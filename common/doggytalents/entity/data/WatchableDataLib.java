@@ -11,4 +11,5 @@ public class WatchableDataLib {
 	public static final int ID_MODE = 23;
 	public static final int ID_WILL_OBEY_OTHERS = 23;
 	public static final int ID_DOG_NAME = 24;
+	public static final int ID_WOLF_TUMMY = 25;
 }

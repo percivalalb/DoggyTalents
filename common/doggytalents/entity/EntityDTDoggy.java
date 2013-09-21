@@ -24,13 +24,16 @@ import doggytalents.entity.ai.EntityAIWatchClosest;
 import doggytalents.entity.data.DogLevel;
 import doggytalents.entity.data.DogMode;
 import doggytalents.entity.data.DogTalents;
+import doggytalents.entity.data.EnumMode;
 import doggytalents.entity.data.EnumTalents;
 import doggytalents.entity.data.WatchableDataLib;
+import doggytalents.lib.Constants;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -69,6 +72,10 @@ public class EntityDTDoggy extends EntityTameable
      */
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
+    private int guardTime;
+    private int tummyTick;
+    private int healingTick;
+    private int regenerationTick;
     private boolean hasBone;
     public EntityAIFetchBone aiFetchBone;
     public DogTalents talents;
@@ -113,6 +120,12 @@ public class EntityDTDoggy extends EntityTameable
             this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
         }
     }
+    
+    
+    public void redoAttributes() {
+    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D + (effectiveLevel() + 1D) * 2D);
+    	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(getSpeedModifier());
+    }
 
     /**
      * Returns true if the newer Entity AI code should be run
@@ -156,6 +169,7 @@ public class EntityDTDoggy extends EntityTameable
         this.dataWatcher.addObject(WatchableDataLib.ID_MODE, mode.getDefaultInt());
         this.dataWatcher.addObject(WatchableDataLib.ID_TAME_SKIN, new Byte((byte)0));
         this.dataWatcher.addObject(WatchableDataLib.ID_DOG_NAME, "");
+        this.dataWatcher.addObject(WatchableDataLib.ID_WOLF_TUMMY, new Integer(60));
     }
 
     /**
@@ -180,6 +194,10 @@ public class EntityDTDoggy extends EntityTameable
         this.mode.writeToNBT(tag);
         tag.setBoolean("willObey", this.willObeyOthers());
         tag.setString("WolfName", this.getWolfName());
+        tag.setInteger("WolfTummy", this.getWolfTummy());
+        tag.setInteger("TummyTick", this.tummyTick);
+        tag.setInteger("HealingTick", this.healingTick);
+        tag.setInteger("RegenTick", this.regenerationTick);
     }
     
     @Override
@@ -215,7 +233,7 @@ public class EntityDTDoggy extends EntityTameable
                 par2 *= 0.25F;
             }
 
-            if (this.onGround && false)
+            if (this.onGround)
             {
                 //this.motionY = 0.02F;
 
@@ -276,6 +294,30 @@ public class EntityDTDoggy extends EntityTameable
         }
     }
     
+    public double getSpeedModifier() {
+    	double var1 = 0.3D;
+
+        if (this.getAttackTarget() != null && !(getAttackTarget() instanceof EntityDTDoggy) && !(getAttackTarget() instanceof EntityPlayer))
+        {
+            for (int i = 0; i < this.talents.getTalentLevel(EnumTalents.DOGGYDASH); i++)
+            {
+                var1 += 0.03D;
+            }
+
+            if (this.talents.getTalentLevel(EnumTalents.DOGGYDASH) == 5)
+            {
+                var1 += 0.04D;
+            }
+
+            if (this.level.isDireDog())
+            {
+                var1 += 0.05D;
+            }
+        }
+
+        return var1;
+    }
+    
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
      */
@@ -289,6 +331,10 @@ public class EntityDTDoggy extends EntityTameable
         this.setWillObeyOthers(tag.getBoolean("willObey"));
         this.setTameSkin(tag.getInteger("doggyTex"));
         this.setWolfName(tag.getString("WolfName"));
+        this.setWolfTummy(tag.getInteger("WolfTummy"));
+        this.tummyTick = tag.getInteger("TummyTick");
+        this.healingTick = tag.getInteger("HealingTick");
+        this.regenerationTick = tag.getInteger("RegenTick");
     }
 
     /**
@@ -352,9 +398,80 @@ public class EntityDTDoggy extends EntityTameable
             this.prevTimeWolfIsShaking = 0.0F;
             this.worldObj.setEntityState(this, (byte)8);
         }
+        
+        if (riddenByEntity == null && (!isSitting() && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L) && Constants.isHungerOn)
+        {
+        	this.tummyTick += 1;
+        }
+
+        if (riddenByEntity != null)
+        {
+            if (Constants.isHungerOn && (this.talents.getTalentLevel(EnumTalents.WOLFMOUNT) != 5 || worldObj.getWorldInfo().getWorldTime() % 2L == 0L))
+            {
+            	tummyTick += 3;
+            }
+
+            if (Constants.isHungerOn && !(riddenByEntity instanceof EntityPlayer))
+            {
+            	tummyTick += 5 - this.talents.getTalentLevel(EnumTalents.SHEPHERDOG);
+            }
+        }
+
+        healingTick += nourishment();
+
+        if (this.getWolfTummy() > 120)
+        {
+            this.setWolfTummy(120);
+        }
+
+        if (this.getWolfTummy() == 0 && worldObj.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1)
+        {
+            attackEntityFrom(DamageSource.generic, 1);
+            fleeingTick = 0;
+        }
+
+        if (this.tummyTick > 300)
+        {
+            if (this.getWolfTummy() > 0)
+            {
+                this.setWolfTummy(this.getWolfTummy() -1);
+            }
+
+            this.tummyTick = 0;
+        }
+
+        if (healingTick >= 6000)
+        {
+            if (this.getHealth() < getMaxHealth() && this.getHealth() != 1)
+            {
+            	this.setHealth(this.getHealth() + 1);
+            }
+
+            if (this.getHealth() > getMaxHealth())
+            {
+                this.setHealth(this.getMaxHealth());
+            }
+
+            if (this.getHealth() < getMaxHealth() && this.getHealth() == 1)
+            {
+            	regenerationTick += 1;
+
+                if (this.talents.getTalentLevel(EnumTalents.GUARDDOG) == 5 && rand.nextInt(2) == 0)
+                {
+                	regenerationTick += 1;
+                }
+            }
+
+            healingTick = 0;
+        }
+
+        if (regenerationTick >= 200)
+        {
+            this.setHealth(this.getHealth() + 1);
+            this.worldObj.setEntityState(this, (byte)7);
+            regenerationTick = 0;
+        }
     }
-    
-    
 
     /**
      * Called to update the entity's position/logic.
@@ -362,6 +479,7 @@ public class EntityDTDoggy extends EntityTameable
     @Override
     public void onUpdate()
     {
+    	this.redoAttributes();
         super.onUpdate();
         this.field_70924_f = this.field_70926_e;
 
@@ -398,6 +516,19 @@ public class EntityDTDoggy extends EntityTameable
 
             if (this.prevTimeWolfIsShaking >= 2.0F)
             {
+            	if (didWolfFish()) {
+                    if (didWolfCook()) {
+                    	if(!this.worldObj.isRemote) {
+                    		dropItem(Item.fishCooked.itemID, 1);
+                    	}
+                    }
+                    else {
+                    	if(!this.worldObj.isRemote) {
+                    		dropItem(Item.fishRaw.itemID, 1);
+                    	}
+                    }
+                }
+            	
                 this.isShaking = false;
                 this.field_70928_h = false;
                 this.prevTimeWolfIsShaking = 0.0F;
@@ -433,6 +564,10 @@ public class EntityDTDoggy extends EntityTameable
                 }
     		}
     	}
+        
+        if (guardTime > 0) {
+            guardTime--;
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -494,7 +629,7 @@ public class EntityDTDoggy extends EntityTameable
      * Called when the entity is attacked.
      */
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float damage)
     {
         if (this.isEntityInvulnerable())
         {
@@ -507,10 +642,23 @@ public class EntityDTDoggy extends EntityTameable
 
             if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
             {
-                par2 = (par2 + 1.0F) / 2.0F;
+            	damage = (damage + 1.0F) / 2.0F;
+            }
+            
+            if (entity != null && guardTime <= 0)
+            {
+                int blockChance = this.talents.getTalentLevel(EnumTalents.GUARDDOG) != 5 ? 0 : 1;
+                blockChance += this.talents.getTalentLevel(EnumTalents.GUARDDOG);
+
+                if (rand.nextInt(12) < blockChance)
+                {
+                    guardTime = 10;
+                    worldObj.playSoundAtEntity(this, "random.break", getSoundVolume(), (rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F);
+                    return false;
+                }
             }
 
-            return super.attackEntityFrom(par1DamageSource, par2);
+            return super.attackEntityFrom(par1DamageSource, damage);
         }
     }
 
@@ -696,6 +844,37 @@ public class EntityDTDoggy extends EntityTameable
         this.dataWatcher.updateObject(WatchableDataLib.ID_TAME_SKIN, Byte.valueOf((byte)par1));
     }
 
+    public boolean didWolfFish() {
+        return rand.nextInt(15) < this.talents.getTalentLevel(EnumTalents.FISHERDOG) * 2;
+    }
+
+    public boolean didWolfCook() {
+        return rand.nextInt(15) < this.talents.getTalentLevel(EnumTalents.HELLHOUND) * 2;
+    }
+    
+    public int nourishment()
+    {
+        int amount = 0;
+
+        if (this.getWolfTummy() > 0)
+        {
+            amount = 40 + 4 * (effectiveLevel() + 1);
+
+            if (isSitting() && this.talents.getTalentLevel(EnumTalents.QUICKHEALER) == 5)
+            {
+                amount += 20 + 2 * (effectiveLevel() + 1);
+            }
+
+            if (!isSitting())
+            {
+                amount *= 5 + this.talents.getTalentLevel(EnumTalents.QUICKHEALER);
+                amount /= 10;
+            }
+        }
+
+        return amount;
+    }
+    
     /**
      * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
      */
@@ -888,8 +1067,18 @@ public class EntityDTDoggy extends EntityTameable
         return this.spawnBabyAnimal(par1EntityAgeable);
     }
 
-	public int getWolfTummy() {
-		//TODO Add hunger system
-		return 60;
+    public int getWolfTummy() {
+		return this.dataWatcher.getWatchableObjectInt(WatchableDataLib.ID_WOLF_TUMMY);
 	}
+    
+    public void setWolfTummy(int par1) {
+    	if(par1 > 120) {
+    		par1 = 120;
+    	}
+    	if(par1 < 0) {
+    		par1 = 0;
+    	}
+    	
+    	this.dataWatcher.updateObject(WatchableDataLib.ID_WOLF_TUMMY, par1);
+    }
 }

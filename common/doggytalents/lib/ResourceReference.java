@@ -30,7 +30,6 @@ public class ResourceReference {
 	
 	public static final ResourceLocation doggyHurt = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
 	public static final ResourceLocation doggyWild = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
-    public static final ResourceLocation doggyAngry = new ResourceLocation("textures/entity/wolf/wolf_angry.png");
 	
 	
 	 /**

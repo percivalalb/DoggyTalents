@@ -121,14 +121,7 @@ public class ModelDTDoggy extends ModelBase
     {
         EntityDTDoggy entitywolf = (EntityDTDoggy)par1EntityLivingBase;
 
-        if (entitywolf.isAngry())
-        {
-            this.wolfTail.rotateAngleY = 0.0F;
-        }
-        else
-        {
-            this.wolfTail.rotateAngleY = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
-        }
+        this.wolfTail.rotateAngleY = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
 
         if (entitywolf.isSitting())
         {

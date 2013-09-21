@@ -79,10 +79,7 @@ public class RenderDTDoggy extends RenderLiving
 			case 16: return ResourceReference.doggyTame16;
 			}
         }
-
-        if (dog.isAngry()) {
-            return ResourceReference.doggyAngry;
-        }
+    	
         return ResourceReference.doggyWild;
     }
 

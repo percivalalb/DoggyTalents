@@ -798,7 +798,7 @@ public class EntityDTDoggy extends EntityTameable
     @Override
     protected boolean canDespawn()
     {
-        return !this.isTamed() && this.ticksExisted > 2400;
+        return false;
     }
 
     @Override

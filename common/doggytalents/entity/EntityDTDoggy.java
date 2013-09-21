@@ -130,15 +130,6 @@ public class EntityDTDoggy extends EntityTameable
     public void setAttackTarget(EntityLivingBase par1EntityLivingBase)
     {
         super.setAttackTarget(par1EntityLivingBase);
-
-        if (par1EntityLivingBase == null)
-        {
-            this.setAngry(false);
-        }
-        else if (!this.isTamed())
-        {
-            this.setAngry(true);
-        }
     }
 
     /**
@@ -183,7 +174,6 @@ public class EntityDTDoggy extends EntityTameable
     public void writeEntityToNBT(NBTTagCompound tag)
     {
         super.writeEntityToNBT(tag);
-        tag.setBoolean("Angry", this.isAngry());
         tag.setInteger("doggyTex", this.getTameSkin());
         this.talents.writeToNBT(tag);
         this.level.writeToNBT(tag);
@@ -293,7 +283,6 @@ public class EntityDTDoggy extends EntityTameable
     public void readEntityFromNBT(NBTTagCompound tag)
     {
         super.readEntityFromNBT(tag);
-        this.setAngry(tag.getBoolean("Angry"));
         this.talents.readFromNBT(tag);
         this.level.readFromNBT(tag);
         this.mode.readFromNBT(tag);  
@@ -308,7 +297,7 @@ public class EntityDTDoggy extends EntityTameable
     @Override
     protected String getLivingSound()
     {
-        return this.isAngry() ? "mob.wolf.growl" : (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.dataWatcher.getWatchableObjectFloat(18) < 10.0F ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark");
+        return this.rand.nextInt(3) == 0 ? (this.isTamed() && this.dataWatcher.getWatchableObjectFloat(18) < 10.0F ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark";
     }
 
     /**
@@ -624,7 +613,7 @@ public class EntityDTDoggy extends EntityTameable
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if (itemstack != null && itemstack.itemID == Item.bone.itemID && !this.isAngry())
+        else if (itemstack != null && itemstack.itemID == Item.bone.itemID)
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -683,7 +672,7 @@ public class EntityDTDoggy extends EntityTameable
     @SideOnly(Side.CLIENT)
     public float getTailRotation()
     {
-        return this.isAngry() ? 1.5393804F : (this.isTamed() ? (0.55F - (20.0F - this.dataWatcher.getWatchableObjectFloat(18)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F));
+        return this.isTamed() ? (0.55F - (20.0F - this.dataWatcher.getWatchableObjectFloat(18)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
     }
 
     /**
@@ -694,40 +683,6 @@ public class EntityDTDoggy extends EntityTameable
     public boolean isBreedingItem(ItemStack par1ItemStack)
     {
         return par1ItemStack == null ? false : (!(Item.itemsList[par1ItemStack.itemID] instanceof ItemFood) ? false : ((ItemFood)Item.itemsList[par1ItemStack.itemID]).isWolfsFavoriteMeat());
-    }
-
-    /**
-     * Will return how many at most can spawn in a chunk at once.
-     */
-    @Override
-    public int getMaxSpawnedInChunk()
-    {
-        return 8;
-    }
-
-    /**
-     * Determines whether this wolf is angry or not.
-     */
-    public boolean isAngry()
-    {
-        return (this.dataWatcher.getWatchableObjectByte(16) & 2) != 0;
-    }
-
-    /**
-     * Sets whether this wolf is angry or not.
-     */
-    public void setAngry(boolean par1)
-    {
-        byte b0 = this.dataWatcher.getWatchableObjectByte(16);
-
-        if (par1)
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 | 2)));
-        }
-        else
-        {
-            this.dataWatcher.updateObject(16, Byte.valueOf((byte)(b0 & -3)));
-        }
     }
 
     public int getTameSkin()

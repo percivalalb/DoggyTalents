@@ -9,4 +9,5 @@ public class Constants {
 	public static boolean allowPermaDeath = false;
 	public static boolean direParticalsOff = false;
 	public static int barkRate = 10;
+	public static boolean bloodWhenIncapacitated = true;
 }

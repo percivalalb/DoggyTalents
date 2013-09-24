@@ -45,12 +45,10 @@ public class RenderDTDoggy extends RenderLiving
             GL11.glColor3f(f1, f1, f1);
             return 1;
         }
-        else if (par2 == 1 && par1EntityDTDoggy.isTamed())
-        {
-            //this.bindTexture(wolfCollarTextures);
-            //f1 = 1.0F;
-            //int j = par1EntityDTDoggy.getCollarColor();
-           // GL11.glColor3f(f1 * EntitySheep.fleeceColorTable[j][0], f1 * EntitySheep.fleeceColorTable[j][1], f1 * EntitySheep.fleeceColorTable[j][2]);
+        else if (par2 == 1 && (par1EntityDTDoggy.getHealth() == 1 && Constants.bloodWhenIncapacitated)) {
+        	this.bindTexture(ResourceReference.doggyHurt);
+            f1 = par1EntityDTDoggy.getBrightness(par3) * par1EntityDTDoggy.getShadingWhileShaking(par3);
+            GL11.glColor3f(f1, f1, f1);
             return 1;
         }
         else

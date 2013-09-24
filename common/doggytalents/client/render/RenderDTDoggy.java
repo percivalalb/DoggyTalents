@@ -18,7 +18,9 @@ import doggytalents.entity.EntityDTDoggy;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceReference;
 
-@SideOnly(Side.CLIENT)
+/**
+ * @author ProPercivalalb
+ */
 public class RenderDTDoggy extends RenderLiving
 {
     public RenderDTDoggy(ModelBase par1ModelBase, ModelBase par2ModelBase, float par3)
@@ -101,47 +103,47 @@ public class RenderDTDoggy extends RenderLiving
     
     protected void renderName(EntityLiving entityliving, double d, double d1, double d2)
     {
-        EntityDTDoggy entitydtdoggy = (EntityDTDoggy)entityliving;
+        EntityDTDoggy dog = (EntityDTDoggy)entityliving;
 
-        if (Minecraft.isGuiEnabled() && !entitydtdoggy.getWolfName().equals("") && entitydtdoggy != renderManager.livingPlayer)
+        if (Minecraft.isGuiEnabled() && !dog.getWolfName().equals("") && dog != renderManager.livingPlayer)
         {
             float f = 1.6F;
             float f1 = 0.01666667F * f;
-            float f2 = entitydtdoggy.getDistanceToEntity(renderManager.livingPlayer);
-            float f3 = entitydtdoggy.isSneaking() ? 32F : 64F;
-            byte byte0 = ((byte)(!Constants.isHungerOn ? 0 : 4));
+            float currentDistance = dog.getDistanceToEntity(renderManager.livingPlayer);
+            float nameVisableDistance = dog.isSneaking() ? 32F : 64F;
+            byte hungerVisableDistance = ((byte)(!Constants.isHungerOn ? 0 : 4));
 
-            if (f2 < f3)
+            if (currentDistance < nameVisableDistance)
             {
-               	String s = entitydtdoggy.mode.getMode().getTip();
+               	String s = dog.mode.getMode().getTip();
                 
-                if (entitydtdoggy.getHealth() == 1) {
+                if (dog.getHealth() == 1) {
                     s = "(I)";
                 }
 
-                String s1 = entitydtdoggy.getWolfName();
-                String s2 = (new StringBuilder()).append(s).append("(").append(entitydtdoggy.getWolfTummy()).append(")").toString();
+                String dogName = dog.getWolfName();
+                String dogTummy = String.format("(%d)", dog.getDogTummy());
 
-                if (!entitydtdoggy.isSneaking())
+                if (!dog.isSneaking())
                 {
                     float f4 = 1.0F;
                     double d3 = 0.0D;
 
-                    if (entitydtdoggy.riddenByEntity != null)
+                    if (dog.riddenByEntity != null)
                     {
                         d3 = -0.20000000000000001D;
                     }
 
-                    if (entitydtdoggy.riddenByEntity == null)
+                    if (dog.riddenByEntity == null)
                     {
-                        renderLivingLabel(entitydtdoggy, s1, d, d1 - (double)f4, d2, 64, 1.6F);
+                        renderLivingLabel(dog, dogName, d, d1 - (double)f4, d2, 64, 1.6F);
                     }
 
-                    renderLivingLabel(entitydtdoggy, s2, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, byte0, 0.7F);
+                    renderLivingLabel(dog, dogTummy, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
                 
-                    if(renderManager.livingPlayer.isSneaking() && entitydtdoggy.riddenByEntity == null && !entitydtdoggy.getOwnerName().equals(""))
+                    if(renderManager.livingPlayer.isSneaking() && dog.riddenByEntity == null && !dog.getOwnerName().equals(""))
                     {
-                    	renderLivingLabel(entitydtdoggy, entitydtdoggy.getOwnerName(), d, (d1 - (double)f4) + 0.21000000000000001D + d3, d2, byte0, 0.7F);
+                    	renderLivingLabel(dog, dog.getOwnerName(), d, (d1 - (double)f4) + 0.21000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
                     }
                 }
                 else
@@ -162,7 +164,7 @@ public class RenderDTDoggy extends RenderLiving
                     int i = 0;
                     GL11.glDisable(GL11.GL_TEXTURE_2D);
                     tessellator.startDrawingQuads();
-                    int j = fontrenderer.getStringWidth(s1) / 2;
+                    int j = fontrenderer.getStringWidth(dogName) / 2;
                     tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 1.0F);
                     tessellator.addVertex(-j - 1, -1 + i, 0.0D);
                     tessellator.addVertex(-j - 1, 8 + i, 0.0D);
@@ -171,7 +173,7 @@ public class RenderDTDoggy extends RenderLiving
                     tessellator.draw();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
                     GL11.glDepthMask(true);
-                    fontrenderer.drawString(s1, -fontrenderer.getStringWidth(s1) / 2, 0, 0x20c82536);
+                    fontrenderer.drawString(dogName, -fontrenderer.getStringWidth(dogName) / 2, 0, 0x20c82536);
                     GL11.glEnable(GL11.GL_LIGHTING);
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

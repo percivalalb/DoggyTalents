@@ -11,6 +11,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Init;
@@ -28,6 +29,9 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import doggytalents.api.DefaultBedMaterial;
+import doggytalents.api.DogBedManager;
+import doggytalents.core.addon.AddonManager;
 import doggytalents.core.handler.ConfigurationHandler;
 import doggytalents.core.handler.ConnectionHandler;
 import doggytalents.core.handler.LocalizationHandler;
@@ -62,7 +66,6 @@ public class DoggyTalentsMod {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		proxy.onPreLoad();
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		
 		VersionHelper.checkVersion(Type.BLANK);
@@ -72,6 +75,7 @@ public class DoggyTalentsMod {
 		ModBlocks.inti();
 		ModItems.inti();
 		ModEntities.inti();
+		proxy.onPreLoad();
 	}
 	
 	@EventHandler
@@ -80,12 +84,38 @@ public class DoggyTalentsMod {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		//Handlers
-		//MinecraftForge.EVENT_BUS.register(new ConnectionHandler());
 		proxy.registerHandlers();
 	}
 		
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent par1) {
+		DogBedManager.registerBedWood("oakPlank", new DefaultBedMaterial(Block.planks, 0), new ItemStack(Block.planks, 1, 0));
+		DogBedManager.registerBedWood("sprucePlank", new DefaultBedMaterial(Block.planks, 1), new ItemStack(Block.planks, 1, 1));
+		DogBedManager.registerBedWood("birchPlank", new DefaultBedMaterial(Block.planks, 2), new ItemStack(Block.planks, 1, 2));
+		DogBedManager.registerBedWood("junglePlank", new DefaultBedMaterial(Block.planks, 3), new ItemStack(Block.planks, 1, 3));
+		DogBedManager.registerBedWood("oakWood", new DefaultBedMaterial(Block.wood, 0), new ItemStack(Block.wood, 1, 0));
+		DogBedManager.registerBedWood("spruceWood", new DefaultBedMaterial(Block.wood, 1), new ItemStack(Block.wood, 1, 1));
+		DogBedManager.registerBedWood("birchWood", new DefaultBedMaterial(Block.wood, 2), new ItemStack(Block.wood, 1, 2));
+		DogBedManager.registerBedWood("jungleWood", new DefaultBedMaterial(Block.wood, 3), new ItemStack(Block.wood, 1, 3));
 		
+		DogBedManager.registerBedWool("whiteWool", new DefaultBedMaterial(Block.cloth, 0), new ItemStack(Block.cloth, 1, 0));
+		DogBedManager.registerBedWool("orangeWool", new DefaultBedMaterial(Block.cloth, 1), new ItemStack(Block.cloth, 1, 1));
+		DogBedManager.registerBedWool("magentaWool", new DefaultBedMaterial(Block.cloth, 2), new ItemStack(Block.cloth, 1, 2));
+		DogBedManager.registerBedWool("lightBlueWool", new DefaultBedMaterial(Block.cloth, 3), new ItemStack(Block.cloth, 1, 3));
+		DogBedManager.registerBedWool("yellowWool", new DefaultBedMaterial(Block.cloth, 4), new ItemStack(Block.cloth, 1, 4));
+		DogBedManager.registerBedWool("limeWool", new DefaultBedMaterial(Block.cloth, 5), new ItemStack(Block.cloth, 1, 5));
+		DogBedManager.registerBedWool("pinkWool", new DefaultBedMaterial(Block.cloth, 6), new ItemStack(Block.cloth, 1, 6));
+		DogBedManager.registerBedWool("grayWool", new DefaultBedMaterial(Block.cloth, 7), new ItemStack(Block.cloth, 1, 7));
+		DogBedManager.registerBedWool("lightGrayWool", new DefaultBedMaterial(Block.cloth, 8), new ItemStack(Block.cloth, 1, 8));
+		DogBedManager.registerBedWool("cyanWool", new DefaultBedMaterial(Block.cloth, 9), new ItemStack(Block.cloth, 1, 9));
+		DogBedManager.registerBedWool("purpleWool", new DefaultBedMaterial(Block.cloth, 10), new ItemStack(Block.cloth, 1, 10));
+		DogBedManager.registerBedWool("blueWool", new DefaultBedMaterial(Block.cloth, 11), new ItemStack(Block.cloth, 1, 11));
+		DogBedManager.registerBedWool("brownWool", new DefaultBedMaterial(Block.cloth, 12), new ItemStack(Block.cloth, 1, 12));
+		DogBedManager.registerBedWool("greenWool", new DefaultBedMaterial(Block.cloth, 13), new ItemStack(Block.cloth, 1, 13));
+		DogBedManager.registerBedWool("redWool", new DefaultBedMaterial(Block.cloth, 14), new ItemStack(Block.cloth, 1, 14));
+		DogBedManager.registerBedWool("blackWool", new DefaultBedMaterial(Block.cloth, 15), new ItemStack(Block.cloth, 1, 15));
+		
+		AddonManager.registerAddons();
+		AddonManager.runRegisteredAddons(ConfigurationHandler.configuration);
 	}
 }

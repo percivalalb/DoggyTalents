@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 public class ModEntities {
 	
 	public static void inti() {
-		registerEntity(EntityDTDoggy.class, "DTDoggy", 0, 0, 0);
+		registerEntity(EntityDTDoggy.class, "DTDoggy", 0);
 	}
 	
-	public static void registerEntity(Class entityClass, String saveName, int id, int i, int y) {
-	    EntityRegistry.registerModEntity(entityClass, saveName, id, DoggyTalentsMod.instance, 120, 3, true);
+	public static void registerEntity(Class entityClass, String saveName, int id) {
+	    EntityRegistry.registerModEntity(entityClass, saveName, id, DoggyTalentsMod.instance, 120, 2, true);
 	}
 }

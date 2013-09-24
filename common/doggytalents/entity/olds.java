@@ -1577,8 +1577,7 @@ public class olds extends EntityAnimal
     }
     
     @Override
-    public int getMaxSpawnedInChunk()
-    {
+    public int getMaxSpawnedInChunk() {
         return 8;
     }
 

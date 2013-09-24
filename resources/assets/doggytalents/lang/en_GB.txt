@@ -1,0 +1,71 @@
+tile.dt.dogBed.name=Dog Bed
+
+item.dt.throwBone0.name=Throw Bone
+item.dt.throwBone1.name=Drool Throw Bone
+item.dt.trainingTreat.name=Training Treat
+item.dt.superTreat.name=Super Treat
+item.dt.masterTreat.name=Master Treat
+item.dt.direTreat.name=Dire Treat
+item.dt.breedingBone.name=Breeding Bone
+item.dt.doggyCharm.name=Doggy Charm
+item.dt.collarShears.name=Collar Shears
+item.dt.commandEmblem.name=Command Emblem
+
+container.packpuppy=Doggy Backpack
+
+dogBed.bedding.whiteWool=White Wool Bedding
+dogBed.bedding.orangeWool=Orange Wool Bedding
+dogBed.bedding.magentaWool=Magenta Wool Bedding
+dogBed.bedding.lightBlueWool=Light Blue Wool Bedding
+dogBed.bedding.yellowWool=Yellow Wool Bedding
+dogBed.bedding.limeWool=Lime Wool Bedding
+dogBed.bedding.pinkWool=Pink Wool Bedding
+dogBed.bedding.grayWool=Gray Wool Bedding
+dogBed.bedding.lightGrayWool=Light Gray Wool Bedding
+dogBed.bedding.cyanWool=Cyan Wool Bedding
+dogBed.bedding.purpleWool=Purple Wool Bedding
+dogBed.bedding.blueWool=Blue Wool Bedding
+dogBed.bedding.brownWool=Brown Wool Bedding
+dogBed.bedding.greenWool=Green Wool Bedding
+dogBed.bedding.redWool=Red Wool Bedding
+dogBed.bedding.blackWool=Black Wool Bedding
+
+dogBed.outside.oakPlank=Oak Plank Casing
+dogBed.outside.sprucePlank=Spruce Plank Casing
+dogBed.outside.birchPlank=Birch Plank Casing
+dogBed.outside.junglePlank=Jungle Plank Casing
+
+dogBed.outside.oakWood=Oak Wood Casing
+dogBed.outside.spruceWood=Spruce Wood Casing
+dogBed.outside.birchWood=Birch Wood Casing
+dogBed.outside.jungleWood=Jungle Wood Casing
+
+dogBed.woolError=Error (Unknown Wool ID)
+dogBed.woodError=Error (Unknown Casing ID)
+
+#Forestry Addon
+dogBed.outside.forestry.larchPlank=Larch Plank Casing
+dogBed.outside.forestry.teakPlank=Teak Plank Casing
+dogBed.outside.forestry.acaciaPlank=Acacia Plank Casing
+dogBed.outside.forestry.limePlank=Lime Plank Casing
+dogBed.outside.forestry.chestnutPlank=Chestnut Plank Casing
+dogBed.outside.forestry.wengePlank=Wenge Plank Casing
+dogBed.outside.forestry.baobabPlank=Baobab Plank Casing
+dogBed.outside.forestry.sequoiaPlank=Sequoia Plank Casing
+dogBed.outside.forestry.kapokPlank=Kapok Plank Casing
+dogBed.outside.forestry.ebonyPlank=Ebony Plank Casing
+dogBed.outside.forestry.mahoganyPlank=Mahogany Plank Casing
+dogBed.outside.forestry.balsaPlank=Balsa Plank Casing
+dogBed.outside.forestry.willowPlank=Willow Plank Casing
+dogBed.outside.forestry.walnutPlank=Walnut Plank Casing
+dogBed.outside.forestry.greenheartPlank=Greenheart Plank Casing
+dogBed.outside.forestry.cherryPlank=Cherry Plank Casing
+dogBed.outside.forestry.mahoePlank=Mahoe Plank Casing
+dogBed.outside.forestry.poplarPlank=Poplar Plank Casing
+dogBed.outside.forestry.palmPlank=Palm Plank Casing
+dogBed.outside.forestry.papayaPlank=Papaya Plank Casing
+dogBed.outside.forestry.pinePlank=Pine Plank Casing
+dogBed.outside.forestry.plumPlank=Plum Plank Casing
+dogBed.outside.forestry.maplePlank=Maple Plank Casing
+dogBed.outside.forestry.citrusPlank=Citrus Plank Casing
+dogBed.outside.forestry.giganteumPlank=Giganteum Plank Casing

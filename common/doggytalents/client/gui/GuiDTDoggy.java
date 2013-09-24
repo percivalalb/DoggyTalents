@@ -469,7 +469,7 @@ public class GuiDTDoggy extends GuiContainer {
 	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Hell Hound", EnumChatFormatting.GRAY+"--------------------", "Lets your dog set things on fire with its attacks", "The higher the level, the longer the fire lasts.", "Mastering the skill grants your dog immunity to fire.");
 	    				 break;
 	    			 case 5:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Wolf Mount (Coming Soon)", EnumChatFormatting.GRAY+"---------------------", "Currently not implemented");
+	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Wolf Mount", EnumChatFormatting.GRAY+"---------------------", "Allows you to ride your dog anywhere at speed", "speed effects from doggy dash apply", "To get on your dog have an empty hand", "and jump and click on the dog to get", "it... Enjoy!");
 	    				 break;
 	    			 case 6:
 	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Pack Puppy", EnumChatFormatting.GRAY+"--------------------", "Each level gives your dog 3 inventory slots in", "its, PackPuppy GUI. To open the GUI right click on", "your, dog with a plank in hand! At level 5, your dog", "will, also automatically pick up any nearby", "items if, it has space in its inventory");

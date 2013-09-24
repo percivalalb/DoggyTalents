@@ -1,6 +1,7 @@
 package doggytalents.core.helper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * @author ProPercivalalb
@@ -9,6 +10,39 @@ import java.lang.reflect.Field;
  */
 public class ReflectionHelper {
 
+	public static Class getClass(String className) {
+		try {
+	        return Class.forName(className);
+	    }
+		catch(Exception e) {
+		    return null;
+		}
+	}
+ 	
+	public static Method getMethod(Class<?> class1, int methodIndex) {
+		try {
+			Method method = class1.getDeclaredMethods()[methodIndex];
+			method.setAccessible(true);
+	        return method;
+	    }
+		catch(Exception e) {
+		    e.printStackTrace();
+		    return null;
+		}
+	}
+	
+	public static Method getMethod(Class<?> class1, String methodName, Class<?>... classParam) {
+		try {
+			Method method = class1.getDeclaredMethod(methodName, classParam);
+			method.setAccessible(true);
+	        return method;
+	    }
+		catch(Exception e) {
+		    e.printStackTrace();
+		    return null;
+		}
+	}
+	
 	public static Field getField(Class<?> class1, Object instance, int fieldIndex) {
 		try {
 			Field field = class1.getDeclaredFields()[fieldIndex];

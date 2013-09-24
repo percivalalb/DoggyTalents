@@ -20,6 +20,8 @@ public class ConnectionHandler implements IConnectionHandler {
 		EntityPlayerMP player = (EntityPlayerMP)p;
 		EntityDTDoggy dog = new EntityDTDoggy(player.worldObj);
 		dog.setPosition(player.posX, player.posY, player.posZ);
+		dog.setOwner(player.getCommandSenderName());
+		dog.setTamed(true);
 		player.worldObj.spawnEntityInWorld(dog);
 	}
 

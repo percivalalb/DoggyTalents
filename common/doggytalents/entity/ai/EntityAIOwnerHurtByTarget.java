@@ -1,19 +1,21 @@
 package doggytalents.entity.ai;
 
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.passive.EntityTameable;
 
 public class EntityAIOwnerHurtByTarget extends EntityAITarget
 {
-    EntityTameable theDefendingTameable;
-    EntityLivingBase theOwnerAttacker;
+    private EntityDTDoggy dog;
+    private EntityLivingBase theOwnerAttacker;
     private int field_142051_e;
 
-    public EntityAIOwnerHurtByTarget(EntityTameable par1EntityTameable)
+    public EntityAIOwnerHurtByTarget(EntityDTDoggy par1EntityDTDoggy)
     {
-        super(par1EntityTameable, false);
-        this.theDefendingTameable = par1EntityTameable;
+        super(par1EntityDTDoggy, false);
+        this.dog = par1EntityDTDoggy;
         this.setMutexBits(1);
     }
 
@@ -22,13 +24,13 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
      */
     public boolean shouldExecute()
     {
-        if (!this.theDefendingTameable.isTamed())
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
         {
             return false;
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.theDefendingTameable.func_130012_q();
+            EntityLivingBase entitylivingbase = this.dog.func_130012_q();
 
             if (entitylivingbase == null)
             {
@@ -38,9 +40,14 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
             {
                 this.theOwnerAttacker = entitylivingbase.getAITarget();
                 int i = entitylivingbase.func_142015_aE();
-                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.theDefendingTameable.func_142018_a(this.theOwnerAttacker, entitylivingbase);
+                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, entitylivingbase);
             }
         }
+    }
+    
+    @Override
+    public boolean continueExecuting() {
+    	return this.dog.getHealth() > 1 && super.continueExecuting();
     }
 
     /**
@@ -49,7 +56,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);
-        EntityLivingBase entitylivingbase = this.theDefendingTameable.func_130012_q();
+        EntityLivingBase entitylivingbase = this.dog.func_130012_q();
 
         if (entitylivingbase != null)
         {

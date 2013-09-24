@@ -1,19 +1,21 @@
 package doggytalents.entity.ai;
 
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.passive.EntityTameable;
 
 public class EntityAIOwnerHurtTarget extends EntityAITarget
 {
-    EntityTameable theEntityTameable;
+    private EntityDTDoggy dog;
     EntityLivingBase theTarget;
     private int field_142050_e;
 
-    public EntityAIOwnerHurtTarget(EntityTameable par1EntityTameable)
+    public EntityAIOwnerHurtTarget(EntityDTDoggy par1EntityDTDoggy)
     {
-        super(par1EntityTameable, false);
-        this.theEntityTameable = par1EntityTameable;
+        super(par1EntityDTDoggy, false);
+        this.dog = par1EntityDTDoggy;
         this.setMutexBits(1);
     }
 
@@ -22,13 +24,13 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget
      */
     public boolean shouldExecute()
     {
-        if (!this.theEntityTameable.isTamed())
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
         {
             return false;
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.theEntityTameable.func_130012_q();
+            EntityLivingBase entitylivingbase = this.dog.func_130012_q();
 
             if (entitylivingbase == null)
             {
@@ -38,9 +40,14 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget
             {
                 this.theTarget = entitylivingbase.getLastAttacker();
                 int i = entitylivingbase.getLastAttackerTime();
-                return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.theEntityTameable.func_142018_a(this.theTarget, entitylivingbase);
+                return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.dog.func_142018_a(this.theTarget, entitylivingbase);
             }
         }
+    }
+    
+    @Override
+    public boolean continueExecuting() {
+    	return this.dog.getHealth() > 1 && super.continueExecuting();
     }
 
     /**
@@ -49,7 +56,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.theTarget);
-        EntityLivingBase entitylivingbase = this.theEntityTameable.func_130012_q();
+        EntityLivingBase entitylivingbase = this.dog.func_130012_q();
 
         if (entitylivingbase != null)
         {

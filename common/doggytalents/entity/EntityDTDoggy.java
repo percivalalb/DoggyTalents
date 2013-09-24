@@ -20,6 +20,7 @@ import doggytalents.entity.ai.EntityAIHurtByTarget;
 import doggytalents.entity.ai.EntityAILeapAtTarget;
 import doggytalents.entity.ai.EntityAILookIdle;
 import doggytalents.entity.ai.EntityAIMate;
+import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAISwimming;
@@ -123,15 +124,15 @@ public class EntityDTDoggy extends EntityTameable
         this.tasks.addTask(10, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntitySheep.class, 200, false));
+        this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
+        this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true));
+        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntitySheep.class, 200, false));
         this.setTamed(false);
         this.inventory = new InventoryPackPuppy(this);
     }
 
     @Override
-    protected void applyEntityAttributes()
-    {
+    protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
 
@@ -202,8 +203,7 @@ public class EntityDTDoggy extends EntityTameable
      * Plays step sound at given x, y, z for the entity
      */
     @Override
-    protected void playStepSound(int par1, int par2, int par3, int par4)
-    {
+    protected void playStepSound(int par1, int par2, int par3, int par4) {
         this.playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
@@ -244,10 +244,8 @@ public class EntityDTDoggy extends EntityTameable
     }
 
     @Override
-    public void moveEntityWithHeading(float par1, float par2)
-    {
-        if (this.riddenByEntity instanceof EntityPlayer)
-        {
+    public void moveEntityWithHeading(float par1, float par2) {
+        if (this.riddenByEntity instanceof EntityPlayer) {
             this.prevRotationYaw = this.rotationYaw = this.riddenByEntity.rotationYaw;
             this.rotationPitch = this.riddenByEntity.rotationPitch * 0.5F;
             this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -255,8 +253,7 @@ public class EntityDTDoggy extends EntityTameable
             par1 = ((EntityPlayer)this.riddenByEntity).moveStrafing * 0.5F;
             par2 = ((EntityPlayer)this.riddenByEntity).moveForward;
 
-            if (par2 <= 0.0F)
-            {
+            if (par2 <= 0.0F) {
                 par2 *= 0.25F;
             }
 
@@ -1032,12 +1029,13 @@ public class EntityDTDoggy extends EntityTameable
             }
             else {
             	if(this.talents.getTalentLevel(EnumTalents.WOLFMOUNT) > 0 && par1EntityPlayer.ridingEntity == null && !par1EntityPlayer.onGround) {
+            		this.aiSit.setSitting(false);
             		par1EntityPlayer.mountEntity(this);
             		return true;
             	}
             }
 
-            if (canInteract(par1EntityPlayer) && !this.worldObj.isRemote && !this.isBreedingItem(itemstack))
+            if (canInteract(par1EntityPlayer) && !this.worldObj.isRemote && par1EntityPlayer.ridingEntity == null && !this.isBreedingItem(itemstack))
             {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;

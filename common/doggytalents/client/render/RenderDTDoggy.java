@@ -45,7 +45,7 @@ public class RenderDTDoggy extends RenderLiving
             GL11.glColor3f(f1, f1, f1);
             return 1;
         }
-        else if (par2 == 1 && (par1EntityDTDoggy.getHealth() == 1 && Constants.bloodWhenIncapacitated)) {
+        else if (par2 == 1 && (par1EntityDTDoggy.getHealth() == 1 && par1EntityDTDoggy.isImmortal() && Constants.bloodWhenIncapacitated)) {
         	this.bindTexture(ResourceReference.doggyHurt);
             f1 = par1EntityDTDoggy.getBrightness(par3) * par1EntityDTDoggy.getShadingWhileShaking(par3);
             GL11.glColor3f(f1, f1, f1);
@@ -58,7 +58,7 @@ public class RenderDTDoggy extends RenderLiving
     }
 
     protected ResourceLocation getDogTexture(EntityDTDoggy dog) {
-    	if (dog.isTamed()) {
+    	if(dog.isTamed()) {
 			switch(dog.getTameSkin()) {
 			case 0: return ResourceReference.doggyTame0;
 			case 1: return ResourceReference.doggyTame1;
@@ -113,10 +113,10 @@ public class RenderDTDoggy extends RenderLiving
 
             if (currentDistance < nameVisableDistance)
             {
-               	String s = dog.mode.getMode().getTip();
+               	String modeTip = dog.mode.getMode().getTip();
                 
                 if (dog.getHealth() == 1) {
-                    s = "(I)";
+                    modeTip = "(I)";
                 }
 
                 String dogName = dog.getWolfName();
@@ -137,7 +137,7 @@ public class RenderDTDoggy extends RenderLiving
                         renderLivingLabel(dog, dogName, d, d1 - (double)f4, d2, 64, 1.6F);
                     }
 
-                    renderLivingLabel(dog, dogTummy, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
+                    renderLivingLabel(dog, modeTip + "" + dogTummy, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
                 
                     if(renderManager.livingPlayer.isSneaking() && dog.riddenByEntity == null && !dog.getOwnerName().equals(""))
                     {

@@ -99,6 +99,7 @@ public class EntityDTDoggy extends EntityTameable
     private int charmerCharge;
     private boolean hasBone;
     private boolean canSeeCreeper;
+    private EntityAgeable lastBaby;
     public EntityAIFetchBone aiFetchBone;
     public DogTalents talents;
     public DogLevel level;
@@ -556,6 +557,11 @@ public class EntityDTDoggy extends EntityTameable
             }
 
             slaySilverFish(byte0);
+        }
+        
+        if(this.lastBaby != null && Constants.tenDayPuppies) {
+        	this.lastBaby.setGrowingAge(-24000 * 10);
+        	this.lastBaby = null;
         }
         
         if (!this.worldObj.isRemote && this.talents.getTalentLevel(EnumTalents.PUPPYEYES) != 0 && this.getCharmerCharge() == 0) {
@@ -1374,6 +1380,8 @@ public class EntityDTDoggy extends EntityTameable
             entitywolf.setOwner(s);
             entitywolf.setTamed(true);
         }
+        
+        this.lastBaby = entitywolf;
 
         return entitywolf;
     }

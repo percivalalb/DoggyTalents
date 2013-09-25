@@ -1,4 +1,5 @@
 tile.dt.dogBed.name=Dog Bed
+tile.dt.foodBowl.name=Food Bowl
 
 item.dt.throwBone0.name=Throw Bone
 item.dt.throwBone1.name=Drool Throw Bone
@@ -12,6 +13,8 @@ item.dt.collarShears.name=Collar Shears
 item.dt.commandEmblem.name=Command Emblem
 
 container.packpuppy=Doggy Backpack
+container.foodBowl=Food Bowl
+itemGroup.doggytalents=Doggy Talents
 
 dogBed.bedding.whiteWool=White Wool Bedding
 dogBed.bedding.orangeWool=Orange Wool Bedding

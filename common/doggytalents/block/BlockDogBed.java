@@ -14,6 +14,7 @@ import doggytalents.ModBlocks;
 import doggytalents.api.DogBedManager;
 import doggytalents.core.helper.LogHelper;
 import doggytalents.core.proxy.CommonProxy;
+import doggytalents.entity.EntityDTDoggy;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -22,6 +23,7 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -29,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -201,6 +204,20 @@ public class BlockDogBed extends BlockContainer {
 			return DogBedManager.getWoodIcon(dogBed.getWoodId(), side);
 		}
 		return null;
+    }
+	
+	@Override
+	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
+		if(par7Entity instanceof EntityDTDoggy) {
+	        AxisAlignedBB axisalignedbb1 = AxisAlignedBB.getAABBPool().getAABB((double)par2 + 0.0D, (double)par3 + 0.0D, (double)par4 + 0.0D, (double)par2 + 1.0D, (double)par3 + 0.3D, (double)par4 + 1.0D);
+	
+	        if (axisalignedbb1 != null && par5AxisAlignedBB.intersectsWith(axisalignedbb1)) {
+	            par6List.add(axisalignedbb1);
+	        }
+		}
+		else {
+			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+		}
     }
 	
 	@Override

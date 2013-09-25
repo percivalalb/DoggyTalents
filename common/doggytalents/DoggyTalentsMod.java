@@ -34,6 +34,7 @@ import doggytalents.api.DogBedManager;
 import doggytalents.core.addon.AddonManager;
 import doggytalents.core.handler.ConfigurationHandler;
 import doggytalents.core.handler.ConnectionHandler;
+import doggytalents.core.handler.EventRightClickEntity;
 import doggytalents.core.handler.LocalizationHandler;
 import doggytalents.core.helper.LogHelper;
 import doggytalents.core.helper.VersionHelper;
@@ -84,6 +85,7 @@ public class DoggyTalentsMod {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 		NetworkRegistry.instance().registerConnectionHandler(new ConnectionHandler());
 		//Handlers
+		MinecraftForge.EVENT_BUS.register(new EventRightClickEntity());
 		proxy.registerHandlers();
 	}
 		
@@ -93,10 +95,6 @@ public class DoggyTalentsMod {
 		DogBedManager.registerBedWood("sprucePlank", new DefaultBedMaterial(Block.planks, 1), new ItemStack(Block.planks, 1, 1));
 		DogBedManager.registerBedWood("birchPlank", new DefaultBedMaterial(Block.planks, 2), new ItemStack(Block.planks, 1, 2));
 		DogBedManager.registerBedWood("junglePlank", new DefaultBedMaterial(Block.planks, 3), new ItemStack(Block.planks, 1, 3));
-		DogBedManager.registerBedWood("oakWood", new DefaultBedMaterial(Block.wood, 0), new ItemStack(Block.wood, 1, 0));
-		DogBedManager.registerBedWood("spruceWood", new DefaultBedMaterial(Block.wood, 1), new ItemStack(Block.wood, 1, 1));
-		DogBedManager.registerBedWood("birchWood", new DefaultBedMaterial(Block.wood, 2), new ItemStack(Block.wood, 1, 2));
-		DogBedManager.registerBedWood("jungleWood", new DefaultBedMaterial(Block.wood, 3), new ItemStack(Block.wood, 1, 3));
 		
 		DogBedManager.registerBedWool("whiteWool", new DefaultBedMaterial(Block.cloth, 0), new ItemStack(Block.cloth, 1, 0));
 		DogBedManager.registerBedWool("orangeWool", new DefaultBedMaterial(Block.cloth, 1), new ItemStack(Block.cloth, 1, 1));

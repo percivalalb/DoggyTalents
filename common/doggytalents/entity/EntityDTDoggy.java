@@ -134,16 +134,7 @@ public class EntityDTDoggy extends EntityTameable
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.30000001192092896D);
-
-        if (this.isTamed())
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
-        }
-        else
-        {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
-        }
+        this.redoAttributes();
     }
     
     public void redoAttributes() {
@@ -1022,6 +1013,29 @@ public class EntityDTDoggy extends EntityTameable
                         this.setWillObeyOthers(false);
                         this.mode.setMode(EnumMode.DOCILE);
                         this.reversionTime = 40;
+                    }
+
+                    return true;
+                }
+                else if(itemstack.itemID == Item.cake.itemID) {
+                 	if(!par1EntityPlayer.capabilities.isCreativeMode) {
+                 		itemstack.stackSize--;
+                 	}
+
+                    if (itemstack.stackSize <= 0) {
+                    	par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
+                    }
+
+                    if (!worldObj.isRemote)
+                    {
+                        this.aiSit.setSitting(true);
+                        this.setHealth(this.getHealth());
+                        this.regenerationTick = 0;
+                        this.setPathToEntity((PathEntity)null);
+                        this.setTarget((Entity)null);
+                        this.setAttackTarget((EntityLivingBase)null);
+                        this.playTameEffect(true);
+                        worldObj.setEntityState(this, (byte)7);
                     }
 
                     return true;

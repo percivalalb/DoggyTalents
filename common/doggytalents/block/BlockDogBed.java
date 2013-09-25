@@ -223,6 +223,8 @@ public class BlockDogBed extends BlockContainer {
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z) {
 		TileEntity target = world.getBlockTileEntity(x, y, z);
+		if(!(target instanceof TileEntityDogBed))
+			return world.setBlockToAir(x, y, z);
 		TileEntityDogBed dogBed = (TileEntityDogBed)target;
 		
 		ItemStack stack = this.createItemStack(dogBed.getWoodId(), dogBed.getWoolId());

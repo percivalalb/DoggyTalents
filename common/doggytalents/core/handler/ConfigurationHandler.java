@@ -16,16 +16,16 @@ public class ConfigurationHandler {
 		config.load();
 		configuration = config;
 		
-		ItemIds.ID_DOG_OWNERS_MANUEL = config.getItem("dogOwnersManuel", 13550).getInt(13550);
-		ItemIds.ID_THROW_BONE = config.getItem("throwBone", 13551).getInt(13551);
-		ItemIds.ID_COMMAND_EMBLEM = config.getItem("commandEmblem", 13552).getInt(13552);
-		ItemIds.ID_TRAINING_TREAT = config.getItem("trainingTreat", 13553).getInt(13553);
-		ItemIds.ID_SUPER_TREAT = config.getItem("superTreat", 13554).getInt(13554);
-		ItemIds.ID_MASTER_TREAT = config.getItem("masterTreat", 13555).getInt(13555);
-		ItemIds.ID_DIRE_TREAT = config.getItem("direTreat", 13556).getInt(13556);
-		ItemIds.ID_BREEDING_BONE = config.getItem("breedingBone", 13557).getInt(13557);
-		ItemIds.ID_COLLAR_SHEARS = config.getItem("collarShears", 13558).getInt(13558);
-		ItemIds.ID_DOGGY_CHARM = config.getItem("doggyCharm", 13559).getInt(13559);
+		ItemIds.ID_DOG_OWNERS_MANUEL = config.getItem("dogOwnersManuel", 12550).getInt(12550);
+		ItemIds.ID_THROW_BONE = config.getItem("throwBone", 12551).getInt(12551);
+		ItemIds.ID_COMMAND_EMBLEM = config.getItem("commandEmblem", 12552).getInt(12552);
+		ItemIds.ID_TRAINING_TREAT = config.getItem("trainingTreat", 12553).getInt(12553);
+		ItemIds.ID_SUPER_TREAT = config.getItem("superTreat", 12554).getInt(12554);
+		ItemIds.ID_MASTER_TREAT = config.getItem("masterTreat", 12555).getInt(12555);
+		ItemIds.ID_DIRE_TREAT = config.getItem("direTreat", 12556).getInt(12556);
+		ItemIds.ID_BREEDING_BONE = config.getItem("breedingBone", 12557).getInt(12557);
+		ItemIds.ID_COLLAR_SHEARS = config.getItem("collarShears", 12558).getInt(12558);
+		ItemIds.ID_DOGGY_CHARM = config.getItem("doggyCharm", 12559).getInt(12559);
 		
 		BlockIds.ID_DOG_BED = config.getBlock("dogBed", 3550).getInt(3550);
 		BlockIds.ID_DOG_BOWL = config.getBlock("bogBowl", 3551).getInt(3551);

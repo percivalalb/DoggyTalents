@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -40,6 +41,7 @@ import doggytalents.core.helper.LogHelper;
 import doggytalents.core.helper.VersionHelper;
 import doggytalents.core.helper.VersionHelper.Type;
 import doggytalents.core.proxy.CommonProxy;
+import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketHandler;
 
@@ -57,6 +59,8 @@ public class DoggyTalentsMod {
 	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
     public static CommonProxy proxy;
 	
+	public static CreativeTabs creativeTab;
+	
 	public DoggyTalentsMod() {
    	 	instance = this;
     }
@@ -68,7 +72,7 @@ public class DoggyTalentsMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
-		
+		this.creativeTab = new CreativeTabDoggyTalents();
 		VersionHelper.checkVersion(Type.BLANK);
 		//Loads the Languages into the game
 		LocalizationHandler.loadLanguages();

@@ -2,6 +2,7 @@ package doggytalents.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.DoggyTalentsMod;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -15,7 +16,7 @@ public class ItemDT extends Item {
 	
 	public ItemDT(int id, String iconPath) {
 		super(id);
-		this.setCreativeTab(CreativeTabs.tabFood);
+		this.setCreativeTab(DoggyTalentsMod.creativeTab);
 		this.path = iconPath;
 	}
 

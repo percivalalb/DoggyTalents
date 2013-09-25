@@ -37,7 +37,7 @@ public class BlockFoodBowl extends BlockContainer {
     public BlockFoodBowl(int i) {
         super(i, Material.iron);
         this.setTickRandomly(true);
-        this.setCreativeTab(CreativeTabs.tabFood);
+        this.setCreativeTab(DoggyTalentsMod.creativeTab);
     }
 
     @Override

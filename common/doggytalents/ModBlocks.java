@@ -19,7 +19,7 @@ public class ModBlocks {
     public static Block foodBowl;
 	
 	public static void inti() {
-		dogBed = new BlockDogBed(BlockIds.ID_DOG_BED).setUnlocalizedName("dt.dogBed").setCreativeTab(CreativeTabs.tabBlock);
+		dogBed = new BlockDogBed(BlockIds.ID_DOG_BED).setUnlocalizedName("dt.dogBed").setCreativeTab(DoggyTalentsMod.creativeTab);
 		foodBowl = new BlockFoodBowl(BlockIds.ID_DOG_BOWL).setUnlocalizedName("dt.foodBowl");
 		
 		GameRegistry.registerBlock(dogBed, ItemDogBed.class, "dt.dogBed");

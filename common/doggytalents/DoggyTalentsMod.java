@@ -3,6 +3,8 @@ package doggytalents;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.google.common.base.Strings;
+
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.Configuration;

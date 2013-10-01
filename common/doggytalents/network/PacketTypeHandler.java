@@ -23,7 +23,8 @@ public enum PacketTypeHandler {
 	OBEY_OTHERS(PacketObeyOthers.class),
 	DOGGY_MODE(PacketDoggyMode.class),
 	DOGGY_NAME(PacketDoggyName.class),
-	DOG_BED_UPDATE(PacketDogBedUpdate.class);
+	DOG_BED_UPDATE(PacketDogBedUpdate.class),
+	DOG_COMMAND(PacketCommand.class);
 	
     private Class<? extends DTPacket> clazz;
 

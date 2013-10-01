@@ -16,10 +16,10 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  **/
-public class ItemDoggyCharm extends Item {
+public class ItemDoggyCharm extends ItemDT {
 	
-    public ItemDoggyCharm(int id, String par2Str) {
-        super(id);
+    public ItemDoggyCharm(int id, String iconPath) {
+        super(id, iconPath);
         this.setMaxStackSize(1);
         this.setCreativeTab(CreativeTabs.tabFood);
     }

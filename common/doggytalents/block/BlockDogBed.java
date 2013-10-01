@@ -249,9 +249,7 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
-		
-	}
+	public void registerIcons(IconRegister par1IconRegister) {}
 
 	@Override
 	public boolean isOpaqueCube() {
@@ -295,9 +293,7 @@ public class BlockDogBed extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int id, CreativeTabs creativeTab, List stackList) {
 		for(String woodId : DogBedManager.getAllWoodIds()) {
-			for(String woolId : DogBedManager.getAllWoolIds()) {
-				stackList.add(createItemStack(woodId, woolId));
-			}
+			stackList.add(createItemStack(woodId, "whiteWool"));
 		}
     }
 	

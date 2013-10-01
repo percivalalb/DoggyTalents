@@ -7,7 +7,7 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.5.0
+v1.5.0a
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)
 + Added the infamous wolf mount talents!
 + Added critical hit particles when a dog with Black Pelt attacks a mob
@@ -19,8 +19,7 @@ v1.5.0
 * Fixed it not using the item when right clicking with training treats
 
 
-v1.4.0
-
+v1.4.0a
 Updated to MC 1.6.2
 + Made the placement code of the dog bowl better so it can not be placed in mid air, and can be placed on blocks such as the top of half slabs
 + Made the dog have red dots (blood) over him when Incapacitated (This can be switched of in the config file)
@@ -47,3 +46,26 @@ Updated to MC 1.6.2
 * Fixed the config file not working for Block & Item Id's
 
 / General Clean up of the code (The EntityDTDoggy.class is still 2024 lines long :(.)
+
+v1.3.0a
+Updated to MC 1.5
++ Made it so you can set whether other players can interact with your dog
+
+# Rewrote code to fix some bugs and make it easier to add new features.
+
+* Fixed Breeding Bone not working.
+* Fixed name tags above dogs head not disappearing when F1 was clicked.
+* Fixed the dog reverting to Docile mode when reloading the world.
+* Fixed the dog picking up the throw bone into it's inventory when pack puppy was level 5.
+
+v1.1.0a
++ Added 14 talents back from the original mod.
++ Made wolfs stay away from you when holding a tool or sword, to give you a bit more space.
++ When sneaking and looking at a dog an extra line of information will appear above there head. (The owners name.)
+
+# Revered back to the MC 1.1 wolf AI to give the dogs less of a robotic feel.
+
+* Collar shears now work.
+
+v1.0.0a
++ Intial Release

@@ -51,7 +51,10 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
@@ -426,6 +429,16 @@ public class EntityDTDoggy extends EntityTameable
             this.worldObj.setEntityState(this, (byte)8);
         }
         
+        if(this.entityToAttack != null && this.entityToAttack.isDead) {
+        	this.entityToAttack = null;
+        }
+        
+
+        if(isTamed() && masterOrder() != 3 && riddenByEntity instanceof EntityAnimal && this.talents.getTalentLevel(EnumTalents.SHEPHERDOG) > 0) {
+        	this.riddenByEntity.ridingEntity = null;
+        	this.riddenByEntity = null;
+        }
+        
         if (this.level.isDireDog() && !Constants.direParticalsOff) {
             for (int i = 0; i < 2; i++) {
                 worldObj.spawnParticle("portal", posX + (rand.nextDouble() - 0.5D) * (double)width, (posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)width, (rand.nextDouble() - 0.5D) * 2D, -rand.nextDouble(), (rand.nextDouble() - 0.5D) * 2D);
@@ -562,6 +575,11 @@ public class EntityDTDoggy extends EntityTameable
         if(this.lastBaby != null && Constants.tenDayPuppies) {
         	this.lastBaby.setGrowingAge(-24000 * 10);
         	this.lastBaby = null;
+        }
+        
+        if(masterOrder() == 3 && this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer)) {
+        	this.riddenByEntity.ridingEntity = null;
+        	this.riddenByEntity = null;
         }
         
         if (!this.worldObj.isRemote && this.talents.getTalentLevel(EnumTalents.PUPPYEYES) != 0 && this.getCharmerCharge() == 0) {

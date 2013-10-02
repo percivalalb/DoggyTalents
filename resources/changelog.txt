@@ -15,6 +15,7 @@ v1.5.0a
 + Added critical hit particles when a dog with Black Pelt attacks a mob
 + Added Dog Beds which you can make using any plank and wool
   They will heal them by 1/2 a heart every 20 seconds if they are within 3 blocks
+  More coming soon
 
 * Fixed dogs being invisible on the server
 * Fixed the training treat not converting wolfs to dogs

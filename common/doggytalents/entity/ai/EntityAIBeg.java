@@ -1,5 +1,6 @@
 package doggytalents.entity.ai;
 
+import doggytalents.ModItems;
 import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityWolf;
@@ -81,6 +82,6 @@ public class EntityAIBeg extends EntityAIBase
     private boolean hasPlayerGotBoneInHand(EntityPlayer par1EntityPlayer)
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-        return itemstack == null ? false : (!this.theDog.isTamed() && itemstack.itemID == Item.bone.itemID ? true : this.theDog.isBreedingItem(itemstack));
+        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.itemID == Item.bone.itemID) || itemstack.itemID == ModItems.trainingTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.direTreat.itemID ? true : this.theDog.isBreedingItem(itemstack));
     }
 }

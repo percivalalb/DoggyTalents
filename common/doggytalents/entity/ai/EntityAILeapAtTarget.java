@@ -1,5 +1,6 @@
 package doggytalents.entity.ai;
 
+import doggytalents.core.helper.LogHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -26,11 +27,12 @@ public class EntityAILeapAtTarget extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         this.leapTarget = this.leaper.getAttackTarget();
 
-        if (this.leapTarget == null)
+        if (this.leapTarget == null || this.leapTarget.isDead)
         {
             return false;
         }
@@ -44,16 +46,19 @@ public class EntityAILeapAtTarget extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting()
     {
-        return !this.leaper.onGround;
+        return !this.leaper.onGround && !this.leapTarget.isDead;
     }
 
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
+    	LogHelper.logInfo("Leap");
         double d0 = this.leapTarget.posX - this.leaper.posX;
         double d1 = this.leapTarget.posZ - this.leaper.posZ;
         float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);

@@ -109,6 +109,8 @@ public class EntityDTDoggy extends EntityTameable
     public DogMode mode;
     public DogSavePosition saveposition;
     public InventoryPackPuppy inventory;
+    //TODO
+    public int tailWag = 0;
 
     public EntityDTDoggy(World par1World)
     {

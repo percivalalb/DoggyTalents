@@ -72,6 +72,9 @@ public class PacketCommand extends DTPacket {
 			            		dog.setPathToEntity((PathEntity)null);
 			            	    dog.setTarget((Entity)null);
 			            	    dog.setAttackTarget((EntityLivingBase)null);
+			            	    if(dog.mode.isMode(EnumMode.WANDERING)) {
+			            	    	dog.mode.setMode(EnumMode.DOCILE);
+			            	    }
 			                    isDog = true;
 			            	}
 			            }
@@ -97,13 +100,16 @@ public class PacketCommand extends DTPacket {
 			            		dog.setPathToEntity((PathEntity)null);
 			            	    dog.setTarget((Entity)null);
 			            	    dog.setAttackTarget((EntityLivingBase)null);
+			            	    if(dog.mode.isMode(EnumMode.WANDERING)) {
+			            	    	dog.mode.setMode(EnumMode.DOCILE);
+			            	    }
 			                    isDog = true;
 			            	}
 			            }
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage("Sit!");
+			        	player.addChatMessage("Stay!");
 			        }
 				}
 				else if(commandId == 3)
@@ -151,7 +157,7 @@ public class PacketCommand extends DTPacket {
 			            if (o instanceof EntityDTDoggy)
 			            {
 			            	EntityDTDoggy dog = (EntityDTDoggy)o;
-			            	if(dog.canInteract(player))
+			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING))
 			            	{
 			            		 int i = MathHelper.floor_double(player.posX) - 2;
 			                     int j = MathHelper.floor_double(player.posZ) - 2;

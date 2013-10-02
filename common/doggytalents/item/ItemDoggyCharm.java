@@ -30,13 +30,13 @@ public class ItemDoggyCharm extends ItemDT {
             return true;
         }
         else {
-            int var11 = world.getBlockId(x, y, z);
+            int blockId = world.getBlockId(x, y, z);
             x += Facing.offsetsXForSide[side];
             y += Facing.offsetsYForSide[side];
             z += Facing.offsetsZForSide[side];
             double var12 = 0.0D;
 
-            if (side == 1 && Block.blocksList[var11] != null && Block.blocksList[var11].getRenderType() == 11) {
+            if (side == 1 && Block.blocksList[blockId] != null && Block.blocksList[blockId].getRenderType() == 11) {
                 var12 = 0.5D;
             }
 

@@ -25,6 +25,8 @@ public class DogMode {
 			return EnumMode.AGGRESIVE;
 		case 3:
 			return EnumMode.BERSERKER;
+		case 4:
+			return EnumMode.TACTICAL;
 		default: 
 			return EnumMode.UNKNOWN;
 		}	
@@ -41,6 +43,8 @@ public class DogMode {
 			return EnumMode.AGGRESIVE;
 		case 3:
 			return EnumMode.BERSERKER;
+		case 4:
+			return EnumMode.TACTICAL;
 		default: 
 			return EnumMode.UNKNOWN;
 		}	
@@ -56,6 +60,8 @@ public class DogMode {
 			return 2;
 		case BERSERKER:
 			return 3;
+		case TACTICAL:
+			return 4;
 		default: 
 			return 100;
 		}

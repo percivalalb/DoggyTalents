@@ -9,7 +9,8 @@ public enum EnumMode {
 	WANDERING("Wandering", "(W)"),
 	DOCILE("Docile", "(D)"),
 	AGGRESIVE("Aggresive", "(A)"),
-	BERSERKER("Berserker", "(B)");
+	BERSERKER("Berserker", "(B)"),
+	TACTICAL("Tactical", "(T)");
 	
 	String tip;
 	String name;

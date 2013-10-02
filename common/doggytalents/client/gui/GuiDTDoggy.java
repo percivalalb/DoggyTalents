@@ -337,6 +337,10 @@ public class GuiDTDoggy extends GuiContainer {
         		this.changeMode(EnumMode.WANDERING);
         	}
         	else if(dog.mode.isMode(EnumMode.WANDERING)) {
+        		par1GuiButton.displayString = EnumMode.TACTICAL.modeName();
+        		this.changeMode(EnumMode.TACTICAL);
+        	}
+        	else if(dog.mode.isMode(EnumMode.TACTICAL)) {
         		par1GuiButton.displayString = EnumMode.AGGRESIVE.modeName();
         		this.changeMode(EnumMode.AGGRESIVE);
         	}
@@ -522,6 +526,9 @@ public class GuiDTDoggy extends GuiContainer {
 	     		 		}
 	     		 		else if(btn.displayString.equals(EnumMode.BERSERKER.modeName())) {
 		    		 		 list = Arrays.asList("In this mode your dog will follow", "you and if any mob comes to close he", "will attack it without warning"); 
+	     		 		}
+	     		 		else if(btn.displayString.equals(EnumMode.TACTICAL.modeName())) {
+		    		 		 list = Arrays.asList("In this mode your dog will follow", "you but will not attack anything", "unless you use the command beam"); 
 	     		 		}
 	    		 		break;
 	    			}

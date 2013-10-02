@@ -2,6 +2,8 @@ package doggytalents.entity;
 
 import java.util.List;
 
+import doggytalents.entity.data.EnumMode;
+
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -52,7 +54,7 @@ public class EntityDoggyBeam extends EntityThrowable
                 {
                 	EntityDTDoggy dog = (EntityDTDoggy)o;
                 	if(!dog.isSitting() && par1MovingObjectPosition.entityHit != dog && dog.func_142018_a((EntityLiving)par1MovingObjectPosition.entityHit, dog.func_130012_q()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
-                		if(dog.getDistanceToEntity(par1MovingObjectPosition.entityHit) < getTargetDistance(dog)) {
+                		if(dog.getDistanceToEntity(par1MovingObjectPosition.entityHit) < getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
                 			dog.setAttackTarget((EntityLiving)par1MovingObjectPosition.entityHit);
                 		}
                 	}

@@ -124,7 +124,7 @@ public class PacketCommand extends DTPacket {
 			            	EntityDTDoggy dog = (EntityDTDoggy)o;
 			            	if(dog.canInteract(player))
 			            	{
-			            		if(dog.getMaxHealth() / 2 >= dog.getMaxHealth())
+			            		if(dog.getMaxHealth() / 2 >= dog.getHealth())
 			            		{
 			            			dog.getSitAI().setSitting(true);
 			            			dog.setPathToEntity((PathEntity)null);

@@ -1,10 +1,14 @@
 package doggytalents.tileentity;
 
+import java.util.List;
+
+import doggytalents.entity.EntityDTDoggy;
 import doggytalents.network.PacketTypeHandler;
 import doggytalents.network.packet.PacketDogBedUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
@@ -31,6 +35,26 @@ public class TileEntityDogBed extends TileEntity {
 		super.writeToNBT(tag);
 		tag.setString("bedWoolId", this.woolId);
 		tag.setString("bedWoodId", this.woodId);
+	}
+	
+	@Override
+	public void updateEntity() {
+		List dogsClose = this.worldObj.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1.0D, this.yCoord + 1.0D, this.zCoord + 1.0D).expand(3D, 2D, 3D));
+		 
+	    if (dogsClose != null && dogsClose.size() > 0) {
+	    	for (int index = 0; index < dogsClose.size(); index++) {
+	            EntityDTDoggy dog = (EntityDTDoggy)dogsClose.get(index);
+	            
+	            if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
+	            	if(dog.bedHealTick <= 0) {
+	            		dog.heal(0.5F);
+	            		dog.bedHealTick = 20 * 20;
+	            	}
+	            	dog.bedHealTick--;
+        		}
+	        }
+	    }
+
 	}
 	
 	@Override

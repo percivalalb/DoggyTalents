@@ -10,6 +10,8 @@ Update List Key
 v1.5.0a
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)
 + Added the infamous wolf mount talents!
++ Added a new mode called TACTICAL, this will mean the dog will not attack unless instructed to by a command beam
++ Added a new ability to the Command Emblem that so when you right click you will fire a command beam causing any dogs in TACTICAL or AGGRESSIVE mode near by to attack it
 + Added critical hit particles when a dog with Black Pelt attacks a mob
 + Added Dog Beds which you can make using any plank and wool
   They will speed up the 

@@ -13,6 +13,7 @@ v1.5.0a
 + Added a new mode called TACTICAL, this will mean the dog will not attack unless instructed to by a command beam
 + Added a new ability to the Command Emblem that so when you right click you will fire a command beam causing any dogs in TACTICAL or AGGRESSIVE mode near by to attack it
 + Added critical hit particles when a dog with Black Pelt attacks a mob
++ The dog will now wag his tail when not moving or sitting
 + Added Dog Beds which you can make using any plank and wool
   They will heal them by 1/2 a heart every 20 seconds if they are within 3 blocks
   More coming soon
@@ -20,7 +21,7 @@ v1.5.0a
 * Fixed dogs being invisible on the server
 * Fixed the training treat not converting wolfs to dogs
 * Fixed it not using the item when right clicking with training treats
-
+* Fixed mods like 'Damage Indicators' showing the entityId name instead of the dogs name
 
 v1.4.0a
 Updated to MC 1.6.2

@@ -100,6 +100,10 @@ public class EntityDTDoggy extends EntityTameable
     private int regenerationTick;
     private int reversionTime;
     private int charmerCharge;
+    private float timeWolfIsHappy;
+    private float prevTimeWolfIsHappy;
+    private boolean isWolfHappy;
+    public boolean hiyaMaster;
     private boolean hasBone;
     private boolean canSeeCreeper;
     private EntityAgeable lastBaby;
@@ -110,7 +114,6 @@ public class EntityDTDoggy extends EntityTameable
     public DogSavePosition saveposition;
     public InventoryPackPuppy inventory;
     //TODO
-    public int tailWag = 0;
     public int bedHealTick = 0;
 
     public EntityDTDoggy(World par1World)
@@ -273,11 +276,6 @@ public class EntityDTDoggy extends EntityTameable
                     this.motionX += (double)(-0.4F * f2 * 0.15F); // May change
                     this.motionZ += (double)(0.4F * f3 * 0.15F);
                 }
-            }
-            
-            
-            if(this.rand.nextInt(40) == 0) {
-            	this.playSound("mob.wolf.panting", 0.4F, 1.0F);
             }
 
             this.stepHeight = 1.0F;
@@ -656,7 +654,7 @@ public class EntityDTDoggy extends EntityTameable
         super.onUpdate();
         this.field_70924_f = this.field_70926_e;
 
-        if (this.func_70922_bv())
+        if (this.isBegging())
         {
             this.field_70926_e += (1.0F - this.field_70926_e) * 0.4F;
         }
@@ -665,7 +663,7 @@ public class EntityDTDoggy extends EntityTameable
             this.field_70926_e += (0.0F - this.field_70926_e) * 0.4F;
         }
 
-        if (this.func_70922_bv())
+        if (this.isBegging())
         {
             this.numTicksToChaseTarget = 10;
         }
@@ -720,6 +718,35 @@ public class EntityDTDoggy extends EntityTameable
                     this.worldObj.spawnParticle("splash", this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, this.motionX, this.motionY, this.motionZ);
                 }
             }
+        }
+        
+        if(this.rand.nextInt(200) == 0) {
+        	this.hiyaMaster = true;
+        }
+        
+        if (((this.isBegging()) || (this.hiyaMaster)) && (!this.isWolfHappy))
+        {
+        	this.isWolfHappy = true;
+          	this.timeWolfIsHappy = 0.0F;
+          	this.prevTimeWolfIsHappy = 0.0F;
+        }
+        else  {
+        	hiyaMaster = false;
+        }
+        if (this.isWolfHappy)
+        {
+        	if (this.timeWolfIsHappy % 1.0F == 0.0F)
+        	{
+        		this.worldObj.playSoundAtEntity(this, "mob.wolf.panting", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        	}
+        	this.prevTimeWolfIsHappy = this.timeWolfIsHappy;
+        	this.timeWolfIsHappy += 0.05F;
+        	if (this.prevTimeWolfIsHappy >= 8.0F)
+        	{
+        		this.isWolfHappy = false;
+        		this.prevTimeWolfIsHappy = 0.0F;
+        		this.timeWolfIsHappy = 0.0F;
+        	}
         }
         
         if(this.isTamed()) {
@@ -1219,6 +1246,19 @@ public class EntityDTDoggy extends EntityTameable
         }
     }
 
+    public float getWagAngle(float f, float f1) {
+        float f2 = (this.prevTimeWolfIsHappy + (this.timeWolfIsHappy - this.prevTimeWolfIsHappy) * f + f1) / 2.0F;
+        if (f2 < 0.0F)
+        {
+          f2 = 0.0F;
+        }
+        else if (f2 > 2.0F)
+        {
+          f2 %= 2.0F;
+        }
+        return MathHelper.sin(f2 * 3.141593F * 11.0F) * 0.3F * 3.141593F;
+      }
+    
     @SideOnly(Side.CLIENT)
     public float getTailRotation() {
         return this.isTamed() ? (0.55F - ((float)(this.getMaxHealth() - this.getHealth()) / tailMod()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
@@ -1407,7 +1447,7 @@ public class EntityDTDoggy extends EntityTameable
         return entitywolf;
     }
 
-    public void func_70918_i(boolean par1)
+    public void setIsBegging(boolean par1)
     {
         if (par1)
         {
@@ -1444,7 +1484,7 @@ public class EntityDTDoggy extends EntityTameable
         }
     }
 
-    public boolean func_70922_bv()
+    public boolean isBegging()
     {
         return this.dataWatcher.getWatchableObjectByte(19) == 1;
     }

@@ -119,11 +119,11 @@ public class ModelDTDoggy extends ModelBase
     @Override
     public void setLivingAnimations(EntityLivingBase par1EntityLivingBase, float par2, float par3, float par4)
     {
-        EntityDTDoggy entitywolf = (EntityDTDoggy)par1EntityLivingBase;
+        EntityDTDoggy dog = (EntityDTDoggy)par1EntityLivingBase;
 
         this.wolfTail.rotateAngleY = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
 
-        if (entitywolf.isSitting())
+        if (dog.isSitting())
         {
             this.wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
             this.wolfMane.rotateAngleX = ((float)Math.PI * 2F / 5F);
@@ -157,10 +157,14 @@ public class ModelDTDoggy extends ModelBase
             this.wolfLeg4.rotateAngleX = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
         }
 
-        this.wolfHeadMain.rotateAngleZ = entitywolf.getInterestedAngle(par4) + entitywolf.getShakeAngle(par4, 0.0F);
-        this.wolfMane.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.08F);
-        this.wolfBody.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.16F);
-        this.wolfTail.rotateAngleZ = entitywolf.getShakeAngle(par4, -0.2F);
+        this.wolfHeadMain.rotateAngleZ = dog.getInterestedAngle(par4) + dog.getShakeAngle(par4, 0.0F);
+        this.wolfMane.rotateAngleZ = dog.getShakeAngle(par4, -0.08F);
+        this.wolfBody.rotateAngleZ = dog.getShakeAngle(par4, -0.16F);
+        this.wolfTail.rotateAngleZ = dog.getShakeAngle(par4, -0.2F);
+        
+        if((dog.isSitting() || (dog.motionX == 0.0F && dog.motionZ == 0.0F)) && dog.getHealth() > 1) {
+        	this.wolfTail.rotateAngleY = dog.getWagAngle(par4, 0.0F);
+        }
     }
 
     /**

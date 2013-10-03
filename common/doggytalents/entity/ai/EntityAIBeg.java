@@ -18,7 +18,7 @@ public class EntityAIBeg extends EntityAIBase
     private EntityPlayer thePlayer;
     private World worldObject;
     private float minPlayerDistance;
-    private int field_75384_e;
+    private int begTimer;
 
     public EntityAIBeg(EntityDTDoggy par1EntityDTDoggy, float playerMinDistance)
     {
@@ -43,7 +43,7 @@ public class EntityAIBeg extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-        return !this.thePlayer.isEntityAlive() ? false : (this.theDog.getDistanceSqToEntity(this.thePlayer) > (double)(this.minPlayerDistance * this.minPlayerDistance) ? false : this.field_75384_e > 0 && this.hasPlayerGotBoneInHand(this.thePlayer));
+        return !this.thePlayer.isEntityAlive() ? false : (this.theDog.getDistanceSqToEntity(this.thePlayer) > (double)(this.minPlayerDistance * this.minPlayerDistance) ? false : this.begTimer > 0 && this.hasPlayerGotBoneInHand(this.thePlayer));
     }
 
     /**
@@ -52,8 +52,8 @@ public class EntityAIBeg extends EntityAIBase
     @Override
     public void startExecuting()
     {
-        this.theDog.func_70918_i(true);
-        this.field_75384_e = 40 + this.theDog.getRNG().nextInt(40);
+        this.theDog.setIsBegging(true);
+        this.begTimer = 40 + this.theDog.getRNG().nextInt(40);
     }
 
     /**
@@ -62,7 +62,7 @@ public class EntityAIBeg extends EntityAIBase
     @Override
     public void resetTask()
     {
-        this.theDog.func_70918_i(false);
+        this.theDog.setIsBegging(false);
         this.thePlayer = null;
     }
 
@@ -73,7 +73,7 @@ public class EntityAIBeg extends EntityAIBase
     public void updateTask()
     {
         this.theDog.getLookHelper().setLookPosition(this.thePlayer.posX, this.thePlayer.posY + (double)this.thePlayer.getEyeHeight(), this.thePlayer.posZ, 10.0F, (float)this.theDog.getVerticalFaceSpeed());
-        --this.field_75384_e;
+        --this.begTimer;
     }
 
     /**
@@ -82,6 +82,6 @@ public class EntityAIBeg extends EntityAIBase
     private boolean hasPlayerGotBoneInHand(EntityPlayer par1EntityPlayer)
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.itemID == Item.bone.itemID) || itemstack.itemID == ModItems.trainingTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.direTreat.itemID ? true : this.theDog.isBreedingItem(itemstack));
+        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.itemID == Item.bone.itemID) || itemstack.itemID == ModItems.throwBone.itemID || itemstack.itemID == ModItems.trainingTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.direTreat.itemID || itemstack.itemID == ModItems.breedingBone.itemID ? true : this.theDog.isBreedingItem(itemstack));
     }
 }

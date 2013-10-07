@@ -14,6 +14,7 @@ v1.5.0a
 + Added a new ability to the Command Emblem that so when you right click you will fire a command beam causing any dogs in TACTICAL or AGGRESSIVE mode near by to attack it
 + Added critical hit particles when a dog with Black Pelt attacks a mob
 + The dog will now wag his tail when not moving or sitting
++ Added a version checker, it will tell you when there is a new update
 + Added Dog Beds which you can make using any plank and wool
   They will heal them by 1/2 a heart every 20 seconds if they are within 3 blocks
   More coming soon

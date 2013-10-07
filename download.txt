@@ -1,8 +1,8 @@
 Doggy Talents
 
-v1.4.0a - 27229 Downloads
+v1.4.0a - 28260 Downloads
 v1.3.0a - 58592 Downloads
 v1.1.0a - 10253 Downloads
 v1.0.0a - 52804 Downloads
 
-Total = 148878 Downloads
+Total = 149909 Downloads

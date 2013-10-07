@@ -9,6 +9,7 @@ import doggytalents.client.model.ModelDTDoggy;
 import doggytalents.client.render.RenderDTDoggy;
 import doggytalents.client.render.RenderItemDogBed;
 import doggytalents.client.render.RenderWorldDogBed;
+import doggytalents.core.handler.ClientTickHandler;
 import doggytalents.core.handler.DTKeyHandler;
 import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.client.Minecraft;
@@ -35,7 +36,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerHandlers() {
 		KeyBindingRegistry.registerKeyBinding(new DTKeyHandler());
-		//TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+		TickRegistry.registerTickHandler(new ClientTickHandler(), Side.CLIENT);
 	}
 	
 	@Override

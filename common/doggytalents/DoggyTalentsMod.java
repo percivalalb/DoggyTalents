@@ -14,6 +14,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -118,6 +119,17 @@ public class DoggyTalentsMod {
 		DogBedManager.registerBedWool("greenWool", new DefaultBedMaterial(Block.cloth, 13), new ItemStack(Block.cloth, 1, 13));
 		DogBedManager.registerBedWool("redWool", new DefaultBedMaterial(Block.cloth, 14), new ItemStack(Block.cloth, 1, 14));
 		DogBedManager.registerBedWool("blackWool", new DefaultBedMaterial(Block.cloth, 15), new ItemStack(Block.cloth, 1, 15));
+		
+		GameRegistry.addRecipe(new ItemStack(ModItems.throwBone, 1), new Object[] {" X ", "XYX", " X ", 'X', Item.bone, 'Y', Item.slimeBall});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.throwBone, 1, 0), new Object[] {new ItemStack(ModItems.throwBone, 1, 0)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.superTreat, 5), new Object[] { new ItemStack(ModItems.trainingTreat, 1), new ItemStack(ModItems.trainingTreat, 1), new ItemStack(ModItems.trainingTreat, 1), new ItemStack(ModItems.trainingTreat, 1), new ItemStack(ModItems.trainingTreat, 1), new ItemStack(Item.appleGold, 1)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.direTreat, 1), new Object[] {new ItemStack(ModItems.masterTreat, 1), new ItemStack(ModItems.masterTreat, 1), new ItemStack(ModItems.masterTreat, 1), new ItemStack(ModItems.masterTreat, 1), new ItemStack(ModItems.masterTreat, 1), new ItemStack(Block.whiteStone, 1)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.breedingBone, 2), new Object[] {new ItemStack(ModItems.masterTreat, 1), new ItemStack(Item.beefCooked, 1), new ItemStack(Item.porkCooked, 1), new ItemStack(Item.chickenCooked, 1), new ItemStack(Item.fishCooked, 1)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.masterTreat, 5), new Object[] {new ItemStack(ModItems.superTreat, 1), new ItemStack(ModItems.superTreat, 1), new ItemStack(ModItems.superTreat, 1), new ItemStack(ModItems.superTreat, 1), new ItemStack(ModItems.superTreat, 1), new ItemStack(Item.diamond, 1)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.trainingTreat, 1), new Object[] {"TUV", "XXX", "YYY", 'T', Item.silk, 'U', Item.bone, 'V', Item.gunpowder, 'X', Item.sugar, 'Y', Item.wheat});
+        GameRegistry.addRecipe(new ItemStack(ModItems.collarShears, 1), new Object[] {" X ", "XYX", " X ", 'X', Item.bone, 'Y', Item.shears});
+        GameRegistry.addRecipe(new ItemStack(ModItems.commandEmblem, 1), new Object[] {" X ", "XYX", " X ", 'X', Item.ingotGold, 'Y', Item.bow});
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.foodBowl, 1), new Object[] {"XXX", "XYX", "XXX", 'X', Item.ingotIron, 'Y', Item.bone});
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.configuration);

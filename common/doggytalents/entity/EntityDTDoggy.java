@@ -578,11 +578,6 @@ public class EntityDTDoggy extends EntityTameable
         	this.lastBaby = null;
         }
         
-        if(masterOrder() == 3 && this.riddenByEntity != null && !(this.riddenByEntity instanceof EntityPlayer)) {
-        	this.riddenByEntity.ridingEntity = null;
-        	this.riddenByEntity = null;
-        }
-        
         if (!this.worldObj.isRemote && this.talents.getTalentLevel(EnumTalents.PUPPYEYES) != 0 && this.getCharmerCharge() == 0) {
             EntityLiving entityliving = charmVillagers(this, 5D);
 
@@ -652,6 +647,18 @@ public class EntityDTDoggy extends EntityTameable
     {
     	this.redoAttributes();
         super.onUpdate();
+        /**
+        if (masterOrder() == 3 && this.getHealth() > 1 && riddenByEntity == null && this.getAttackTarget() == null && isTamed() && this.talents.getTalentLevel(EnumTalents.SHEPHERDOG) > 0) {
+            List list1 = worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(posX, posY, posZ, posX + 1.0D, posY + 1.0D, posZ + 1.0D).expand(2D, 2D, 2D));
+            EntityAnimal finalAnimal = null;
+            for(int i = 0; i < list1.size(); ++i) {
+            	EntityAnimal animal = (EntityAnimal)list1.get(i);
+            	finalAnimal = animal;
+            }
+            if(this.riddenByEntity == null && finalAnimal != null) {
+            	finalAnimal.mountEntity(this);
+            }
+        }**/
         this.field_70924_f = this.field_70926_e;
 
         if (this.isBegging())

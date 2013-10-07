@@ -50,9 +50,12 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.theDog.func_130012_q();
+        EntityLivingBase entitylivingbase = (EntityLivingBase)this.theDog.func_130012_q();
         int order = this.theDog.masterOrder();
         
+        if(entitylivingbase == null) {
+        	entitylivingbase = theOwner;
+        }
         if (entitylivingbase == null)
         {
             return false;
@@ -71,7 +74,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         {
         	return false;
         }
-        else if (this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist) && !this.theDog.hasBone() && (order == 0 || order == 3))
+        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist) || (this.theDog.riddenByEntity == null && order == 3)) && !this.theDog.hasBone() && (order == 0 || order == 3))
         {
             return false;
         }
@@ -116,7 +119,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     /**
      * Updates the task
      */
-    
+    @Override
     public void updateTask()
     {
     	int order = this.theDog.masterOrder();
@@ -245,7 +248,7 @@ public class EntityAIFollowOwner extends EntityAIBase
                         flag1 = true;
                     }
 
-                    if (flag1)
+                    if (flag1 && entityanimal1.ridingEntity == null)
                     {
                         entityanimal = entityanimal1;
                     }
@@ -253,9 +256,8 @@ public class EntityAIFollowOwner extends EntityAIBase
 
                 if (entityanimal != null)
                 {
-                	LogHelper.logInfo("dasd");
-                	if (entityanimal.getDistanceToEntity(this.theDog) > 3D)
-                    {entityanimal.mountEntity(this.theDog);
+                	if (entityanimal.getDistanceToEntity(this.theDog) > 2D)
+                    {
                 		if(!this.petPathfinder.tryMoveToEntityLiving(entityanimal, this.moveSpeed)) {
                 			if (!this.theDog.getLeashed()) {
              
@@ -263,7 +265,6 @@ public class EntityAIFollowOwner extends EntityAIBase
                          }
                     }
                 	else {
-                		LogHelper.logInfo("Mount");
                 		entityanimal.mountEntity(this.theDog);
                 	}
                 }

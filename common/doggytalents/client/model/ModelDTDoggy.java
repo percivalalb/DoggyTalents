@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.opengl.GL11;
 
+import doggytalents.core.helper.LogHelper;
 import doggytalents.entity.EntityDTDoggy;
 
 @SideOnly(Side.CLIENT)
@@ -163,7 +164,10 @@ public class ModelDTDoggy extends ModelBase
         this.wolfTail.rotateAngleZ = dog.getShakeAngle(par4, -0.2F);
         
         if((dog.isSitting() || (dog.motionX == 0.0F && dog.motionZ == 0.0F)) && dog.getHealth() > 1) {
-        	this.wolfTail.rotateAngleY = dog.getWagAngle(par4, 0.0F);
+        	float wagAngleY = dog.getWagAngle(par4, 0.0F);
+        	if(wagAngleY == 0.0F)
+        		wagAngleY = MathHelper.cos(par2 * 0.6662F) * 1.4F * par3;
+        	this.wolfTail.rotateAngleY = wagAngleY;
         }
     }
 

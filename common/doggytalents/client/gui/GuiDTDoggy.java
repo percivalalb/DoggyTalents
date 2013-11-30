@@ -427,7 +427,7 @@ public class GuiDTDoggy extends GuiContainer {
 		if(scale == 2)
 			return 1F;
 		if(scale == 3)
-			return 1F / 3F * 2F;
+			return 1F;
 		return 1F;
 	}
 	
@@ -474,10 +474,16 @@ public class GuiDTDoggy extends GuiContainer {
 	    		 GuiCustomButton btn = (GuiCustomButton)guibutton;
 	    		 if(btn.isMouseAbove(mouseX, mouseY)) {
 		    		List list = new ArrayList();
-	    			if(btn.id >= 1 && btn.id <= 18)
-			    		list.add(I18n.getString("dogGui.talentName." + btn.id));
-	    			String str = I18n.getString("dogGui.buttonInfo." + btn.id);
-	    			list.addAll(splitInto(str, 150, this.mc.fontRenderer));
+	    			if(btn.id >= 1 && btn.id <= 18) {
+			    		list.add(EnumChatFormatting.GREEN + I18n.getString("dogGui.talentName." + btn.id));
+			    		list.add(EnumChatFormatting.GRAY + "--------------------------------");
+		    			String str = I18n.getString("dogGui.buttonInfo." + btn.id);
+		    			list.addAll(splitInto(str, 200, this.mc.fontRenderer));
+	    			}
+	    			else if(btn.id == 22) {
+	    				String str = I18n.getString("dogGui.buttonInfo." + btn.displayString.toLowerCase());
+	    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
+	    			}
 	    			this.drawHoveringText(list, mouseX, mouseY, this.mc.fontRenderer);
 	         	}
 	    	 }
@@ -501,9 +507,11 @@ public class GuiDTDoggy extends GuiContainer {
 			}
 			
 			temp += str + " ";
+			
+			if(i == split.length - 1)
+				list.add(temp);
 		}
 
-	        
 	    return list;
 	}
 	

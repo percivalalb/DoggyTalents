@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.DoggyTalentsMod;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,7 +26,7 @@ public class ItemThrowBone extends Item {
 	
 	public ItemThrowBone(int id) {
 		super(id);
-		this.setCreativeTab(CreativeTabs.tabFood);
+		this.setCreativeTab(DoggyTalentsMod.creativeTab);
 		this.setMaxStackSize(1);
 	}
 

@@ -8,7 +8,12 @@ Update List Key
 (/) Other
 
 v1.5.1a
+# Moved all doggy talents items to the DT tab now
+
+* Fixed tooltips of the dog talents going off the screen
 * Fixed crash with forestry on server
+* Fixed the dogs inventory not being saved on world restart
+* Fixed the dog bed crafting recipe being upside down 
 
 v1.5.0a
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)

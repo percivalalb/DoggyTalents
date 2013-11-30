@@ -1,5 +1,6 @@
 package doggytalents.item;
 
+import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,7 +22,7 @@ public class ItemDoggyCharm extends ItemDT {
     public ItemDoggyCharm(int id, String iconPath) {
         super(id, iconPath);
         this.setMaxStackSize(1);
-        this.setCreativeTab(CreativeTabs.tabFood);
+        this.setCreativeTab(DoggyTalentsMod.creativeTab);
     }
     
     @Override

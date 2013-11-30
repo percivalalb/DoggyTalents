@@ -65,7 +65,7 @@ public class DogBedManager {
 		woodIcons.put(uniqueId, iconLookup);
 		woodAssociatedItem.put(uniqueId, associatedItem);
 		for(String woolId : DogBedManager.getAllWoolIds()) {
-			GameRegistry.addRecipe(createItemStack(uniqueId, woolId), new Object[] {"CCC", "CBC", "CBC", 'C', associatedItem, 'B', woolAssociatedItem.get(woolId)});
+			GameRegistry.addRecipe(createItemStack(uniqueId, woolId), new Object[] {"CBC", "CBC", "CCC", 'C', associatedItem, 'B', woolAssociatedItem.get(woolId)});
 		}
 	}
 	

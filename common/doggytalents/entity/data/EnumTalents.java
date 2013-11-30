@@ -21,7 +21,7 @@ public enum EnumTalents {
 	PESTFIGHTER(14),
 	RESCUEDOG(15),
 	POSIONFANG(16),
-	SHEPHERDOG(17),
+	SHEPHERDDOG(17),
 	PUPPYEYES(18),
 	UNUSED_19(19), // Will always return 0 because no skill is associated with it.
 	UNUSED_20(20), // Will always return 0 because no skill is associated with it.

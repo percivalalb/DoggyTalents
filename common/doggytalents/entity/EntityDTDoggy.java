@@ -218,6 +218,7 @@ public class EntityDTDoggy extends EntityTameable
         this.talents.writeToNBT(tag);
         this.level.writeToNBT(tag);
         this.mode.writeToNBT(tag);
+        this.inventory.writeToNBT(tag);
         tag.setBoolean("willObey", this.willObeyOthers());
         tag.setString("wolfName", this.getWolfName());
         tag.setInteger("wolfTummy", this.getDogTummy());
@@ -347,7 +348,8 @@ public class EntityDTDoggy extends EntityTameable
         super.readEntityFromNBT(tag);
         this.talents.readFromNBT(tag);
         this.level.readFromNBT(tag);
-        this.mode.readFromNBT(tag);  
+        this.mode.readFromNBT(tag);
+        this.inventory.readFromNBT(tag);
         this.setWillObeyOthers(tag.getBoolean("willObey"));
         this.setTameSkin(tag.getInteger("doggyTex"));
         this.setWolfName(tag.getString("wolfName"));
@@ -435,7 +437,7 @@ public class EntityDTDoggy extends EntityTameable
         }
         
 
-        if(isTamed() && masterOrder() != 3 && riddenByEntity instanceof EntityAnimal && this.talents.getTalentLevel(EnumTalents.SHEPHERDOG) > 0) {
+        if(isTamed() && masterOrder() != 3 && riddenByEntity instanceof EntityAnimal && this.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) > 0) {
         	this.riddenByEntity.ridingEntity = null;
         	this.riddenByEntity = null;
         }
@@ -502,7 +504,7 @@ public class EntityDTDoggy extends EntityTameable
 
             if (Constants.isHungerOn && !(riddenByEntity instanceof EntityPlayer))
             {
-            	tummyTick += 5 - this.talents.getTalentLevel(EnumTalents.SHEPHERDOG);
+            	tummyTick += 5 - this.talents.getTalentLevel(EnumTalents.SHEPHERDDOG);
             }
         }
 

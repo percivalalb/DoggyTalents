@@ -230,7 +230,7 @@ public class EntityAIFollowOwner extends EntityAIBase
             	}
             }
     	}
-    	else if(order == 3 && this.theDog.riddenByEntity == null && this.theDog.talents.getTalentLevel(EnumTalents.SHEPHERDOG) > 0) {
+    	else if(order == 3 && this.theDog.riddenByEntity == null && this.theDog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) > 0) {
     		List list1 = this.theDog.worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(this.theDog.posX, this.theDog.posY, this.theDog.posZ, this.theDog.posX + 1.0D, this.theDog.posY + 1.0D, this.theDog.posZ + 1.0D).expand(10D, 2D, 10D));
 
             if (!list1.isEmpty())

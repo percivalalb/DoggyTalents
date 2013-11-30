@@ -30,8 +30,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.network.packet.Packet;
@@ -50,6 +52,7 @@ public class GuiDTDoggy extends GuiContainer {
     private int level = 0;
     private int direLevel = 0;
     private EntityDTDoggy dog;
+    private ScaledResolution resolution;
     
     private String BlackPeltStatement;
     private String GuardDogStatement;
@@ -160,12 +163,10 @@ public class GuiDTDoggy extends GuiContainer {
         level = dog.level.getLevel();
         direLevel = dog.level.getDireLevel();
         if(this.buttonList.contains(21)) {
-        	if(dog.willObeyOthers()) {
+        	if(dog.willObeyOthers())
         		((GuiButton)this.buttonList.get(21)).displayString = "true";
-        	}
-        	else {
+        	else
         		((GuiButton)this.buttonList.get(21)).displayString = "false";
-        	}
         }
         
         //if(this.buttonList.contains(22)) {
@@ -188,7 +189,7 @@ public class GuiDTDoggy extends GuiContainer {
 		this.hunterDogLevel = this.dog.talents.getTalentLevel(EnumTalents.HUNTERDOG);
 		this.bedFinderLevel = this.dog.talents.getTalentLevel(EnumTalents.BEDFINDER);
 		this.pestFighterLevel = this.dog.talents.getTalentLevel(EnumTalents.PESTFIGHTER);
-		this.ShepherDogLevel = this.dog.talents.getTalentLevel(EnumTalents.SHEPHERDOG);
+		this.ShepherDogLevel = this.dog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG);
 		this.fisherDogLevel = this.dog.talents.getTalentLevel(EnumTalents.FISHERDOG);
 		this.puppyEyesLevel = this.dog.talents.getTalentLevel(EnumTalents.PUPPYEYES);
 		this.packPuppyLevel = this.dog.talents.getTalentLevel(EnumTalents.PACKPUPPY);
@@ -197,6 +198,7 @@ public class GuiDTDoggy extends GuiContainer {
 	@Override
 	public void initGui() {
 		guiLeft = 0;
+		this.resolution = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
 	    Keyboard.enableRepeatEvents(true);
 	    this.buttonList.clear();
 	    int var1 = this.width / 2 - 100;
@@ -287,7 +289,7 @@ public class GuiDTDoggy extends GuiContainer {
     	if (par1GuiButton.id == 15 && dog.talents.getTalentLevel(EnumTalents.POSIONFANG) < 5 && dog.spendablePoints() >= dog.talents.getTalentLevel(EnumTalents.POSIONFANG) + 1){
     		this.sendNewTalentToServer(14);
         }
-    	if (par1GuiButton.id == 16 && dog.talents.getTalentLevel(EnumTalents.SHEPHERDOG) < 5 && dog.spendablePoints() >= dog.talents.getTalentLevel(EnumTalents.SHEPHERDOG) + 1) {
+    	if (par1GuiButton.id == 16 && dog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) < 5 && dog.spendablePoints() >= dog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) + 1) {
     		this.sendNewTalentToServer(15);
         }
     	if (par1GuiButton.id == 17 && dog.talents.getTalentLevel(EnumTalents.RESCUEDOG) < 5 && dog.spendablePoints() >= dog.talents.getTalentLevel(EnumTalents.RESCUEDOG) + 1) {
@@ -381,7 +383,7 @@ public class GuiDTDoggy extends GuiContainer {
 	    
         String var4 = this.txt_petName.getText().trim();
         this.sendNewNameToServer(var4);
-	 }
+	}
 
     @Override
 	protected void mouseClicked(int var1, int var2, int var3)
@@ -409,7 +411,7 @@ public class GuiDTDoggy extends GuiContainer {
 	}
 	
 	@Override
-	public boolean doesGuiPauseGame() {
+	public boolean doesGuiPauseGame() {;
 	    return false;
 	}
 
@@ -418,7 +420,18 @@ public class GuiDTDoggy extends GuiContainer {
 		
 	}
 	
+	public float getScaleFactor() {
+		int scale = resolution.getScaleFactor();
+		if(scale == 1)
+			return 1F;
+		if(scale == 2)
+			return 1F;
+		if(scale == 3)
+			return 1F / 3F * 2F;
+		return 1F;
+	}
 	
+	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 	     int var4 = this.width / 2 - this.fontRenderer.getStringWidth(this.TITLE) / 2;
 	     int var5 = this.height / 2 - 50 + 20  + 100;
@@ -452,168 +465,119 @@ public class GuiDTDoggy extends GuiContainer {
 	    	 drawString(fontRenderer, "Obey Others", width - 115, 200, 0xffffff);
 	     }
 	     drawCenteredString(fontRenderer, screenTitle, width / 2, 200, 0xffffff);
-	     
+	     GL11.glPushMatrix();
+	     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		 GL11.glScaled(getScaleFactor(), getScaleFactor(), getScaleFactor());
 	     for (int k = 0; k < this.buttonList.size(); ++k) {
 	    	 GuiButton guibutton = (GuiButton)this.buttonList.get(k);
 	    	 if(guibutton instanceof GuiCustomButton) {
 	    		 GuiCustomButton btn = (GuiCustomButton)guibutton;
 	    		 if(btn.isMouseAbove(mouseX, mouseY)) {
-	    			List<String> list = Arrays.asList();
-	    			switch(btn.id) {
-	    			 case 1:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Black Pelt", EnumChatFormatting.GRAY+"--------------------", "Improves critical hit rate", "1/2 a heart for every level plus", "an extra heart when you master it.");
-	    				 break;
-	    			 case 2:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Guard Dog", EnumChatFormatting.GRAY+"--------------------", "Increases the chance that your dog", "will completely block a physical attack.");
-	    				 break;
-	    			 case 3:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Hunter Dog", EnumChatFormatting.GRAY+"--------------------", "Every level grants a 10% chance to make", "anything your dog kills drop its loot twice", "Level 5 grants an extra 10%", "bringing it up to a 60% chance.");
-	    				 break;
-	    			 case 4:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Hell Hound", EnumChatFormatting.GRAY+"--------------------", "Lets your dog set things on fire with its attacks", "The higher the level, the longer the fire lasts.", "Mastering the skill grants your dog immunity to fire.");
-	    				 break;
-	    			 case 5:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Wolf Mount", EnumChatFormatting.GRAY+"---------------------", "Allows you to ride your dog anywhere at speed", "speed effects from doggy dash apply", "To get on your dog have an empty hand", "and jump and click on the dog to get", "it... Enjoy!");
-	    				 break;
-	    			 case 6:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Pack Puppy", EnumChatFormatting.GRAY+"--------------------", "Each level gives your dog 3 inventory slots in", "its, PackPuppy GUI. To open the GUI right click on", "your, dog with a plank in hand! At level 5, your dog", "will, also automatically pick up any nearby", "items if, it has space in its inventory");
-	    				 break;
-	    			 case 7:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Pillow Paw", EnumChatFormatting.GRAY+"--------------------", "Every level lets your dog fall 3 more", "blocks before it starts taking damage", "Mastering the skill makes your dog completely", "immune to fall damage, and also capable of floating!");
-	    				 break;
-	    			 case 8:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Quick Healer", EnumChatFormatting.GRAY+"--------------------", "Improves the rate at which your dog heals without needing to rest", "Mastering the skill will heal your dog 50% faster when sitting.");
-	    				 break;
-	    			 case 9:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Creeper Sweeper", EnumChatFormatting.GRAY+"--------------------", "A dog with this skill can smell creepers in the area and it", "will growl to warn you. The range at which your", "dog, can, detect creepers increases by 6 blocks per level, and", "mastering this skill will make your dog capable of attacking creepers", "Your dog will reset the creeper's detonation timer with each attack.");
-	    				 break;
-	    			 case 10:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Doggy Dash", EnumChatFormatting.GRAY+"--------------------", "Increases your dog's movement speed while chasing a target", "Every level grants a 12% increase, and", "mastering it grants an additional 15% increase");
-	    				 break;
-	    			 case 11:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Fisher Dog", EnumChatFormatting.GRAY+"--------------------", "Whenever your dog enters the water, it may catch a fish", "which it will give to you when it shakes itself dry", "The chance of catching a fish increases with level, and any", "points in HellHound may cause the fish to be pre-cooked.", "Mastering this skill lets your dog breathe underwater.");
-	    				 break;
-	    			 case 12:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Happy Eater", EnumChatFormatting.GRAY+"--------------------", "Increases the NP your dog gets from food items by 10%", "per level. In addition, level 3 lets your dog eat", "rotten flesh, and level 5 lets your dog eat fish.");
-	    				 break;
-	    			 case 13:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Bed Finder", EnumChatFormatting.GRAY+"--------------------", "While a dog with this skill is on your head, it will", "look in the direction of your home. To get the", "dog on you head right click on him with a bone in hand.", "The range at which it can do this is equal to 200", "blocks per level, but becomes infinite at level 5.");
-	    				 break;
-	    			 case 14:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Pest Fighter", EnumChatFormatting.GRAY+"--------------------", "Inflicts 1 point of damage on all nearby silverfish at", "random Increasing the skill level increases the range by 3", "blocks and mastering the skill doubles the damage.");
-	    				 break;
-	    			 case 15:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Posion Fang", EnumChatFormatting.GRAY+"--------------------", "Your dog's attacks will poison their target, and the poison's", "duration increases with level. At level 3 your dog becomes", "immune to poison, and mastering this skill allows you", "to cleanse yourself of all potion effects, including poison, by", "right-clicking on your dog with a spider eye, at the cost of 30 NP.");
-	    				 break;
-	    			 case 16:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Shepher Dog", EnumChatFormatting.GRAY+"--------------------", "Put some wheat in your hand, and any trained Shepher Dogs will", "immediately rustle up some nearby livestock and carry them for you", "making it easier to transport livestock long distances", "This is quite tiring though, and costs a lot of nourishment", "the cost is reduced with higher levels in the skill", "To have your dog drop the animal, simply don't hold wheat.");
-	    				 break;
-	    			 case 17:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Rescue Dog", EnumChatFormatting.GRAY+"--------------------", "If you're at critical health and a dog with this skill is", "following you, it will attempt to heal you half a heart", "per level in this skill, at the cost of 100 NP", "Mastering this skill reduces the cost to 80 NP");
-	    				 break;
-	    			 case 18:
-	    				 list = Arrays.asList(EnumChatFormatting.GOLD+"Puppy Eyes", EnumChatFormatting.GRAY+"--------------------", "This skill will cause your dog to warm the heart of", "any villager, prompting the villager to give you", "presents! Higher levels in the skill increase the", "quality of the random gifts. This can only be done once", "every two Minecraft days. Mastering the skill", "allows you to do this once every Minecraft day.");
-	    				 break;
-	     		 	 case 22:
-	     		 		if(btn.displayString.equals(EnumMode.DOCILE.modeName())) {
-		    		 		 list = Arrays.asList("In this mode your dog will follow", "you but not attack anything", "He is ready for you to throw the bone"); 
-	     		 		}
-	     		 		else if(btn.displayString.equals(EnumMode.WANDERING.modeName())) {
-		    		 		 list = Arrays.asList("In this mode your dog so stay near", "it's bowl and wait for your next command", "To set you dog's bowl simply bring", "your dog withing 1 block of one"); 
-	     		 		}
-	     		 		else if(btn.displayString.equals(EnumMode.AGGRESIVE.modeName())) {
-		    		 		 list = Arrays.asList("In this mode your dog will follow", "you and attack anything that attacks", "you or that you attack"); 
-	     		 		}
-	     		 		else if(btn.displayString.equals(EnumMode.BERSERKER.modeName())) {
-		    		 		 list = Arrays.asList("In this mode your dog will follow", "you and if any mob comes to close he", "will attack it without warning"); 
-	     		 		}
-	     		 		else if(btn.displayString.equals(EnumMode.TACTICAL.modeName())) {
-		    		 		 list = Arrays.asList("In this mode your dog will follow", "you but will not attack anything", "unless you use the command beam"); 
-	     		 		}
-	    		 		break;
-	    			}
-	 
+		    		List list = new ArrayList();
+	    			if(btn.id >= 1 && btn.id <= 18)
+			    		list.add(I18n.getString("dogGui.talentName." + btn.id));
+	    			String str = I18n.getString("dogGui.buttonInfo." + btn.id);
+	    			list.addAll(splitInto(str, 150, this.mc.fontRenderer));
 	    			this.drawHoveringText(list, mouseX, mouseY, this.mc.fontRenderer);
 	         	}
 	    	 }
 	     }
+		 GL11.glPopMatrix();
 	}
 	
-	protected void drawHoveringText(List par1List, int par2, int par3, FontRenderer font)
-    {
-        if (!par1List.isEmpty())
-        {
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-            RenderHelper.disableStandardItemLighting();
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            int k = 0;
-            Iterator iterator = par1List.iterator();
+	public List splitInto(String text, int maxLength, FontRenderer font) {
+		List list = new ArrayList(); 
+		
+		String temp = "";
+		String[] split = text.split(" ");
+		
+		for(int i = 0; i < split.length; ++i) {
+			String str = split[i];
+			int length = font.getStringWidth(temp + str);
+			
+			if(length > maxLength) {
+				list.add(temp);
+				temp = "";
+			}
+			
+			temp += str + " ";
+		}
 
-            while (iterator.hasNext())
-            {
-                String s = (String)iterator.next();
-                int l = font.getStringWidth(s);
+	        
+	    return list;
+	}
+	
+	protected void drawHoveringText(List par1List, int xMouse, int yMouse, FontRenderer font) {
+		if (!par1List.isEmpty()) {
+			xMouse = (int)(xMouse / this.getScaleFactor());
+			yMouse = (int)(yMouse / this.getScaleFactor());
+	        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+	        RenderHelper.disableStandardItemLighting();
+	        GL11.glDisable(GL11.GL_LIGHTING);
+	        GL11.glDisable(GL11.GL_DEPTH_TEST);
+	        int k = 0;
+	        Iterator iterator = par1List.iterator();
 
-                if (l > k)
-                {
-                    k = l;
-                }
-            }
+	        while (iterator.hasNext()) {
+	            String s = (String)iterator.next();
+	            int l = font.getStringWidth(s);
 
-            int i1 = par2 + 12;
-            int j1 = par3 - 12;
-            int k1 = 8;
+	            if (l > k) {
+	                k = l;
+	            }
+	        }
 
-            if (par1List.size() > 1)
-            {
-                k1 += 2 + (par1List.size() - 1) * 10;
-            }
+	        int i1 = xMouse + 12;
+	        int j1 = yMouse - 12;
+	        int k1 = 8;
 
-            if (i1 + k > this.width)
-            {
-                i1 -= 28 + k;
-            }
+	        if (par1List.size() > 1) {
+	                k1 += 2 + (par1List.size() - 1) * 10;
+	            }
 
-            if (j1 + k1 + 6 > this.height)
-            {
-                j1 = this.height - k1 - 6;
-            }
+	        if (i1 + k > this.width) {
+	            i1 -= 28 + k;
+	        }
 
-            this.zLevel = 300.0F;
-            itemRenderer.zLevel = 300.0F;
-            int l1 = -267386864;
-            this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
-            this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
-            this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 + k1 + 3, l1, l1);
-            this.drawGradientRect(i1 - 4, j1 - 3, i1 - 3, j1 + k1 + 3, l1, l1);
-            this.drawGradientRect(i1 + k + 3, j1 - 3, i1 + k + 4, j1 + k1 + 3, l1, l1);
-            int i2 = 1347420415;
-            int j2 = (i2 & 16711422) >> 1 | i2 & -16777216;
-            this.drawGradientRect(i1 - 3, j1 - 3 + 1, i1 - 3 + 1, j1 + k1 + 3 - 1, i2, j2);
-            this.drawGradientRect(i1 + k + 2, j1 - 3 + 1, i1 + k + 3, j1 + k1 + 3 - 1, i2, j2);
-            this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 - 3 + 1, i2, i2);
-            this.drawGradientRect(i1 - 3, j1 + k1 + 2, i1 + k + 3, j1 + k1 + 3, j2, j2);
+	        if (j1 + k1 + 6 > this.height)
+	        {
+	            j1 = this.height - k1 - 6;
+	        }
 
-            for (int k2 = 0; k2 < par1List.size(); ++k2)
-            {
-                String s1 = (String)par1List.get(k2);
-                font.drawStringWithShadow(s1, i1, j1, -1);
+	        this.zLevel = 300.0F;
+	        itemRenderer.zLevel = 300.0F;
+	        int l1 = -267386864;
+	        this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
+	        this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
+	        this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 + k1 + 3, l1, l1);
+	        this.drawGradientRect(i1 - 4, j1 - 3, i1 - 3, j1 + k1 + 3, l1, l1);
+	        this.drawGradientRect(i1 + k + 3, j1 - 3, i1 + k + 4, j1 + k1 + 3, l1, l1);
+	        int i2 = 1347420415;
+	        int j2 = (i2 & 16711422) >> 1 | i2 & -16777216;
+	        this.drawGradientRect(i1 - 3, j1 - 3 + 1, i1 - 3 + 1, j1 + k1 + 3 - 1, i2, j2);
+	        this.drawGradientRect(i1 + k + 2, j1 - 3 + 1, i1 + k + 3, j1 + k1 + 3 - 1, i2, j2);
+	        this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 - 3 + 1, i2, i2);
+	        this.drawGradientRect(i1 - 3, j1 + k1 + 2, i1 + k + 3, j1 + k1 + 3, j2, j2);
 
-                if (k2 == 0)
-                {
-                    j1 += 2;
-                }
+	        for (int k2 = 0; k2 < par1List.size(); ++k2)
+	        {
+	        	String s1 = (String)par1List.get(k2);
+	            font.drawStringWithShadow(s1, i1, j1, -1);
 
-                j1 += 10;
-            }
+	            if (k2 == 0)
+	            {
+	                j1 += 2;
+	            }
 
-            this.zLevel = 0.0F;
-            itemRenderer.zLevel = 0.0F;
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            RenderHelper.enableStandardItemLighting();
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        }
-    }
+	                j1 += 10;
+	            }
+
+	            this.zLevel = 0.0F;
+	            itemRenderer.zLevel = 0.0F;
+	            GL11.glEnable(GL11.GL_LIGHTING);
+	            GL11.glEnable(GL11.GL_DEPTH_TEST);
+	            RenderHelper.enableStandardItemLighting();
+	            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+	        }
+	    }
 }

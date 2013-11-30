@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityHopper;
 import doggytalents.entity.EntityDTDoggy;
 
@@ -13,17 +15,17 @@ import doggytalents.entity.EntityDTDoggy;
  */
 public class InventoryPackPuppy implements IInventory {
 	
-	public ItemStack inventorySlots[];
+	public ItemStack[] inventorySlots;
     private EntityDTDoggy dog;
 
     public InventoryPackPuppy(EntityDTDoggy entitydtdoggy) {
         this.dog = entitydtdoggy;
-        this.inventorySlots = new ItemStack[15];
+        this.inventorySlots = new ItemStack[this.getSizeInventory()];
     }
 
     @Override
 	public int getSizeInventory()  {
-		return inventorySlots.length;
+		return 15;
 	}
 
 	@Override
@@ -210,4 +212,36 @@ public class InventoryPackPuppy implements IInventory {
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return false;
 	}
+	
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
+        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
+        
+        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        {
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            int j = nbttagcompound1.getByte("Slot") & 255;
+
+            if (j >= 0 && j < this.inventorySlots.length)
+            {
+                this.inventorySlots[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            }
+        }
+    }
+
+    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
+        NBTTagList nbttaglist = new NBTTagList();
+
+        for (int i = 0; i < this.inventorySlots.length; ++i)
+        {
+            if (this.inventorySlots[i] != null)
+            {
+                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+                nbttagcompound1.setByte("Slot", (byte)i);
+                this.inventorySlots[i].writeToNBT(nbttagcompound1);
+                nbttaglist.appendTag(nbttagcompound1);
+            }
+        }
+
+        par1NBTTagCompound.setTag("Items", nbttaglist);
+    }
 }

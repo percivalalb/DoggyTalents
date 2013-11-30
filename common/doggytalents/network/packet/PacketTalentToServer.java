@@ -96,7 +96,7 @@ public class PacketTalentToServer extends DTPacket {
 			dog.talents.increaseTalentLevel(EnumTalents.POSIONFANG, 1);
 			break;
 		case 15:
-			dog.talents.increaseTalentLevel(EnumTalents.SHEPHERDOG, 1);
+			dog.talents.increaseTalentLevel(EnumTalents.SHEPHERDDOG, 1);
 			break;
 		case 16:
 			dog.talents.increaseTalentLevel(EnumTalents.RESCUEDOG, 1);

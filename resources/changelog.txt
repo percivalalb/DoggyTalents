@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.5.1a
+* Fixed crash with forestry on server
+
 v1.5.0a
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)
 + Added the infamous wolf mount talents!

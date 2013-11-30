@@ -43,7 +43,7 @@ public class ForestryAPI {
 			for(Field fld : enumWoodTypeClass.get().getFields()) {
 				if(fld.isEnumConstant()) {
 					try {
-						if((boolean)enumWoodTypeClass.get().getField("hasPlank").get((Enum)fld.get(null)))
+						if((Boolean)enumWoodTypeClass.get().getField("hasPlank").get((Enum)fld.get(null)))
 							enumsTypes.add((Enum)fld.get(null));
 					} catch (Exception e) {
 						e.printStackTrace();

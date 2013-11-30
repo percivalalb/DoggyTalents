@@ -26,6 +26,7 @@ public class ItemThrowBone extends Item {
 	public ItemThrowBone(int id) {
 		super(id);
 		this.setCreativeTab(CreativeTabs.tabFood);
+		this.setMaxStackSize(1);
 	}
 
 	@Override

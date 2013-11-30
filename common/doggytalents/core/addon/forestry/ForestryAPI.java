@@ -12,7 +12,9 @@ import net.minecraftforge.client.IItemRenderer;
 
 import com.google.common.base.Optional;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
 import doggytalents.core.helper.LogHelper;
 import doggytalents.core.helper.ReflectionHelper;
 
@@ -48,7 +50,8 @@ public class ForestryAPI {
 					} 
 				}
 	 		}
-			woodIconField = Optional.fromNullable(ReflectionHelper.getField(enumWoodTypeClass.get(), null, ForestryLib.FIELD_ICONS));
+			if(FMLCommonHandler.instance().getSide() == Side.CLIENT) 
+				woodIconField = Optional.fromNullable(ReflectionHelper.getField(enumWoodTypeClass.get(), null, ForestryLib.FIELD_ICONS));
 		}
 		
 		if(forestryBlocksClass.isPresent()) {

@@ -1,7 +1,6 @@
 package doggytalents.entity.data;
 
 import doggytalents.entity.EntityDTDoggy;
-import net.minecraft.util.MathHelper;
 
 /**
  * @author ProPercivalalb

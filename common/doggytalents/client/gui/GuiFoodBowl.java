@@ -1,14 +1,10 @@
 package doggytalents.client.gui;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
-
-import com.google.common.base.Strings;
 
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.lib.ResourceReference;
@@ -29,13 +25,12 @@ public class GuiFoodBowl extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-    	String s = this.foodBowl.isInvNameLocalized() ? this.foodBowl.getInvName() : I18n.getString(this.foodBowl.getInvName());
-        this.fontRenderer.drawString(s, 10, 8, 4210752);
+    	String s = this.foodBowl.hasCustomInventoryName() ? this.foodBowl.getInventoryName() : StatCollector.translateToLocal(this.foodBowl.getInventoryName());
+        this.fontRendererObj.drawString(s, 10, 8, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-    {
+    protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ResourceReference.foodBowl);
         int var2 = (this.width - this.xSize) / 2;

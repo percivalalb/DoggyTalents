@@ -1,10 +1,10 @@
 package doggytalents.inventory;
 
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumTalents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumTalents;
 
 /**
  * @author ProPercivalalb

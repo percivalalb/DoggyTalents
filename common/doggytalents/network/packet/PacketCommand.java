@@ -5,56 +5,51 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import doggytalents.ModItems;
-import doggytalents.core.helper.LogHelper;
+import doggytalents.core.helper.ChatHelper;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.entity.data.EnumMode;
-import doggytalents.entity.data.EnumTalents;
-import doggytalents.network.PacketTypeHandler;
+import doggytalents.network.IPacket;
 
 /**
  * @author ProPercivalalb
  */
-public class PacketCommand extends DTPacket {
+public class PacketCommand extends IPacket {
 
 	public int commandId;
 	
-	public PacketCommand() {
-		super(PacketTypeHandler.DOG_COMMAND, false);
-	}
-	
+	public PacketCommand() {}
 	public PacketCommand(int commandId) {
 		this();
 		this.commandId = commandId;
 	}
 
 	@Override
-	public void readData(DataInputStream data) throws IOException {
+	public void read(DataInputStream data) throws IOException {
 		this.commandId = data.readInt();
 	}
 
 	@Override
-	public void writeData(DataOutputStream dos) throws IOException {
+	public void write(DataOutputStream dos) throws IOException {
 		dos.writeInt(commandId);
 	}
 
 	@Override
-	public void execute(INetworkManager network, EntityPlayer player) {
+	public void execute(EntityPlayer player) {
 		World world = player.worldObj;
 		ItemStack stack = player.getCurrentEquippedItem();
 		if(stack == null)
 			return;
 		
-		if(stack.itemID == ModItems.commandEmblem.itemID) {
+		if(stack.getItem() == ModItems.commandEmblem) {
 
 			if(commandId == 1)
 			{
@@ -81,7 +76,7 @@ public class PacketCommand extends DTPacket {
 			        }
             		if(isDog)
             		{
-            			player.addChatMessage("Stand!");
+            			player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.come"));
             		}
 				}
 				else if(commandId == 2)
@@ -109,7 +104,7 @@ public class PacketCommand extends DTPacket {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage("Stay!");
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.stay"));
 			        }
 				}
 				else if(commandId == 3)
@@ -144,7 +139,7 @@ public class PacketCommand extends DTPacket {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage("Okay!");
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.ok"));
 			        }
 				}
 				else if(commandId == 4)
@@ -166,7 +161,7 @@ public class PacketCommand extends DTPacket {
 			                     {
 			                         for (int i1 = 0; i1 <= 4; i1++)
 			                         {
-			                             if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && player.worldObj.isBlockNormalCube(i + l, k - 1, j + i1) && !player.worldObj.isBlockNormalCube(i + l, k, j + i1) && !player.worldObj.isBlockNormalCube(i + l, k + 1, j + i1)  && player.worldObj.getBlockId(i + l, k + 1, j + i1) != Block.lavaMoving.blockID && player.worldObj.getBlockId(i + l, k + 1, j + i1) != Block.lavaStill.blockID)
+			                             if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(world, i + l, k - 1, j + i1) && !world.getBlock(i + l, k, j + i1).isNormalCube() && !world.getBlock(i + l, k + 1, j + i1).isNormalCube() && world.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && world.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
 			                             {
 			                                 dog.setLocationAndAngles((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, dog.rotationYaw, dog.rotationPitch);
 			                             }
@@ -175,6 +170,11 @@ public class PacketCommand extends DTPacket {
 			                    isDog = true;
 			            	}
 			            }
+			        }
+			        
+			        if(isDog)
+			        {
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.heel"));
 			        }
 				}
 					

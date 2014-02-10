@@ -1,6 +1,6 @@
 package doggytalents.core.addon.forestry;
 
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import doggytalents.api.IDogBedMaterial;
 
 /**
@@ -9,17 +9,17 @@ import doggytalents.api.IDogBedMaterial;
 public class ForestryBedMaterial implements IDogBedMaterial {
 
 	private Enum en;
-	private static Icon[][] icons;
+	private static IIcon[][] icons;
 	
 	public ForestryBedMaterial(Enum en) {
 		this.en = en;
 	}
 
 	@Override
-	public Icon getMaterialIcon(int side) {
+	public IIcon getMaterialIcon(int side) {
 		if(icons == null) {
 			try {
-				icons = (Icon[][])ForestryAPI.woodIconField.get().get(null);
+				icons = (IIcon[][])ForestryAPI.woodIconField.get().get(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return null;

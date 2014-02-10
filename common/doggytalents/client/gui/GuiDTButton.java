@@ -1,11 +1,11 @@
 package doggytalents.client.gui;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.ScaledResolution;
+
+import org.lwjgl.opengl.GL11;
 
 /**
  * @author ProPercivalalb
@@ -33,15 +33,15 @@ public class GuiDTButton extends GuiButton {
     @Override
 	public void drawButton(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.drawButton)
+        if (this.visible)
         {
         	boolean flag1 = Minecraft.getSystemTime() - this.lastClicked < 250L;
-            this.field_82253_i = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.field_146123_n = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
             if(flag1 == true) {
             	canShow = true;
             }
             
-            if(field_82253_i && canShow) {
+            if(field_146123_n && canShow) {
             	ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft().gameSettings, Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight);
                 int j = scaledresolution.getScaledWidth();
                 int k = scaledresolution.getScaledHeight();
@@ -50,7 +50,7 @@ public class GuiDTButton extends GuiButton {
             	drawRect(this.xPos - 1, this.yPos - 1, this.xPos + this.width_2 + 1, this.yPos + this.height_2 + 1, -6250336);
                 drawRect(this.xPos, this.yPos, this.xPos + this.width_2, this.yPos + this.height_2, -16777216);
             }
-            else if(!field_82253_i && canShow) {
+            else if(!field_146123_n && canShow) {
             	canShow = false;
             }
  
@@ -58,7 +58,7 @@ public class GuiDTButton extends GuiButton {
             par1Minecraft.getTextureManager().bindTexture(buttonTextures);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             
-            int k = this.getHoverState(this.field_82253_i);
+            int k = this.getHoverState(this.field_146123_n);
             this.drawTexturedModalRect(this.xPosition, this.yPosition, 0, 46 + k * 20, this.width / 2, this.height);
             this.drawTexturedModalRect(this.xPosition + this.width / 2, this.yPosition, 200 - this.width / 2, 46 + k * 20, this.width / 2, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
@@ -68,7 +68,7 @@ public class GuiDTButton extends GuiButton {
             {
                 l = -6250336;
             }
-            else if (this.field_82253_i)
+            else if (this.field_146123_n)
             {
                 l = 16777120;
             }
@@ -78,6 +78,6 @@ public class GuiDTButton extends GuiButton {
     }
 	
 	public boolean rightClick(Minecraft par1Minecraft, int par2, int par3) {
-        return this.enabled && this.drawButton && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+        return this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
 	}
 }

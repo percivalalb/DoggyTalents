@@ -1,9 +1,6 @@
 package doggytalents.tileentity;
 
 import java.util.List;
-import java.util.Random;
-
-import doggytalents.entity.EntityDTDoggy;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import doggytalents.entity.EntityDTDoggy;
 
 public class TileEntityFoodBowl extends TileEntity implements IInventory {
    
@@ -28,14 +26,13 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
     
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
-    {
-        super.readFromNBT(nbttagcompound);
-        NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        NBTTagList nbttaglist = tag.getTagList("Items", 10);
         bowlcontents = new ItemStack[getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); i++) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 0xff;
 
             if (j >= 0 && j < bowlcontents.length) {
@@ -108,7 +105,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         {
             ItemStack itemstack1 = GetStackInSlot(i);
 
-            if (itemstack1 != null && itemstack1.itemID == itemstack.itemID && itemstack1.isStackable() && itemstack1.stackSize < itemstack1.getMaxStackSize() && itemstack1.stackSize < getInventoryStackLimit() && (!itemstack1.getHasSubtypes() || itemstack1.getItemDamage() == itemstack.getItemDamage()))
+            if (itemstack1 != null && itemstack1.getItem() == itemstack.getItem() && itemstack1.isStackable() && itemstack1.stackSize < itemstack1.getMaxStackSize() && itemstack1.stackSize < getInventoryStackLimit() && (!itemstack1.getHasSubtypes() || itemstack1.getItemDamage() == itemstack.getItemDamage()))
             {
                 return i;
             }
@@ -172,7 +169,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     public int StorePartialItemStack(ItemStack itemstack)
     {
-        int i = itemstack.itemID;
+        Item item = itemstack.getItem();
         int j = itemstack.stackSize;
         int k = FindSlotToStoreItemStack(itemstack);
 
@@ -188,7 +185,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
         if (GetStackInSlot(k) == null)
         {
-            setInventorySlotContents(k, new ItemStack(i, 0, itemstack.getItemDamage()));
+            setInventorySlotContents(k, new ItemStack(item, 0, itemstack.getItemDamage()));
         }
 
         int l = j;
@@ -264,7 +261,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
             }
             else
             {
-                onInventoryChanged();
+                this.markDirty();
             }
 
             return itemstack2;
@@ -307,7 +304,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
                 }
 
                 itemstack.stackSize -= i1;
-                EntityItem entityitem = new EntityItem(world, (float)i + f, (float)j + f1, (float)k + f2, new ItemStack(itemstack.itemID, i1, itemstack.getItemDamage()));
+                EntityItem entityitem = new EntityItem(world, (float)i + f, (float)j + f1, (float)k + f2, new ItemStack(itemstack.getItem(), i1, itemstack.getItemDamage()));
                 float f3 = 0.05F;
                 entityitem.motionX = (float)world.rand.nextGaussian() * f3;
                 entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
@@ -338,7 +335,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
             }
             else
             {
-                onInventoryChanged();
+                this.markDirty();
             }
 
             return itemstack1;
@@ -357,11 +354,11 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
             itemstack.stackSize = getInventoryStackLimit();
         }
 
-        onInventoryChanged();
+        markDirty();
     }
 
     @Override
-    public String getInvName() {
+    public String getInventoryName() {
         return "container.foodBowl";
     }
 
@@ -371,16 +368,15 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
 
     @Override
-    public void onInventoryChanged() {}
-
-    @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) != this ? false : player.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
+        return worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false : player.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
     }
 
-    public void openChest() {}
+	@Override
+	public void openInventory() {}
 
-    public void closeChest() {}
+	@Override
+	public void closeInventory() {}
 
     private boolean ContainsFood()
     {
@@ -415,7 +411,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
 
 	@Override
-	public boolean isInvNameLocalized() {
+	public boolean hasCustomInventoryName() {
 		return false;
 	}
 

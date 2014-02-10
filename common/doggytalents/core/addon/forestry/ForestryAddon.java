@@ -3,14 +3,9 @@ package doggytalents.core.addon.forestry;
 import java.util.Locale;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.api.DogBedManager;
 import doggytalents.core.addon.AddonEvent;
-import doggytalents.core.helper.LogHelper;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.event.ForgeSubscribe;
 
 /**
  * @author ProPercivalalb
@@ -19,19 +14,19 @@ public class ForestryAddon {
 
 	private static ForestryAPI API = new ForestryAPI(ForestryLib.MOD_NAME);
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onPre(AddonEvent.Pre event) {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onInit(AddonEvent.Init event) {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onPost(AddonEvent.Post event) throws Exception {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;

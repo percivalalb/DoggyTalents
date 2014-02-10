@@ -1,14 +1,11 @@
 package doggytalents.inventory;
 
-import java.util.List;
-
-import doggytalents.tileentity.TileEntityFoodBowl;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import doggytalents.tileentity.TileEntityFoodBowl;
 
 /**
  * @author ProPercivalalb

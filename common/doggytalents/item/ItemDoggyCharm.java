@@ -1,26 +1,23 @@
 package doggytalents.item;
 
-import doggytalents.DoggyTalentsMod;
-import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import doggytalents.DoggyTalentsMod;
+import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb
  **/
 public class ItemDoggyCharm extends ItemDT {
 	
-    public ItemDoggyCharm(int id, String iconPath) {
-        super(id, iconPath);
+    public ItemDoggyCharm(String iconPath) {
+        super(iconPath);
         this.setMaxStackSize(1);
         this.setCreativeTab(DoggyTalentsMod.creativeTab);
     }
@@ -31,19 +28,17 @@ public class ItemDoggyCharm extends ItemDT {
             return true;
         }
         else {
-            int blockId = world.getBlockId(x, y, z);
+        	Block block = world.getBlock(x, y, z);
             x += Facing.offsetsXForSide[side];
             y += Facing.offsetsYForSide[side];
             z += Facing.offsetsZForSide[side];
-            double var12 = 0.0D;
+            double yOffset = 0.0D;
 
-            if (side == 1 && Block.blocksList[blockId] != null && Block.blocksList[blockId].getRenderType() == 11) {
-                var12 = 0.5D;
-            }
+            if (side == 1 && block.getRenderType() == 11)
+            	yOffset = 0.5D;
 
-            if (spawnCreature(world, (double)x + 0.5D, (double)y + var12, (double)z + 0.5D, player) != null && !player.capabilities.isCreativeMode) {
+            if (spawnCreature(world, (double)x + 0.5D, (double)y + yOffset, (double)z + 0.5D, player) != null && !player.capabilities.isCreativeMode)
                 --stack.stackSize;
-            }
 
             return true;
         }
@@ -61,7 +56,7 @@ public class ItemDoggyCharm extends ItemDT {
                 var10.rotationYawHead = var10.rotationYaw;
                 var10.renderYawOffset = var10.rotationYaw;
                 var10.setTamed(true);
-                var10.setOwner(par7EntityPlayer.username);
+                var10.setOwner(par7EntityPlayer.getCommandSenderName());
                 par0World.spawnEntityInWorld(var8);
                 var10.playLivingSound();
             }

@@ -2,15 +2,12 @@ package doggytalents.api;
 
 import java.util.Hashtable;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import doggytalents.ModBlocks;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 
 /**
  * @author ProPercivalalb
@@ -31,13 +28,13 @@ public class DogBedManager {
 		return woolIcons.keySet().contains(woolId);
 	}
 	
-	public static Icon getWoodIcon(String woodId, int side) {
+	public static IIcon getWoodIcon(String woodId, int side) {
 		if(isValidWoodId(woodId))
 			return woodIcons.get(woodId).getMaterialIcon(side);
 		return null;
 	}
 	
-	public static Icon getWoolIcon(String woolId, int side) {
+	public static IIcon getWoolIcon(String woolId, int side) {
 		if(isValidWoolId(woolId))
 			return woolIcons.get(woolId).getMaterialIcon(side);
 		return null;
@@ -88,12 +85,12 @@ public class DogBedManager {
 	}
 	
 	public static ItemStack createItemStack(String woodId, String woolId) {
-		ItemStack stack = new ItemStack(ModBlocks.dogBed.blockID, 1, 0);
+		ItemStack stack = new ItemStack(ModBlocks.dogBed, 1, 0);
 		stack.stackTagCompound = new NBTTagCompound();
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("woodId", woodId);
 		tag.setString("woolId", woolId);
-		stack.stackTagCompound.setCompoundTag("doggytalents", tag);
+		stack.stackTagCompound.setTag("doggytalents", tag);
 		return stack;
 	}
 }

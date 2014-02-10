@@ -1,9 +1,9 @@
 package doggytalents.item;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import doggytalents.api.IDogTreat;
+import doggytalents.core.helper.ChatHelper;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.entity.data.DogTalents;
 
@@ -14,8 +14,8 @@ public class ItemTreat extends ItemDT implements IDogTreat {
 
 	private int maxLevel;
 	
-	public ItemTreat(int id, String iconPath, int level) {
-		super(id, iconPath);
+	public ItemTreat(String iconPath, int level) {
+		super(iconPath);
 		this.maxLevel = level;
 	}
 
@@ -50,21 +50,20 @@ public class ItemTreat extends ItemDT implements IDogTreat {
             dog.getSitAI().setSitting(true);
             dog.worldObj.setEntityState(dog, (byte)7);
             dog.playTameEffect(true);
-            if (!player.worldObj.isRemote) {
-            	player.addChatMessage("Level up!");
-            }
+            if (!player.worldObj.isRemote)
+            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTreat.levelup"));
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {
 			if (!player.worldObj.isRemote){
 				 dog.playTameEffect(false);
-	            player.addChatMessage("This dog's a bit too young to be learning skills just yet.");
+				 player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTreat.tooyoung"));
 			}
 		}
 		else if(type == EnumFeedBack.LEVELTOOHIGH) {
             player.worldObj.setEntityState(dog, (byte)6);
             if (!player.worldObj.isRemote) {
             	dog.playTameEffect(false);
-            	player.addChatMessage((new StringBuilder()).append("Your dog is too high level to gain anything from these treats.").toString());
+            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTreat.leveltoohigh"));
             }
 		}
 	}

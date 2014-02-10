@@ -2,15 +2,12 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import doggytalents.core.helper.LogHelper;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityTameable;
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumMode;
 
 public class EntityAIModeAttackTarget extends EntityAITarget
 {
@@ -37,7 +34,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.dog.func_130012_q();
+            EntityLivingBase entitylivingbase = this.dog.getOwner();
 
             if (entitylivingbase == null)
             {
@@ -76,7 +73,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.entityToAttack);
-        EntityLivingBase entitylivingbase = this.dog.func_130012_q();
+        EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
         {

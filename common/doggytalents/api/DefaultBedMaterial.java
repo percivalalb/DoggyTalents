@@ -1,7 +1,7 @@
 package doggytalents.api;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 /**
  * @author ProPercivalalb
@@ -17,7 +17,7 @@ public class DefaultBedMaterial implements IDogBedMaterial {
 	}
 	
 	@Override
-	public Icon getMaterialIcon(int side) {
+	public IIcon getMaterialIcon(int side) {
 		return block.getIcon(side, metadata);
 	}
 

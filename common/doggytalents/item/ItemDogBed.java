@@ -2,28 +2,27 @@ package doggytalents.item;
 
 import java.util.List;
 
-import com.google.common.base.Strings;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import doggytalents.api.DogBedManager;
-import doggytalents.tileentity.TileEntityDogBed;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.util.StringTranslate;
+
+import com.google.common.base.Strings;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.api.DogBedManager;
 
 /**
  * @author ProPercivalalb
  */
 public class ItemDogBed extends ItemBlock {
 
-	public ItemDogBed(int id) {
-		super(id);
+	public ItemDogBed(Block block) {
+		super(block);
 		this.setMaxStackSize(1);
 	}
 	

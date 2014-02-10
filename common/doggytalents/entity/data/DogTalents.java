@@ -1,8 +1,7 @@
 package doggytalents.entity.data;
 
-import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb

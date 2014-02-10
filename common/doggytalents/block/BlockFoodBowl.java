@@ -3,39 +3,36 @@ package doggytalents.block;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.core.proxy.CommonProxy;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.tileentity.TileEntityFoodBowl;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 
 /**
  * @author ProPercivalalb
  **/
 public class BlockFoodBowl extends BlockContainer {
 	
-    public static Icon top;
-    public static Icon side;
-    public static Icon bottom;
+    public static IIcon top;
+    public static IIcon side;
+    public static IIcon bottom;
 	
-    public BlockFoodBowl(int i) {
-        super(i, Material.iron);
+    public BlockFoodBowl() {
+        super(Material.iron);
         this.setTickRandomly(true);
         this.setCreativeTab(DoggyTalentsMod.creativeTab);
     }
@@ -92,34 +89,29 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-    public Icon getIcon(int side, int meta)
-    {
+    public IIcon getIcon(int side, int meta) {
     	return side == 1 ? this.top : side == 0 ? this.bottom : this.side;
     }
 
     @Override
-    public boolean renderAsNormalBlock()
-    {
+    public boolean renderAsNormalBlock() {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube()
-    {
+    public boolean isOpaqueCube() {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-    {
-        if (par1World.isRemote)
-        {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+        if (world.isRemote) {
             return true;
         }
         else
         {
-            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)par1World.getBlockTileEntity(par2, par3, par4);
-            par5EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_FOOD_BOWL, par1World, par2, par3, par4);
+            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)world.getTileEntity(x, y, z);
+            player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_FOOD_BOWL, world, x, y, z);
             return true;
         }
     }
@@ -145,7 +137,7 @@ public class BlockFoodBowl extends BlockContainer {
         
         if (entity != null && entity instanceof EntityItem)
         {
-            TileEntity tileentity = par1World.getBlockTileEntity(i, j, k);
+            TileEntity tileentity = par1World.getTileEntity(i, j, k);
 
             if (!(tileentity instanceof TileEntityFoodBowl))
             {
@@ -168,12 +160,10 @@ public class BlockFoodBowl extends BlockContainer {
                     return;
                 }
 
-                int k1 = par1World.getBlockId(i, j + 1, k);
+                Block block = par1World.getBlock(i, j + 1, k);
 
-                if (k1 != Block.waterMoving.blockID && k1 != Block.waterStill.blockID)
-                {
+                if (block != Blocks.water && block != Blocks.flowing_water)
                     return;
-                }
 
                 double d = (double)j + 1.05D;
 
@@ -190,7 +180,7 @@ public class BlockFoodBowl extends BlockContainer {
 
         if (list2 != null && list2.size() > 0)
         {
-            TileEntity tileentity1 = par1World.getBlockTileEntity(i, j, k);
+            TileEntity tileentity1 = par1World.getTileEntity(i, j, k);
 
             if (!(tileentity1 instanceof TileEntityFoodBowl))
             {
@@ -212,7 +202,7 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int meta) {
         return new TileEntityFoodBowl();
     }
     
@@ -227,21 +217,21 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-    public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6) {
-        TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)par1World.getBlockTileEntity(par2, par3, par4);
-        tileentitydogfoodbowl.DropContents(par1World, par2, par3, par4);
-        super.breakBlock(par1World, par2, par3, par4, par5, par6);
+    public void breakBlock(World par1World, int x, int y, int z, Block block, int side) {
+        TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)par1World.getTileEntity(x, y, z);
+        tileentitydogfoodbowl.DropContents(par1World, x, y, z);
+        super.breakBlock(par1World, x, y, z, block, side);
     }
     
     @Override
-    public void registerIcons(IconRegister par1IconRegister) {
+    public void registerBlockIcons(IIconRegister par1IconRegister) {
         this.top = par1IconRegister.registerIcon("doggytalents:foodTop");
         this.bottom = par1IconRegister.registerIcon("doggytalents:foodBottom");
         this.side = par1IconRegister.registerIcon("doggytalents:foodSide");
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5) {
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
         if (!this.canBlockStay(par1World, par2, par3, par4)) {
             par1World.setBlockToAir(par2, par3, par4);
         }
@@ -249,7 +239,7 @@ public class BlockFoodBowl extends BlockContainer {
 
     @Override
     public boolean canBlockStay(World world, int x, int y, int z) {
-    	Block block = Block.blocksList[world.getBlockId(x, y - 1, z)];
-    	return block.isBlockSolidOnSide(world, x, y - 1, z, ForgeDirection.UP);
+    	Block block = world.getBlock(x, y - 1, z);
+    	return block.isSideSolid(world, x, y - 1, z, ForgeDirection.UP);
     }
 }

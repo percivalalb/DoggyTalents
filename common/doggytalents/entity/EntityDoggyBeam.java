@@ -2,20 +2,15 @@ package doggytalents.entity;
 
 import java.util.List;
 
-import doggytalents.entity.data.EnumMode;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.AttributeInstance;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import doggytalents.entity.data.EnumMode;
 
 /**
  * @author ProPercivalalb
@@ -53,7 +48,7 @@ public class EntityDoggyBeam extends EntityThrowable
                 if (o instanceof EntityDTDoggy)
                 {
                 	EntityDTDoggy dog = (EntityDTDoggy)o;
-                	if(!dog.isSitting() && par1MovingObjectPosition.entityHit != dog && dog.func_142018_a((EntityLiving)par1MovingObjectPosition.entityHit, dog.func_130012_q()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
+                	if(!dog.isSitting() && par1MovingObjectPosition.entityHit != dog && dog.func_142018_a((EntityLiving)par1MovingObjectPosition.entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
                 		if(dog.getDistanceToEntity(par1MovingObjectPosition.entityHit) < getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
                 			dog.setAttackTarget((EntityLiving)par1MovingObjectPosition.entityHit);
                 		}
@@ -73,9 +68,8 @@ public class EntityDoggyBeam extends EntityThrowable
         }
     }
     
-    protected double getTargetDistance(EntityDTDoggy dog)
-    {
-        AttributeInstance attributeinstance = dog.getEntityAttribute(SharedMonsterAttributes.followRange);
-        return attributeinstance == null ? 16.0D : attributeinstance.getAttributeValue();
+    protected double getTargetDistance(EntityDTDoggy dog) {
+        IAttributeInstance iattributeinstance = dog.getEntityAttribute(SharedMonsterAttributes.followRange);
+        return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
     }
 }

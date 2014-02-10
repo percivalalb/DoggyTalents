@@ -6,23 +6,17 @@ import java.io.IOException;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import doggytalents.core.helper.LogHelper;
 import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumTalents;
-import doggytalents.network.PacketTypeHandler;
+import doggytalents.network.IPacket;
 
 /**
  * @author ProPercivalalb
  */
-public class PacketDoggyTexture extends DTPacket {
+public class PacketDoggyTexture extends IPacket {
 
 	public int entityId, doggyTexture;
 	
-	public PacketDoggyTexture() {
-		super(PacketTypeHandler.DOGGY_TEXTURE, false);
-	}
-	
+	public PacketDoggyTexture() {}
 	public PacketDoggyTexture(int entityId, int doggyTexture) {
 		this();
 		this.entityId = entityId;
@@ -30,19 +24,19 @@ public class PacketDoggyTexture extends DTPacket {
 	}
 
 	@Override
-	public void readData(DataInputStream data) throws IOException {
+	public void read(DataInputStream data) throws IOException {
 		this.entityId = data.readInt();
 		this.doggyTexture = data.readInt();
 	}
 
 	@Override
-	public void writeData(DataOutputStream dos) throws IOException {
+	public void write(DataOutputStream dos) throws IOException {
 		dos.writeInt(entityId);
 		dos.writeInt(doggyTexture);
 	}
 
 	@Override
-	public void execute(INetworkManager network, EntityPlayer player) {
+	public void execute(EntityPlayer player) {
 		Entity target = player.worldObj.getEntityByID(entityId);
         if(!(target instanceof EntityDTDoggy))
         	return;

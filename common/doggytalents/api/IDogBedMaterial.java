@@ -1,6 +1,6 @@
 package doggytalents.api;
 
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 
 /**
  * @author ProPercivalalb
@@ -12,5 +12,5 @@ public interface IDogBedMaterial {
 	 * @param side The side can be used to determine the icon, the bedding will always have a side value of 1
 	 * @return The icon that will be rendered
 	 */
-	public Icon getMaterialIcon(int side);
+	public IIcon getMaterialIcon(int side);
 }

@@ -4,28 +4,20 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
-import doggytalents.core.helper.LogHelper;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumTalents;
-import doggytalents.network.PacketTypeHandler;
+import doggytalents.network.IPacket;
 import doggytalents.tileentity.TileEntityDogBed;
 
 /**
  * @author ProPercivalalb
  */
-public class PacketDogBedUpdate extends DTPacket {
+public class PacketDogBedUpdate extends IPacket {
 
 	public int x, y, z;
 	public String woolId, woodId;
 	
-	public PacketDogBedUpdate() {
-		super(PacketTypeHandler.DOG_BED_UPDATE, false);
-	}
-	
+	public PacketDogBedUpdate() {}
 	public PacketDogBedUpdate(int x, int y, int z, String woolId, String woodId) {
 		this();
 		this.x = x;
@@ -36,7 +28,7 @@ public class PacketDogBedUpdate extends DTPacket {
 	}
 
 	@Override
-	public void readData(DataInputStream data) throws IOException {
+	public void read(DataInputStream data) throws IOException {
 		this.x = data.readInt();
 		this.y = data.readInt();
 		this.z = data.readInt();
@@ -45,24 +37,24 @@ public class PacketDogBedUpdate extends DTPacket {
 	}
 
 	@Override
-	public void writeData(DataOutputStream dos) throws IOException {
-		dos.writeInt(x);
-		dos.writeInt(y);
-		dos.writeInt(z);
-		dos.writeUTF(woolId);
-		dos.writeUTF(woodId);
+	public void write(DataOutputStream dos) throws IOException {
+		dos.writeInt(this.x);
+		dos.writeInt(this.y);
+		dos.writeInt(this.z);
+		dos.writeUTF(this.woolId);
+		dos.writeUTF(this.woodId);
 	}
 
 	@Override
-	public void execute(INetworkManager network, EntityPlayer player) {
-		TileEntity target = player.worldObj.getBlockTileEntity(x, y, z);
+	public void execute(EntityPlayer player) {
+		TileEntity target = player.worldObj.getTileEntity(x, y, z);
 		
 		if(!(target instanceof TileEntityDogBed))
 			return;
 		
 		TileEntityDogBed dogBed = (TileEntityDogBed)target;
-		dogBed.setWoolId(woolId);
-		dogBed.setWoodId(woodId);
+		dogBed.setWoolId(this.woolId);
+		dogBed.setWoodId(this.woodId);
 	}
 
 }

@@ -1,13 +1,5 @@
 package doggytalents.client.render;
 
-import org.lwjgl.opengl.GL11;
-
-import com.google.common.base.Strings;
-
-import doggytalents.ModBlocks;
-import doggytalents.api.DogBedManager;
-import doggytalents.tileentity.TileEntityDogBed;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -15,8 +7,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
+
+import doggytalents.ModBlocks;
+import doggytalents.api.DogBedManager;
 
 /**
  * @author ProPercivalalb

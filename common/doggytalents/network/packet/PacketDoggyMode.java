@@ -6,24 +6,17 @@ import java.io.IOException;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
-import doggytalents.core.helper.LogHelper;
 import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
-import doggytalents.entity.data.EnumTalents;
-import doggytalents.network.PacketTypeHandler;
+import doggytalents.network.IPacket;
 
 /**
  * @author ProPercivalalb
  */
-public class PacketDoggyMode extends DTPacket {
+public class PacketDoggyMode extends IPacket {
 
 	public int entityId, doggyMode;
 	
-	public PacketDoggyMode() {
-		super(PacketTypeHandler.DOGGY_MODE, false);
-	}
-	
+	public PacketDoggyMode() {}
 	public PacketDoggyMode(int entityId, int doggyMode) {
 		this();
 		this.entityId = entityId;
@@ -31,19 +24,19 @@ public class PacketDoggyMode extends DTPacket {
 	}
 
 	@Override
-	public void readData(DataInputStream data) throws IOException {
+	public void read(DataInputStream data) throws IOException {
 		this.entityId = data.readInt();
 		this.doggyMode = data.readInt();
 	}
 
 	@Override
-	public void writeData(DataOutputStream dos) throws IOException {
+	public void write(DataOutputStream dos) throws IOException {
 		dos.writeInt(entityId);
 		dos.writeInt(doggyMode);
 	}
 
 	@Override
-	public void execute(INetworkManager network, EntityPlayer player) {
+	public void execute(EntityPlayer player) {
 		Entity target = player.worldObj.getEntityByID(entityId);
         if(!(target instanceof EntityDTDoggy))
         	return;

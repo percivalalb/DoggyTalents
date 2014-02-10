@@ -1,12 +1,9 @@
 package doggytalents.core.proxy;
 
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import doggytalents.client.gui.GuiDTDoggy;
 import doggytalents.client.gui.GuiFoodBowl;
@@ -36,7 +33,7 @@ public class CommonProxy implements IGuiHandler {
 			return packPuppyContainer;
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getBlockTileEntity(x, y, z);
+			TileEntity target = world.getTileEntity(x, y, z);
 			if(!(target instanceof TileEntityFoodBowl)) 
 				return null;
 			
@@ -68,7 +65,7 @@ public class CommonProxy implements IGuiHandler {
 			return packPuppyGui;
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getBlockTileEntity(x, y, z);
+			TileEntity target = world.getTileEntity(x, y, z);
 			if(!(target instanceof TileEntityFoodBowl)) 
 				return null;
 			

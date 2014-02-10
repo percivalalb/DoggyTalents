@@ -2,11 +2,6 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import doggytalents.core.helper.LogHelper;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
-import doggytalents.entity.data.EnumTalents;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -14,12 +9,14 @@ import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumMode;
+import doggytalents.entity.data.EnumTalents;
 
 public class EntityAIFollowOwner extends EntityAIBase
 {
@@ -50,7 +47,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = (EntityLivingBase)this.theDog.func_130012_q();
+        EntityLivingBase entitylivingbase = (EntityLivingBase)this.theDog.getOwner();
         int order = this.theDog.masterOrder();
         
         if(entitylivingbase == null) {
@@ -152,7 +149,7 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                            {
 	                                for (int i1 = 0; i1 <= 4; ++i1)
 	                                {
-	                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.theWorld.doesBlockHaveSolidTopSurface(i + l, k - 1, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k + 1, j + i1) && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaMoving.blockID && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaStill.blockID)
+	                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
 	                                    {
 	                                        this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                        this.petPathfinder.clearPathEntity();
@@ -190,7 +187,7 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                        {
 	                            for (int i1 = 0; i1 <= 4; ++i1)
 	                            {
-	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.theWorld.doesBlockHaveSolidTopSurface(i + l, k - 1, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k + 1, j + i1) && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaMoving.blockID && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaStill.blockID)
+	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
 	                                {
 	                                    this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                    this.petPathfinder.clearPathEntity();
@@ -217,7 +214,7 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                        {
 	                            for (int i1 = 0; i1 <= 4; ++i1)
 	                            {
-	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.theWorld.doesBlockHaveSolidTopSurface(i + l, k - 1, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k, j + i1) && !this.theWorld.isBlockNormalCube(i + l, k + 1, j + i1) && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaMoving.blockID && this.theWorld.getBlockId(i + l, k + 1, j + i1) != Block.lavaStill.blockID)
+	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
 	                                {
 	                                    this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                    this.petPathfinder.clearPathEntity();

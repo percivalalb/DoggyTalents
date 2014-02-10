@@ -1,20 +1,15 @@
 package doggytalents.client.render;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import doggytalents.DoggyTalentsMod;
-import doggytalents.ModBlocks;
 import doggytalents.api.DogBedManager;
-import doggytalents.core.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityDogBed;
 
 /**
@@ -29,7 +24,7 @@ public class RenderWorldDogBed implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-		TileEntity target = world.getBlockTileEntity(x, y, z);
+		TileEntity target = world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 
 		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -131,7 +126,7 @@ public class RenderWorldDogBed implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int modelId) {
 		return false;
 	}
 

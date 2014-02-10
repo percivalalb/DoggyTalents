@@ -2,6 +2,7 @@ package doggytalents.entity.ai;
 
 import java.util.Iterator;
 import java.util.List;
+
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.util.AxisAlignedBB;

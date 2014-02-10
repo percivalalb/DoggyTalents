@@ -1,21 +1,16 @@
 package doggytalents.core.addon.forestry;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
 
 import com.google.common.base.Optional;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
-import doggytalents.core.helper.LogHelper;
 import doggytalents.core.helper.ReflectionHelper;
 
 /**

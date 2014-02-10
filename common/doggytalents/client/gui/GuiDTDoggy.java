@@ -1,45 +1,36 @@
 package doggytalents.client.gui;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.google.common.base.Strings;
-
+import doggytalents.DoggyTalentsMod;
+import doggytalents.core.helper.ChatHelper;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.entity.data.DogMode;
 import doggytalents.entity.data.EnumMode;
 import doggytalents.entity.data.EnumTalents;
 import doggytalents.inventory.ContainerDummy;
-import doggytalents.network.PacketTypeHandler;
 import doggytalents.network.packet.PacketDoggyMode;
 import doggytalents.network.packet.PacketDoggyName;
 import doggytalents.network.packet.PacketDoggyTexture;
 import doggytalents.network.packet.PacketObeyOthers;
 import doggytalents.network.packet.PacketTalentToServer;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet250CustomPayload;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 
 /**
  * @author ProPercivalalb
@@ -122,16 +113,16 @@ public class GuiDTDoggy extends GuiContainer {
 		this.redoScreenText();
 	}
 	
-	public void updateScreen()
-	{
-		if(dog == null || dog.isDead) {
+	@Override
+	public void updateScreen() {
+		if(this.dog == null || this.dog.isDead) {
 			this.mc.displayGuiScreen(null);
 			this.mc.setIngameFocus();
 		}
-		if(dog != null && !dog.getOwnerName().equalsIgnoreCase(player.username) && !dog.willObeyOthers()) {
+		if(this.dog != null && !this.dog.getOwnerName().equalsIgnoreCase(player.getCommandSenderName()) && !dog.willObeyOthers()) {
 			this.mc.displayGuiScreen(null);
 			this.mc.setIngameFocus();
-			player.addChatMessage("This dog will no longer obey you.");
+			this.player.addChatMessage(ChatHelper.getChatComponentTranslation("dogGui.noObey"));
 		}
 		
 	    this.txt_petName.updateCursorCounter();
@@ -144,7 +135,7 @@ public class GuiDTDoggy extends GuiContainer {
         GuardDogStatement = (this.guardDogLevel == 5 ? completeColour : unCompleteColour) + "Guard Dog: " + this.guardDogLevel;
         HunterDogStatement = (this.hunterDogLevel == 5 ? completeColour : unCompleteColour) + "Hunter Dog: " + this.hunterDogLevel;
         HellHoundStatement = (this.hellHoundLevel == 5 ? completeColour : unCompleteColour) + "Hell Hound: " + this.hellHoundLevel;
-        WolfMountStatement = (this.hellHoundLevel == 5 ? completeColour : unCompleteColour) + "Wolf Mount: " + this.wolfMountLevel;
+        WolfMountStatement = (this.wolfMountLevel == 5 ? completeColour : unCompleteColour) + "Wolf Mount: " + this.wolfMountLevel;
         PackPuppyStatement = (this.packPuppyLevel == 5 ? completeColour : unCompleteColour) + "Pack Puppy: " + this.packPuppyLevel;
         QuickHealerStatement = (this.quickHealerLevel == 5 ? completeColour : unCompleteColour) + "Quick Healer: " + this.quickHealerLevel;
         PillowPawStatement = (this.pillowPawLevel == 5 ? completeColour : unCompleteColour) + "Pillow Paw: " + this.pillowPawLevel;
@@ -203,7 +194,7 @@ public class GuiDTDoggy extends GuiContainer {
 	    this.buttonList.clear();
 	    int var1 = this.width / 2 - 100;
 	    int var2 = this.height / 2 - 50 + 47 + 100;
-	    this.txt_petName = new GuiTextField(this.fontRenderer, var1, var2, 200, 20);
+	    this.txt_petName = new GuiTextField(this.fontRendererObj, var1, var2, 200, 20);
 	    this.txt_petName.setFocused(false);
 	    this.txt_petName.setMaxStringLength(32);
 	    try {this.txt_petName.setText(startText);}
@@ -230,7 +221,7 @@ public class GuiDTDoggy extends GuiContainer {
 	    
         this.buttonList.add(new GuiButton(19, width - 22, 170, 20, 20, "+"));
         this.buttonList.add(new GuiButton(20, width - 44, 170, 20, 20, "-"));
-        if(dog.getOwnerName().equalsIgnoreCase(player.username)) {
+        if(dog.getOwnerName().equalsIgnoreCase(player.getCommandSenderName())) {
         	this.buttonList.add(new GuiButton(21, width - 44, 195, 42, 20, String.valueOf(dog.willObeyOthers())));
         }
         
@@ -358,19 +349,19 @@ public class GuiDTDoggy extends GuiContainer {
     }
     
     public void changeDoggyTexture(int var1) {
-    	PacketTypeHandler.populatePacketAndSendToServer(new PacketDoggyTexture(id, var1));
+    	DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDoggyTexture(id, var1));
     }
     
     public void changeMode(EnumMode mode) {
-    	PacketTypeHandler.populatePacketAndSendToServer(new PacketDoggyMode(id, DogMode.getId(mode)));
+    	DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDoggyMode(id, DogMode.getId(mode)));
     }
     
     public void changeWillObey(boolean var1) {
-    	PacketTypeHandler.populatePacketAndSendToServer(new PacketObeyOthers(id, var1));
+    	DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketObeyOthers(id, var1));
     }
     
     public void sendNewTalentToServer(int talentId) {
-    	PacketTypeHandler.populatePacketAndSendToServer(new PacketTalentToServer(id, talentId));
+    	DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketTalentToServer(id, talentId));
     }
 
     @Override
@@ -399,7 +390,7 @@ public class GuiDTDoggy extends GuiContainer {
                 if (guibutton instanceof GuiDTButton && ((GuiDTButton)guibutton).rightClick(this.mc, var1, var2))
                 {
                 	((GuiDTButton)guibutton).lastClicked = Minecraft.getSystemTime();
-                    this.mc.sndManager.playSoundFX("random.click", 1.0F, 1.0F);
+                	guibutton.func_146113_a(this.mc.getSoundHandler());
                 }
             }
         }
@@ -407,7 +398,7 @@ public class GuiDTDoggy extends GuiContainer {
 
 	protected void sendNewNameToServer(String var1)
 	{
-		PacketTypeHandler.populatePacketAndSendToServer(new PacketDoggyName(id, var1));
+		DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDoggyName(id, var1));
 	}
 	
 	@Override
@@ -433,38 +424,38 @@ public class GuiDTDoggy extends GuiContainer {
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-	     int var4 = this.width / 2 - this.fontRenderer.getStringWidth(this.TITLE) / 2;
+	     int var4 = this.width / 2 - this.fontRendererObj.getStringWidth(this.TITLE) / 2;
 	     int var5 = this.height / 2 - 50 + 20  + 100;
 	     var4 = this.width / 2 - 100;
 	     var5 = this.height / 2 - 50 + 35 + 100;
-	     this.fontRenderer.drawString("New name:", var4, var5, 4210752);
-	     this.drawString(fontRenderer, "Level: " + level, 0 + 10, 160, 0xff10f9);
-	     this.drawString(fontRenderer, "Level Dire: " + direLevel, 0 + 10, 160 + 15, 0xff10f9);
+	     this.fontRendererObj.drawString("New name:", var4, var5, 4210752);
+	     this.drawString(fontRendererObj, "Level: " + level, 0 + 10, 160, 0xff10f9);
+	     this.drawString(fontRendererObj, "Level Dire: " + direLevel, 0 + 10, 160 + 15, 0xff10f9);
 	     this.txt_petName.drawTextBox();
-	     drawString(fontRenderer, BlackPeltStatement, 0 + 10, 10, 0xffffff);
-	     drawString(fontRenderer, GuardDogStatement, width / 3, 10, 0xffffff);
-	     drawString(fontRenderer, HunterDogStatement, (2 * width) / 3, 10, 0xffffff);
-	     drawString(fontRenderer, HellHoundStatement, 0 + 10, 35, 0xffffff);
-	     drawString(fontRenderer, WolfMountStatement, width / 3, 35, 0xffffff);
-	     drawString(fontRenderer, PackPuppyStatement, (2 * width) / 3, 35, 0xffffff);
-	     drawString(fontRenderer, PillowPawStatement, 0 + 10, 60, 0xffffff);
-	     drawString(fontRenderer, QuickHealerStatement, width / 3, 60, 0xffffff);
-	     drawString(fontRenderer, CreeperSweeperStatement, (2 * width) / 3, 60, 0xffffff);
-	     drawString(fontRenderer, DoggyDashStatement, 0 + 10, 85, 0xffffff);
-	     drawString(fontRenderer, FisherDogStatement, width / 3, 85, 0xffffff);
-	     drawString(fontRenderer, HappyEaterStatement, (2 * width) / 3, 85, 0xffffff);
-	     drawString(fontRenderer, BedFinderStatement, 0 + 10, 110, 0xffffff);
-	     drawString(fontRenderer, PestFighterStatement, width / 3, 110, 0xffffff);
-	     drawString(fontRenderer, PoisonFangStatement, (2 * width) / 3, 110, 0xffffff);
-	     drawString(fontRenderer, ShepherDogStatement, 0 + 10, 135, 0xffffff);
-	     drawString(fontRenderer, RescueDogStatement, width / 3, 135, 0xffffff);
-	     drawString(fontRenderer, PuppyEyesStatement, (2 * width) / 3, 135, 0xffffff);
-	     drawString(fontRenderer, PointsStatement, width / 3, 160, 0xffffff);
-	     drawString(fontRenderer, DoggyTexStatement, width - 115, 175, 0xffffff);
-	     if(dog.getOwnerName().equalsIgnoreCase(player.username)) {
-	    	 drawString(fontRenderer, "Obey Others", width - 115, 200, 0xffffff);
+	     drawString(fontRendererObj, BlackPeltStatement, 0 + 10, 10, 0xffffff);
+	     drawString(fontRendererObj, GuardDogStatement, width / 3, 10, 0xffffff);
+	     drawString(fontRendererObj, HunterDogStatement, (2 * width) / 3, 10, 0xffffff);
+	     drawString(fontRendererObj, HellHoundStatement, 0 + 10, 35, 0xffffff);
+	     drawString(fontRendererObj, WolfMountStatement, width / 3, 35, 0xffffff);
+	     drawString(fontRendererObj, PackPuppyStatement, (2 * width) / 3, 35, 0xffffff);
+	     drawString(fontRendererObj, PillowPawStatement, 0 + 10, 60, 0xffffff);
+	     drawString(fontRendererObj, QuickHealerStatement, width / 3, 60, 0xffffff);
+	     drawString(fontRendererObj, CreeperSweeperStatement, (2 * width) / 3, 60, 0xffffff);
+	     drawString(fontRendererObj, DoggyDashStatement, 0 + 10, 85, 0xffffff);
+	     drawString(fontRendererObj, FisherDogStatement, width / 3, 85, 0xffffff);
+	     drawString(fontRendererObj, HappyEaterStatement, (2 * width) / 3, 85, 0xffffff);
+	     drawString(fontRendererObj, BedFinderStatement, 0 + 10, 110, 0xffffff);
+	     drawString(fontRendererObj, PestFighterStatement, width / 3, 110, 0xffffff);
+	     drawString(fontRendererObj, PoisonFangStatement, (2 * width) / 3, 110, 0xffffff);
+	     drawString(fontRendererObj, ShepherDogStatement, 0 + 10, 135, 0xffffff);
+	     drawString(fontRendererObj, RescueDogStatement, width / 3, 135, 0xffffff);
+	     drawString(fontRendererObj, PuppyEyesStatement, (2 * width) / 3, 135, 0xffffff);
+	     drawString(fontRendererObj, PointsStatement, width / 3, 160, 0xffffff);
+	     drawString(fontRendererObj, DoggyTexStatement, width - 115, 175, 0xffffff);
+	     if(dog.getOwnerName().equalsIgnoreCase(player.getCommandSenderName())) {
+	    	 drawString(fontRendererObj, "Obey Others", width - 115, 200, 0xffffff);
 	     }
-	     drawCenteredString(fontRenderer, screenTitle, width / 2, 200, 0xffffff);
+	     drawCenteredString(fontRendererObj, screenTitle, width / 2, 200, 0xffffff);
 	     GL11.glPushMatrix();
 	     GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		 GL11.glScaled(getScaleFactor(), getScaleFactor(), getScaleFactor());
@@ -475,13 +466,13 @@ public class GuiDTDoggy extends GuiContainer {
 	    		 if(btn.isMouseAbove(mouseX, mouseY)) {
 		    		List list = new ArrayList();
 	    			if(btn.id >= 1 && btn.id <= 18) {
-			    		list.add(EnumChatFormatting.GREEN + I18n.getString("dogGui.talentName." + btn.id));
+			    		list.add(EnumChatFormatting.GREEN + StatCollector.translateToLocal("dogGui.talentName." + btn.id));
 			    		list.add(EnumChatFormatting.GRAY + "--------------------------------");
-		    			String str = I18n.getString("dogGui.buttonInfo." + btn.id);
+		    			String str = StatCollector.translateToLocal("dogGui.buttonInfo." + btn.id);
 		    			list.addAll(splitInto(str, 200, this.mc.fontRenderer));
 	    			}
 	    			else if(btn.id == 22) {
-	    				String str = I18n.getString("dogGui.buttonInfo." + btn.displayString.toLowerCase());
+	    				String str = StatCollector.translateToLocal("dogGui.buttonInfo." + btn.displayString.toLowerCase());
 	    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
 	    			}
 	    			this.drawHoveringText(list, mouseX, mouseY, this.mc.fontRenderer);
@@ -553,7 +544,7 @@ public class GuiDTDoggy extends GuiContainer {
 	        }
 
 	        this.zLevel = 300.0F;
-	        itemRenderer.zLevel = 300.0F;
+	        itemRender.zLevel = 300.0F;
 	        int l1 = -267386864;
 	        this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
 	        this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -581,7 +572,7 @@ public class GuiDTDoggy extends GuiContainer {
 	            }
 
 	            this.zLevel = 0.0F;
-	            itemRenderer.zLevel = 0.0F;
+	            itemRender.zLevel = 0.0F;
 	            GL11.glEnable(GL11.GL_LIGHTING);
 	            GL11.glEnable(GL11.GL_DEPTH_TEST);
 	            RenderHelper.enableStandardItemLighting();

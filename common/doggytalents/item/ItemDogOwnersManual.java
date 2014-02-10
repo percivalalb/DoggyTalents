@@ -7,8 +7,8 @@ import net.minecraft.item.Item;
  */
 public class ItemDogOwnersManual extends Item {
 
-	public ItemDogOwnersManual(int id) {
-		super(id);
+	public ItemDogOwnersManual() {
+		super();
 	}
 
 }

@@ -1,7 +1,7 @@
 package doggytalents.core.addon;
 
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.event.Event;
+import net.minecraftforge.common.config.Configuration;
+import cpw.mods.fml.common.eventhandler.Event;
 
 /**
  * @author ProPercivalalb

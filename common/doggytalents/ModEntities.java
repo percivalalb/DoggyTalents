@@ -3,7 +3,6 @@ package doggytalents;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.entity.EntityDoggyBeam;
-import net.minecraft.item.Item;
 
 /**
  * @author ProPercivalalb

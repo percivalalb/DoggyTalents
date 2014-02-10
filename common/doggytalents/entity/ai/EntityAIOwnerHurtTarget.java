@@ -1,10 +1,9 @@
 package doggytalents.entity.ai;
 
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.passive.EntityTameable;
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumMode;
 
 public class EntityAIOwnerHurtTarget extends EntityAITarget
 {
@@ -30,7 +29,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.dog.func_130012_q();
+            EntityLivingBase entitylivingbase = this.dog.getOwner();
 
             if (entitylivingbase == null)
             {
@@ -56,7 +55,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.theTarget);
-        EntityLivingBase entitylivingbase = this.dog.func_130012_q();
+        EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
         {

@@ -3,13 +3,54 @@ package doggytalents.entity;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAISit;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+
+import com.google.common.base.Strings;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
-import doggytalents.core.helper.LogHelper;
+import doggytalents.core.helper.ChatHelper;
 import doggytalents.core.helper.ReflectionHelper;
 import doggytalents.core.proxy.CommonProxy;
 import doggytalents.entity.ai.EntityAIAttackOnCollide;
@@ -36,46 +77,6 @@ import doggytalents.entity.data.EnumTalents;
 import doggytalents.entity.data.WatchableDataLib;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.lib.Constants;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
-import net.minecraft.block.StepSound;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAISit;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
 
 /**
  * @author ProPercivalalb
@@ -148,8 +149,8 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     public void redoAttributes() {
-    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20D + (effectiveLevel() + 1D) * 2D);
-    	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(getSpeedModifier());
+    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20D + (effectiveLevel() + 1D) * 2D);
+    	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(getSpeedModifier());
     }
 
     /**
@@ -204,7 +205,7 @@ public class EntityDTDoggy extends EntityTameable
      * Plays step sound at given x, y, z for the entity
      */
     @Override
-    protected void playStepSound(int par1, int par2, int par3, int par4) {
+    protected void func_145780_a(int x, int y, int z, Block block) {
         this.playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
@@ -230,11 +231,11 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     @Override
-    public String getEntityName() {
+    public String getCommandSenderName() {
     	String name = this.getWolfName();
-    	if(!name.equals(""))
+    	if(!Strings.isNullOrEmpty(name))
     		return name;
-    	return super.getEntityName();
+    	return super.getCommandSenderName();
     }
     
     public String getWolfName() {
@@ -410,9 +411,8 @@ public class EntityDTDoggy extends EntityTameable
      * Returns the item ID for the item the mob drops on death.
      */
     @Override
-    protected int getDropItemId()
-    {
-        return -1;
+    protected Item getDropItem() {
+        return Item.getItemById(-1);
     }
 
     /**
@@ -588,52 +588,52 @@ public class EntityDTDoggy extends EntityTameable
 
                 if (j1 == 0)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: Cute dog! Take good care of him. Or her. ").toString());
-                    player.addChatMessage((new StringBuilder()).append("Here, it can have some pork.").toString());
-                    entityliving.dropItem(Item.porkRaw.itemID, 2);
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.1.part1"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.1.part2"));
+                    entityliving.dropItem(Items.porkchop, 2);
                 }
 
                 if (j1 == 1)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: Awww, who's a good boy?").toString());
-                    player.addChatMessage((new StringBuilder()).append("Whoozagoodboy? You are! YOU ARE!").toString());
-                    player.addChatMessage((new StringBuilder()).append("Yes you are! And a good boy's gotta eat!").toString());
-                    entityliving.dropItem(Item.porkRaw.itemID, 5);
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.2.part1"));
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.2.part2"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.2.part3"));
+                    entityliving.dropItem(Items.porkchop, 5);
                 }
 
                 if (j1 == 2)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: Oh my goodness! Where did you get that little bundle").toString());
-                    player.addChatMessage((new StringBuilder()).append("of happiness and loyalty? Here, take this").toString());
-                    player.addChatMessage((new StringBuilder()).append("iron, make some gear, keep your buddy safe!").toString());
-                    entityliving.dropItem(Item.ingotIron.itemID, 3);
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.3.part1"));
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.3.part2"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.3.part3"));
+                    entityliving.dropItem(Items.iron_ingot, 3);
                 }
 
                 if (j1 == 3)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: I think my heart just grew beyond the").toString());
-                    player.addChatMessage((new StringBuilder()).append("size of my nose. Here, take this.").toString());
-                    player.addChatMessage((new StringBuilder()).append("No, I insist!").toString());
-                    entityliving.dropItem(Item.ingotGold.itemID, 2);
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.4.part1"));
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.4.part2"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.4.part3"));
+                    entityliving.dropItem(Items.gold_ingot, 2);
                 }
 
                 if (j1 == 4)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: I'd just like to tell you that you have").toString());
-                    player.addChatMessage((new StringBuilder()).append("the bestest doggy in the universe!").toString());
-                    player.addChatMessage((new StringBuilder()).append("And also to give you a diamond!").toString());
-                    entityliving.dropItem(Item.diamond.itemID, 1);
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.5.part1"));
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.5.part2"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.5.part3"));
+                    entityliving.dropItem(Items.diamond, 1);
                 }
 
                 if (j1 == 5)
                 {
-                    player.addChatMessage((new StringBuilder()).append("Villager: aaaaAAAAAAAAAAAAAAAAAAAAAAAAA").toString());
-                    player.addChatMessage((new StringBuilder()).append("AAAAAAAAAAAAAAAAAAAaaaaaaaaaa").toString());
-                    player.addChatMessage((new StringBuilder()).append("aaaaaaaaaAAAAAAAAWWWWWWWWW!").toString());
-                    entityliving.dropItem(Item.appleRed.itemID, 1);
-                    entityliving.dropItem(Item.cake.itemID, 1);
-                    entityliving.dropItem(Item.slimeBall.itemID, 3);
-                    entityliving.dropItem(Item.porkRaw.itemID, 5);
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.6.part1"));
+                  	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.6.part2"));
+                	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogTalent.puppyeyes.6.part3"));
+                    entityliving.dropItem(Items.apple, 1);
+                    entityliving.dropItem(Items.cake, 1);
+                    entityliving.dropItem(Items.slime_ball, 3);
+                    entityliving.dropItem(Items.porkchop, 5);
                 }
 
                 this.setCharmerCharge(this.talents.getTalentLevel(EnumTalents.PUPPYEYES) != 5 ? 48000 : 24000);
@@ -699,12 +699,12 @@ public class EntityDTDoggy extends EntityTameable
             	if (didWolfFish()) {
                     if (didWolfCook()) {
                     	if(!this.worldObj.isRemote) {
-                    		dropItem(Item.fishCooked.itemID, 1);
+                    		dropItem(Items.cooked_fished, 1);
                     	}
                     }
                     else {
                     	if(!this.worldObj.isRemote) {
-                    		dropItem(Item.fishRaw.itemID, 1);
+                    		dropItem(Items.fish, 1);
                     	}
                     }
                 }
@@ -766,7 +766,7 @@ public class EntityDTDoggy extends EntityTameable
 
                 if (distanceToOwner <= 2F && this.hasBone()) {
                 	if(!this.worldObj.isRemote) {
-                		this.entityDropItem(new ItemStack(ModItems.throwBone.itemID, 1, 1), 0.0F);
+                		this.entityDropItem(new ItemStack(ModItems.throwBone, 1, 1), 0.0F);
                 	}
                 	
                     this.setHasBone(false);
@@ -845,8 +845,7 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     @Override
-    protected void fall(float par1)
-    {
+    protected void fall(float par1) {
     	par1 = ForgeHooks.onLivingFall(this, par1);
         if (par1 <= 0) return;
         PotionEffect potioneffect = this.getActivePotionEffect(Potion.jump);
@@ -865,12 +864,11 @@ public class EntityDTDoggy extends EntityTameable
             }
 
             this.attackEntityFrom(DamageSource.fall, (float)i);
-            int j = this.worldObj.getBlockId(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
+            Block block = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
 
-            if (j > 0)
-            {
-                StepSound stepsound = Block.blocksList[j].stepSound;
-                this.playSound(stepsound.getStepSound(), stepsound.getVolume() * 0.5F, stepsound.getPitch() * 0.75F);
+            if (block.getMaterial() != Material.air) {
+                Block.SoundType soundtype = block.stepSound;
+                this.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
         }
     }
@@ -1003,11 +1001,11 @@ public class EntityDTDoggy extends EntityTameable
 
         if (par1)
         {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(20.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
         }
         else
         {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(8.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
         }
     }
 
@@ -1023,7 +1021,7 @@ public class EntityDTDoggy extends EntityTameable
         {
             if (itemstack != null)
             {
-            	if (Item.itemsList[itemstack.itemID] instanceof ItemFood && foodValue(itemstack) != 0 && this.getDogTummy() < 120)
+            	if (itemstack.getItem() instanceof ItemFood && foodValue(itemstack) != 0 && this.getDogTummy() < 120)
                 {
            		 	if(!par1EntityPlayer.capabilities.isCreativeMode) {
         				itemstack.stackSize--;
@@ -1036,7 +1034,7 @@ public class EntityDTDoggy extends EntityTameable
                     this.setDogTummy(this.getDogTummy() + foodValue(itemstack));
                     return true;
                 }
-            	else if(itemstack.itemID == Item.bone.itemID && canInteract(par1EntityPlayer)) {
+            	else if(itemstack.getItem() == Items.bone && canInteract(par1EntityPlayer)) {
                     this.aiSit.setSitting(true);
             		if (!worldObj.isRemote) {
                         if(this.ridingEntity != null) {
@@ -1048,24 +1046,24 @@ public class EntityDTDoggy extends EntityTameable
                     }
                     return true;
                 }
-                else if(itemstack.itemID == Item.stick.itemID && canInteract(par1EntityPlayer))
+                else if(itemstack.getItem() == Items.stick && canInteract(par1EntityPlayer))
                 {
-                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.entityId, MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                 	return true;
                 }
-                else if(itemstack.itemID == Block.planks.blockID && canInteract(par1EntityPlayer))
+                else if(itemstack.getItem() == Item.getItemFromBlock(Blocks.planks) && canInteract(par1EntityPlayer))
                 {
-                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, this.worldObj, this.entityId, MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                 	return true;
                 }
-                else if(Item.itemsList[itemstack.itemID] instanceof IDogTreat && canInteract(par1EntityPlayer))
+                else if(itemstack.getItem() instanceof IDogTreat && canInteract(par1EntityPlayer))
                 {
-                	IDogTreat treat = (IDogTreat)Item.itemsList[itemstack.itemID];
+                	IDogTreat treat = (IDogTreat)itemstack.getItem();
                 	EnumFeedBack type = treat.canGiveToDog(par1EntityPlayer, this, this.level.getLevel(), this.level.getDireLevel());
                 	treat.giveTreat(type, par1EntityPlayer, this, this.talents);
                 	return true;
                 }
-                else if (itemstack.itemID == ModItems.collarShears.itemID && par1EntityPlayer.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
+                else if (itemstack.getItem() == ModItems.collarShears && par1EntityPlayer.getCommandSenderName().equalsIgnoreCase(this.getOwnerName())) {
                     if (!worldObj.isRemote) {
                     	this.setTamed(false);
                         this.setPathToEntity(null);
@@ -1080,7 +1078,7 @@ public class EntityDTDoggy extends EntityTameable
 
                     return true;
                 }
-                else if(itemstack.itemID == Item.cake.itemID) {
+                else if(itemstack.getItem() == Items.cake) {
                  	if(!par1EntityPlayer.capabilities.isCreativeMode) {
                  		itemstack.stackSize--;
                  	}
@@ -1121,14 +1119,14 @@ public class EntityDTDoggy extends EntityTameable
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if (itemstack.itemID == ModItems.collarShears.itemID && this.reversionTime < 1 && !worldObj.isRemote) {
+        else if (itemstack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !worldObj.isRemote) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.worldObj);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.worldObj.spawnEntityInWorld(wolf);
             return true;
         }
-        else if (itemstack != null && itemstack.itemID == Item.bone.itemID)
+        else if (itemstack != null && itemstack.getItem() == Items.bone)
         {
             if (!par1EntityPlayer.capabilities.isCreativeMode)
             {
@@ -1178,28 +1176,28 @@ public class EntityDTDoggy extends EntityTameable
     {
         int i = 0;
 
-        if (itemstack != null && (itemstack.itemID == Item.fishRaw.itemID || itemstack.itemID == Item.fishCooked.itemID) && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) == 5)
+        if (itemstack != null && (itemstack.getItem() == Items.fish || itemstack.getItem() == Items.cooked_fished) && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) == 5)
         {
             i = 30 + 3 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
         }
 
-        if (itemstack != null && itemstack.itemID == Item.rottenFlesh.itemID && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) >= 3)
+        if (itemstack != null && itemstack.getItem() == Items.rotten_flesh && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) >= 3)
         {
             i = 30 + 3 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
         }
 
-        if (itemstack != null && itemstack.itemID == Item.rottenFlesh.itemID && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) < 3)
+        if (itemstack != null && itemstack.getItem() == Items.rotten_flesh && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) < 3)
         {
             i = 0;
         }
 
-        if (itemstack != null && (itemstack.itemID == Item.porkRaw.itemID || itemstack.itemID == Item.porkCooked.itemID || itemstack.itemID == Item.beefRaw.itemID || itemstack.itemID == Item.beefCooked.itemID || itemstack.itemID == Item.chickenCooked.itemID || itemstack.itemID == Item.chickenRaw.itemID))
+        if (itemstack != null && (itemstack.getItem() == Items.porkchop || itemstack.getItem() == Items.cooked_porkchop || itemstack.getItem() == Items.beef || itemstack.getItem() == Items.cooked_beef || itemstack.getItem() == Items.chicken || itemstack.getItem() == Items.cooked_chicken))
         {
             i = 40 + 4 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
         }
-        else if (itemstack != null && itemstack.itemID != Item.rottenFlesh.itemID && (Item.itemsList[itemstack.itemID] instanceof ItemFood))
+        else if (itemstack != null && itemstack.getItem() != Items.rotten_flesh && (itemstack.getItem() instanceof ItemFood))
         {
-            ItemFood itemfood = (ItemFood)Item.itemsList[itemstack.itemID];
+            ItemFood itemfood = (ItemFood)itemstack.getItem();
 
             if (itemfood.isWolfsFavoriteMeat())
             {
@@ -1307,9 +1305,8 @@ public class EntityDTDoggy extends EntityTameable
      * the animal type)
      */
     @Override
-    public boolean isBreedingItem(ItemStack par1ItemStack)
-    {
-        return par1ItemStack == null ? false : par1ItemStack.itemID == ModItems.breedingBone.itemID;
+    public boolean isBreedingItem(ItemStack par1ItemStack) {
+        return par1ItemStack == null ? false : par1ItemStack.getItem() == ModItems.breedingBone;
     }
 
     public int getTameSkin()
@@ -1361,7 +1358,7 @@ public class EntityDTDoggy extends EntityTameable
         if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 EntityItem entityitem = (EntityItem)list.get(i);
-                if (!this.worldObj.isRemote && entityitem.getEntityItem().itemID != ModItems.throwBone.itemID) {
+                if (!this.worldObj.isRemote && entityitem.getEntityItem().getItem() != ModItems.throwBone) {
                     if(this.inventory.insertStackFromEntity((EntityItem)entityitem)) {
                     	worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
@@ -1508,17 +1505,17 @@ public class EntityDTDoggy extends EntityTameable
             float distanceAway = player.getDistanceToEntity(this);
             ItemStack itemstack = player.inventory.getCurrentItem();
 
-            if (itemstack != null && (Item.itemsList[itemstack.itemID] instanceof ItemTool) && distanceAway <= 20F)
+            if (itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)
             {
                 order = 1;
             }
 
-            if (itemstack != null && ((Item.itemsList[itemstack.itemID] instanceof ItemSword) || (Item.itemsList[itemstack.itemID] instanceof ItemBow)))
+            if (itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
             {
                 order = 2;
             }
 
-            if (itemstack != null && itemstack.itemID == Item.wheat.itemID)
+            if (itemstack != null && itemstack.getItem() == Items.wheat)
             {
                 order = 3;
             }
@@ -1606,7 +1603,6 @@ public class EntityDTDoggy extends EntityTameable
     @Override
     protected void attackEntity(Entity entity, float damage)
     {
-    	
     	super.attackEntity(entity, damage);
     }
 

@@ -3,11 +3,9 @@ package doggytalents.inventory;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntityHopper;
 import doggytalents.entity.EntityDTDoggy;
 
 /**
@@ -41,7 +39,7 @@ public class InventoryPackPuppy implements IInventory {
             if (this.inventorySlots[par1].stackSize <= par2) {
                 var3 = this.inventorySlots[par1];
                 this.inventorySlots[par1] = null;
-                this.onInventoryChanged();
+                this.markDirty();
                 return var3;
             }
             else {
@@ -52,7 +50,7 @@ public class InventoryPackPuppy implements IInventory {
                     this.inventorySlots[par1] = null;
                 }
 
-                this.onInventoryChanged();
+                this.markDirty();
                 return var3;
             }
         }
@@ -81,11 +79,11 @@ public class InventoryPackPuppy implements IInventory {
             par2ItemStack.stackSize = this.getInventoryStackLimit();
         }
 
-        this.onInventoryChanged();
+        this.markDirty();
 	}
 
 	@Override
-	public String getInvName()  {
+	public String getInventoryName()  {
 		return "container.packpuppy";
 	}
 
@@ -93,118 +91,82 @@ public class InventoryPackPuppy implements IInventory {
 	public int getInventoryStackLimit() {
 		return 64;
 	}
-
-	@Override
-	public void onInventoryChanged() {}
-
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
 
-	public void openChest() {}
+	public boolean insertStackFromEntity(EntityItem entityItem) {
+	    boolean succesful = false;
+
+	    if (entityItem == null || entityItem.isDead)
+	        return false;
+	    else {
+	        ItemStack itemstack = entityItem.getEntityItem().copy();
+	        ItemStack itemstack1 = this.insertStack(itemstack);
+
+	        if (itemstack1 != null && itemstack1.stackSize != 0)
+	        	entityItem.setEntityItemStack(itemstack1);
+	        else {
+	        	succesful = true;
+	        	entityItem.setDead();
+	        }
+
+	        return succesful;
+	    }
+	}
 	
-	public void closeChest() {}
+    public ItemStack insertStack(ItemStack stack) {
+    	int j = this.getSizeInventory();
 
-	public boolean insertStackFromEntity(EntityItem par1EntityItem)
-    {
-        boolean flag = false;
+        for (int k = 0; k < j && stack != null && stack.stackSize > 0; ++k)
+        	stack = tryInsertStackToSlot(stack, k);
 
-        if (par1EntityItem == null || par1EntityItem.isDead) {
-            return false;
-        }
-        else {
-            ItemStack itemstack = par1EntityItem.getEntityItem().copy();
-            ItemStack itemstack1 = insertStack(this, itemstack, -1);
+        if (stack != null && stack.stackSize == 0)
+            stack = null;
 
-            if (itemstack1 != null && itemstack1.stackSize != 0)
-            {
-                par1EntityItem.setEntityItemStack(itemstack1);
-            }
-            else
-            {
-                flag = true;
-                par1EntityItem.setDead();
-            }
-
-            return flag;
-        }
-    }
-
-    /**
-     * Inserts a stack into an inventory. Args: Inventory, stack, side. Returns leftover items.
-     */
-    public ItemStack insertStack(IInventory par0IInventory, ItemStack par1ItemStack, int par2)
-    {
-        if (par0IInventory instanceof ISidedInventory && par2 > -1)
-        {
-            ISidedInventory isidedinventory = (ISidedInventory)par0IInventory;
-            int[] aint = isidedinventory.getAccessibleSlotsFromSide(par2);
-
-            for (int j = 0; j < aint.length && par1ItemStack != null && par1ItemStack.stackSize > 0; ++j)
-            {
-                par1ItemStack = func_102014_c(par0IInventory, par1ItemStack, aint[j], par2);
-            }
-        }
-        else
-        {
-            int k = par0IInventory.getSizeInventory();
-
-            for (int l = 0; l < k && par1ItemStack != null && par1ItemStack.stackSize > 0; ++l)
-            {
-                par1ItemStack = func_102014_c(par0IInventory, par1ItemStack, l, par2);
-            }
-        }
-
-        if (par1ItemStack != null && par1ItemStack.stackSize == 0)
-        {
-            par1ItemStack = null;
-        }
-
-        return par1ItemStack;
+        return stack;
     }
     
-    private ItemStack func_102014_c(IInventory par0IInventory, ItemStack par1ItemStack, int par2, int par3)
-    {
-        ItemStack itemstack1 = par0IInventory.getStackInSlot(par2);
-            
-        boolean flag = false;
+    public ItemStack tryInsertStackToSlot(ItemStack stack, int slot) {
+        ItemStack slotStack = this.getStackInSlot(slot);
 
-        if (itemstack1 == null)
-        {
-            par0IInventory.setInventorySlotContents(par2, par1ItemStack);
-            par1ItemStack = null;
-            flag = true;
-        }
-        else if (areItemStacksEqualItem(itemstack1, par1ItemStack))
-        {
-            int k = par1ItemStack.getMaxStackSize() - itemstack1.stackSize;
-            int l = Math.min(par1ItemStack.stackSize, k);
-            par1ItemStack.stackSize -= l;
-            itemstack1.stackSize += l;
-            flag = l > 0;
-        }
+        if (this.isItemValidForSlot(slot, stack)) {
+            boolean changed = false;
 
-        if (flag)
-        {
-            if (par0IInventory instanceof TileEntityHopper)
-            {
-                ((TileEntityHopper)par0IInventory).setTransferCooldown(8);
-                par0IInventory.onInventoryChanged();
+            if (slotStack == null) {
+                int max = Math.min(stack.getMaxStackSize(), this.getInventoryStackLimit());
+                if (max >= stack.stackSize) {
+                	this.setInventorySlotContents(slot, stack);
+                    stack = null;
+                }
+                else
+                	this.setInventorySlotContents(slot, stack.splitStack(max));
+                changed = true;
+            }
+            else if (this.areItemStacksEqualItem(slotStack, stack)) {
+                int max = Math.min(stack.getMaxStackSize(), this.getInventoryStackLimit());
+                if (max > slotStack.stackSize) {
+                    int l = Math.min(stack.stackSize, max - slotStack.stackSize);
+                    stack.stackSize -= l;
+                    slotStack.stackSize += l;
+                    changed = l > 0;
+                }
             }
 
-            par0IInventory.onInventoryChanged();
+            if (changed)
+                this.markDirty();
         }
 
-        return par1ItemStack;
+        return stack;
     }
     
-    private boolean areItemStacksEqualItem(ItemStack par0ItemStack, ItemStack par1ItemStack) {
-        return par0ItemStack.itemID != par1ItemStack.itemID ? false : (par0ItemStack.getItemDamage() != par1ItemStack.getItemDamage() ? false : (par0ItemStack.stackSize > par0ItemStack.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(par0ItemStack, par1ItemStack)));
+    private boolean areItemStacksEqualItem(ItemStack p_145894_0_, ItemStack p_145894_1_) {
+        return p_145894_0_.getItem() != p_145894_1_.getItem() ? false : (p_145894_0_.getItemDamage() != p_145894_1_.getItemDamage() ? false : (p_145894_0_.stackSize > p_145894_0_.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(p_145894_0_, p_145894_1_)));
     }
     
     @Override
-	public boolean isInvNameLocalized() {
+	public boolean hasCustomInventoryName() {
 		return false;
 	}
 
@@ -214,11 +176,11 @@ public class InventoryPackPuppy implements IInventory {
 	}
 	
 	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items");
+        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
         
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.inventorySlots.length)
@@ -244,4 +206,15 @@ public class InventoryPackPuppy implements IInventory {
 
         par1NBTTagCompound.setTag("Items", nbttaglist);
     }
+
+	@Override
+	public void markDirty() {
+		
+	}
+
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
 }

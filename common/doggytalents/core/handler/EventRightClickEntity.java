@@ -1,28 +1,27 @@
 package doggytalents.core.handler;
 
-import doggytalents.DoggyTalentsMod;
-import doggytalents.ModItems;
-import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import doggytalents.ModItems;
+import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb
  **/
 public class EventRightClickEntity {
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void rightClickEntity(EntityInteractEvent event) {
-		 if(event.target instanceof EntityWolf && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().itemID == ModItems.trainingTreat.itemID) {
+		 if(event.target instanceof EntityWolf && event.entityPlayer.getCurrentEquippedItem() != null && event.entityPlayer.getCurrentEquippedItem().getItem() == ModItems.trainingTreat) {
 			 EntityWolf wolf = (EntityWolf)event.target;
 			 if(wolf.isTamed() && wolf.getOwnerName().equals(event.entityPlayer.getCommandSenderName())) {
 				event.target.setDead();
 			 	World worldObj = event.entityPlayer.worldObj;
 			 	EntityDTDoggy dog = new EntityDTDoggy(worldObj);
 			 	dog.setTamed(true);
-			 	dog.setOwner(event.entityPlayer.username);
+			 	dog.setOwner(event.entityPlayer.getCommandSenderName());
 			 	dog.setHealth(dog.getMaxHealth());
 			 	dog.setSitting(false);
 			 	dog.setPositionAndRotation(event.target.posX, event.target.posY, event.target.posZ, event.target.rotationYaw, event.target.rotationPitch);

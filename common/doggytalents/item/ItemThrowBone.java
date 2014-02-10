@@ -1,44 +1,42 @@
 package doggytalents.item;
 
 import java.util.List;
-import java.util.Random;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.DoggyTalentsMod;
-
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.DoggyTalentsMod;
 
 /**
  * @author ProPercivalalb
  **/
 public class ItemThrowBone extends Item {
 	
-	private Icon droolBone;
+	private IIcon droolBone;
 	
-	public ItemThrowBone(int id) {
-		super(id);
+	public ItemThrowBone() {
+		super();
 		this.setCreativeTab(DoggyTalentsMod.creativeTab);
 		this.setMaxStackSize(1);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister) {
+	public void registerIcons(IIconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon("doggytalents:throwbone");
 		this.droolBone = par1IconRegister.registerIcon("doggytalents:droolThrowBone");
 	}
 	
 	@Override
-	public Icon getIconFromDamage(int meta) {
+	public IIcon getIconFromDamage(int meta) {
 		switch(meta) {
 		case 0: return this.itemIcon;
 		case 1: return this.droolBone;
@@ -79,9 +77,9 @@ public class ItemThrowBone extends Item {
     
 	@Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
+    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
+        par3List.add(new ItemStack(item, 1, 0));
+        par3List.add(new ItemStack(item, 1, 1));
     }
     
 	@Override

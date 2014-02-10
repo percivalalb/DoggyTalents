@@ -1,6 +1,5 @@
 package doggytalents.entity.ai;
 
-import doggytalents.core.helper.LogHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -58,7 +57,6 @@ public class EntityAILeapAtTarget extends EntityAIBase
     @Override
     public void startExecuting()
     {
-    	LogHelper.logInfo("Leap");
         double d0 = this.leapTarget.posX - this.leaper.posX;
         double d1 = this.leapTarget.posZ - this.leaper.posZ;
         float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);

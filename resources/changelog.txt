@@ -7,6 +7,14 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.6.0a
+Updated to MC 1.7
+# Most text is now in the .lang files so other languages can edit them
+
+* Fixed some small bugs on the way
+
+NOTE: This was a straight port to 1.7 no features were changed, in the next update quite alot will change :D.
+
 v1.5.1a
 # Moved all doggy talents items to the DT tab now
 

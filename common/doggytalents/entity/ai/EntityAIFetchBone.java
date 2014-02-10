@@ -2,21 +2,16 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import doggytalents.ModItems;
-import doggytalents.core.helper.LogHelper;
-import doggytalents.entity.EntityDTDoggy;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import doggytalents.ModItems;
+import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb
@@ -52,7 +47,7 @@ public class EntityAIFetchBone extends EntityAIBase
     public boolean shouldExecute()
     {
     	this.theBone = getClosestsBone();
-    	EntityLivingBase possibleOwner = this.theDog.func_130012_q();
+    	EntityLivingBase possibleOwner = this.theDog.getOwner();
     	
         if(this.theBone == null)
         {
@@ -135,7 +130,7 @@ public class EntityAIFetchBone extends EntityAIBase
         for (int i = 0; i < list.size(); i++) {
             Entity listEntity = (Entity)list.get(i);
 
-            if ((listEntity instanceof EntityItem) && ((EntityItem)listEntity).getEntityItem().itemID == ModItems.throwBone.itemID && ((EntityItem)listEntity).getEntityItem().getItemDamage() == 0) {
+            if ((listEntity instanceof EntityItem) && ((EntityItem)listEntity).getEntityItem().getItem() == ModItems.throwBone && ((EntityItem)listEntity).getEntityItem().getItemDamage() == 0) {
                 entityItem = (EntityItem)listEntity;
             }
         }

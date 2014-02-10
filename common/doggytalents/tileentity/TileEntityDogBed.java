@@ -2,13 +2,12 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.network.PacketTypeHandler;
-import doggytalents.network.packet.PacketDogBedUpdate;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import doggytalents.entity.EntityDTDoggy;
+import doggytalents.network.packet.PacketDogBedUpdate;
 
 /**
  * @author ProPercivalalb
@@ -59,7 +58,7 @@ public class TileEntityDogBed extends TileEntity {
 	
 	@Override
     public Packet getDescriptionPacket() {
-        return PacketTypeHandler.populatePacket(new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.woolId, this.woodId));
+        return new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.woolId, this.woodId).getPacket();
     }
 	
 	public void setWoolId(String newId) {

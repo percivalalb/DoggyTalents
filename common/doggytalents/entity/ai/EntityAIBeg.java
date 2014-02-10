@@ -1,13 +1,12 @@
 package doggytalents.entity.ai;
 
-import doggytalents.ModItems;
-import doggytalents.entity.EntityDTDoggy;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import doggytalents.ModItems;
+import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb
@@ -82,6 +81,6 @@ public class EntityAIBeg extends EntityAIBase
     private boolean hasPlayerGotBoneInHand(EntityPlayer par1EntityPlayer)
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.itemID == Item.bone.itemID) || itemstack.itemID == ModItems.throwBone.itemID || itemstack.itemID == ModItems.trainingTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.superTreat.itemID || itemstack.itemID == ModItems.direTreat.itemID || itemstack.itemID == ModItems.breedingBone.itemID ? true : this.theDog.isBreedingItem(itemstack));
+        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.getItem() == Items.bone) || itemstack.getItem() == ModItems.throwBone || itemstack.getItem() == ModItems.trainingTreat || itemstack.getItem() == ModItems.superTreat || itemstack.getItem() == ModItems.superTreat || itemstack.getItem() == ModItems.direTreat || itemstack.getItem() == ModItems.breedingBone ? true : this.theDog.isBreedingItem(itemstack));
     }
 }

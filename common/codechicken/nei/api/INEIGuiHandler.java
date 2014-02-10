@@ -2,9 +2,9 @@ package codechicken.nei.api;
 
 import java.util.List;
 
-import codechicken.nei.VisiblityData;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
+import codechicken.nei.VisiblityData;
 
 public interface INEIGuiHandler {
 

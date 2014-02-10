@@ -13,6 +13,9 @@ import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.inventory.ContainerPackPuppy;
 import doggytalents.tileentity.TileEntityFoodBowl;
 
+/**
+ * @author ProPercivalalb
+ */
 public class CommonProxy implements IGuiHandler {
 
 	public static final int GUI_ID_DOGGY = 1;
@@ -80,6 +83,10 @@ public class CommonProxy implements IGuiHandler {
 
 	public void onPreLoad() {
 	
+	}
+	
+	public EntityPlayer getClientPlayer() {
+		return null;
 	}
 	
 	/**

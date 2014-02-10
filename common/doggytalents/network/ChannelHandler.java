@@ -9,9 +9,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
+import doggytalents.DoggyTalentsMod;
 
 /**
  * @author ProPercivalalb
@@ -29,7 +29,7 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>{
     	DataOutputStream dos = new DataOutputStream(bos);
     	
     	if (FMLCommonHandler.instance().getEffectiveSide().isClient())
-        	dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
+        	dos.writeUTF(DoggyTalentsMod.proxy.getClientPlayer().getCommandSenderName());
 
     	msg.write(dos);
     	bytes.writeBytes(bos.toByteArray());
@@ -47,7 +47,7 @@ public class ChannelHandler extends FMLIndexedMessageToMessageCodec<IPacket>{
 			EntityPlayer player;
 			
 			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-				player = FMLClientHandler.instance().getClientPlayerEntity();
+				player = DoggyTalentsMod.proxy.getClientPlayer();
 			else
 				player = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(dis.readUTF());
 

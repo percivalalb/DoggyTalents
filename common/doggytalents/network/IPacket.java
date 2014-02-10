@@ -9,8 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.network.play.server.S3FPacketCustomPayload;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
+import doggytalents.DoggyTalentsMod;
 import doggytalents.lib.Reference;
 
 /**
@@ -36,7 +36,7 @@ public abstract class IPacket {
 	    	DataOutputStream dos = new DataOutputStream(bos);
 	    	dos.writeByte(PacketType.getIdFromClass(this.getClass()));
 	    	if(isClient)
-	    		dos.writeUTF(FMLClientHandler.instance().getClientPlayerEntity().getCommandSenderName());
+	    		dos.writeUTF(DoggyTalentsMod.proxy.getClientPlayer().getCommandSenderName());
 			this.write(dos);
 	    	return bos.toByteArray();
 		}

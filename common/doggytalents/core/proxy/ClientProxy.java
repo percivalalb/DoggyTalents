@@ -3,9 +3,11 @@ package doggytalents.core.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityCrit2FX;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -18,6 +20,9 @@ import doggytalents.core.handler.ClientTickHandler;
 import doggytalents.core.handler.KeyStateHandler;
 import doggytalents.entity.EntityDTDoggy;
 
+/**
+ * @author ProPercivalalb
+ */
 public class ClientProxy extends CommonProxy {
 
 	private Minecraft mc = Minecraft.getMinecraft();
@@ -41,6 +46,11 @@ public class ClientProxy extends CommonProxy {
 		
 		FMLCommonHandler.instance().bus().register(new KeyStateHandler());
 		FMLCommonHandler.instance().bus().register(new ClientTickHandler());
+	}
+	
+	@Override
+	public EntityPlayer getClientPlayer() {
+		return FMLClientHandler.instance().getClientPlayerEntity();
 	}
 	
 	@Override

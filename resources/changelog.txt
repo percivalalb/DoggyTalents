@@ -11,6 +11,7 @@ v1.6.0a
 Updated to MC 1.7
 # Most text is now in the .lang files so other languages can edit them
 
+* Fixed crash on server (In first version of this version)
 * Fixed some small bugs on the way
 
 NOTE: This was a straight port to 1.7 no features were changed, in the next update quite alot will change :D.

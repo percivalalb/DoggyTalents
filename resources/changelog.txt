@@ -14,7 +14,7 @@ Updated to MC 1.7
 * Fixed crash on server (In first version of this version)
 * Fixed some small bugs on the way
 
-NOTE: This was a straight port to 1.7 no features were changed, in the next update quite alot will change :D.
+NOTE: This was a straight port to 1.7 no features were changed, in the next update quite a lot will change :D.
 
 v1.5.1a
 # Moved all doggy talents items to the DT tab now
@@ -28,7 +28,7 @@ v1.5.0a
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)
 + Added the infamous wolf mount talents!
 + Added a new mode called TACTICAL, this will mean the dog will not attack unless instructed to by a command beam
-+ Added a new ability to the Command Emblem that so when you right click you will fire a command beam causing any dogs in TACTICAL or AGGRESSIVE mode near by to attack it
++ Added a new ability to the Command Emblem that so when you right click you will fire a command beam causing any dogs in TACTICAL or AGGRESSIVE mode nearby to attack it
 + Added critical hit particles when a dog with Black Pelt attacks a mob
 + The dog will now wag his tail when not moving or sitting
 + Added a version checker, it will tell you when there is a new update
@@ -39,23 +39,23 @@ v1.5.0a
 * Fixed dogs being invisible on the server
 * Fixed the training treat not converting wolfs to dogs
 * Fixed it not using the item when right clicking with training treats
-* Fixed mods like 'Damage Indicators' showing the entityId name instead of the dogs name
+* Fixed mods like 'Damage Indicators' showing the entityId name instead of the dog’s name
 
 v1.4.0a
 Updated to MC 1.6.2
-+ Made the placement code of the dog bowl better so it can not be placed in mid air, and can be placed on blocks such as the top of half slabs
++ Made the placement code of the dog bowl better so it cannot be placed in midair, and can be placed on blocks such as the top of half slabs
 + Made the dog have red dots (blood) over him when Incapacitated (This can be switched of in the config file)
 + Added tool tips about the talents when hovering over the + button
-+ Added 4 modes for the dog to be in (Docile, Wandering, Aggresive and Berserker)
++ Added 4 modes for the dog to be in (Docile, Wandering, Aggressive and Berserker)
   These can be changed in the doggy menu for your dog
-  There are tool tips ingame for the modes so look there to find out what each mode is
+  There are tool tips in-game for the modes so look there to find out what each mode is
 
-# Made the dog not go for a throw bone if it all ready has one.
+# Made the dog not go for a throw bone if it already has one.
 # Made the dog attack speed slower like the wolf attack speed
 # Made the distance you have to be away from your dog for him to teleport 20 blocks.
 # Moved textures to /assets/doggytalents/textures/ so old textures packs will need to be updated.
 # Put spaces between the words in the main Doggy GUI
-# Added the 'Wolf Mount' Texture to the doggy gui (Is still not added)
+# Added the 'Wolf Mount' Texture to the doggy GUI (Is still not added)
 
 * Fixed not being able to get the dog off your head once he was on.
 * Fixed a bug where you could sometimes get a talent to level 6 which would cause a crash.
@@ -67,7 +67,7 @@ Updated to MC 1.6.2
 * Fixed the dogs insta-killing creepers they now only attack creepers when Talent 'CreeperSweeper' is level 5 and when they do they reset the explosion time.
 * Fixed the config file not working for Block & Item Id's
 
-/ General Clean up of the code (The EntityDTDoggy.class is still 2024 lines long :(.)
+/ General Cleanup of the code (The EntityDTDoggy.class is still 2024 lines long :(.)
 
 v1.3.0a
 Updated to MC 1.5
@@ -77,17 +77,17 @@ Updated to MC 1.5
 
 * Fixed Breeding Bone not working.
 * Fixed name tags above dogs head not disappearing when F1 was clicked.
-* Fixed the dog reverting to Docile mode when reloading the world.
-* Fixed the dog picking up the throw bone into it's inventory when pack puppy was level 5.
+* Fixed the dog reverting to docile mode when reloading the world.
+* Fixed the dog picking up the throw bone into its inventory when pack puppy was level 5.
 
 v1.1.0a
 + Added 14 talents back from the original mod.
 + Made wolfs stay away from you when holding a tool or sword, to give you a bit more space.
-+ When sneaking and looking at a dog an extra line of information will appear above there head. (The owners name.)
++ When sneaking and looking at a dog an extra line of information will appear above their head. (The owners name.)
 
-# Revered back to the MC 1.1 wolf AI to give the dogs less of a robotic feel.
+# Reverted to the MC 1.1 wolf AI to give the dogs less of a robotic feel.
 
 * Collar shears now work.
 
 v1.0.0a
-+ Intial Release
++ Initial Release

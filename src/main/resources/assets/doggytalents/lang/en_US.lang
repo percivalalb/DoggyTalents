@@ -1,0 +1,160 @@
+tile.dt.dogBed.name=Dog Bed
+tile.dt.foodBowl.name=Food Bowl
+
+item.dt.throwBone0.name=Throw Bone
+item.dt.throwBone1.name=Drool Throw Bone
+item.dt.trainingTreat.name=Training Treat
+item.dt.superTreat.name=Super Treat
+item.dt.masterTreat.name=Master Treat
+item.dt.direTreat.name=Dire Treat
+item.dt.breedingBone.name=Breeding Bone
+item.dt.doggyCharm.name=Doggy Charm
+item.dt.collarShears.name=Collar Shears
+item.dt.commandEmblem.name=Command Emblem
+
+doggytalents.key.category=Doggy Talents
+doggytalents.key.come=Come Command
+doggytalents.key.stay=Stay Command
+doggytalents.key.ok=Ok Command
+doggytalents.key.heel=Heel Command
+
+dogGui.noObey=This dog will no longer obey you.
+
+dogTreat.levelup=Level up!
+dogTreat.tooyoung=This dog's a bit too young to be learning skills just yet.
+dogTreat.leveltoohigh=Your dog is too high level to gain anything from these treats.
+dogTreat.toomuch=Your dog can't possibly handle the awesome power contained in these treats.
+dogTreat.ultimatelevel=CONGRATULATIONS! Your dog has reached the ultimate level!
+
+dogCommand.come=Stand!
+dogCommand.stay=Stay!
+dogCommand.ok=Okay!
+dogCommand.heel=Heel!
+
+dogTalent.puppyeyes.1.part1=Villager: Cute dog! Take good care of him. Or her.
+dogTalent.puppyeyes.1.part2=Here, it can have some pork.
+
+dogTalent.puppyeyes.2.part1=Villager: Awww, who's a good boy?
+dogTalent.puppyeyes.2.part2=Whoozagoodboy? You are! YOU ARE!
+dogTalent.puppyeyes.2.part3=Yes you are! And a good boy's gotta eat!
+
+dogTalent.puppyeyes.3.part1=Villager: Oh my goodness! Where did you get that little bundle
+dogTalent.puppyeyes.3.part2=of happiness and loyalty? Here, take this
+dogTalent.puppyeyes.3.part3=iron, make some gear, keep your buddy safe!
+
+dogTalent.puppyeyes.4.part1=Villager: I think my heart just grew beyond the
+dogTalent.puppyeyes.4.part2=size of my nose. Here, take this.
+dogTalent.puppyeyes.4.part3=No, I insist!
+
+dogTalent.puppyeyes.5.part1=Villager: I'd just like to tell you that you have
+dogTalent.puppyeyes.5.part2=the bestest doggy in the universe!
+dogTalent.puppyeyes.5.part3=And also to give you a diamond!
+
+dogTalent.puppyeyes.6.part1=Villager: aaaaAAAAAAAAAAAAAAAAAAAAAAAAA
+dogTalent.puppyeyes.6.part2=AAAAAAAAAAAAAAAAAAAaaaaaaaaaa
+dogTalent.puppyeyes.6.part3=aaaaaaaaaAAAAAAAAWWWWWWWWW!
+
+dogGui.buttonInfo.1=Improves critical hit rate 1/2 a heart for every level plus an extra heart when you master it
+dogGui.buttonInfo.2=Increases the chance that your dog, will completely block a physical attack
+dogGui.buttonInfo.3=Every level grants a 10% chance to make anything your dog kills drop its loot twice, Level 5 grants an extra 10%, bringing it up to a 60% chance
+dogGui.buttonInfo.4=Lets your dog set things on fire with its attacks The higher the level, the longer the fire lasts. Mastering the skill grants your dog immunity to fire
+dogGui.buttonInfo.5=Allows you to ride your dog anywhere at speed speed effects from doggy dash apply. To get on your dog have an empty hand and jump and click on the dog to get on it... Enjoy
+dogGui.buttonInfo.6=Each level gives your dog 3 inventory slots in its, PackPuppy GUI. To open the GUI right click on your, dog with a plank in hand! At level 5, your dog will, also automatically pick up any nearby items if, it has space in its inventory
+dogGui.buttonInfo.7=Every level lets your dog fall 3 more blocks before it starts taking damage Mastering the skill makes your dog completely immune to fall damage, and also capable of floating!
+dogGui.buttonInfo.8=Improves the rate at which your dog heals without needing to rest Mastering the skill will heal your dog 50% faster when sitting.
+dogGui.buttonInfo.9=A dog with this skill can smell creepers in the area and it will growl to warn you. The range at which your dog, can, detect creepers increases by 6 blocks per level, and mastering this skill will make your dog capable of attacking creepers Your dog will reset the creeper's detonation timer with each attack.
+dogGui.buttonInfo.10=Increases your dog's movement speed while chasing a target Every level grants a 12% increase, and mastering it grants an additional 15% increase
+dogGui.buttonInfo.11=Whenever your dog enters the water, it may catch a fish which it will give to you when it shakes itself dry The chance of catching a fish increases with level, and any points in HellHound may cause the fish to be pre-cooked. Mastering this skill lets your dog breathe underwater.
+dogGui.buttonInfo.12=Increases the NP your dog gets from food items by 10% per level. In addition, level 3 lets your dog eat rotten flesh, and level 5 lets your dog eat fish.
+dogGui.buttonInfo.13=While a dog with this skill is on your head, it will look in the direction of your home. To get the dog on you head right click on him with a bone in hand. The range at which it can do this is equal to 200 blocks per level, but becomes infinite at level 5.
+dogGui.buttonInfo.14=Inflicts 1 point of damage on all nearby silverfish at random Increasing the skill level increases the range by 3 blocks and mastering the skill doubles the damage.
+dogGui.buttonInfo.15=Your dog's attacks will poison their target, and the poison's duration increases with level. At level 3 your dog becomes immune to poison, and mastering this skill allows you to cleanse yourself of all potion effects, including poison, by right-clicking on your dog with a spider eye, at the cost of 30 NP.
+dogGui.buttonInfo.16=Put some wheat in your hand, and any trained Shepher Dogs will immediately rustle up some nearby livestock and carry them for you making it easier to transport livestock long distances This is quite tiring though, and costs a lot of nourishment the cost is reduced with higher levels in the skill To have your dog drop the animal, simply don't hold wheat.
+dogGui.buttonInfo.17=If you're at critical health and a dog with this skill is following you, it will attempt to heal you half a heart per level in this skill, at the cost of 100 NP Mastering this skill reduces the cost to 80 NP
+dogGui.buttonInfo.18=This skill will cause your dog to warm the heart of any villager, prompting the villager to give you presents! Higher levels in the skill increase the quality of the random gifts. This can only be done once every two Minecraft days. Mastering the skill allows you to do this once every Minecraft day.
+
+dogGui.buttonInfo.wandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one
+dogGui.buttonInfo.tactical=In this mode your dog will follow you but will not attack anything unless you use the command beam
+dogGui.buttonInfo.aggresive=In this mode your dog will follow you and attack anything that attacks you or that you attack
+dogGui.buttonInfo.berserker=In this mode your dog will follow you and if any mob comes to close he will attack it without warning
+dogGui.buttonInfo.docile=In this mode your dog will follow you but not attack anything He is ready for you to throw the bone
+
+dogGui.talentName.1=Black Pelt
+dogGui.talentName.2=Guard Dog
+dogGui.talentName.3=Hunter Dog
+dogGui.talentName.4=Hell Hound
+dogGui.talentName.5=Wolf Mount
+dogGui.talentName.6=Pack Puppy
+dogGui.talentName.7=Pillow Paw
+dogGui.talentName.8=Quick Healer
+dogGui.talentName.9=Creeper Sweeper
+dogGui.talentName.10=Doggy Dash
+dogGui.talentName.11=Fisher Dog
+dogGui.talentName.12=Happy Eater
+dogGui.talentName.13=Bed Finder
+dogGui.talentName.14=Pest Fighter
+dogGui.talentName.15=Posion Fang
+dogGui.talentName.16=Shepherd Dog
+dogGui.talentName.17=Rescue Dog
+dogGui.talentName.18=Puppy Eyes
+
+container.packpuppy=Doggy Backpack
+container.foodBowl=Food Bowl
+itemGroup.doggytalents=Doggy Talents
+
+dogBed.bedding.whiteWool=White Wool Bedding
+dogBed.bedding.orangeWool=Orange Wool Bedding
+dogBed.bedding.magentaWool=Magenta Wool Bedding
+dogBed.bedding.lightBlueWool=Light Blue Wool Bedding
+dogBed.bedding.yellowWool=Yellow Wool Bedding
+dogBed.bedding.limeWool=Lime Wool Bedding
+dogBed.bedding.pinkWool=Pink Wool Bedding
+dogBed.bedding.grayWool=Gray Wool Bedding
+dogBed.bedding.lightGrayWool=Light Gray Wool Bedding
+dogBed.bedding.cyanWool=Cyan Wool Bedding
+dogBed.bedding.purpleWool=Purple Wool Bedding
+dogBed.bedding.blueWool=Blue Wool Bedding
+dogBed.bedding.brownWool=Brown Wool Bedding
+dogBed.bedding.greenWool=Green Wool Bedding
+dogBed.bedding.redWool=Red Wool Bedding
+dogBed.bedding.blackWool=Black Wool Bedding
+
+dogBed.outside.oakPlank=Oak Plank Casing
+dogBed.outside.sprucePlank=Spruce Plank Casing
+dogBed.outside.birchPlank=Birch Plank Casing
+dogBed.outside.junglePlank=Jungle Plank Casing
+
+dogBed.outside.oakWood=Oak Wood Casing
+dogBed.outside.spruceWood=Spruce Wood Casing
+dogBed.outside.birchWood=Birch Wood Casing
+dogBed.outside.jungleWood=Jungle Wood Casing
+
+dogBed.woolError=Error (Unknown Wool ID)
+dogBed.woodError=Error (Unknown Casing ID)
+
+#Forestry Addon
+dogBed.outside.forestry.larchPlank=Larch Plank Casing
+dogBed.outside.forestry.teakPlank=Teak Plank Casing
+dogBed.outside.forestry.acaciaPlank=Acacia Plank Casing
+dogBed.outside.forestry.limePlank=Lime Plank Casing
+dogBed.outside.forestry.chestnutPlank=Chestnut Plank Casing
+dogBed.outside.forestry.wengePlank=Wenge Plank Casing
+dogBed.outside.forestry.baobabPlank=Baobab Plank Casing
+dogBed.outside.forestry.sequoiaPlank=Sequoia Plank Casing
+dogBed.outside.forestry.kapokPlank=Kapok Plank Casing
+dogBed.outside.forestry.ebonyPlank=Ebony Plank Casing
+dogBed.outside.forestry.mahoganyPlank=Mahogany Plank Casing
+dogBed.outside.forestry.balsaPlank=Balsa Plank Casing
+dogBed.outside.forestry.willowPlank=Willow Plank Casing
+dogBed.outside.forestry.walnutPlank=Walnut Plank Casing
+dogBed.outside.forestry.greenheartPlank=Greenheart Plank Casing
+dogBed.outside.forestry.cherryPlank=Cherry Plank Casing
+dogBed.outside.forestry.mahoePlank=Mahoe Plank Casing
+dogBed.outside.forestry.poplarPlank=Poplar Plank Casing
+dogBed.outside.forestry.palmPlank=Palm Plank Casing
+dogBed.outside.forestry.papayaPlank=Papaya Plank Casing
+dogBed.outside.forestry.pinePlank=Pine Plank Casing
+dogBed.outside.forestry.plumPlank=Plum Plank Casing
+dogBed.outside.forestry.maplePlank=Maple Plank Casing
+dogBed.outside.forestry.citrusPlank=Citrus Plank Casing
+dogBed.outside.forestry.giganteumPlank=Giganteum Plank Casing

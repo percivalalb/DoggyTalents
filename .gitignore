@@ -2,6 +2,22 @@
 ## Eclipse
 #################
 
+.gradle/
+gradle/
+eclipse/
+build/
+bin/
+mods/
+logs/
+resourcepacks/
+saves/
+crash-reports/
+config/
+.settings/
+gradlew
+gradlew.bat
+options.txt
+
 *.pydevproject
 .project
 .metadata
@@ -15,6 +31,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+*.jar
 
 # External tool builders
 .externalToolBuilders/

@@ -7,21 +7,31 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.7.2a
-# Fixed crash when opening inventory with NEI installed
-# Fixed mcmod.info file not working
+v1.7.3a - 24th July 2014
++ Added zh_CN language file, thanks to 'crafteverywhere'
 
-v1.7.1a
-# Fixed doggy charm spawning a dog you can't interact with
+* Fixed the NEI intergration not working
 
-v1.7.0a
+v1.7.2a - 9th July 2014
+* Fixed crash when opening inventory with NEI installed
+* Fixed mcmod.info file not working
+
+v1.7.1a - 8th July 2014
+* Fixed doggy charm spawning a dog you can't interact with
+
+v1.7.0a - 8th July 2014
 Updated to MC 1.7.10
 
 # Updated owner name system to cater for upcoming name changes
 # Removed some unused classes
 
-v1.6.0a
-Updated to MC 1.7
+v1.6.1a - 24th July 2014
++ Added zh_CN language file, thanks to 'crafteverywhere'
+
+* Fixed the NEI intergration not working
+
+v1.6.0a - 10th Febuary 2014
+Updated to MC 1.7.2
 # Most text is now in the .lang files so other languages can edit them
 
 * Fixed crash on server (In first version of this version)
@@ -29,7 +39,7 @@ Updated to MC 1.7
 
 NOTE: This was a straight port to 1.7 no features were changed, in the next update quite alot will change :D.
 
-v1.5.1a
+v1.5.1a - 30th November 2013
 # Moved all doggy talents items to the DT tab now
 
 * Fixed tooltips of the dog talents going off the screen
@@ -37,7 +47,7 @@ v1.5.1a
 * Fixed the dogs inventory not being saved on world restart
 * Fixed the dog bed crafting recipe being upside down 
 
-v1.5.0a
+v1.5.0a - 14th October 2013
 + Recoded everything to be able to use the latest AI system (Dogs should now not fall in lava/get such behind trees XD)
 + Added the infamous wolf mount talents!
 + Added a new mode called TACTICAL, this will mean the dog will not attack unless instructed to by a command beam
@@ -54,7 +64,7 @@ v1.5.0a
 * Fixed it not using the item when right clicking with training treats
 * Fixed mods like 'Damage Indicators' showing the entityId name instead of the dogs name
 
-v1.4.0a
+v1.4.0a - 10th July 2013
 Updated to MC 1.6.2
 + Made the placement code of the dog bowl better so it can not be placed in mid air, and can be placed on blocks such as the top of half slabs
 + Made the dog have red dots (blood) over him when Incapacitated (This can be switched of in the config file)

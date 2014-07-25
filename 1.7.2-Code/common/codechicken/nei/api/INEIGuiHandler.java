@@ -8,8 +8,6 @@ import codechicken.nei.VisiblityData;
 
 public interface INEIGuiHandler {
 
-	int getItemSpawnSlot(GuiContainer gui, ItemStack item);
-
 	VisiblityData modifyVisiblity(GuiContainer gui,
 			VisiblityData currentVisibility);
 
@@ -17,5 +15,10 @@ public interface INEIGuiHandler {
 
 	boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey,
 			ItemStack draggedStack, int button);
+
+	Iterable<Integer> getItemSpawnSlots(GuiContainer arg0, ItemStack arg1);
+
+	boolean hideItemPanelSlot(GuiContainer arg0, int arg1, int arg2, int arg3,
+			int arg4);
 
 }

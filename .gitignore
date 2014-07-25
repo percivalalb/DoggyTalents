@@ -13,6 +13,8 @@ resourcepacks/
 saves/
 crash-reports/
 config/
+screenshots/
+ignore/
 .settings/
 gradlew
 gradlew.bat

@@ -16,15 +16,9 @@ public class NEIGuiHandler implements INEIGuiHandler {
 
 	@Override
 	public VisiblityData modifyVisiblity(GuiContainer gui, VisiblityData currentVisibility) { 
-		if(gui instanceof GuiDTDoggy) {
+		if(gui instanceof GuiDTDoggy)
 			currentVisibility.showNEI = false;
-		}
 		return currentVisibility;
-	}
-
-	@Override
-	public int getItemSpawnSlot(GuiContainer gui, ItemStack item) {
-		return -1;
 	}
 
 	@Override
@@ -34,6 +28,16 @@ public class NEIGuiHandler implements INEIGuiHandler {
 
 	@Override
 	public boolean handleDragNDrop(GuiContainer gui, int mousex, int mousey, ItemStack draggedStack, int button) {
+		return false;
+	}
+
+	@Override
+	public Iterable<Integer> getItemSpawnSlots(GuiContainer arg0, ItemStack arg1) {
+		return null;
+	}
+
+	@Override
+	public boolean hideItemPanelSlot(GuiContainer arg0, int arg1, int arg2, int arg3, int arg4) {
 		return false;
 	}
 

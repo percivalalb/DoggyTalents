@@ -3,6 +3,7 @@ package doggytalents;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -29,6 +30,9 @@ import doggytalents.core.proxy.CommonProxy;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.lib.Reference;
 import doggytalents.network.NetworkManager;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 /**
  * @author ProPercivalalb
@@ -79,11 +83,20 @@ public class DoggyTalentsMod {
 		
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent par1) {
-		DogBedManager.registerBedWood("oakPlank", new DefaultBedMaterial(Blocks.planks, 0), new ItemStack(Blocks.planks, 1, 0));
-		DogBedManager.registerBedWood("sprucePlank", new DefaultBedMaterial(Blocks.planks, 1), new ItemStack(Blocks.planks, 1, 1));
-		DogBedManager.registerBedWood("birchPlank", new DefaultBedMaterial(Blocks.planks, 2), new ItemStack(Blocks.planks, 1, 2));
-		DogBedManager.registerBedWood("junglePlank", new DefaultBedMaterial(Blocks.planks, 3), new ItemStack(Blocks.planks, 1, 3));
-		
+		ArrayList<ItemStack> planks = OreDictionary.getOres("plankWood");
+		for (ItemStack plank : planks) {
+			if (plank.getHasSubtypes()) {
+				Item plankItem = plank.getItem();
+				ArrayList<ItemStack> plankSubTypes = new ArrayList<ItemStack>();
+				plankItem.getSubItems(plankItem, null, plankSubTypes);
+				for (ItemStack subPlank : plankSubTypes) {
+					DogBedManager.registerBedWood(subPlank);
+				}
+			} else {
+				DogBedManager.registerBedWood(plank);
+			}
+		}
+
 		DogBedManager.registerBedWool("whiteWool", new DefaultBedMaterial(Blocks.wool, 0), new ItemStack(Blocks.wool, 1, 0));
 		DogBedManager.registerBedWool("orangeWool", new DefaultBedMaterial(Blocks.wool, 1), new ItemStack(Blocks.wool, 1, 1));
 		DogBedManager.registerBedWool("magentaWool", new DefaultBedMaterial(Blocks.wool, 2), new ItemStack(Blocks.wool, 1, 2));

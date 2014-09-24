@@ -2,6 +2,7 @@ package doggytalents.api;
 
 import java.util.Hashtable;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -48,14 +49,24 @@ public class DogBedManager {
 		return woolIcons.keySet().toArray(new String[woolIcons.size()]);
 	}
 	
+	public static void registerBedWood(ItemStack plank) {
+		Block plankBlock = Block.getBlockFromItem(plank.getItem());
+		DogBedManager.registerBedWood(plank.getDisplayName(), new DefaultBedMaterial(plankBlock, plank.getItemDamage()), plank);
+	}
+
 	/**
 	 *
 	 * @param uniqueId A save id that will be used to look up the icon
 	 * @param iconLookup The pre-registered icon stored in a hashtable
 	 */
 	public static void registerBedWood(String uniqueId, IDogBedMaterial iconLookup, ItemStack associatedItem) {
+		if (associatedItem == null || associatedItem.getItem() == null) {
+			FMLLog.warning("[DoggyTalents] The wood id '%s' does not exist, please fix", uniqueId);
+			return;
+		}
+
 		if(woodIcons.keySet().contains(uniqueId)) {
-			FMLLog.warning("[DoggyTalents] The dog bed wood id '%s' has already been taken, please fix");
+			FMLLog.warning("[DoggyTalents] The dog bed wood id '%s' has already been taken, please fix", uniqueId);
 			return;
 		}
 		FMLLog.info("Registered dog bed wood id '%s'", uniqueId);

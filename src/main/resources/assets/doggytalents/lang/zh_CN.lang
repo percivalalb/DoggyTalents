@@ -118,42 +118,7 @@ dogBed.bedding.greenWool=绿色羊毛垫
 dogBed.bedding.redWool=红色羊毛垫
 dogBed.bedding.blackWool=黑色羊毛垫
 
-dogBed.outside.oakPlank=橡树狗窝
-dogBed.outside.sprucePlank=云杉狗窝
-dogBed.outside.birchPlank=白桦狗窝
-dogBed.outside.junglePlank=丛林木狗窝
-
-dogBed.outside.oakWood=橡树狗窝
-dogBed.outside.spruceWood=云杉狗窝
-dogBed.outside.birchWood=白桦狗窝
-dogBed.outside.jungleWood=丛林木狗窝
+dogBed.casing=狗窝
 
 dogBed.woolError=错误(未知羊毛ID)
 dogBed.woodError=错误(未知狗窝ID)
-
-#Forestry Addon
-dogBed.outside.forestry.larchPlank=落叶松树狗窝
-dogBed.outside.forestry.teakPlank=柚树狗窝
-dogBed.outside.forestry.acaciaPlank=刺槐树狗窝
-dogBed.outside.forestry.limePlank=菩提树狗窝
-dogBed.outside.forestry.chestnutPlank=栗子树狗窝
-dogBed.outside.forestry.wengePlank=崖豆树狗窝
-dogBed.outside.forestry.baobabPlank=猴面包树狗窝
-dogBed.outside.forestry.sequoiaPlank=红杉树狗窝
-dogBed.outside.forestry.kapokPlank=木棉树狗窝
-dogBed.outside.forestry.ebonyPlank=乌檀树狗窝
-dogBed.outside.forestry.mahoganyPlank=桃花心树狗窝
-dogBed.outside.forestry.balsaPlank=巴尔杉树狗窝
-dogBed.outside.forestry.willowPlank=柳树狗窝
-dogBed.outside.forestry.walnutPlank=核桃树狗窝
-dogBed.outside.forestry.greenheartPlank=樟树狗窝
-dogBed.outside.forestry.cherryPlank=樱桃树狗窝
-dogBed.outside.forestry.mahoePlank=白皮树狗窝
-dogBed.outside.forestry.poplarPlank=杨树狗窝
-dogBed.outside.forestry.palmPlank=棕榈树狗窝
-dogBed.outside.forestry.papayaPlank=木瓜树狗窝
-dogBed.outside.forestry.pinePlank=松树狗窝
-dogBed.outside.forestry.plumPlank=李子树狗窝
-dogBed.outside.forestry.maplePlank=枫树狗窝
-dogBed.outside.forestry.citrusPlank=柑橘树狗窝
-dogBed.outside.forestry.giganteumPlank=巨杉树狗窝

@@ -34,7 +34,7 @@ public class ItemDogBed extends ItemBlock {
 		    	
 		    String woodId = tag.getString("woodId");
 		    if(!Strings.isNullOrEmpty(woodId) && DogBedManager.isValidWoodId(woodId)) {
-		    	toolTipList.add(StatCollector.translateToLocal("dogBed.outside." + woodId));
+		    	toolTipList.add(woodId + " " + StatCollector.translateToLocal("dogBed.casing"));
 		    }
 		    else {
 		    	toolTipList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woodError"));

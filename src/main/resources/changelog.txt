@@ -9,6 +9,7 @@ Update List Key
 
 v1.8.0a - 27th September 2014
 * Fixed packpuppy talent at level 5 not automatically picking up items from the floor
+* Fixed the spelling of 'Poison' from 'Posion'.
 
 v1.7.3a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'

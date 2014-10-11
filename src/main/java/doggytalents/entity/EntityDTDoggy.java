@@ -130,7 +130,6 @@ public class EntityDTDoggy extends EntityTameable {
         this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, aiFetchBone = new EntityAIFetchBone(this, 1.0D, 0.5F, 20.0F));
-        this.tasks.addTask(7, new EntityAIShepard(this, 1.0D, 0.5F, 20.0F));
         this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(9, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(10, new EntityAIBeg(this, 8.0F));

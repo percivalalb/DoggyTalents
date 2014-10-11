@@ -1,3 +1,6 @@
+
+
+
 package doggytalents.client.model;
 
 import net.minecraft.client.model.ModelBase;
@@ -38,20 +41,22 @@ public class ModelDTDoggy extends ModelBase
 
     /** The wolf's mane */
     ModelRenderer wolfMane;
-
-    public ModelDTDoggy()
-    {
+    
+    public ModelDTDoggy() {
         float f = 0.0F;
         float f1 = 13.5F;
         this.wolfHeadMain = new ModelRenderer(this, 0, 0);
-        this.wolfHeadMain.addBox(-3.0F, -3.0F, -2.0F, 6, 6, 4, f);
+        this.wolfHeadMain.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 5, f);//Bigger head for new ears
         this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F);
+        
         this.wolfBody = new ModelRenderer(this, 18, 14);
         this.wolfBody.addBox(-4.0F, -2.0F, -3.0F, 6, 9, 6, f);
         this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
-        this.wolfMane = new ModelRenderer(this, 21, 0);
+        
+        this.wolfMane = new ModelRenderer(this, 22, 0);//cause BiggerHead
         this.wolfMane.addBox(-4.0F, -3.0F, -3.0F, 8, 6, 7, f);
         this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F);
+        
         this.wolfLeg1 = new ModelRenderer(this, 0, 18);
         this.wolfLeg1.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f);
         this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
@@ -64,12 +69,29 @@ public class ModelDTDoggy extends ModelBase
         this.wolfLeg4 = new ModelRenderer(this, 0, 18);
         this.wolfLeg4.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f);
         this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
+        
         this.wolfTail = new ModelRenderer(this, 9, 18);
         this.wolfTail.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, f);
         this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
-        this.wolfHeadMain.setTextureOffset(16, 14).addBox(-3.0F, -5.0F, 0.0F, 2, 2, 1, f);
-        this.wolfHeadMain.setTextureOffset(16, 14).addBox(1.0F, -5.0F, 0.0F, 2, 2, 1, f);
-        this.wolfHeadMain.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -5.0F, 3, 3, 4, f);
+        
+                 
+        //Child
+        this.wolfHeadMain.setTextureOffset(16, 14).addBox(-3.0F, -5.0F, 0.0F, 2, 2, 1, f); //EarNormal1
+        this.wolfHeadMain.setTextureOffset(16, 14).addBox(1.0F, -5.0F, 0.0F, 2, 2, 1, f); //EarNormal2
+        
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(-4.0F, -2.0F, -1.5F, 1, 5, 3, f);//EarBoni
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(3.0F, -2.0F, -1.5F, 1, 5, 3, f);//EarBoni
+        
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(-3.8F, -3.5F, -2.0F, 2, 1, 2, f);//SmallEar1
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(1.8F, -3.5F, -2.0F, 2, 1, 2, f);//SmallEar2
+        
+        this.wolfHeadMain.setTextureOffset(0, 11).addBox(-1.5F, 0.0F, -6.0F, 3, 3, 4, f);//Nose moved
+        
+        this.wolfTail.setTextureOffset(52, 5).addBox(-1.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);//Tail2
+        
+        this.wolfBody.setTextureOffset(52, 21).addBox(1.0F, -1F, 0F, 2, 7, 4);//Backpack1
+        this.wolfBody.setTextureOffset(52, 21).addBox(-5.0F, -1F, 0F, 2, 7, 4);//Backpack1
+                     
     }
 
     /**

@@ -10,7 +10,16 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAISit;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -55,22 +64,13 @@ import doggytalents.api.IDogTreat.EnumFeedBack;
 import doggytalents.core.helper.ChatHelper;
 import doggytalents.core.helper.ReflectionHelper;
 import doggytalents.core.proxy.CommonProxy;
-import doggytalents.entity.ai.EntityAIAttackOnCollide;
 import doggytalents.entity.ai.EntityAIBeg;
 import doggytalents.entity.ai.EntityAIFetchBone;
 import doggytalents.entity.ai.EntityAIFollowOwner;
-import doggytalents.entity.ai.EntityAIHurtByTarget;
-import doggytalents.entity.ai.EntityAILeapAtTarget;
-import doggytalents.entity.ai.EntityAILookIdle;
-import doggytalents.entity.ai.EntityAIMate;
 import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepard;
-import doggytalents.entity.ai.EntityAISwimming;
-import doggytalents.entity.ai.EntityAITargetNonTamed;
-import doggytalents.entity.ai.EntityAIWander;
-import doggytalents.entity.ai.EntityAIWatchClosest;
 import doggytalents.entity.data.DogLevel;
 import doggytalents.entity.data.DogMode;
 import doggytalents.entity.data.DogSavePosition;
@@ -119,8 +119,7 @@ public class EntityDTDoggy extends EntityTameable {
     //TODO
     public int bedHealTick = 0;
 
-    public EntityDTDoggy(World par1World)
-    {
+    public EntityDTDoggy(World par1World) {
         super(par1World);
         this.setSize(0.6F, 0.8F);
         this.getNavigator().setAvoidsWater(true);

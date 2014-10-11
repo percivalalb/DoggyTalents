@@ -2,7 +2,6 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -72,7 +71,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         {
         	return false;
         }
-        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist)) && !this.theDog.hasBone() && (order == 0 || order == 3))
+        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist) || (this.theDog.riddenByEntity == null && order == 3)) && !this.theDog.hasBone() && (order == 0 || order == 3))
         {
             return false;
         }
@@ -89,8 +88,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-    	int order = this.theDog.masterOrder();
-        return !this.petPathfinder.noPath() && /**&& this.theDog.masterOrder() == 0**/ order != 3 && (this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist)) && !this.theDog.isSitting() && (this.theDog.aiFetchBone.getCurrentTarget() == null || this.theDog.aiFetchBone.getCurrentTarget().isDead);
+        return !this.petPathfinder.noPath() /**&& this.theDog.masterOrder() == 0**/ && (this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist)) && !this.theDog.isSitting() && (this.theDog.aiFetchBone.getCurrentTarget() == null || this.theDog.aiFetchBone.getCurrentTarget().isDead);
     }
 
     /**
@@ -121,7 +119,6 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void updateTask()
     {
-    	FMLLog.info("Sheepdog");
     	int order = this.theDog.masterOrder();
     	int masterX = MathHelper.floor_double(this.theOwner.posX);
     	int masterY = MathHelper.floor_double(this.theOwner.posY);
@@ -230,6 +227,5 @@ public class EntityAIFollowOwner extends EntityAIBase
             	}
             }
     	}
-
     }
 }

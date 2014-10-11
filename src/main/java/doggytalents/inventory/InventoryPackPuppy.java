@@ -96,75 +96,6 @@ public class InventoryPackPuppy implements IInventory {
 		return true;
 	}
 
-	public boolean insertStackFromEntity(EntityItem entityItem) {
-	    boolean succesful = false;
-
-	    if (entityItem == null || entityItem.isDead)
-	        return false;
-	    else {
-	        ItemStack itemstack = entityItem.getEntityItem().copy();
-	        ItemStack itemstack1 = this.insertStack(itemstack);
-
-	        if (itemstack1 != null && itemstack1.stackSize != 0)
-	        	entityItem.setEntityItemStack(itemstack1);
-	        else {
-	        	succesful = true;
-	        	entityItem.setDead();
-	        }
-
-	        return succesful;
-	    }
-	}
-	
-    public ItemStack insertStack(ItemStack stack) {
-    	int j = this.getSizeInventory();
-
-        for (int k = 0; k < j && stack != null && stack.stackSize > 0; ++k)
-        	stack = tryInsertStackToSlot(stack, k);
-
-        if (stack != null && stack.stackSize == 0)
-            stack = null;
-
-        return stack;
-    }
-    
-    public ItemStack tryInsertStackToSlot(ItemStack stack, int slot) {
-        ItemStack slotStack = this.getStackInSlot(slot);
-
-        if (this.isItemValidForSlot(slot, stack)) {
-            boolean changed = false;
-
-            if (slotStack == null) {
-                int max = Math.min(stack.getMaxStackSize(), this.getInventoryStackLimit());
-                if (max >= stack.stackSize) {
-                	this.setInventorySlotContents(slot, stack);
-                    stack = null;
-                }
-                else
-                	this.setInventorySlotContents(slot, stack.splitStack(max));
-                changed = true;
-            }
-            else if (this.areItemStacksEqualItem(slotStack, stack)) {
-                int max = Math.min(stack.getMaxStackSize(), this.getInventoryStackLimit());
-                if (max > slotStack.stackSize) {
-                    int l = Math.min(stack.stackSize, max - slotStack.stackSize);
-                    stack.stackSize -= l;
-                    slotStack.stackSize += l;
-                    changed = l > 0;
-                }
-            }
-
-            if (changed)
-                this.markDirty();
-        }
-
-        return stack;
-    }
-    
-    private boolean areItemStacksEqualItem(ItemStack p_145894_0_, ItemStack p_145894_1_) {
-        return p_145894_0_.getItem() != p_145894_1_.getItem() ? false : (p_145894_0_.getItemDamage() != p_145894_1_.getItemDamage() ? false : (p_145894_0_.stackSize > p_145894_0_.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(p_145894_0_, p_145894_1_)));
-    }
-    
     @Override
 	public boolean hasCustomInventoryName() {
 		return false;
@@ -172,11 +103,11 @@ public class InventoryPackPuppy implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return false;
+		return true;
 	}
 	
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        NBTTagList nbttaglist = par1NBTTagCompound.getTagList("Items", 10);
+	public void readFromNBT(NBTTagCompound tag) {
+        NBTTagList nbttaglist = tag.getTagList("Items", 10);
         
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -190,7 +121,7 @@ public class InventoryPackPuppy implements IInventory {
         }
     }
 
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
+    public void writeToNBT(NBTTagCompound tag) {
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inventorySlots.length; ++i)
@@ -204,7 +135,7 @@ public class InventoryPackPuppy implements IInventory {
             }
         }
 
-        par1NBTTagCompound.setTag("Items", nbttaglist);
+        tag.setTag("Items", nbttaglist);
     }
 
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import doggytalents.entity.DoggyUtil;
 import doggytalents.entity.EntityDTDoggy;
 
 public class TileEntityFoodBowl extends TileEntity implements IInventory {
@@ -42,68 +43,52 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound) {
-        super.writeToNBT(nbttagcompound);
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < bowlcontents.length; i++) {
-            if (bowlcontents[i] != null) {
+        for (int i = 0; i < this.bowlcontents.length; i++) {
+            if (this.bowlcontents[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
-                bowlcontents[i].writeToNBT(nbttagcompound1);
+                this.bowlcontents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
 
-        nbttagcompound.setTag("Items", nbttaglist);
+        tag.setTag("Items", nbttaglist);
     }
 
     @Override
     public void updateEntity()
     {
-    	List var1 = null;
-        var1 = this.worldObj.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)this.xCoord, (double)(float)this.yCoord + 0.5D, (float)this.zCoord, (float)(this.xCoord + 1), (double)(float)this.yCoord + 0.5D + 0.05000000074505806D, (float)(this.zCoord + 1)).expand(5, 5, 5));
+    	List dogList = this.worldObj.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 0.5D, this.zCoord, this.xCoord + 1.0D, this.yCoord + 0.5D + 0.05000000074505806D, this.zCoord + 1.0D).expand(5, 5, 5));
 
-        if (var1 != null && var1.size() > 0)
-        {
-            for (int j1 = 0; j1 < var1.size(); j1++)
-            {
-                EntityDTDoggy entitydtdoggy1 = (EntityDTDoggy)var1.get(j1);
+        if (dogList != null && dogList.size() > 0) {
+            for (int j1 = 0; j1 < dogList.size(); j1++) {
+                EntityDTDoggy entitydtdoggy1 = (EntityDTDoggy)dogList.get(j1);
 
-                if (entitydtdoggy1.getDogTummy() <= 60 && this.GetFirstDogFoodStack(entitydtdoggy1) >= 0)
-                {
-                    this.FeedDog(entitydtdoggy1, this.GetFirstDogFoodStack(entitydtdoggy1), 1);
-                }
+                if (entitydtdoggy1.getDogTummy() <= 60 && this.getFirstDogFoodStack(entitydtdoggy1) >= 0)
+                    this.feedDog(entitydtdoggy1, this.getFirstDogFoodStack(entitydtdoggy1), 1);
             }
         }
     }
 
-    /**
-     * Returns the number of slots in the inventory.
-     */
-    public int getSizeInventory()
-    {
+    @Override
+    public int getSizeInventory() {
         return 5;
     }
 
-    /**
-     * Returns the stack in slot i
-     */
-    public ItemStack getStackInSlot(int i)
-    {
+    @Override
+    public ItemStack getStackInSlot(int i) {
         return bowlcontents[i];
     }
 
-    public ItemStack GetStackInSlot(int i)
-    {
-        return bowlcontents[i];
-    }
-
-    private int FindSlotToStoreItemStack(ItemStack itemstack)
+    private int findSlotToStoreItemStack(ItemStack itemstack)
     {
         for (int i = 0; i < getSizeInventory(); i++)
         {
-            ItemStack itemstack1 = GetStackInSlot(i);
+            ItemStack itemstack1 = getStackInSlot(i);
 
             if (itemstack1 != null && itemstack1.getItem() == itemstack.getItem() && itemstack1.isStackable() && itemstack1.stackSize < itemstack1.getMaxStackSize() && itemstack1.stackSize < getInventoryStackLimit() && (!itemstack1.getHasSubtypes() || itemstack1.getItemDamage() == itemstack.getItemDamage()))
             {
@@ -114,11 +99,11 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         return -1;
     }
 
-    public int GetFirstEmptyStack()
+    public int getFirstEmptyStack()
     {
         for (int i = 0; i < getSizeInventory(); i++)
         {
-            if (GetStackInSlot(i) == null)
+            if (getStackInSlot(i) == null)
             {
                 return i;
             }
@@ -127,55 +112,34 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         return -1;
     }
 
-    public int FindFirstDogFoodStack()
-    {
-        for (int i = 0; i < getSizeInventory(); i++)
-        {
-            if (GetStackInSlot(i) == null)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public int GetFirstDogFoodStack(EntityDTDoggy entitydtdoggy)
-    {
-        for (int i = 0; i < 5; i++)
-        {
+    public int getFirstDogFoodStack(EntityDTDoggy entitydtdoggy) {
+        for (int i = 0; i < 5; i++) {
             if (bowlcontents[i] == null)
-            {
                 continue;
-            }
 
             Item item = bowlcontents[i].getItem();
 
             if (item == null || !(item instanceof ItemFood))
-            {
                 continue;
-            }
 
-            ItemStack itemstack = GetStackInSlot(i);
+            ItemStack itemstack = getStackInSlot(i);
 
-            if (entitydtdoggy.foodValue(itemstack) != 0)
-            {
+            if(DoggyUtil.foodValue(entitydtdoggy, itemstack) != 0)
                 return i;
-            }
         }
 
         return -1;
     }
 
-    public int StorePartialItemStack(ItemStack itemstack)
+    public int storePartialItemStack(ItemStack itemstack)
     {
         Item item = itemstack.getItem();
         int j = itemstack.stackSize;
-        int k = FindSlotToStoreItemStack(itemstack);
+        int k = findSlotToStoreItemStack(itemstack);
 
         if (k < 0)
         {
-            k = GetFirstEmptyStack();
+            k = getFirstEmptyStack();
         }
 
         if (k < 0)
@@ -183,13 +147,13 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
             return j;
         }
 
-        if (GetStackInSlot(k) == null)
+        if (getStackInSlot(k) == null)
         {
             setInventorySlotContents(k, new ItemStack(item, 0, itemstack.getItemDamage()));
         }
 
         int l = j;
-        ItemStack itemstack1 = GetStackInSlot(k);
+        ItemStack itemstack1 = getStackInSlot(k);
 
         if (l > itemstack1.getMaxStackSize() - itemstack1.stackSize)
         {
@@ -214,11 +178,11 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         }
     }
 
-    public boolean AddItemStackToInventory(ItemStack itemstack)
+    public boolean addItemStackToInventory(ItemStack itemstack)
     {
         if (!itemstack.isItemDamaged())
         {
-            itemstack.stackSize = StorePartialItemStack(itemstack);
+            itemstack.stackSize = storePartialItemStack(itemstack);
 
             if (itemstack.stackSize == 0)
             {
@@ -226,7 +190,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
             }
         }
 
-        int i = GetFirstEmptyStack();
+        int i = getFirstEmptyStack();
 
         if (i >= 0)
         {
@@ -239,46 +203,36 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         }
     }
 
-    public ItemStack FeedDog(EntityDTDoggy entitydtdoggy, int i, int j)
-    {
-        if (GetStackInSlot(i) != null)
-        {
-            ItemStack itemstack = GetStackInSlot(i);
-            entitydtdoggy.setDogTummy(entitydtdoggy.getDogTummy() + entitydtdoggy.foodValue(itemstack));
+    public ItemStack feedDog(EntityDTDoggy dog, int i, int j) {
+        if (getStackInSlot(i) != null) {
+            ItemStack itemstack = getStackInSlot(i);
+            dog.setDogTummy(dog.getDogTummy() + DoggyUtil.foodValue(dog, itemstack));
 
-            if (GetStackInSlot(i).stackSize <= j)
-            {
-                ItemStack itemstack1 = GetStackInSlot(i);
+            if (getStackInSlot(i).stackSize <= j) {
+                ItemStack itemstack1 = getStackInSlot(i);
                 setInventorySlotContents(i, null);
                 return itemstack1;
             }
 
-            ItemStack itemstack2 = GetStackInSlot(i).splitStack(j);
+            ItemStack itemstack2 = getStackInSlot(i).splitStack(j);
 
-            if (GetStackInSlot(i).stackSize == 0)
-            {
-                setInventorySlotContents(i, null);
-            }
+            if(getStackInSlot(i).stackSize == 0)
+                this.setInventorySlotContents(i, null);
             else
-            {
                 this.markDirty();
-            }
 
             return itemstack2;
         }
         else
-        {
             return null;
-        }
     }
 
-    public void DropContents(World world, int i, int j, int k)
-    {
+    public void dropContents(World world, int i, int j, int k) {
         label0:
 
         for (int l = 0; l < 5; l++)
         {
-            ItemStack itemstack = GetStackInSlot(l);
+            ItemStack itemstack = getStackInSlot(l);
 
             if (itemstack == null)
             {
@@ -319,18 +273,18 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     @Override
     public ItemStack decrStackSize(int i, int j)
     {
-        if (GetStackInSlot(i) != null)
+        if (getStackInSlot(i) != null)
         {
-            if (GetStackInSlot(i).stackSize <= j)
+            if (getStackInSlot(i).stackSize <= j)
             {
-                ItemStack itemstack = GetStackInSlot(i);
+                ItemStack itemstack = getStackInSlot(i);
                 setInventorySlotContents(i, null);
                 return itemstack;
             }
 
-            ItemStack itemstack1 = GetStackInSlot(i).splitStack(j);
+            ItemStack itemstack1 = getStackInSlot(i).splitStack(j);
 
-            if (GetStackInSlot(i).stackSize == 0) {
+            if (getStackInSlot(i).stackSize == 0) {
                 setInventorySlotContents(i, null);
             }
             else

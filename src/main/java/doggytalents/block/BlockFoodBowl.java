@@ -153,7 +153,7 @@ public class BlockFoodBowl extends BlockContainer {
                     return;
                 }
 
-                if (tileentitydogfoodbowl.AddItemStackToInventory(entityitem.getEntityItem()))
+                if (tileentitydogfoodbowl.addItemStackToInventory(entityitem.getEntityItem()))
                 {
                     par1World.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     entityitem.setDead();
@@ -193,9 +193,9 @@ public class BlockFoodBowl extends BlockContainer {
             {
                 EntityDTDoggy entitydtdoggy1 = (EntityDTDoggy)list2.get(j1);
 
-                if (entitydtdoggy1.getDogTummy() <= 60 && tileentitydogfoodbowl1.GetFirstDogFoodStack(entitydtdoggy1) >= 0)
+                if (entitydtdoggy1.getDogTummy() <= 60 && tileentitydogfoodbowl1.getFirstDogFoodStack(entitydtdoggy1) >= 0)
                 {
-                    tileentitydogfoodbowl1.FeedDog(entitydtdoggy1, tileentitydogfoodbowl1.GetFirstDogFoodStack(entitydtdoggy1), 1);
+                    tileentitydogfoodbowl1.feedDog(entitydtdoggy1, tileentitydogfoodbowl1.getFirstDogFoodStack(entitydtdoggy1), 1);
                 }
             }
         }
@@ -219,7 +219,7 @@ public class BlockFoodBowl extends BlockContainer {
     @Override
     public void breakBlock(World par1World, int x, int y, int z, Block block, int side) {
         TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)par1World.getTileEntity(x, y, z);
-        tileentitydogfoodbowl.DropContents(par1World, x, y, z);
+        tileentitydogfoodbowl.dropContents(par1World, x, y, z);
         super.breakBlock(par1World, x, y, z, block, side);
     }
     

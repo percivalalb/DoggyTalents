@@ -2,6 +2,7 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -71,7 +72,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         {
         	return false;
         }
-        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist) || (this.theDog.riddenByEntity == null && order == 3)) && !this.theDog.hasBone() && (order == 0 || order == 3))
+        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist)) && !this.theDog.hasBone() && (order == 0 || order == 3))
         {
             return false;
         }
@@ -88,7 +89,8 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public boolean continueExecuting()
     {
-        return !this.petPathfinder.noPath() /**&& this.theDog.masterOrder() == 0**/ && (this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist)) && !this.theDog.isSitting() && (this.theDog.aiFetchBone.getCurrentTarget() == null || this.theDog.aiFetchBone.getCurrentTarget().isDead);
+    	int order = this.theDog.masterOrder();
+        return !this.petPathfinder.noPath() && /**&& this.theDog.masterOrder() == 0**/ order != 3 && (this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist)) && !this.theDog.isSitting() && (this.theDog.aiFetchBone.getCurrentTarget() == null || this.theDog.aiFetchBone.getCurrentTarget().isDead);
     }
 
     /**
@@ -119,6 +121,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void updateTask()
     {
+    	FMLLog.info("Sheepdog");
     	int order = this.theDog.masterOrder();
     	int masterX = MathHelper.floor_double(this.theOwner.posX);
     	int masterY = MathHelper.floor_double(this.theOwner.posY);
@@ -227,45 +230,6 @@ public class EntityAIFollowOwner extends EntityAIBase
             	}
             }
     	}
-    	else if(order == 3 && this.theDog.riddenByEntity == null && this.theDog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) > 0) {
-    		List list1 = this.theDog.worldObj.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(this.theDog.posX, this.theDog.posY, this.theDog.posZ, this.theDog.posX + 1.0D, this.theDog.posY + 1.0D, this.theDog.posZ + 1.0D).expand(10D, 2D, 10D));
 
-            if (!list1.isEmpty())
-            {
-                EntityAnimal entityanimal = null;
-                boolean flag = false;
-
-                for (int l2 = 0; l2 < list1.size() && entityanimal == null; l2++)
-                {
-                    boolean flag1 = false;
-                    EntityAnimal entityanimal1 = (EntityAnimal)list1.get(l2);
-
-                    if (((entityanimal1 instanceof EntityPig) || (entityanimal1 instanceof EntityChicken) || (entityanimal1 instanceof EntityCow) || (entityanimal1 instanceof EntitySheep)))
-                    {
-                        flag1 = true;
-                    }
-
-                    if (flag1 && entityanimal1.ridingEntity == null)
-                    {
-                        entityanimal = entityanimal1;
-                    }
-                }
-
-                if (entityanimal != null)
-                {
-                	if (entityanimal.getDistanceToEntity(this.theDog) > 2D)
-                    {
-                		if(!this.petPathfinder.tryMoveToEntityLiving(entityanimal, this.moveSpeed)) {
-                			if (!this.theDog.getLeashed()) {
-             
-             	            }
-                         }
-                    }
-                	else {
-                		entityanimal.mountEntity(this.theDog);
-                	}
-                }
-            }
-    	}
     }
 }

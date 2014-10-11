@@ -82,19 +82,19 @@ public class DoggyTalentsMod {
 	}
 		
 	@EventHandler
-	public void modsLoaded(FMLPostInitializationEvent par1) {
+	public void modsLoaded(FMLPostInitializationEvent event) {
 		ArrayList<ItemStack> planks = OreDictionary.getOres("plankWood");
-		for (ItemStack plank : planks) {
+		
+		for(ItemStack plank : planks) {
 			if (plank.getHasSubtypes()) {
 				Item plankItem = plank.getItem();
 				ArrayList<ItemStack> plankSubTypes = new ArrayList<ItemStack>();
 				plankItem.getSubItems(plankItem, null, plankSubTypes);
-				for (ItemStack subPlank : plankSubTypes) {
+				for (ItemStack subPlank : plankSubTypes)
 					DogBedManager.registerBedWood(subPlank);
-				}
-			} else {
+			} 
+			else
 				DogBedManager.registerBedWood(plank);
-			}
 		}
 
 		DogBedManager.registerBedWool("whiteWool", new DefaultBedMaterial(Blocks.wool, 0), new ItemStack(Blocks.wool, 1, 0));

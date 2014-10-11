@@ -36,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -44,6 +45,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 import com.google.common.base.Strings;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
@@ -64,6 +66,7 @@ import doggytalents.entity.ai.EntityAIMate;
 import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
+import doggytalents.entity.ai.EntityAIShepard;
 import doggytalents.entity.ai.EntityAISwimming;
 import doggytalents.entity.ai.EntityAITargetNonTamed;
 import doggytalents.entity.ai.EntityAIWander;
@@ -81,8 +84,7 @@ import doggytalents.lib.Constants;
 /**
  * @author ProPercivalalb
  */
-public class EntityDTDoggy extends EntityTameable
-{
+public class EntityDTDoggy extends EntityTameable {
     private float field_70926_e;
     private float field_70924_f;
 
@@ -128,11 +130,12 @@ public class EntityDTDoggy extends EntityTameable
         this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, aiFetchBone = new EntityAIFetchBone(this, 1.0D, 0.5F, 20.0F));
-        this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIBeg(this, 8.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(10, new EntityAILookIdle(this));
+        this.tasks.addTask(7, new EntityAIShepard(this, 1.0D, 0.5F, 20.0F));
+        this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
+        this.tasks.addTask(9, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(10, new EntityAIBeg(this, 8.0F));
+        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(12, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
@@ -449,7 +452,6 @@ public class EntityDTDoggy extends EntityTameable
         }
         
         this.faceBed();
-        
         if (this.talents.getTalentLevel(EnumTalents.PACKPUPPY) == 5 && this.getHealth() > 1) {
         	this.autoPickup();
         }
@@ -917,8 +919,7 @@ public class EntityDTDoggy extends EntityTameable
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entity)
-    {
+    public boolean attackEntityAsMob(Entity entity) {
         int damage = 4 + (effectiveLevel() + 1) / 2;
         int critChance = this.talents.getTalentLevel(EnumTalents.BLACKPELT) != 5 ? 0 : 1;
         critChance += this.talents.getTalentLevel(EnumTalents.BLACKPELT);
@@ -1009,62 +1010,46 @@ public class EntityDTDoggy extends EntityTameable
         }
     }
 
-    /**
-     * Called when a player interacts with a mob. e.g. gets milk from a cow, gets into the saddle on a pig.
-     */
     @Override
-    public boolean interact(EntityPlayer par1EntityPlayer)
-    {
-        ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
+    public boolean interact(EntityPlayer player) {
+        ItemStack stack = player.inventory.getCurrentItem();
 
-        if (this.isTamed())
-        {
-            if (itemstack != null)
-            {
-            	if (itemstack.getItem() instanceof ItemFood && foodValue(itemstack) != 0 && this.getDogTummy() < 120)
-                {
-           		 	if(!par1EntityPlayer.capabilities.isCreativeMode) {
-        				itemstack.stackSize--;
-        			}
-
-                    if (itemstack.stackSize <= 0) {
-                    	par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                    }
-
-                    this.setDogTummy(this.getDogTummy() + foodValue(itemstack));
+        if (this.isTamed()) {
+            if (stack != null) {
+            	int foodValue = DoggyUtil.foodValue(this, stack);
+            	
+            	if(foodValue != 0 && this.getDogTummy() < 120) {
+            		DoggyUtil.loseStack(player, stack);
+            		
+                    this.setDogTummy(this.getDogTummy() + foodValue);
                     return true;
                 }
-            	else if(itemstack.getItem() == Items.bone && canInteract(par1EntityPlayer)) {
+            	else if(stack.getItem() == Items.bone && canInteract(player)) {
                     this.aiSit.setSitting(true);
             		if (!worldObj.isRemote) {
-                        if(this.ridingEntity != null) {
+                        if(this.ridingEntity != null)
                         	this.mountEntity(null);
-                        }
-                        else {
-                         	this.mountEntity(par1EntityPlayer);
-                        }
+                        else
+                         	this.mountEntity(player);
                     }
                     return true;
                 }
-                else if(itemstack.getItem() == Items.stick && canInteract(par1EntityPlayer))
-                {
-                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+                else if(stack.getItem() == Items.stick && canInteract(player)) {
+                	player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                 	return true;
                 }
-                else if(itemstack.getItem() == Item.getItemFromBlock(Blocks.planks) && canInteract(par1EntityPlayer))
-                {
-                	par1EntityPlayer.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+                else if(stack.getItem() == Item.getItemFromBlock(Blocks.planks) && canInteract(player)) {
+                	player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                 	return true;
                 }
-                else if(itemstack.getItem() instanceof IDogTreat && canInteract(par1EntityPlayer))
-                {
-                	IDogTreat treat = (IDogTreat)itemstack.getItem();
-                	EnumFeedBack type = treat.canGiveToDog(par1EntityPlayer, this, this.level.getLevel(), this.level.getDireLevel());
-                	treat.giveTreat(type, par1EntityPlayer, this, this.talents);
+                else if(stack.getItem() instanceof IDogTreat && canInteract(player)) {
+                	IDogTreat treat = (IDogTreat)stack.getItem();
+                	EnumFeedBack type = treat.canGiveToDog(player, this, this.level.getLevel(), this.level.getDireLevel());
+                	treat.giveTreat(type, player, this, this.talents);
                 	return true;
                 }
-                else if (itemstack.getItem() == ModItems.collarShears && this.func_152114_e(par1EntityPlayer)) {
-                    if (!worldObj.isRemote) {
+                else if (stack.getItem() == ModItems.collarShears && this.func_152114_e(player)) {
+                    if (!this.worldObj.isRemote) {
                     	this.setTamed(false);
                         this.setPathToEntity(null);
                         this.setSitting(false);
@@ -1078,17 +1063,10 @@ public class EntityDTDoggy extends EntityTameable
 
                     return true;
                 }
-                else if(itemstack.getItem() == Items.cake) {
-                 	if(!par1EntityPlayer.capabilities.isCreativeMode) {
-                 		itemstack.stackSize--;
-                 	}
-
-                    if (itemstack.stackSize <= 0) {
-                    	par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
-                    }
-
-                    if (!worldObj.isRemote)
-                    {
+                else if(stack.getItem() == Items.cake) {
+                	DoggyUtil.loseStack(player, stack);
+                	
+                    if (!this.worldObj.isRemote) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getHealth());
                         this.regenerationTick = 0;
@@ -1103,15 +1081,14 @@ public class EntityDTDoggy extends EntityTameable
                 }
             }
             else {
-            	if(this.talents.getTalentLevel(EnumTalents.WOLFMOUNT) > 0 && par1EntityPlayer.ridingEntity == null && !par1EntityPlayer.onGround) {
+            	if(this.talents.getTalentLevel(EnumTalents.WOLFMOUNT) > 0 && player.ridingEntity == null && !player.onGround) {
             		this.aiSit.setSitting(false);
-            		par1EntityPlayer.mountEntity(this);
+            		player.mountEntity(this);
             		return true;
             	}
             }
 
-            if (canInteract(par1EntityPlayer) && !this.worldObj.isRemote && par1EntityPlayer.ridingEntity == null && !this.isBreedingItem(itemstack))
-            {
+            if (canInteract(player) && !this.worldObj.isRemote && player.ridingEntity == null && !this.isBreedingItem(stack)) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
                 this.setPathToEntity((PathEntity)null);
@@ -1119,40 +1096,28 @@ public class EntityDTDoggy extends EntityTameable
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if (itemstack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !worldObj.isRemote) {
+        else if (stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !worldObj.isRemote) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.worldObj);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.worldObj.spawnEntityInWorld(wolf);
             return true;
         }
-        else if (itemstack != null && itemstack.getItem() == Items.bone)
-        {
-            if (!par1EntityPlayer.capabilities.isCreativeMode)
-            {
-                --itemstack.stackSize;
-            }
+        else if (stack != null && stack.getItem() == Items.bone) {
+        	DoggyUtil.loseStack(player, stack);
 
-            if (itemstack.stackSize <= 0)
-            {
-                par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack)null);
-            }
-
-            if (!this.worldObj.isRemote)
-            {
-                if (this.rand.nextInt(3) == 0)
-                {
+            if (!this.worldObj.isRemote) {
+                if (this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.setPathToEntity((PathEntity)null);
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
-                    this.func_152115_b(par1EntityPlayer.getUniqueID().toString());
+                    this.func_152115_b(player.getUniqueID().toString());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte)7);
                 }
-                else
-                {
+                else {
                     this.playTameEffect(false);
                     this.worldObj.setEntityState(this, (byte)6);
                 }
@@ -1161,7 +1126,7 @@ public class EntityDTDoggy extends EntityTameable
             return true;
         }
 
-        return super.interact(par1EntityPlayer);
+        return super.interact(player);
     }
     
     public boolean canInteract(EntityPlayer player) {
@@ -1169,42 +1134,6 @@ public class EntityDTDoggy extends EntityTameable
     		return true;
     	
     	return this.willObeyOthers();
-    }
-    
-    public int foodValue(ItemStack itemstack)
-    {
-        int i = 0;
-
-        if (itemstack != null && (itemstack.getItem() == Items.fish || itemstack.getItem() == Items.cooked_fished) && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) == 5)
-        {
-            i = 30 + 3 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
-        }
-
-        if (itemstack != null && itemstack.getItem() == Items.rotten_flesh && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) >= 3)
-        {
-            i = 30 + 3 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
-        }
-
-        if (itemstack != null && itemstack.getItem() == Items.rotten_flesh && this.talents.getTalentLevel(EnumTalents.HAPPYEATER) < 3)
-        {
-            i = 0;
-        }
-
-        if (itemstack != null && (itemstack.getItem() == Items.porkchop || itemstack.getItem() == Items.cooked_porkchop || itemstack.getItem() == Items.beef || itemstack.getItem() == Items.cooked_beef || itemstack.getItem() == Items.chicken || itemstack.getItem() == Items.cooked_chicken))
-        {
-            i = 40 + 4 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
-        }
-        else if (itemstack != null && itemstack.getItem() != Items.rotten_flesh && (itemstack.getItem() instanceof ItemFood))
-        {
-            ItemFood itemfood = (ItemFood)itemstack.getItem();
-
-            if (itemfood.isWolfsFavoriteMeat())
-            {
-                i = 40 + 4 * this.talents.getTalentLevel(EnumTalents.HAPPYEATER);
-            }
-        }
-
-        return i;
     }
     
     public int healCost() {
@@ -1218,17 +1147,13 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     @Override
-    public void playTameEffect(boolean par1)
-    {
+    public void playTameEffect(boolean par1) {
         String s = "heart";
 
         if (!par1)
-        {
             s = "smoke";
-        }
 
-        for (int i = 0; i < 7; ++i)
-        {
+        for (int i = 0; i < 7; ++i) {
             double d0 = this.rand.nextGaussian() * 0.02D;
             double d1 = this.rand.nextGaussian() * 0.02D;
             double d2 = this.rand.nextGaussian() * 0.02D;
@@ -1238,16 +1163,13 @@ public class EntityDTDoggy extends EntityTameable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void handleHealthUpdate(byte par1)
-    {
-        if (par1 == 8)
-        {
+    public void handleHealthUpdate(byte par1) {
+        if (par1 == 8) {
             this.field_70928_h = true;
             this.timeWolfIsShaking = 0.0F;
             this.prevTimeWolfIsShaking = 0.0F;
         }
-        else
-        {
+        else {
             super.handleHealthUpdate(par1);
         }
     }
@@ -1299,10 +1221,6 @@ public class EntityDTDoggy extends EntityTameable
         return true;
     }
     
-    /**
-     * Checks if the parameter is an item which this animal can be fed to breed it (wheat, carrots or seeds depending on
-     * the animal type)
-     */
     @Override
     public boolean isBreedingItem(ItemStack par1ItemStack) {
         return par1ItemStack == null ? false : par1ItemStack.getItem() == ModItems.breedingBone;
@@ -1319,8 +1237,7 @@ public class EntityDTDoggy extends EntityTameable
 
     public double sniffRange(){
         double d = 0.0D;
-        for (int i = 0; i < this.talents.getTalentLevel(EnumTalents.CREEPERSWEEPER) * 6; i++)
-        {
+        for (int i = 0; i < this.talents.getTalentLevel(EnumTalents.CREEPERSWEEPER) * 6; i++) {
             d++;
         }
         return d;
@@ -1355,11 +1272,11 @@ public class EntityDTDoggy extends EntityTameable
         List list = worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(posX - 2.5D, posY - 1.0D, posZ - 2.5D, posX + 2.5D, posY + 1.0D, posZ + 2.5D));
 
         if (!list.isEmpty()) {
-            for (int i = 0; i < list.size(); i++) {
+            for(int i = 0; i < list.size(); i++) {
                 EntityItem entityitem = (EntityItem)list.get(i);
                 if (!this.worldObj.isRemote && entityitem.getEntityItem().getItem() != ModItems.throwBone) {
-                    if(this.inventory.insertStackFromEntity((EntityItem)entityitem)) {
-                    	worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    if(TileEntityHopper.func_145898_a(this.inventory, entityitem)) {
+                    	this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                 }
             }
@@ -1432,56 +1349,25 @@ public class EntityDTDoggy extends EntityTameable
 
         return amount;
     }
-    
-    /**
-     * This function is used when two same-species animals in 'love mode' breed to generate the new baby animal.
-     */
-    public EntityDTDoggy spawnBabyAnimal(EntityAgeable par1EntityAgeable)
-    {
-        EntityDTDoggy entitywolf = new EntityDTDoggy(this.worldObj);
-        String s = this.func_152113_b();
 
-        if (s != null && s.trim().length() > 0)
-        {
-            entitywolf.func_152115_b(s);
-            entitywolf.setTamed(true);
-        }
-        
-        this.lastBaby = entitywolf;
-
-        return entitywolf;
-    }
-
-    public void setIsBegging(boolean par1)
-    {
+    public void setIsBegging(boolean par1) {
         if (par1)
-        {
             this.dataWatcher.updateObject(19, Byte.valueOf((byte)1));
-        }
         else
-        {
             this.dataWatcher.updateObject(19, Byte.valueOf((byte)0));
-        }
     }
 
     /**
      * Returns true if the mob is currently able to mate with the specified mob.
      */
     @Override
-    public boolean canMateWith(EntityAnimal par1EntityAnimal)
-    {
+    public boolean canMateWith(EntityAnimal par1EntityAnimal){
         if (par1EntityAnimal == this)
-        {
             return false;
-        }
         else if (!this.isTamed())
-        {
             return false;
-        }
         else if (!(par1EntityAnimal instanceof EntityDTDoggy))
-        {
             return false;
-        }
         else
         {
             EntityDTDoggy entitywolf = (EntityDTDoggy)par1EntityAnimal;
@@ -1495,7 +1381,6 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     public int masterOrder() {
-       
     	int order = 0;
         EntityPlayer player = (EntityPlayer)this.getOwner();
 
@@ -1618,8 +1503,7 @@ public class EntityDTDoggy extends EntityTameable
 		return total;
     }
     
-    public int deductive(int par1)
-    {
+    public int deductive(int par1) {
         byte byte0 = 0;
         switch(par1) {
         case 1: return 1;
@@ -1637,9 +1521,18 @@ public class EntityDTDoggy extends EntityTameable
     }
     
     @Override
-    public EntityAgeable createChild(EntityAgeable par1EntityAgeable)
-    {
-        return this.spawnBabyAnimal(par1EntityAgeable);
+    public EntityAgeable createChild(EntityAgeable par1EntityAgeable) {
+    	EntityDTDoggy entitywolf = new EntityDTDoggy(this.worldObj);
+        String s = this.func_152113_b();
+
+        if (s != null && s.trim().length() > 0) {
+            entitywolf.func_152115_b(s);
+            entitywolf.setTamed(true);
+        }
+        
+        this.lastBaby = entitywolf;
+
+        return entitywolf;
     }
 
     public int getDogTummy() {

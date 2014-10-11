@@ -31,7 +31,7 @@ public class ItemDogBed extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer player, List toolTipList, boolean extraDetail) {
 		if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("doggytalents")) {
 			NBTTagCompound tag = stack.stackTagCompound.getCompoundTag("doggytalents");
-		    	
+		    
 		    String woodId = tag.getString("woodId");
 		    if(!Strings.isNullOrEmpty(woodId) && DogBedManager.isValidWoodId(woodId)) {
 		    	toolTipList.add(woodId + " " + StatCollector.translateToLocal("dogBed.casing"));

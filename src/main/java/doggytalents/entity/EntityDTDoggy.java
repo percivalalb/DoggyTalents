@@ -15,6 +15,7 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
@@ -71,6 +72,7 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepard;
+import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.entity.data.DogLevel;
 import doggytalents.entity.data.DogMode;
 import doggytalents.entity.data.DogSavePosition;
@@ -85,6 +87,7 @@ import doggytalents.lib.Constants;
  * @author ProPercivalalb
  */
 public class EntityDTDoggy extends EntityTameable {
+	
     private float field_70926_e;
     private float field_70924_f;
 
@@ -119,8 +122,8 @@ public class EntityDTDoggy extends EntityTameable {
     //TODO
     public int bedHealTick = 0;
 
-    public EntityDTDoggy(World par1World) {
-        super(par1World);
+    public EntityDTDoggy(World world) {
+        super(world);
         this.setSize(0.6F, 0.8F);
         this.getNavigator().setAvoidsWater(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
@@ -129,20 +132,21 @@ public class EntityDTDoggy extends EntityTameable {
         this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, aiFetchBone = new EntityAIFetchBone(this, 1.0D, 0.5F, 20.0F));
-        this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(10, new EntityAIBeg(this, 8.0F));
-        this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(12, new EntityAILookIdle(this));
+        this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(9, new EntityAIBeg(this, 8.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(11, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
         this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true));
         this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntitySheep.class, 200, false));
-        this.setTamed(false);
+        this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
         this.inventory = new InventoryPackPuppy(this);
+        this.setTamed(false);
     }
-
+    
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -150,21 +154,15 @@ public class EntityDTDoggy extends EntityTameable {
     }
     
     public void redoAttributes() {
-    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20D + (effectiveLevel() + 1D) * 2D);
-    	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(getSpeedModifier());
+    	this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20D + (this.effectiveLevel() + 1D) * 2D);
+    	this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.getSpeedModifier());
     }
 
-    /**
-     * Returns true if the newer Entity AI code should be run
-     */
     @Override
     public boolean isAIEnabled() {
         return true;
     }
 
-    /**
-     * Sets the active target the Task system uses for tracking
-     */
     @Override
     public void setAttackTarget(EntityLivingBase par1EntityLivingBase) {
         super.setAttackTarget(par1EntityLivingBase);
@@ -172,14 +170,6 @@ public class EntityDTDoggy extends EntityTameable {
     
     public EntityAISit getSitAI() {
     	return this.aiSit;
-    }
-
-    /**
-     * main AI tick function, replaces updateEntityActionState
-     */
-    @Override
-    protected void updateAITick() {
-        this.dataWatcher.updateObject(18, Float.valueOf(this.getHealth()));
     }
 
     @Override
@@ -190,7 +180,6 @@ public class EntityDTDoggy extends EntityTameable {
     	this.saveposition = new DogSavePosition(this);
     	
         super.entityInit();
-        this.dataWatcher.addObject(18, new Float(this.getHealth()));
         this.dataWatcher.addObject(19, new Byte((byte)0));
         this.dataWatcher.addObject(WatchableDataLib.ID_TALENTS, talents.getDefaultStr());
         this.dataWatcher.addObject(WatchableDataLib.ID_LEVEL, level.getDefaultStr());
@@ -369,7 +358,7 @@ public class EntityDTDoggy extends EntityTameable {
            return "mob.wolf.growl";
         if (rand.nextInt(10) < Constants.barkRate) {
             if (rand.nextInt(3) == 0) {
-                if (isTamed() && this.dataWatcher.getWatchableObjectFloat(18) == 1)
+                if (this.isTamed() && this.getHealth() == 1)
                     return "mob.wolf.whine";
                 else
                     return "mob.wolf.panting";
@@ -437,6 +426,14 @@ public class EntityDTDoggy extends EntityTameable {
         	this.entityToAttack = null;
         }
         
+        
+        if((masterOrder() == 3 || this.mode.getMode() == EnumMode.DOCILE) && this.getAttackTarget() != null) {
+        	double d0 = this.getDistanceSqToEntity(this.getAttackTarget());
+            if(d0 <= 4.0D) {
+            	this.getAttackTarget().mountEntity(this);
+            	this.setAttackTarget(null);
+            }
+        }
 
         if(isTamed() && masterOrder() != 3 && riddenByEntity instanceof EntityAnimal && this.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) > 0) {
         	this.riddenByEntity.ridingEntity = null;
@@ -839,8 +836,7 @@ public class EntityDTDoggy extends EntityTameable {
      * use in wolves.
      */
     @Override
-    public int getVerticalFaceSpeed()
-    {
+    public int getVerticalFaceSpeed() {
         return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
     }
     
@@ -850,18 +846,13 @@ public class EntityDTDoggy extends EntityTameable {
         if (par1 <= 0) return;
         PotionEffect potioneffect = this.getActivePotionEffect(Potion.jump);
         float f1 = potioneffect != null ? (float)(potioneffect.getAmplifier() + 1) : 0.0F;
-        int i = MathHelper.ceiling_float_int(par1 - 3.0F - f1) - fallProtection();
+        int i = MathHelper.ceiling_float_int(par1 - 3.0F - f1) - this.fallProtection();
 
-        if (i > 0 && !isImmuneToFalls() && ridingEntity == null)
-        {
+        if (i > 0 && !this.isImmuneToFalls() && ridingEntity == null) {
             if (i > 4)
-            {
                 this.playSound("damage.fallbig", 1.0F, 1.0F);
-            }
             else
-            {
                 this.playSound("damage.fallsmall", 1.0F, 1.0F);
-            }
 
             this.attackEntityFrom(DamageSource.fall, (float)i);
             Block block = this.worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset), MathHelper.floor_double(this.posZ));
@@ -873,23 +864,14 @@ public class EntityDTDoggy extends EntityTameable {
         }
     }
 
-    /**
-     * Called when the entity is attacked.
-     */
     @Override
-    public boolean attackEntityFrom(DamageSource par1DamageSource, float damage)
-    {
+    public boolean attackEntityFrom(DamageSource par1DamageSource, float damage) {
         if (this.isEntityInvulnerable())
-        {
             return false;
-        }
-        else
-        {
-        	if(this.talents.getTalentLevel(EnumTalents.HELLHOUND) == 5) {
-        		if(par1DamageSource.isFireDamage()) {
+        else {
+        	if(this.talents.getTalentLevel(EnumTalents.HELLHOUND) == 5)
+        		if(par1DamageSource.isFireDamage())
         			return false;
-        		}
-        	}
         		
             Entity entity = par1DamageSource.getEntity();
             this.aiSit.setSitting(false);
@@ -918,6 +900,7 @@ public class EntityDTDoggy extends EntityTameable {
 
     @Override
     public boolean attackEntityAsMob(Entity entity) {
+    	
         int damage = 4 + (effectiveLevel() + 1) / 2;
         int critChance = this.talents.getTalentLevel(EnumTalents.BLACKPELT) != 5 ? 0 : 1;
         critChance += this.talents.getTalentLevel(EnumTalents.BLACKPELT);
@@ -954,9 +937,8 @@ public class EntityDTDoggy extends EntityTameable {
         
         while(iterator.hasNext()) {
         	EntitySilverfish entitySilverfish = (EntitySilverfish)iterator.next();
-        	if(rand.nextInt(20) == 0) {
+        	if(this.rand.nextInt(20) == 0)
         		entitySilverfish.attackEntityFrom(DamageSource.generic, damage);
-        	}
         }
     }
     
@@ -990,7 +972,7 @@ public class EntityDTDoggy extends EntityTameable {
     @Override
     protected boolean isMovementBlocked()
     {
-        return this.riddenByEntity != null ? true : super.isMovementBlocked();
+        return this.riddenByEntity instanceof EntityPlayer ? true : super.isMovementBlocked();
     }
 
     @Override
@@ -1038,6 +1020,7 @@ public class EntityDTDoggy extends EntityTameable {
                 }
                 else if(stack.getItem() == Item.getItemFromBlock(Blocks.planks) && canInteract(player)) {
                 	player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+                	this.worldObj.playSoundEffect(this.posX, this.posY + 0.5D, this.posZ, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 	return true;
                 }
                 else if(stack.getItem() instanceof IDogTreat && canInteract(player)) {
@@ -1373,8 +1356,7 @@ public class EntityDTDoggy extends EntityTameable {
         }
     }
 
-    public boolean isBegging()
-    {
+    public boolean isBegging() {
         return this.dataWatcher.getWatchableObjectByte(19) == 1;
     }
     
@@ -1388,19 +1370,13 @@ public class EntityDTDoggy extends EntityTameable {
             ItemStack itemstack = player.inventory.getCurrentItem();
 
             if (itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)
-            {
                 order = 1;
-            }
 
             if (itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
-            {
                 order = 2;
-            }
 
             if (itemstack != null && itemstack.getItem() == Items.wheat)
-            {
                 order = 3;
-            }
         }
 
         return order;
@@ -1435,31 +1411,21 @@ public class EntityDTDoggy extends EntityTameable {
         return this.talents.getTalentLevel(EnumTalents.FISHERDOG) == 5;
     }
     
-    /**
-     * Determines if an entity can be despawned, used on idle far away entities
-     */
     @Override
-    protected boolean canDespawn()
-    {
+    protected boolean canDespawn() {
         return false;
     }
 
     @Override
-    public boolean func_142018_a(EntityLivingBase par1EntityLivingBase, EntityLivingBase par2EntityLivingBase)
-    {
-        if ((!(par1EntityLivingBase instanceof EntityCreeper) || this.talents.getTalentLevel(EnumTalents.CREEPERSWEEPER) == 5) && !(par1EntityLivingBase instanceof EntityGhast))
-        {
+    public boolean func_142018_a(EntityLivingBase par1EntityLivingBase, EntityLivingBase par2EntityLivingBase)  {
+        if ((!(par1EntityLivingBase instanceof EntityCreeper) || this.talents.getTalentLevel(EnumTalents.CREEPERSWEEPER) == 5) && !(par1EntityLivingBase instanceof EntityGhast)) {
             if (par1EntityLivingBase instanceof EntityDTDoggy && par1EntityLivingBase != this)
-            {
             	return false;
-            }
 
             return par1EntityLivingBase instanceof EntityPlayer && par2EntityLivingBase instanceof EntityPlayer && !((EntityPlayer)par2EntityLivingBase).canAttackPlayer((EntityPlayer)par1EntityLivingBase) ? false : !(par1EntityLivingBase instanceof EntityHorse) || !((EntityHorse)par1EntityLivingBase).isTame();
         }
         else
-        {
             return false;
-        }
     }
     
     public void setHasBone(boolean hasBone) {
@@ -1483,8 +1449,7 @@ public class EntityDTDoggy extends EntityTameable {
     }
     
     @Override
-    protected void attackEntity(Entity entity, float damage)
-    {
+    protected void attackEntity(Entity entity, float damage) {
     	super.attackEntity(entity, damage);
     }
 

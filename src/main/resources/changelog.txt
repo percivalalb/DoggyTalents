@@ -7,9 +7,19 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.8.0a - 27th September 2014
+v1.8.0a - 11th October 2014
++ Added acacia and dark oak plank casing for dog beds
++ Added a visual indicator to show when the talent packpuppy is present, tiny chests on the dogs side!
++ When using a plank to open a dogs inventory it will make the chest opening sound
+
+# The different plank types for dog beds now uses the ore dictionary to look up planks, thanks to 'mezz'
+
 * Fixed packpuppy talent at level 5 not automatically picking up items from the floor
+* Fixed dogs not begging (tilting their head) when holding food
 * Fixed the spelling of 'Poison' from 'Posion'.
+* Fixed the talent shepherd dog not working
+* Fixed a baby wolf being turned straight into a adult dog not a baby dog
+* Fixed the name of the owner (when shifting looking at a dog) being the UUID id not the users in game name
 
 v1.7.3a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'

@@ -24,6 +24,7 @@ public class EventRightClickEntity {
 			 	dog.func_152115_b(event.entityPlayer.getUniqueID().toString());
 			 	dog.setHealth(dog.getMaxHealth());
 			 	dog.setSitting(false);
+			 	dog.setGrowingAge(wolf.getGrowingAge());
 			 	dog.setPositionAndRotation(event.target.posX, event.target.posY, event.target.posZ, event.target.rotationYaw, event.target.rotationPitch);
 				if(!event.entityPlayer.capabilities.isCreativeMode) {
 					event.entityPlayer.getCurrentEquippedItem().stackSize--;

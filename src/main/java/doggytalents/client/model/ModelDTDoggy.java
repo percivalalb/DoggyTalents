@@ -11,7 +11,11 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.data.EnumTalents;
 
+/**
+ * @author ProPercivalalb
+ */
 @SideOnly(Side.CLIENT)
 public class ModelDTDoggy extends ModelBase
 {
@@ -20,6 +24,7 @@ public class ModelDTDoggy extends ModelBase
 
     /** The wolf's body */
     public ModelRenderer wolfBody;
+    public ModelRenderer wolfBodyChest;
 
     /** Wolf'se first leg */
     public ModelRenderer wolfLeg1;
@@ -49,6 +54,10 @@ public class ModelDTDoggy extends ModelBase
         this.wolfBody = new ModelRenderer(this, 18, 14);
         this.wolfBody.addBox(-4.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
+        
+        this.wolfBodyChest = new ModelRenderer(this, 18, 14);
+        this.wolfBodyChest.addBox(-4.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
+        this.wolfBodyChest.setRotationPoint(0.0F, 14.0F, 2.0F);
         
         this.wolfMane = new ModelRenderer(this, 22, 0);//cause BiggerHead
         this.wolfMane.addBox(-4.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
@@ -86,8 +95,8 @@ public class ModelDTDoggy extends ModelBase
         
         this.wolfTail.setTextureOffset(52, 5).addBox(-1.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);//Tail2
         
-        this.wolfBody.setTextureOffset(52, 21).addBox(1.0F, -1F, 0F, 2, 7, 4);//Backpack1
-        this.wolfBody.setTextureOffset(52, 21).addBox(-5.0F, -1F, 0F, 2, 7, 4);//Backpack1
+        this.wolfBodyChest.setTextureOffset(52, 21).addBox(1.0F, -1F, 0F, 2, 7, 4);//Backpack1
+        this.wolfBodyChest.setTextureOffset(52, 21).addBox(-5.0F, -1F, 0F, 2, 7, 4);//Backpack1
                      
     }
 
@@ -100,6 +109,8 @@ public class ModelDTDoggy extends ModelBase
         super.render(par1Entity, par2, par3, par4, par5, par6, par7);
         this.setRotationAngles(par2, par3, par4, par5, par6, par7, par1Entity);
 
+        EntityDTDoggy dog = (EntityDTDoggy)par1Entity;
+        
         if (this.isChild)
         {
             float f6 = 2.0F;
@@ -110,7 +121,10 @@ public class ModelDTDoggy extends ModelBase
             GL11.glPushMatrix();
             GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
             GL11.glTranslatef(0.0F, 24.0F * par7, 0.0F);
-            this.wolfBody.render(par7);
+            if(dog.talents.getTalentLevel(EnumTalents.PACKPUPPY) > 0) 
+            	this.wolfBodyChest.render(par7);
+            else
+            	this.wolfBody.render(par7);
             this.wolfLeg1.render(par7);
             this.wolfLeg2.render(par7);
             this.wolfLeg3.render(par7);
@@ -122,7 +136,10 @@ public class ModelDTDoggy extends ModelBase
         else
         {
             this.wolfHeadMain.renderWithRotation(par7);
-            this.wolfBody.render(par7);
+            if(dog.talents.getTalentLevel(EnumTalents.PACKPUPPY) > 0) 
+            	this.wolfBodyChest.render(par7);
+            else
+            	this.wolfBody.render(par7);
             this.wolfLeg1.render(par7);
             this.wolfLeg2.render(par7);
             this.wolfLeg3.render(par7);
@@ -150,6 +167,8 @@ public class ModelDTDoggy extends ModelBase
             this.wolfMane.rotateAngleY = 0.0F;
             this.wolfBody.setRotationPoint(0.0F, 18.0F, 0.0F);
             this.wolfBody.rotateAngleX = ((float)Math.PI / 4F);
+            this.wolfBodyChest.setRotationPoint(0.0F, 18.0F, 0.0F);
+            this.wolfBodyChest.rotateAngleX = ((float)Math.PI / 4F);
             this.wolfTail.setRotationPoint(-1.0F, 21.0F, 6.0F);
             this.wolfLeg1.setRotationPoint(-2.5F, 22.0F, 2.0F);
             this.wolfLeg1.rotateAngleX = ((float)Math.PI * 3F / 2F);
@@ -164,6 +183,8 @@ public class ModelDTDoggy extends ModelBase
         {
             this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
             this.wolfBody.rotateAngleX = ((float)Math.PI / 2F);
+            this.wolfBodyChest.setRotationPoint(0.0F, 14.0F, 2.0F);
+            this.wolfBodyChest.rotateAngleX = ((float)Math.PI / 2F);
             this.wolfMane.setRotationPoint(-1.0F, 14.0F, -3.0F);
             this.wolfMane.rotateAngleX = this.wolfBody.rotateAngleX;
             this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
@@ -180,6 +201,7 @@ public class ModelDTDoggy extends ModelBase
         this.wolfHeadMain.rotateAngleZ = dog.getInterestedAngle(par4) + dog.getShakeAngle(par4, 0.0F);
         this.wolfMane.rotateAngleZ = dog.getShakeAngle(par4, -0.08F);
         this.wolfBody.rotateAngleZ = dog.getShakeAngle(par4, -0.16F);
+        this.wolfBodyChest.rotateAngleZ = dog.getShakeAngle(par4, -0.16F);
         this.wolfTail.rotateAngleZ = dog.getShakeAngle(par4, -0.2F);
         
         if((dog.isSitting() || (dog.motionX == 0.0F && dog.motionZ == 0.0F)) && dog.getHealth() > 1) {

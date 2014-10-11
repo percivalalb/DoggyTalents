@@ -1,5 +1,6 @@
 package doggytalents.entity;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,5 +44,12 @@ public class DoggyUtil {
         }
 
         return 0;
+    }
+    
+    public static String getOwnerName(EntityDTDoggy dog) {
+    	EntityLivingBase owner = dog.getOwner();
+    	if(owner instanceof EntityPlayer)
+    		return owner.getCommandSenderName();
+    	return dog.func_152113_b();
     }
 }

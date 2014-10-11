@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import doggytalents.entity.DoggyUtil;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceReference;
@@ -113,34 +114,28 @@ public class RenderDTDoggy extends RenderLiving
             {
                	String modeTip = dog.mode.getMode().getTip();
                 
-                if (dog.getHealth() == 1) {
+                if (dog.getHealth() == 1)
                     modeTip = "(I)";
-                }
 
                 String dogName = dog.getWolfName();
                 String dogTummy = String.format("(%d)", dog.getDogTummy());
 
-                if (!dog.isSneaking())
-                {
+                if (!dog.isSneaking()) {
                     float f4 = 1.0F;
                     double d3 = 0.0D;
 
                     if (dog.riddenByEntity != null)
-                    {
                         d3 = -0.20000000000000001D;
-                    }
 
                     if (dog.riddenByEntity == null)
-                    {
-                        renderLivingLabel(dog, dogName, d, d1 - (double)f4, d2, 64, 1.6F);
-                    }
+                        this.renderLivingLabel(dog, dogName, d, d1 - (double)f4, d2, 64, 1.6F);
 
-                    renderLivingLabel(dog, modeTip + "" + dogTummy, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
+                    this.renderLivingLabel(dog, modeTip + "" + dogTummy, d, (d1 - (double)f4) + 0.11000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
                 
-                    if(renderManager.livingPlayer.isSneaking() && dog.riddenByEntity == null && !dog.func_152113_b().equals(""))
-                    {
-                    	renderLivingLabel(dog, dog.func_152113_b(), d, (d1 - (double)f4) + 0.21000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
-                    }
+                    String ownerName = DoggyUtil.getOwnerName(dog);
+                    
+                    if(this.renderManager.livingPlayer.isSneaking() && dog.riddenByEntity == null && !ownerName.equals(""))
+                    	 this.renderLivingLabel(dog, ownerName, d, (d1 - (double)f4) + 0.21000000000000001D + d3, d2, hungerVisableDistance, 0.7F);
                 }
                 else
                 {

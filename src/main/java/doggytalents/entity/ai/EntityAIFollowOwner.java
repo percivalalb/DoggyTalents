@@ -2,6 +2,7 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -45,8 +46,7 @@ public class EntityAIFollowOwner extends EntityAIBase
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
-    public boolean shouldExecute()
-    {
+    public boolean shouldExecute() {
         EntityLivingBase entitylivingbase = (EntityLivingBase)this.theDog.getOwner();
         int order = this.theDog.masterOrder();
         
@@ -71,9 +71,12 @@ public class EntityAIFollowOwner extends EntityAIBase
         {
         	return false;
         }
-        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist) || (this.theDog.riddenByEntity == null && order == 3)) && !this.theDog.hasBone() && (order == 0 || order == 3))
+        else if ((this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist)))
         {
             return false;
+        }
+        else if(this.theDog.riddenByEntity == null && order == 3) {
+        	return false;
         }
         else
         {
@@ -125,7 +128,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     	int masterZ = MathHelper.floor_double(this.theOwner.posZ);
     	float distanceAway = this.theOwner.getDistanceToEntity(this.theDog);
     	
-    	if((order == 0 || (order == 3 && this.theDog.riddenByEntity != null)) && distanceAway >= 2F) {
+    	if((order == 0 || order == 3) && distanceAway >= 2F) {
     		
 	        this.theDog.getLookHelper().setLookPositionWithEntity(this.theOwner, 10.0F, (float)this.theDog.getVerticalFaceSpeed());
 	

@@ -2,7 +2,7 @@
 {
   "modid": "doggytalents",
   "name": "Doggy Talents",
-  "description": "Making your wolfs into fun, playful dogs.",
+  "description": "Turning your wolves into fun, playful dogs.",
   "version": "${version}",
   "credits": "RaustBlackDragon for creating the original version",
   "mcversion": "${mcversion}",

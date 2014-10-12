@@ -1,5 +1,6 @@
 package doggytalents.block;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -58,21 +59,7 @@ public class BlockDogBed extends BlockContainer {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack stack) {
 	    int facingDirection = MathHelper.floor_double((double)(entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
-	    if (facingDirection == 0) {
-	        world.setBlockMetadataWithNotify(x, y, z, 0, 2);
-	    }
-
-	    if (facingDirection == 1) {
-	        world.setBlockMetadataWithNotify(x, y, z, 1, 2);
-	    }
-
-	    if (facingDirection == 2) {
-	        world.setBlockMetadataWithNotify(x, y, z, 2, 2);
-	    }
-
-	    if (facingDirection == 3) {
-	        world.setBlockMetadataWithNotify(x, y, z, 3, 2);
-	    }
+	    world.setBlockMetadataWithNotify(x, y, z, facingDirection, 2);
 
 	    if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("doggytalents")) {
 	    	NBTTagCompound tag = stack.stackTagCompound.getCompoundTag("doggytalents");

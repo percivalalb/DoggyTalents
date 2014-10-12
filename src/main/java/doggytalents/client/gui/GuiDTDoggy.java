@@ -295,14 +295,14 @@ public class GuiDTDoggy extends GuiContainer {
                 doggyTex--;
             }
             else {
-                doggyTex = 16;
+                doggyTex = 127;
             }
             
             this.changeDoggyTexture(doggyTex);
         }
 
         if (par1GuiButton.id == 19) {
-            if (doggyTex != 16) {
+            if (doggyTex != 127) {
                 doggyTex++;
             }
             else {
@@ -451,7 +451,7 @@ public class GuiDTDoggy extends GuiContainer {
 	     drawString(fontRendererObj, RescueDogStatement, width / 3, 135, 0xffffff);
 	     drawString(fontRendererObj, PuppyEyesStatement, (2 * width) / 3, 135, 0xffffff);
 	     drawString(fontRendererObj, PointsStatement, width / 3, 160, 0xffffff);
-	     drawString(fontRendererObj, DoggyTexStatement, width - 115, 175, 0xffffff);
+	     drawString(fontRendererObj, DoggyTexStatement, width - 120, 175, 0xffffff);
 	     if(dog.func_152114_e(player)) {
 	    	 drawString(fontRendererObj, "Obey Others", width - 115, 200, 0xffffff);
 	     }

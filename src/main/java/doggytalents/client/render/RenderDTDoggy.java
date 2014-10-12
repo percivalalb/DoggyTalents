@@ -57,27 +57,8 @@ public class RenderDTDoggy extends RenderLiving
     }
 
     protected ResourceLocation getDogTexture(EntityDTDoggy dog) {
-    	if(dog.isTamed()) {
-			switch(dog.getTameSkin()) {
-			case 0: return ResourceReference.doggyTame0;
-			case 1: return ResourceReference.doggyTame1;
-			case 2: return ResourceReference.doggyTame2;
-			case 3: return ResourceReference.doggyTame3;
-			case 4: return ResourceReference.doggyTame4;
-			case 5: return ResourceReference.doggyTame5;
-			case 6: return ResourceReference.doggyTame6;
-			case 7: return ResourceReference.doggyTame7;
-			case 8: return ResourceReference.doggyTame8;
-			case 9: return ResourceReference.doggyTame9;
-			case 10: return ResourceReference.doggyTame10;
-			case 11: return ResourceReference.doggyTame11;
-			case 12: return ResourceReference.doggyTame12;
-			case 13: return ResourceReference.doggyTame13;
-			case 14: return ResourceReference.doggyTame14;
-			case 15: return ResourceReference.doggyTame15;
-			case 16: return ResourceReference.doggyTame16;
-			}
-        }
+    	if(dog.isTamed())
+			return ResourceReference.getTameSkin(dog.getTameSkin());
     	
         return ResourceReference.doggyWild;
     }
@@ -86,8 +67,7 @@ public class RenderDTDoggy extends RenderLiving
      * Queries whether should render the specified pass or not.
      */
     @Override
-    protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3)
-    {
+    protected int shouldRenderPass(EntityLivingBase par1EntityLivingBase, int par2, float par3) {
         return this.func_82447_a((EntityDTDoggy)par1EntityLivingBase, par2, par3);
     }
     

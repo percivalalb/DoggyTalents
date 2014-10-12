@@ -1447,11 +1447,6 @@ public class EntityDTDoggy extends EntityTameable {
     public int effectiveLevel() {
         return (this.level.getLevel() + this.level.getDireLevel()) / 10;
     }
-    
-    @Override
-    protected void attackEntity(Entity entity, float damage) {
-    	super.attackEntity(entity, damage);
-    }
 
     public int spendablePoints() {
         return points() - usedPoints();
@@ -1485,17 +1480,17 @@ public class EntityDTDoggy extends EntityTameable {
     
     @Override
     public EntityAgeable createChild(EntityAgeable par1EntityAgeable) {
-    	EntityDTDoggy entitywolf = new EntityDTDoggy(this.worldObj);
+    	EntityDTDoggy entityDTDoggy = new EntityDTDoggy(this.worldObj);
         String s = this.func_152113_b();
 
         if (s != null && s.trim().length() > 0) {
-            entitywolf.func_152115_b(s);
-            entitywolf.setTamed(true);
+            entityDTDoggy.func_152115_b(s);
+            entityDTDoggy.setTamed(true);
         }
         
-        this.lastBaby = entitywolf;
+        this.lastBaby = entityDTDoggy;
 
-        return entitywolf;
+        return entityDTDoggy;
     }
 
     public int getDogTummy() {
@@ -1503,12 +1498,10 @@ public class EntityDTDoggy extends EntityTameable {
 	}
     
     public void setDogTummy(int par1) {
-    	if(par1 > 120) {
+    	if(par1 > 120)
     		par1 = 120;
-    	}
-    	if(par1 < 0) {
+    	if(par1 < 0)
     		par1 = 0;
-    	}
     	
     	this.dataWatcher.updateObject(WatchableDataLib.ID_WOLF_TUMMY, par1);
     }

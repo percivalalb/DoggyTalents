@@ -7,10 +7,15 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.8.0a - 11th October 2014
+v1.8.0a - 12th October 2014
 + Added acacia and dark oak plank casing for dog beds
-+ Added a visual indicator to show when the talent packpuppy is present, tiny chests on the dogs side!
++ Added a visual indicator to show when the talent packpuppy is present, tiny chests on the dogs side! Thanks to 'knuckles001'
++ Added 2 more ears (side ears and flat ears on top of head) and a shorter tail to the dog model so you can texture appropriately to have the ear size you want, thanks to 'knuckles001'
 + When using a plank to open a dogs inventory it will make the chest opening sound
++ Increased the amount of skins you can have from 17 to 128 to add new skins use make the skin and put it in the "/assets/doggytalents/textures/mob/" folder and name it doggytex50.png etc (up to 127)
++ Added 2 new skins doggytex17.png and doggytex18.png
+
+- Removed the version checker due to too much traffic to dropbox
 
 # The different plank types for dog beds now uses the ore dictionary to look up planks, thanks to 'mezz'
 
@@ -20,6 +25,7 @@ v1.8.0a - 11th October 2014
 * Fixed the talent shepherd dog not working
 * Fixed a baby wolf being turned straight into a adult dog not a baby dog
 * Fixed the name of the owner (when shifting looking at a dog) being the UUID id not the users in game name
+* Fixed various spelling and grammatical mistakes
 
 v1.7.3a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'

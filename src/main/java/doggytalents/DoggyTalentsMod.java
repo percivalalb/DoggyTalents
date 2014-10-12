@@ -57,6 +57,7 @@ public class DoggyTalentsMod {
 	
 	@EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
+		
     }
 	
 	@EventHandler

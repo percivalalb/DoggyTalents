@@ -48,7 +48,7 @@ public class ModelDTDoggy extends ModelBase
         float scaleFactor = 0.0F;
         float f1 = 13.5F;
         this.wolfHeadMain = new ModelRenderer(this, 0, 0);
-        this.wolfHeadMain.addBox(-3.0F, -3.0F, -3.0F, 6, 6, 5, scaleFactor);//Bigger head for new ears
+        this.wolfHeadMain.addBox(-3.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);//Bigger head for new ears
         this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F);
         
         this.wolfBody = new ModelRenderer(this, 18, 14);
@@ -59,7 +59,7 @@ public class ModelDTDoggy extends ModelBase
         this.wolfBodyChest.addBox(-4.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBodyChest.setRotationPoint(0.0F, 14.0F, 2.0F);
         
-        this.wolfMane = new ModelRenderer(this, 22, 0);//cause BiggerHead
+        this.wolfMane = new ModelRenderer(this, 21, 0);//cause BiggerHead
         this.wolfMane.addBox(-4.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
         this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F);
         
@@ -85,13 +85,13 @@ public class ModelDTDoggy extends ModelBase
         this.wolfHeadMain.setTextureOffset(16, 14).addBox(-3.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal1
         this.wolfHeadMain.setTextureOffset(16, 14).addBox(1.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal2
         
-        this.wolfHeadMain.setTextureOffset(52, 8).addBox(-4.0F, -2.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
-        this.wolfHeadMain.setTextureOffset(52, 8).addBox(3.0F, -2.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(-4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
         
-        this.wolfHeadMain.setTextureOffset(52, 0).addBox(-3.8F, -3.5F, -2.0F, 2, 1, 2, scaleFactor);//SmallEar1
-        this.wolfHeadMain.setTextureOffset(52, 0).addBox(1.8F, -3.5F, -2.0F, 2, 1, 2, scaleFactor);//SmallEar2
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(-3.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar1
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(1.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar2
         
-        this.wolfHeadMain.setTextureOffset(0, 11).addBox(-1.5F, 0.0F, -6.0F, 3, 3, 4, scaleFactor);//Nose moved
+        this.wolfHeadMain.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -6.0F, 3, 3, 4, scaleFactor);//Nose moved
         
         this.wolfTail.setTextureOffset(52, 5).addBox(-1.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);//Tail2
         

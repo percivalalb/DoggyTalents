@@ -12,6 +12,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -79,8 +80,7 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-    {
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4) {
         int var1 = par1World.getBlockMetadata(par2, par3, par4);
         float var2 = 0.0625F;
         float var3 = (float)(1 + var1 * 2) / 16F;
@@ -119,68 +119,37 @@ public class BlockFoodBowl extends BlockContainer {
     /**
      * Triggered whenever an entity collides with this block (enters into the block). Args: par1World, x, y, z, entity
      */
-    public void onEntityCollidedWithBlock(World par1World, int i, int j, int k, Entity entity)
-    {
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+    	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) world.getTileEntity(x, y, z);
         List list = null;
-        list = par1World.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)i, (double)(float)j + 0.5D, (float)k, (float)(i + 1), (double)(float)j + 0.5D + 0.05000000074505806D, (float)(k + 1)));
+        list = world.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
 
         if (list != null && list.size() > 0)
         {
             for (int l = 0; l < list.size(); l++)
             {
                 EntityDTDoggy entitydtdoggy = (EntityDTDoggy)list.get(l);
-                entitydtdoggy.saveposition.setBowlX(i);
-                entitydtdoggy.saveposition.setBowlY(j);
-                entitydtdoggy.saveposition.setBowlZ(k);
+                entitydtdoggy.saveposition.setBowlX(x);
+                entitydtdoggy.saveposition.setBowlY(y);
+                entitydtdoggy.saveposition.setBowlZ(z);
             }
         }
         
-        if (entity != null && entity instanceof EntityItem)
-        {
-            TileEntity tileentity = par1World.getTileEntity(i, j, k);
+        if (entity instanceof EntityItem) {
+            EntityItem entityItem = (EntityItem)entity;
+            
 
-            if (!(tileentity instanceof TileEntityFoodBowl))
-            {
-                return;
-            }
-
-            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)tileentity;
-
-                EntityItem entityitem = (EntityItem)entity;
-
-                if (entityitem.isDead)
-                {
-                    return;
-                }
-
-                if (tileentitydogfoodbowl.addItemStackToInventory(entityitem.getEntityItem()))
-                {
-                    par1World.playSoundEffect((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((par1World.rand.nextFloat() - par1World.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    entityitem.setDead();
-                    return;
-                }
-
-                Block block = par1World.getBlock(i, j + 1, k);
-
-                if (block != Blocks.water && block != Blocks.flowing_water)
-                    return;
-
-                double d = (double)j + 1.05D;
-
-                if (entityitem.boundingBox.minY < d)
-                {
-                    double d1 = d - entityitem.boundingBox.minY;
-                    entityitem.setPosition(entityitem.posX, entityitem.posY + d1, entityitem.posZ);
-                }
+            if(TileEntityHopper.func_145898_a(foodBowl, entityItem))
+                world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             
         }
 
         List list2 = null;
-        list2 = par1World.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)i, (double)(float)j + 0.5D, (float)k, (float)(i + 1), (double)(float)j + 0.5D + 0.05000000074505806D, (float)(k + 1)));
+        list2 = world.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
 
         if (list2 != null && list2.size() > 0)
         {
-            TileEntity tileentity1 = par1World.getTileEntity(i, j, k);
+            TileEntity tileentity1 = world.getTileEntity(x, y, z);
 
             if (!(tileentity1 instanceof TileEntityFoodBowl))
             {

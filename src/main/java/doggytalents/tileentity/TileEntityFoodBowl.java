@@ -20,24 +20,24 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
    
 	private final int iDogFoodBowlInventorySize = 5;
     private final int iDogFoodBowlStackSizeLimit = 64;
-    private ItemStack bowlcontents[];
+    private ItemStack bowlContents[];
 
     public TileEntityFoodBowl() {
-        bowlcontents = new ItemStack[5];
+        this.bowlContents = new ItemStack[5];
     }
     
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         NBTTagList nbttaglist = tag.getTagList("Items", 10);
-        bowlcontents = new ItemStack[getSizeInventory()];
+        this.bowlContents = new ItemStack[getSizeInventory()];
 
         for (int i = 0; i < nbttaglist.tagCount(); i++) {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 0xff;
 
-            if (j >= 0 && j < bowlcontents.length) {
-                bowlcontents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+            if (j >= 0 && j < this.bowlContents.length) {
+            	this.bowlContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
             }
         }
     }
@@ -47,11 +47,11 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         super.writeToNBT(tag);
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.bowlcontents.length; i++) {
-            if (this.bowlcontents[i] != null) {
+        for (int i = 0; i < this.bowlContents.length; i++) {
+            if (this.bowlContents[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
-                this.bowlcontents[i].writeToNBT(nbttagcompound1);
+                this.bowlContents[i].writeToNBT(nbttagcompound1);
                 nbttaglist.appendTag(nbttagcompound1);
             }
         }
@@ -81,7 +81,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     @Override
     public ItemStack getStackInSlot(int i) {
-        return bowlcontents[i];
+        return this.bowlContents[i];
     }
 
     private int findSlotToStoreItemStack(ItemStack itemstack)
@@ -114,10 +114,10 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     public int getFirstDogFoodStack(EntityDTDoggy entitydtdoggy) {
         for (int i = 0; i < 5; i++) {
-            if (bowlcontents[i] == null)
+            if (bowlContents[i] == null)
                 continue;
 
-            Item item = bowlcontents[i].getItem();
+            Item item = bowlContents[i].getItem();
 
             if (item == null || !(item instanceof ItemFood))
                 continue;
@@ -130,79 +130,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
         return -1;
     }
-
-    public int storePartialItemStack(ItemStack itemstack)
-    {
-        Item item = itemstack.getItem();
-        int j = itemstack.stackSize;
-        int k = findSlotToStoreItemStack(itemstack);
-
-        if (k < 0)
-        {
-            k = getFirstEmptyStack();
-        }
-
-        if (k < 0)
-        {
-            return j;
-        }
-
-        if (getStackInSlot(k) == null)
-        {
-            setInventorySlotContents(k, new ItemStack(item, 0, itemstack.getItemDamage()));
-        }
-
-        int l = j;
-        ItemStack itemstack1 = getStackInSlot(k);
-
-        if (l > itemstack1.getMaxStackSize() - itemstack1.stackSize)
-        {
-            l = itemstack1.getMaxStackSize() - itemstack1.stackSize;
-        }
-
-        if (l > getInventoryStackLimit() - itemstack1.stackSize)
-        {
-            l = getInventoryStackLimit() - itemstack1.stackSize;
-        }
-
-        if (l == 0)
-        {
-            return j;
-        }
-        else
-        {
-            j -= l;
-            itemstack1.stackSize += l;
-            setInventorySlotContents(k, itemstack1);
-            return j;
-        }
-    }
-
-    public boolean addItemStackToInventory(ItemStack itemstack)
-    {
-        if (!itemstack.isItemDamaged())
-        {
-            itemstack.stackSize = storePartialItemStack(itemstack);
-
-            if (itemstack.stackSize == 0)
-            {
-                return true;
-            }
-        }
-
-        int i = getFirstEmptyStack();
-
-        if (i >= 0)
-        {
-            setInventorySlotContents(i, itemstack);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
+    
     public ItemStack feedDog(EntityDTDoggy dog, int i, int j) {
         if (getStackInSlot(i) != null) {
             ItemStack itemstack = getStackInSlot(i);
@@ -302,7 +230,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     @Override
     public void setInventorySlotContents(int i, ItemStack itemstack) {
-        bowlcontents[i] = itemstack;
+        bowlContents[i] = itemstack;
 
         if (itemstack != null && itemstack.stackSize > getInventoryStackLimit()) {
             itemstack.stackSize = getInventoryStackLimit();
@@ -336,12 +264,12 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     {
         for (int i = 0; i < 5; i++)
         {
-            if (bowlcontents[i] == null)
+            if (bowlContents[i] == null)
             {
                 continue;
             }
 
-            Item item = bowlcontents[i].getItem();
+            Item item = bowlContents[i].getItem();
 
             if (item != null && (item instanceof ItemFood))
             {
@@ -354,9 +282,9 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
-        if (bowlcontents[slot] != null) {
-            ItemStack itemstack = bowlcontents[slot];
-            bowlcontents[slot] = null;
+        if (bowlContents[slot] != null) {
+            ItemStack itemstack = bowlContents[slot];
+            bowlContents[slot] = null;
             return itemstack;
         }
         else {

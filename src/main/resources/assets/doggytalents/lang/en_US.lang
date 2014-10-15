@@ -11,6 +11,8 @@ item.dt.breedingBone.name=Breeding Bone
 item.dt.doggyCharm.name=Doggy Charm
 item.dt.collarShears.name=Collar Shears
 item.dt.commandEmblem.name=Command Emblem
+item.dt.radioCollar.name=Radio Collar
+item.dt.radar.name=Radar
 
 doggytalents.key.category=Doggy Talents
 doggytalents.key.come=Come Command

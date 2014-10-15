@@ -16,6 +16,7 @@ public class ResourceReference {
 	
 	public static final ResourceLocation doggyHurt = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
 	public static final ResourceLocation doggyWild = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
+	public static final ResourceLocation doggyRadioCollar = new ResourceLocation("doggytalents", getMobTexturePath("doggyRadioCollar.png"));
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))

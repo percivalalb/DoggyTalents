@@ -180,7 +180,7 @@ public class EntityDTDoggy extends EntityTameable {
     	this.saveposition = new DogSavePosition(this);
     	
         super.entityInit();
-        this.dataWatcher.addObject(19, new Byte((byte)0));
+        this.dataWatcher.addObject(WatchableDataLib.ID_BEGGING, new Byte((byte)0));
         this.dataWatcher.addObject(WatchableDataLib.ID_TALENTS, talents.getDefaultStr());
         this.dataWatcher.addObject(WatchableDataLib.ID_LEVEL, level.getDefaultStr());
         this.dataWatcher.addObject(WatchableDataLib.ID_MODE, mode.getDefaultInt());
@@ -189,6 +189,7 @@ public class EntityDTDoggy extends EntityTameable {
         this.dataWatcher.addObject(WatchableDataLib.ID_DOG_NAME, "");
         this.dataWatcher.addObject(WatchableDataLib.ID_WOLF_TUMMY, new Integer(60));
         this.dataWatcher.addObject(WatchableDataLib.ID_WILL_OBEY_OTHERS, 0);
+        this.dataWatcher.addObject(WatchableDataLib.ID_RADAR_COLAR, 0);
     }
 
     /**
@@ -211,6 +212,7 @@ public class EntityDTDoggy extends EntityTameable {
         this.mode.writeToNBT(tag);
         this.inventory.writeToNBT(tag);
         tag.setBoolean("willObey", this.willObeyOthers());
+        tag.setBoolean("radioCollar", this.hasRadarCollar());
         tag.setString("wolfName", this.getWolfName());
         tag.setInteger("wolfTummy", this.getDogTummy());
         tag.setInteger("tummyTick", this.tummyTick);
@@ -342,6 +344,7 @@ public class EntityDTDoggy extends EntityTameable {
         this.mode.readFromNBT(tag);
         this.inventory.readFromNBT(tag);
         this.setWillObeyOthers(tag.getBoolean("willObey"));
+        this.hasRadarCollar(tag.getBoolean("radioCollar"));
         this.setTameSkin(tag.getInteger("doggyTex"));
         this.setWolfName(tag.getString("wolfName"));
         this.setDogTummy(tag.getInteger("wolfTummy"));
@@ -1023,6 +1026,11 @@ public class EntityDTDoggy extends EntityTameable {
                 	this.worldObj.playSoundEffect(this.posX, this.posY + 0.5D, this.posZ, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                 	return true;
                 }
+                else if(stack.getItem() == ModItems.radioCollar && canInteract(player) && !this.hasRadarCollar()) {
+                	DoggyUtil.loseStack(player, stack);
+                	this.hasRadarCollar(true);
+                	return true;
+                }
                 else if(stack.getItem() instanceof IDogTreat && canInteract(player)) {
                 	IDogTreat treat = (IDogTreat)stack.getItem();
                 	EnumFeedBack type = treat.canGiveToDog(player, this, this.level.getLevel(), this.level.getDireLevel());
@@ -1039,6 +1047,9 @@ public class EntityDTDoggy extends EntityTameable {
                         this.func_152115_b("");
                         this.setWillObeyOthers(false);
                         this.mode.setMode(EnumMode.DOCILE);
+                        if(this.hasRadarCollar())
+                        	this.dropItem(ModItems.radioCollar, 1);
+                        this.hasRadarCollar(false);
                         this.reversionTime = 40;
                     }
 
@@ -1333,9 +1344,9 @@ public class EntityDTDoggy extends EntityTameable {
 
     public void setIsBegging(boolean par1) {
         if (par1)
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte)1));
+            this.dataWatcher.updateObject(WatchableDataLib.ID_BEGGING, Byte.valueOf((byte)1));
         else
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte)0));
+            this.dataWatcher.updateObject(WatchableDataLib.ID_BEGGING, Byte.valueOf((byte)0));
     }
 
     /**
@@ -1357,7 +1368,7 @@ public class EntityDTDoggy extends EntityTameable {
     }
 
     public boolean isBegging() {
-        return this.dataWatcher.getWatchableObjectByte(19) == 1;
+        return this.dataWatcher.getWatchableObjectByte(WatchableDataLib.ID_BEGGING) == 1;
     }
     
     public int masterOrder() {
@@ -1504,5 +1515,13 @@ public class EntityDTDoggy extends EntityTameable {
     		par1 = 0;
     	
     	this.dataWatcher.updateObject(WatchableDataLib.ID_WOLF_TUMMY, par1);
+    }
+    
+    public void hasRadarCollar(boolean flag) {
+    	this.dataWatcher.updateObject(WatchableDataLib.ID_RADAR_COLAR, flag ? 1 : 0);
+    }
+    
+    public boolean hasRadarCollar() {
+    	return this.dataWatcher.getWatchableObjectInt(WatchableDataLib.ID_RADAR_COLAR) != 0;
     }
 }

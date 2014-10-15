@@ -24,6 +24,7 @@ import doggytalents.core.addon.AddonManager;
 import doggytalents.core.handler.ConfigurationHandler;
 import doggytalents.core.handler.ConnectionHandler;
 import doggytalents.core.handler.EventRightClickEntity;
+import doggytalents.core.helper.Version;
 import doggytalents.core.helper.VersionHelper;
 import doggytalents.core.helper.VersionHelper.UpdateType;
 import doggytalents.core.proxy.CommonProxy;
@@ -64,7 +65,7 @@ public class DoggyTalentsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		creativeTab = new CreativeTabDoggyTalents();
-		VersionHelper.checkVersion(UpdateType.BLANK);
+		Version.startVersionCheck();
 		//Loads the Blocks/Items
 		ModBlocks.inti();
 		ModItems.inti();

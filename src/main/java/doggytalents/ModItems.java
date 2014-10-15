@@ -7,6 +7,7 @@ import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDogOwnersManual;
 import doggytalents.item.ItemDoggyCharm;
+import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTreat;
 
@@ -26,6 +27,8 @@ public class ModItems {
     public static Item breedingBone;
     public static Item collarShears;
     public static Item doggyCharm;
+    public static Item radioCollar;
+    public static Item radar;
 	
 	public static void inti() {
 		dogOwnersManual = new ItemDogOwnersManual().setUnlocalizedName("dt.dogOwnersManual").setTextureName("doggytalents:dogOwnersManual");
@@ -38,7 +41,9 @@ public class ModItems {
 	    breedingBone = new ItemDT("breedingbone").setUnlocalizedName("dt.breedingBone");
 	    collarShears = new ItemDT("collarshears").setUnlocalizedName("dt.collarShears").setMaxDamage(16);
 	    doggyCharm = new ItemDoggyCharm("doggycharm").setUnlocalizedName("dt.doggyCharm");
-		
+	    radioCollar = new ItemDT("radiocollar").setUnlocalizedName("dt.radioCollar");
+	    radar = new ItemRadar().setUnlocalizedName("dt.radar");
+	    
 		GameRegistry.registerItem(throwBone, "dt.throwBone");
 	    GameRegistry.registerItem(trainingTreat, "dt.trainingTreat");
 	    GameRegistry.registerItem(superTreat, "dt.superTreat");
@@ -48,5 +53,7 @@ public class ModItems {
 	    GameRegistry.registerItem(collarShears, "dt.collarShears");
 	    GameRegistry.registerItem(commandEmblem, "dt.commandEmblem");
 	    GameRegistry.registerItem(doggyCharm, "dt.doggyCharm");
+	    GameRegistry.registerItem(radioCollar, "dt.radioCollar");
+	    GameRegistry.registerItem(radar, "dt.radar");
 	}
 }

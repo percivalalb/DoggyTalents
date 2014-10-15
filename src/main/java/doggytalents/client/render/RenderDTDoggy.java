@@ -33,12 +33,10 @@ public class RenderDTDoggy extends RenderLiving
         return par1EntityDTDoggy.getTailRotation();
     }
 
-    protected int func_82447_a(EntityDTDoggy par1EntityDTDoggy, int par2, float par3)
-    {
+    protected int func_82447_a(EntityDTDoggy par1EntityDTDoggy, int par2, float par3) {
         float f1;
 
-        if (par2 == 0 && par1EntityDTDoggy.getWolfShaking())
-        {
+        if (par2 == 0 && par1EntityDTDoggy.getWolfShaking()) {
             f1 = par1EntityDTDoggy.getBrightness(par3) * par1EntityDTDoggy.getShadingWhileShaking(par3);
             this.bindTexture(this.getDogTexture(par1EntityDTDoggy));
             GL11.glColor3f(f1, f1, f1);
@@ -46,6 +44,12 @@ public class RenderDTDoggy extends RenderLiving
         }
         else if (par2 == 1 && (par1EntityDTDoggy.getHealth() == 1 && par1EntityDTDoggy.isImmortal() && Constants.bloodWhenIncapacitated)) {
         	this.bindTexture(ResourceReference.doggyHurt);
+            f1 = par1EntityDTDoggy.getBrightness(par3) * par1EntityDTDoggy.getShadingWhileShaking(par3);
+            GL11.glColor3f(f1, f1, f1);
+            return 1;
+        }
+        else if (par2 == 2 && par1EntityDTDoggy.hasRadarCollar()) {
+        	this.bindTexture(ResourceReference.doggyRadioCollar);
             f1 = par1EntityDTDoggy.getBrightness(par3) * par1EntityDTDoggy.getShadingWhileShaking(par3);
             GL11.glColor3f(f1, f1, f1);
             return 1;

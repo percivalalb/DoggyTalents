@@ -7,6 +7,8 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.0a - 14th October 2014
+
 v1.8.0a - 12th October 2014
 + Added acacia and dark oak plank casing for dog beds
 + Added a visual indicator to show when the talent packpuppy is present, tiny chests on the dogs side! Thanks to 'knuckles001'

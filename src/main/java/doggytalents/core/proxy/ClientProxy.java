@@ -12,9 +12,11 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import doggytalents.ModBlocks;
+import doggytalents.ModItems;
 import doggytalents.client.model.ModelDTDoggy;
 import doggytalents.client.render.RenderDTDoggy;
 import doggytalents.client.render.RenderItemDogBed;
+import doggytalents.client.render.RenderItemRadar;
 import doggytalents.client.render.RenderWorldDogBed;
 import doggytalents.core.handler.ClientTickHandler;
 import doggytalents.core.handler.KeyStateHandler;
@@ -28,6 +30,7 @@ public class ClientProxy extends CommonProxy {
 	private Minecraft mc = Minecraft.getMinecraft();
 	private RenderWorldDogBed renderWorldDogBed = new RenderWorldDogBed();
 	private RenderItemDogBed  renderItemDogBed  = new RenderItemDogBed();
+	private RenderItemRadar   renderItemRadar   = new RenderItemRadar();
 	
 	@Override
 	public void onPreLoad() {
@@ -35,6 +38,7 @@ public class ClientProxy extends CommonProxy {
 		this.RENDER_ID_DOG_BED = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(renderWorldDogBed);
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.dogBed), renderItemDogBed);
+		MinecraftForgeClient.registerItemRenderer(ModItems.radar, renderItemRadar);
 	}
 	
 	@Override

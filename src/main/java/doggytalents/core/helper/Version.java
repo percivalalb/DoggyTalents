@@ -35,7 +35,7 @@ public class Version {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("https://cdn.rawgit.com/ProPercivalalb/DoggyTalents/master/version.json");
+                    URL url = new URL("https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/version.json");
                     InputStream con = url.openStream();
                     String data = new String(ByteStreams.toByteArray(con));
                     con.close();
@@ -58,7 +58,7 @@ public class Version {
                         else {
                             status = OUTDATED;
                             recommendedVersion = rec;
-                            linkVersion = links.get("rec");
+                            linkVersion = links.get(rec);
                         }
                     }
                 }
@@ -74,12 +74,19 @@ public class Version {
                 
                 
                 while(!checkedVersion) {
+                	try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 	if(status == OUTDATED) {
                 		EntityPlayer player = DoggyTalentsMod.proxy.getClientPlayer();
                 		if(player != null) {
                 			ChatComponentTranslation chatComponent = ChatHelper.getChatComponentTranslation("doggytalents.updatemessage", Reference.MOD_NAME, recommendedVersion, linkVersion);
                 		  	chatComponent.getChatStyle().setItalic(true);
                 		  	player.addChatMessage(chatComponent);
+                		  	checkedVersion = true;
                 		}
                 	}
                 }

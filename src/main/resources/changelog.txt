@@ -7,7 +7,8 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.9.0a - 14th October 2014
+v1.8.1a - 14th October 2014
+* Fixed a glitch where you could duplicate items with the packpuppy talent
 
 v1.8.0a - 12th October 2014
 + Added acacia and dark oak plank casing for dog beds

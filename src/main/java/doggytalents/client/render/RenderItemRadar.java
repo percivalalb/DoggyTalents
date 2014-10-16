@@ -46,7 +46,7 @@ public class RenderItemRadar implements IItemRenderer {
 	
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
+		return type == ItemRenderType.FIRST_PERSON_MAP;
 	}
 
 	@Override
@@ -72,9 +72,40 @@ public class RenderItemRadar implements IItemRenderer {
             textureManager.bindTexture(this.field_148253_a);
             int i = 0;
             GL11.glPushMatrix();
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glColor4f(49F / 255F, 150F / 255F, 49F / 255F, 1.0F);
+            OpenGlHelper.glBlendFunc(1, 771, 0, 1);
+            GL11.glDisable(GL11.GL_ALPHA_TEST);
+            tessellator.startDrawingQuads();
+            tessellator.addVertexWithUV((double)((float)(b0 + 0) + f), (double)((float)(b1 + 128) - f), -0.009999999776482582D, 0.0D, 1.0D);
+            tessellator.addVertexWithUV((double)((float)(b0 + 128) - f), (double)((float)(b1 + 128) - f), -0.009999999776482582D, 1.0D, 1.0D);
+            tessellator.addVertexWithUV((double)((float)(b0 + 128) - f), (double)((float)(b1 + 0) + f), -0.009999999776482582D, 1.0D, 0.0D);
+            tessellator.addVertexWithUV((double)((float)(b0 + 0) + f), (double)((float)(b1 + 0) + f), -0.009999999776482582D, 0.0D, 0.0D);
+            tessellator.draw();
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+            GL11.glDisable(GL11.GL_BLEND);
+            
+            GL11.glColor4f(0.0F, 82F / 255F, 0.0F, 1.0F);
+            GL11.glTranslatef(0F, 0F, -0.12F);
+            GL11.glLineWidth(1.0F);
+            GL11.glBegin(1);
+            GL11.glVertex2d(0.0D, 0D);
+            GL11.glVertex2d(128.0D, 128.0D);
+            GL11.glVertex2d(128.0D, 0D);
+            GL11.glVertex2d(0.0D, 128.0D);
+            GL11.glVertex2d(64.0D, 0D);
+            GL11.glVertex2d(64.0D, 128.0D);
+            GL11.glVertex2d(0.0D, 64D);
+            GL11.glVertex2d(128.0D, 64.0D);
+            GL11.glEnd();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glEnable(GL11.GL_LIGHTING);
+
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(64F, 64F, -0.02F);
-
-
             GL11.glRotatef((player.rotationYaw % 360), 0.0F, 0.0F, -1.0F);
             GL11.glTranslatef(-64F, -64F, 0F);
  

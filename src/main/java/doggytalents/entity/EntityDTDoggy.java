@@ -1266,7 +1266,7 @@ public class EntityDTDoggy extends EntityTameable {
         if (!list.isEmpty()) {
             for(int i = 0; i < list.size(); i++) {
                 EntityItem entityitem = (EntityItem)list.get(i);
-                if (!this.worldObj.isRemote && entityitem.getEntityItem().getItem() != ModItems.throwBone) {
+                if (!this.worldObj.isRemote && !entityitem.isDead &&entityitem.getEntityItem().getItem() != ModItems.throwBone) {
                     if(TileEntityHopper.func_145898_a(this.inventory, entityitem)) {
                     	this.worldObj.playSoundAtEntity(this, "random.pop", 0.2F, ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }

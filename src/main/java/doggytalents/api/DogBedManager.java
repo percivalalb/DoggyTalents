@@ -53,6 +53,12 @@ public class DogBedManager {
 		Block plankBlock = Block.getBlockFromItem(plank.getItem());
 		DogBedManager.registerBedWood(plank.getDisplayName(), new DefaultBedMaterial(plankBlock, plank.getItemDamage()), plank);
 	}
+	
+	public static void registerBedWood(String block, int meta) {
+		Block plankBlock = Block.getBlockFromName(block);
+		ItemStack stack = new ItemStack(plankBlock, 1, meta);
+		DogBedManager.registerBedWood(stack.getDisplayName(), new DefaultBedMaterial(plankBlock, meta), stack);
+	}
 
 	/**
 	 *

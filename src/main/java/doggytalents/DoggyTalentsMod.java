@@ -24,9 +24,7 @@ import doggytalents.core.addon.AddonManager;
 import doggytalents.core.handler.ConfigurationHandler;
 import doggytalents.core.handler.ConnectionHandler;
 import doggytalents.core.handler.EventRightClickEntity;
-import doggytalents.core.helper.Version;
-import doggytalents.core.helper.VersionHelper;
-import doggytalents.core.helper.VersionHelper.UpdateType;
+import doggytalents.core.helper.DoggyTalentsVersion;
 import doggytalents.core.proxy.CommonProxy;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.lib.Reference;
@@ -65,7 +63,7 @@ public class DoggyTalentsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		creativeTab = new CreativeTabDoggyTalents();
-		Version.startVersionCheck();
+		DoggyTalentsVersion.startVersionCheck();
 		//Loads the Blocks/Items
 		ModBlocks.inti();
 		ModItems.inti();
@@ -119,6 +117,9 @@ public class DoggyTalentsMod {
         GameRegistry.addRecipe(new ItemStack(ModItems.collarShears, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.bone, 'Y', Items.shears});
         GameRegistry.addRecipe(new ItemStack(ModItems.commandEmblem, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.gold_ingot, 'Y', Items.bow});
         GameRegistry.addRecipe(new ItemStack(ModBlocks.foodBowl, 1), new Object[] {"XXX", "XYX", "XXX", 'X', Items.iron_ingot, 'Y', Items.bone});
+        
+        GameRegistry.addRecipe(new ItemStack(ModItems.radioCollar, 1), new Object[] {"XX", "YX", 'X', Items.iron_ingot, 'Y', Items.redstone});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.radar, 1), new Object[] {new ItemStack(Items.map, 1), new ItemStack(Items.redstone, 1), new ItemStack(ModItems.radioCollar, 1)});
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.configuration);

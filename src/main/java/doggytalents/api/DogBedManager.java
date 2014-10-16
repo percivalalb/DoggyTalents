@@ -9,6 +9,7 @@ import net.minecraft.util.IIcon;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import doggytalents.ModBlocks;
+import doggytalents.core.helper.LogHelper;
 
 /**
  * @author ProPercivalalb
@@ -27,6 +28,19 @@ public class DogBedManager {
 	
 	public static boolean isValidWoolId(String woolId) {
 		return woolIcons.keySet().contains(woolId);
+	}
+	
+	
+	public static ItemStack getAssociactedWoodItem(String woodId) {
+		if(isValidWoodId(woodId))
+			return woodAssociatedItem.get(woodId);
+		return null;
+	}
+	
+	public static ItemStack getAssociactedWoolItem(String woolId) {
+		if(isValidWoolId(woolId))
+			return woolAssociatedItem.get(woolId);
+		return null;
 	}
 	
 	public static IIcon getWoodIcon(String woodId, int side) {
@@ -56,6 +70,11 @@ public class DogBedManager {
 	
 	public static void registerBedWood(String block, int meta) {
 		Block plankBlock = Block.getBlockFromName(block);
+		if(plankBlock == null) {
+			LogHelper.warning("[DoggyTalents] The wood id '%s' does not exist, please fix", block);
+			return;
+		}
+			
 		ItemStack stack = new ItemStack(plankBlock, 1, meta);
 		DogBedManager.registerBedWood(stack.getDisplayName(), new DefaultBedMaterial(plankBlock, meta), stack);
 	}
@@ -67,15 +86,15 @@ public class DogBedManager {
 	 */
 	public static void registerBedWood(String uniqueId, IDogBedMaterial iconLookup, ItemStack associatedItem) {
 		if (associatedItem == null || associatedItem.getItem() == null) {
-			FMLLog.warning("[DoggyTalents] The wood id '%s' does not exist, please fix", uniqueId);
+			LogHelper.warning("[DoggyTalents] The wood id '%s' does not exist, please fix", uniqueId);
 			return;
 		}
 
 		if(woodIcons.keySet().contains(uniqueId)) {
-			FMLLog.warning("[DoggyTalents] The dog bed wood id '%s' has already been taken, please fix", uniqueId);
+			LogHelper.warning("[DoggyTalents] The dog bed wood id '%s' has already been taken, please fix", uniqueId);
 			return;
 		}
-		FMLLog.info("Registered dog bed wood id '%s'", uniqueId);
+		LogHelper.info("Registered dog bed wood id '%s'", uniqueId);
 		woodIcons.put(uniqueId, iconLookup);
 		woodAssociatedItem.put(uniqueId, associatedItem);
 		for(String woolId : DogBedManager.getAllWoolIds()) {
@@ -90,10 +109,10 @@ public class DogBedManager {
 	 */
 	public static void registerBedWool(String uniqueId, IDogBedMaterial iconLookup, ItemStack associatedItem) {
 		if(woolIcons.keySet().contains(uniqueId)) {
-			FMLLog.warning("[DoggyTalents] The dog bed wool id '%s' has already been taken, please fix");
+			LogHelper.warning("[DoggyTalents] The dog bed wool id '%s' has already been taken, please fix");
 			return;
 		}
-		FMLLog.info("Registered dog bed wool id '%s'", uniqueId);
+		LogHelper.info("Registered dog bed wool id '%s'", uniqueId);
 		woolIcons.put(uniqueId, iconLookup);
 		woolAssociatedItem.put(uniqueId, associatedItem);
 		for(String woodId : DogBedManager.getAllWoodIds()) {

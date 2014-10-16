@@ -56,10 +56,7 @@ public class RenderItemRadar implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		if(type == ItemRenderType.EQUIPPED) {
-	      
-		}
-		else if(type == ItemRenderType.FIRST_PERSON_MAP) {
+		if(type == ItemRenderType.FIRST_PERSON_MAP) {
 			EntityPlayer player = (EntityPlayer)data[0];
 			TextureManager textureManager = (TextureManager)data[1];
 			MapData mapData = (MapData)data[2];
@@ -121,6 +118,9 @@ public class RenderItemRadar implements IItemRenderer {
 						int rotation = (int) dog.rotationYaw ;
 						int centerX = (int) (player.posX - dog.posX);
 						int centerZ = (int) (player.posZ - dog.posZ);
+						if((centerX >= 128 || centerX <= -128) || (centerZ >= 128 || centerZ <= -128))
+							continue;	
+						
 	                    GL11.glPushMatrix();
 	                    GL11.glTranslatef((float)b0 + (float)centerX / 2.0F + 64.0F, (float)b1 + (float)centerZ / 2.0F + 64.0F, -0.02F);
 	                    GL11.glRotatef((dog.rotationYaw % 360), 0.0F, 0.0F, 1.0F);
@@ -166,17 +166,5 @@ public class RenderItemRadar implements IItemRenderer {
             
 			//Minecraft.getMinecraft().entityRenderer.getMapItemRenderer().func_148250_a(mapData, false);
 		}
-		
-		else if(type == ItemRenderType.ENTITY) {
-			RenderBlocks renderBlocks = (RenderBlocks)data[0];
-			EntityItem entityItem = (EntityItem)data[1];
-			
-		}
-		
-		else if(type == ItemRenderType.INVENTORY) {
-			RenderBlocks renderBlocks = (RenderBlocks)data[0];
-		
-		}
-		
 	}
 }

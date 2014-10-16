@@ -7,8 +7,17 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.8.1a - 14th October 2014
+v1.8.1a - 16th October 2014
++ Added Radio Collar which can be put on a dog
++ Added Radar with shows any dogs within 128 blocks which have a radio collar on
++ Added config option to check if you want to check for updates or not
+
+# Improved version checker so it will will only tell you new versions available for the version of minecraft you are on
+
+* Fixed crash on server due to dog bed casing
 * Fixed a glitch where you could duplicate items with the packpuppy talent
+* Fixed dogs not begging when holding a master treat
+* Fixed crash with foresty
 
 v1.8.0a - 12th October 2014
 + Added acacia and dark oak plank casing for dog beds
@@ -17,8 +26,6 @@ v1.8.0a - 12th October 2014
 + When using a plank to open a dogs inventory it will make the chest opening sound
 + Increased the amount of skins you can have from 17 to 128 to add new skins use make the skin and put it in the "/assets/doggytalents/textures/mob/" folder and name it doggytex50.png etc (up to 127)
 + Added 2 new skins doggytex17.png and doggytex18.png
-
-- Removed the version checker due to too much traffic to dropbox
 
 # The different plank types for dog beds now uses the ore dictionary to look up planks, thanks to 'mezz'
 

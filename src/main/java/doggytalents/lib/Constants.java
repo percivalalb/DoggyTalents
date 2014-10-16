@@ -12,4 +12,5 @@ public class Constants {
 	public static int barkRate = 10;
 	public static boolean bloodWhenIncapacitated = true;
 	public static boolean isStartingItemEnabled = true;
+	public static boolean versionCheck = true;
 }

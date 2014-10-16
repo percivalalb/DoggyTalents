@@ -82,6 +82,6 @@ public class EntityAIBeg extends EntityAIBase
     private boolean hasPlayerGotBoneInHand(EntityPlayer par1EntityPlayer)
     {
         ItemStack itemstack = par1EntityPlayer.inventory.getCurrentItem();
-        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.getItem() == Items.bone) || DoggyUtil.foodValue(this.theDog, itemstack) > 0 || itemstack.getItem() == ModItems.throwBone || itemstack.getItem() == ModItems.trainingTreat || itemstack.getItem() == ModItems.superTreat || itemstack.getItem() == ModItems.superTreat || itemstack.getItem() == ModItems.direTreat || itemstack.getItem() == ModItems.breedingBone ? true : this.theDog.isBreedingItem(itemstack));
+        return itemstack == null ? false : ((!this.theDog.isTamed() && itemstack.getItem() == Items.bone) || DoggyUtil.foodValue(this.theDog, itemstack) > 0 || itemstack.getItem() == ModItems.throwBone || itemstack.getItem() == ModItems.trainingTreat || itemstack.getItem() == ModItems.superTreat || itemstack.getItem() == ModItems.masterTreat || itemstack.getItem() == ModItems.direTreat || itemstack.getItem() == ModItems.breedingBone ? true : this.theDog.isBreedingItem(itemstack));
     }
 }

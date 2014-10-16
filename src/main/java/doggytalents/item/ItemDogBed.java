@@ -34,7 +34,8 @@ public class ItemDogBed extends ItemBlock {
 		    
 		    String woodId = tag.getString("woodId");
 		    if(!Strings.isNullOrEmpty(woodId) && DogBedManager.isValidWoodId(woodId)) {
-		    	toolTipList.add(woodId + " " + StatCollector.translateToLocal("dogBed.casing"));
+		    	ItemStack item = DogBedManager.getAssociactedWoodItem(woodId);
+		    	toolTipList.add(item.getDisplayName() + " " + StatCollector.translateToLocal("dogBed.casing"));
 		    }
 		    else {
 		    	toolTipList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woodError"));
@@ -42,6 +43,7 @@ public class ItemDogBed extends ItemBlock {
 		    	
 		    String woolId = tag.getString("woolId");
 		    if(!Strings.isNullOrEmpty(woolId) && DogBedManager.isValidWoolId(woolId)) {
+		    	ItemStack item = DogBedManager.getAssociactedWoolItem(woolId);
 		    	toolTipList.add(StatCollector.translateToLocal("dogBed.bedding." + woolId));	
 		    }
 		    

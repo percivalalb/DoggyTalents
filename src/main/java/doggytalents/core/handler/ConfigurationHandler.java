@@ -21,6 +21,7 @@ public class ConfigurationHandler {
 		Constants.direParticalsOff = config.get("doggySettings", "direParticalsOff", false, "Disables the particle effect on Dire Level 30 dogs.").getBoolean(false);
 		Constants.isStartingItemEnabled = config.get("doggySettings", "isStartingItemsEnabled", true, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(true);
 		Constants.bloodWhenIncapacitated = config.get("doggySettings", "bloodWhenIncapacitated", true, "When enabled, Dogs will bleed while incapacitated.").getBoolean(true);
+		Constants.versionCheck = config.get("general", "versionCheck", true, "Should check whether there are available updates").getBoolean(true);
 		
 		config.save();
 	 }

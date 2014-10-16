@@ -18,7 +18,6 @@ import doggytalents.client.render.RenderDTDoggy;
 import doggytalents.client.render.RenderItemDogBed;
 import doggytalents.client.render.RenderItemRadar;
 import doggytalents.client.render.RenderWorldDogBed;
-import doggytalents.core.handler.ClientTickHandler;
 import doggytalents.core.handler.KeyStateHandler;
 import doggytalents.entity.EntityDTDoggy;
 
@@ -49,7 +48,6 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(KeyStateHandler.heel);
 		
 		FMLCommonHandler.instance().bus().register(new KeyStateHandler());
-		FMLCommonHandler.instance().bus().register(new ClientTickHandler());
 	}
 	
 	@Override

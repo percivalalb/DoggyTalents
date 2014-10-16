@@ -21,9 +21,10 @@ import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.DefaultArtifactVersion;
 import cpw.mods.fml.relauncher.Side;
 import doggytalents.DoggyTalentsMod;
+import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 
-public class Version {
+public class DoggyTalentsVersion {
 
 	public static Status status = PENDING;
 	public static String recommendedVersion = Reference.MOD_VERSION;
@@ -31,6 +32,9 @@ public class Version {
 	public static boolean checkedVersion = false;
 	
     public static void startVersionCheck() {
+    	if(!Constants.versionCheck)
+    		return;
+    	
         new Thread("Doggy Talents Version Check") {
             @Override
             public void run() {
@@ -77,7 +81,6 @@ public class Version {
                 	try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 	if(status == OUTDATED) {

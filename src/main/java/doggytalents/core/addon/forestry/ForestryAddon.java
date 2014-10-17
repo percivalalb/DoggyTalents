@@ -31,32 +31,10 @@ public class ForestryAddon {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 		
-		DogBedManager.registerBedWood("for.planks", 0);
-		DogBedManager.registerBedWood("for.planks", 1);
-		DogBedManager.registerBedWood("for.planks", 2);
-		DogBedManager.registerBedWood("for.planks", 3);
-		DogBedManager.registerBedWood("for.planks", 4);
-		DogBedManager.registerBedWood("for.planks", 5);
-		DogBedManager.registerBedWood("for.planks", 6);
-		DogBedManager.registerBedWood("for.planks", 7);
-		DogBedManager.registerBedWood("for.planks", 8);
-		DogBedManager.registerBedWood("for.planks", 9);
-		DogBedManager.registerBedWood("for.planks", 10);
-		DogBedManager.registerBedWood("for.planks", 11);
-		DogBedManager.registerBedWood("for.planks", 12);
-		DogBedManager.registerBedWood("for.planks", 13);
-		DogBedManager.registerBedWood("for.planks", 14);
-		DogBedManager.registerBedWood("for.planks", 15);
-		
-		DogBedManager.registerBedWood("for.planks2", 0);
-		DogBedManager.registerBedWood("for.planks2", 1);
-		DogBedManager.registerBedWood("for.planks2", 2);
-		DogBedManager.registerBedWood("for.planks2", 3);
-		DogBedManager.registerBedWood("for.planks2", 4);
-		DogBedManager.registerBedWood("for.planks2", 5);
-		DogBedManager.registerBedWood("for.planks2", 6);
-		DogBedManager.registerBedWood("for.planks2", 7);
-		
+		for(int i = 0; i < ForestryLib.PLANKS_1_COUNT; ++i)
+			DogBedManager.registerBedWood(ForestryLib.PLANKS_1_ID, i);
+		for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
+			DogBedManager.registerBedWood(ForestryLib.PLANKS_2_ID, i);
 		
 	}
 }

@@ -76,7 +76,7 @@ public class DogBedManager {
 		}
 			
 		ItemStack stack = new ItemStack(plankBlock, 1, meta);
-		DogBedManager.registerBedWood(stack.getDisplayName(), new DefaultBedMaterial(plankBlock, meta), stack);
+		DogBedManager.registerBedWood(block + "-" + meta, new DefaultBedMaterial(plankBlock, meta), stack);
 	}
 
 	/**

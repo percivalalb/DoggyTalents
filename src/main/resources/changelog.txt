@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.8.2a - 17th October 2014
+* Fixed forestry addon not registering planks for the dog casing
+
 v1.8.1a - 16th October 2014
 + Added Radio Collar which can be put on a dog
 + Added Radar with shows any dogs within 128 blocks which have a radio collar on

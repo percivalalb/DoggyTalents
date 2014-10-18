@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityMob;
+import doggytalents.core.helper.LogHelper;
 import doggytalents.entity.EntityDTDoggy;
 import doggytalents.entity.data.EnumMode;
 
@@ -55,6 +56,12 @@ public class EntityAIModeAttackTarget extends EntityAITarget
 	           	 		if(this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase))
 	           	 			return true;
 	           	 	}
+            	}
+            	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
+            		this.entityToAttack = entitylivingbase.getLastAttacker();
+                    int i = entitylivingbase.getLastAttackerTime();
+                    LogHelper.info("daweewaeawe");
+                    return i != this.field_142051_e && this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
             }

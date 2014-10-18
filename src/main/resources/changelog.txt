@@ -7,16 +7,25 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.8.3a - 18th October 2014
++ For every level of talent doggymount you now can jump half a block more (basicly need 2 level to jump 1 block, level 5 is about 4 blocks)
+# Changed the layout of the changelog and added dates of release to early versions of the mod
+* Fixed cake not getting the dog out of incapacitated mode
+* Fixed jumping with you dog when you are riding him with wolf mount
+* Fixed the talent pillowpaw at level 5 not making the dog float when you jumped
+* Fixed the talent doggydash not increasing the speed when you are riding your dog
+* Fixed the dog not standing up when you mounted it
+* Fixed dogs not being able to attack creepers at level 5
+* Fixed creepers sometimes exploding when dogs are attacking them
+
 v1.8.2a - 17th October 2014
-* Fixed forestry addon not registering planks for the dog casing
+* Fixed Forestry addon not registering planks for the dog casing
 
 v1.8.1a - 16th October 2014
 + Added Radio Collar which can be put on a dog
 + Added Radar with shows any dogs within 128 blocks which have a radio collar on
 + Added config option to check if you want to check for updates or not
-
 # Improved version checker so it will will only tell you new versions available for the version of minecraft you are on
-
 * Fixed crash on server due to dog bed casing
 * Fixed a glitch where you could duplicate items with the packpuppy talent
 * Fixed dogs not begging when holding a master treat
@@ -29,9 +38,7 @@ v1.8.0a - 12th October 2014
 + When using a plank to open a dogs inventory it will make the chest opening sound
 + Increased the amount of skins you can have from 17 to 128 to add new skins use make the skin and put it in the "/assets/doggytalents/textures/mob/" folder and name it doggytex50.png etc (up to 127)
 + Added 2 new skins doggytex17.png and doggytex18.png
-
 # The different plank types for dog beds now uses the ore dictionary to look up planks, thanks to 'mezz'
-
 * Fixed packpuppy talent at level 5 not automatically picking up items from the floor
 * Fixed dogs not begging (tilting their head) when holding food
 * Fixed the spelling of 'Poison' from 'Posion'.
@@ -42,7 +49,6 @@ v1.8.0a - 12th October 2014
 
 v1.7.3a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'
-
 * Fixed the NEI intergration not working
 
 v1.7.2a - 9th July 2014
@@ -54,29 +60,24 @@ v1.7.1a - 8th July 2014
 
 v1.7.0a - 8th July 2014
 Updated to MC 1.7.10
-
 # Updated owner name system to cater for upcoming name changes
 # Removed some unused classes
 
 v1.6.1a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'
-
 * Fixed the NEI intergration not working
 
-v1.6.0a - 10th Febuary 2014
+v1.6.0a - 10th February 2014
 Updated to MC 1.7.2
 # Most text is now in the .lang files so other languages can edit them
-
 * Fixed crash on server (In first version of this version)
 * Fixed some small bugs on the way
-
 NOTE: This was a straight port to 1.7 no features were changed, in the next update quite a lot will change :D.
 
 v1.5.1a - 30th November 2013
 # Moved all doggy talents items to the DT tab now
-
 * Fixed tooltips of the dog talents going off the screen
-* Fixed crash with forestry on server
+* Fixed crash with Forestry on server
 * Fixed the dogs inventory not being saved on world restart
 * Fixed the dog bed crafting recipe being upside down 
 
@@ -91,7 +92,6 @@ v1.5.0a - 14th October 2013
 + Added Dog Beds which you can make using any plank and wool
   They will heal them by 1/2 a heart every 20 seconds if they are within 3 blocks
   More coming soon
-
 * Fixed dogs being invisible on the server
 * Fixed the training treat not converting wolfs to dogs
 * Fixed it not using the item when right clicking with training treats
@@ -105,14 +105,12 @@ Updated to MC 1.6.2
 + Added 4 modes for the dog to be in (Docile, Wandering, Aggressive and Berserker)
   These can be changed in the doggy menu for your dog
   There are tool tips in-game for the modes so look there to find out what each mode is
-
 # Made the dog not go for a throw bone if it already has one.
 # Made the dog attack speed slower like the wolf attack speed
 # Made the distance you have to be away from your dog for him to teleport 20 blocks.
 # Moved textures to /assets/doggytalents/textures/ so old textures packs will need to be updated.
 # Put spaces between the words in the main Doggy GUI
 # Added the 'Wolf Mount' Texture to the doggy GUI (Is still not added)
-
 * Fixed not being able to get the dog off your head once he was on.
 * Fixed a bug where you could sometimes get a talent to level 6 which would cause a crash.
 * Fixed the dog being one block too high when on your head.
@@ -122,28 +120,23 @@ Updated to MC 1.6.2
 * Fixed the dog sometimes not looking at your bed when you give them the Talent 'BedFinder' 
 * Fixed the dogs insta-killing creepers they now only attack creepers when Talent 'CreeperSweeper' is level 5 and when they do they reset the explosion time.
 * Fixed the config file not working for Block & Item Id's
-
 / General Cleanup of the code (The EntityDTDoggy.class is still 2024 lines long :(.)
 
-v1.3.0a
+v1.3.0a - 17th March 2013
 Updated to MC 1.5
 + Made it so you can set whether other players can interact with your dog
-
 # Rewrote code to fix some bugs and make it easier to add new features.
-
 * Fixed Breeding Bone not working.
 * Fixed name tags above dogs head not disappearing when F1 was clicked.
 * Fixed the dog reverting to docile mode when reloading the world.
 * Fixed the dog picking up the throw bone into its inventory when pack puppy was level 5.
 
-v1.1.0a
+v1.1.0a - 26th February 2013
 + Added 14 talents back from the original mod.
 + Made wolfs stay away from you when holding a tool or sword, to give you a bit more space.
 + When sneaking and looking at a dog an extra line of information will appear above their head. (The owners name.)
-
 # Reverted to the MC 1.1 wolf AI to give the dogs less of a robotic feel.
-
 * Collar shears now work.
 
-v1.0.0a
+v1.0.0a - 17th January 2013
 + Initial Release

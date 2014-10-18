@@ -1,5 +1,6 @@
 package doggytalents.core.handler;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -12,7 +13,9 @@ import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
+import doggytalents.entity.EntityDTDoggy;
 import doggytalents.network.packet.PacketCommand;
+import doggytalents.network.packet.PacketDogJump;
 
 /**
  * @author ProPercivalalb
@@ -23,9 +26,10 @@ public class KeyStateHandler {
     public static final KeyBinding stay = new KeyBinding("doggytalents.key.stay", Keyboard.KEY_DOWN, "doggytalents.key.category");
     public static final KeyBinding ok = new KeyBinding("doggytalents.key.ok", Keyboard.KEY_LEFT, "doggytalents.key.category");
     public static final KeyBinding heel = new KeyBinding("doggytalents.key.heel", Keyboard.KEY_RIGHT, "doggytalents.key.category");
-    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel};
+    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel, Minecraft.getMinecraft().gameSettings.keyBindJump};
     
     protected boolean[] keyDown = new boolean[Keyboard.KEYBOARD_SIZE];
+    private Minecraft mc = Minecraft.getMinecraft();
     
     @SubscribeEvent
     public void keyEvent(ClientTickEvent event) {
@@ -41,7 +45,13 @@ public class KeyStateHandler {
 	            	//Key Pressed
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
-	            	if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == ModItems.commandEmblem) {
+	            	if(kb == mc.gameSettings.keyBindJump) {
+	            		if(player.ridingEntity instanceof EntityDTDoggy && mc.currentScreen == null) {
+	            			EntityDTDoggy dog = (EntityDTDoggy)player.ridingEntity;
+	            			DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogJump(dog.getEntityId()));
+	            		}
+	            	}
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == ModItems.commandEmblem) {
 	            	    int command = -1;
 	            	   
 	                	if(kb == come) {

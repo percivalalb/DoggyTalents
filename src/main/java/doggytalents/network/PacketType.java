@@ -2,6 +2,7 @@ package doggytalents.network;
 
 import doggytalents.network.packet.PacketCommand;
 import doggytalents.network.packet.PacketDogBedUpdate;
+import doggytalents.network.packet.PacketDogJump;
 import doggytalents.network.packet.PacketDoggyMode;
 import doggytalents.network.packet.PacketDoggyName;
 import doggytalents.network.packet.PacketDoggyTexture;
@@ -19,7 +20,8 @@ public enum PacketType {
 	DOGGY_MODE(PacketDoggyMode.class),
 	DOGGY_NAME(PacketDoggyName.class),
 	DOG_BED_UPDATE(PacketDogBedUpdate.class),
-	DOG_COMMAND(PacketCommand.class);
+	DOG_COMMAND(PacketCommand.class),
+	DOG_JUMP(PacketDogJump.class);
 	
     public Class<? extends IPacket> packetClass;
 

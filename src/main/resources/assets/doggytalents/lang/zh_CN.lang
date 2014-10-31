@@ -11,6 +11,8 @@ item.dt.breedingBone.name=生育骨头
 item.dt.doggyCharm.name=狗狗魔咒
 item.dt.collarShears.name=项圈剪刀
 item.dt.commandEmblem.name=命令徽章
+item.dt.radioCollar.name=雷达项圈
+item.dt.radar.name=雷达
 
 doggytalents.key.category=汪才济济
 doggytalents.key.come=命令:起立
@@ -36,7 +38,7 @@ dogTalent.puppyeyes.1.part2=我这有些猪肉要送给狗狗吃.
 
 dogTalent.puppyeyes.2.part1=村民:-ω-,谁是好孩子?
 dogTalent.puppyeyes.2.part2=谁兹好孩子?你就是啊!你就是!
-dogTalent.puppyeyes.2.part3=是的你就是!好孩子就该有好吃的!
+dogTalent.puppyeyes.2.part3=是的你就是!好孩子就该有好吃滴!
 
 dogTalent.puppyeyes.3.part1=村民:噢我滴女神!你从哪弄来的这个可爱的小家伙,
 dogTalent.puppyeyes.3.part2=无忧无虑,又忠诚若斯,快快,拿走这些铁,
@@ -58,12 +60,12 @@ dogGui.buttonInfo.1=每级提升半心暴击伤害,精通后额外再提升一�
 dogGui.buttonInfo.2=提升狗狗格挡物理攻击的几率
 dogGui.buttonInfo.3=每级提升10%掉落物翻倍几率,达到五级时再额外提升10%的几率,此时几率会提升至60%
 dogGui.buttonInfo.4=使狗狗攻击的目标着火.等级越高,火焰持续时间越长.精通后你的狗狗将免疫火焰伤害
-dogGui.buttonInfo.5=能够让你骑上自己的狗狗,速度取决于狗狗冲刺技能.空手跳起来点击你的狗狗来骑上它...然后纵情奔跑吧!
+dogGui.buttonInfo.5=能够让你骑上自己的狗狗,跳跃高度取决于等级.空手跳起来点击你的狗狗来骑上它...然后纵情奔跑吧!
 dogGui.buttonInfo.6=每级为你的狗狗在背包狗界面增加三个物品栏格子.拿着木板右击狗狗就能打开这个界面.达到5级后,只要物品栏尚有空间,你的狗狗将为你自动拾取附近的掉落物.
 dogGui.buttonInfo.7=每级在为你的狗狗计算掉落伤害时减免三格高度.精通后免疫掉落伤害,还会获得漂浮能力!
 dogGui.buttonInfo.8=提升狗狗不休息状态下的生命回复速度.精通后坐下时回复速度也会提升50%.
 dogGui.buttonInfo.9=拥有这项技能的狗狗能够嗅到附近的爬行者,它会发出低吼来警示你.每级为你的狗狗增加6格侦察范围.精通后你的狗狗将获得攻击爬行者的能力,每次进攻都会重置爬行者爆炸的倒计时.
-dogGui.buttonInfo.10=每级增加狗狗追逐目标时的移动速度12%,精通后再额外增速15%.
+dogGui.buttonInfo.10=每级增加狗狗追逐目标和被骑乘时的移动速度12%,精通后再额外增速15%.
 dogGui.buttonInfo.11=当狗狗进入水中后会进行捕鱼,当它上岸甩干自己的时候会把捕到的鱼交给你.捕到鱼的几率随着级别提供而增加,如果学会了冥犬技能,捕到的鱼将可能直接变成烤鱼.精通后你的狗狗将能够进行水下呼吸.
 dogGui.buttonInfo.12=每级提高狗狗吃食物时增加的营养点10%.此外,达到三级后你狗狗将能够食用腐肉,5级后就可以吃鱼.
 dogGui.buttonInfo.13=拥有这项技能的狗狗可以骑在你的脑袋上,为你察看回家的方向.手上拿着骨头右击狗狗就能让它爬到头上.每级增加探查范围200格，5级后无距离限制.
@@ -97,6 +99,7 @@ dogGui.talentName.16=牧犬
 dogGui.talentName.17=救援犬
 dogGui.talentName.18=汪之萌眼
 
+doggytalents.updatemessage=新的%s版本已经发布于%s.请到这里下载:%s
 container.packpuppy=狗狗背包
 container.foodBowl=食盆
 itemGroup.doggytalents=汪才济济

@@ -5,13 +5,16 @@ import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
@@ -32,7 +35,7 @@ import doggytalents.network.packet.PacketDogTexture;
 /**
  * @author ProPercivalalb
  */
-public class GuiDogInfo extends GuiContainer {
+public class GuiDogInfo extends GuiScreen {
 
 	public EntityDog dog;
 	public EntityPlayer player;
@@ -45,7 +48,6 @@ public class GuiDogInfo extends GuiContainer {
 	public int btnPerPages = 0;
 	
 	public GuiDogInfo(EntityDog dog, EntityPlayer player) {
-		super(new ContainerDummy());
 		this.dog = dog;
 		this.player = player;
 	}
@@ -112,36 +114,41 @@ public class GuiDogInfo extends GuiContainer {
         
         this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, this.dog.mode.getMode().modeName()));
 	}
-
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float partialTickTime, int xMouse, int yMouse) {
-		int topX = this.width / 2;
-	    int topY = this.height / 2;
-		this.fontRendererObj.drawString("New name:", topX - 100, topY + 38, 4210752);
-		this.fontRendererObj.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
-		this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
-		this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
-		
-		this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
-		this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
-		
-    	for(int i = 0; i < this.btnPerPages; ++i) {
-    		if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
-    			continue;
-    		this.fontRendererObj.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
-    	}
-		
-		for(GuiTextField field : this.textfieldList)
-        	field.drawTextBox();
-	}
 	
 	@Override
-	protected void drawGuiContainerForegroundLayer(int xMouse, int yMouse) {
+	public void drawScreen(int xMouse, int yMouse, float partialTickTime) {
+		this.drawDefaultBackground();
+		//Background
+				int topX = this.width / 2;
+			    int topY = this.height / 2;
+				this.fontRendererObj.drawString("New name:", topX - 100, topY + 38, 4210752);
+				this.fontRendererObj.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
+				this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
+				this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+				
+				this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
+				this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
+				
+		    	for(int i = 0; i < this.btnPerPages; ++i) {
+		    		if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
+		    			continue;
+		    		this.fontRendererObj.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
+		    	}
+				
+				for(GuiTextField field : this.textfieldList)
+		        	field.drawTextBox();
+	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+	    RenderHelper.disableStandardItemLighting();
+	    GL11.glDisable(GL11.GL_LIGHTING);
+	    GL11.glDisable(GL11.GL_DEPTH_TEST);
+	        super.drawScreen(xMouse, yMouse, partialTickTime);
+	        RenderHelper.enableGUIStandardItemLighting();
 		
 		
+		//Foreground
+
 		GL11.glPushMatrix();
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	    GL11.glTranslatef(-this.guiLeft, -this.guiTop, 0.0F);
 	    for (int k = 0; k < this.buttonList.size(); ++k) {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
 	    	if(button.mousePressed(this.mc, xMouse, yMouse)) {
@@ -168,12 +175,12 @@ public class GuiDogInfo extends GuiContainer {
 	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
 	    	}
 	    }
-	    GL11.glTranslatef(this.guiLeft, this.guiTop, 0.0F);
 		GL11.glPopMatrix();
 	}
 	
 	@Override
     protected void actionPerformed(GuiButton button)  {
+
 		if(button.id >= 1 && button.id <= TalentRegistry.getTalents().size()) {
 			ITalent talent = TalentRegistry.getTalent(button.id - 1);
 			int level = this.dog.talents.getLevel(talent);
@@ -202,7 +209,7 @@ public class GuiDogInfo extends GuiContainer {
             else {
             	this.doggyTex = 127;
             }
-            
+    		LogHelper.info("action");
             DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogTexture(this.dog.getEntityId(), this.doggyTex));
         }
 
@@ -262,6 +269,11 @@ public class GuiDogInfo extends GuiContainer {
 	@Override
 	public void onGuiClosed() {
 	    Keyboard.enableRepeatEvents(false);
+	}
+	
+	@Override
+	public boolean doesGuiPauseGame() {
+		return false;
 	}
 	
 	public List splitInto(String text, int maxLength, FontRenderer font) {

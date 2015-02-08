@@ -7,6 +7,14 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.0a - 08th February 2015
++ Added dog bath for aesthetic purposes
+# Changed many numbers due to the massive code redo
+# Changed the max stack size of the dog bed to 64 not 1
+# Changed the way bed finder shows the bed, instead of the dog facing it the bed is highlighted in black
+# Updated for the lastest version of forestry
+* Fixed crash when clicking space
+
 v1.8.3a - 18th October 2014
 + For every level of talent doggymount you now can jump half a block more (basicly need 2 level to jump 1 block, level 5 is about 4 blocks)
 # Changed the layout of the changelog and added dates of release to early versions of the mod

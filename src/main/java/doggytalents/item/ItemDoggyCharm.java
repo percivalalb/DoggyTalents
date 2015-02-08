@@ -9,7 +9,8 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import doggytalents.DoggyTalentsMod;
-import doggytalents.entity.EntityDTDoggy;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
@@ -19,7 +20,7 @@ public class ItemDoggyCharm extends ItemDT {
     public ItemDoggyCharm(String iconPath) {
         super(iconPath);
         this.setMaxStackSize(1);
-        this.setCreativeTab(DoggyTalentsMod.creativeTab);
+        this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
     }
     
     @Override
@@ -45,17 +46,18 @@ public class ItemDoggyCharm extends ItemDT {
     }
     
     public static Entity spawnCreature(World par0World, double par2, double par4, double par6, EntityPlayer par7EntityPlayer) {
-        EntityDTDoggy var8 = null;
+    	EntityDog var8 = null;
 
         for (int var9 = 0; var9 < 1; ++var9) {
-            var8 = new EntityDTDoggy(par0World);
+            var8 = new EntityDog(par0World);
 
             if (var8 != null && var8 instanceof EntityLiving) {
-                EntityDTDoggy var10 = (EntityDTDoggy)var8;
+            	EntityDog var10 = (EntityDog)var8;
                 var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
                 var10.rotationYawHead = var10.rotationYaw;
                 var10.renderYawOffset = var10.rotationYaw;
                 var10.setTamed(true);
+                var10.updateEntityAttributes();
                 var10.func_152115_b(par7EntityPlayer.getUniqueID().toString());
                 par0World.spawnEntityInWorld(var8);
                 var10.playLivingSound();

@@ -1,8 +1,7 @@
 package doggytalents.entity.ai;
 
-import cpw.mods.fml.common.FMLLog;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumTalents;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -15,9 +14,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
  */
 public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 
-	public EntityDTDoggy dog;
+	public EntityDog dog;
 	
-	public EntityAIShepherdDog(EntityDTDoggy dog, Class target, int targetChance, boolean shouldCheckSight) {
+	public EntityAIShepherdDog(EntityDog dog, Class target, int targetChance, boolean shouldCheckSight) {
 		super(dog, target, targetChance, shouldCheckSight);
 		this.dog = dog;
 	}
@@ -25,7 +24,7 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 	@Override
 	public boolean shouldExecute() {
 		int order = dog.masterOrder();
-        return order == 3 && this.dog.isTamed() && this.dog.riddenByEntity == null && this.dog.talents.getTalentLevel(EnumTalents.SHEPHERDDOG) > 0 && super.shouldExecute();
+        return order == 3 && this.dog.mode.isMode(EnumMode.DOCILE) && this.dog.isTamed() && this.dog.riddenByEntity == null && this.dog.talents.getLevel("shepherddog") > 0 && super.shouldExecute();
     }
 	
 	@Override
@@ -35,6 +34,7 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 	
 	@Override
 	public boolean continueExecuting() {
-		return super.continueExecuting();
+		int order = dog.masterOrder();
+        return order == 3 && super.continueExecuting();
 	}
 }

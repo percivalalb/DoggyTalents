@@ -2,6 +2,7 @@ package doggytalents.entity;
 
 import java.util.List;
 
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,34 +11,26 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import doggytalents.entity.data.EnumMode;
 
 /**
  * @author ProPercivalalb
  */
-public class EntityDoggyBeam extends EntityThrowable
-{
-    public EntityDoggyBeam(World par1World)
-    {
+public class EntityDoggyBeam extends EntityThrowable {
+	
+    public EntityDoggyBeam(World par1World) {
         super(par1World);
     }
 
-    public EntityDoggyBeam(World par1World, EntityLivingBase par2EntityLivingBase)
-    {
+    public EntityDoggyBeam(World par1World, EntityLivingBase par2EntityLivingBase) {
         super(par1World, par2EntityLivingBase);
     }
 
-    public EntityDoggyBeam(World par1World, double par2, double par4, double par6)
-    {
+    public EntityDoggyBeam(World par1World, double par2, double par4, double par6) {
         super(par1World, par2, par4, par6);
     }
 
-    /**
-     * Called when this EntityThrowable hits a block or entity.
-     */
     @Override
-    protected void onImpact(MovingObjectPosition par1MovingObjectPosition)
-    {
+    protected void onImpact(MovingObjectPosition par1MovingObjectPosition) {
         if (par1MovingObjectPosition.entityHit != null && par1MovingObjectPosition.entityHit instanceof EntityLiving)
         {
             byte var2 = 0;
@@ -45,11 +38,11 @@ public class EntityDoggyBeam extends EntityThrowable
             List nearEnts = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(100D, 10D, 100D));
             for (Object o : nearEnts)
             {
-                if (o instanceof EntityDTDoggy)
+                if (o instanceof EntityDog)
                 {
-                	EntityDTDoggy dog = (EntityDTDoggy)o;
+                	EntityDog dog = (EntityDog)o;
                 	if(!dog.isSitting() && par1MovingObjectPosition.entityHit != dog && dog.func_142018_a((EntityLiving)par1MovingObjectPosition.entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
-                		if(dog.getDistanceToEntity(par1MovingObjectPosition.entityHit) < getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
+                		if(dog.getDistanceToEntity(par1MovingObjectPosition.entityHit) < this.getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
                 			dog.setAttackTarget((EntityLiving)par1MovingObjectPosition.entityHit);
                 		}
                 	}
@@ -68,7 +61,7 @@ public class EntityDoggyBeam extends EntityThrowable
         }
     }
     
-    protected double getTargetDistance(EntityDTDoggy dog) {
+    protected double getTargetDistance(EntityDog dog) {
         IAttributeInstance iattributeinstance = dog.getEntityAttribute(SharedMonsterAttributes.followRange);
         return iattributeinstance == null ? 16.0D : iattributeinstance.getAttributeValue();
     }

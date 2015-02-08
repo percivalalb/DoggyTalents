@@ -3,6 +3,7 @@ package doggytalents.item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
+import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +20,7 @@ import net.minecraft.world.storage.MapData;
 public class ItemRadar extends ItemMap {
 	
 	public ItemRadar() {
-		this.setCreativeTab(DoggyTalentsMod.creativeTab);
+		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 	}
 
 	@Override

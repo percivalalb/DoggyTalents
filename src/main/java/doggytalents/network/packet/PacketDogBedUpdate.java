@@ -15,16 +15,16 @@ import doggytalents.tileentity.TileEntityDogBed;
 public class PacketDogBedUpdate extends IPacket {
 
 	public int x, y, z;
-	public String woolId, woodId;
+	public String casingId, bedingId;
 	
 	public PacketDogBedUpdate() {}
-	public PacketDogBedUpdate(int x, int y, int z, String woolId, String woodId) {
+	public PacketDogBedUpdate(int x, int y, int z, String casingId, String bedingId) {
 		this();
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.woolId = woolId;
-		this.woodId = woodId;
+		this.casingId = casingId;
+		this.bedingId = bedingId;
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class PacketDogBedUpdate extends IPacket {
 		this.x = data.readInt();
 		this.y = data.readInt();
 		this.z = data.readInt();
-		this.woolId = data.readUTF();
-		this.woodId = data.readUTF();
+		this.casingId = data.readUTF();
+		this.bedingId = data.readUTF();
 	}
 
 	@Override
@@ -41,20 +41,20 @@ public class PacketDogBedUpdate extends IPacket {
 		dos.writeInt(this.x);
 		dos.writeInt(this.y);
 		dos.writeInt(this.z);
-		dos.writeUTF(this.woolId);
-		dos.writeUTF(this.woodId);
+		dos.writeUTF(this.casingId);
+		dos.writeUTF(this.bedingId);
 	}
 
 	@Override
 	public void execute(EntityPlayer player) {
-		TileEntity target = player.worldObj.getTileEntity(x, y, z);
+		TileEntity target = player.worldObj.getTileEntity(this.x, this.y, this.z);
 		
 		if(!(target instanceof TileEntityDogBed))
 			return;
 		
 		TileEntityDogBed dogBed = (TileEntityDogBed)target;
-		dogBed.setWoolId(this.woolId);
-		dogBed.setWoodId(this.woodId);
+		dogBed.setCasingId(this.casingId);
+		dogBed.setBeddingId(this.bedingId);
 	}
 
 }

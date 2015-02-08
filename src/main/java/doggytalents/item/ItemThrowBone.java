@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
+import doggytalents.api.DoggyTalentsAPI;
 
 /**
  * @author ProPercivalalb
@@ -23,8 +24,7 @@ public class ItemThrowBone extends Item {
 	private IIcon droolBone;
 	
 	public ItemThrowBone() {
-		super();
-		this.setCreativeTab(DoggyTalentsMod.creativeTab);
+		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 		this.setMaxStackSize(1);
 	}
 

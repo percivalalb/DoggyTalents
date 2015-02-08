@@ -2,9 +2,11 @@ package doggytalents;
 
 import net.minecraft.block.Block;
 import cpw.mods.fml.common.registry.GameRegistry;
+import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
-import doggytalents.item.ItemDogBed;
+import doggytalents.block.ItemDogBed;
+import doggytalents.tileentity.TileEntityDogBath;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
 
@@ -14,15 +16,19 @@ import doggytalents.tileentity.TileEntityFoodBowl;
 public class ModBlocks {
 
 	public static Block dogBed;
+	public static Block dogBath;
     public static Block foodBowl;
 	
 	public static void inti() {
-		dogBed = new BlockDogBed().setBlockName("dt.dogBed").setCreativeTab(DoggyTalentsMod.creativeTab);
-		foodBowl = new BlockFoodBowl().setBlockName("dt.foodBowl");
+		dogBed = new BlockDogBed().setBlockName("doggytalents.dogbed");
+		dogBath = new BlockDogBath().setBlockName("doggytalents.dogbath");
+		foodBowl = new BlockFoodBowl().setBlockName("doggytalents.foodbowl");
 		
-		GameRegistry.registerBlock(dogBed, ItemDogBed.class, "dt.dogBed");
-		GameRegistry.registerBlock(foodBowl, "dt.foodBowl");
-		GameRegistry.registerTileEntity(TileEntityDogBed.class, "dt.dogBed");
-		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "dt.dogBowl");
+		GameRegistry.registerBlock(dogBed, ItemDogBed.class, "dog_bed");
+		GameRegistry.registerBlock(dogBath, "dog_bath");
+		GameRegistry.registerBlock(foodBowl, "food_bowl");
+		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
+		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
+		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "doggytalents.dog_bowl");
 	}
 }

@@ -1,26 +1,29 @@
 package doggytalents.entity.ai;
 
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
+import net.minecraft.entity.passive.EntityTameable;
 
+/**
+ * @author ProPercivalalb
+ */
 public class EntityAIOwnerHurtByTarget extends EntityAITarget
 {
-    private EntityDTDoggy dog;
+    private EntityDog dog;
     private EntityLivingBase theOwnerAttacker;
     private int field_142051_e;
+    private static final String __OBFID = "CL_00001624";
 
-    public EntityAIOwnerHurtByTarget(EntityDTDoggy par1EntityDTDoggy)
+    public EntityAIOwnerHurtByTarget(EntityDog dog)
     {
-        super(par1EntityDTDoggy, false);
-        this.dog = par1EntityDTDoggy;
+        super(dog, false);
+        this.dog = dog;
         this.setMutexBits(1);
     }
-
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+    
+    @Override
     public boolean shouldExecute()
     {
         if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
@@ -43,15 +46,13 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
             }
         }
     }
-    
+
     @Override
     public boolean continueExecuting() {
     	return this.dog.getHealth() > 1 && super.continueExecuting();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
+    @Override
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);

@@ -19,8 +19,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import doggytalents.DoggyTalentsMod;
-import doggytalents.core.proxy.CommonProxy;
-import doggytalents.entity.EntityDTDoggy;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.entity.EntityDog;
+import doggytalents.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityFoodBowl;
 
 /**
@@ -35,7 +36,8 @@ public class BlockFoodBowl extends BlockContainer {
     public BlockFoodBowl() {
         super(Material.iron);
         this.setTickRandomly(true);
-        this.setCreativeTab(DoggyTalentsMod.creativeTab);
+        this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+        this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F - 0.0625F, 0.5F, 1.0F - 0.0625F);
     }
 
     @Override
@@ -55,16 +57,16 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
-        List list = par1World.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)par2, (double)(float)par3 + 0.5D, (float)par4, (float)(par2 + 1), (double)(float)par3 + 0.5D + 0.05000000074505806D, (float)(par4 + 1)).expand(5, 5, 5));
+        List list = par1World.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox((float)par2, (double)(float)par3 + 0.5D, (float)par4, (float)(par2 + 1), (double)(float)par3 + 0.5D + 0.05000000074505806D, (float)(par4 + 1)).expand(5, 5, 5));
 
         if (list != null && list.size() > 0)
         {
             for (int l = 0; l < list.size(); l++)
             {
-                EntityDTDoggy entitydtdoggy = (EntityDTDoggy)list.get(l);
-                entitydtdoggy.saveposition.setBowlX(par2);
-                entitydtdoggy.saveposition.setBowlY(par3);
-                entitydtdoggy.saveposition.setBowlZ(par4);
+            	EntityDog entitydtdoggy = (EntityDog)list.get(l);
+                //TODO entitydtdoggy.saveposition.setBowlX(par2);
+              //TODO entitydtdoggy.saveposition.setBowlY(par3);
+              //TODO entitydtdoggy.saveposition.setBowlZ(par4);
             }
         }
     }
@@ -122,16 +124,16 @@ public class BlockFoodBowl extends BlockContainer {
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
     	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) world.getTileEntity(x, y, z);
         List list = null;
-        list = world.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
+        list = world.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
 
         if (list != null && list.size() > 0)
         {
             for (int l = 0; l < list.size(); l++)
             {
-                EntityDTDoggy entitydtdoggy = (EntityDTDoggy)list.get(l);
-                entitydtdoggy.saveposition.setBowlX(x);
-                entitydtdoggy.saveposition.setBowlY(y);
-                entitydtdoggy.saveposition.setBowlZ(z);
+            	EntityDog entitydtdoggy = (EntityDog)list.get(l);
+                //TODO entitydtdoggy.saveposition.setBowlX(x);
+            	//TODO entitydtdoggy.saveposition.setBowlY(y);
+            	//TODO entitydtdoggy.saveposition.setBowlZ(z);
             }
         }
         
@@ -145,7 +147,7 @@ public class BlockFoodBowl extends BlockContainer {
         }
 
         List list2 = null;
-        list2 = world.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
+        list2 = world.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox((float)x, (double)(float)y + 0.5D, (float)z, (float)(x + 1), (double)(float)y + 0.5D + 0.05000000074505806D, (float)(z + 1)));
 
         if (list2 != null && list2.size() > 0)
         {
@@ -160,9 +162,9 @@ public class BlockFoodBowl extends BlockContainer {
 
             for (int j1 = 0; j1 < list2.size(); j1++)
             {
-                EntityDTDoggy entitydtdoggy1 = (EntityDTDoggy)list2.get(j1);
+            	EntityDog entitydtdoggy1 = (EntityDog)list2.get(j1);
 
-                if (entitydtdoggy1.getDogTummy() <= 60 && tileentitydogfoodbowl1.getFirstDogFoodStack(entitydtdoggy1) >= 0)
+                if (entitydtdoggy1.getDogHunger() <= 60 && tileentitydogfoodbowl1.getFirstDogFoodStack(entitydtdoggy1) >= 0)
                 {
                     tileentitydogfoodbowl1.feedDog(entitydtdoggy1, tileentitydogfoodbowl1.getFirstDogFoodStack(entitydtdoggy1), 1);
                 }
@@ -200,10 +202,9 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, Block par5) {
-        if (!this.canBlockStay(par1World, par2, par3, par4)) {
-            par1World.setBlockToAir(par2, par3, par4);
-        }
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        if (!this.canBlockStay(world, x, y, z))
+            world.setBlockToAir(x, y, z);
     }
 
     @Override

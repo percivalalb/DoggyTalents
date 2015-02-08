@@ -14,9 +14,10 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import doggytalents.ModItems;
-import doggytalents.core.helper.ChatHelper;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.helper.ChatHelper;
 import doggytalents.network.IPacket;
 
 /**
@@ -51,16 +52,16 @@ public class PacketCommand extends IPacket {
 		
 		if(stack.getItem() == ModItems.commandEmblem) {
 
-			if(commandId == 1)
+			if(this.commandId == 1)
 			{
 				world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 				boolean isDog = false;
 			    List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(20D, 20D, 20D));
 			    for (Object o : nearEnts)
 			        {
-			            if (o instanceof EntityDTDoggy)
+			            if (o instanceof EntityDog)
 			            {
-			            	EntityDTDoggy dog = (EntityDTDoggy)o;
+			            	EntityDog dog = (EntityDog)o;
 			            	if(dog.canInteract(player))
 			            	{
 			            		dog.getSitAI().setSitting(false);
@@ -76,19 +77,19 @@ public class PacketCommand extends IPacket {
 			        }
             		if(isDog)
             		{
-            			player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.come"));
+            			player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.come"));
             		}
 				}
-				else if(commandId == 2)
+				else if(this.commandId == 2)
 				{
 					world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)
 			        {
-			            if (o instanceof EntityDTDoggy)
+			            if (o instanceof EntityDog)
 			            {
-			            	EntityDTDoggy dog = (EntityDTDoggy)o;
+			            	EntityDog dog = (EntityDog)o;
 			            	if(dog.canInteract(player))
 			            	{
 			            		dog.getSitAI().setSitting(true);
@@ -104,19 +105,19 @@ public class PacketCommand extends IPacket {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.stay"));
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.stay"));
 			        }
 				}
-				else if(commandId == 3)
+				else if(this.commandId == 3)
 				{
 					world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)
 			        {
-			            if (o instanceof EntityDTDoggy)
+			            if (o instanceof EntityDog)
 			            {
-			            	EntityDTDoggy dog = (EntityDTDoggy)o;
+			            	EntityDog dog = (EntityDog)o;
 			            	if(dog.canInteract(player))
 			            	{
 			            		if(dog.getMaxHealth() / 2 >= dog.getHealth())
@@ -139,19 +140,19 @@ public class PacketCommand extends IPacket {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.ok"));
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.ok"));
 			        }
 				}
-				else if(commandId == 4)
+				else if(this.commandId == 4)
 				{
 					world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.boundingBox.expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)
 			        {
-			            if (o instanceof EntityDTDoggy)
+			            if(o instanceof EntityDog)
 			            {
-			            	EntityDTDoggy dog = (EntityDTDoggy)o;
+			            	EntityDog dog = (EntityDog)o;
 			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING))
 			            	{
 			            		 int i = MathHelper.floor_double(player.posX) - 2;
@@ -174,7 +175,7 @@ public class PacketCommand extends IPacket {
 			        
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogCommand.heel"));
+			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.heel"));
 			        }
 				}
 					

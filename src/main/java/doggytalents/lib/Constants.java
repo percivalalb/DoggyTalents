@@ -5,12 +5,11 @@ package doggytalents.lib;
  */
 public class Constants {
 
-	public static boolean isHungerOn = true;
-	public static boolean allowPermaDeath = false;
-	public static boolean tenDayPuppies = true;
-	public static boolean direParticalsOff = false;
-	public static int barkRate = 10;
-	public static boolean bloodWhenIncapacitated = true;
-	public static boolean isStartingItemEnabled = true;
-	public static boolean versionCheck = true;
+	public static  boolean STARTING_ITEMS = true;
+	public static boolean IS_HUNGER_ON = true;
+	public static boolean DOGS_IMMORTAL = true;
+	public static boolean RENDER_BLOOD = true;
+	public static boolean DIRE_PARTICLES = true;
+	public static boolean VERSION_CHECK = true;
+	public static boolean TEN_DAY_PUPS = true;
 }

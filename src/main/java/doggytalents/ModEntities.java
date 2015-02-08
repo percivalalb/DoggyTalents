@@ -1,8 +1,9 @@
 package doggytalents;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-import doggytalents.entity.EntityDTDoggy;
+import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
+import doggytalents.lib.Reference;
 
 /**
  * @author ProPercivalalb
@@ -10,11 +11,12 @@ import doggytalents.entity.EntityDoggyBeam;
 public class ModEntities {
 	
 	public static void inti() {
-		registerEntity(EntityDTDoggy.class, "DTDoggy", 0);
-		registerEntity(EntityDoggyBeam.class, "DTBeam", 1);
+		registerEntity(EntityDog.class, "dog");
+		registerEntity(EntityDoggyBeam.class, "attackbeam");
+		EntityRegistry.registerModEntity(EntityDoggyBeam.class, Reference.MOD_ID + ":attackbeam", 0, DoggyTalentsMod.instance, 64, 10, true);
 	}
 	
-	public static void registerEntity(Class entityClass, String saveName, int id) {
-	    EntityRegistry.registerModEntity(entityClass, saveName, id, DoggyTalentsMod.instance, 120, 1, true);
+	public static void registerEntity(Class entityClass, String saveName) {
+	    EntityRegistry.registerGlobalEntityID(entityClass, Reference.MOD_ID + ":" + saveName, EntityRegistry.findGlobalUniqueEntityId());
 	}
 }

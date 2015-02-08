@@ -1,12 +1,12 @@
 package doggytalents.inventory;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import doggytalents.entity.EntityDTDoggy;
 
 /**
  * @author ProPercivalalb
@@ -14,10 +14,10 @@ import doggytalents.entity.EntityDTDoggy;
 public class InventoryPackPuppy implements IInventory {
 	
 	public ItemStack[] inventorySlots;
-    private EntityDTDoggy dog;
+    private EntityDog dog;
 
-    public InventoryPackPuppy(EntityDTDoggy entitydtdoggy) {
-        this.dog = entitydtdoggy;
+    public InventoryPackPuppy(EntityDog dog) {
+        this.dog = dog;
         this.inventorySlots = new ItemStack[this.getSizeInventory()];
     }
 
@@ -106,28 +106,23 @@ public class InventoryPackPuppy implements IInventory {
 		return true;
 	}
 	
-	public void readFromNBT(NBTTagCompound tag) {
-        NBTTagList nbttaglist = tag.getTagList("Items", 10);
+	public void readFromNBT(NBTTagCompound tagCompound) {
+        NBTTagList nbttaglist = tagCompound.getTagList("packpuppyitems", 10);
         
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
+        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.inventorySlots.length)
-            {
                 this.inventorySlots[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
         }
     }
 
-    public void writeToNBT(NBTTagCompound tag) {
+    public void writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.inventorySlots.length; ++i)
-        {
-            if (this.inventorySlots[i] != null)
-            {
+        for (int i = 0; i < this.inventorySlots.length; ++i) {
+            if (this.inventorySlots[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.inventorySlots[i].writeToNBT(nbttagcompound1);
@@ -135,7 +130,7 @@ public class InventoryPackPuppy implements IInventory {
             }
         }
 
-        tag.setTag("Items", nbttaglist);
+        tagCompound.setTag("packpuppyitems", nbttaglist);
     }
 
 	@Override

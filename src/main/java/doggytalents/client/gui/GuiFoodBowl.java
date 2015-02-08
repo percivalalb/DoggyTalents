@@ -17,9 +17,9 @@ public class GuiFoodBowl extends GuiContainer {
 	
     private TileEntityFoodBowl foodBowl;
 
-    public GuiFoodBowl(InventoryPlayer par1InventoryPlayer, TileEntityFoodBowl par2TileEntityFoodBowl) {
-        super(new ContainerFoodBowl(par1InventoryPlayer, par2TileEntityFoodBowl));
-        foodBowl = par2TileEntityFoodBowl;
+    public GuiFoodBowl(InventoryPlayer playerInventory, TileEntityFoodBowl par2TileEntityFoodBowl) {
+        super(new ContainerFoodBowl(playerInventory, par2TileEntityFoodBowl));
+        this.foodBowl = par2TileEntityFoodBowl;
         this.ySize = 127;
     }
 

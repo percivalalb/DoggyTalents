@@ -2,6 +2,7 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,14 +14,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import doggytalents.entity.DoggyUtil;
-import doggytalents.entity.EntityDTDoggy;
 
+/**
+ * @author ProPercivalalb
+ */
 public class TileEntityFoodBowl extends TileEntity implements IInventory {
    
 	private final int iDogFoodBowlInventorySize = 5;
     private final int iDogFoodBowlStackSizeLimit = 64;
-    private ItemStack bowlContents[];
+    private ItemStack[] bowlContents;
 
     public TileEntityFoodBowl() {
         this.bowlContents = new ItemStack[5];
@@ -62,13 +64,13 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     @Override
     public void updateEntity()
     {
-    	List dogList = this.worldObj.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 0.5D, this.zCoord, this.xCoord + 1.0D, this.yCoord + 0.5D + 0.05000000074505806D, this.zCoord + 1.0D).expand(5, 5, 5));
+    	List dogList = this.worldObj.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 0.5D, this.zCoord, this.xCoord + 1.0D, this.yCoord + 0.5D + 0.05000000074505806D, this.zCoord + 1.0D).expand(5, 5, 5));
 
         if (dogList != null && dogList.size() > 0) {
             for (int j1 = 0; j1 < dogList.size(); j1++) {
-                EntityDTDoggy entitydtdoggy1 = (EntityDTDoggy)dogList.get(j1);
+            	EntityDog entitydtdoggy1 = (EntityDog)dogList.get(j1);
 
-                if (entitydtdoggy1.getDogTummy() <= 60 && this.getFirstDogFoodStack(entitydtdoggy1) >= 0)
+                if (entitydtdoggy1.getDogHunger() < 60 && this.getFirstDogFoodStack(entitydtdoggy1) >= 0)
                     this.feedDog(entitydtdoggy1, this.getFirstDogFoodStack(entitydtdoggy1), 1);
             }
         }
@@ -112,7 +114,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         return -1;
     }
 
-    public int getFirstDogFoodStack(EntityDTDoggy entitydtdoggy) {
+    public int getFirstDogFoodStack(EntityDog dog) {
         for (int i = 0; i < 5; i++) {
             if (bowlContents[i] == null)
                 continue;
@@ -124,17 +126,17 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
             ItemStack itemstack = getStackInSlot(i);
 
-            if(DoggyUtil.foodValue(entitydtdoggy, itemstack) != 0)
+            if(dog.foodValue(itemstack) != 0)
                 return i;
         }
 
         return -1;
     }
     
-    public ItemStack feedDog(EntityDTDoggy dog, int i, int j) {
+    public ItemStack feedDog(EntityDog dog, int i, int j) {
         if (getStackInSlot(i) != null) {
             ItemStack itemstack = getStackInSlot(i);
-            dog.setDogTummy(dog.getDogTummy() + DoggyUtil.foodValue(dog, itemstack));
+            dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
 
             if (getStackInSlot(i).stackSize <= j) {
                 ItemStack itemstack1 = getStackInSlot(i);
@@ -251,7 +253,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getTileEntity(xCoord, yCoord, zCoord) != this ? false : player.getDistanceSq((double)xCoord + 0.5D, (double)yCoord + 0.5D, (double)zCoord + 0.5D) <= 64D;
+        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
     }
 
 	@Override
@@ -299,6 +301,6 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return false;
+		return true;
 	}
 }

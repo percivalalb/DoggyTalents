@@ -1,9 +1,7 @@
 package doggytalents;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -15,27 +13,42 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import doggytalents.api.DefaultBedMaterial;
-import doggytalents.api.DogBedManager;
-import doggytalents.core.addon.AddonManager;
-import doggytalents.core.handler.ConfigurationHandler;
-import doggytalents.core.handler.ConnectionHandler;
-import doggytalents.core.handler.EventRightClickEntity;
-import doggytalents.core.helper.DoggyTalentsVersion;
-import doggytalents.core.proxy.CommonProxy;
+import doggytalents.addon.AddonManager;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.DefaultDogBedIcon;
+import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.api.registry.TalentRegistry;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
+import doggytalents.handler.ConfigurationHandler;
+import doggytalents.handler.ConnectionHandler;
+import doggytalents.handler.EntityInteractHandler;
+import doggytalents.helper.DoggyTalentsVersion;
 import doggytalents.lib.Reference;
 import doggytalents.network.NetworkManager;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.ArrayList;
+import doggytalents.proxy.CommonProxy;
+import doggytalents.talent.BedFinder;
+import doggytalents.talent.BlackPelt;
+import doggytalents.talent.CreeperSweeper;
+import doggytalents.talent.DoggyDash;
+import doggytalents.talent.FisherDog;
+import doggytalents.talent.GuardDog;
+import doggytalents.talent.HappyEater;
+import doggytalents.talent.HellHound;
+import doggytalents.talent.HunterDog;
+import doggytalents.talent.PackPuppy;
+import doggytalents.talent.PestFighter;
+import doggytalents.talent.PillowPaw;
+import doggytalents.talent.PoisonFang;
+import doggytalents.talent.PuppyEyes;
+import doggytalents.talent.QuickHealer;
+import doggytalents.talent.RescueDog;
+import doggytalents.talent.ShepherdDog;
+import doggytalents.talent.WolfMount;
 
 /**
  * @author ProPercivalalb
- * The Main Mod Class.
  */
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.MOD_DEPENDENCIES)
 public class DoggyTalentsMod {
@@ -43,69 +56,84 @@ public class DoggyTalentsMod {
 	@Instance(value = Reference.MOD_ID)
 	public static DoggyTalentsMod instance;
 	
-	@SidedProxy(clientSide = Reference.SP_CLIENT, serverSide = Reference.SP_SERVER)
+	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
 	
 	public static NetworkManager NETWORK_MANAGER;
 	
-	public static CreativeTabs creativeTab;
-	
-	public DoggyTalentsMod() {
-   	 	instance = this;
-    }
-	
-	@EventHandler
-    public void serverStarting(FMLServerStartingEvent event) {
-		
-    }
-	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
-		creativeTab = new CreativeTabDoggyTalents();
 		DoggyTalentsVersion.startVersionCheck();
-		//Loads the Blocks/Items
+		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		ModBlocks.inti();
 		ModItems.inti();
 		ModEntities.inti();
-		proxy.onPreLoad();
+		proxy.preInit();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		NETWORK_MANAGER = new NetworkManager();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
+		MinecraftForge.EVENT_BUS.register(new EntityInteractHandler());
 		FMLCommonHandler.instance().bus().register(new ConnectionHandler());
-		//Handlers
-		MinecraftForge.EVENT_BUS.register(new EventRightClickEntity());
-		proxy.registerHandlers();
+		proxy.init();
 	}
-		
+	
 	@EventHandler
-	public void modsLoaded(FMLPostInitializationEvent event) {
-		DogBedManager.registerBedWood("oakPlank", new DefaultBedMaterial(Blocks.planks, 0), new ItemStack(Blocks.planks, 1, 0));
-		DogBedManager.registerBedWood("sprucePlank", new DefaultBedMaterial(Blocks.planks, 1), new ItemStack(Blocks.planks, 1, 1));
-		DogBedManager.registerBedWood("birchPlank", new DefaultBedMaterial(Blocks.planks, 2), new ItemStack(Blocks.planks, 1, 2));
-		DogBedManager.registerBedWood("junglePlank", new DefaultBedMaterial(Blocks.planks, 3), new ItemStack(Blocks.planks, 1, 3));
-		DogBedManager.registerBedWood("darkoakPlank", new DefaultBedMaterial(Blocks.planks, 4), new ItemStack(Blocks.planks, 1, 4));
-		DogBedManager.registerBedWood("acaciaPlank", new DefaultBedMaterial(Blocks.planks, 5), new ItemStack(Blocks.planks, 1, 5));
+	public void postInit(FMLPostInitializationEvent event) {
+		DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.throwBone);
+		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.breedingBone);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.bone);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.throwBone);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.trainingTreat);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.masterTreat);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.superTreat);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.direTreat);
 		
-		DogBedManager.registerBedWool("whiteWool", new DefaultBedMaterial(Blocks.wool, 0), new ItemStack(Blocks.wool, 1, 0));
-		DogBedManager.registerBedWool("orangeWool", new DefaultBedMaterial(Blocks.wool, 1), new ItemStack(Blocks.wool, 1, 1));
-		DogBedManager.registerBedWool("magentaWool", new DefaultBedMaterial(Blocks.wool, 2), new ItemStack(Blocks.wool, 1, 2));
-		DogBedManager.registerBedWool("lightBlueWool", new DefaultBedMaterial(Blocks.wool, 3), new ItemStack(Blocks.wool, 1, 3));
-		DogBedManager.registerBedWool("yellowWool", new DefaultBedMaterial(Blocks.wool, 4), new ItemStack(Blocks.wool, 1, 4));
-		DogBedManager.registerBedWool("limeWool", new DefaultBedMaterial(Blocks.wool, 5), new ItemStack(Blocks.wool, 1, 5));
-		DogBedManager.registerBedWool("pinkWool", new DefaultBedMaterial(Blocks.wool, 6), new ItemStack(Blocks.wool, 1, 6));
-		DogBedManager.registerBedWool("grayWool", new DefaultBedMaterial(Blocks.wool, 7), new ItemStack(Blocks.wool, 1, 7));
-		DogBedManager.registerBedWool("lightGrayWool", new DefaultBedMaterial(Blocks.wool, 8), new ItemStack(Blocks.wool, 1, 8));
-		DogBedManager.registerBedWool("cyanWool", new DefaultBedMaterial(Blocks.wool, 9), new ItemStack(Blocks.wool, 1, 9));
-		DogBedManager.registerBedWool("purpleWool", new DefaultBedMaterial(Blocks.wool, 10), new ItemStack(Blocks.wool, 1, 10));
-		DogBedManager.registerBedWool("blueWool", new DefaultBedMaterial(Blocks.wool, 11), new ItemStack(Blocks.wool, 1, 11));
-		DogBedManager.registerBedWool("brownWool", new DefaultBedMaterial(Blocks.wool, 12), new ItemStack(Blocks.wool, 1, 12));
-		DogBedManager.registerBedWool("greenWool", new DefaultBedMaterial(Blocks.wool, 13), new ItemStack(Blocks.wool, 1, 13));
-		DogBedManager.registerBedWool("redWool", new DefaultBedMaterial(Blocks.wool, 14), new ItemStack(Blocks.wool, 1, 14));
-		DogBedManager.registerBedWool("blackWool", new DefaultBedMaterial(Blocks.wool, 15), new ItemStack(Blocks.wool, 1, 15));
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 0);
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 1);
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 2);
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 3);
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 4);
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.planks, 5);
+		
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 0);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 1);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 2);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 3);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 4);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 5);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 6);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 7);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 8);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 9);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 10);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 11);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 12);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 13);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 14);
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.wool, 15);
+		
+		TalentRegistry.registerTalent(new BedFinder());
+		TalentRegistry.registerTalent(new BlackPelt());
+		TalentRegistry.registerTalent(new CreeperSweeper());
+		TalentRegistry.registerTalent(new DoggyDash());
+		TalentRegistry.registerTalent(new FisherDog());
+		TalentRegistry.registerTalent(new GuardDog());
+		TalentRegistry.registerTalent(new HappyEater());
+		TalentRegistry.registerTalent(new HellHound());
+		TalentRegistry.registerTalent(new HunterDog());
+		TalentRegistry.registerTalent(new PackPuppy());
+		TalentRegistry.registerTalent(new PestFighter());
+		TalentRegistry.registerTalent(new PillowPaw());
+		TalentRegistry.registerTalent(new PoisonFang());
+		TalentRegistry.registerTalent(new PuppyEyes());
+		TalentRegistry.registerTalent(new QuickHealer());
+		TalentRegistry.registerTalent(new RescueDog());
+		TalentRegistry.registerTalent(new ShepherdDog());
+		TalentRegistry.registerTalent(new WolfMount());
 		
 		GameRegistry.addRecipe(new ItemStack(ModItems.throwBone, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.bone, 'Y', Items.slime_ball});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.throwBone, 1, 0), new Object[] {new ItemStack(ModItems.throwBone, 1, 0)});
@@ -121,7 +149,9 @@ public class DoggyTalentsMod {
         GameRegistry.addRecipe(new ItemStack(ModItems.radioCollar, 1), new Object[] {"XX", "YX", 'X', Items.iron_ingot, 'Y', Items.redstone});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.radar, 1), new Object[] {new ItemStack(Items.map, 1), new ItemStack(Items.redstone, 1), new ItemStack(ModItems.radioCollar, 1)});
 		
+		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.configuration);
+		proxy.postInit();
 	}
 }

@@ -2,30 +2,28 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityMob;
-import doggytalents.core.helper.LogHelper;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.entity.data.EnumMode;
 
-public class EntityAIModeAttackTarget extends EntityAITarget
-{
-    private EntityDTDoggy dog;
+/**
+ * @author ProPercivalalb
+ **/
+public class EntityAIModeAttackTarget extends EntityAITarget {
+	
+    private EntityDog dog;
     private EntityLivingBase entityToAttack;
     private int field_142051_e;
 
-    public EntityAIModeAttackTarget(EntityDTDoggy par1EntityDTDoggy)
-    {
-        super(par1EntityDTDoggy, true);
-        this.dog = par1EntityDTDoggy;
+    public EntityAIModeAttackTarget(EntityDog dog) {
+        super(dog, true);
+        this.dog = dog;
         this.setMutexBits(1);
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
     @Override
     public boolean shouldExecute()
     {
@@ -60,7 +58,6 @@ public class EntityAIModeAttackTarget extends EntityAITarget
             	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
             		this.entityToAttack = entitylivingbase.getLastAttacker();
                     int i = entitylivingbase.getLastAttackerTime();
-                    LogHelper.info("daweewaeawe");
                     return i != this.field_142051_e && this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
@@ -73,19 +70,13 @@ public class EntityAIModeAttackTarget extends EntityAITarget
     	return this.dog.getHealth() > 1 && super.continueExecuting();
     }
 
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
     @Override
-    public void startExecuting()
-    {
+    public void startExecuting() {
         this.taskOwner.setAttackTarget(this.entityToAttack);
         EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
-        {
             this.field_142051_e = entitylivingbase.func_142015_aE();
-        }
 
         super.startExecuting();
     }

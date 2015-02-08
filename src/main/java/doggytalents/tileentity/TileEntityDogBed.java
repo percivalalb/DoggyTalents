@@ -2,54 +2,54 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
+import doggytalents.network.packet.PacketDogBedUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import doggytalents.entity.EntityDTDoggy;
-import doggytalents.network.packet.PacketDogBedUpdate;
 
 /**
  * @author ProPercivalalb
  */
 public class TileEntityDogBed extends TileEntity {
 
-	private String woolId;
-	private String woodId;
+	private String casingId;
+	private String beddingId;
 	
 	public TileEntityDogBed() {
-		this.woolId = "";
-		this.woodId = "";
+		this.casingId = "";
+		this.beddingId = "";
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		this.woolId = tag.getString("bedWoolId");
-		this.woodId = tag.getString("bedWoodId");
+		this.casingId = tag.getString("casingId");
+		this.beddingId = tag.getString("beddingId");
     }
 
 	@Override
     public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setString("bedWoolId", this.woolId);
-		tag.setString("bedWoodId", this.woodId);
+		tag.setString("casingId", this.casingId);
+		tag.setString("beddingId", this.beddingId);
 	}
 	
 	@Override
 	public void updateEntity() {
-		List dogsClose = this.worldObj.getEntitiesWithinAABB(EntityDTDoggy.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1.0D, this.yCoord + 1.0D, this.zCoord + 1.0D).expand(3D, 2D, 3D));
+		List dogs = this.worldObj.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1.0D, this.yCoord + 1.0D, this.zCoord + 1.0D).expand(3D, 2D, 3D));
 		 
-	    if (dogsClose != null && dogsClose.size() > 0) {
-	    	for (int index = 0; index < dogsClose.size(); index++) {
-	            EntityDTDoggy dog = (EntityDTDoggy)dogsClose.get(index);
+	    if (dogs != null && dogs.size() > 0) {
+	    	for (int index = 0; index < dogs.size(); index++) {
+	            EntityDog dog = (EntityDog)dogs.get(index);
 	            
 	            if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
-	            	if(dog.bedHealTick <= 0) {
+	            	//if(dog.bedHealTick <= 0) {
 	            		dog.heal(0.5F);
-	            		dog.bedHealTick = 20 * 20;
-	            	}
-	            	dog.bedHealTick--;
+	            		//dog.bedHealTick = 20 * 20;
+	            	//}
+	            	//dog.bedHealTick--;
         		}
 	        }
 	    }
@@ -58,22 +58,22 @@ public class TileEntityDogBed extends TileEntity {
 	
 	@Override
     public Packet getDescriptionPacket() {
-        return new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.woolId, this.woodId).getPacket();
+        return new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.casingId, this.beddingId).getPacket();
     }
 	
-	public void setWoolId(String newId) {
-		this.woolId = newId;
+	public void setCasingId(String newId) {
+		this.casingId = newId;
 	}
 	
-	public void setWoodId(String newId) {
-		this.woodId = newId;
+	public void setBeddingId(String newId) {
+		this.beddingId = newId;
 	}
 	
-	public String getWoolId() {
-		return this.woolId;
+	public String getCasingId() {
+		return this.casingId;
 	}
 	
-	public String getWoodId() {
-		return this.woodId;
+	public String getBeddingId() {
+		return this.beddingId;
 	}
 }

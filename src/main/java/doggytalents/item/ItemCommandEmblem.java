@@ -8,29 +8,24 @@ import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDoggyBeam;
 
 /**
  * @author ProPercivalalb
  **/
-public class ItemCommandEmblem extends Item {
+public class ItemCommandEmblem extends ItemDT {
 	
 	public ItemCommandEmblem() {
-		super();
-		this.setCreativeTab(DoggyTalentsMod.creativeTab);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("doggytalents:commandEmblem");
+		super("commandEmblem");
+		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 	}
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-        if (!world.isRemote) {
+        if(!world.isRemote) {
             world.spawnEntityInWorld(new EntityDoggyBeam(world, player));
         }
 

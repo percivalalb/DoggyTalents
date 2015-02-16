@@ -9,13 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import com.google.common.base.Strings;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.helper.LogHelper;
 
 /**
  * @author ProPercivalalb
@@ -29,8 +25,8 @@ public class ItemDogBed extends ItemBlock {
 	@Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List toolTipList, boolean extraDetail) {
-		if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("doggytalents")) {
-			NBTTagCompound tag = stack.stackTagCompound.getCompoundTag("doggytalents");
+		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
 		    
 		    String casingId = tag.getString("casingId");
 		    String beddingId = tag.getString("beddingId");

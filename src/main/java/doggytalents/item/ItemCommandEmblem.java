@@ -1,14 +1,8 @@
 package doggytalents.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.DoggyTalentsMod;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDoggyBeam;
 
 /**
@@ -17,8 +11,7 @@ import doggytalents.entity.EntityDoggyBeam;
 public class ItemCommandEmblem extends ItemDT {
 	
 	public ItemCommandEmblem() {
-		super("commandEmblem");
-		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+		super();
 	}
 	
 	@Override

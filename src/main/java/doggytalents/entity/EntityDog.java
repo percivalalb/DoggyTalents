@@ -3,29 +3,7 @@ package doggytalents.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.DoggyTalentsMod;
-import doggytalents.ModItems;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.IDogTreat;
-import doggytalents.api.IDogTreat.EnumFeedBack;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
-import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.entity.ai.EntityAIDogBeg;
-import doggytalents.entity.ai.EntityAIFetchBone;
-import doggytalents.entity.ai.EntityAIFollowOwner;
-import doggytalents.entity.ai.EntityAIModeAttackTarget;
-import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
-import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
-import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.helper.LogHelper;
-import doggytalents.lib.Constants;
-import doggytalents.lib.Reference;
-import doggytalents.proxy.CommonProxy;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockColored;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -46,12 +24,12 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
@@ -60,13 +38,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import com.google.common.base.Predicate;
+
+import doggytalents.DoggyTalentsMod;
+import doggytalents.ModItems;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.IDogTreat;
+import doggytalents.api.IDogTreat.EnumFeedBack;
+import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.entity.ai.EntityAIDogBeg;
+import doggytalents.entity.ai.EntityAIFetchBone;
+import doggytalents.entity.ai.EntityAIFollowOwner;
+import doggytalents.entity.ai.EntityAIModeAttackTarget;
+import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
+import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
+import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.helper.LogHelper;
+import doggytalents.lib.Constants;
+import doggytalents.lib.Reference;
+import doggytalents.proxy.CommonProxy;
 
 /**
  * @author ProPercivalalb
@@ -102,7 +103,7 @@ public class EntityDog extends EntityTameable {
         super(word);
         this.objects = new HashMap<String, Object>();
         this.setSize(0.6F, 0.8F);
-        this.getNavigator().setAvoidsWater(true);
+        ((PathNavigateGround)this.getNavigator()).func_179690_a(true);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -118,7 +119,17 @@ public class EntityDog extends EntityTameable {
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
         this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true));
-        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntitySheep.class, 200, false));
+        this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntityAnimal.class, false, new Predicate() {
+    
+            public boolean func_180094_a(Entity p_180094_1_)
+            {
+                return p_180094_1_ instanceof EntitySheep || p_180094_1_ instanceof EntityRabbit;
+            }
+            public boolean apply(Object p_apply_1_)
+            {
+                return this.func_180094_a((Entity)p_apply_1_);
+            }
+        }));
         this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
         this.setTamed(false);
         TalentHelper.onClassCreation(this);
@@ -137,18 +148,13 @@ public class EntityDog extends EntityTameable {
         else
             this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
     }
-
-    @Override
-    public boolean isAIEnabled() {
-        return true;
-    }
     
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
     	String name = this.getDogName();
     	if(name != "")
     		return name;
-    	return super.getCommandSenderName();
+    	return super.getName();
     }
     
     @Override
@@ -178,7 +184,7 @@ public class EntityDog extends EntityTameable {
     }
 
     @Override
-    protected void func_145780_a(int x, int y, int z, Block block) {
+    protected void playStepSound(BlockPos pos, Block block) {
         this.playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
@@ -311,12 +317,12 @@ public class EntityDog extends EntityTameable {
         
         if(this.getDogHunger() == 0 && this.worldObj.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1) {
             this.attackEntityFrom(DamageSource.generic, 1);
-            this.fleeingTick = 0;
+            //this.fleeingTick = 0;
         }
         
         if (this.levels.isDireDog() && Constants.DIRE_PARTICLES) {
             for (int i = 0; i < 2; i++) {
-                worldObj.spawnParticle("portal", this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
+                worldObj.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
             }
         }
         
@@ -336,9 +342,6 @@ public class EntityDog extends EntityTameable {
         else
             this.timeDogBegging += (0.0F - this.timeDogBegging) * 0.4F;
 
-        if(this.isBegging())
-            this.numTicksToChaseTarget = 10;
-
         if(this.isWet()) {
             this.isShaking = true;
             this.forceShake = false;
@@ -357,7 +360,7 @@ public class EntityDog extends EntityTameable {
             	if(this.rand.nextInt(15) < this.talents.getLevel("fisherdog") * 2) {
                     if(this.rand.nextInt(15) < this.talents.getLevel("hellhound") * 2) {
                     	if(!this.worldObj.isRemote) {
-                    		dropItem(Items.cooked_fished, 1);
+                    		dropItem(Items.cooked_fish, 1);
                     	}
                     }
                     else {
@@ -374,14 +377,14 @@ public class EntityDog extends EntityTameable {
             }
 
             if(this.timeDogIsShaking > 0.4F) {
-                float f = (float)this.boundingBox.minY;
+                float f = (float)this.getEntityBoundingBox().minY;
                 int i = (int)(MathHelper.sin((this.timeDogIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
 
                 for (int j = 0; j < i; ++j)
                 {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
                     float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
-                    this.worldObj.spawnParticle("splash", this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, this.motionX, this.motionY, this.motionZ);
+                    this.worldObj.spawnParticle(EnumParticleTypes.WATER_SPLASH, this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, this.motionX, this.motionY, this.motionZ);
                 }
             }
         }
@@ -543,34 +546,35 @@ public class EntityDog extends EntityTameable {
     public int getVerticalFaceSpeed() {
         return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
     }
-    
+
     @Override
-    protected void fall(float distance) {
-    	distance = ForgeHooks.onLivingFall(this, distance);
-        if (distance <= 0) return;
+    public void fall(float distance, float damageMultiplier) {
+        float[] ret = net.minecraftforge.common.ForgeHooks.onLivingFall(this, distance, damageMultiplier);
+        if (ret == null) return;
+        distance = ret[0]; damageMultiplier = ret[1];
+        super.fall(distance, damageMultiplier);
         PotionEffect potioneffect = this.getActivePotionEffect(Potion.jump);
-        float f1 = potioneffect != null ? (float)(potioneffect.getAmplifier() + 1) : 0.0F;
-        int i = MathHelper.ceiling_float_int(distance - 3.0F - f1) - TalentHelper.fallProtection(this);
+        float f2 = potioneffect != null ? (float)(potioneffect.getAmplifier() + 1) : 0.0F;
+        int i = MathHelper.ceiling_float_int(((distance - 3.0F - f2) - TalentHelper.fallProtection(this)) * damageMultiplier);
 
         if (i > 0 && !TalentHelper.isImmuneToFalls(this)) {
-            this.playSound(this.func_146067_o(i), 1.0F, 1.0F);
+            this.playSound(this.getFallSoundString(i), 1.0F, 1.0F);
             this.attackEntityFrom(DamageSource.fall, (float)i);
             int j = MathHelper.floor_double(this.posX);
-            int k = MathHelper.floor_double(this.posY - 0.20000000298023224D - (double)this.yOffset);
+            int k = MathHelper.floor_double(this.posY - 0.20000000298023224D);
             int l = MathHelper.floor_double(this.posZ);
-            Block block = this.worldObj.getBlock(j, k, l);
+            Block block = this.worldObj.getBlockState(new BlockPos(j, k, l)).getBlock();
 
             if (block.getMaterial() != Material.air) {
                 Block.SoundType soundtype = block.stepSound;
-                this.playSound(soundtype.getStepResourcePath(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+                this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.5F, soundtype.getFrequency() * 0.75F);
             }
         }
     }
 
-
     @Override
     public boolean attackEntityFrom(DamageSource damageSource, float damage) {
-        if (this.isEntityInvulnerable())
+        if (this.isEntityInvulnerable(damageSource))
             return false;
         else {
         	if(!TalentHelper.attackEntityFrom(this, damageSource, damage))
@@ -653,14 +657,14 @@ public class EntityDog extends EntityTameable {
                  	treat.giveTreat(type, player, this);
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.collarShears && this.func_152114_e(player)) {
+                else if(stack.getItem() == ModItems.collarShears && this.isOwner(player)) {
                 	if(!this.worldObj.isRemote) {
                 		this.setTamed(false);
-                        this.setPathToEntity(null);
+                	    this.navigator.clearPathEntity();
                         this.setSitting(false);
                         this.setHealth(8);
                         this.talents.resetTalents();
-                        this.func_152115_b("");
+                        this.setOwnerId("");
                         this.setWillObeyOthers(false);
                         this.mode.setMode(EnumMode.DOCILE);
                         if(this.hasRadarCollar())
@@ -680,8 +684,6 @@ public class EntityDog extends EntityTameable {
                         this.setHealth(this.getMaxHealth());
                         this.setDogHunger(120);
                         this.regenerationTick = 0;
-                        this.setPathToEntity((PathEntity)null);
-                        this.setTarget((Entity)null);
                         this.setAttackTarget((EntityLivingBase)null);
                         this.playTameEffect(true);
                         this.worldObj.setEntityState(this, (byte)7);
@@ -689,21 +691,16 @@ public class EntityDog extends EntityTameable {
 
                     return true;
                 }
-                else if(stack.getItem() == Items.stick) {
-                	player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), 0, 0);
-                	return true;
-                }
             }
 
-            if (this.func_152114_e(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack)) {
+            if(!this.worldObj.isRemote && !this.isBreedingItem(stack) && this.canInteract(player)) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
-                this.setPathToEntity((PathEntity)null);
-                this.setTarget((Entity)null);
+                this.navigator.clearPathEntity();
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if(stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !worldObj.isRemote) {
+        else if(stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !this.worldObj.isRemote) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.worldObj);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -717,11 +714,11 @@ public class EntityDog extends EntityTameable {
             if(!this.worldObj.isRemote) {
                 if(this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
-                    this.setPathToEntity((PathEntity)null);
+                    this.navigator.clearPathEntity();
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
-                    this.func_152115_b(player.getUniqueID().toString());
+                    this.setOwnerId(player.getUniqueID().toString());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte)7);
                 }
@@ -848,7 +845,7 @@ public class EntityDog extends EntityTameable {
     }
     
     public boolean canInteract(EntityPlayer player) {
-    	return this.func_152114_e(player) || this.willObeyOthers();
+    	return this.isOwner(player) || this.willObeyOthers();
     }
     
     public int nourishment() {
@@ -930,10 +927,10 @@ public class EntityDog extends EntityTameable {
     @Override
     public EntityDog createChild(EntityAgeable entityAgeable) {
         EntityDog entitydog = new EntityDog(this.worldObj);
-        String uuid = this.func_152113_b();
+        String uuid = this.getOwnerId();
 
         if (uuid != null && uuid.trim().length() > 0) {
-            entitydog.func_152115_b(uuid);
+            entitydog.setOwnerId(uuid);
             entitydog.setTamed(true);
         }
         

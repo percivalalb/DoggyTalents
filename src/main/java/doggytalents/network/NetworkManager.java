@@ -3,12 +3,12 @@ package doggytalents.network;
 import java.util.EnumMap;
 
 import net.minecraft.entity.player.EntityPlayer;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.FMLEmbeddedChannel;
-import cpw.mods.fml.common.network.FMLOutboundHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
+import net.minecraftforge.fml.common.network.FMLOutboundHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.relauncher.Side;
 import doggytalents.lib.Reference;
 
 /**
@@ -17,15 +17,16 @@ import doggytalents.lib.Reference;
 public class NetworkManager {
 
     public final ChannelHandler channelHandler;
-    private final FMLEmbeddedChannel clientOutboundChannel;
-    private final FMLEmbeddedChannel serverOutboundChannel;
+    public final FMLEmbeddedChannel clientOutboundChannel;
+    public final FMLEmbeddedChannel serverOutboundChannel;
     
     public NetworkManager() {
         this.channelHandler = new ChannelHandler();
         
-        EnumMap<Side, FMLEmbeddedChannel> channelPair = NetworkRegistry.INSTANCE.newChannel(Reference.CHANNEL_NAME, channelHandler);
+        EnumMap<Side, FMLEmbeddedChannel> channelPair = NetworkRegistry.INSTANCE.newChannel(Reference.CHANNEL_NAME, this.channelHandler);
         this.clientOutboundChannel = channelPair.get(Side.CLIENT);
         this.serverOutboundChannel = channelPair.get(Side.SERVER);
+        
     }
     
     public void sendPacketToServer(IPacket packet) {
@@ -39,6 +40,14 @@ public class NetworkManager {
         if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             this.serverOutboundChannel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
             this.serverOutboundChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
+            this.serverOutboundChannel.writeOutbound(packet);
+        }
+    }
+    
+    public void sendPacketToAllInDimension(IPacket packet, int dimensionId) {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+            this.serverOutboundChannel.attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
+            this.serverOutboundChannel.attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(dimensionId);
             this.serverOutboundChannel.writeOutbound(packet);
         }
     }

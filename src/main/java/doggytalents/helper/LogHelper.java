@@ -1,8 +1,9 @@
 package doggytalents.helper;
 
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
+
 import org.apache.logging.log4j.Level;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import doggytalents.lib.Reference;
 
 /**

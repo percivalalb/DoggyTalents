@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import doggytalents.ModBlocks;
 import doggytalents.api.inferface.DefaultDogBedIcon;
 import doggytalents.api.inferface.IDogBedIcon;
@@ -25,7 +25,7 @@ public class DogBedRegistry {
 	
 	private final List<String> keys = new ArrayList<String>();
 	private final Map<String, String> lookupnames = new HashMap<String, String>();
-	private final Map<String, IDogBedIcon> icons = new HashMap<String, IDogBedIcon>();
+	private final Map<String, String> textures = new HashMap<String, String>();
 	private final Map<String, ItemStack> craftingItems = new HashMap<String, ItemStack>();
 	private final String key;
 	
@@ -37,34 +37,34 @@ public class DogBedRegistry {
 		return this.keys.contains(id);
 	}
 	
-	public void registerMaterial(String blockId) { this.registerMaterial(blockId, 0); }
-	public void registerMaterial(Block block) { this.registerMaterial(block, 0); }
+	public void registerMaterial(String blockId, String textureLocation) { this.registerMaterial(blockId, 0, textureLocation); }
+	public void registerMaterial(Block block, String textureLocation) { this.registerMaterial(block, 0, textureLocation); }
 	
-	public void registerMaterial(String blockId, int meta) {
-		if(Block.blockRegistry.containsKey(blockId))
+	public void registerMaterial(String blockId, int meta, String textureLocation) {
+		if(Block.blockRegistry.containsKey(new ResourceLocation(blockId)))
 			LogHelper.warning("The block id %s does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);
 			String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 			ItemStack stack = new ItemStack(block, 1, meta);
-			this.registerMaterial(blockId + "." + meta, lookupname, new DefaultDogBedIcon(block, meta), stack);
+			this.registerMaterial(blockId + "." + meta, lookupname, textureLocation, stack);
 		}
 	}
 	
-	public void registerMaterial(Block block, int meta) {
-		String blockId = Block.blockRegistry.getNameForObject(block);
+	public void registerMaterial(Block block, int meta, String textureLocation) {
+		String blockId = ((ResourceLocation)Block.blockRegistry.getNameForObject(block)).toString();
 		String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 		ItemStack stack = new ItemStack(block, 1, meta);
-		this.registerMaterial(blockId + "." + meta, lookupname, new DefaultDogBedIcon(block, meta), stack);
+		this.registerMaterial(blockId + "." + meta, lookupname, textureLocation, stack);
 	}
 	
-	public void registerMaterial(String key, String lookupname, IDogBedIcon dogBedIcon, ItemStack craftingItem) {
+	public void registerMaterial(String key, String lookupname, String textureLocation, ItemStack craftingItem) {
 		if(this.isValidId(key))
 			LogHelper.warning("Tried to register a dog bed material with the id %s more that once", key); 
 		else {
 			this.keys.add(key);
 			this.lookupnames.put(key, lookupname);
-			this.icons.put(key, dogBedIcon);
+			this.textures.put(key, textureLocation);
 			this.craftingItems.put(key, craftingItem);
 			
 			if("casing".equals(this.key))
@@ -82,16 +82,16 @@ public class DogBedRegistry {
 		return this.keys;
 	}
 	
-	public IIcon getIcon(String id, int side) {
-		if(!this.isValidId(id))
-			return null;
-		return this.icons.get(id).getIcon(side);
-	}
-	
 	public String getLookUpValue(String id) {
 		if(!this.isValidId(id))
 			return null;
 		return this.lookupnames.get(id);
+	}
+	
+	public String getTexture(String id) {
+		if(!this.isValidId(id))
+			return null;
+		return this.textures.get(id);
 	}
 	
 	public ItemStack getCraftingItem(String id) {
@@ -102,12 +102,12 @@ public class DogBedRegistry {
 	
 	public static ItemStack createItemStack(String casingId, String beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.dogBed, 1, 0);
-		stack.stackTagCompound = new NBTTagCompound();
+		stack.setTagCompound(new NBTTagCompound());
 		
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("casingId", casingId);
 		tag.setString("beddingId", beddingId);
-		stack.stackTagCompound.setTag("doggytalents", tag);
+		stack.getTagCompound().setTag("doggytalents", tag);
 		return stack;
 	}
 }

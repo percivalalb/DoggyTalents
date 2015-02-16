@@ -1,17 +1,15 @@
 package doggytalents.proxy;
 
-import cpw.mods.fml.common.network.IGuiHandler;
-import doggytalents.client.gui.GuiDogInfo;
-import doggytalents.client.gui.GuiFoodBowl;
-import doggytalents.client.gui.GuiPackPuppy;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.inventory.ContainerPackPuppy;
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb
@@ -27,16 +25,17 @@ public class CommonProxy implements IGuiHandler {
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		
 		if(ID == GUI_ID_DOGGY) {}
 		else if(ID == GUI_ID_PACKPUPPY) {
 			Entity target = player.worldObj.getEntityByID(x);
             if(!(target instanceof EntityDog)) 
             	return null;
 			EntityDog dog = (EntityDog)target;
-			return new ContainerPackPuppy(player.inventory, dog);
+			return new ContainerPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(x, y, z);
+			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
@@ -44,30 +43,10 @@ public class CommonProxy implements IGuiHandler {
 		}
 		return null;
 	}
+	
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
-		if(ID == GUI_ID_DOGGY) {
-			Entity target = player.worldObj.getEntityByID(x);
-            if(!(target instanceof EntityDog))
-            	return null;
-			EntityDog dog = (EntityDog)target;
-			return new GuiDogInfo(dog, player);
-		}
-		else if(ID == GUI_ID_PACKPUPPY) {
-			Entity target = player.worldObj.getEntityByID(x);
-            if(!(target instanceof EntityDog)) 
-            	return null;
-			EntityDog dog = (EntityDog)target;
-			return new GuiPackPuppy(player.inventory, dog);
-		}
-		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(x, y, z);
-			if(!(target instanceof TileEntityFoodBowl))
-				return null;
-			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
-			return new GuiFoodBowl(player.inventory, foodBowl);
-		}
 		return null;
 	}
 	

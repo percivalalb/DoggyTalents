@@ -1,12 +1,8 @@
 package doggytalents.entity;
 
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraft.nbt.NBTTagCompound;
 
 import com.google.common.base.Strings;
-
-import doggytalents.api.inferface.ITalent;
-import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author ProPercivalalb

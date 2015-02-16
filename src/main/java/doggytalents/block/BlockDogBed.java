@@ -2,43 +2,46 @@ package doggytalents.block;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.properties.PropertyHelper;
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.particle.EntityDiggingFX;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.google.common.base.Strings;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.entity.EntityDog;
+import doggytalents.helper.LogHelper;
 import doggytalents.tileentity.TileEntityDogBed;
 
 /**
@@ -46,6 +49,10 @@ import doggytalents.tileentity.TileEntityDogBed;
  */
 public class BlockDogBed extends BlockContainer {
 
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyString CASING = PropertyString.create("casing");
+	public static final PropertyString BEDDING = PropertyString.create("bedding");
+	
 	public BlockDogBed() {
 		super(Material.wood);
 		this.setHardness(2.0F);
@@ -61,156 +68,171 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLiving, ItemStack stack) {
-	    int facingDirection = MathHelper.floor_double((double)(entityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-	    world.setBlockMetadataWithNotify(x, y, z, facingDirection, 2);
-
-	    if (stack.hasTagCompound() && stack.stackTagCompound.hasKey("doggytalents")) {
-	    	NBTTagCompound tag = stack.stackTagCompound.getCompoundTag("doggytalents");
+	public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+	
+	@Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
+	    
+        if(stack != null && stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
+	    	NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
 	    	
 	    	String casingId = tag.getString("casingId");
 	    	if(DogBedRegistry.CASINGS.isValidId(casingId)) 
-	    		((TileEntityDogBed)world.getTileEntity(x, y, z)).setCasingId(casingId);
+	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setCasingId(casingId);
 	    	
 	    	String beddingId = tag.getString("beddingId");
 	    	if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-	    		((TileEntityDogBed)world.getTileEntity(x, y, z)).setBeddingId(beddingId);
+	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setBeddingId(beddingId);
 	    }
 	}
 	
-	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int x, int y, int z, int side) {
-        if(side == 0) {
-        	Block block = par1IBlockAccess.getBlock(x, y - 1, z);
-        	if(par1IBlockAccess instanceof World)
-        		return block.isSideSolid((World)par1IBlockAccess, x, y - 1, z, ForgeDirection.UP);
-        	else
-        		return block.isBlockSolid(par1IBlockAccess, x, y - 1, z, 1);
+	public IBlockState getStateForEntityRender(IBlockState state) {
+	    return this.getDefaultState().withProperty(FACING, EnumFacing.SOUTH);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+	    if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+	        enumfacing = EnumFacing.NORTH;
+
+	    return this.getDefaultState().withProperty(FACING, enumfacing);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+	    return ((EnumFacing)state.getValue(FACING)).getIndex();
+	}
+
+	@Override
+	protected BlockState createBlockState() {
+	    return new ExtendedBlockState(this, new IProperty[] {FACING}, new IUnlistedProperty[] {CASING, BEDDING});
+	}
+	
+	@Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
+        if(te instanceof TileEntityDogBed && state instanceof IExtendedBlockState)
+        {
+        	IExtendedBlockState stateExtended = (IExtendedBlockState)state;
+        	TileEntityDogBed dogBed = (TileEntityDogBed) te;
+            return stateExtended.withProperty(CASING, dogBed.getCasingId()).withProperty(BEDDING, dogBed.getBeddingId());
         }
-		return true;
+        return state;
     }
 	
 	@Override
-	public Item getItemDropped(int meta, Random par2Random, int fortune) {
-	    return Item.getItemById(-1);
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
-		int x = target.blockX;
-		int y = target.blockY;
-		int z = target.blockZ;
-		int sideHit = target.sideHit;
-		
-		TileEntity tile = worldObj.getTileEntity(x, y, z);
-		IIcon icon = Blocks.planks.getIcon(0, 0);
-		if(tile instanceof TileEntityDogBed) {
-			TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-			icon = this.getIconSafe(DogBedRegistry.CASINGS.getIcon(dogBed.getCasingId(), sideHit));
-		}
-		
-		Block block = ModBlocks.dogBed;
-		float b = 0.1F;
-		double px = x + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxX() - block.getBlockBoundsMinX() - (b * 2.0F)) + b + block.getBlockBoundsMinX();
-		double py = y + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxY() - block.getBlockBoundsMinY() - (b * 2.0F)) + b + block.getBlockBoundsMinY();
-		double pz = z + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxZ() - block.getBlockBoundsMinZ() - (b * 2.0F)) + b + block.getBlockBoundsMinZ();
+	public boolean addHitEffects(World world, MovingObjectPosition target, EffectRenderer effectRenderer) {
+		BlockPos pos = target.getBlockPos();
+		IBlockState iblockstate = world.getBlockState(pos);
+        Block block = iblockstate.getBlock();
+        EnumFacing side = target.sideHit;
 
-		if (sideHit == 0)
-			py = (double) y + block.getBlockBoundsMinY() - (double) b;
-		else if (sideHit == 1)
-			py = (double) y + block.getBlockBoundsMaxY() + (double) b;
-		else if (sideHit == 2)
-			pz = (double) z + block.getBlockBoundsMinZ() - (double) b;
-		else if (sideHit == 3)
-			pz = (double) z + block.getBlockBoundsMaxZ() + (double) b;
-		else if (sideHit == 4)
-			px = (double) x + block.getBlockBoundsMinX() - (double) b;
-		else if (sideHit == 5)
-			px = (double) x + block.getBlockBoundsMaxX() + (double) b;
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
+        float f = 0.1F;
+        double d0 = (double)i + world.rand.nextDouble() * (block.getBlockBoundsMaxX() - block.getBlockBoundsMinX() - (double)(f * 2.0F)) + (double)f + block.getBlockBoundsMinX();
+        double d1 = (double)j + world.rand.nextDouble() * (block.getBlockBoundsMaxY() - block.getBlockBoundsMinY() - (double)(f * 2.0F)) + (double)f + block.getBlockBoundsMinY();
+        double d2 = (double)k + world.rand.nextDouble() * (block.getBlockBoundsMaxZ() - block.getBlockBoundsMinZ() - (double)(f * 2.0F)) + (double)f + block.getBlockBoundsMinZ();
 
-		EntityDiggingFX fx = new EntityDiggingFX(worldObj, px, py, pz, 0.0D, 0.0D, 0.0D, block, sideHit, worldObj.getBlockMetadata(x, y, z));
-		fx.setParticleIcon(icon);
-		effectRenderer.addEffect(fx.applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-		return true;
-	}
+        if (side == EnumFacing.DOWN)
+            {
+                d1 = (double)j + block.getBlockBoundsMinY() - (double)f;
+            }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean addDestroyEffects(World worldObj, int x, int y, int z, int meta, EffectRenderer effectRenderer) {
-		TileEntity target = worldObj.getTileEntity(x, y, z);
+            if (side == EnumFacing.UP)
+            {
+                d1 = (double)j + block.getBlockBoundsMaxY() + (double)f;
+            }
 
-		byte its = 4;
-		for (int i = 0; i < its; ++i) {
-			for (int j = 0; j < its; ++j) {
-				for (int k = 0; k < its; ++k) {
-					double px = x + (i + 0.5D) / (double)its;
-					double py = y + (j + 0.5D) / (double)its;
-					double pz = z + (k + 0.5D) / (double)its;
-					int random = worldObj.rand.nextInt(6);
-					IIcon icon = Blocks.planks.getIcon(0, 0);
-					if(target instanceof TileEntityDogBed) {
-						TileEntityDogBed dogBed = (TileEntityDogBed)target;
-						icon = this.getIconSafe(DogBedRegistry.CASINGS.getIcon(dogBed.getCasingId(), random));
-					}
-					EntityDiggingFX fx = new EntityDiggingFX(worldObj, px, py, pz, px - x - 0.5D, py - y - 0.5D, pz - z - 0.5D, ModBlocks.dogBed, random, meta);
-					fx.setParticleIcon(icon);
-					effectRenderer.addEffect(fx.applyColourMultiplier(x, y, z));
-				}
-			}
-		}
+            if (side == EnumFacing.NORTH)
+            {
+                d2 = (double)k + block.getBlockBoundsMinZ() - (double)f;
+            }
+
+            if (side == EnumFacing.SOUTH)
+            {
+                d2 = (double)k + block.getBlockBoundsMaxZ() + (double)f;
+            }
+
+            if (side == EnumFacing.WEST)
+            {
+                d0 = (double)i + block.getBlockBoundsMinX() - (double)f;
+            }
+
+            if (side == EnumFacing.EAST)
+            {
+                d0 = (double)i + block.getBlockBoundsMaxX() + (double)f;
+            }
+            world.spawnParticle(EnumParticleTypes.BLOCK_CRACK, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[] {Block.getStateId(iblockstate)});
+            //effectRenderer.addEffect((new EntityDiggingFX(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, iblockstate)).func_174846_a(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
 		return true;
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public IIcon getIconSafe(IIcon icon) {
-	    if (icon == null)
-	        icon = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+    public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos)
+    {
+        Block block = worldIn.getBlockState(pos).getBlock();
+        int i = worldIn.getCombinedLight(pos, 0);
 
-	    return icon;
-	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
-		TileEntity tile = blockAccess.getTileEntity(x, y, z);
-		if(tile instanceof TileEntityDogBed) {
-			TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-			return DogBedRegistry.CASINGS.getIcon(dogBed.getCasingId(), side);
-		}
-		return null;
+            return i;
     }
 	
 	@Override
-	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
-		if(par7Entity instanceof EntityDog) {
+	public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity) {
+		if(collidingEntity instanceof EntityDog) {
 	       
 		}
 		else {
-			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
+			super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
 		}
     }
 	
 	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-		TileEntity target = world.getTileEntity(x, y, z);
-		if(!(target instanceof TileEntityDogBed))
-			return super.removedByPlayer(world, player, x, y, z, willHarvest);
-		TileEntityDogBed dogBed = (TileEntityDogBed)target;
+	public boolean isOpaqueCube() {
+		return false;
+	}
 		
-		ItemStack stack = DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
+	@Override
+	public boolean isFullBlock() {
+		return false;
+	}
 		
-		boolean flag = super.removedByPlayer(world, player, x, y, z, willHarvest);
-		if(player == null || !player.capabilities.isCreativeMode)
-			this.dropBlockAsItem(world, x, y, z, stack);
+	@Override
+	public boolean isFullCube() {
+	    return false;
+	}
 		
-		return flag;
+	@Override
+	public int getRenderType() {
+		return 3;
 	}
 	
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-        TileEntity tile = world.getTileEntity(x, y, z);
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        List<ItemStack> ret = new ArrayList<ItemStack>();
+        
+        TileEntity target = world.getTileEntity(pos);
+		if(!(target instanceof TileEntityDogBed))
+			return ret;
+		TileEntityDogBed dogBed = (TileEntityDogBed)target;
+		
+		ItemStack stack = DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
+		ret.add(stack);
+		
+        return ret;
+    }
+	
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
 		
 		if(!(tile instanceof TileEntityDogBed))
 			return null;
@@ -220,42 +242,27 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {}
-
-	@Override
-	public boolean isOpaqueCube() {
-        return false;
-    }
-	
-	@Override
-	public boolean renderAsNormalBlock() {
-		return false;
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
 	}
 
 	@Override
-	public int getRenderType() {
-	    return DoggyTalentsMod.proxy.RENDER_ID_DOG_BED;
-	}
-	
-	@Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        if (!super.canPlaceBlockAt(world, x, y, z))
-            return false;
-        else
-            return canBlockStay(world, x, y, z);
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!this.canBlockStay(world, x, y, z))
-			this.removedByPlayer(world, null, x, y, z, false);
+	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
+		if(!this.canBlockStay(worldIn, pos)) {
+		    TileEntity tile = worldIn.getTileEntity(pos);
+			if(tile instanceof TileEntityDogBed) {
+					
+				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
+				
+		        this.spawnAsEntity(worldIn, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+		        worldIn.setBlockToAir(pos);
+			}
+		}
 	}
 
-	@Override
-	public boolean canBlockStay(World world, int x, int y, int z) {
-		Block block = world.getBlock(x, y - 1, z);
-		return block != null && block.isSideSolid(world, x, y - 1, z, ForgeDirection.UP);
+	public boolean canBlockStay(World world, BlockPos pos) {
+		IBlockState blockstate = world.getBlockState(pos.down());
+		return blockstate.getBlock().isSideSolid(world, pos.down(), EnumFacing.UP);
 	}
 	
 	@Override

@@ -1,15 +1,14 @@
 package doggytalents.item;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Facing;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import doggytalents.DoggyTalentsMod;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 
 /**
@@ -17,28 +16,25 @@ import doggytalents.entity.EntityDog;
  **/
 public class ItemDoggyCharm extends ItemDT {
 	
-    public ItemDoggyCharm(String iconPath) {
-        super(iconPath);
+    public ItemDoggyCharm() {
+        super();
         this.setMaxStackSize(1);
-        this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
     }
     
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-        if (world.isRemote) {
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if(worldIn.isRemote) {
             return true;
         }
         else {
-        	Block block = world.getBlock(x, y, z);
-            x += Facing.offsetsXForSide[side];
-            y += Facing.offsetsYForSide[side];
-            z += Facing.offsetsZForSide[side];
+        	IBlockState blockstate = worldIn.getBlockState(pos);
+        	pos = pos.offset(side);
             double yOffset = 0.0D;
 
-            if (side == 1 && block.getRenderType() == 11)
+            if (side == EnumFacing.UP && blockstate.getBlock().getRenderType() == 11)
             	yOffset = 0.5D;
 
-            if (spawnCreature(world, (double)x + 0.5D, (double)y + yOffset, (double)z + 0.5D, player) != null && !player.capabilities.isCreativeMode)
+            if (spawnCreature(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY() + yOffset, (double)pos.getZ() + 0.5D, player) != null && !player.capabilities.isCreativeMode)
                 --stack.stackSize;
 
             return true;
@@ -58,7 +54,7 @@ public class ItemDoggyCharm extends ItemDT {
                 var10.renderYawOffset = var10.rotationYaw;
                 var10.setTamed(true);
                 var10.updateEntityAttributes();
-                var10.func_152115_b(par7EntityPlayer.getUniqueID().toString());
+                var10.setOwnerId(par7EntityPlayer.getUniqueID().toString());
                 par0World.spawnEntityInWorld(var8);
                 var10.playLivingSound();
             }

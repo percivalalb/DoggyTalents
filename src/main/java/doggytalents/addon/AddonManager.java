@@ -1,7 +1,7 @@
 package doggytalents.addon;
 
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.common.eventhandler.EventBus;
+import net.minecraftforge.fml.common.eventhandler.EventBus;
 import doggytalents.addon.forestry.ForestryAddon;
 
 /**

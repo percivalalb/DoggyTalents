@@ -2,17 +2,19 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
-import doggytalents.entity.EntityDog;
-import doggytalents.network.packet.PacketDogBedUpdate;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import doggytalents.entity.EntityDog;
+import doggytalents.network.packet.PacketDogBedUpdate;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityDogBed extends TileEntity {
+public class TileEntityDogBed extends TileEntity implements IUpdatePlayerListBox {
 
 	private String casingId;
 	private String beddingId;
@@ -37,8 +39,8 @@ public class TileEntityDogBed extends TileEntity {
 	}
 	
 	@Override
-	public void updateEntity() {
-		List dogs = this.worldObj.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1.0D, this.yCoord + 1.0D, this.zCoord + 1.0D).expand(3D, 2D, 3D));
+	public void update() {
+		List dogs = this.worldObj.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 1.0D, this.pos.getZ() + 1.0D).expand(3D, 2D, 3D));
 		 
 	    if (dogs != null && dogs.size() > 0) {
 	    	for (int index = 0; index < dogs.size(); index++) {
@@ -58,8 +60,16 @@ public class TileEntityDogBed extends TileEntity {
 	
 	@Override
     public Packet getDescriptionPacket() {
-        return new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.casingId, this.beddingId).getPacket();
+		NBTTagCompound nbttagcompound = new NBTTagCompound();
+	    this.writeToNBT(nbttagcompound);
+	    return new S35PacketUpdateTileEntity(this.pos, this.getBlockMetadata(), nbttagcompound);
+        //return new PacketDogBedUpdate(this.pos, this.casingId, this.beddingId).getPacket();
     }
+	
+	@Override
+	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+	}
 	
 	public void setCasingId(String newId) {
 		this.casingId = newId;

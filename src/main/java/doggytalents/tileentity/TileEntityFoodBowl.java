@@ -2,7 +2,6 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,14 +10,19 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityFoodBowl extends TileEntity implements IInventory {
+public class TileEntityFoodBowl extends TileEntity implements IUpdatePlayerListBox, IInventory {
    
 	private final int iDogFoodBowlInventorySize = 5;
     private final int iDogFoodBowlStackSizeLimit = 64;
@@ -62,9 +66,8 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
 
     @Override
-    public void updateEntity()
-    {
-    	List dogList = this.worldObj.getEntitiesWithinAABB(EntityDog.class, AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 0.5D, this.zCoord, this.xCoord + 1.0D, this.yCoord + 0.5D + 0.05000000074505806D, this.zCoord + 1.0D).expand(5, 5, 5));
+    public void update() {
+    	List dogList = this.worldObj.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 0.5D + 0.05000000074505806D, this.pos.getZ() + 1.0D).expand(5, 5, 5));
 
         if (dogList != null && dogList.size() > 0) {
             for (int j1 = 0; j1 < dogList.size(); j1++) {
@@ -193,7 +196,7 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
                 entityitem.motionX = (float)world.rand.nextGaussian() * f3;
                 entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
                 entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-                entityitem.delayBeforeCanPickup = 10;
+                entityitem.setPickupDelay(10);
                 world.spawnEntityInWorld(entityitem);
             }
             while (true);
@@ -242,25 +245,20 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
     }
 
     @Override
-    public String getInventoryName() {
-        return "container.foodBowl";
-    }
-
-    @Override
     public int getInventoryStackLimit() {
         return 64;
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) != this ? false : player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+    	return this.worldObj.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer player) {}
 
     private boolean ContainsFood()
     {
@@ -294,13 +292,44 @@ public class TileEntityFoodBowl extends TileEntity implements IInventory {
         }
     }
 
+    @Override
+	public String getName() {
+		return "container.foodBowl";
+	}
+
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 		return false;
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		for(int i = 0; i < this.bowlContents.length; ++i)
+			this.bowlContents[i] = null;
 	}
 }

@@ -3,7 +3,7 @@ package doggytalents.talent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 

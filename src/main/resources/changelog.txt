@@ -7,6 +7,11 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1a - 16th February 2015
+Updated to MC 1.8
+
+* Fixed crash when sneaking and looking at a dogs labels
+
 v1.9.0b - 08th February 2015
 * Fixed NEI and TMI overlapping with the doggy info screen
 

@@ -1,6 +1,5 @@
 package doggytalents.item;
 
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import doggytalents.api.IDogTreat;
@@ -12,8 +11,8 @@ import doggytalents.helper.ChatHelper;
  **/
 public class ItemDireTreat extends ItemDT implements IDogTreat {
 	
-	public ItemDireTreat(String iconPath) {
-		super(iconPath);
+	public ItemDireTreat() {
+		super();
 	}
 
 	@Override
@@ -41,7 +40,7 @@ public class ItemDireTreat extends ItemDT implements IDogTreat {
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 
             dog.levels.increaseDireLevel();
-            dog.setPathToEntity(null);
+            dog.getNavigator().clearPathEntity();
             dog.setHealth(dog.getMaxHealth());
             dog.getSitAI().setSitting(true);
             dog.worldObj.setEntityState(dog, (byte)7);

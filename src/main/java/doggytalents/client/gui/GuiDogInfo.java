@@ -1,31 +1,29 @@
 package doggytalents.client.gui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.LogHelper;
-import doggytalents.inventory.ContainerDummy;
 import doggytalents.network.packet.PacketDogMode;
 import doggytalents.network.packet.PacketDogName;
 import doggytalents.network.packet.PacketDogObey;
@@ -63,7 +61,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.doggyTex = this.dog.getTameSkin();
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
-		GuiTextField nameTextField = new GuiTextField(this.fontRendererObj, topX - 100, topY + 50, 200, 20) {
+		GuiTextField nameTextField = new GuiTextField(0, this.fontRendererObj, topX - 100, topY + 50, 200, 20) {
 			@Override
 			public boolean textboxKeyTyped(char character, int keyId) {
 				boolean typed = super.textboxKeyTyped(character, keyId);
@@ -108,7 +106,7 @@ public class GuiDogInfo extends GuiScreen {
 
         this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
         this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
-        if(this.dog.func_152114_e(this.player)) {
+        if(this.dog.isOwner(this.player)) {
         	this.buttonList.add(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())));
         }
         
@@ -119,30 +117,31 @@ public class GuiDogInfo extends GuiScreen {
 	public void drawScreen(int xMouse, int yMouse, float partialTickTime) {
 		this.drawDefaultBackground();
 		//Background
-				int topX = this.width / 2;
-			    int topY = this.height / 2;
-				this.fontRendererObj.drawString("New name:", topX - 100, topY + 38, 4210752);
-				this.fontRendererObj.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
-				this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
-				this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+		int topX = this.width / 2;
+		int topY = this.height / 2;
+		this.fontRendererObj.drawString("New name:", topX - 100, topY + 38, 4210752);
+		this.fontRendererObj.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
+		this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
+		this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-				this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
-				this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
+		this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
+	    if(this.dog.isOwner(this.player))
+	    	this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
 				
-		    	for(int i = 0; i < this.btnPerPages; ++i) {
-		    		if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
-		    			continue;
-		    		this.fontRendererObj.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
-		    	}
+		for(int i = 0; i < this.btnPerPages; ++i) {
+			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
+		    	continue;
+		    this.fontRendererObj.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
+		}
 				
-				for(GuiTextField field : this.textfieldList)
-		        	field.drawTextBox();
+		for(GuiTextField field : this.textfieldList)
+			field.drawTextBox();
 	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	    RenderHelper.disableStandardItemLighting();
 	    GL11.glDisable(GL11.GL_LIGHTING);
 	    GL11.glDisable(GL11.GL_DEPTH_TEST);
-	        super.drawScreen(xMouse, yMouse, partialTickTime);
-	        RenderHelper.enableGUIStandardItemLighting();
+	    super.drawScreen(xMouse, yMouse, partialTickTime);
+	    RenderHelper.enableGUIStandardItemLighting();
 		
 		
 		//Foreground
@@ -159,7 +158,7 @@ public class GuiDogInfo extends GuiScreen {
 			    	list.add(EnumChatFormatting.GREEN + talent.getLocalisedName());
 			    	list.add("Level: " + this.dog.talents.getLevel(talent));
 			    	list.add(EnumChatFormatting.GRAY + "--------------------------------");
-		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRenderer));
+		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRendererObj));
 	    		}
 	    		else if(button.id == -1) {
 	    			list.add(EnumChatFormatting.ITALIC + "Previous Page");
@@ -169,10 +168,10 @@ public class GuiDogInfo extends GuiScreen {
 	    		}
 	    		else if(button.id == -6) {
     				String str = StatCollector.translateToLocal("doggui.modeinfo." + button.displayString.toLowerCase());
-    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
+    				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
     			}
 	    		
-	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
+	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRendererObj);
 	    	}
 	    }
 		GL11.glPopMatrix();
@@ -251,7 +250,7 @@ public class GuiDogInfo extends GuiScreen {
 	}
 	
 	@Override
-	public void mouseClicked(int xMouse, int yMouse, int mouseButton) {	
+	public void mouseClicked(int xMouse, int yMouse, int mouseButton) throws IOException {	
 		super.mouseClicked(xMouse, yMouse, mouseButton);
 		for(GuiTextField field : this.textfieldList)
 			field.mouseClicked(xMouse, yMouse, mouseButton);

@@ -1,7 +1,6 @@
 package doggytalents.entity;
 
 import net.minecraft.nbt.NBTTagCompound;
-import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb

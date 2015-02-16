@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import doggytalents.api.inferface.ITalent;
-import doggytalents.helper.LogHelper;
 
 /**
  * @author ProPercivalalb

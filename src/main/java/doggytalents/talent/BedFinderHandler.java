@@ -1,13 +1,16 @@
 package doggytalents.talent;
 
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.entity.EntityDog;
 
 /**
@@ -26,7 +29,7 @@ public class BedFinderHandler {
 				
 				GL11.glPushMatrix();
 				
-				AxisAlignedBB boundingBox = AxisAlignedBB.getBoundingBox(dog.coords.getBedX(), dog.coords.getBedY(), dog.coords.getBedZ(), dog.coords.getBedX() + 1, dog.coords.getBedY() + 1, dog.coords.getBedZ() + 1);
+				AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedX(), dog.coords.getBedY(), dog.coords.getBedZ(), dog.coords.getBedX() + 1, dog.coords.getBedY() + 1, dog.coords.getBedZ() + 1);
 				this.drawSelectionBox(player, event.partialTicks, boundingBox);
 			    GL11.glPopMatrix();
 		    }
@@ -49,9 +52,9 @@ public class BedFinderHandler {
     	double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)particleTicks;
     	double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)particleTicks;
 
-        this.drawOutlinedBoundingBox(boundingBox.getOffsetBoundingBox(-d0, -d1, -d2));
+    	RenderGlobal.drawOutlinedBoundingBox(boundingBox.offset(-d0, -d1, -d2), -1);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.3F);
-        this.drawBoundingBox(boundingBox.getOffsetBoundingBox(-d0, -d1, -d2));
+        this.drawBoundingBox(boundingBox.offset(-d0, -d1, -d2));
         GL11.glEnable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glDepthMask(true);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -59,95 +62,68 @@ public class BedFinderHandler {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
     }
-	
-	public void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB) {
-		net.minecraft.client.renderer.Tessellator var2 = net.minecraft.client.renderer.Tessellator.instance;
-        var2.startDrawing(3);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
-        var2.draw();
-        var2.startDrawing(3);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
-        var2.draw();
-        var2.startDrawing(1);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
-        var2.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
-        var2.draw();
-    }
-	
+
 	public void drawBoundingBox(AxisAlignedBB boundingBox) {
-		net.minecraft.client.renderer.Tessellator tessellator = net.minecraft.client.renderer.Tessellator.instance;
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+		Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.startDrawingQuads();
+        worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+        worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+        worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+        worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+        worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+        worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+        worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+        worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
 	    tessellator.draw();
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.startDrawingQuads();
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
 	    tessellator.draw();
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.startDrawingQuads();
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
 	    tessellator.draw();
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.startDrawingQuads();
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
 	    tessellator.draw();
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.startDrawingQuads();
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
 	    tessellator.draw();
-	    tessellator.startDrawingQuads();
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
-	    tessellator.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.startDrawingQuads();
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.minX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.minZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ);
+	    worldrenderer.addVertex(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ);
 	    tessellator.draw();
 	}
 	

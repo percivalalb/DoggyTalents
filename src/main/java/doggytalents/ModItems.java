@@ -1,7 +1,7 @@
 package doggytalents;
 
 import net.minecraft.item.Item;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
@@ -32,14 +32,14 @@ public class ModItems {
 		//dogOwnersManual = new ItemDogOwnersManual().setUnlocalizedName("dt.dogOwnersManual").setTextureName("doggytalents:dogOwnersManual");
 		throwBone = new ItemThrowBone().setUnlocalizedName("doggytalents.throwbone");
 		commandEmblem = new ItemCommandEmblem().setUnlocalizedName("doggytalents.commandemblem");
-		trainingTreat = new ItemTreat("trainingtreat", 20).setUnlocalizedName("doggytalents.trainingtreat");
-	    superTreat = new ItemTreat("supertreat", 40).setUnlocalizedName("doggytalents.supertreat");
-	    masterTreat = new ItemTreat("mastertreat", 60).setUnlocalizedName("doggytalents.mastertreat");
-	    direTreat = new ItemDireTreat("diretreat").setUnlocalizedName("doggytalents.diretreat");
-	    breedingBone = new ItemDT("breedingbone").setUnlocalizedName("doggytalents.breedingbone");
-	    collarShears = new ItemDT("collarshears").setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16);
-	    doggyCharm = new ItemDoggyCharm("doggycharm").setUnlocalizedName("doggytalents.doggycharm");
-	    radioCollar = new ItemDT("radiocollar").setUnlocalizedName("doggytalents.radiocollar");
+		trainingTreat = new ItemTreat(20).setUnlocalizedName("doggytalents.trainingtreat");
+	    superTreat = new ItemTreat(40).setUnlocalizedName("doggytalents.supertreat");
+	    masterTreat = new ItemTreat(60).setUnlocalizedName("doggytalents.mastertreat");
+	    direTreat = new ItemDireTreat().setUnlocalizedName("doggytalents.diretreat");
+	    breedingBone = new ItemDT().setUnlocalizedName("doggytalents.breedingbone");
+	    collarShears = new ItemDT().setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16);
+	    doggyCharm = new ItemDoggyCharm().setUnlocalizedName("doggytalents.doggycharm");
+	    radioCollar = new ItemDT().setUnlocalizedName("doggytalents.radiocollar");
 	    radar = new ItemRadar().setUnlocalizedName("doggytalents.radar");
 	    
 		GameRegistry.registerItem(throwBone, "throw_bone");

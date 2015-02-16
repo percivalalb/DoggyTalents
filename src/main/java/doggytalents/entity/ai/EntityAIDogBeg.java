@@ -1,12 +1,11 @@
 package doggytalents.entity.ai;
 
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb

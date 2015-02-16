@@ -2,12 +2,12 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityMob;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 
 /**
  * @author ProPercivalalb
@@ -33,7 +33,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.dog.getOwner();
+            EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
 
             if (entitylivingbase == null)
             {
@@ -43,7 +43,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
             {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {
 	           	 	double distance = 16D;
-	           	 	List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.boundingBox.expand(distance, distance, distance));
+	           	 	List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().expand(distance, distance, distance));
 	
 	           	 	for (int count = 0; count < list.size(); count++) {
 	           	 		Entity entity1 = (Entity)list.get(count);
@@ -73,10 +73,10 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     @Override
     public void startExecuting() {
         this.taskOwner.setAttackTarget(this.entityToAttack);
-        EntityLivingBase entitylivingbase = this.dog.getOwner();
+        EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
 
         if (entitylivingbase != null)
-            this.field_142051_e = entitylivingbase.func_142015_aE();
+            this.field_142051_e = entitylivingbase.getLastAttackerTime();
 
         super.startExecuting();
     }

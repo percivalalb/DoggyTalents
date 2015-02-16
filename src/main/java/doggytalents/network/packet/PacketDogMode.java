@@ -1,11 +1,10 @@
 package doggytalents.network.packet;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.IPacket;
 
@@ -24,15 +23,15 @@ public class PacketDogMode extends IPacket {
 	}
 
 	@Override
-	public void read(DataInputStream data) throws IOException {
-		this.entityId = data.readInt();
-		this.doggyMode = data.readInt();
+	public void read(PacketBuffer packetbuffer) throws IOException {
+		this.entityId = packetbuffer.readInt();
+		this.doggyMode = packetbuffer.readInt();
 	}
 
 	@Override
-	public void write(DataOutputStream dos) throws IOException {
-		dos.writeInt(this.entityId);
-		dos.writeInt(this.doggyMode);
+	public void write(PacketBuffer packetbuffer) throws IOException {
+		packetbuffer.writeInt(this.entityId);
+		packetbuffer.writeInt(this.doggyMode);
 	}
 
 	@Override

@@ -1,14 +1,9 @@
 package doggytalents.talent;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import doggytalents.inventory.InventoryPackPuppy;
 
 /**
  * @author ProPercivalalb

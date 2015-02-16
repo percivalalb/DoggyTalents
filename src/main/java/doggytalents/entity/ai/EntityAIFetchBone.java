@@ -7,8 +7,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import doggytalents.ModItems;
@@ -43,7 +43,7 @@ public class EntityAIFetchBone extends EntityAIBase {
     @Override
     public boolean shouldExecute() {
     	this.theBone = this.getClosestsBone();
-    	EntityLivingBase possibleOwner = this.theDog.getOwner();
+    	EntityLivingBase possibleOwner = this.theDog.getOwnerEntity();
     	
         if(this.theBone == null) {
             return false;
@@ -101,8 +101,8 @@ public class EntityAIFetchBone extends EntityAIBase {
     public void startExecuting()
     {
         this.tenTickTimer = 0;
-        this.preShouldAvoidWater = this.theDog.getNavigator().getAvoidsWater();
-        this.theDog.getNavigator().setAvoidsWater(false);
+        this.preShouldAvoidWater = ((PathNavigateGround)this.theDog.getNavigator()).func_179689_e();
+        ((PathNavigateGround)this.theDog.getNavigator()).func_179690_a(false);
     }
 
     /**
@@ -112,7 +112,7 @@ public class EntityAIFetchBone extends EntityAIBase {
     public void resetTask() {
         this.theOwner = null;
         this.petPathfinder.clearPathEntity();
-        this.theDog.getNavigator().setAvoidsWater(this.preShouldAvoidWater);
+        ((PathNavigateGround)this.theDog.getNavigator()).func_179690_a(this.preShouldAvoidWater);
     }
     
     public EntityItem getClosestsBone() {
@@ -121,7 +121,7 @@ public class EntityAIFetchBone extends EntityAIBase {
         if(this.theDog.hasBone())
         	return null;
         
-        List list = this.theWorld.getEntitiesWithinAABBExcludingEntity(this.theDog, this.theDog.boundingBox.expand((double)maxDist, (double)maxDist, (double)maxDist));
+        List list = this.theWorld.getEntitiesWithinAABBExcludingEntity(this.theDog, this.theDog.getEntityBoundingBox().expand((double)maxDist, (double)maxDist, (double)maxDist));
         for (int i = 0; i < list.size(); i++) {
             Entity listEntity = (Entity)list.get(i);
 
@@ -149,8 +149,7 @@ public class EntityAIFetchBone extends EntityAIBase {
         		this.theBone.attackEntityFrom(DamageSource.generic, 12F);
         		this.theDog.setHasBone(true);
         		this.theBone = null;
-                this.theDog.setPathToEntity((PathEntity)null);
-                this.theDog.setTarget((Entity)null);
+        	    this.theDog.getNavigator().clearPathEntity();
                 this.theDog.setAttackTarget((EntityLivingBase)null);
         	}
         }

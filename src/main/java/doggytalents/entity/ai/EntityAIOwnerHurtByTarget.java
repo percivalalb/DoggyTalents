@@ -1,10 +1,9 @@
 package doggytalents.entity.ai;
 
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.passive.EntityTameable;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 
 /**
  * @author ProPercivalalb
@@ -32,7 +31,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
         }
         else
         {
-            EntityLivingBase entitylivingbase = this.dog.getOwner();
+            EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
 
             if (entitylivingbase == null)
             {
@@ -41,7 +40,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
             else
             {
                 this.theOwnerAttacker = entitylivingbase.getAITarget();
-                int i = entitylivingbase.func_142015_aE();
+                int i = entitylivingbase.getRevengeTimer();
                 return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, entitylivingbase);
             }
         }
@@ -56,11 +55,11 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     public void startExecuting()
     {
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);
-        EntityLivingBase entitylivingbase = this.dog.getOwner();
+        EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
 
         if (entitylivingbase != null)
         {
-            this.field_142051_e = entitylivingbase.func_142015_aE();
+            this.field_142051_e = entitylivingbase.getRevengeTimer();
         }
 
         super.startExecuting();

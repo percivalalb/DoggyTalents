@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.util.AxisAlignedBB;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 
@@ -24,7 +23,7 @@ public class CreeperSweeper extends ITalent {
 		int level = dog.talents.getLevel(this);
 		
 		if(dog.getAttackTarget() == null && dog.isTamed() && level > 0) {
-            List list = dog.worldObj.getEntitiesWithinAABB(EntityCreeper.class, dog.boundingBox.expand(level * 6, level * 6, level * 6));
+            List list = dog.worldObj.getEntitiesWithinAABB(EntityCreeper.class, dog.getEntityBoundingBox().expand(level * 6, level * 6, level * 6));
 
             if (!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1)
             	dog.objects.put("canseecreeper", true);

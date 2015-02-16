@@ -1,12 +1,14 @@
 package doggytalents.inventory;
 
-import doggytalents.entity.EntityDog;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
+import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
@@ -83,22 +85,12 @@ public class InventoryPackPuppy implements IInventory {
 	}
 
 	@Override
-	public String getInventoryName()  {
-		return "container.packpuppy";
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
-	}
-
-    @Override
-	public boolean hasCustomInventoryName() {
-		return false;
 	}
 
 	@Override
@@ -109,7 +101,7 @@ public class InventoryPackPuppy implements IInventory {
 	public void readFromNBT(NBTTagCompound tagCompound) {
         NBTTagList nbttaglist = tagCompound.getTagList("packpuppyitems", 10);
         
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
+        for(int i = 0; i < nbttaglist.tagCount(); ++i) {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
@@ -121,8 +113,8 @@ public class InventoryPackPuppy implements IInventory {
     public void writeToNBT(NBTTagCompound tagCompound) {
         NBTTagList nbttaglist = new NBTTagList();
 
-        for (int i = 0; i < this.inventorySlots.length; ++i) {
-            if (this.inventorySlots[i] != null) {
+        for(int i = 0; i < this.inventorySlots.length; ++i) {
+            if(this.inventorySlots[i] != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.inventorySlots[i].writeToNBT(nbttagcompound1);
@@ -139,8 +131,44 @@ public class InventoryPackPuppy implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {}
+	public void openInventory(EntityPlayer player) {}
 
 	@Override
-	public void closeInventory() {}
+	public void closeInventory(EntityPlayer player) {}
+
+	@Override
+	public String getName() {
+		return "container.packpuppy";
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public IChatComponent getDisplayName() {
+		return (IChatComponent)(this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+	}
+
+	@Override
+	public int getField(int id) {
+		return 0;
+	}
+
+	@Override
+	public void setField(int id, int value) {
+		
+	}
+
+	@Override
+	public int getFieldCount() {
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		for(int i = 0; i < this.inventorySlots.length; ++i)
+			this.inventorySlots[i] = (ItemStack)null;
+	}
 }

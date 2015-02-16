@@ -5,14 +5,13 @@ import java.util.HashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
@@ -41,7 +40,7 @@ public class KeyStateHandler {
     
     private void keyTick(boolean tickEnd) {
     	for(KeyBinding kb : keyBindings) {
-	        if(kb.getIsKeyPressed()) {
+	        if(kb.isKeyDown()) {
 	            if (!tickEnd && (!this.keyState.containsKey(kb) || !this.keyState.get(kb))) {
 	            	this.keyState.put(kb, true);
 	            	//Key Pressed

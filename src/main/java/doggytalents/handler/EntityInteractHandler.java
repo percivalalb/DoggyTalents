@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.EntityInteractEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 
@@ -23,14 +23,14 @@ public class EntityInteractHandler {
 		if(event.target instanceof EntityWolf && stack != null && stack.getItem() == ModItems.trainingTreat) {
 			EntityWolf wolf = (EntityWolf)event.target;
 			 
-			if(wolf.isTamed() && wolf.func_152114_e(event.entityPlayer)) {
+			if(wolf.isTamed() && wolf.isOwner(event.entityPlayer)) {
 
 				if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
 					player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 				 
 			 	EntityDog dog = new EntityDog(world);
 			 	dog.setTamed(true);
-			 	dog.func_152115_b(event.entityPlayer.getUniqueID().toString());
+			 	dog.setOwnerId(event.entityPlayer.getUniqueID().toString());
 			 	dog.setHealth(dog.getMaxHealth());
 			 	dog.setSitting(false);
 			 	dog.setGrowingAge(wolf.getGrowingAge());

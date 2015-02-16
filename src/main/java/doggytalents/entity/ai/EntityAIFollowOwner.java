@@ -1,14 +1,15 @@
 package doggytalents.entity.ai;
 
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 
 public class EntityAIFollowOwner extends EntityAIBase
 {
@@ -20,7 +21,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     private int field_75343_h;
     float maxDist;
     float minDist;
-    private boolean field_75344_i;
+    private boolean preShouldAvoidWater;
     private static final String __OBFID = "CL_00001585";
 
     public EntityAIFollowOwner(EntityDog p_i1625_1_, double p_i1625_2_, float p_i1625_4_, float p_i1625_5_)
@@ -39,7 +40,7 @@ public class EntityAIFollowOwner extends EntityAIBase
      */
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.theDog.getOwner();
+        EntityLivingBase entitylivingbase = this.theDog.getOwnerEntity();
         int order = this.theDog.masterOrder();
         
         if (entitylivingbase == null)
@@ -78,8 +79,8 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void startExecuting() {
         this.field_75343_h = 0;
-        this.field_75344_i = this.theDog.getNavigator().getAvoidsWater();
-        this.theDog.getNavigator().setAvoidsWater(false);
+        this.preShouldAvoidWater = ((PathNavigateGround)this.theDog.getNavigator()).func_179689_e();
+        ((PathNavigateGround)this.theDog.getNavigator()).func_179690_a(false);
     }
 
     /**
@@ -89,7 +90,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     {
         this.theOwner = null;
         this.petPathfinder.clearPathEntity();
-        this.theDog.getNavigator().setAvoidsWater(this.field_75344_i);
+        ((PathNavigateGround)this.theDog.getNavigator()).func_179690_a(this.preShouldAvoidWater);
     }
 
     @Override
@@ -116,13 +117,13 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                        {
 	                            int i = MathHelper.floor_double(this.theOwner.posX) - 2;
 	                            int j = MathHelper.floor_double(this.theOwner.posZ) - 2;
-	                            int k = MathHelper.floor_double(this.theOwner.boundingBox.minY);
+	                            int k = MathHelper.floor_double(this.theOwner.getEntityBoundingBox().minY);
 	
 	                            for (int l = 0; l <= 4; ++l)
 	                            {
 	                                for (int i1 = 0; i1 <= 4; ++i1)
 	                                {
-	                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
+	                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, new BlockPos(i + l, k - 1, j + i1)) && !this.theWorld.getBlockState(new BlockPos(i + l, k, j + i1)).getBlock().isFullBlock() && !this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)).getBlock().isFullBlock() && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.flowing_lava && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.lava)
 	                                    {
 	                                        this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                        this.petPathfinder.clearPathEntity();
@@ -138,7 +139,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     	}
     	else if(order == 1 || order == 2) {
     		int dogX = MathHelper.floor_double(this.theDog.posX);
-            int dogY = MathHelper.floor_double(this.theDog.posY - 0.20000000298023224D - (double)this.theDog.yOffset);
+            int dogY = MathHelper.floor_double(this.theDog.posY - 0.20000000298023224D - (double)this.theDog.getYOffset());
             int dogZ = MathHelper.floor_double(this.theDog.posZ);
             int k2 = dogX - masterX;
             int i3 = dogZ - masterZ;
@@ -154,13 +155,13 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                    {
 	                        int i = MathHelper.floor_double(this.theOwner.posX) - 2;
 	                        int j = MathHelper.floor_double(this.theOwner.posZ) - 2;
-	                        int k = MathHelper.floor_double(this.theOwner.boundingBox.minY);
+	                        int k = MathHelper.floor_double(this.theOwner.getEntityBoundingBox().minY);
 	
 	                        for (int l = 0; l <= 4; ++l)
 	                        {
 	                            for (int i1 = 0; i1 <= 4; ++i1)
 	                            {
-	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
+	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, new BlockPos(i + l, k - 1, j + i1)) && !this.theWorld.getBlockState(new BlockPos(i + l, k, j + i1)).getBlock().isFullBlock() && !this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)).getBlock().isFullBlock() && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.flowing_lava && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.lava)
 	                                {
 	                                    this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                    this.petPathfinder.clearPathEntity();
@@ -181,13 +182,13 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                    {
 	                        int i = MathHelper.floor_double(this.theOwner.posX) - 2;
 	                        int j = MathHelper.floor_double(this.theOwner.posZ) - 2;
-	                        int k = MathHelper.floor_double(this.theOwner.boundingBox.minY);
+	                        int k = MathHelper.floor_double(this.theOwner.getEntityBoundingBox().minY);
 	
 	                        for (int l = 0; l <= 4; ++l)
 	                        {
 	                            for (int i1 = 0; i1 <= 4; ++i1)
 	                            {
-	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, i + l, k - 1, j + i1) && !this.theWorld.getBlock(i + l, k, j + i1).isNormalCube() && !this.theWorld.getBlock(i + l, k + 1, j + i1).isNormalCube() && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.flowing_lava && this.theWorld.getBlock(i + l, k + 1, j + i1) != Blocks.lava)
+	                                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(this.theWorld, new BlockPos(i + l, k - 1, j + i1)) && !this.theWorld.getBlockState(new BlockPos(i + l, k, j + i1)).getBlock().isFullBlock() && !this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)).getBlock().isFullBlock() && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.flowing_lava && this.theWorld.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.lava)
 	                                {
 	                                    this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
 	                                    this.petPathfinder.clearPathEntity();

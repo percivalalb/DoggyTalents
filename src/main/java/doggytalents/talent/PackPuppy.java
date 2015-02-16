@@ -10,13 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraftforge.oredict.OreDictionary;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.TalentHelper;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.proxy.CommonProxy;
 
@@ -64,7 +61,7 @@ public class PackPuppy extends ITalent {
 		if(!dog.worldObj.isRemote && dog.talents.getLevel(this) >= 5 && dog.getHealth() > 1) {
 			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 			
-			List list = dog.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(dog.posX - 2.5D, dog.posY - 1.0D, dog.posZ - 2.5D, dog.posX + 2.5D, dog.posY + 1.0D, dog.posZ + 2.5D));
+			List list = dog.worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(dog.posX - 2.5D, dog.posY - 1.0D, dog.posZ - 2.5D, dog.posX + 2.5D, dog.posY + 1.0D, dog.posZ + 2.5D));
 	        for(int i = 0; i < list.size(); i++) {
 	            EntityItem entityItem = (EntityItem)list.get(i);
 	            if (!entityItem.isDead && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getEntityItem()))

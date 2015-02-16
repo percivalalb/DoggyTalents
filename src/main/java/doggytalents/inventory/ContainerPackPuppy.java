@@ -1,7 +1,6 @@
 package doggytalents.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -16,10 +15,10 @@ public class ContainerPackPuppy extends Container {
 	
     private EntityDog dog;
 
-    public ContainerPackPuppy(InventoryPlayer playerInventory, EntityDog dog) {
+    public ContainerPackPuppy(EntityPlayer player, EntityDog dog) {
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
-        inventory.openInventory();
+        inventory.openInventory(player);
         int packpuppyLevel = MathHelper.clamp_int(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         for (int j = 0; j < 3; j++) {
@@ -32,10 +31,10 @@ public class ContainerPackPuppy extends Container {
         
         for (var3 = 0; var3 < 3; ++var3)
             for (var4 = 0; var4 < 9; ++var4)
-                this.addSlotToContainer(new Slot(playerInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+                this.addSlotToContainer(new Slot(player.inventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
 
         for (var3 = 0; var3 < 9; ++var3)
-            this.addSlotToContainer(new Slot(playerInventory, var3, 8 + var3 * 18, 142));
+            this.addSlotToContainer(new Slot(player.inventory, var3, 8 + var3 * 18, 142));
     }
 
     @Override
@@ -73,9 +72,9 @@ public class ContainerPackPuppy extends Container {
     }
     
     @Override
-    public void onContainerClosed(EntityPlayer p_75134_1_) {
-        super.onContainerClosed(p_75134_1_);
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
-        inventory.closeInventory();
+        inventory.closeInventory(player);
     }
 }

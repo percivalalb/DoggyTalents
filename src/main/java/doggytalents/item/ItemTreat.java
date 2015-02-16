@@ -1,11 +1,10 @@
 package doggytalents.item;
 
-import doggytalents.api.IDogTreat;
-import doggytalents.api.IDogTreat.EnumFeedBack;
-import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import doggytalents.api.IDogTreat;
+import doggytalents.entity.EntityDog;
+import doggytalents.helper.ChatHelper;
 
 /**
  * @author ProPercivalalb
@@ -14,8 +13,8 @@ public class ItemTreat extends ItemDT implements IDogTreat {
 
 	private int maxLevel;
 	
-	public ItemTreat(String iconPath, int maxLevel) {
-		super(iconPath);
+	public ItemTreat(int maxLevel) {
+		super();
 		this.maxLevel = maxLevel;
 	}
 

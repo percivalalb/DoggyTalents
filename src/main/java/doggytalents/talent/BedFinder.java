@@ -1,7 +1,7 @@
 package doggytalents.talent;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.BlockPos;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 
@@ -16,11 +16,11 @@ public class BedFinder extends ITalent {
 		
 		if (dog.ridingEntity instanceof EntityPlayer && !dog.worldObj.isRemote) {
 			EntityPlayer player = (EntityPlayer)dog.ridingEntity;
-			ChunkCoordinates bedLocation = player.getBedLocation(player.dimension);
+			BlockPos bedLocation = player.getBedLocation(player.dimension);
 			if(player != null && bedLocation != null) {
-	            dog.coords.setBedX(bedLocation.posX);
-	            dog.coords.setBedY(bedLocation.posY);
-	            dog.coords.setBedZ(bedLocation.posZ);
+	            dog.coords.setBedX(bedLocation.getX());
+	            dog.coords.setBedY(bedLocation.getY());
+	            dog.coords.setBedZ(bedLocation.getZ());
 	        }
 	    }
 	}

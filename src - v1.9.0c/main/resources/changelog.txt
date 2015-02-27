@@ -7,6 +7,24 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1b - 27th February 2015
++ Added a recipe for dog bath - water bucket surrounded by iron ingots
+
+* Fixed not spawning with the Doggy Charm and command emblem in new worlds
+* Fixed there sometimes only being one talent in the talent gui
+* Mod will not load with forge version 11.14.0.1292 or lower to avoid crashes
+
+v1.9.1a - 16th February 2015
+Updated to MC 1.8
+
+* Fixed crash when sneaking and looking at a dogs labels
+
+v1.9.1c - 27th February 2015
++ Added a recipe for dog bath - water bucket surrounded by iron ingots
+
+* Fixed not spawning with the Doggy Charm and command emblem in new worlds
+* Fixed there sometimes only being one talent in the talent gui
+
 v1.9.0b - 08th February 2015
 * Fixed NEI and TMI overlapping with the doggy info screen
 

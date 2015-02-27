@@ -85,8 +85,9 @@ public class GuiDogInfo extends GuiScreen {
     	while((temp + 2) * 21 + 10 < this.resolution.getScaledHeight())
     		temp += 1;
     	
+		this.btnPerPages = temp;
+		
     	if(temp < size) {
-    		this.btnPerPages = temp;
     		this.buttonList.add(new GuiButton(-1, 25, temp * 21 + 10, 20, 20, "<"));
     	    this.buttonList.add(new GuiButton(-2, 48, temp * 21 + 10, 20, 20, ">"));
     	}

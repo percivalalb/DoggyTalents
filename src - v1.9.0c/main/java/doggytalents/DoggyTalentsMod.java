@@ -145,7 +145,8 @@ public class DoggyTalentsMod {
         GameRegistry.addRecipe(new ItemStack(ModItems.collarShears, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.bone, 'Y', Items.shears});
         GameRegistry.addRecipe(new ItemStack(ModItems.commandEmblem, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.gold_ingot, 'Y', Items.bow});
         GameRegistry.addRecipe(new ItemStack(ModBlocks.foodBowl, 1), new Object[] {"XXX", "XYX", "XXX", 'X', Items.iron_ingot, 'Y', Items.bone});
-        
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.dogBath, 1), new Object[] {"XXX", "XYX", "XXX", 'X', Items.iron_ingot, 'Y', Items.water_bucket});
+		
         GameRegistry.addRecipe(new ItemStack(ModItems.radioCollar, 1), new Object[] {"XX", "YX", 'X', Items.iron_ingot, 'Y', Items.redstone});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.radar, 1), new Object[] {new ItemStack(Items.map, 1), new ItemStack(Items.redstone, 1), new ItemStack(ModItems.radioCollar, 1)});
 		

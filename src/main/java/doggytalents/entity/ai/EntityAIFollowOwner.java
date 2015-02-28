@@ -61,7 +61,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         {
             return false;
         }
-        else if(this.theDog.riddenByEntity == null && order == 3) {
+        else if(this.theDog.riddenByEntity == null && order == 3 && this.theDog.talents.getLevel("shepherddog") > 0) {
         	return false;
         }
         else

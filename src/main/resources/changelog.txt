@@ -7,6 +7,14 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1c - 28th February 2015
+* Fixed mcmod.info file now working and having invalid data in it
+* Fixed the talent happy eater not affecting what the dog and eat and the NP value
+* Fixed the talent doggy dash not affecting the speed at which the dog moves
+* Fixed dogs being inside you when the was meant to be on your head
+* Fixed dogs being 1 block under minecarts when they were meant to be in the them
+* Fixed the dog standing still when holding wheat if they have no points in shepherd dog
+
 v1.9.1b - 27th February 2015
 + Added a recipe for dog bath - water bucket surrounded by iron ingots
 
@@ -17,9 +25,18 @@ v1.9.1b - 27th February 2015
 v1.9.1a - 16th February 2015
 Updated to MC 1.8
 
-* Fixed crash when sneaking and looking at a dogs labels
+* Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
 
-v1.9.1c - 27th February 2015
+v1.9.0d - 28th February 2015
+* Fixed mcmod.info file now working and having invalid data in it
+* Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
+* Fixed the talent happy eater not affecting what the dog and eat and the NP value
+* Fixed the talent doggy dash not affecting the speed at which the dog moves
+* Fixed dogs being inside you when the was meant to be on your head
+* Fixed dogs being 1 block under minecarts when they were meant to be in the them
+* Fixed the dog standing still when holding wheat if they have no points in shepherd dog
+
+v1.9.0c - 27th February 2015
 + Added a recipe for dog bath - water bucket surrounded by iron ingots
 
 * Fixed not spawning with the Doggy Charm and command emblem in new worlds

@@ -135,8 +135,13 @@ public class RenderDog extends RenderLiving {
     	if (distanceFromPlayer < 100.0D) {
     		y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.5F);
               
-           if(this.renderManager.livingPlayer.isSneaking())
-        	   this.renderLivingLabel(entityLivingBase, dog.getOwner().getCommandSenderName(), x, y, z, 5, 0.5F);
+           if(this.renderManager.livingPlayer.isSneaking()) {
+        	   EntityLivingBase owner = dog.getOwner();
+	    	   if(owner != null)
+	    		   this.renderLivingLabel(dog, owner.func_145748_c_().getUnformattedText(), x, y, z, 5, 0.5F);
+	    	   else
+	    		   this.renderLivingLabel(dog, dog.func_152113_b(), x, y, z, 5, 0.5F);
+           }
     	}
     }
     

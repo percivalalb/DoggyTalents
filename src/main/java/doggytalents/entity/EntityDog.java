@@ -741,7 +741,7 @@ public class EntityDog extends EntityTameable {
 
     @Override
     public double getYOffset() {
-        return (double)-1.0F;
+        return this.ridingEntity instanceof EntityPlayer ? 0.5D : 0.0D;
     }
     
     @Override
@@ -776,7 +776,7 @@ public class EntityDog extends EntityTameable {
             	foodValue = 40;
         }
         
-        TalentHelper.changeFoodValue(this, stack, foodValue);
+        foodValue = TalentHelper.changeFoodValue(this, stack, foodValue);
 
         return foodValue;
     }

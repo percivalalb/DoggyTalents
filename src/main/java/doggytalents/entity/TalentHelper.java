@@ -89,7 +89,7 @@ public class TalentHelper {
 	}
 
 	public static double addToMoveSpeed(EntityDog dog) {
-		int total = 0;
+		double total = 0;
 		for(ITalent talent : TalentRegistry.getTalents())
 			total += talent.addToMoveSpeed(dog);
 		return total;

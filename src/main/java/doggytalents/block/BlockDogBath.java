@@ -20,9 +20,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.LogHelper;
 import doggytalents.tileentity.TileEntityDogBath;
+import doggytalents.tileentity.TileEntityDogBed;
 
 /**
  * @author ProPercivalalb
@@ -88,8 +90,10 @@ public class BlockDogBath extends BlockContainer {
 
 	@Override
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
-		if(!this.canBlockStay(worldIn, pos))
-	        worldIn.setBlockToAir(pos);
+		if(!this.canBlockStay(worldIn, pos)) {
+			this.dropBlockAsItem(worldIn, pos, state, 0);
+		    worldIn.setBlockToAir(pos);
+		}
 	}
 
 	public boolean canBlockStay(World world, BlockPos pos) {

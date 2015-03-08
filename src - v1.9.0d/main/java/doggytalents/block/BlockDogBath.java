@@ -77,11 +77,6 @@ public class BlockDogBath extends BlockContainer {
         }
 		return true;
     }
-	
-	@Override
-	public Item getItemDropped(int meta, Random par2Random, int fortune) {
-	    return Item.getItemById(-1);
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -106,10 +101,6 @@ public class BlockDogBath extends BlockContainer {
 			dog.forceShake = true;
 		}
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {}
 
 	@Override
 	public boolean isOpaqueCube() {
@@ -136,8 +127,10 @@ public class BlockDogBath extends BlockContainer {
 	
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!this.canBlockStay(world, x, y, z))
-			this.removedByPlayer(world, null, x, y, z, false);
+		if (!this.canBlockStay(world, x, y, z)) {
+			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			world.setBlockToAir(x, y, z);
+		}
 	}
 
 	@Override

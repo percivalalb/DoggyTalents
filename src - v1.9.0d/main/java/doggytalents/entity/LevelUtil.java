@@ -62,6 +62,6 @@ public class LevelUtil {
 	}
 
 	public boolean isDireDog() {
-		return this.getDireLevel() == 15;
+		return this.getDireLevel() == 30;
 	}
 }

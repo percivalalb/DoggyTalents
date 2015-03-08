@@ -1,7 +1,10 @@
 package doggytalents.client.renderer.block;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -18,12 +21,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.client.model.ISmartItemModel;
+import net.minecraftforge.client.model.b3d.B3DLoader.B3DState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import com.google.common.collect.Lists;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
+import doggytalents.helper.LogHelper;
 
 public class DogBedModelTexture extends SimpleBakedModel implements ISmartBlockModel, ISmartItemModel {
 	
@@ -36,9 +41,9 @@ public class DogBedModelTexture extends SimpleBakedModel implements ISmartBlockM
     public IBakedModel handleBlockState(IBlockState blockstate) {
     	if(blockstate instanceof IExtendedBlockState) {
     		IExtendedBlockState exState = (IExtendedBlockState)blockstate;
-    		TextureAtlasSprite casingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.CASINGS.getTexture((String)exState.getValue(BlockDogBed.CASING)));
-  		    TextureAtlasSprite beddingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.BEDDINGS.getTexture((String)exState.getValue(BlockDogBed.BEDDING)));
-	    	return new DogBedModelTexture.Builder(this, casingTexture, beddingTexture).makeBakedModel();
+    		String casingId = (String)exState.getValue(BlockDogBed.CASING);
+  		    String beddingId = (String)exState.getValue(BlockDogBed.BEDDING);
+	    	return this.getCachedModel(casingId, beddingId);
     	}
 	    return this;
     }
@@ -48,12 +53,27 @@ public class DogBedModelTexture extends SimpleBakedModel implements ISmartBlockM
     	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
 		    
-		    TextureAtlasSprite casingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.CASINGS.getTexture(tag.getString("casingId")));
-		    TextureAtlasSprite beddingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.BEDDINGS.getTexture(tag.getString("beddingId")));
-		    return new DogBedModelTexture.Builder(this, casingTexture, beddingTexture).makeBakedModel();
+			String casingId = tag.getString("casingId");
+			String beddingId = tag.getString("beddingId");
+		    return this.getCachedModel(casingId, beddingId);
     	}
     	
     	return this;
+    }
+    
+    private final Map<List<String>, IBakedModel> cache = new HashMap<List<String>, IBakedModel>();
+
+    public IBakedModel getCachedModel(String casingId, String beddingId) {
+    	
+    	List<String> key = Arrays.asList(casingId, beddingId);
+  
+        if(!this.cache.containsKey(key)) {
+        	TextureAtlasSprite casingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.CASINGS.getTexture(casingId));
+   		    TextureAtlasSprite beddingTexture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(DogBedRegistry.BEDDINGS.getTexture(beddingId));
+            this.cache.put(key, new DogBedModelTexture.Builder(this, casingTexture, beddingTexture).makeBakedModel());
+        }
+        
+        return this.cache.get(key);
     }
     
 	public static class Builder {

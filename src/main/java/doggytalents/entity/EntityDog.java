@@ -700,7 +700,7 @@ public class EntityDog extends EntityTameable {
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if(stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !this.worldObj.isRemote) {
+        else if(stack != null && stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !this.worldObj.isRemote) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.worldObj);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -736,7 +736,7 @@ public class EntityDog extends EntityTameable {
     
     @Override
     protected boolean isMovementBlocked() {
-        return this.isPlayerSleeping() || this.riddenByEntity instanceof EntityPlayer || super.isMovementBlocked();
+        return this.isPlayerSleeping() || this.ridingEntity != null || this.riddenByEntity instanceof EntityPlayer || super.isMovementBlocked();
     }
 
     @Override

@@ -7,6 +7,13 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1d - 28th February 2015
+# Optimized the code for rendering the dog bed to improve performance
+* Fixed the dog not acting correctly when it was dire level 30 (no particles, 15 less points to spend)
+* Fixed dogs moving things they are riding
+* Fixed crash when right clicking on a non-tamed dog with an empty hand
+* Fixed the dog bath not dropping itself as an item when the block below was removed
+
 v1.9.1c - 28th February 2015
 * Fixed mcmod.info file now working and having invalid data in it
 * Fixed the talent happy eater not affecting what the dog and eat and the NP value
@@ -17,7 +24,6 @@ v1.9.1c - 28th February 2015
 
 v1.9.1b - 27th February 2015
 + Added a recipe for dog bath - water bucket surrounded by iron ingots
-
 * Fixed not spawning with the Doggy Charm and command emblem in new worlds
 * Fixed there sometimes only being one talent in the talent gui
 * Mod will not load with forge version 11.14.0.1292 or lower to avoid crashes
@@ -26,6 +32,12 @@ v1.9.1a - 16th February 2015
 Updated to MC 1.8
 
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
+
+v1.9.1e - 28th February 2015
+* Fixed the dog not acting correctly when it was dire level 30 (no particles, 15 less points to spend)
+* Fixed dogs moving things they are riding
+* Fixed crash when right clicking on a non-tamed dog with an empty hand
+* Fixed the dog bath not dropping itself as an item when broken or when the block below was removed
 
 v1.9.0d - 28th February 2015
 * Fixed mcmod.info file now working and having invalid data in it

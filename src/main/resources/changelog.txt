@@ -8,11 +8,13 @@ Update List Key
 (/) Other
 
 v1.9.1d - 28th February 2015
++ Readded the rendering for the radio collar and the incapacitated blood on the dog
 # Optimized the code for rendering the dog bed to improve performance
 * Fixed the dog not acting correctly when it was dire level 30 (no particles, 15 less points to spend)
 * Fixed dogs moving things they are riding
 * Fixed crash when right clicking on a non-tamed dog with an empty hand
 * Fixed the dog bath not dropping itself as an item when the block below was removed
+* Fixed the dog bowl not dropping itself as an item when the block below was removed
 
 v1.9.1c - 28th February 2015
 * Fixed mcmod.info file now working and having invalid data in it
@@ -38,6 +40,7 @@ v1.9.1e - 28th February 2015
 * Fixed dogs moving things they are riding
 * Fixed crash when right clicking on a non-tamed dog with an empty hand
 * Fixed the dog bath not dropping itself as an item when broken or when the block below was removed
+* Fixed the dog bowl not dropping itself as an item when the block below was removed
 
 v1.9.0d - 28th February 2015
 * Fixed mcmod.info file now working and having invalid data in it

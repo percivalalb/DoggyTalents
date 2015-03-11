@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.layers.LayerWolfCollar;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,6 +34,8 @@ public class RenderDog extends RenderLiving {
 	
     public RenderDog(RenderManager renderManager, ModelBase model, float shadowSize) {
         super(renderManager, model, shadowSize);
+        this.addLayer(new LayerRadioCollar(this));
+        this.addLayer(new LayerDogHurt(this));
     }
 
     protected float handleRotationFloat(EntityDog dog, float partialTickTime) {

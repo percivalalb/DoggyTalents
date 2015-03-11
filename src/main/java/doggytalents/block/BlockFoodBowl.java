@@ -137,14 +137,8 @@ public class BlockFoodBowl extends BlockContainer {
 	@Override
 	public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock) {
 		if(!this.canBlockStay(worldIn, pos)) {
-		    TileEntity tile = worldIn.getTileEntity(pos);
-			if(tile instanceof TileEntityDogBed) {
-					
-				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-				
-		        this.spawnAsEntity(worldIn, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
-		        worldIn.setBlockToAir(pos);
-			}
+			this.dropBlockAsItem(worldIn, pos, state, 0);
+		    worldIn.setBlockToAir(pos);
 		}
 	}
 

@@ -7,7 +7,7 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.9.1d - 28th February 2015
+v1.9.1d - 15th March 2015
 + Readded the rendering for the radio collar and the incapacitated blood on the dog
 # Optimized the code for rendering the dog bed to improve performance
 * Fixed the dog not acting correctly when it was dire level 30 (no particles, 15 less points to spend)
@@ -35,7 +35,7 @@ Updated to MC 1.8
 
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
 
-v1.9.1e - 28th February 2015
+v1.9.1e - 15th March 2015
 * Fixed the dog not acting correctly when it was dire level 30 (no particles, 15 less points to spend)
 * Fixed dogs moving things they are riding
 * Fixed crash when right clicking on a non-tamed dog with an empty hand

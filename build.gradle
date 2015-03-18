@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "v1.9.1d"
+version = "v1.9.1e"
 group= "com.propercivalalb.doggytalents" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "doggytalents"
 

@@ -11,12 +11,7 @@ import doggytalents.lib.Reference;
 public class ModEntities {
 	
 	public static void inti() {
-		registerEntity(EntityDog.class, "dog");
-		registerEntity(EntityDoggyBeam.class, "attackbeam");
-		EntityRegistry.registerModEntity(EntityDoggyBeam.class, Reference.MOD_ID + ":attackbeam", 0, DoggyTalentsMod.instance, 64, 10, true);
-	}
-	
-	public static void registerEntity(Class entityClass, String saveName) {
-	    EntityRegistry.registerGlobalEntityID(entityClass, Reference.MOD_ID + ":" + saveName, EntityRegistry.findGlobalUniqueEntityId());
+		EntityRegistry.registerModEntity(EntityDog.class, Reference.MOD_ID + ":dog", 0, DoggyTalentsMod.instance, 120, 1, true);
+		EntityRegistry.registerModEntity(EntityDoggyBeam.class, Reference.MOD_ID + ":attackbeam", 1, DoggyTalentsMod.instance, 64, 10, true);
 	}
 }

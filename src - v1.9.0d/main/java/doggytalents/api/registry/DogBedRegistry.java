@@ -41,7 +41,7 @@ public class DogBedRegistry {
 	public void registerMaterial(Block block) { this.registerMaterial(block, 0); }
 	
 	public void registerMaterial(String blockId, int meta) {
-		if(Block.blockRegistry.containsKey(blockId))
+		if(!Block.blockRegistry.containsKey(blockId))
 			LogHelper.warning("The block id %s does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);

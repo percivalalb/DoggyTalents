@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1f -2015
+* Fixed bug when registering bed casing and bedding
+
 v1.9.1e - 18th March 2015
 * Fixed compatibly issue with Copious Dogs 
 
@@ -37,6 +40,9 @@ v1.9.1a - 16th February 2015
 Updated to MC 1.8
 
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
+
+v1.9.0g - 2015
+* Fixed bug when registering bed casing and bedding
 
 v1.9.0f - 18th March 2015
 * Fixed compatibly issue with Copious Dogs
@@ -129,6 +135,10 @@ v1.7.0a - 8th July 2014
 Updated to MC 1.7.10
 # Updated owner name system to cater for upcoming name changes
 # Removed some unused classes
+
+v1.6.2a - 19th March 2015
++ Updated the 1.7.2 to have the lastest bug fixes and features in the most recent versions
+* Fixed bug when registering bed casing and bedding
 
 v1.6.1a - 24th July 2014
 + Added zh_CN language file, thanks to 'crafteverywhere'

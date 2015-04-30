@@ -1,0 +1,125 @@
+package doggytalents.client.renderer.block;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.init.Blocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import doggytalents.DoggyTalentsMod;
+import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.tileentity.TileEntityDogBed;
+
+/**
+ * @author ProPercivalalb
+ */
+public class RenderBlockDogBath implements ISimpleBlockRenderingHandler {
+
+	@Override
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+		
+	}
+
+	@Override
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		TileEntity target = world.getTileEntity(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+
+		GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+
+		//Bottom Wood
+		renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.2D, 1.0D);
+		renderer.renderStandardBlock(block, x, y, z);
+		
+		if(meta == 0) {
+			//Back
+			renderer.setRenderBounds(0.0D, 0.2D, 0.9D, 1.0D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Right
+			renderer.setRenderBounds(0.9D, 0.2D, 0.1D, 1.0D, 0.5D, 0.9D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Left
+			renderer.setRenderBounds(0.0D, 0.2D, 0.1D, 0.1D, 0.5D, 0.9D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Front
+			renderer.setRenderBounds(0.0D, 0.2D, 0.0D, 1.0D, 0.5D, 0.1D);
+			renderer.renderStandardBlock(block, x, y, z);
+		}
+		else if(meta == 1) {
+			//Back
+			renderer.setRenderBounds(0.0D, 0.2D, 0.0D, 0.1D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Right
+			renderer.setRenderBounds(0.1D, 0.2D, 0.0D, 0.9D, 0.5D, 0.1D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Left
+			renderer.setRenderBounds(0.1D, 0.2D, 0.9D, 0.9D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Front
+			renderer.setRenderBounds(0.9D, 0.2D, 0.0D, 1.0D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+		}
+		else if(meta == 2) {
+			//Back
+			renderer.setRenderBounds(0.0D, 0.2D, 0.0D, 1.0D, 0.5D, 0.1D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Right
+			renderer.setRenderBounds(0.9D, 0.2D, 0.1D, 1.0D, 0.5D, 0.9D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Left
+			renderer.setRenderBounds(0.0D, 0.2D, 0.1D, 0.1D, 0.5D, 0.9D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Front
+			renderer.setRenderBounds(0.0D, 0.2D, 0.9D, 1.0D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+		}
+		else if(meta == 3) {
+			//Back
+			renderer.setRenderBounds(0.9D, 0.2D, 0.0D, 1.0D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Right
+			renderer.setRenderBounds(0.1D, 0.2D, 0.9D, 0.9D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Left
+			renderer.setRenderBounds(0.1D, 0.2D, 0.0D, 0.9D, 0.5D, 0.1D);
+			renderer.renderStandardBlock(block, x, y, z);
+			
+			//Front
+			renderer.setRenderBounds(0.0D, 0.2D, 0.0D, 0.1D, 0.5D, 1.0D);
+			renderer.renderStandardBlock(block, x, y, z);
+		}
+	    
+		renderer.setOverrideBlockTexture(renderer.getIconSafe(Blocks.water.getBlockTextureFromSide(1)));
+	    renderer.setRenderBounds(0.1D, 0.2D, 0.1D, 0.9D, 0.4D, 0.9D);
+	    renderer.renderStandardBlock(block, x, y, z);
+	    
+	    renderer.clearOverrideBlockTexture();
+	    
+	    GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
+        return true;
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId) {
+		return false;
+	}
+
+	@Override
+	public int getRenderId() {
+		return DoggyTalentsMod.proxy.RENDER_ID_DOG_BATH;
+	}
+}

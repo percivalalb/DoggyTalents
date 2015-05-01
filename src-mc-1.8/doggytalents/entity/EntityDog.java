@@ -285,16 +285,24 @@ public class EntityDog extends EntityTameable {
         if(Constants.DOGS_IMMORTAL) {
         	this.prevRegenerationTick = this.regenerationTick;
         	
-	        if(this.getHealth() <= 1) {
+	        if(this.isSitting()) {
 	        	this.regenerationTick += 1;
 	        	
 	        	this.regenerationTick += TalentHelper.onRegenerationTick(this, this.regenerationTick - this.prevRegenerationTick);
 	        }
+	        else if(!this.isSitting())
+	        	this.regenerationTick = 0;
 	        
-	        if(this.regenerationTick >= 12000) {
-	            this.setHealth(this.getHealth() + 1);
-	            this.worldObj.setEntityState(this, (byte)7);
-	            this.regenerationTick = 0;
+	        if(this.regenerationTick >= 2400 && this.getHealth() <= 1) {
+	            this.setHealth(2);
+	            this.setDogHunger(10);
+	        }
+	        else if(this.regenerationTick >= 2400 && this.getHealth() > 1) {
+		        if(this.regenerationTick >= 4400) {
+		        	this.setDogHunger(this.getDogHunger() + 1);
+		            this.worldObj.setEntityState(this, (byte)7);
+		            this.regenerationTick = 2400;
+		        }
 	        }
     	}
         

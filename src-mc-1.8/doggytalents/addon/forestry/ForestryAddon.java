@@ -30,9 +30,9 @@ public class ForestryAddon {
 			return;
 		
 		//TODO for(int i = 0; i < ForestryLib.PLANKS_1_COUNT; ++i)
-			//DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_1_ID, i);
-		//for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
-			//DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_2_ID, i);
+			//TODO DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_1_ID, i);
+			//TODO for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
+		//TODO DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_2_ID, i);
 		
 	}
 }

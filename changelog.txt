@@ -7,8 +7,12 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.9.1f -2015
+v1.9.1f - 2015
++ When dogs have been sitting for a while they will regen hunger and can stop being incapcitated
 * Fixed bug when registering bed casing and bedding
+* Fixed being able to access other peoples dog without permission
+* Fixed Forestry addon not registering planks for the dog casing
+* Fixed localisation data being missing for foresty wood casing tool tips
 
 v1.9.1e - 18th March 2015
 * Fixed compatibly issue with Copious Dogs 

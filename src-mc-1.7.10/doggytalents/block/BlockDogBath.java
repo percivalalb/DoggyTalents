@@ -85,6 +85,10 @@ public class BlockDogBath extends BlockContainer {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister) {}
+	
+	@Override
 	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
 		if(par7Entity instanceof EntityDog) {
 		 

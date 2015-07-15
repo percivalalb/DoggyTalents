@@ -26,7 +26,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
     @Override
     public boolean shouldExecute()
     {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
         {
             return false;
         }
@@ -49,7 +49,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
     
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
     
     @Override

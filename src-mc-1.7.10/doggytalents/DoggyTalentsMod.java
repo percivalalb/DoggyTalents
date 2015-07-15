@@ -23,10 +23,11 @@ import doggytalents.api.registry.TalentRegistry;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.handler.ConfigurationHandler;
 import doggytalents.handler.ConnectionHandler;
+import doggytalents.handler.DogTextureLoader;
 import doggytalents.handler.EntityInteractHandler;
 import doggytalents.helper.DoggyTalentsVersion;
 import doggytalents.lib.Reference;
-import doggytalents.network.NetworkManager;
+import doggytalents.network.PacketDispatcher;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.talent.BedFinder;
 import doggytalents.talent.BlackPelt;
@@ -45,6 +46,7 @@ import doggytalents.talent.PuppyEyes;
 import doggytalents.talent.QuickHealer;
 import doggytalents.talent.RescueDog;
 import doggytalents.talent.ShepherdDog;
+import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 
 /**
@@ -59,22 +61,21 @@ public class DoggyTalentsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
 	
-	public static NetworkManager NETWORK_MANAGER;
-	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
 		DoggyTalentsVersion.startVersionCheck();
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
+		//DogTextureLoader.loadYourTexures();
 		ModBlocks.inti();
 		ModItems.inti();
 		ModEntities.inti();
 		proxy.preInit();
+		PacketDispatcher.registerPackets();
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		NETWORK_MANAGER = new NetworkManager();
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		MinecraftForge.EVENT_BUS.register(new EntityInteractHandler());
 		FMLCommonHandler.instance().bus().register(new ConnectionHandler());
@@ -133,6 +134,7 @@ public class DoggyTalentsMod {
 		TalentRegistry.registerTalent(new QuickHealer());
 		TalentRegistry.registerTalent(new RescueDog());
 		TalentRegistry.registerTalent(new ShepherdDog());
+		TalentRegistry.registerTalent(new SwimmerDog());
 		TalentRegistry.registerTalent(new WolfMount());
 		
 		GameRegistry.addRecipe(new ItemStack(ModItems.throwBone, 1), new Object[] {" X ", "XYX", " X ", 'X', Items.bone, 'Y', Items.slime_ball});

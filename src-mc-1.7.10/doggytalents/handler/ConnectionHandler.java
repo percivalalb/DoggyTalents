@@ -19,12 +19,11 @@ public class ConnectionHandler {
 	@SubscribeEvent
 	public void playerLoggedIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-		NBTTagCompound entityData = player.getEntityData();
+		NBTTagCompound entityData = player.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
 
-		if (Constants.STARTING_ITEMS && !entityData.getBoolean("gotDTStartingItems")) {
+		if(Constants.STARTING_ITEMS && !entityData.getBoolean("gotDTStartingItems")) {
             entityData.setBoolean("gotDTStartingItems", true);
 
-            entityData.setBoolean("gotNoDTStartingItems", false);
             //player.inventory.addItemStackToInventory(book);
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.doggyCharm));
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.commandEmblem));

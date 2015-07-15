@@ -286,12 +286,12 @@ public class EntityDog extends EntityTameable {
 	        else if(!this.isSitting())
 	        	this.regenerationTick = 0;
 	        
-	        if(this.regenerationTick >= 2400 && this.getHealth() <= 1) {
+	        if(this.regenerationTick >= 2400 && this.isIncapacicated()) {
 	            this.setHealth(2);
-	            this.setDogHunger(10);
+	            this.setDogHunger(1);
 	        }
-	        else if(this.regenerationTick >= 2400 && this.getHealth() > 1) {
-		        if(this.regenerationTick >= 4400) {
+	        else if(this.regenerationTick >= 2400 && !this.isIncapacicated()) {
+		        if(this.regenerationTick >= 4400 && this.getDogHunger() < 60) {
 		        	this.setDogHunger(this.getDogHunger() + 1);
 		            this.worldObj.setEntityState(this, (byte)7);
 		            this.regenerationTick = 2400;
@@ -299,7 +299,7 @@ public class EntityDog extends EntityTameable {
 	        }
     	}
         
-        if(this.getHealth() != 1) {
+        if(!this.isIncapacicated()) {
 	        this.prevHealingTick = this.healingTick;
 	        this.healingTick += this.nourishment();
 	        
@@ -316,7 +316,7 @@ public class EntityDog extends EntityTameable {
             this.setHealth(1);
         }
         
-        if(this.getDogHunger() == 0 && this.worldObj.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1) {
+        if(this.getDogHunger() == 0 && this.worldObj.getWorldInfo().getWorldTime() % 100L == 0L && !this.isIncapacicated()) {
             this.attackEntityFrom(DamageSource.generic, 1);
             this.fleeingTick = 0;
         }
@@ -497,7 +497,6 @@ public class EntityDog extends EntityTameable {
     @Override
     public float getAIMoveSpeed() {
     	double speed = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
-    	
     	speed += TalentHelper.addToMoveSpeed(this);
     	
     	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.riddenByEntity instanceof EntityPlayer)
@@ -598,7 +597,7 @@ public class EntityDog extends EntityTameable {
     	if(!TalentHelper.shouldDamageMob(this, entity))
     		return false;
     	
-    	int damage = 4 + (this.effectiveLevel() + 1) / 2;
+    	int damage = 4 + (MathHelper.floor_double(this.effectiveLevel()) + 1) / 2;
         damage = TalentHelper.attackEntityAsMob(this, entity, damage);
         
         if (entity instanceof EntityZombie)
@@ -628,7 +627,7 @@ public class EntityDog extends EntityTameable {
             if (stack != null) {
             	int foodValue = this.foodValue(stack);
             	
-            	if(foodValue != 0 && this.getDogHunger() < 120 && this.canInteract(player)) {
+            	if(foodValue != 0 && this.getDogHunger() < 120 && this.canInteract(player) && !this.isIncapacicated()) {
             		 if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
                          player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
             		
@@ -644,17 +643,17 @@ public class EntityDog extends EntityTameable {
                     }
                     return true;
                 }
-            	else if(stack.getItem() == Items.stick && this.canInteract(player)) {
+            	else if(stack.getItem() == Items.stick && this.canInteract(player) && !this.isIncapacicated()) {
             		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.radioCollar && this.canInteract(player) && !this.hasRadarCollar()) {
+                else if(stack.getItem() == ModItems.radioCollar && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
                          player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                  	this.hasRadarCollar(true);
                  	return true;
                 }
-                else if(stack.getItem() instanceof IDogTreat && this.canInteract(player)) {
+                else if(stack.getItem() instanceof IDogTreat && this.canInteract(player) && !this.isIncapacicated()) {
                  	IDogTreat treat = (IDogTreat)stack.getItem();
                  	EnumFeedBack type = treat.canGiveToDog(player, this, this.levels.getLevel(), this.levels.getDireLevel());
                  	treat.giveTreat(type, player, this);
@@ -678,7 +677,7 @@ public class EntityDog extends EntityTameable {
 
                 	return true;
                 }
-                else if(stack.getItem() == Items.cake && this.canInteract(player) && this.getHealth() == 1) {
+                else if(stack.getItem() == Items.cake && this.canInteract(player) && this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                  	
@@ -752,7 +751,7 @@ public class EntityDog extends EntityTameable {
     
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if (this.getHealth() <= 1)
+        if(this.isIncapacicated())
             return false;
 
         if(!TalentHelper.isPostionApplicable(this, potionEffect))
@@ -858,10 +857,10 @@ public class EntityDog extends EntityTameable {
         int amount = 0;
 
         if (this.getDogHunger() > 0) {
-            amount = 40 + 4 * (this.effectiveLevel() + 1);
+            amount = 40 + 4 * (MathHelper.floor_double(this.effectiveLevel()) + 1);
 
             if (isSitting() && this.talents.getLevel("quickhealer") == 5) {
-                amount += 20 + 2 * (this.effectiveLevel() + 1);
+                amount += 20 + 2 * (MathHelper.floor_double(this.effectiveLevel()) + 1);
             }
 
             if (!this.isSitting()) {
@@ -878,8 +877,8 @@ public class EntityDog extends EntityTameable {
        super.playTameEffect(successful);
     }
     
-    public int effectiveLevel() {
-        return (this.levels.getLevel() + this.levels.getDireLevel()) / 10;
+    public double effectiveLevel() {
+        return (this.levels.getLevel() + this.levels.getDireLevel()) / 10.0D;
     }
 
     public int getTameSkin() {
@@ -1023,4 +1022,21 @@ public class EntityDog extends EntityTameable {
     	
         return super.canAttackClass(p_70686_1_);
     }
+    
+    public boolean isIncapacicated() {
+    	return Constants.DOGS_IMMORTAL && this.getHealth() <= 1;
+    }
+    
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+    
+    @Override
+    public boolean shouldDismountInWater(Entity rider) {
+    	if(!TalentHelper.shouldDismountInWater(this, rider))
+    		return false;
+    		
+		return super.shouldDismountInWater(rider);
+	}
 }

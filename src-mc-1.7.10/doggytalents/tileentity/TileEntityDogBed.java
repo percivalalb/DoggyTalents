@@ -3,7 +3,8 @@ package doggytalents.tileentity;
 import java.util.List;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.network.packet.PacketDogBedUpdate;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.DogBedUpdateMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +59,7 @@ public class TileEntityDogBed extends TileEntity {
 	
 	@Override
     public Packet getDescriptionPacket() {
-        return new PacketDogBedUpdate(this.xCoord, this.yCoord, this.zCoord, this.casingId, this.beddingId).getPacket();
+        return PacketDispatcher.getPacket(new DogBedUpdateMessage(this.xCoord, this.yCoord, this.zCoord, this.casingId, this.beddingId));
     }
 	
 	public void setCasingId(String newId) {

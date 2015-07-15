@@ -27,7 +27,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     @Override
     public boolean shouldExecute()
     {
-        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.getHealth() <= 1)
+        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
         {
             return false;
         }
@@ -67,7 +67,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
 
     @Override

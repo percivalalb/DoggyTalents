@@ -1,6 +1,7 @@
 package doggytalents.proxy;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
@@ -75,7 +76,10 @@ public class CommonProxy implements IGuiHandler {
 	public void init() {}
 	public void postInit() {}
 	
-	public EntityPlayer getClientPlayer() { return null; }
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity;
+	}
+	
 	public void spawnCrit(World world, Entity entity) {}
 
 }

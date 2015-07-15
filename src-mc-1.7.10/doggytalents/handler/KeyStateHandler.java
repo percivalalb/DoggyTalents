@@ -16,8 +16,9 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
-import doggytalents.network.packet.PacketCommand;
-import doggytalents.network.packet.PacketDogJump;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.CommandMessage;
+import doggytalents.network.packet.client.DogJumpMessage;
 
 /**
  * @author ProPercivalalb
@@ -43,14 +44,13 @@ public class KeyStateHandler {
     	for(KeyBinding kb : keyBindings) {
 	        if(kb.getIsKeyPressed()) {
 	            if (!tickEnd && (!this.keyState.containsKey(kb) || !this.keyState.get(kb))) {
-	            	this.keyState.put(kb, true);
 	            	//Key Pressed
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
 	            	if(kb == mc.gameSettings.keyBindJump) {
 	            		if(player.ridingEntity instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.ridingEntity;
-	            			DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogJump(dog.getEntityId()));
+	            			PacketDispatcher.sendToServer(new DogJumpMessage(dog.getEntityId()));
 	            		}
 	            	}
 	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == ModItems.commandEmblem) {
@@ -70,7 +70,8 @@ public class KeyStateHandler {
 	                	}
 
 	                	if(command != -1)
-	                		DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketCommand(command));
+	                		PacketDispatcher.sendToServer(new CommandMessage(command));
+		            	this.keyState.put(kb, true);
 	               }
 	            }
 	            else if(!tickEnd) {

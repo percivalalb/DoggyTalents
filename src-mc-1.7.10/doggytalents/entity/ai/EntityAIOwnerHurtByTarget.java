@@ -24,44 +24,37 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     }
     
     @Override
-    public boolean shouldExecute()
-    {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
-        {
+    public boolean shouldExecute() {
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
-        }
-        else
-        {
-            EntityLivingBase entitylivingbase = this.dog.getOwner();
+        else {
+            EntityLivingBase owner = this.dog.getOwner();
 
-            if (entitylivingbase == null)
+            if (owner == null)
             {
                 return false;
             }
             else
             {
-                this.theOwnerAttacker = entitylivingbase.getAITarget();
-                int i = entitylivingbase.func_142015_aE();
-                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, entitylivingbase);
+                this.theOwnerAttacker = owner.getAITarget();
+                int i = owner.func_142015_aE();
+                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, owner);
             }
         }
     }
 
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
 
     @Override
-    public void startExecuting()
-    {
+    public void startExecuting(){
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);
-        EntityLivingBase entitylivingbase = this.dog.getOwner();
+        EntityLivingBase owner = this.dog.getOwner();
 
-        if (entitylivingbase != null)
-        {
-            this.field_142051_e = entitylivingbase.func_142015_aE();
-        }
+        if (owner != null)
+            this.field_142051_e = owner.func_142015_aE();
 
         super.startExecuting();
     }

@@ -159,4 +159,11 @@ public class TalentHelper {
 				return false;
 		return true;
 	}
+	
+	public static boolean shouldDismountInWater(EntityDog dog, Entity rider) {
+		for(ITalent talent : TalentRegistry.getTalents())
+			if(!talent.shouldDismountInWater(dog, rider))
+				return false;
+		return true;
+	}
 }

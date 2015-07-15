@@ -1,5 +1,6 @@
 package doggytalents.proxy;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityCrit2FX;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
@@ -13,6 +14,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.client.model.ModelDog;
@@ -25,6 +27,7 @@ import doggytalents.client.renderer.item.RenderItemRadar;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.KeyStateHandler;
+import doggytalents.handler.ScreenRenderHandler;
 import doggytalents.talent.BedFinderHandler;
 
 /**
@@ -51,6 +54,7 @@ public class ClientProxy extends CommonProxy {
 		MinecraftForgeClient.registerItemRenderer(ModItems.radar, renderItemRadar);
 		
 		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
+		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		ClientRegistry.registerKeyBinding(KeyStateHandler.come);
 		ClientRegistry.registerKeyBinding(KeyStateHandler.stay);
 		ClientRegistry.registerKeyBinding(KeyStateHandler.ok);
@@ -60,8 +64,8 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public EntityPlayer getClientPlayer() {
-		return FMLClientHandler.instance().getClientPlayerEntity();
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
 	}
 	
 	@Override

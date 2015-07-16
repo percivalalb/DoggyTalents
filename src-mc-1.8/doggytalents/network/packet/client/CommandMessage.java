@@ -1,47 +1,46 @@
-package doggytalents.network.packet;
+package doggytalents.network.packet.client;
 
-import java.io.IOException;
 import java.util.List;
 
+import doggytalents.ModItems;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.helper.ChatHelper;
+import doggytalents.network.AbstractMessage.AbstractServerMessage;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import doggytalents.ModItems;
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.ChatHelper;
-import doggytalents.network.IPacket;
+import net.minecraftforge.fml.relauncher.Side;
 
-/**
- * @author ProPercivalalb
- */
-public class PacketCommand extends IPacket {
-
+public class CommandMessage extends AbstractServerMessage {
+	
 	public int commandId;
 	
-	public PacketCommand() {}
-	public PacketCommand(int commandId) {
-		this();
-		this.commandId = commandId;
-	}
+	public CommandMessage() {}
+    public CommandMessage(int commandId) {
+        this.commandId = commandId;
+    }
 
 	@Override
-	public void read(PacketBuffer packetbuffer) throws IOException {
-		this.commandId = packetbuffer.readInt();
+	protected void read(PacketBuffer buffer) {
+		this.commandId = buffer.readInt();
 	}
-
+	
 	@Override
-	public void write(PacketBuffer packetbuffer) throws IOException {
-		packetbuffer.writeInt(this.commandId);
+	protected void write(PacketBuffer buffer) {
+		buffer.writeInt(this.commandId);
+		
 	}
-
+	
 	@Override
-	public void execute(EntityPlayer player) {
+	public void process(EntityPlayer player, Side side) {
 		World world = player.worldObj;
 		ItemStack stack = player.getCurrentEquippedItem();
 		if(stack == null)
@@ -173,6 +172,8 @@ public class PacketCommand extends IPacket {
 				}
 					
 			}
+		
 	}
-
+	
+	
 }

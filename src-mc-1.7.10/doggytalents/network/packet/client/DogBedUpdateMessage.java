@@ -5,13 +5,13 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.network.AbstractClientMessageHandler;
+import doggytalents.network.AbstractMessage.AbstractClientMessage;
 import doggytalents.tileentity.TileEntityDogBed;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 
-public class DogBedUpdateMessage implements IMessage {
+public class DogBedUpdateMessage extends AbstractClientMessage {
 	
 	public int x, y, z;
 	public String casingId, bedingId;
@@ -26,7 +26,7 @@ public class DogBedUpdateMessage implements IMessage {
 	}
     
 	@Override
-	public void fromBytes(ByteBuf buffer) {
+	public void read(PacketBuffer buffer) {
 		this.x = buffer.readInt();
 		this.y = buffer.readInt();
 		this.z = buffer.readInt();
@@ -35,7 +35,7 @@ public class DogBedUpdateMessage implements IMessage {
 	}
 
 	@Override
-	public void toBytes(ByteBuf buffer) {
+	public void write(PacketBuffer buffer) {
 		buffer.writeInt(this.x);
 		buffer.writeInt(this.y);
 		buffer.writeInt(this.z);
@@ -43,20 +43,15 @@ public class DogBedUpdateMessage implements IMessage {
 		ByteBufUtils.writeUTF8String(buffer, this.bedingId);
 	}
 	
-	public static class Handler extends AbstractClientMessageHandler<DogBedUpdateMessage> {
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public IMessage handleClientMessage(EntityPlayer player, DogBedUpdateMessage message, MessageContext ctx) {
-			TileEntity target = player.worldObj.getTileEntity(message.x, message.y, message.z);
-			
-			if(!(target instanceof TileEntityDogBed))
-				return null;
-			
-			TileEntityDogBed dogBed = (TileEntityDogBed)target;
-			dogBed.setCasingId(message.casingId);
-			dogBed.setBeddingId(message.bedingId);
-			return null;
-		}
+	@Override
+	public void process(EntityPlayer player, Side side) {
+		TileEntity target = player.worldObj.getTileEntity(this.x, this.y, this.z);
+		
+		if(!(target instanceof TileEntityDogBed))
+			return;
+		
+		TileEntityDogBed dogBed = (TileEntityDogBed)target;
+		dogBed.setCasingId(this.casingId);
+		dogBed.setBeddingId(this.bedingId);
 	}
 }

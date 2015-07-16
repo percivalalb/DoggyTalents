@@ -33,6 +33,7 @@ doggui.talentname.poisonfang=Poison Fang
 doggui.talentname.shepherddog=Shepherd Dog
 doggui.talentname.rescuedog=Rescue Dog
 doggui.talentname.puppyeyes=Puppy Eyes
+doggui.talentname.swimmerdog=Swimmer Dog
 
 doggui.talentinfo.bedfinder=While a dog with this skill is on your head, your bed will be highlighted in a black outline. To get the dog on you head right click on him with a bone in hand. The range at which it can do this is equal to 200 blocks per level, but becomes infinite at level 5.
 doggui.talentinfo.blackpelt=Improves critical hit rate 1/2 a heart for every level plus an extra heart when you master it
@@ -52,12 +53,14 @@ doggui.talentinfo.poisonfang=Your dog's attacks will poison their target, and th
 doggui.talentinfo.shepherddog=Put some wheat in your hand, and any trained Shepherd Dogs will immediately rustle up some nearby livestock and carry them for you making it easier to transport livestock long distances This is quite tiring though, and costs a lot of nourishment the cost is reduced with higher levels in the skill To have your dog drop the animal, simply don't hold wheat.
 doggui.talentinfo.rescuedog=If you're at critical health and a dog with this skill is following you, it will attempt to heal you half a heart per level in this skill, at the cost of 100 NP Mastering this skill reduces the cost to 80 NP
 doggui.talentinfo.puppyeyes=This skill will cause your dog to warm the heart of any villager, prompting the villager to give you presents! Higher levels in the skill increase the quality of the random gifts. This can only be done once every two Minecraft days. Mastering the skill allows you to do this once every Minecraft day.
+doggui.talentinfo.swimmerdog=Allows you to ride your dog in water and it to breath longer underwater. Maxing it allows the rider to see easily underwater. 
 
 doggui.modeinfo.wandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one
 doggui.modeinfo.tactical=In this mode your dog will follow you but will not attack anything unless you use the command beam
 doggui.modeinfo.aggresive=In this mode your dog will follow you and attack anything that attacks you or that you attack
 doggui.modeinfo.berserker=In this mode your dog will follow you and if any mob draws near he will attack it without warning
 doggui.modeinfo.docile=In this mode your dog will follow you but not attack anything He is ready for you to throw the bone
+
 
 dogtalent.puppyeyes.1.part1=Villager: Cute dog! Take good care of him. Or her.
 dogtalent.puppyeyes.1.part2=Here, it can have some pork.
@@ -76,6 +79,8 @@ dogtalent.puppyeyes.5.part3=And also to give you a diamond!
 dogtalent.puppyeyes.6.part1=Villager: aaaaAAAAAAAAAAAAAAAAAAAAAAAAA
 dogtalent.puppyeyes.6.part2=AAAAAAAAAAAAAAAAAAAaaaaaaaaaa
 dogtalent.puppyeyes.6.part3=aaaaaaaaaAAAAAAAAWWWWWWWWW!
+
+dogtalent.puppyeyes.wolfmount.outofhunger=%s: Woooff, woof, woof woofff (Food Please)
 
 dogbed.bedding.minecraft:wool.0=White Wool Bedding
 dogbed.bedding.minecraft:wool.1=Orange Wool Bedding
@@ -131,6 +136,50 @@ dogbed.casing.Forestry:planks2.10=Padauk Plank Casing
 dogbed.casing.Forestry:planks2.11=Cocobolo Plank Casing
 dogbed.casing.Forestry:planks2.12=Zebrawood Plank Casing
 
+dogbed.casing.BiomesOPlenty:planks.0=Sacred Oak Plank Casing
+dogbed.casing.BiomesOPlenty:planks.1=Cherry Plank Casing
+dogbed.casing.BiomesOPlenty:planks.2=Dark Plank Casing
+dogbed.casing.BiomesOPlenty:planks.3=Fir Plank Casing
+dogbed.casing.BiomesOPlenty:planks.4=Ethereal Plank Casing
+dogbed.casing.BiomesOPlenty:planks.5=Magic Plank Casing
+dogbed.casing.BiomesOPlenty:planks.6=Mangrove Plank Casing
+dogbed.casing.BiomesOPlenty:planks.7=Palm Plank Casing
+dogbed.casing.BiomesOPlenty:planks.8=Redwood Plank Casing
+dogbed.casing.BiomesOPlenty:planks.9=Willow Plank Casing
+dogbed.casing.BiomesOPlenty:planks.10=Bamboo Thatching Casing
+dogbed.casing.BiomesOPlenty:planks.11=Pine Plank Casing
+dogbed.casing.BiomesOPlenty:planks.12=Hellbark Plank Casing
+dogbed.casing.BiomesOPlenty:planks.13=Jacaranda Plank Casing
+dogbed.casing.BiomesOPlenty:planks.14=Mahogany Plank Casing
+
+dogbed.casing.ExtraUtilites:colorWoodPlanks.0=White Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.1=Orange Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanksl.2=Magenta Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.3=Light Blue Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.4=Yellow Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.5=Lime Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.6=Pink Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.7=Gray Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.8=Light Gray Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.9=Cyan Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.10=Purple Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.11=Blue Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.12=Brown Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.13=Green Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.14=Red Coloured Plank Casing
+dogbed.casing.ExtraUtilites:colorWoodPlanks.15=Black Coloured Plank Casing
+
+dogbed.casing.Thaumcraft:blockWoodenDevice.6=Greatwood Plank Casing
+dogbed.casing.Thaumcraft:blockWoodenDevice.7=Silverwood Plank Casing
+
+dogbed.casing.TwilightForest:tile.TFTowerStone.0=Towerwood Plank Casing
+dogbed.casing.TwilightForest:tile.TFTowerStone.2=Cracked Towerwood Casing
+dogbed.casing.TwilightForest:tile.TFTowerStone.3=Mossy Towerwood Casing
+dogbed.casing.TwilightForest:tile.TFTowerStone.4=Infested Towerwood Casing
+
+dogbed.casing.tropicraft:tile.plank.0=Palm Plank Casing
+dogbed.casing.tropicraft:tile.bambooBundle.0=Bamboo Bundle Casing
+
 dogtreat.levelup=Level up!
 dogtreat.tooyoung=This dog's a bit too young to be learning skills just yet.
 dogtreat.leveltoohigh=Your dog is too high level to gain anything from these treats.
@@ -145,4 +194,4 @@ dogcommand.heel=Heel!
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
 itemGroup.doggytalents=Doggy Talents
-doggytalents.updatemessage=A new %s version exists %s. Get it here: %s
+doggytalents.updatemessage=A new %s version exists %s. Get it here:

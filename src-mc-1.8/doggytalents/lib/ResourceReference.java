@@ -20,7 +20,7 @@ public class ResourceReference {
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))
-			doggyTameSkins.put(index, new ResourceLocation("doggytalents", getMobTexturePath("doggytex" + index + ".png")));
+			doggyTameSkins.put(index, new ResourceLocation("doggytalents", getMobTexturePath("dog/doggytex" + index + ".png")));
 		return doggyTameSkins.get(index);
 	}
 	

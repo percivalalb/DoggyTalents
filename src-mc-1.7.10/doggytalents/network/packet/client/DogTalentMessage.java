@@ -6,12 +6,12 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.entity.EntityDog;
-import doggytalents.network.AbstractServerMessageHandler;
-import io.netty.buffer.ByteBuf;
+import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 
-public class DogTalentMessage implements IMessage {
+public class DogTalentMessage extends AbstractServerMessage {
 	
 	public int entityId;
 	public String talentId;
@@ -23,31 +23,26 @@ public class DogTalentMessage implements IMessage {
     }
     
 	@Override
-	public void fromBytes(ByteBuf buffer) {
+	public void read(PacketBuffer buffer) {
 		this.entityId = buffer.readInt();
 		this.talentId = ByteBufUtils.readUTF8String(buffer);
 	}
 
 	@Override
-	public void toBytes(ByteBuf buffer) {
+	public void write(PacketBuffer buffer) {
 		buffer.writeInt(this.entityId);
 		ByteBufUtils.writeUTF8String(buffer, this.talentId);
 	}
 	
-	public static class Handler extends AbstractServerMessageHandler<DogTalentMessage> {
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public IMessage handleServerMessage(EntityPlayer player, DogTalentMessage message, MessageContext ctx) {
-			Entity target = player.worldObj.getEntityByID(message.entityId);
-	        
-	        if(!(target instanceof EntityDog))
-	        	return null;
-	        
-			EntityDog dog = (EntityDog)target;
-	        
-			dog.talents.setLevel(message.talentId, dog.talents.getLevel(message.talentId) + 1);
-			return null;
-		}
+	@Override
+	public void process(EntityPlayer player, Side side) {
+		Entity target = player.worldObj.getEntityByID(this.entityId);
+        
+        if(!(target instanceof EntityDog))
+        	return;
+        
+		EntityDog dog = (EntityDog)target;
+        
+		dog.talents.setLevel(this.talentId, dog.talents.getLevel(this.talentId) + 1);
 	}
 }

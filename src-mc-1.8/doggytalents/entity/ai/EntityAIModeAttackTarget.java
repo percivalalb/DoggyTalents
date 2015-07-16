@@ -25,22 +25,15 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     }
 
     @Override
-    public boolean shouldExecute()
-    {
-        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.getHealth() <= 1)
-        {
+    public boolean shouldExecute() {
+        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
-        }
-        else
-        {
+        else {
             EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
 
             if (entitylivingbase == null)
-            {
                 return false;
-            }
-            else
-            {
+            else {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {
 	           	 	double distance = 16D;
 	           	 	List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().expand(distance, distance, distance));
@@ -67,7 +60,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
 
     @Override

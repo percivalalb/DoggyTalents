@@ -2,6 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb

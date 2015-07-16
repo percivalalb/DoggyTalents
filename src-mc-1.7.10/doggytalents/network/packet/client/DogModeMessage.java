@@ -5,12 +5,12 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.entity.EntityDog;
-import doggytalents.network.AbstractServerMessageHandler;
-import io.netty.buffer.ByteBuf;
+import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 
-public class DogModeMessage implements IMessage {
+public class DogModeMessage extends AbstractServerMessage {
 	
 	public int entityId, doggyMode;
 	
@@ -21,30 +21,25 @@ public class DogModeMessage implements IMessage {
     }
     
 	@Override
-	public void fromBytes(ByteBuf buffer) {
+	public void read(PacketBuffer buffer) {
 		this.entityId = buffer.readInt();
 		this.doggyMode = buffer.readInt();
 	}
 
 	@Override
-	public void toBytes(ByteBuf buffer) {
+	public void write(PacketBuffer buffer) {
 		buffer.writeInt(this.entityId);
 		buffer.writeInt(this.doggyMode);
 	}
 	
-	public static class Handler extends AbstractServerMessageHandler<DogModeMessage> {
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public IMessage handleServerMessage(EntityPlayer player, DogModeMessage message, MessageContext ctx) {
-			Entity target = player.worldObj.getEntityByID(message.entityId);
-	        if(!(target instanceof EntityDog))
-	        	return null;
-	        
-	        EntityDog dog = (EntityDog)target;
-	        
-			dog.mode.setMode(message.doggyMode);
-			return null;
-		}
+	@Override
+	public void process(EntityPlayer player, Side side) {
+		Entity target = player.worldObj.getEntityByID(this.entityId);
+        if(!(target instanceof EntityDog))
+        	return;
+        
+        EntityDog dog = (EntityDog)target;
+        
+		dog.mode.setMode(this.doggyMode);
 	}
 }

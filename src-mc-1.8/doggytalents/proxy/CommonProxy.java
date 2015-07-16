@@ -4,8 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import doggytalents.entity.EntityDog;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.inventory.ContainerPackPuppy;
@@ -54,7 +56,14 @@ public class CommonProxy implements IGuiHandler {
 	public void init() {}
 	public void postInit() {}
 	
-	public EntityPlayer getClientPlayer() { return null; }
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity;
+	}
+	
+	public IThreadListener getThreadFromContext(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity.getServerForPlayer();
+	}
+	
 	public void spawnCrit(World world, Entity entity) {}
 
 }

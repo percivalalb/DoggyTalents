@@ -1,8 +1,11 @@
 package doggytalents.handler;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import doggytalents.ModItems;
@@ -16,12 +19,17 @@ public class ConnectionHandler {
 	@SubscribeEvent
 	public void playerLoggedIn(PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-		NBTTagCompound entityData = player.getEntityData();
+		
+		NBTTagCompound tag = player.getEntityData();
 
-		if (Constants.STARTING_ITEMS && !entityData.getBoolean("gotDTStartingItems")) {
-            
-            entityData.setBoolean("gotDTStartingItems", true);
-            //player.inventory.addItemStackToInventory(book);
+        if(!tag.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
+        	tag.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound());
+        
+        NBTTagCompound persistTag = tag.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+        
+		if(Constants.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
+			persistTag.setBoolean("gotDTStartingItems", true);
+
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.doggyCharm));
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.commandEmblem));
         }

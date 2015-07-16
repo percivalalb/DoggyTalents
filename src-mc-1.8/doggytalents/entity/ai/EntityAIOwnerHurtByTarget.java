@@ -23,44 +23,34 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     }
     
     @Override
-    public boolean shouldExecute()
-    {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
-        {
+    public boolean shouldExecute() {
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
-        }
-        else
-        {
-            EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
+        else {
+            EntityLivingBase owner = this.dog.getOwnerEntity();
 
-            if (entitylivingbase == null)
-            {
+            if (owner == null)
                 return false;
-            }
-            else
-            {
-                this.theOwnerAttacker = entitylivingbase.getAITarget();
-                int i = entitylivingbase.getRevengeTimer();
-                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, entitylivingbase);
+            else {
+                this.theOwnerAttacker = owner.getAITarget();
+                int i = owner.getRevengeTimer();
+                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, owner);
             }
         }
     }
 
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
 
     @Override
-    public void startExecuting()
-    {
+    public void startExecuting() {
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);
-        EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
+        EntityLivingBase owner = this.dog.getOwnerEntity();
 
-        if (entitylivingbase != null)
-        {
-            this.field_142051_e = entitylivingbase.getRevengeTimer();
-        }
+        if (owner != null)
+            this.field_142051_e = owner.getRevengeTimer();
 
         super.startExecuting();
     }

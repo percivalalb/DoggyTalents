@@ -7,22 +7,21 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.9.1f - 2015
+v1.9.1f - 16th July 2015
 + Added new talent swimmer dog
 + When dogs have been sitting for a while they will regen hunger up to 60 NP and can stop being incapcitated
 + Added hunger icons when riding dogs to see what NP they are on
 + Added air icons when riding dogs to see how much breath they have left
-+ You can now make beds using planks from biomesoplenty, extrautilies, thaumcraft, tropicraft and twilight forest
 # The version checker is not more reliable and will provide a link you can click on in chat to send you to the download page
 * Fixed bug when registering bed casing and bedding
 * Fixed being able to access other peoples dog without permission
-* Fixed Forestry addon not registering planks for the dog casing
 * Fixed localisation data being missing for foresty wood casing tool tips
 * Fixed dogs been able to teleport to you even when they were sat down
 * Fixed some abilities still working when a dog was incapcitated
 * Fixed players being able to mount other peoples dogs regardless
 * Fixed error message with dog bath having no texture when it wasn't needed
-* Fixed constantly getting doggy charms and command emblems on respawn
+* FINALLY Fixed constantly getting doggy charms and command emblems on respawn, you now will only get them once
+* Fixed pillow paw talent now working
 
 v1.9.1e - 18th March 2015
 * Fixed compatibly issue with Copious Dogs 
@@ -55,8 +54,22 @@ Updated to MC 1.8
 
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
 
-v1.9.0g - 2015
+v1.9.0g - 16th July 2015
++ Added new talent swimmer dog
++ When dogs have been sitting for a while they will regen hunger up to 60 NP and can stop being incapcitated
++ Added hunger icons when riding dogs to see what NP they are on
++ Added air icons when riding dogs to see how much breath they have left
++ You can now make beds using planks from biomesoplenty, extrautilies, thaumcraft, tropicraft and twilight forest
+# The version checker is not more reliable and will provide a link you can click on in chat to send you to the download page
 * Fixed bug when registering bed casing and bedding
+* Fixed being able to access other peoples dog without permission
+* Fixed Forestry addon not registering planks for the dog casing
+* Fixed localisation data being missing for foresty wood casing tool tips
+* Fixed dogs been able to teleport to you even when they were sat down
+* Fixed some abilities still working when a dog was incapcitated
+* Fixed players being able to mount other peoples dogs regardless
+* Fixed error message with dog bath having no texture when it wasn't needed
+* FINALLY Fixed constantly getting doggy charms and command emblems on respawn, you now will only get them once
 
 v1.9.0f - 18th March 2015
 * Fixed compatibly issue with Copious Dogs

@@ -23,44 +23,34 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
     }
 
     @Override
-    public boolean shouldExecute()
-    {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.getHealth() <= 1)
-        {
+    public boolean shouldExecute() {
+        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
-        }
-        else
-        {
-            EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
+        else {
+            EntityLivingBase owner = this.dog.getOwnerEntity();
 
-            if (entitylivingbase == null)
-            {
+            if (owner == null)
                 return false;
-            }
-            else
-            {
-                this.theTarget = entitylivingbase.getLastAttacker();
-                int i = entitylivingbase.getLastAttackerTime();
-                return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.dog.func_142018_a(this.theTarget, entitylivingbase);
+            else {
+                this.theTarget = owner.getLastAttacker();
+                int i = owner.getLastAttackerTime();
+                return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.dog.func_142018_a(this.theTarget, owner);
             }
         }
     }
     
     @Override
     public boolean continueExecuting() {
-    	return this.dog.getHealth() > 1 && super.continueExecuting();
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
     }
     
     @Override
-    public void startExecuting()
-    {
+    public void startExecuting() {
         this.taskOwner.setAttackTarget(this.theTarget);
-        EntityLivingBase entitylivingbase = this.dog.getOwnerEntity();
+        EntityLivingBase owner = this.dog.getOwnerEntity();
 
-        if (entitylivingbase != null)
-        {
-            this.field_142050_e = entitylivingbase.getLastAttackerTime();
-        }
+        if (owner != null)
+            this.field_142050_e = owner.getLastAttackerTime();
 
         super.startExecuting();
     }

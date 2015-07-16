@@ -32,38 +32,33 @@ public class PacketDispatcher {
 	private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 
 	public static final void registerPackets() {
-		registerMessage(CommandMessage.Handler.class, CommandMessage.class);
-		registerMessage(DogJumpMessage.Handler.class, DogJumpMessage.class);
-		registerMessage(DogModeMessage.Handler.class, DogModeMessage.class);
-		registerMessage(DogNameMessage.Handler.class, DogNameMessage.class);
-		registerMessage(DogObeyMessage.Handler.class, DogObeyMessage.class);
-		registerMessage(DogTalentMessage.Handler.class, DogTalentMessage.class);
-		registerMessage(DogTextureMessage.Handler.class, DogTextureMessage.class);
-		registerMessage(DogBedUpdateMessage.Handler.class, DogBedUpdateMessage.class);
+		registerMessage(CommandMessage.class);
+		registerMessage(DogJumpMessage.class);
+		registerMessage(DogModeMessage.class);
+		registerMessage(DogNameMessage.class);
+		registerMessage(DogObeyMessage.class);
+		registerMessage(DogTalentMessage.class);
+		registerMessage(DogTextureMessage.class);
+		registerMessage(DogBedUpdateMessage.class);
 	}
-
-	private static final <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> handlerClass, Class<REQ> messageClass, Side side) {
-		PacketDispatcher.dispatcher.registerMessage(handlerClass, messageClass, packetId++, side);
-	}
-
-	private static final <REQ extends IMessage, REPLY extends IMessage> void registerBiMessage(Class<? extends IMessageHandler<REQ, REPLY>> handlerClass, Class<REQ> messageClass) {
-		PacketDispatcher.dispatcher.registerMessage(handlerClass, messageClass, packetId, Side.CLIENT);
-		PacketDispatcher.dispatcher.registerMessage(handlerClass, messageClass, packetId++, Side.SERVER);
-	}
-
-	private static final <REQ extends IMessage> void registerMessage(Class<? extends AbstractMessageHandler<REQ>> handlerClass, Class<REQ> messageClass) {
-		if(AbstractClientMessageHandler.class.isAssignableFrom(handlerClass))
-			registerMessage(handlerClass, messageClass, Side.CLIENT);
-		else if (AbstractServerMessageHandler.class.isAssignableFrom(handlerClass))
-			registerMessage(handlerClass, messageClass, Side.SERVER);
-		else if (AbstractBiMessageHandler.class.isAssignableFrom(handlerClass))
-			registerBiMessage(handlerClass, messageClass);
-		else
-			throw new IllegalArgumentException("Cannot determine on which Side(s) to register " + handlerClass.getName() + " - unrecognized handler class!");
+	
+	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {
+		if (AbstractMessage.AbstractClientMessage.class.isAssignableFrom(clazz)) {
+			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.CLIENT);
+		} else if (AbstractMessage.AbstractServerMessage.class.isAssignableFrom(clazz)) {
+			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.SERVER);
+		} else {
+			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId, Side.CLIENT);
+			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.SERVER);
+		}
 	}
 
 	public static final void sendTo(IMessage message, EntityPlayerMP player) {
 		PacketDispatcher.dispatcher.sendTo(message, player);
+	}
+	
+	public static void sendToAll(IMessage message) {
+		PacketDispatcher.dispatcher.sendToAll(message);
 	}
 
 	public static final void sendToAllAround(IMessage message, NetworkRegistry.TargetPoint point) {

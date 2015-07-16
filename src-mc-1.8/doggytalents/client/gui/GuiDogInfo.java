@@ -4,6 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import doggytalents.api.inferface.ITalent;
+import doggytalents.api.registry.TalentRegistry;
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.helper.LogHelper;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.DogModeMessage;
+import doggytalents.network.packet.client.DogNameMessage;
+import doggytalents.network.packet.client.DogObeyMessage;
+import doggytalents.network.packet.client.DogTalentMessage;
+import doggytalents.network.packet.client.DogTextureMessage;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -13,22 +28,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import doggytalents.DoggyTalentsMod;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.LogHelper;
-import doggytalents.network.packet.PacketDogMode;
-import doggytalents.network.packet.PacketDogName;
-import doggytalents.network.packet.PacketDogObey;
-import doggytalents.network.packet.PacketDogTalent;
-import doggytalents.network.packet.PacketDogTexture;
 
 /**
  * @author ProPercivalalb
@@ -66,7 +65,7 @@ public class GuiDogInfo extends GuiScreen {
 			public boolean textboxKeyTyped(char character, int keyId) {
 				boolean typed = super.textboxKeyTyped(character, keyId);
 				if(typed)
-					 DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogName(dog.getEntityId(), this.getText()));
+					 PacketDispatcher.sendToServer(new DogNameMessage(dog.getEntityId(), this.getText()));
 				return typed;
 			}
 		};
@@ -186,7 +185,7 @@ public class GuiDogInfo extends GuiScreen {
 			int level = this.dog.talents.getLevel(talent);
 			
 			if(level < talent.getHighestLevel(this.dog) && this.dog.spendablePoints() >= talent.getCost(this.dog, level + 1))
-				DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogTalent(this.dog.getEntityId(), TalentRegistry.getTalent(button.id - 1).getKey()));
+				PacketDispatcher.sendToServer(new DogTalentMessage(this.dog.getEntityId(), TalentRegistry.getTalent(button.id - 1).getKey()));
 			
 		
 		}
@@ -210,7 +209,7 @@ public class GuiDogInfo extends GuiScreen {
             	this.doggyTex = 127;
             }
     		LogHelper.info("action");
-            DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogTexture(this.dog.getEntityId(), this.doggyTex));
+            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
         }
 
         if (button.id == -3) {
@@ -221,18 +220,18 @@ public class GuiDogInfo extends GuiScreen {
             	this.doggyTex = 0;
             }
             
-            DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogTexture(this.dog.getEntityId(), this.doggyTex));
+            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
         }
         
         if (button.id == -5) {
         	if(!this.dog.willObeyOthers()) {
         		button.displayString = "true";
-        		DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogObey(this.dog.getEntityId(), true));
+        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), true));
         		
         	}
         	else {
         		button.displayString = "false";
-        		DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogObey(this.dog.getEntityId(), false));
+        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), false));
         	}
         }
         
@@ -240,7 +239,7 @@ public class GuiDogInfo extends GuiScreen {
         	int newMode = (dog.mode.getMode().ordinal() + 1) % EnumMode.values().length;
         	EnumMode mode = EnumMode.values()[newMode];
         	button.displayString = mode.modeName();
-        	DoggyTalentsMod.NETWORK_MANAGER.sendPacketToServer(new PacketDogMode(this.dog.getEntityId(), newMode));
+        	PacketDispatcher.sendToServer(new DogModeMessage(this.dog.getEntityId(), newMode));
         }
 	}
 

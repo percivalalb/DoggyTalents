@@ -1,9 +1,9 @@
 package doggytalents.addon.forestry;
 
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.addon.AddonEvent;
 import doggytalents.api.registry.DogBedRegistry;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
@@ -29,10 +29,10 @@ public class ForestryAddon {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 		
-		//TODO for(int i = 0; i < ForestryLib.PLANKS_1_COUNT; ++i)
-			//TODO DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_1_ID, i);
-			//TODO for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
-		//TODO DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_2_ID, i);
+		//for(int i = 0; i < ForestryLib.PLANKS_1_COUNT; ++i)
+		//	DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_1_ID, i);
+		//for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
+		//	DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_2_ID, i);
 		
 	}
 }

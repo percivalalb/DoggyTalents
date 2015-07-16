@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
@@ -35,6 +37,7 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.ClientHandler;
 import doggytalents.handler.KeyStateHandler;
+import doggytalents.handler.ScreenRenderHandler;
 import doggytalents.talent.BedFinderHandler;
 import doggytalents.tileentity.TileEntityFoodBowl;
 
@@ -58,6 +61,7 @@ public class ClientProxy extends CommonProxy {
 		
 		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
 		MinecraftForge.EVENT_BUS.register(new ClientHandler());
+		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		ClientRegistry.registerKeyBinding(KeyStateHandler.come);
 		ClientRegistry.registerKeyBinding(KeyStateHandler.stay);
 		ClientRegistry.registerKeyBinding(KeyStateHandler.ok);
@@ -123,8 +127,13 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public EntityPlayer getClientPlayer() {
-		return FMLClientHandler.instance().getClientPlayerEntity();
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
+	}
+	
+	@Override
+	public IThreadListener getThreadFromContext(MessageContext ctx) {
+		return (ctx.side.isClient() ? Minecraft.getMinecraft() : super.getThreadFromContext(ctx));
 	}
 	
 	@Override

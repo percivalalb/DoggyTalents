@@ -6,9 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
@@ -26,7 +28,18 @@ public class ItemRadar extends ItemMap {
 	}
 
 	@Override
+    public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
+		return null;
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		
+	}
+	
+	@Override
 	public MapData getMapData(ItemStack p_77873_1_, World p_77873_2_) {
+		return null;
 		/**
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 		World world = player.worldObj;

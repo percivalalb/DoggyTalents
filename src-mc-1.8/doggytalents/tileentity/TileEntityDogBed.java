@@ -9,7 +9,8 @@ import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import doggytalents.entity.EntityDog;
-import doggytalents.network.packet.PacketDogBedUpdate;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.DogBedUpdateMessage;
 
 /**
  * @author ProPercivalalb
@@ -60,17 +61,9 @@ public class TileEntityDogBed extends TileEntity implements IUpdatePlayerListBox
 	
 	@Override
     public Packet getDescriptionPacket() {
-		NBTTagCompound nbttagcompound = new NBTTagCompound();
-	    this.writeToNBT(nbttagcompound);
-	    return new S35PacketUpdateTileEntity(this.pos, this.getBlockMetadata(), nbttagcompound);
-        //return new PacketDogBedUpdate(this.pos, this.casingId, this.beddingId).getPacket();
+		return PacketDispatcher.getPacket(new DogBedUpdateMessage(this.pos, this.casingId, this.beddingId));
     }
-	
-	@Override
-	public void onDataPacket(net.minecraft.network.NetworkManager net, net.minecraft.network.play.server.S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
-	
+
 	public void setCasingId(String newId) {
 		this.casingId = newId;
 	}

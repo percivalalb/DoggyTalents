@@ -60,6 +60,10 @@ public class CommonProxy implements IGuiHandler {
 		return ctx.getServerHandler().playerEntity;
 	}
 	
+	public EntityPlayer getPlayerEntity() {
+		return null;
+	}
+	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
 		return ctx.getServerHandler().playerEntity.getServerForPlayer();
 	}

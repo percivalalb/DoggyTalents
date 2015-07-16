@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.9.1g - 16th July 2015
+* Fixed crash on server startup
+
 v1.9.1f - 16th July 2015
 + Added new talent swimmer dog
 + When dogs have been sitting for a while they will regen hunger up to 60 NP and can stop being incapcitated
@@ -53,6 +56,9 @@ v1.9.1a - 16th February 2015
 Updated to MC 1.8
 
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
+
+v1.9.0h - 16th July 2015
+* Fixed crash on server startup
 
 v1.9.0g - 16th July 2015
 + Added new talent swimmer dog

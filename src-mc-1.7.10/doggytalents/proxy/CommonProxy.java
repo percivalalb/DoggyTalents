@@ -80,6 +80,10 @@ public class CommonProxy implements IGuiHandler {
 		return ctx.getServerHandler().playerEntity;
 	}
 	
+	public EntityPlayer getPlayerEntity() {
+		return null;
+	}
+	
 	public void spawnCrit(World world, Entity entity) {}
 
 }

@@ -69,6 +69,11 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
+	public EntityPlayer getPlayerEntity() {
+		return Minecraft.getMinecraft().thePlayer;
+	}
+	
+	@Override
 	public void spawnCrit(World world, Entity entity) {
 		FMLClientHandler.instance().getClient().effectRenderer.addEffect(new EntityCrit2FX(world, entity));
 	}

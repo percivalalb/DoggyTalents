@@ -12,7 +12,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.event.HoverEvent;
 import net.minecraft.util.ChatComponentText;
@@ -89,15 +88,15 @@ public class DoggyTalentsVersion {
                 if(status == OUTDATED)
 	                LogHelper.info(chat);
                 
-                
-                while(!checkedVersion) {
+                Side side = FMLCommonHandler.instance().getEffectiveSide();
+                while(!checkedVersion && side == Side.CLIENT) {
                 	try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
                 	if(status == OUTDATED) {
-                		EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+                		EntityPlayer player = DoggyTalentsMod.proxy.getPlayerEntity();
                 		if(player != null) {
                 			IChatComponent link = ForgeHooks.newChatWithLinks(linkVersion);
                 			link.getChatStyle().setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText("Click to download!")));

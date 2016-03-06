@@ -135,6 +135,6 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void spawnCrit(World world, Entity entity) {
-		FMLClientHandler.instance().getClient().effectRenderer.func_178926_a(entity, EnumParticleTypes.CRIT);
+		FMLClientHandler.instance().getClient().effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
 	}
 }

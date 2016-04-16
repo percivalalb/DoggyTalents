@@ -7,6 +7,9 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.10.0a - 16th April 2016
+Updated to MC 1.8.9
+
 v1.9.1g - 16th July 2015
 * Fixed crash on server startup
 

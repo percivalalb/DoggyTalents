@@ -75,7 +75,7 @@ public class DoggyTalentsMod {
 	public void init(FMLInitializationEvent event) {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
 		MinecraftForge.EVENT_BUS.register(new EntityInteractHandler());
-		FMLCommonHandler.instance().bus().register(new ConnectionHandler());
+		MinecraftForge.EVENT_BUS.register(new ConnectionHandler());
 		proxy.init();
 	}
 	

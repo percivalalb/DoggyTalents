@@ -10,7 +10,8 @@
     "1.6.4-recommended": "v1.5.1a",
     "1.7.2-recommended": "v1.6.2a",
     "1.7.10-recommended": "v1.9.0h",
-    "1.8-recommended": "v1.9.1g"
+    "1.8-recommended": "v1.9.1g", 
+    "1.8.9-recommended": "v1.10.0a"
   },
   "links": {
     "v1.1.0a": "",
@@ -19,6 +20,7 @@
     "v1.6.2a": "http://adfoc.us/14766154871061",
     "v1.8.3a": "http://adfoc.us/14766148446168", 
     "v1.9.0h": "http://adfoc.us/14766155916785",
-    "v1.9.1g": "http://adfoc.us/14766155916686"
+    "v1.9.1g": "http://adfoc.us/14766155916686",
+    "v1.10.0a": "http://adfoc.us/14766156033165"
   }
 }

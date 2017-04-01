@@ -19,6 +19,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class CommandMessage extends AbstractServerMessage {
@@ -44,15 +45,13 @@ public class CommandMessage extends AbstractServerMessage {
 	@Override
 	public void process(EntityPlayer player, Side side) {
 		World world = player.worldObj;
-		ItemStack stack = player.getActiveItemStack();
-		if(stack == null)
-			return;
-		
-		if(stack.getItem() == ModItems.commandEmblem) {
 
+		if(((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {
+
+			FMLLog.info(this.commandId + " id");
 			if(this.commandId == 1)
 			{
-				//TODO sound world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+				world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 				boolean isDog = false;
 			    List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
 			    for (Object o : nearEnts)
@@ -79,9 +78,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				else if(this.commandId == 2)
 				{
-					//world.playSound(x, y, z, soundIn, category, volume, pitch, distanceDelay);.playSoundAtEntity(player, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
-					
-					//TODOworld.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)
@@ -108,7 +105,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				else if(this.commandId == 3)
 				{
-					//TODOworld.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)
@@ -141,7 +138,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				else if(this.commandId == 4)
 				{
-					//TODOworld.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
 			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
 			        for (Object o : nearEnts)

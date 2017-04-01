@@ -14,12 +14,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -38,7 +40,7 @@ public class BlockFoodBowl extends BlockContainer {
         super(Material.IRON);
         this.setTickRandomly(true);
         this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
- 
+		this.setResistance(5.0F);
     }
     
     @Override
@@ -99,9 +101,9 @@ public class BlockFoodBowl extends BlockContainer {
             EntityItem entityItem = (EntityItem)entityIn;
             
 
-            if(TileEntityHopper.putDropInInventoryAllSlots(foodBowl, entityItem)) {}
-                //TODO worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getX() + 0.5D, pos.getZ() + 0.5D, "random.pop", 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-            
+            if(TileEntityHopper.putDropInInventoryAllSlots(foodBowl, entityItem)) {
+            	worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            }
         }
 
         List list2 = null;

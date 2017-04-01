@@ -72,10 +72,10 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable, IInvent
 
         if (dogList != null && dogList.size() > 0) {
             for (int j1 = 0; j1 < dogList.size(); j1++) {
-            	EntityDog entitydtdoggy1 = (EntityDog)dogList.get(j1);
+            	EntityDog dog = (EntityDog)dogList.get(j1);
 
-                if (entitydtdoggy1.getDogHunger() < 60 && this.getFirstDogFoodStack(entitydtdoggy1) >= 0)
-                    this.feedDog(entitydtdoggy1, this.getFirstDogFoodStack(entitydtdoggy1), 1);
+                if (dog.getDogHunger() < 60 && this.getFirstDogFoodStack(dog) >= 0)
+                    this.feedDog(dog, this.getFirstDogFoodStack(dog), 1);
             }
         }
     }

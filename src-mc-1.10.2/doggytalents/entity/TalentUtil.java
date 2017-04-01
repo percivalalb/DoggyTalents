@@ -63,7 +63,7 @@ public class TalentUtil {
 	}
 	
 	public void setLevel(String id, int level) {
-		if(level == this.getLevel(id))
+		if(level == this.getLevel(id) && level > 5)
 			return;
 		
 		this.dataMap.put(id, level);

@@ -52,18 +52,16 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
 
     @Override
-    protected void rotateCorpse(EntityDog bat, float p_77043_2_, float p_77043_3_, float partialTicks)
+    protected void rotateCorpse(EntityDog dog, float p_77043_2_, float p_77043_3_, float partialTicks)
     {
-        if (bat.isEntityAlive() && bat.isPlayerSleeping())
+        if (dog.isEntityAlive() && dog.isPlayerSleeping())
         {
            // GlStateManager.rotate(bat.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotate(this.getDeathMaxRotation(bat), 0.0F, 0.0F, 1.0F);
+            GlStateManager.rotate(this.getDeathMaxRotation(dog), 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
         }
         else
-        {
-            super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
-        }
+            super.rotateCorpse(dog, p_77043_2_, p_77043_3_, partialTicks);
     }
 
     @Override
@@ -85,43 +83,44 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
     
     @Override
-	public void renderName(EntityDog dog, double p_77033_2_, double p_77033_4_, double p_77033_6_) {
+	public void renderName(EntityDog dog, double x, double y, double z) {
         
         if(!dog.getDogName().isEmpty())
-        	super.renderName(dog, p_77033_2_, p_77033_4_, p_77033_6_);
+        	super.renderName(dog, x, y, z);
     }
     
     @Override
-    protected void renderEntityName(EntityDog dog, double x, double y, double z, String name, double distanceFromPlayer)
-    {
-        //if (distanceFromPlayer < 100.0D)
-       // {
-       
+    protected void renderEntityName(EntityDog dog, double x, double y, double z, String name, double distanceFromPlayer) {
 
-            y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
+    	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	
-            String tip = dog.mode.getMode().getTip();
+    	String tip = dog.mode.getMode().getTip();
             
-            if(dog.isImmortal() && dog.getHealth() <= 1)
-            	tip = "(I)";
+    	if(dog.isImmortal() && dog.getHealth() <= 1)
+    		tip = "(I)";
             
-            String label = String.format("%s(%d)", tip, dog.getDogHunger());
-            
-            double d0 = dog.getDistanceSqToEntity(this.renderManager.renderViewEntity);
-
-            if (d0 <= (double)(64 * 64))
-            {
-                boolean flag = dog.isSneaking();
-                float f = this.renderManager.playerViewY;
-                float f1 = this.renderManager.playerViewX;
-                boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-                float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
+    	String label = String.format("%s(%d)", tip, dog.getDogHunger());
+    	if (distanceFromPlayer <= (double)(64 * 64)) {
+    		boolean flag = dog.isSneaking();
+    		float f = this.renderManager.playerViewY;
+    		float f1 = this.renderManager.playerViewX;
+    		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
+    		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
     
-                func_189692_a(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag);
-            }
-  
-
-       // }
+    		this.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	
+    		if (distanceFromPlayer <= (double)(5 * 5)) {
+	    		if(this.renderManager.renderViewEntity.isSneaking()) {
+	    			EntityLivingBase owner = dog.getOwner();
+	    			if(owner != null)
+	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), owner.getDisplayName().getUnformattedText(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	    			else
+	          		   	this.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getOwnerId().toString(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	             }
+    		}
+    	}
+    		
+    	
 
         super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
     }
@@ -161,27 +160,22 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	}
     }**/
     
-    //TODO
-    public static void func_189692_a(FontRenderer fontRenderer, String textToRender, float p_189692_2_, float p_189692_3_, float p_189692_4_, int p_189692_5_, float p_189692_6_, float p_189692_7_, boolean p_189692_8_, boolean p_189692_9_)
-    {
+    public static void renderLabelWithScale(FontRenderer fontRenderer, String str, float x, float y, float z, int p_189692_5_, float rotateX, float rotateY, boolean reverseRender, boolean depth, float scale) {
         GlStateManager.pushMatrix();
-        GlStateManager.translate(p_189692_2_, p_189692_3_, p_189692_4_);
+        GlStateManager.translate(x, y, z);
         GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(-p_189692_6_, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate((float)(p_189692_8_ ? -1 : 1) * p_189692_7_, 1.0F, 0.0F, 0.0F);
-        float scale = 0.010F;
+        GlStateManager.rotate(-rotateX, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate((float)(reverseRender ? -1 : 1) * rotateY, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(-scale, -scale, scale);
         GlStateManager.disableLighting();
         GlStateManager.depthMask(false);
 
-        if (!p_189692_9_)
-        {
+        if (!depth)
             GlStateManager.disableDepth();
-        }
 
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-        int i = fontRenderer.getStringWidth(textToRender) / 2;
+        int i = fontRenderer.getStringWidth(str) / 2;
         GlStateManager.disableTexture2D();
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vertexbuffer = tessellator.getBuffer();
@@ -193,18 +187,16 @@ public class RenderDog extends RenderLiving<EntityDog> {
         tessellator.draw();
         GlStateManager.enableTexture2D();
 
-        if (!p_189692_9_)
-        {
-            fontRenderer.drawString(textToRender, -fontRenderer.getStringWidth(textToRender) / 2, p_189692_5_, 553648127);
+        if (!depth) {
+            fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, p_189692_5_, 553648127);
             GlStateManager.enableDepth();
         }
 
         GlStateManager.depthMask(true);
-        fontRenderer.drawString(textToRender, -fontRenderer.getStringWidth(textToRender) / 2, p_189692_5_, p_189692_9_ ? 553648127 : -1);
+        fontRenderer.drawString(str, -fontRenderer.getStringWidth(str) / 2, p_189692_5_, depth ? 553648127 : -1);
         GlStateManager.enableLighting();
         GlStateManager.disableBlend();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
     }
-    
 }

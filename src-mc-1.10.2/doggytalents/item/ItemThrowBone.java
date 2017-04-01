@@ -35,8 +35,7 @@ public class ItemThrowBone extends ItemDT {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 		if(itemStackIn.getItemDamage() == 1) {
     		itemStackIn.setItemDamage(0);
     		playerIn.swingArm(hand);

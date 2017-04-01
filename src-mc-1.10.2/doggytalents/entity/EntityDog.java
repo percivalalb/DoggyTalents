@@ -20,6 +20,7 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.helper.ChatHelper;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -53,6 +54,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -155,8 +157,7 @@ public class EntityDog extends EntityTameable {
     }
     
     @Override
-    protected void initEntityAI()
-    {
+    protected void initEntityAI() {
         this.aiSit = new EntityAISit(this);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
@@ -528,18 +529,18 @@ public class EntityDog extends EntityTameable {
              this.setRotation(this.rotationYaw, this.rotationPitch);
              this.renderYawOffset = this.rotationYaw;
              this.rotationYawHead = this.renderYawOffset;
-             strafe = entitylivingbase.moveStrafing * 0.5F;
+             strafe = entitylivingbase.moveStrafing * 0.75F;
              forward = entitylivingbase.moveForward;
 
             if (forward <= 0.0F)
-                forward *= 0.25F;
+                forward *= 0.5F;
 
             if (this.onGround) {
                 if (forward > 0.0F) {
                     float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
                     float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
-                    this.motionX += (double)(-0.4F * f2 * 0.15F); // May change
-                    this.motionZ += (double)(0.4F * f3 * 0.15F);
+                    this.motionX += (double)(-0.4F * f2 * 0.05F); // May change
+                    this.motionZ += (double)(0.4F * f3 * 0.05F);
                 }
             }
 
@@ -548,15 +549,15 @@ public class EntityDog extends EntityTameable {
 
             if (this.canPassengerSteer())
             {
-                this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+            	this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.3F);
                 super.moveEntityWithHeading(strafe, forward);
             }
-            else if (entitylivingbase instanceof EntityPlayer)
-            {
-                this.motionX = 0.0D;
-                this.motionY = 0.0D;
-                this.motionZ = 0.0D;
-            }
+           	else if (entitylivingbase instanceof EntityPlayer)
+         	{
+           	    this.motionX = 0.0D;
+          	     this.motionY = 0.0D;
+          	     this.motionZ = 0.0D;
+         	 }
 
             this.prevLimbSwingAmount = this.limbSwingAmount;
             double d0 = this.posX - this.prevPosX;
@@ -578,7 +579,7 @@ public class EntityDog extends EntityTameable {
     
     @Override
     public float getAIMoveSpeed() {
-    	double speed = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+    	double speed = 0.30000001192092896D;
     	
     	speed += TalentHelper.addToMoveSpeed(this);
     	
@@ -586,8 +587,8 @@ public class EntityDog extends EntityTameable {
     		if (this.levels.isDireDog())
     			speed += 0.05D;
     	
-    	if(this.getControllingPassenger() instanceof EntityPlayer)
-    		speed /= 4;
+    	//if(this.getControllingPassenger() instanceof EntityPlayer)
+    	//	speed /= 4;
     	
         return (float)speed;
     }
@@ -746,6 +747,8 @@ public class EntityDog extends EntityTameable {
                         //	this.dismountEntity(player);
                       	//else
                         	 this.startRiding(player);
+                        	 if(this.aiSit != null)
+                        		 this.aiSit.setSitting(true);
                     //}
                     return true;
                 }
@@ -1144,4 +1147,11 @@ public class EntityDog extends EntityTameable {
     		
 		return super.shouldDismountInWater(rider);
 	}
+    
+    @Override
+    public void onDeath(DamageSource cause) {
+    	//if(!this.worldObj.isRemote && this.worldObj.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof EntityPlayerMP) {
+         //   this.getOwner().addChatMessage(ChatHelper.getChatComponent(this.getDogName() + " has been incapacitated."));
+        //}
+    }
 }

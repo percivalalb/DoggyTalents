@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.potion.Potion;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class DogJumpMessage extends AbstractServerMessage {
@@ -33,11 +34,16 @@ public class DogJumpMessage extends AbstractServerMessage {
 		Entity target = player.worldObj.getEntityByID(this.entityId);
         if(!(target instanceof EntityDog))
         	return;
-        
+        FMLLog.info("Recive");
         EntityDog dog = (EntityDog)target;
 		if(dog.onGround) {
 			
+			//TODO
+			dog.setJumping(true);
+			  FMLLog.info("On ground");
+
 			dog.motionY = 2F * dog.talents.getLevel("wolfmount") * 0.1F;
+			  dog.motionY = 2F;
 			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
 				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
 			dog.isAirBorne = true;

@@ -30,7 +30,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -118,19 +120,18 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] {FACING});
+		return new ExtendedBlockState(this, new IProperty[] {FACING}, new IUnlistedProperty[] {CASING, BEDDING});
 	}
 	
 	@Override
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof TileEntityDogBed && state instanceof IExtendedBlockState)
-        {
+        if(te instanceof TileEntityDogBed && state instanceof IExtendedBlockState) {
         	IExtendedBlockState stateExtended = (IExtendedBlockState)state;
         	TileEntityDogBed dogBed = (TileEntityDogBed) te;
             return stateExtended.withProperty(CASING, dogBed.getCasingId()).withProperty(BEDDING, dogBed.getBeddingId());
         }
-        return state;
+        return super.getExtendedState(state, world, pos);
     }
 	
 	/**

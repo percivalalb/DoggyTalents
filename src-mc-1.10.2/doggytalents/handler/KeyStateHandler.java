@@ -53,9 +53,9 @@ public class KeyStateHandler {
 	            			PacketDispatcher.sendToServer(new DogJumpMessage(dog.getEntityId()));
 	            		}
 	            	}
-	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) {
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {
 	            	    int command = -1;
-	            	   
+	            	   FMLLog.info("Command");
 	                	if(kb == come) {
 	                		command = 1;
 	                	}

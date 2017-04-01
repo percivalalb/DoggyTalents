@@ -7,6 +7,11 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.11.0a - 1st March 2017
+Updated to MC 1.10.2
++ Added some missing localisation no more entity.doggytalent.doggytalent:dog.name etc!
+# Changed the way the radar works, when you right click it will tell you how the distance and direction your dog is away from you along with their name so you can identify them has a range of ~ 150 blocks
+
 v1.10.0a - 16th April 2016
 Updated to MC 1.8.9
 

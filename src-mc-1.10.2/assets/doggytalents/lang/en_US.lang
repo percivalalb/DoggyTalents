@@ -186,10 +186,18 @@ dogtreat.leveltoohigh=Your dog is too high level to gain anything from these tre
 dogtreat.toomuch=Your dog can't possibly handle the awesome power contained in these treats.
 dogtreat.ultimatelevel=CONGRATULATIONS! Your dog has reached the ultimate level!
 
+doggytalents.key.come=Command Come
+doggytalents.key.stay=Command Stay
+doggytalents.key.ok=Command Ok
+doggytalents.key.heel=Command Heal
+doggytalents.key.category=Doggy Talents
+
 dogcommand.come=Stand!
 dogcommand.stay=Stay!
 dogcommand.ok=Okay!
 dogcommand.heel=Heel!
+
+entity.doggytalents.doggytalents:dog.name=Dog
 
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl

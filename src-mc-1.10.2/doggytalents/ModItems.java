@@ -9,6 +9,7 @@ import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -43,16 +44,16 @@ public class ModItems {
 	    radioCollar = new ItemDT().setUnlocalizedName("doggytalents.radiocollar");
 	    radar = new ItemRadar().setUnlocalizedName("doggytalents.radar");
 	    
-		GameRegistry.registerItem(throwBone, "throw_bone");
-	    GameRegistry.registerItem(trainingTreat, "training_treat");
-	    GameRegistry.registerItem(superTreat, "super_treat");
-	    GameRegistry.registerItem(masterTreat, "master_treat");
-	    GameRegistry.registerItem(direTreat, "dire_treat");
-	    GameRegistry.registerItem(breedingBone, "breeding_bone");
-	    GameRegistry.registerItem(collarShears, "collar_shears");
-	    GameRegistry.registerItem(commandEmblem, "command_emblem");
-	    GameRegistry.registerItem(doggyCharm, "doggy_charm");
-	    GameRegistry.registerItem(radioCollar, "radio_collar");
-	    GameRegistry.registerItem(radar, "radar");
+		GameRegistry.register(throwBone, new ResourceLocation(Reference.MOD_ID, "throw_bone"));
+	    GameRegistry.register(trainingTreat, new ResourceLocation(Reference.MOD_ID, "training_treat"));
+	    GameRegistry.register(superTreat, new ResourceLocation(Reference.MOD_ID, "super_treat"));
+	    GameRegistry.register(masterTreat, new ResourceLocation(Reference.MOD_ID, "master_treat"));
+	    GameRegistry.register(direTreat, new ResourceLocation(Reference.MOD_ID, "dire_treat"));
+	    GameRegistry.register(breedingBone, new ResourceLocation(Reference.MOD_ID, "breeding_bone"));
+	    GameRegistry.register(collarShears, new ResourceLocation(Reference.MOD_ID, "collar_shears"));
+	    GameRegistry.register(commandEmblem, new ResourceLocation(Reference.MOD_ID, "command_emblem"));
+	    GameRegistry.register(doggyCharm, new ResourceLocation(Reference.MOD_ID, "doggy_charm"));
+	    GameRegistry.register(radioCollar, new ResourceLocation(Reference.MOD_ID, "radio_collar"));
+	    GameRegistry.register(radar, new ResourceLocation(Reference.MOD_ID, "radar"));
 	}
 }

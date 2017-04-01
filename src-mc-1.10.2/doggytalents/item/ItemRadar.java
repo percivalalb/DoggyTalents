@@ -1,81 +1,61 @@
 package doggytalents.item;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.entity.EntityDog;
+import doggytalents.helper.ChatHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
+import net.minecraft.stats.StatList;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 
 /**
  * @author ProPercivalalb
  **/
-public class ItemRadar extends ItemMap {
+public class ItemRadar extends ItemDT {
 	
 	public ItemRadar() {
-		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+		super();
 		this.setMaxStackSize(1);
 	}
+	
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
 
-	/**
-	@Override
-	public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
-        return this.getMapData(player, stack, worldIn).getMapPacket(stack, worldIn, player);
-    }
-	
-	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(!worldIn.isRemote) {
-			MapData mapdata = this.getMapData(entityIn, stack, worldIn);
-		
-			if(isSelected)
-				this.updateMapData(worldIn, entityIn, mapdata);
-	    }
-	}
-	
-	public MapData getMapData(Entity entityIn, ItemStack stack, World worldIn) {
-		MapData mapdata = new MapData("Radar");
-	    mapdata.dimension = worldIn.provider.getDimensionId();
-	    mapdata.calculateMapCenter((double)worldIn.getWorldInfo().getSpawnX(), (double)worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
-		//mapdata.calculateMapCenter(entityIn.posX, entityIn.posZ, 3);
-		mapdata.markDirty();
-		if(entityIn instanceof EntityPlayer) {
-			EntityPlayer entityplayer = (EntityPlayer)entityIn;
-			mapdata.updateVisiblePlayers(entityplayer, stack);
-        }
-		
-		return mapdata;
-	}**/
-	
-	@Override
-	public Packet createMapDataPacket(ItemStack stack, World worldIn, EntityPlayer player) {
-		return null;
-	}
-	@Override
-	 public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected)
-	    {
-		 
-	    }
-	@Override
-	public MapData getMapData(ItemStack stack, World worldIn) {
-		return null;
-		
-		/**String s = "map_" + stack.getMetadata();
-        MapData mapdata = (MapData)worldIn.loadItemData(MapData.class, s);
+		if(!worldIn.isRemote)
+		for(Object entity : worldIn.loadedEntityList) {
+			if(entity instanceof EntityDog) {
+				EntityDog dog = (EntityDog)entity;
 
-        if (mapdata == null && !worldIn.isRemote)
-        {
-            stack.setItemDamage(worldIn.getUniqueDataId("map"));
-            s = "map_" + stack.getMetadata();
-            mapdata = new MapData(s);
-            mapdata.scale = 4;
-            mapdata.calculateMapCenter((double)worldIn.getWorldInfo().getSpawnX(), (double)worldIn.getWorldInfo().getSpawnZ(), mapdata.scale);
-            mapdata.dimension = worldIn.provider.getDimensionId();
-            mapdata.markDirty();
-            worldIn.setItemData(s, mapdata);
-        }
-        return mapdata;**/
+				if(dog.hasRadarCollar() && dog.canInteract(playerIn)) {
+					StringBuilder builder = new StringBuilder();
+					builder.append(dog.getName());
+					builder.append(" is ");
+					builder.append((int)Math.ceil(dog.getDistanceToEntity(playerIn)));
+					builder.append(" blocks away ");
+					if(playerIn.posZ > dog.posZ)
+						builder.append("north");
+					else
+						builder.append("south");
+					
+					if(playerIn.posX < dog.posX)
+						builder.append(", east");
+					else
+							builder.append(", west");
+					playerIn.addChatMessage(ChatHelper.getChatComponent(builder.toString()));
+				}
+			}
+		}
+    	return new ActionResult(EnumActionResult.FAIL, itemStackIn);
     }
 }

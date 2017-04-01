@@ -48,9 +48,9 @@ public class PackPuppy extends ITalent {
 	    if (dog.isTamed()) {
 	    	if (stack != null) {
 	    		if(stack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && !player.worldObj.isRemote) {
-	    			player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, dog.worldObj, dog.getEntityId(), 0, 0);
-	    			dog.worldObj.playSound((EntityPlayer)null, dog.posX, dog.posY + 0.5D, dog.posZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, dog.worldObj.rand.nextFloat() * 0.1F + 0.9F);
-                	return true;
+		    		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, dog.worldObj, dog.getEntityId(), 0, 0);
+		    		dog.worldObj.playSound((EntityPlayer)null, dog.posX, dog.posY + 0.5D, dog.posZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.NEUTRAL, 0.5F, dog.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		    		return true;
 	    		}
 	    	}
 	    }
@@ -67,8 +67,9 @@ public class PackPuppy extends ITalent {
 	        for(int i = 0; i < list.size(); i++) {
 	            EntityItem entityItem = (EntityItem)list.get(i);
 	            if(!entityItem.isDead && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getEntityItem()))
-	            	if(TileEntityHopper.putDropInInventoryAllSlots(inventory, entityItem)) {}
-	            		//TODO dog.worldObj.playSoundAtEntity(dog, "random.pop", 0.2F, ((dog.getRNG().nextFloat() - dog.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
+	            	if(TileEntityHopper.putDropInInventoryAllSlots(inventory, entityItem)) {
+	            		dog.worldObj.playSound(null, dog.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, ((dog.worldObj.rand.nextFloat() - dog.worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+	            	}
 	        }
 		}
 	}

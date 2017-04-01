@@ -190,6 +190,14 @@ dogcommand.stay=Stay!
 dogcommand.ok=Okay!
 dogcommand.heel=Heel!
 
+doggytalents.key.come=Command Come
+doggytalents.key.stay=Command Stay
+doggytalents.key.ok=Command Ok
+doggytalents.key.heel=Command Heal
+doggytalents.key.category=Doggy Talents
+
+entity.doggytalents.doggytalents:dog.name=Dog
+
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
 itemGroup.doggytalents=Doggy Talents

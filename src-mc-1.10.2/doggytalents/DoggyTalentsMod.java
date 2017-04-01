@@ -49,7 +49,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY)
 public class DoggyTalentsMod {
 
 	@Instance(value = Reference.MOD_ID)
@@ -58,9 +58,11 @@ public class DoggyTalentsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
 	
+	public static Configuration config;
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
+		ConfigurationHandler.loadConfig(config = new Configuration(event.getSuggestedConfigurationFile()));
 		DoggyTalentsVersion.startVersionCheck();
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		ModBlocks.inti();

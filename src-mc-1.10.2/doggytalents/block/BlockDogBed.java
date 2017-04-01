@@ -54,17 +54,12 @@ public class BlockDogBed extends BlockContainer {
 		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return AABB;
-    }
-
+	
 	@Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-        return AABB.offset(pos);
-    }
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return AABB;
+	}
 	
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {

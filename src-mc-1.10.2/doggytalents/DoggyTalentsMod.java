@@ -49,7 +49,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.MOD_DEPENDENCIES)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION)
 public class DoggyTalentsMod {
 
 	@Instance(value = Reference.MOD_ID)

@@ -26,6 +26,13 @@ public class LevelUtil {
 		
 		if(tagCompound.hasKey("level_dire"))
 			this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, tagCompound.getInteger("level_dire"));
+		
+		//Backwards compatibility
+		if(tagCompound.hasKey("levels", 8)) {
+			String[] split = tagCompound.getString("levels").split(":");
+			this.dog.getDataManager().set(EntityDog.LEVEL, new Integer(split[0]));
+			this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, new Integer(split[1]));
+		}
 	}
 	
 	public int getLevel() {

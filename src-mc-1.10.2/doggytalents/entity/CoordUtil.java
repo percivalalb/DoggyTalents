@@ -65,6 +65,13 @@ public class CoordUtil {
 		
 		if(tagCompound.hasKey("bowlPosX"))
 			this.setBowlPos(new BlockPos(tagCompound.getInteger("bowlPosX"), tagCompound.getInteger("bowlPosY"), tagCompound.getInteger("bowlPosZ")));
+	
+		//Backwards compatibility
+		if(tagCompound.hasKey("coords")) {
+			String[] split = tagCompound.getString("coords").split(":");
+			this.setBedPos(new BlockPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2])));
+			this.setBowlPos(new BlockPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5])));
+		}
 	}
 }
 

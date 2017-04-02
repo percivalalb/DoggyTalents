@@ -292,50 +292,6 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable, IInvent
         else
             return ItemStack.EMPTY;
     }
-
-    public void dropContents(World world, int i, int j, int k) {
-        label0:
-
-        for (int l = 0; l < 5; l++)
-        {
-            ItemStack itemstack = getStackInSlot(l);
-
-            if (itemstack.isEmpty())
-            {
-                continue;
-            }
-
-            float f = world.rand.nextFloat() * 0.7F + 0.15F;
-            float f1 = world.rand.nextFloat() * 0.7F + 0.15F;
-            float f2 = world.rand.nextFloat() * 0.7F + 0.15F;
-
-            do
-            {
-                if (itemstack.isEmpty())
-                {
-                    continue label0;
-                }
-
-                int i1 = world.rand.nextInt(21) + 10;
-
-                if (i1 > itemstack.getCount())
-                {
-                    i1 = itemstack.getCount();
-                }
-
-                itemstack.shrink(i1);
-                EntityItem entityitem = new EntityItem(world, (float)i + f, (float)j + f1, (float)k + f2, new ItemStack(itemstack.getItem(), i1, itemstack.getItemDamage()));
-                float f3 = 0.05F;
-                entityitem.motionX = (float)world.rand.nextGaussian() * f3;
-                entityitem.motionY = (float)world.rand.nextGaussian() * f3 + 0.2F;
-                entityitem.motionZ = (float)world.rand.nextGaussian() * f3;
-                entityitem.setPickupDelay(10);
-                world.spawnEntity(entityitem);
-            }
-            while (true);
-        }
-    }
-
   
     private boolean ContainsFood()
     {

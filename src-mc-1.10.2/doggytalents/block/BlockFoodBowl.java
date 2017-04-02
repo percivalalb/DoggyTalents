@@ -15,9 +15,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -38,6 +41,7 @@ public class BlockFoodBowl extends BlockContainer {
 	
     public BlockFoodBowl() {
         super(Material.IRON);
+        this.setHardness(5.0F);
         this.setTickRandomly(true);
         this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 		this.setResistance(5.0F);
@@ -149,6 +153,34 @@ public class BlockFoodBowl extends BlockContainer {
 			((World)world).setBlockToAir(pos);
 		}
 	}
+	
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+
+		if(tileentity instanceof TileEntityFoodBowl) {
+			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityFoodBowl)tileentity);
+			worldIn.updateComparatorOutputLevel(pos, this);
+		}
+
+		super.breakBlock(worldIn, pos, state);
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return Container.calcRedstone(worldIn.getTileEntity(pos));
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
 	public boolean canBlockStay(IBlockAccess world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());

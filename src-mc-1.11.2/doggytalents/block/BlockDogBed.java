@@ -2,10 +2,12 @@ package doggytalents.block;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.tileentity.TileEntityDogBed;
+import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
@@ -19,13 +21,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -49,7 +56,7 @@ public class BlockDogBed extends BlockContainer {
 	
 	public BlockDogBed() {
 		super(Material.WOOD);
-		this.setHardness(2.0F);
+		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.WOOD);
 		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
@@ -130,59 +137,6 @@ public class BlockDogBed extends BlockContainer {
         return super.getExtendedState(state, world, pos);
     }
 	
-	/**
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
-		BlockPos pos = target.getBlockPos();
-		IBlockState iblockstate = world.getBlockState(pos);
-        Block block = iblockstate.getBlock();
-        EnumFacing side = target.sideHit;
-
-        int i = pos.getX();
-        int j = pos.getY();
-        int k = pos.getZ();
-        float f = 0.1F;
-        AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(world, pos);
-        double d0 = (double)i + world.rand.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
-        double d1 = (double)j + world.rand.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
-        double d2 = (double)k + world.rand.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
-
-        if (side == EnumFacing.DOWN)
-        {
-            d1 = (double)j + axisalignedbb.minY - 0.10000000149011612D;
-        }
-
-        if (side == EnumFacing.UP)
-        {
-            d1 = (double)j + axisalignedbb.maxY + 0.10000000149011612D;
-        }
-
-        if (side == EnumFacing.NORTH)
-        {
-            d2 = (double)k + axisalignedbb.minZ - 0.10000000149011612D;
-        }
-
-        if (side == EnumFacing.SOUTH)
-        {
-            d2 = (double)k + axisalignedbb.maxZ + 0.10000000149011612D;
-        }
-
-        if (side == EnumFacing.WEST)
-        {
-            d0 = (double)i + axisalignedbb.minX - 0.10000000149011612D;
-        }
-
-        if (side == EnumFacing.EAST)
-        {
-            d0 = (double)i + axisalignedbb.maxX + 0.10000000149011612D;
-        }
-
-        this.addEffect((new ParticleDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, iblockstate)).setBlockPos(pos).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-           
-		return true;
-	}
-	**/
 	@SideOnly(Side.CLIENT)
     public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos)
     {
@@ -202,20 +156,27 @@ public class BlockDogBed extends BlockContainer {
 	    return false;
 	}
 	
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+		TileEntity tileentity = worldIn.getTileEntity(pos);
+
+		if(tileentity instanceof TileEntityDogBed) {
+			TileEntityDogBed dogBed = (TileEntityDogBed)tileentity;
+			this.spawnAsEntity(worldIn, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+		}
+
+		super.breakBlock(worldIn, pos, state);
+	}
 	
 	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        List<ItemStack> ret = new ArrayList<ItemStack>();
-        
-        TileEntity target = world.getTileEntity(pos);
-		if(!(target instanceof TileEntityDogBed))
-			return ret;
-		TileEntityDogBed dogBed = (TileEntityDogBed)target;
-		
-		ItemStack stack = DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
-		ret.add(stack);
-		
-        return ret;
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Items.AIR;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 	
 	@Override
@@ -223,7 +184,7 @@ public class BlockDogBed extends BlockContainer {
         TileEntity tile = world.getTileEntity(pos);
 		
 		if(!(tile instanceof TileEntityDogBed))
-			return null;
+			return ItemStack.EMPTY;
 		TileEntityDogBed dogBed = (TileEntityDogBed)tile;
 		
 		return DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
@@ -259,4 +220,14 @@ public class BlockDogBed extends BlockContainer {
 		for(String casingId : DogBedRegistry.CASINGS.getKeys())
 			stackList.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
     }
+	
+	@Override
+	public IBlockState withRotation(IBlockState state, Rotation rot) {
+		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
+	}
+
+	@Override
+	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
+		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	}
 }

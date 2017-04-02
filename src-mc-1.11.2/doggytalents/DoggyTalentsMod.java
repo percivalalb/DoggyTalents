@@ -8,7 +8,6 @@ import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.handler.ConfigurationHandler;
 import doggytalents.handler.ConnectionHandler;
 import doggytalents.handler.EntityInteractHandler;
-import doggytalents.helper.DoggyTalentsVersion;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.proxy.CommonProxy;
@@ -61,7 +60,6 @@ public class DoggyTalentsMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
-		DoggyTalentsVersion.startVersionCheck();
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		ModBlocks.inti();
 		ModItems.inti();

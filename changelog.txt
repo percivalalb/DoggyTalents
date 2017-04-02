@@ -7,7 +7,27 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.12.0b | MC 1.11.2 | 2nd April 2017
+v1.12.2a | MC 1.11.2 | 2nd April 2017
++ Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
++ Added code for dog bed that can allow it to be flipped and rotated by other mods
+# Food Bowl and Dog Bath can only be broken by pickaxe, and it is much better to use an axe on a wooden dog bed :P
+* Fixed food bowl not dropping its contents when broken
+* Fixed dog bed not dropping anything
+* Fixed pick block on dog bed
+* Fixed time to break some blocks (food bowl) being instant 
+- Removed old redundant custom version checker
+
+v1.11.2a | MC 1.10.2 | 2nd April 2017
++ Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
++ Added code for dog bed that can allow it to be flipped and rotated by other mods
+# Food Bowl and Dog Bath can only be broken by pickaxe, and it is much better to use an axe on a wooden dog bed :P
+* Fixed food bowl not dropping its contents when broken
+* Fixed dog bed not dropping anything
+* Fixed pick block on dog bed
+* Fixed time to break some blocks (food bowl) being instant 
+- Removed old redundant custom version checker
+
+v1.12.1a | MC 1.11.2 | 2nd April 2017
 # Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount
@@ -18,7 +38,7 @@ v1.12.0b | MC 1.11.2 | 2nd April 2017
 * Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
 * Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
-v1.11.0c | MC 1.10.2 | 2nd April 2017
+v1.11.1a | MC 1.10.2 | 2nd April 2017
 # Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount

@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,8 +27,8 @@ public class BlockDogBath extends BlockContainer {
 	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
 	
 	public BlockDogBath() {
-		super(Material.WOOD);
-		this.setHardness(2.0F);
+		super(Material.IRON);
+		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.METAL);
 		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
@@ -66,6 +67,12 @@ public class BlockDogBath extends BlockContainer {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 	    return EnumBlockRenderType.MODEL;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 	
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {

@@ -8,6 +8,7 @@ Update List Key
 (/) Other
 
 v1.12.0b | MC 1.11.2 | 2nd April 2017
+# Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount
 * Fixed bed finder not highlighting your bed when a dog is on your head (now highlights in yellow colour)
@@ -18,6 +19,7 @@ v1.12.0b | MC 1.11.2 | 2nd April 2017
 * Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
 v1.11.0c | MC 1.10.2 | 2nd April 2017
+# Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount
 * Fixed bed finder not highlighting your bed when a dog is on your head (now highlights in yellow colour)

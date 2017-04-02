@@ -46,7 +46,7 @@ public class CommandMessage extends AbstractServerMessage {
 	public void process(EntityPlayer player, Side side) {
 		World world = player.world;
 
-		if(((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {
+		if((player.getHeldItemMainhand().getItem() == ModItems.commandEmblem || player.getHeldItemOffhand().getItem() == ModItems.commandEmblem)) {
 
 			FMLLog.info(this.commandId + " id");
 			if(this.commandId == 1)

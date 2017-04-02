@@ -76,7 +76,7 @@ public class EntityAIDogBeg extends EntityAIBase
         for (EnumHand enumhand : EnumHand.values()) {
             ItemStack itemstack = player.getHeldItem(enumhand);
 
-            if (itemstack != null) {
+            if (!itemstack.isEmpty()) {
         
                 if(DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
                 	return true;

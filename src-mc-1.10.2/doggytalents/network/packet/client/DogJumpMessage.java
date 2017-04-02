@@ -34,19 +34,13 @@ public class DogJumpMessage extends AbstractServerMessage {
 		Entity target = player.worldObj.getEntityByID(this.entityId);
         if(!(target instanceof EntityDog))
         	return;
-        FMLLog.info("Recive");
+   
         EntityDog dog = (EntityDog)target;
 		if(dog.onGround) {
-			
-			//TODO
-			dog.setJumping(true);
-			  FMLLog.info("On ground");
 
-			dog.motionY = 2F * dog.talents.getLevel("wolfmount") * 0.1F;
-			  dog.motionY = 2F;
+			dog.addVelocity(0D, 2F * dog.talents.getLevel("wolfmount") * 0.1F, 0D);
 			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
 				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
-			dog.isAirBorne = true;
 		}
 		else if(dog.isInWater() && dog.talents.getLevel("swimmerdog") > 0) {
 			dog.motionY = 0.2F;

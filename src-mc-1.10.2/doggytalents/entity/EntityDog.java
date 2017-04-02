@@ -405,6 +405,11 @@ public class EntityDog extends EntityTameable {
         if(this.reversionTime > 0)
         	this.reversionTime -= 1;
         
+        //Remove dog from players head if sneaking
+        if(this.getRidingEntity() instanceof EntityPlayer)
+        	if(this.getRidingEntity().isSneaking())
+        		this.dismountRidingEntity();
+        
         TalentHelper.onLivingUpdate(this);
     }
 
@@ -549,19 +554,19 @@ public class EntityDog extends EntityTameable {
             }
 
             this.stepHeight = 1.0F;
-            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.2F;
+            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
 
             if (this.canPassengerSteer())
             {
-            	this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.3F);
+            	this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
                 super.moveEntityWithHeading(strafe, forward);
             }
            	else if (entitylivingbase instanceof EntityPlayer)
          	{
-           	    this.motionX = 0.0D;
-          	     this.motionY = 0.0D;
-          	     this.motionZ = 0.0D;
-         	 }
+           		this.motionX = 0.0D;
+           		this.motionY = 0.0D;
+           		this.motionZ = 0.0D;
+         	}
 
             this.prevLimbSwingAmount = this.limbSwingAmount;
             double d0 = this.posX - this.prevPosX;
@@ -590,9 +595,6 @@ public class EntityDog extends EntityTameable {
     	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.isControllingPassengerPlayer())
     		if (this.levels.isDireDog())
     			speed += 0.05D;
-    	
-    	//if(this.isControllingPassengerPlayer())
-    	//	speed /= 4;
     	
         return (float)speed;
     }
@@ -1151,6 +1153,21 @@ public class EntityDog extends EntityTameable {
     		
 		return super.shouldDismountInWater(rider);
 	}
+    
+    @Override
+    public void updatePassenger(Entity passenger){
+        super.updatePassenger(passenger);
+
+        if(passenger instanceof EntityLiving) {
+            EntityLiving entityliving = (EntityLiving)passenger;
+            this.renderYawOffset = entityliving.renderYawOffset;
+        }
+    }
+    
+    @Override
+    public boolean canBeSteered() {
+        return true;
+    }
     
     @Override
     public void onDeath(DamageSource cause) {

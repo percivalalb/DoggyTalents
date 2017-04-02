@@ -7,24 +7,37 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-v1.11.0c and v1.12.0b - 1st April 2017
+v1.12.0b | MC 1.11.2 | 2nd April 2017
+# Dogs can now be removed from your head by sneaking
+* Fixed not been able to jump when riding dogs with Wolf Mount
+* Fixed bed finder not highlighting your bed when a dog is on your head (now highlights in yellow colour)
+* Fixed not being able to mount a dog with Wolf Mount
+* Fixed some internal code using null instead of ItemStack.EMPTY (new to 1.11.2) which was causing some bugs
 * Fixed dogs drowning in water when pillow paw is level 5
 * Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
+* Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
-v1.12.0a - 1st April 2017
+v1.11.0c | MC 1.10.2 | 2nd April 2017
+# Dogs can now be removed from your head by sneaking
+* Fixed not been able to jump when riding dogs with Wolf Mount
+* Fixed bed finder not highlighting your bed when a dog is on your head (now highlights in yellow colour)
+* Fixed dogs drowning in water when pillow paw is level 5
+* Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
+* Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
+
+v1.12.0a | MC 1.11.2 | 1st April 2017
 Updated to MC 1.11.2
 
-v1.11.0b - 1st April 2017
+v1.11.0b | MC 1.10.2 | 1st April 2017
 # Changed the file names of some textures
 * Fixed the collision box of dog beds
 
-v1.11.0a - 1st April 2017
+v1.11.0a | MC 1.10.2 | 1st April 2017
 Updated to MC 1.10.2
-
 + Added some missing localisation no more entity.doggytalent.doggytalent:dog.name etc!
 # Changed the way the radar works, when you right click it will tell you how the distance and direction your dog is away from you along with their name so you can identify them has a range of ~ 150 blocks
 
-v1.10.0a - 16th April 2016
+v1.10.0a | MC 1.8.9 | 16th April 2016
 Updated to MC 1.8.9
 
 v1.9.1g - 16th July 2015
@@ -74,7 +87,6 @@ v1.9.1b - 27th February 2015
 
 v1.9.1a - 16th February 2015
 Updated to MC 1.8
-
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
 
 v1.9.0h - 16th July 2015

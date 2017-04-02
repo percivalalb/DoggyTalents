@@ -1,26 +1,15 @@
 {
-  "versions": {
-    "1.4.7-recommended": "v1.1.0a",
-    "1.5-recommended": "v1.3.0a",
-    "1.5.1-recommended": "v1.3.0a",
-    "1.5.2-recommended": "v1.3.0a",
-    "1.6.1-recommended": "v1.5.1a",
-    "1.6.2-recommended": "v1.5.1a",
-    "1.6.3-recommended": "v1.5.1a",
-    "1.6.4-recommended": "v1.5.1a",
-    "1.7.2-recommended": "v1.6.2a",
-    "1.7.10-recommended": "v1.9.0h",
-    "1.8-recommended": "v1.9.1g", 
-    "1.8.9-recommended": "v1.10.0a"
-  },
-  "links": {
-    "v1.1.0a": "",
-    "v1.3.0a": "",
-    "v1.5.1a": "",
-    "v1.6.2a": "http://adfoc.us/14766154871061",
-    "v1.8.3a": "http://adfoc.us/14766148446168", 
-    "v1.9.0h": "http://adfoc.us/14766155916785",
-    "v1.9.1g": "http://adfoc.us/14766155916686",
-    "v1.10.0a": "http://adfoc.us/14766156033165"
-  }
+    "homepage": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287584",
+	    "promos": {
+        "1.10.2-latest": "v1.11.1a",
+        "1.10.2-recommended": "v1.11.1a",
+        "1.11.2-latest": "v1.12.1a",
+        "1.11.2-recommended": "v1.12.1a"
+    },
+    "1.10.2": {
+        "v1.11.1a": "Download Now"
+    },
+    "1.11.2": {
+        "v1.12.1a": "Download Now"
+    }
 }

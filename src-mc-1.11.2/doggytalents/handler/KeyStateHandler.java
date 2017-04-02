@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * @author ProPercivalalb
@@ -49,8 +50,10 @@ public class KeyStateHandler {
 	            	if(kb == mc.gameSettings.keyBindJump) {
 	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.getRidingEntity();
-	            			FMLLog.info("Jump");
-	            			PacketDispatcher.sendToServer(new DogJumpMessage(dog.getEntityId()));
+	
+	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
+	            			jumpMessage.process(player, Side.CLIENT);
+	            			PacketDispatcher.sendToServer(jumpMessage);
 	            		}
 	            	}
 	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {

@@ -16,15 +16,18 @@ import net.minecraftforge.fml.client.config.ConfigGuiType;
 import net.minecraftforge.fml.client.config.DummyConfigElement;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyListElement;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.NumberSliderEntry;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class GuiConfigDoggyTalents extends GuiConfig {
     
 	public GuiConfigDoggyTalents(GuiScreen parent) {
-        super(parent, (new ConfigElement(DoggyTalentsMod.config.getCategory("doggySettings"))).getChildElements(), Reference.MOD_ID,  false, false, I18n.format("fml.config.sample.title"));
-    }
+        super(parent, (new ConfigElement(DoggyTalentsMod.config.getCategory("doggySettings"))).getChildElements(), Reference.MOD_ID,  false, false, I18n.format("doggytalents.configgui.title"));
+	}
     
     @Override
     public void initGui() {

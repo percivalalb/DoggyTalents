@@ -519,9 +519,13 @@ public class EntityDog extends EntityTameable {
         return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
     }
     
+    public boolean isControllingPassengerPlayer() {
+        return this.getControllingPassenger() instanceof EntityPlayer;
+    }
+    
     @Override
     public void moveEntityWithHeading(float strafe, float forward) {
-        if(this.getControllingPassenger() instanceof EntityPlayer) {
+        if(this.isControllingPassengerPlayer()) {
         	 EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
              this.rotationYaw = entitylivingbase.rotationYaw;
              this.prevRotationYaw = this.rotationYaw;
@@ -583,11 +587,11 @@ public class EntityDog extends EntityTameable {
     	
     	speed += TalentHelper.addToMoveSpeed(this);
     	
-    	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.getControllingPassenger() instanceof EntityPlayer)
+    	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.isControllingPassengerPlayer())
     		if (this.levels.isDireDog())
     			speed += 0.05D;
     	
-    	//if(this.getControllingPassenger() instanceof EntityPlayer)
+    	//if(this.isControllingPassengerPlayer())
     	//	speed /= 4;
     	
         return (float)speed;

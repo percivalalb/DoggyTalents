@@ -13,6 +13,7 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -53,4 +54,9 @@ public class ClientHandler {
      
 
 	}
+	
+	@SubscribeEvent
+    public void onChange(OnConfigChangedEvent event) {
+    	FMLLog.info("Change " + event.getModID() + " " + event.getConfigID());
+    }
 }

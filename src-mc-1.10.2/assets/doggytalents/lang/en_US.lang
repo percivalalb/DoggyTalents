@@ -199,6 +199,20 @@ dogcommand.heel=Heel!
 
 entity.doggytalents.doggytalents:dog.name=Dog
 
+doggytalents.configgui.title=Doggy Talents Configuration
+bloodWhenIncapacitated=Incapacitated Texture
+doggytalents.configgui.bloodWhenIncapacitated.tooltip=Incapacitated Texture
+direParticles=Dire Particles
+doggytalents.configgui.direParticles.tooltip=Enables the particle effect on Dire Level 30 dogs
+isDogImmortal=Immortal Dog
+doggytalents.configgui.isDogImmortal.tooltip=Determines if dogs die when their health reaches zero. If true, dogs will not die, and will instead become incapacitated.
+isHungerOn=Dog Hunger
+doggytalents.configgui.isHungerOn.tooltip=Does your dog need feeding
+isStartingItemsEnabled=Starting Items
+doggytalents.configgui.isStartingItemsEnabled.tooltip=When enabled you will spawn with a guide, Doggy Charm and Command Emblem.
+tenDayPuppies=Ten Day Puppies
+doggytalents.configgui.tenDayPuppies.tooltip=Determines if pups take 10 days to mature
+
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
 itemGroup.doggytalents=Doggy Talents

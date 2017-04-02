@@ -198,6 +198,14 @@ doggytalents.key.category=Doggy Talents
 
 entity.doggytalents.doggytalents:dog.name=Dog
 
+doggytalents.configgui.title=Doggy Talents Configuration
+bloodWhenIncapacitated=Incapacitated Texture
+direParticals=Dire Particles
+isDogImmortal=Immortal Dog
+isHungerOn=Dog Hunger
+isStartingItemsEnabled=Starting Items
+tenDayPuppies=Ten Day Puppies
+
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
 itemGroup.doggytalents=Doggy Talents

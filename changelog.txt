@@ -7,6 +7,10 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+v1.11.0c and v1.12.0b - 1st April 2017
+* Fixed dogs drowning in water when pillow paw is level 5
+* Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
+
 v1.12.0a - 1st April 2017
 Updated to MC 1.11.2
 

@@ -2,6 +2,7 @@ package doggytalents.proxy;
 
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
+import doggytalents.client.gui.GuiConfigDoggyTalents;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
@@ -55,7 +56,7 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(KeyStateHandler.ok);
 		ClientRegistry.registerKeyBinding(KeyStateHandler.heel);
 		
-		FMLCommonHandler.instance().bus().register(new KeyStateHandler());
+		MinecraftForge.EVENT_BUS.register(new KeyStateHandler());
 	}
 	
 	@Override

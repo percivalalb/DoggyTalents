@@ -17,31 +17,34 @@ public class EntityInteractHandler {
 	
 	@SubscribeEvent
 	public void rightClickEntity(EntityInteract event) {
-		EntityPlayer player = event.getEntityPlayer();
 	 	World world = event.getTarget().worldObj;
-		ItemStack stack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
 		
-		if(event.getTarget() instanceof EntityWolf && stack != null && stack.getItem() == ModItems.trainingTreat) {
-			EntityWolf wolf = (EntityWolf)event.getTarget();
-			 
-			if(wolf.isTamed() && wolf.isOwner(player)) {
-
-				if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+	 	if(!world.isRemote) {
+			EntityPlayer player = event.getEntityPlayer();
+			ItemStack stack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+			
+			if(event.getTarget() instanceof EntityWolf && stack != null && stack.getItem() == ModItems.trainingTreat) {
+				EntityWolf wolf = (EntityWolf)event.getTarget();
 				 
-			 	EntityDog dog = new EntityDog(world);
-			 	dog.setTamed(true);
-			 	dog.setOwnerId(player.getUniqueID());
-			 	dog.setHealth(dog.getMaxHealth());
-			 	dog.setSitting(false);
-			 	dog.setGrowingAge(wolf.getGrowingAge());
-			 	dog.setPositionAndRotation(wolf.posX, wolf.posY, wolf.posZ, wolf.rotationYaw, wolf.rotationPitch);
-			 
-			 	if(!world.isRemote)
-			 		world.spawnEntityInWorld(dog);
-			 	
-				wolf.setDead();
+				if(!wolf.isDead && wolf.isTamed() && wolf.isOwner(player)) {
+	
+					if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
+						player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+					 
+				 	EntityDog dog = new EntityDog(world);
+				 	dog.setTamed(true);
+				 	dog.setOwnerId(player.getUniqueID());
+				 	dog.setHealth(dog.getMaxHealth());
+				 	dog.setSitting(false);
+				 	dog.setGrowingAge(wolf.getGrowingAge());
+				 	dog.setPositionAndRotation(wolf.posX, wolf.posY, wolf.posZ, wolf.rotationYaw, wolf.rotationPitch);
+				 
+				 	
+				 	world.spawnEntityInWorld(dog);
+				 	
+					wolf.setDead();
+				 }
 			 }
-		 }
+	 	}
 	}
 }

@@ -7,8 +7,10 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+# Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left
 * Fixed the dogs nose being too long
+
 
 v1.12.2a | MC 1.11.2 | 2nd April 2017
 + Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)

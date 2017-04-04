@@ -38,7 +38,29 @@ public class DogJumpMessage extends AbstractServerMessage {
         EntityDog dog = (EntityDog)target;
 		if(dog.onGround) {
 
-			dog.addVelocity(0D, 2F * dog.talents.getLevel("wolfmount") * 0.1F, 0D);
+			double verticalVelocity = 0.0D;
+			switch(dog.talents.getLevel("wolfmount")) {
+			case 1:
+				verticalVelocity = 0.37D;
+				break;
+			case 2:
+				verticalVelocity = 0.47D;
+				break;
+			case 3:
+				verticalVelocity = 0.57D;
+				break;
+			case 4:
+				verticalVelocity = 0.67D;
+				break;
+			case 5:
+				verticalVelocity = 0.87D;
+				break;
+			default:
+				verticalVelocity = 0.0D;
+				break;
+			}
+			
+			dog.addVelocity(0D, verticalVelocity, 0D);
 			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
 				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
 		}

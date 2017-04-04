@@ -196,9 +196,9 @@ public class BlockFoodBowl extends BlockContainer {
     
     @Override
     public void registerBlockIcons(IIconRegister par1IconRegister) {
-        this.top = par1IconRegister.registerIcon("doggytalents:foodTop");
-        this.bottom = par1IconRegister.registerIcon("doggytalents:foodBottom");
-        this.side = par1IconRegister.registerIcon("doggytalents:foodSide");
+        this.top = par1IconRegister.registerIcon("doggytalents:food_top");
+        this.bottom = par1IconRegister.registerIcon("doggytalents:food_bottom");
+        this.side = par1IconRegister.registerIcon("doggytalents:food_side");
     }
 
     @Override

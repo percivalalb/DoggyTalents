@@ -96,7 +96,6 @@ public class ModelDog extends ModelBase {
         
         this.wolfBodyChest.setTextureOffset(52, 21).addBox(2.0F, -1F, 0F, 2, 7, 4);//Backpack1
         this.wolfBodyChest.setTextureOffset(52, 21).addBox(-4.0F, -1F, 0F, 2, 7, 4);//Backpack1
-                     
     }
 
     @Override

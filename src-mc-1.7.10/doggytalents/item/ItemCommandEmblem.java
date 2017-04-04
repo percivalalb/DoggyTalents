@@ -17,7 +17,7 @@ import doggytalents.entity.EntityDoggyBeam;
 public class ItemCommandEmblem extends ItemDT {
 	
 	public ItemCommandEmblem() {
-		super("commandEmblem");
+		super("command_emblem");
 		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 	}
 	

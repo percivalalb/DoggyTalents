@@ -7,12 +7,22 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+Upcoming
+
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left
 * Fixed the dogs nose being too long
 
 
-v1.12.2a | MC 1.11.2 | 2nd April 2017
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.11.2
+
+v1.12.1c | !!!WORK IN PROGRESS!!!
+# Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
+* Fixed the dog model being shifted over 1 pixel to the left
+* Fixed the dogs nose being too long
+
+v1.12.1b | 2nd April 2017
 + Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
 + Added code for dog bed that can allow it to be flipped and rotated by other mods
 # Food Bowl and Dog Bath can only be broken by pickaxe, and it is much better to use an axe on a wooden dog bed :P
@@ -22,17 +32,7 @@ v1.12.2a | MC 1.11.2 | 2nd April 2017
 * Fixed time to break some blocks (food bowl) being instant 
 - Removed old redundant custom version checker
 
-v1.11.2a | MC 1.10.2 | 2nd April 2017
-+ Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
-+ Added code for dog bed that can allow it to be flipped and rotated by other mods
-# Food Bowl and Dog Bath can only be broken by pickaxe, and it is much better to use an axe on a wooden dog bed :P
-* Fixed food bowl not dropping its contents when broken
-* Fixed dog bed not dropping anything
-* Fixed pick block on dog bed
-* Fixed time to break some blocks (food bowl) being instant 
-- Removed old redundant custom version checker
-
-v1.12.1a | MC 1.11.2 | 2nd April 2017
+v1.12.1a | 2nd April 2017
 # Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount
@@ -43,7 +43,28 @@ v1.12.1a | MC 1.11.2 | 2nd April 2017
 * Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
 * Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
-v1.11.1a | MC 1.10.2 | 2nd April 2017
+v1.12.0a | 1st April 2017
+Initial release updated from v1.11.0b
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.10.2
+
+v1.11.1c | !!!WORK IN PROGRESS!!!
+# Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
+* Fixed the dog model being shifted over 1 pixel to the left
+* Fixed the dogs nose being too long
+
+v1.11.1b | 2nd April 2017
++ Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
++ Added code for dog bed that can allow it to be flipped and rotated by other mods
+# Food Bowl and Dog Bath can only be broken by pickaxe, and it is much better to use an axe on a wooden dog bed :P
+* Fixed food bowl not dropping its contents when broken
+* Fixed dog bed not dropping anything
+* Fixed pick block on dog bed
+* Fixed time to break some blocks (food bowl) being instant 
+- Removed old redundant custom version checker
+
+v1.11.1a | 2nd April 2017
 # Version checker now uses the forge version checker so when you look at the list of mods it will alert you to an update and have the changelog as well
 # Dogs can now be removed from your head by sneaking
 * Fixed not been able to jump when riding dogs with Wolf Mount
@@ -52,20 +73,23 @@ v1.11.1a | MC 1.10.2 | 2nd April 2017
 * Fixed dogs responding to holding wheat and picking up animals even when no points where put in Shepherd Dog
 * Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
-v1.12.0a | MC 1.11.2 | 1st April 2017
-Updated to MC 1.11.2
-
-v1.11.0b | MC 1.10.2 | 1st April 2017
+v1.11.0b | 1st April 2017
 # Changed the file names of some textures
 * Fixed the collision box of dog beds
 
-v1.11.0a | MC 1.10.2 | 1st April 2017
-Updated to MC 1.10.2
+v1.11.0a | 1st April 2017
+Initial release updated from v1.10.0a
 + Added some missing localisation no more entity.doggytalent.doggytalent:dog.name etc!
 # Changed the way the radar works, when you right click it will tell you how the distance and direction your dog is away from you along with their name so you can identify them has a range of ~ 150 blocks
 
-v1.10.0a | MC 1.8.9 | 16th April 2016
-Updated to MC 1.8.9
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.8.9
+
+v1.10.0a | 16th April 2016
+Initial release updated from v1.9.1g
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.8
 
 v1.9.1g - 16th July 2015
 * Fixed crash on server startup
@@ -113,8 +137,17 @@ v1.9.1b - 27th February 2015
 * Mod will not load with forge version 11.14.0.1292 or lower to avoid crashes
 
 v1.9.1a - 16th February 2015
-Updated to MC 1.8
+Initial release updated from v1.9.0b
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.7.10
+
+v1.9.0i | !!!WORK IN PROGRESS!!!
+# Changed the location and name of many textures to match that of new versions (v1.11.0a+) of the mod (sorry texture pack makers)
+# Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
+* Fixed the dog model being shifted over 1 pixel to the left
+* Fixed the dogs nose being too long
 
 v1.9.0h - 16th July 2015
 * Fixed crash on server startup
@@ -224,12 +257,15 @@ v1.7.1a - 8th July 2014
 * Fixed doggy charm spawning a dog you can't interact with
 
 v1.7.0a - 8th July 2014
-Updated to MC 1.7.10
+Initial release updated from v1.6.1a
 # Updated owner name system to cater for upcoming name changes
 # Removed some unused classes
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.7.2
+
 v1.6.2a - 19th March 2015
-+ Updated the 1.7.2 to have the lastest bug fixes and features in the most recent versions
++ Updated the 1.7.2 to have the lastest bug fixes and features in the most recent versions (v1.9.0f)
 * Fixed bug when registering bed casing and bedding
 
 v1.6.1a - 24th July 2014
@@ -237,11 +273,14 @@ v1.6.1a - 24th July 2014
 * Fixed the NEI intergration not working
 
 v1.6.0a - 10th February 2014
-Updated to MC 1.7.2
+Initial release updated from v1.5.1a
 # Most text is now in the .lang files so other languages can edit them
 * Fixed crash on server (In first version of this version)
 * Fixed some small bugs on the way
 NOTE: This was a straight port to 1.7 no features were changed, in the next update quite a lot will change :D.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Old Versions
 
 v1.5.1a - 30th November 2013
 # Moved all doggy talents items to the DT tab now

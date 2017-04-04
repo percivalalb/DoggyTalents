@@ -31,8 +31,8 @@ public class ItemThrowBone extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon("doggytalents:throwbone");
-		this.droolBone = par1IconRegister.registerIcon("doggytalents:droolThrowBone");
+		this.itemIcon = par1IconRegister.registerIcon("doggytalents:throw_bone");
+		this.droolBone = par1IconRegister.registerIcon("doggytalents:throw_bone_wet");
 	}
 	
 	@Override

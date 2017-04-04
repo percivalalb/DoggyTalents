@@ -32,14 +32,14 @@ public class ModItems {
 		//dogOwnersManual = new ItemDogOwnersManual().setUnlocalizedName("dt.dogOwnersManual").setTextureName("doggytalents:dogOwnersManual");
 		throwBone = new ItemThrowBone().setUnlocalizedName("doggytalents.throwbone");
 		commandEmblem = new ItemCommandEmblem().setUnlocalizedName("doggytalents.commandemblem");
-		trainingTreat = new ItemTreat("trainingtreat", 20).setUnlocalizedName("doggytalents.trainingtreat");
-	    superTreat = new ItemTreat("supertreat", 40).setUnlocalizedName("doggytalents.supertreat");
-	    masterTreat = new ItemTreat("mastertreat", 60).setUnlocalizedName("doggytalents.mastertreat");
-	    direTreat = new ItemDireTreat("diretreat").setUnlocalizedName("doggytalents.diretreat");
+		trainingTreat = new ItemTreat("training_treat", 20).setUnlocalizedName("doggytalents.trainingtreat");
+	    superTreat = new ItemTreat("super_treat", 40).setUnlocalizedName("doggytalents.supertreat");
+	    masterTreat = new ItemTreat("master_treat", 60).setUnlocalizedName("doggytalents.mastertreat");
+	    direTreat = new ItemDireTreat("dire_treat").setUnlocalizedName("doggytalents.diretreat");
 	    breedingBone = new ItemDT("breedingbone").setUnlocalizedName("doggytalents.breedingbone");
-	    collarShears = new ItemDT("collarshears").setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16);
-	    doggyCharm = new ItemDoggyCharm("doggycharm").setUnlocalizedName("doggytalents.doggycharm");
-	    radioCollar = new ItemDT("radiocollar").setUnlocalizedName("doggytalents.radiocollar");
+	    collarShears = new ItemDT("collar_shears").setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16);
+	    doggyCharm = new ItemDoggyCharm("doggy_charm").setUnlocalizedName("doggytalents.doggycharm");
+	    radioCollar = new ItemDT("radio_collar").setUnlocalizedName("doggytalents.radiocollar");
 	    radar = new ItemRadar().setUnlocalizedName("doggytalents.radar");
 	    
 		GameRegistry.registerItem(throwBone, "throw_bone");

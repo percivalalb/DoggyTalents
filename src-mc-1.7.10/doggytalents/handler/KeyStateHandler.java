@@ -13,6 +13,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.relauncher.Side;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
@@ -50,7 +51,10 @@ public class KeyStateHandler {
 	            	if(kb == mc.gameSettings.keyBindJump) {
 	            		if(player.ridingEntity instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.ridingEntity;
-	            			PacketDispatcher.sendToServer(new DogJumpMessage(dog.getEntityId()));
+	            			
+	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
+	            			jumpMessage.process(player, Side.CLIENT);
+	            			PacketDispatcher.sendToServer(jumpMessage);
 	            		}
 	            	}
 	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == ModItems.commandEmblem) {

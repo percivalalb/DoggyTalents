@@ -39,6 +39,8 @@ public class DogJumpMessage extends AbstractServerMessage {
         if(dog.onGround) {
 
         	double verticalVelocity = 0.27D + 0.1D * dog.talents.getLevel("wolfmount");
+        	if(dog.talents.getLevel("wolfmount") == 5) verticalVelocity += 0.1D;
+        	
 			dog.addVelocity(0D, verticalVelocity, 0D);
 			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
 				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);

@@ -12,9 +12,11 @@ MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.12.1c | !!!WORK IN PROGRESS!!!
++ Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left
 * Fixed the dogs nose being too long
+* Fixed training treat spawning two dogs and consuming 2 items
 
 v1.12.1b | 2nd April 2017
 + Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)
@@ -48,6 +50,7 @@ v1.11.1c | !!!WORK IN PROGRESS!!!
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left
 * Fixed the dogs nose being too long
+* Fixed training treat spawning two dogs and consuming 2 items
 
 v1.11.1b | 2nd April 2017
 + Food bowl will now output redstone signal using a comparator based on how many items are in the bowl (same as vanilla inventories)

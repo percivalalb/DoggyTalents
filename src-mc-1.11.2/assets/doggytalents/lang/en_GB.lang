@@ -2,6 +2,11 @@ tile.doggytalents.dogbed.name=Dog Bed
 tile.doggytalents.foodbowl.name=Food Bowl
 tile.doggytalents.dogbath.name=Dog Bath
 
+modgui.config.doggysettings=Doggy Settings
+modgui.config.doggysettings.tooltip=Here you can change details about your dog.
+modgui.config.general=General Settings
+modgui.config.general.tooltip=Other things
+
 item.doggytalents.throwbone0.name=Throw Bone
 item.doggytalents.throwbone1.name=Drool Throw Bone
 item.doggytalents.trainingtreat.name=Training Treat

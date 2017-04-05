@@ -52,7 +52,7 @@ public class ModGuiConfig extends GuiConfig {
 			list.addAll((new ConfigElement(ConfigurationHandler.config.getCategory(ConfigurationHandler.CATEGORY_DOGGYSETTINGS))).getChildElements());
 			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DOGGYSETTINGS, this.configElement.requiresWorldRestart() ||
 					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.doggysettings"), I18n.format("modgui.config.doggysettings.toolip"));
+					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.doggysettings"), I18n.format("modgui.config.doggysettings.tooltip"));
 		}
 	}
 
@@ -70,7 +70,7 @@ public class ModGuiConfig extends GuiConfig {
 			list.addAll((new ConfigElement(ConfigurationHandler.config.getCategory(ConfigurationHandler.CATEGORY_DT_GENERAL))).getChildElements());
 			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DT_GENERAL, this.configElement.requiresWorldRestart() ||
 					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.toolip"));
+					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));
 		}
 	}
 	

@@ -40,7 +40,7 @@ v1.12.1a | 2nd April 2017
 * Fixed Doggy Dash not really increasing the speed at which dogs run by much - should notice it more now when riding and as they follow you
 
 v1.12.0a | 1st April 2017
-Initial release updated from v1.11.0b
+Initial release, parent version v1.11.0b
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.10.2
@@ -77,16 +77,23 @@ v1.11.0b | 1st April 2017
 * Fixed the collision box of dog beds
 
 v1.11.0a | 1st April 2017
-Initial release updated from v1.10.0a
+Initial release, parent version v1.10.0a
 + Added some missing localisation no more entity.doggytalent.doggytalent:dog.name etc!
 # Changed the way the radar works, when you right click it will tell you how the distance and direction your dog is away from you along with their name so you can identify them has a range of ~ 150 blocks
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.9.4
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.10.1c | 5th April 2017
+Initial release, parent version v1.10.1c
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.8.9
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.10.0a | 16th April 2016
-Initial release updated from v1.9.1g
+Initial release, parent version v1.9.1g
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.8
@@ -138,7 +145,7 @@ v1.9.1b - 27th February 2015
 * Mod will not load with forge version 11.14.0.1292 or lower to avoid crashes
 
 v1.9.1a - 16th February 2015
-Initial release updated from v1.9.0b
+Initial release, parent version v1.9.0b
 * Fixed crash when sneaking and looking at a dogs label in multiplayer if the owner of the do was not on the server
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -259,7 +266,7 @@ v1.7.1a - 8th July 2014
 * Fixed doggy charm spawning a dog you can't interact with
 
 v1.7.0a - 8th July 2014
-Initial release updated from v1.6.1a
+Initial release, parent version v1.6.1a
 # Updated owner name system to cater for upcoming name changes
 # Removed some unused classes
 
@@ -276,7 +283,7 @@ v1.6.1a - 24th July 2014
 * Fixed the NEI intergration not working
 
 v1.6.0a - 10th February 2014
-Initial release updated from v1.5.1a
+Initial release, parent version v1.5.1a
 # Most text is now in the .lang files so other languages can edit them
 * Fixed crash on server (In first version of this version)
 * Fixed some small bugs on the way

@@ -1,10 +1,16 @@
 {
     "homepage": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287584",
 	    "promos": {
+		"1.9.4-latest": "v1.10.1c",
+        "1.9.4-recommended": "v1.10.1c",
         "1.10.2-latest": "v1.11.1c",
         "1.10.2-recommended": "v1.11.1c",
         "1.11.2-latest": "v1.12.1c",
         "1.11.2-recommended": "v1.12.1c"
+    },
+	"1.9.4": {
+		"v1.10.1c": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		
     },
     "1.10.2": {
         "v1.11.1a": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt",

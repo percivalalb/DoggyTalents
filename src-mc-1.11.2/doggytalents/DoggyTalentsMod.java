@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY)
 public class DoggyTalentsMod {
 
 	@Instance(value = Reference.MOD_ID)
@@ -59,7 +59,7 @@ public class DoggyTalentsMod {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ConfigurationHandler.loadConfig(new Configuration(event.getSuggestedConfigurationFile()));
+		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		ModBlocks.inti();
 		ModItems.inti();
@@ -148,7 +148,7 @@ public class DoggyTalentsMod {
 		
 		
 		AddonManager.registerAddons();
-		AddonManager.runRegisteredAddons(ConfigurationHandler.configuration);
+		AddonManager.runRegisteredAddons(ConfigurationHandler.config);
 		proxy.postInit();
 	}
 }

@@ -1,8 +1,8 @@
 tile.doggytalents.dogbed.name=Dog Bed
 tile.doggytalents.foodbowl.name=Food Bowl
 tile.doggytalents.dogbath.name=Dog Bath
-title.doggytalents.config.name=Doggy Talents Configurations
 
+title.doggytalents.config.name=Doggy Talents Configurations
 modgui.config.doggysettings=Doggy Settings
 modgui.config.doggysettings.tooltip=Here you can change details about your dog.
 modgui.config.general=General Settings

@@ -61,7 +61,7 @@ public class BedFinderHandler {
     	double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)particleTicks;
     	double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)particleTicks;
 
-    	RenderGlobal.func_189697_a(boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
+    	RenderGlobal.drawSelectionBoundingBox(boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.3F);
         GL11.glEnable(GL11.GL_DEPTH_TEST); //Make the line see thought blocks
         GL11.glDepthMask(true);

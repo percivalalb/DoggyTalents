@@ -21,20 +21,21 @@ public class ShepherdDog extends ITalent {
 			if(masterOrder == 3 && dog.getAttackTarget() != null) {
 	        	double d0 = dog.getDistanceSqToEntity(dog.getAttackTarget());
 	            if(d0 <= 4.0D) {
-	            	dog.mountTo(dog.getAttackTarget());
+	              	dog.getAttackTarget().mountEntity(dog);
 	            	dog.setAttackTarget(null);
 	            }
 	        }
 			
-			if(dog.isTamed() && masterOrder != 3 && dog.getControllingPassenger() instanceof EntityAnimal) {
-				dog.removePassengers();
+			if(dog.isTamed() && masterOrder != 3 && dog.riddenByEntity instanceof EntityAnimal) {
+				dog.riddenByEntity.ridingEntity = null;
+				dog.riddenByEntity = null;
 			}
 		}
 	}
 	
 	@Override
 	public int onHungerTick(EntityDog dog, int totalInTick) { 
-		if(dog.getControllingPassenger() != null && !dog.isControllingPassengerPlayer())
+		if(dog.riddenByEntity != null && !(dog.riddenByEntity instanceof EntityPlayer))
 			totalInTick += 5 - dog.talents.getLevel(this);
 		return totalInTick;
 	}

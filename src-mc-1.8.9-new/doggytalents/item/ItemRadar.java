@@ -6,16 +6,10 @@ import doggytalents.helper.ChatHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.stats.StatList;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapData;
 
@@ -30,7 +24,7 @@ public class ItemRadar extends ItemDT {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
 
 		if(!worldIn.isRemote)
 		for(Object entity : worldIn.loadedEntityList) {
@@ -56,6 +50,6 @@ public class ItemRadar extends ItemDT {
 				}
 			}
 		}
-    	return new ActionResult(EnumActionResult.FAIL, itemStackIn);
+    	return itemStackIn;
     }
 }

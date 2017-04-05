@@ -39,7 +39,7 @@ public class DogBedRegistry {
 	public void registerMaterial(Block block, String textureLocation) { this.registerMaterial(block, 0, textureLocation); }
 	
 	public void registerMaterial(String blockId, int meta, String textureLocation) {
-		if(!Block.REGISTRY.containsKey(new ResourceLocation(blockId)))
+		if(!Block.blockRegistry.containsKey(new ResourceLocation(blockId)))
 			LogHelper.warning("The block id %s does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);
@@ -50,7 +50,7 @@ public class DogBedRegistry {
 	}
 	
 	public void registerMaterial(Block block, int meta, String textureLocation) {
-		String blockId = ((ResourceLocation)Block.REGISTRY.getNameForObject(block)).toString();
+		String blockId = ((ResourceLocation)Block.blockRegistry.getNameForObject(block)).toString();
 		String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 		ItemStack stack = new ItemStack(block, 1, meta);
 		this.registerMaterial(blockId + "." + meta, lookupname, textureLocation, stack);

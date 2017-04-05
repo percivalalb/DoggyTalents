@@ -9,12 +9,10 @@ import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.block.BlockHorizontal;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,14 +22,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -45,34 +40,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockDogBed extends BlockContainer {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyString CASING = PropertyString.create("casing");
 	public static final PropertyString BEDDING = PropertyString.create("bedding");
 	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.6D, 1.0D);
 	
 	public BlockDogBed() {
-		super(Material.WOOD);
+		super(Material.wood);
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
-		this.setSoundType(SoundType.WOOD);
+		this.setStepSound(Block.soundTypeWood);
+		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.6F, 1.0F);
 		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 	
 	@Override
-    @SideOnly(Side.CLIENT)
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return AABB;
-	}
-	
-	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityDogBed();
-	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-	    return EnumBlockRenderType.MODEL;
 	}
 	
 	@Override
@@ -118,7 +103,7 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	protected BlockStateContainer createBlockState() {
+	protected BlockState createBlockState() {
 		return new ExtendedBlockState(this, new IProperty[] {FACING}, new IUnlistedProperty[] {CASING, BEDDING});
 	}
 	
@@ -143,14 +128,30 @@ public class BlockDogBed extends BlockContainer {
     }
 	
 	@Override
-	public boolean isFullCube(IBlockState state) {
-	    return false;
+	public boolean isOpaqueCube() {
+		return false;
 	}
-
+		
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
+	public boolean isFullBlock() {
+		return false;
+	}
+		
+	@Override
+	public boolean isFullCube() {
 	    return false;
 	}
+		
+	@Override
+	public int getRenderType() {
+		return 3;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer() {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 	
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -170,13 +171,7 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-	
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos) {
         TileEntity tile = world.getTileEntity(pos);
 		
 		if(!(tile instanceof TileEntityDogBed))
@@ -207,23 +202,13 @@ public class BlockDogBed extends BlockContainer {
 
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
+		return blockstate.getBlock().isSideSolid(world, pos.down(), EnumFacing.UP);
 	}
 	
 	@Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs creativeTab, List stackList) {
 		for(String casingId : DogBedRegistry.CASINGS.getKeys())
-			stackList.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
+			stackList.add(DogBedRegistry.createItemStack(casingId, Block.blockRegistry.getNameForObject(Blocks.wool) + ".0"));
     }
-	
-	@Override
-	public IBlockState withRotation(IBlockState state, Rotation rot) {
-		return state.withProperty(FACING, rot.rotate((EnumFacing)state.getValue(FACING)));
-	}
-
-	@Override
-	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
-		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
-	}
 }

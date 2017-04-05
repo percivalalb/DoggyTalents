@@ -12,11 +12,11 @@ public class WolfMount extends ITalent {
 
 	@Override
 	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) { 
-		if(player.getHeldItemMainhand() == null && dog.canInteract(player)) {
+		if(player.getHeldItem() == null && dog.canInteract(player)) {
         	if(dog.talents.getLevel(this) > 0 && !player.isRiding() && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.worldObj.isRemote) {
         			dog.getSitAI().setSitting(false);
-        			dog.mountTo(player);
+            		player.mountEntity(dog);
         		}
         		return true;
         	}
@@ -27,15 +27,15 @@ public class WolfMount extends ITalent {
 	
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
-		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.isBeingRidden()) {
+		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.riddenByEntity != null) {
 			ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
-			dog.removePassengers();
+			dog.riddenByEntity.mountEntity(null);
 		}	
 	}
 	
 	@Override
 	public int onHungerTick(EntityDog dog, int totalInTick) { 
-		if(dog.getLowestRidingEntity() instanceof EntityPlayer)
+		if(dog.riddenByEntity instanceof EntityPlayer)
 			if(dog.talents.getLevel(this) >= 5)
 				totalInTick += 1;
 			else

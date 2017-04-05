@@ -7,7 +7,6 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class EntityAIDogBeg extends EntityAIBase
@@ -73,21 +72,19 @@ public class EntityAIDogBeg extends EntityAIBase
      * Gets if the Player has the Bone in the hand.
      */
     private boolean hasPlayerGotBoneInHand(EntityPlayer player) {
-        for (EnumHand enumhand : EnumHand.values()) {
-            ItemStack itemstack = player.getHeldItem(enumhand);
+    	ItemStack itemstack = player.getHeldItem();
 
-            if (itemstack != null) {
+    	if (itemstack != null) {
         
-                if(DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
-                	return true;
+    		if(DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
+    			return true;
 
-                if(this.theDog.isBreedingItem(itemstack))
-                    return true;
+    		if(this.theDog.isBreedingItem(itemstack))
+    			return true;
                 
-                if(this.theDog.foodValue(itemstack) > 0)
-                    return true;
-            }
-        }
+    		if(this.theDog.foodValue(itemstack) > 0)
+    			return true;
+    	}
 
         return false;
     }

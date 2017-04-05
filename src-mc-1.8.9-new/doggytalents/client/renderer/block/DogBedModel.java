@@ -13,21 +13,23 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
-import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.client.model.ISmartBlockModel;
+import net.minecraftforge.client.model.ISmartItemModel;
+import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.FMLLog;
 
@@ -35,9 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class DogBedModel implements IPerspectiveAwareModel {
-	
-    public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
+public class DogBedModel implements IPerspectiveAwareModel, ISmartBlockModel, ISmartItemModel {
 	
     private IPerspectiveAwareModel variantModel;
     private IRetexturableModel baseModel;
@@ -82,27 +82,14 @@ public class DogBedModel implements IPerspectiveAwareModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-    	
-    	//Defaults
-        String casing = "minecraft:blocks/planks_oak";
-        String bedding = "minecraft:blocks/wool_colored_white";
-        EnumFacing facing = EnumFacing.NORTH;
-        
-        if(state instanceof IExtendedBlockState) {
-            IExtendedBlockState extendedState = (IExtendedBlockState)state;
- 
-            if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
-            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
+	public List<BakedQuad> getFaceQuads(EnumFacing side) {
+		return null;
+	}
 
-            if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
-            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
-            
-            facing = extendedState.getValue(BlockDogBed.FACING);
-        }
-
-        return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand);
-    }
+	@Override
+	public List<BakedQuad> getGeneralQuads() {
+		return null;
+	}
 
     @Override
     public boolean isAmbientOcclusion() {
@@ -128,14 +115,48 @@ public class DogBedModel implements IPerspectiveAwareModel {
     public ItemCameraTransforms getItemCameraTransforms() {
         return this.variantModel.getItemCameraTransforms();
     }
+    
+	@Override
+	public VertexFormat getFormat() {
+		return this.format;
+	}
 
     @Override
-    public ItemOverrideList getOverrides() {
-        return ITEM_OVERIDE;
+    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
+        return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
+    }
+    
+    @Override
+    public IBakedModel handleBlockState(IBlockState blockstate) {
+		String casing = "minecraft:blocks/planks_oak";
+        String bedding = "minecraft:blocks/wool_colored_white";
+        EnumFacing facing = EnumFacing.NORTH;
+        
+        if(blockstate instanceof IExtendedBlockState) {
+            IExtendedBlockState extendedState = (IExtendedBlockState)blockstate;
+ 
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
+            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
+
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
+            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
+            
+            facing = extendedState.getValue(BlockDogBed.FACING);
+        }
+    	
+    	return this.getCustomModel(casing, bedding, facing);
     }
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
+    public IBakedModel handleItemState(ItemStack stack) {
+    	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
+		    
+			String casingId = DogBedRegistry.CASINGS.getTexture(tag.getString("casingId"));
+			String beddingId = DogBedRegistry.BEDDINGS.getTexture(tag.getString("beddingId"));
+		    return this.getCustomModel(casingId, beddingId, null);
+    	}
+    	
+    	return this;
     }
 }

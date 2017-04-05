@@ -6,8 +6,6 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.SoundEvent;
 
 /**
  * @author ProPercivalalb
@@ -38,10 +36,10 @@ public class CreeperSweeper extends ITalent {
 	}
 	
 	@Override
-	public SoundEvent getLivingSound(EntityDog dog) { 
+	public String getLivingSound(EntityDog dog) { 
 		if((Boolean)dog.objects.get("canseecreeper"))
-			return SoundEvents.ENTITY_WOLF_GROWL;
-		return null;
+			return "mob.wolf.growl";
+		return "";
 	}
 	
 	@Override

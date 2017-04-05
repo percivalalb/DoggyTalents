@@ -4,12 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLLog;
@@ -24,26 +21,25 @@ public class BedFinderHandler {
 	public void onWorldRenderLast(RenderWorldLastEvent event) {
 		EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 		
-		for(Entity passenger : player.getPassengers()) {
-			if(passenger instanceof EntityDog) {
-				EntityDog dog = (EntityDog)passenger;
+		if(player.riddenByEntity instanceof EntityDog) {
+			EntityDog dog = (EntityDog)player.riddenByEntity;
+			FMLLog.info("Bed coords");
+			if(dog.coords.hasBedPos()) {
 				FMLLog.info("Bed coords");
-				if(dog.coords.hasBedPos()) {
-					FMLLog.info("Bed coords");
-					int level = dog.talents.getLevel("bedfinder");
-					double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.coords.getBedPos()));
-				    if(level == 5 || distance >= 0.0D) {
+				int level = dog.talents.getLevel("bedfinder");
+				double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.coords.getBedPos()));
+				if(level == 5 || distance >= 0.0D) {
 						
-						GL11.glPushMatrix();
+					GL11.glPushMatrix();
 						
-						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedPos()).expandXyz(0.5D);
-						//func_189697_a(iblockstate.getSelectedBoundingBox(this.theWorld, blockpos).expandXyz(0.0020000000949949026D).offset(-d0, -d1, -d2), 0.0F, 0.0F, 0.0F, 0.4F);
-						this.drawSelectionBox(player, event.getPartialTicks(), boundingBox);
-					    GL11.glPopMatrix();
-				    }
+					AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedPos(), dog.coords.getBedPos().add(1, 1, 1)).expand(0.5D, 0.5D, 0.5D);
+					//func_189697_a(iblockstate.getSelectedBoundingBox(this.theWorld, blockpos).expandXyz(0.0020000000949949026D).offset(-d0, -d1, -d2), 0.0F, 0.0F, 0.0F, 0.4F);
+					this.drawSelectionBox(player, event.partialTicks, boundingBox);
+					GL11.glPopMatrix();
 				}
 			}
 		}
+		
 	}
 	public void drawSelectionBox(EntityPlayer player, float particleTicks, AxisAlignedBB boundingBox) {
 		GL11.glDisable(GL11.GL_ALPHA_TEST);

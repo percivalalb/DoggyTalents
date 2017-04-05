@@ -14,19 +14,15 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,44 +33,43 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  **/
 public class BlockFoodBowl extends BlockContainer {
 	
-	protected static final net.minecraft.util.math.AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 1.0D - 0.0625D, 0.5D, 1.0D - 0.0625D);
-	
     public BlockFoodBowl() {
-        super(Material.IRON);
+        super(Material.iron);
         this.setHardness(5.0F);
         this.setTickRandomly(true);
         this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+        this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F - 0.0625F, 0.5F, 1.0F - 0.0625F);
 		this.setResistance(5.0F);
     }
     
-    @Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
-        return AABB;
-    }
-
 	@Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
-        return AABB.offset(pos);
-    }
-	
+	public boolean isOpaqueCube() {
+		return false;
+	}
+		
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isFullBlock() {
+		return false;
+	}
+		
+	@Override
+	public boolean isFullCube() {
 	    return false;
 	}
-
+		
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-	    return false;
+	public int getRenderType() {
+		return 3;
 	}
 	
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-	    return EnumBlockRenderType.MODEL;
-	}
+	@SideOnly(Side.CLIENT)
+    public EnumWorldBlockLayer getBlockLayer() {
+        return EnumWorldBlockLayer.CUTOUT;
+    }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (worldIn.isRemote) {
             return true;
         }
@@ -106,7 +101,7 @@ public class BlockFoodBowl extends BlockContainer {
             
 
             if(TileEntityHopper.putDropInInventoryAllSlots(foodBowl, entityItem)) {
-            	worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            	worldIn.playSoundEffect(pos.getX() + 0.5D, pos.getX() + 0.5D, pos.getZ() + 0.5D, "random.pop", 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         }
 
@@ -167,23 +162,17 @@ public class BlockFoodBowl extends BlockContainer {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(IBlockState state) {
-		return true;
-	}
+	public boolean hasComparatorInputOverride() {
+        return true;
+    }
 
 	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return Container.calcRedstone(worldIn.getTileEntity(pos));
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
+    public int getComparatorInputOverride(World worldIn, BlockPos pos) {
+        return Container.calcRedstone(worldIn.getTileEntity(pos));
     }
 
 	public boolean canBlockStay(IBlockAccess world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
+		return blockstate.getBlock().isSideSolid(world, pos.down(), EnumFacing.UP);
 	}
 }

@@ -1,28 +1,15 @@
 package doggytalents.item;
 
-import doggytalents.entity.EntityDog;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.tileentity.MobSpawnerBaseLogic;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
@@ -35,85 +22,45 @@ public class ItemDoggyCharm extends ItemDT {
     }
     
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote)
-            return EnumActionResult.SUCCESS;
-        else if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
-        {
-            return EnumActionResult.FAIL;
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if(worldIn.isRemote) {
+            return true;
         }
-        else
-        {
-            IBlockState iblockstate = worldIn.getBlockState(pos);
-
-
-            pos = pos.offset(facing);
-            double d0 = 0.0D;
-
-            if (facing == EnumFacing.UP && iblockstate.getBlock() instanceof BlockFence) //Forge: Fix Vanilla bug comparing state instead of block
-            {
-                d0 = 0.5D;
-            }
-
-            Entity entity = spawnCreature(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY() + d0, (double)pos.getZ() + 0.5D, playerIn);
-
-            if (entity != null)
-                if (!playerIn.capabilities.isCreativeMode)
-                    --stack.stackSize;
-           
-
-            return EnumActionResult.SUCCESS;
-        }
-    }
-    
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
-        if(worldIn.isRemote)
-            return new ActionResult(EnumActionResult.PASS, itemStackIn);
         else {
-            RayTraceResult raytraceresult = this.rayTrace(worldIn, playerIn, true);
+        	IBlockState blockstate = worldIn.getBlockState(pos);
+        	pos = pos.offset(side);
+            double yOffset = 0.0D;
 
-            if (raytraceresult != null && raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK) {
-                BlockPos blockpos = raytraceresult.getBlockPos();
+            if (side == EnumFacing.UP && blockstate.getBlock().getRenderType() == 11)
+            	yOffset = 0.5D;
 
-                if (!(worldIn.getBlockState(blockpos).getBlock() instanceof BlockLiquid))
-                    return new ActionResult(EnumActionResult.PASS, itemStackIn);
-                else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, raytraceresult.sideHit, itemStackIn)) {
-                    Entity entity = this.spawnCreature(worldIn, (double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D, playerIn);
+            if (spawnCreature(worldIn, (double)pos.getX() + 0.5D, (double)pos.getY() + yOffset, (double)pos.getZ() + 0.5D, player) != null && !player.capabilities.isCreativeMode)
+                --stack.stackSize;
 
-                    if (entity == null)
-                        return new ActionResult(EnumActionResult.PASS, itemStackIn);
-                    else {
-                        if (!playerIn.capabilities.isCreativeMode)
-                            --itemStackIn.stackSize;
-      
-
-                        playerIn.addStat(StatList.getObjectUseStats(this));
-                        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
-                    }
-                }
-                else
-                    return new ActionResult(EnumActionResult.FAIL, itemStackIn);
-            }
-            else
-                return new ActionResult(EnumActionResult.PASS, itemStackIn);
+            return true;
         }
     }
     
-    public Entity spawnCreature(World worldIn, double x, double y, double z, EntityPlayer playerIn) {
+    public static Entity spawnCreature(World par0World, double par2, double par4, double par6, EntityPlayer par7EntityPlayer) {
+    	EntityDog var8 = null;
 
-        EntityDog dog = new EntityDog(worldIn);
+        for (int var9 = 0; var9 < 1; ++var9) {
+            var8 = new EntityDog(par0World);
 
-        dog.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
-        dog.rotationYawHead = dog.rotationYaw;
-        dog.renderYawOffset = dog.rotationYaw;
-        dog.setTamed(true);
-        dog.updateEntityAttributes();
-        dog.setOwnerId(playerIn.getUniqueID());
-        worldIn.spawnEntityInWorld(dog);
-        dog.playLivingSound();
+            if (var8 != null && var8 instanceof EntityLiving) {
+            	EntityDog var10 = (EntityDog)var8;
+                var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
+                var10.rotationYawHead = var10.rotationYaw;
+                var10.renderYawOffset = var10.rotationYaw;
+                var10.setTamed(true);
+                var10.updateEntityAttributes();
+                var10.setOwnerId(par7EntityPlayer.getUniqueID().toString());
+                par0World.spawnEntityInWorld(var8);
+                var10.playLivingSound();
+            }
+        }
 
-        return dog;
+        return var8;
     }
         
 }

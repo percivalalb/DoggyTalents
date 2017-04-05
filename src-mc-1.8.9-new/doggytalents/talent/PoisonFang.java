@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -23,7 +22,7 @@ public class PoisonFang extends ITalent {
 		
 	    if (dog.isTamed()) {
 	    	if (stack != null) {
-	    		if(stack.getItem() == Items.SPIDER_EYE && !player.worldObj.isRemote && dog.getDogHunger() > 30) {
+	    		if(stack.getItem() == Items.spider_eye  && !player.worldObj.isRemote && dog.getDogHunger() > 30) {
 	    			player.clearActivePotions();
 	    			dog.setDogHunger(dog.getDogHunger() - 30);
                 	return true;
@@ -37,9 +36,9 @@ public class PoisonFang extends ITalent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
         if(dog.talents.getLevel(this) >= 3) {
-            Potion i = potionEffect.getPotion();
+            int i = potionEffect.getPotionID();
 
-            if (i.equals(MobEffects.POISON))
+            if (i == Potion.poison.id)
                 return false;
         }
         
@@ -51,7 +50,7 @@ public class PoisonFang extends ITalent {
 		int level = dog.talents.getLevel(this);
 		
 		if(entity instanceof EntityLivingBase && level > 0)
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, level * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.id, level * 20, 0));
 	    
 		return damage;
 	}

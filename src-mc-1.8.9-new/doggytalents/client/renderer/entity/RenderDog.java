@@ -10,7 +10,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -90,8 +90,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
     
     @Override
-    protected void renderEntityName(EntityDog dog, double x, double y, double z, String name, double distanceFromPlayer) {
-
+    protected void renderOffsetLivingLabel(EntityDog dog, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {
+ 
+    	
     	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	
     	String tip = dog.mode.getMode().getTip();
@@ -110,7 +111,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     		this.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
     	
     		if (distanceFromPlayer <= (double)(5 * 5)) {
-	    		if(this.renderManager.renderViewEntity.isSneaking()) {
+	    		if(this.renderManager.livingPlayer.isSneaking()) {
 	    			EntityLivingBase owner = dog.getOwner();
 	    			if(owner != null)
 	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), owner.getDisplayName().getUnformattedText(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
@@ -120,9 +121,8 @@ public class RenderDog extends RenderLiving<EntityDog> {
     		}
     	}
     		
-    	
+       	super.renderOffsetLivingLabel(dog, x, y - 0.2, z, displayName, scale, distanceFromPlayer);
 
-        super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
     }
     
     /**
@@ -163,7 +163,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     public static void renderLabelWithScale(FontRenderer fontRenderer, String str, float x, float y, float z, int p_189692_5_, float rotateX, float rotateY, boolean reverseRender, boolean depth, float scale) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, z);
-        GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-rotateX, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate((float)(reverseRender ? -1 : 1) * rotateY, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(-scale, -scale, scale);
@@ -174,16 +174,16 @@ public class RenderDog extends RenderLiving<EntityDog> {
             GlStateManager.disableDepth();
 
         GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         int i = fontRenderer.getStringWidth(str) / 2;
         GlStateManager.disableTexture2D();
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        vertexbuffer.pos((double)(-i - 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        vertexbuffer.pos((double)(-i - 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        vertexbuffer.pos((double)(i + 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        vertexbuffer.pos((double)(i + 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos((double)(-i - 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(-i - 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(i + 1), (double)(8 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos((double)(i + 1), (double)(-1 + p_189692_5_), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
 

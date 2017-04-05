@@ -14,7 +14,7 @@ public class DoggyDash extends ITalent {
 		double speed = 0.0D;
 		int level = dog.talents.getLevel(this);
 
-		if((!(dog.getAttackTarget() instanceof EntityDog) && !(dog.getAttackTarget() instanceof EntityPlayer)) || dog.getControllingPassenger() instanceof EntityPlayer)
+		if((!(dog.getAttackTarget() instanceof EntityDog) && !(dog.getAttackTarget() instanceof EntityPlayer)) || dog.riddenByEntity instanceof EntityPlayer)
 			if(level == 5)
 				speed += 0.04D;
 		

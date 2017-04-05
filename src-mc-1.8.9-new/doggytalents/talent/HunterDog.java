@@ -14,14 +14,14 @@ public class HunterDog extends ITalent {
 
 	@SubscribeEvent
 	public void onLootDrop(LivingDropsEvent event) {
-		Entity entity = event.getSource().getEntity();
+		Entity entity = event.source.getEntity();
 		if(entity instanceof EntityDog) {
 			EntityDog dog = (EntityDog)entity;
 			int level = dog.talents.getLevel(this);
 
 			if(dog.getRNG().nextInt(10) < level + (level == 5 ? 1 : 0)) {
-				for(EntityItem entityItem : event.getDrops())
-					event.getEntityLiving().entityDropItem(entityItem.getEntityItem().copy(), 0.0F);
+				for(EntityItem entityItem : event.drops)
+					event.entityLiving.entityDropItem(entityItem.getEntityItem().copy(), 0.0F);
 			}
 				
 		}

@@ -3,8 +3,8 @@ package doggytalents.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import doggytalents.api.inferface.ITalent;
 import net.minecraft.nbt.NBTTagCompound;
+import doggytalents.api.inferface.ITalent;
 
 /**
  * @author ProPercivalalb
@@ -26,11 +26,11 @@ public class TalentUtil {
     }
 
     public void readTalentsFromNBT(NBTTagCompound tagCompound) {
-    	this.dog.getDataManager().set(EntityDog.TALENTS, tagCompound.getString("talents"));
+    	this.dog.getDataWatcher().updateObject(22, tagCompound.getString("talents"));
     }
 	
 	public String getSaveString() {
-		String saveString = this.dog.getDataManager().get(EntityDog.TALENTS);
+		String saveString = this.dog.getDataWatcher().getWatchableObjectString(22);
 		return saveString == null ? "" : saveString;
 	}
 	
@@ -63,7 +63,7 @@ public class TalentUtil {
 	}
 	
 	public void setLevel(String id, int level) {
-		if(level == this.getLevel(id) && level > 5)
+		if(level == this.getLevel(id))
 			return;
 		
 		this.dataMap.put(id, level);
@@ -79,12 +79,12 @@ public class TalentUtil {
 			first = false;
 		}
 		
-		this.dog.getDataManager().set(EntityDog.TALENTS, saveString);
+		this.dog.getDataWatcher().updateObject(22, saveString);
 		this.dog.updateEntityAttributes();
 	}
 	
 	public void resetTalents() {
 		this.dataMap.clear();
-		this.dog.getDataManager().set(EntityDog.TALENTS, "");
+		this.dog.getDataWatcher().updateObject(22, "");
 	}
 }

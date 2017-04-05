@@ -25,9 +25,9 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.EnumChatFormatting;
 
 /**
  * @author ProPercivalalb
@@ -155,19 +155,19 @@ public class GuiDogInfo extends GuiScreen {
 	    		if(button.id >= 1 && button.id <= TalentRegistry.getTalents().size()) {
 	    			ITalent talent = TalentRegistry.getTalent(button.id - 1);
 	    			 
-			    	list.add(TextFormatting.GREEN + talent.getLocalisedName());
+			    	list.add(EnumChatFormatting.GREEN + talent.getLocalisedName());
 			    	list.add("Level: " + this.dog.talents.getLevel(talent));
-			    	list.add(TextFormatting.GRAY + "--------------------------------");
+			    	list.add(EnumChatFormatting.GRAY + "--------------------------------");
 		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRendererObj));
 	    		}
 	    		else if(button.id == -1) {
-	    			list.add(TextFormatting.ITALIC + "Previous Page");
+	    			list.add(EnumChatFormatting.ITALIC + "Previous Page");
 	    		}
 	    		else if(button.id == -2) {
-	    			list.add(TextFormatting.ITALIC + "Next Page");
+	    			list.add(EnumChatFormatting.ITALIC + "Next Page");
 	    		}
 	    		else if(button.id == -6) {
-    				String str = I18n.translateToLocal("doggui.modeinfo." + button.displayString.toLowerCase());
+    				String str = I18n.format("doggui.modeinfo." + button.displayString.toLowerCase());
     				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
     			}
 	    		

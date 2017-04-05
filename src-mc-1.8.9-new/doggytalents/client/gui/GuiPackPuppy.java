@@ -8,9 +8,9 @@ import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.lib.ResourceReference;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.MathHelper;
 
 /**
  * @author ProPercivalalb
@@ -31,7 +31,7 @@ public class GuiPackPuppy extends GuiContainer {
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	String s = this.inventory.getDisplayName().getUnformattedText();
         this.fontRendererObj.drawString(s, this.xSize / 2 - 10, 14, 4210752);
-        this.fontRendererObj.drawString(I18n.translateToLocal("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
     }
     
     @Override

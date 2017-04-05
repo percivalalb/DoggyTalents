@@ -8,10 +8,10 @@ import doggytalents.network.packet.client.DogBedUpdateMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
@@ -34,11 +34,10 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
     }
 
 	@Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setString("casingId", this.casingId);
 		tag.setString("beddingId", this.beddingId);
-		return tag;
 	}
 	
 	@Override
@@ -62,26 +61,9 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 	}
 	
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
-	}
-	
-	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
-		super.handleUpdateTag(tag);
-	}
-
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
-	}
+    public Packet getDescriptionPacket() {
+		return PacketDispatcher.getPacket(new DogBedUpdateMessage(this.pos, this.casingId, this.beddingId));
+    }
 
 	public void setCasingId(String newId) {
 		this.casingId = newId;

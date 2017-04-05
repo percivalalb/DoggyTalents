@@ -26,7 +26,6 @@ import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
 import jline.internal.Nullable;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -34,7 +33,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -57,8 +56,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFood;
@@ -66,22 +63,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -89,21 +79,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  */
 public class EntityDog extends EntityTameable {
-	
-	public static final DataParameter<Float> DATA_HEALTH_ID = EntityDataManager.<Float>createKey(EntityDog.class, DataSerializers.FLOAT);
-	public static final DataParameter<Boolean> BEGGING = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
-	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<String> DOG_NAME = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
-	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
-	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	
 	
     /**
     this.dataWatcher.addObject(20, new Byte((byte)0)); //Dog Texture
@@ -152,17 +127,17 @@ public class EntityDog extends EntityTameable {
         super(word);
         this.objects = new HashMap<String, Object>();
         this.setSize(0.6F, 0.85F);
+        this.initEntityAI();
         
         TalentHelper.onClassCreation(this);
     }
     
-    @Override
     protected void initEntityAI() {
         this.aiSit = new EntityAISit(this);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, true));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, this.aiFetchBone = new EntityAIFetchBone(this, 1.0D, 0.5F, 20.0F));
         this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
@@ -189,15 +164,15 @@ public class EntityDog extends EntityTameable {
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
         this.updateEntityAttributes();
     }
     
     public void updateEntityAttributes() {
     	if (this.isTamed())
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D + (this.effectiveLevel() + 1.0D));
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D + (this.effectiveLevel() + 1.0D));
         else
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
     }
     
     @Override
@@ -213,11 +188,6 @@ public class EntityDog extends EntityTameable {
     public boolean getAlwaysRenderNameTagForRender() {
         return true;
     }
-
-    @Override
-    protected void updateAITasks() {
-        this.dataManager.set(DATA_HEALTH_ID, Float.valueOf(this.getHealth()));
-    }
     
     @Override
     protected void entityInit() {
@@ -227,19 +197,16 @@ public class EntityDog extends EntityTameable {
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
-        this.dataManager.register(DATA_HEALTH_ID, Float.valueOf(this.getHealth()));
-        this.dataManager.register(BEGGING, Boolean.valueOf(false));
-        this.dataManager.register(DOG_TEXTURE, Byte.valueOf((byte)0));
-        this.dataManager.register(DOG_NAME, "");
-        this.dataManager.register(TALENTS, "");
-        this.dataManager.register(HUNGER, Integer.valueOf(60));
-        this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
-        this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
-        this.dataManager.register(MODE, Integer.valueOf(0));
-        this.dataManager.register(LEVEL, Integer.valueOf(0));
-        this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
-        this.dataManager.register(BOWL_POS, Optional.absent());
-        this.dataManager.register(BED_POS, Optional.absent());
+        this.dataWatcher.addObject(19, new Byte((byte)0)); //Begging
+        this.dataWatcher.addObject(20, new Byte((byte)0)); //Dog Texture
+        this.dataWatcher.addObject(21, new String("")); //Dog Name
+        this.dataWatcher.addObject(22, new String("")); //Talent Data
+        this.dataWatcher.addObject(23, new Integer(60)); //Dog Hunger
+        this.dataWatcher.addObject(24, new String("0:0")); //Level Data
+        this.dataWatcher.addObject(25, new Integer(0)); //Radio Collar
+        this.dataWatcher.addObject(26, new Integer(0)); //Obey Others
+        this.dataWatcher.addObject(27, new Integer(0)); //Dog Mode
+        this.dataWatcher.addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
         /**
         
         this.dataWatcher.addObject(20, new Byte((byte)0)); //Dog Texture
@@ -255,7 +222,7 @@ public class EntityDog extends EntityTameable {
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
+    	this.playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
     @Override
@@ -295,31 +262,26 @@ public class EntityDog extends EntityTameable {
     }
     
     @Override
-    protected SoundEvent getAmbientSound() {
-    	SoundEvent sound = TalentHelper.getLivingSound(this);
-    	if(sound != null)
+    protected String getLivingSound() {
+    	String sound = TalentHelper.getLivingSound(this);
+    	if(!"".equals(sound))
     		return sound;
-        return (this.rand.nextInt(3) == 0 ? (this.isTamed() && ((Float)this.dataManager.get(DATA_HEALTH_ID)).floatValue() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT);
+    	return this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? "mob.wolf.whine" : "mob.wolf.panting") : "mob.wolf.bark";
     }
 
     @Override
-    protected SoundEvent getHurtSound() {
-        return SoundEvents.ENTITY_WOLF_HURT;
+    protected String getHurtSound() {
+        return "mob.wolf.hurt";
     }
 
     @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_WOLF_DEATH;
+    protected String getDeathSound() {
+        return "mob.wolf.death";
     }
 
     @Override
     public float getSoundVolume() {
         return 0.4F;
-    }
-
-    @Nullable
-    protected ResourceLocation getLootTable() {
-        return LootTableList.ENTITIES_WOLF; //TODO DOG Loot
     }
     
     public EntityAISit getSitAI() {
@@ -340,7 +302,7 @@ public class EntityDog extends EntityTameable {
         if(Constants.IS_HUNGER_ON) {
         	this.prevHungerTick = this.hungerTick;
         	
-	        if(!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
+	        if(this.riddenByEntity == null && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
 	        	this.hungerTick += 1;
 	        
 	        this.hungerTick += TalentHelper.onHungerTick(this, this.hungerTick - this.prevHungerTick);
@@ -406,9 +368,10 @@ public class EntityDog extends EntityTameable {
         	this.reversionTime -= 1;
         
         //Remove dog from players head if sneaking
-        if(this.getRidingEntity() instanceof EntityPlayer)
-        	if(this.getRidingEntity().isSneaking())
-        		this.dismountRidingEntity();
+        if(this.ridingEntity instanceof EntityPlayer)
+        	if(this.ridingEntity.isSneaking()) {
+        		this.mountEntity(null);
+        	}
         
         TalentHelper.onLivingUpdate(this);
     }
@@ -432,7 +395,7 @@ public class EntityDog extends EntityTameable {
         else if((this.isWet || this.isShaking) && this.isShaking) {
         	
         	if (this.timeWolfIsShaking == 0.0F)
-                this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        		this.playSound("mob.wolf.shake", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 
         	this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
             this.timeWolfIsShaking += 0.05F;
@@ -441,12 +404,12 @@ public class EntityDog extends EntityTameable {
             	if(this.rand.nextInt(15) < this.talents.getLevel("fisherdog") * 2) {
                     if(this.rand.nextInt(15) < this.talents.getLevel("hellhound") * 2) {
                     	if(!this.worldObj.isRemote) {
-                    		dropItem(Items.COOKED_FISH, 1);
+                    		dropItem(Items.cooked_fish, 1);
                     	}
                     }
                     else {
                     	if(!this.worldObj.isRemote) {
-                    		dropItem(Items.FISH, 1);
+                    		dropItem(Items.fish, 1);
                     	}
                     }
                 }
@@ -487,7 +450,7 @@ public class EntityDog extends EntityTameable {
         {
         	if (this.timeWolfIsHappy % 1.0F == 0.0F)
         	{
-        		this.playSound(SoundEvents.ENTITY_WOLF_PANT, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        		this.worldObj.playSoundAtEntity(this, "mob.wolf.panting", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
         	}
         	this.prevTimeWolfIsHappy = this.timeWolfIsHappy;
         	this.timeWolfIsHappy += 0.05F;
@@ -518,20 +481,10 @@ public class EntityDog extends EntityTameable {
         TalentHelper.onUpdate(this);
     }
     
-    @Nullable
-    @Override
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
-    }
-    
-    public boolean isControllingPassengerPlayer() {
-        return this.getControllingPassenger() instanceof EntityPlayer;
-    }
-    
     @Override
     public void moveEntityWithHeading(float strafe, float forward) {
-        if(this.isControllingPassengerPlayer()) {
-        	 EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
+        if(this.riddenByEntity instanceof EntityPlayer) {
+        	 EntityLivingBase entitylivingbase = (EntityLivingBase)this.riddenByEntity;
              this.rotationYaw = entitylivingbase.rotationYaw;
              this.prevRotationYaw = this.rotationYaw;
              this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
@@ -556,7 +509,7 @@ public class EntityDog extends EntityTameable {
             this.stepHeight = 1.0F;
             this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
 
-            if (this.canPassengerSteer())
+            if (!this.worldObj.isRemote)
             {
             	this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
                 super.moveEntityWithHeading(strafe, forward);
@@ -592,7 +545,7 @@ public class EntityDog extends EntityTameable {
     	
     	speed += TalentHelper.addToMoveSpeed(this);
     	
-    	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.isControllingPassengerPlayer())
+    	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.riddenByEntity instanceof EntityPlayer)
     		if (this.levels.isDireDog())
     			speed += 0.05D;
     	
@@ -656,25 +609,24 @@ public class EntityDog extends EntityTameable {
         if (ret == null) return;
         distance = ret[0]; damageMultiplier = ret[1];
         
-        if(this.isBeingRidden())
-        	 for (Entity entity : this.getPassengers())
-                 entity.fall(distance, damageMultiplier);
+        if (this.riddenByEntity != null)
+            this.riddenByEntity.fall(distance, damageMultiplier);
         
-        PotionEffect potioneffect = this.getActivePotionEffect(MobEffects.JUMP_BOOST);
+        PotionEffect potioneffect = this.getActivePotionEffect(Potion.jump);
         float f2 = potioneffect != null ? (float)(potioneffect.getAmplifier() + 1) : 0.0F;
         int i = MathHelper.ceiling_float_int(((distance - 3.0F - f2) - TalentHelper.fallProtection(this)) * damageMultiplier);
 
         if (i > 0 && !TalentHelper.isImmuneToFalls(this)) {
-        	this.playSound(this.getFallSound(i), 1.0F, 1.0F);
+            this.playSound(this.getFallSoundString(i), 1.0F, 1.0F);
             this.attackEntityFrom(DamageSource.fall, (float)i);
             int j = MathHelper.floor_double(this.posX);
             int k = MathHelper.floor_double(this.posY - 0.20000000298023224D);
             int l = MathHelper.floor_double(this.posZ);
-            IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(j, k, l));
+            Block block = this.worldObj.getBlockState(new BlockPos(j, k, l)).getBlock();
 
-            if(iblockstate.getMaterial() != Material.AIR) {
-            	SoundType soundtype = iblockstate.getBlock().getSoundType();
-                this.playSound(soundtype.getFallSound(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
+            if (block.getMaterial() != Material.air) {
+                Block.SoundType soundtype = block.stepSound;
+                this.playSound(soundtype.getStepSound(), soundtype.getVolume() * 0.5F, soundtype.getFrequency() * 0.75F);
             }
         }
     }
@@ -717,22 +669,15 @@ public class EntityDog extends EntityTameable {
         super.setTamed(p_70903_1_);
 
         if (p_70903_1_)
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
         else
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-    }
-
-    public void mountTo(EntityLivingBase entityLiving) {
-        entityLiving.rotationYaw = this.rotationYaw;
-        entityLiving.rotationPitch = this.rotationPitch;
-
-        if(!this.worldObj.isRemote)
-            entityLiving.startRiding(this);
+            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(8.0D);
     }
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack) {
-
+    public boolean interact(EntityPlayer player) {
+    	ItemStack stack = player.getHeldItem();
+    	
         if(TalentHelper.interactWithPlayer(this, player))
         	return true;
         
@@ -747,18 +692,15 @@ public class EntityDog extends EntityTameable {
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     return true;
                 }
-            	else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
-            		//if (!this.worldObj.isRemote) {
-                       // if(this.isRiding())
-                        //	this.dismountEntity(player);
-                      	//else
-                        	 this.startRiding(player);
+            	else if(stack.getItem() == Items.bone && this.canInteract(player)) {
+            
+            		this.mountEntity(player);
                         	 if(this.aiSit != null)
                         		 this.aiSit.setSitting(true);
                     //}
                     return true;
                 }
-            	else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
+            	else if(stack.getItem() == Items.stick && this.canInteract(player) && !this.isIncapacicated()) {
             		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.worldObj, this.getEntityId(), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
                  	return true;
                 }
@@ -781,7 +723,7 @@ public class EntityDog extends EntityTameable {
                         this.setSitting(false);
                         this.setHealth(8);
                         this.talents.resetTalents();
-                        this.setOwnerId(null);
+                        this.setOwnerId("");
                         this.setWillObeyOthers(false);
                         this.mode.setMode(EnumMode.DOCILE);
                         if(this.hasRadarCollar())
@@ -792,7 +734,7 @@ public class EntityDog extends EntityTameable {
 
                 	return true;
                 }
-                else if(stack.getItem() == Items.CAKE && this.canInteract(player) && this.isIncapacicated()) {
+                else if(stack.getItem() == Items.cake && this.canInteract(player) && this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
                         player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                  	
@@ -824,7 +766,7 @@ public class EntityDog extends EntityTameable {
             this.worldObj.spawnEntityInWorld(wolf);
             return true;
         }
-        else if(stack != null && stack.getItem() == Items.BONE) {
+        else if(stack != null && stack.getItem() == Items.bone) {
         	if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
 
@@ -835,7 +777,7 @@ public class EntityDog extends EntityTameable {
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
-                    this.setOwnerId(player.getUniqueID());
+                    this.setOwnerId(player.getUniqueID().toString());
                     this.playTameEffect(true);
                     this.worldObj.setEntityState(this, (byte)7);
                 }
@@ -848,7 +790,7 @@ public class EntityDog extends EntityTameable {
             return true;
         }
 
-        return super.processInteract(player, hand, stack);
+        return super.interact(player);
     }
     
     @Override
@@ -858,7 +800,7 @@ public class EntityDog extends EntityTameable {
 
     @Override
     public double getYOffset() {
-        return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
+        return this.ridingEntity instanceof EntityPlayer ? 0.5D : 0.0D;
     }
     
     @Override
@@ -886,7 +828,7 @@ public class EntityDog extends EntityTameable {
     	
     	Item item = stack.getItem();
     	
-        if(stack.getItem() != Items.ROTTEN_FLESH && item instanceof ItemFood) {
+        if(stack.getItem() != Items.rotten_flesh && item instanceof ItemFood) {
             ItemFood itemfood = (ItemFood)item;
 
             if (itemfood.isWolfsFavoriteMeat())
@@ -913,7 +855,7 @@ public class EntityDog extends EntityTameable {
             if (itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
                 order = 2;
 
-            if (itemstack != null && itemstack.getItem() == Items.WHEAT)
+            if (itemstack != null && itemstack.getItem() == Items.wheat)
                 order = 3;
         }
 
@@ -994,27 +936,27 @@ public class EntityDog extends EntityTameable {
     }
 
     public int getTameSkin() {
-    	 return this.dataManager.get(DOG_TEXTURE);
+        return this.dataWatcher.getWatchableObjectByte(20);
     }
 
     public void setTameSkin(int index) {
-    	this.dataManager.set(DOG_TEXTURE, (byte)index);
+        this.dataWatcher.updateObject(20, Byte.valueOf((byte)index));
     }
     
     public String getDogName() {
-        return this.dataManager.get(DOG_NAME);
+        return this.dataWatcher.getWatchableObjectString(21);
     }
     
     public void setDogName(String var1) {
-    	this.dataManager.set(DOG_NAME, var1);
+       this.dataWatcher.updateObject(21, var1);
     }
     
     public void setWillObeyOthers(boolean flag) {
-    	this.dataManager.set(OBEY_OTHERS, flag);
+    	this.dataWatcher.updateObject(26, flag ? 1 : 0);
     }
     
     public boolean willObeyOthers() {
-    	return this.dataManager.get(OBEY_OTHERS);
+    	return this.dataWatcher.getWatchableObjectInt(26) != 0;
     }
     
     public int points() {
@@ -1045,41 +987,41 @@ public class EntityDog extends EntityTameable {
     
     @Override
     public EntityDog createChild(EntityAgeable entityAgeable) {
-    	EntityDog entitydog = new EntityDog(this.worldObj);
-        UUID uuid = this.getOwnerId();
+        EntityDog entitydog = new EntityDog(this.worldObj);
+        String uuid = this.getOwnerId();
 
-        if (uuid != null) {
+        if (uuid != null && uuid.trim().length() > 0) {
             entitydog.setOwnerId(uuid);
             entitydog.setTamed(true);
         }
-         
+        
         entitydog.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
 
         return entitydog;
     }
 
-    public boolean isBegging() {
-        return ((Boolean)this.dataManager.get(BEGGING)).booleanValue();
+    public void setBegging(boolean flag) {
+    	this.dataWatcher.updateObject(19, Byte.valueOf((byte)(flag ? 1 : 0)));
     }
-    
-    public void setBegging(boolean beg) {
-        this.dataManager.set(BEGGING, Boolean.valueOf(beg));
+
+    public boolean isBegging() {
+        return this.dataWatcher.getWatchableObjectByte(19) == 1;
     }
     
     public int getDogHunger() {
-		return ((Integer)this.dataManager.get(HUNGER)).intValue();
+		return this.dataWatcher.getWatchableObjectInt(23);
 	}
     
     public void setDogHunger(int par1) {
-    	this.dataManager.set(HUNGER, Integer.valueOf(par1));
+    	this.dataWatcher.updateObject(23, MathHelper.clamp_int(par1, 0, 120));
     }
     
     public void hasRadarCollar(boolean flag) {
-    	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
+    	this.dataWatcher.updateObject(25, flag ? 1 : 0);
     }
     
     public boolean hasRadarCollar() {
-    	return ((Boolean)this.dataManager.get(RADAR_COLLAR)).booleanValue();
+    	return this.dataWatcher.getWatchableObjectInt(25) != 0;
     }
     
     public void setHasBone(boolean hasBone) {
@@ -1153,16 +1095,6 @@ public class EntityDog extends EntityTameable {
     		
 		return super.shouldDismountInWater(rider);
 	}
-    
-    @Override
-    public void updatePassenger(Entity passenger){
-        super.updatePassenger(passenger);
-
-        if(passenger instanceof EntityLiving) {
-            EntityLiving entityliving = (EntityLiving)passenger;
-            this.renderYawOffset = entityliving.renderYawOffset;
-        }
-    }
     
     @Override
     public boolean canBeSteered() {

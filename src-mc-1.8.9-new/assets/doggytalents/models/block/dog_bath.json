@@ -1,5 +1,4 @@
 {
-	"parent": "block/block",
     "textures": {
         "particle": "blocks/iron_block",
         "water": "blocks/water_still",

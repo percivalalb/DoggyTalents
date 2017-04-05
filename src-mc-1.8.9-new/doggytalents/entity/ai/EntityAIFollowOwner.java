@@ -2,6 +2,7 @@ package doggytalents.entity.ai;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,9 +11,10 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIBase
@@ -25,7 +27,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     private int timeToRecalcPath;
     float maxDist;
     float minDist;
-    private float oldWaterCost;
+    private boolean preShouldAvoidWater;
 
     public EntityAIFollowOwner(EntityDog thePetIn, double followSpeedIn, float minDistIn, float maxDistIn)
     {
@@ -46,6 +48,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     /**
      * Returns whether the EntityAIBase should begin execution.
      */
+    @Override
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.theDog.getOwner();
@@ -70,6 +73,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
+    @Override
     public boolean continueExecuting()
     {
         return !this.petPathfinder.noPath() && this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist) && !this.theDog.isSitting();
@@ -78,32 +82,43 @@ public class EntityAIFollowOwner extends EntityAIBase
     /**
      * Execute a one shot task or start executing a continuous task
      */
+    @Override
     public void startExecuting()
     {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.theDog.getPathPriority(PathNodeType.WATER);
-        this.theDog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.preShouldAvoidWater = ((PathNavigateGround)this.theDog.getNavigator()).getAvoidsWater();
+        ((PathNavigateGround)this.theDog.getNavigator()).setAvoidsWater(false);
     }
 
     /**
      * Resets the task
      */
+    @Override
     public void resetTask()
     {
         this.theOwner = null;
         this.petPathfinder.clearPathEntity();
-        this.theDog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        ((PathNavigateGround)this.theDog.getNavigator()).setAvoidsWater(this.preShouldAvoidWater);
     }
 
     private boolean isEmptyBlock(BlockPos pos)
     {
         IBlockState iblockstate = this.theWorld.getBlockState(pos);
-        return iblockstate.getMaterial() == Material.AIR ? true : !iblockstate.isFullCube();
+        Block block = iblockstate.getBlock();
+        return block.getMaterial() == Material.air ? true : !block.isFullCube();
+    }
+    
+    public static boolean doesBlockHaveSolidTopSurface(IBlockAccess blockAccess, BlockPos pos)
+    {
+        IBlockState iblockstate = blockAccess.getBlockState(pos);
+        Block block = iblockstate.getBlock();
+        return block.isSideSolid(blockAccess, pos, EnumFacing.UP);
     }
 
     /**
      * Updates the task
      */
+    @Override
     public void updateTask()
     {
         this.theDog.getLookHelper().setLookPositionWithEntity(this.theOwner, 10.0F, (float)this.theDog.getVerticalFaceSpeed());
@@ -128,7 +143,7 @@ public class EntityAIFollowOwner extends EntityAIBase
                             {
                                 for (int i1 = 0; i1 <= 4; ++i1)
                                 {
-                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.theWorld.getBlockState(new BlockPos(i + l, k - 1, j + i1)).isFullyOpaque() && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
+                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && doesBlockHaveSolidTopSurface(this.theWorld, new BlockPos(i + l, k - 1, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
                                     {
                                         this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
                                         this.petPathfinder.clearPathEntity();

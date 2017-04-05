@@ -54,9 +54,4 @@ public class ClientHandler {
      
 
 	}
-	
-	@SubscribeEvent
-    public void onChange(OnConfigChangedEvent event) {
-    	FMLLog.info("Change " + event.getModID() + " " + event.getConfigID());
-    }
 }

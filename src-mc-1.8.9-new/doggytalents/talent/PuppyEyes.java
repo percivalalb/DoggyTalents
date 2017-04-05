@@ -55,7 +55,7 @@ public class PuppyEyes extends ITalent {
 	            {
 	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.1.part1"));
 	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.1.part2"));
-	                entityliving.dropItem(Items.PORKCHOP, 2);
+	                entityliving.dropItem(Items.porkchop, 2);
 	            }
 
 	            if(j1 == 1)
@@ -63,7 +63,7 @@ public class PuppyEyes extends ITalent {
 	              	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part1"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part2"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part3"));
-	                entityliving.dropItem(Items.PORKCHOP, 5);
+	                entityliving.dropItem(Items.porkchop, 5);
 	            }
 
 	            if(j1 == 2)
@@ -71,7 +71,7 @@ public class PuppyEyes extends ITalent {
 	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part1"));
 	                player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part2"));
 	                player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part3"));
-	                entityliving.dropItem(Items.IRON_INGOT, 3);
+	                entityliving.dropItem(Items.iron_ingot, 3);
 	            }
 
 	            if(j1 == 3)
@@ -79,7 +79,7 @@ public class PuppyEyes extends ITalent {
 	             	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part1"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part2"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part3"));
-	                entityliving.dropItem(Items.GOLD_INGOT, 2);
+	                entityliving.dropItem(Items.gold_ingot, 2);
 	            }
 
 	            if(j1 == 4)
@@ -87,7 +87,7 @@ public class PuppyEyes extends ITalent {
 	             	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part1"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part2"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part3"));
-	                entityliving.dropItem(Items.DIAMOND, 1);
+	                entityliving.dropItem(Items.diamond, 1);
 	            }
 
 	            if(j1 == 5)
@@ -95,10 +95,10 @@ public class PuppyEyes extends ITalent {
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part1"));
 	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part2"));
 	              	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part3"));
-	                entityliving.dropItem(Items.APPLE, 1);
-	                entityliving.dropItem(Items.CAKE, 1);
-	                entityliving.dropItem(Items.SLIME_BALL, 3);
-	                entityliving.dropItem(Items.PORKCHOP, 5);
+	                entityliving.dropItem(Items.apple, 1);
+	                entityliving.dropItem(Items.cake, 1);
+	                entityliving.dropItem(Items.slime_ball, 3);
+	                entityliving.dropItem(Items.porkchop, 5);
 	            }
 
 	            dog.objects.put("charmercharge", level != 5 ? 48000 : 24000);

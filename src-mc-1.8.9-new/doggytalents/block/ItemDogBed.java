@@ -4,12 +4,12 @@ import java.util.List;
 
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -32,14 +32,14 @@ public class ItemDogBed extends ItemBlock {
 		    String beddingId = tag.getString("beddingId");
 		    
 		    if(DogBedRegistry.CASINGS.isValidId(casingId))
-		    	toolTipList.add(I18n.translateToLocal(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
+		    	toolTipList.add(I18n.format(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
 		    else
-		    	toolTipList.add(TextFormatting.RED + I18n.translateToLocal("dogBed.woodError"));
+		    	toolTipList.add(EnumChatFormatting.RED + I18n.format("dogBed.woodError"));
 		    	
 		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-		    	toolTipList.add(I18n.translateToLocal(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
+		    	toolTipList.add(I18n.format(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
 		    else
-		    	toolTipList.add(TextFormatting.RED + I18n.translateToLocal("dogBed.woolError"));
+		    	toolTipList.add(EnumChatFormatting.RED + I18n.format("dogBed.woolError"));
 		}
 	}
 

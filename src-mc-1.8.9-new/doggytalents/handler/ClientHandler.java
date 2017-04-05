@@ -1,11 +1,12 @@
 package doggytalents.handler;
+
 import doggytalents.client.renderer.block.DogBedModel;
 import doggytalents.helper.LogHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -33,13 +34,13 @@ public class ClientHandler {
 		    	ModelResourceLocation modelVariantLocation = new ModelResourceLocation("doggytalents:dog_bed", thing);
 
 		        if(baseModel instanceof IRetexturableModel) {
-		        	IBakedModel variantModel = event.getModelRegistry().getObject(modelVariantLocation);
+		        	IBakedModel variantModel = event.modelRegistry.getObject(modelVariantLocation);
 
 		        	if(variantModel instanceof IPerspectiveAwareModel) {
 
 		        		IBakedModel customModel = new DogBedModel((IPerspectiveAwareModel)variantModel, (IRetexturableModel)baseModel, DefaultVertexFormats.BLOCK);
 
-		        		event.getModelRegistry().putObject(modelVariantLocation, customModel);
+		        		event.modelRegistry.putObject(modelVariantLocation, customModel);
 		        	}
 		        }
 		    }
@@ -51,12 +52,6 @@ public class ClientHandler {
 	
 	@SubscribeEvent
 	public void registerTextures(TextureStitchEvent.Pre event) {
-     
 
 	}
-	
-	@SubscribeEvent
-    public void onChange(OnConfigChangedEvent event) {
-    	FMLLog.info("Change " + event.getModID() + " " + event.getConfigID());
-    }
 }

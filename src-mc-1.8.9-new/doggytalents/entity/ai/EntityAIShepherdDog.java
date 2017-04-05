@@ -21,7 +21,7 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 	@Override
 	public boolean shouldExecute() {
 		int order = dog.masterOrder();
-        return order == 3 && this.dog.mode.isMode(EnumMode.DOCILE) && this.dog.isTamed() && !this.dog.isBeingRidden() && this.dog.talents.getLevel("shepherddog") > 0 && super.shouldExecute();
+        return order == 3 && this.dog.mode.isMode(EnumMode.DOCILE) && this.dog.isTamed() && this.dog.riddenByEntity == null && this.dog.talents.getLevel("shepherddog") > 0 && super.shouldExecute();
     }
 	
 	@Override

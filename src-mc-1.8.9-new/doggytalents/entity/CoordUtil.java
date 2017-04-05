@@ -1,9 +1,7 @@
 package doggytalents.entity;
 
-import com.google.common.base.Optional;
-
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 
 /**
  * @author ProPercivalalb
@@ -16,62 +14,135 @@ public class CoordUtil {
 		this.dog = dog;
 	}
 	
-	public boolean hasBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).isPresent();
+	public int getBedX() {
+		try{return new Integer(this.getSkillsLevels()[0]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
 	}
 	
-	public boolean hasBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).isPresent();
+	public int getBedY() {
+		try{return new Integer(this.getSkillsLevels()[1]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
 	}
 	
-	public BlockPos getBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).get();
+	public int getBedZ() {
+		try{return new Integer(this.getSkillsLevels()[2]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
 	}
 	
-	public BlockPos getBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).get();
+	public int getBowlX() {
+		try{return new Integer(this.getSkillsLevels()[3]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	public int getBowlY() {
+		try{return new Integer(this.getSkillsLevels()[4]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	public int getBowlZ() {
+		try{return new Integer(this.getSkillsLevels()[5]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
 	}
 
 	public void resetBedPosition() {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.absent());
+		this.dog.getDataWatcher().updateObject(28, this.getDefaultStr());
+	}
+	
+	public String getDefaultStr() {
+		return "-1:-1:-1:-1:-1:-1";
+	}
+	
+	public void setBedX(int position) {
+		String structure = "";
+		structure = position + ":" + getBedY() + ":" + getBedZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	public void setBedY(int position) {
+		String structure = "";
+		structure = getBedX() + ":" +  position + ":" + getBedZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	public void setBedZ(int position) {
+		String structure = "";
+		structure = getBedX() + ":" + getBedY() + ":" + position + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
 	}
 	
 	public void setBedPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
+		String structure = "";
+		structure = pos.getX() + ":" + pos.getY() + ":" + pos.getZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	public boolean hasBedPos() {
+		return this.getBedY() != -1;
+	}
+	
+	public BlockPos getBedPos() {
+		return new BlockPos(this.getBedX(), this.getBedY(), this.getBedZ());
+	}
+	
+	public void setBowlX(int position) {
+		String structure = "";
+		structure = getBedX() + ":" + getBedY() + ":" + getBedZ() + ":" + position+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	public void setBowlY(int position) {
+		String structure = "";
+		structure = getBedX() + ":" +  getBedY() + ":" + getBedZ() + ":" + getBowlX()+ ":" + position + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	public void setBowlZ(int position) {
+		String structure = "";
+		structure = getBedX() + ":" + getBedY() + ":" + getBedZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + position;
+		this.dog.getDataWatcher().updateObject(28, structure);
 	}
 	
 	public void setBowlPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
+		String structure = "";
+		structure = getBedX() + ":" + getBedY() + ":" + getBedZ() + ":" + pos.getX() + ":" + pos.getY() + ":" + pos.getZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
 	}
-
+	
+	public boolean hasBowlPos() {
+		return this.getBowlY() != -1;
+	}
+	
+	public BlockPos getBowlPos() {
+		return new BlockPos(this.getBowlX(), this.getBowlY(), this.getBowlZ());
+	}
+	
+	protected String writePosition() {
+		String structure = this.getBedX() + ":" + this.getBedY() + ":" + this.getBedZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+		return structure;
+	}
+	
+	private String[] getSkillsLevels() {
+		String data = this.getLevelString();
+		String[] tokens = data.split(":");
+		return tokens;
+	}
+	
+	private String getLevelString() {
+		return dog.getDataWatcher().getWatchableObjectString(28);
+	}
 	
 	public void writeToNBT(NBTTagCompound tagCompound) {
-		if(this.hasBedPos()) {
-			tagCompound.setInteger("bedPosX", this.getBedPos().getX());
-			tagCompound.setInteger("bedPosY", this.getBedPos().getY());
-			tagCompound.setInteger("bedPosZ", this.getBedPos().getZ());
-		}
-		
-		if(this.hasBowlPos()) {
-			tagCompound.setInteger("bowlPosX", this.getBowlPos().getX());
-			tagCompound.setInteger("bowlPosY", this.getBowlPos().getY());
-			tagCompound.setInteger("bowlPosZ", this.getBowlPos().getZ());
-		}
+		tagCompound.setString("coords", this.getLevelString());
 	}
 	
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		if(tagCompound.hasKey("bedPosX"))
-			this.setBedPos(new BlockPos(tagCompound.getInteger("bedPosX"), tagCompound.getInteger("bedPosY"), tagCompound.getInteger("bedPosZ")));
-		
-		if(tagCompound.hasKey("bowlPosX"))
-			this.setBowlPos(new BlockPos(tagCompound.getInteger("bowlPosX"), tagCompound.getInteger("bowlPosY"), tagCompound.getInteger("bowlPosZ")));
-	
-		//Backwards compatibility
-		if(tagCompound.hasKey("coords")) {
-			String[] split = tagCompound.getString("coords").split(":");
-			this.setBedPos(new BlockPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2])));
-			this.setBowlPos(new BlockPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5])));
-		}
+		if(tagCompound.hasKey("coords"))
+			this.dog.getDataWatcher().updateObject(28, tagCompound.getString("coords"));
+		else
+			this.resetBedPosition();
 	}
+
+
 }
 

@@ -5,9 +5,8 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
@@ -16,15 +15,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class EntityInteractHandler {
 	
 	@SubscribeEvent
-	public void rightClickEntity(EntityInteract event) {
-	 	World world = event.getTarget().worldObj;
+	public void rightClickEntity(EntityInteractEvent event) {
+	 	World world = event.target.worldObj;
 		
 	 	if(!world.isRemote) {
-			EntityPlayer player = event.getEntityPlayer();
-			ItemStack stack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
+			EntityPlayer player = event.entityPlayer;
+			ItemStack stack = player.getHeldItem();
 			
-			if(event.getTarget() instanceof EntityWolf && stack != null && stack.getItem() == ModItems.trainingTreat) {
-				EntityWolf wolf = (EntityWolf)event.getTarget();
+			if(event.entity instanceof EntityWolf && stack != null && stack.getItem() == ModItems.trainingTreat) {
+				EntityWolf wolf = (EntityWolf)event.entity;
 				 
 				if(!wolf.isDead && wolf.isTamed() && wolf.isOwner(player)) {
 	
@@ -33,7 +32,7 @@ public class EntityInteractHandler {
 					 
 				 	EntityDog dog = new EntityDog(world);
 				 	dog.setTamed(true);
-				 	dog.setOwnerId(player.getUniqueID());
+				 	dog.setOwnerId(player.getUniqueID().toString());
 				 	dog.setHealth(dog.getMaxHealth());
 				 	dog.setSitting(false);
 				 	dog.setGrowingAge(wolf.getGrowingAge());

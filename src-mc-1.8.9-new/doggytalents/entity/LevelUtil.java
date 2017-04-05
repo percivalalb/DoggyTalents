@@ -1,8 +1,8 @@
 package doggytalents.entity;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.nbt.NBTTagCompound;
+
+import com.google.common.base.Strings;
 
 /**
  * @author ProPercivalalb
@@ -16,31 +16,27 @@ public class LevelUtil {
 	}
 	
 	public void writeTalentsToNBT(NBTTagCompound tagCompound) {
-		tagCompound.setInteger("level_normal", this.getLevel());		
-		tagCompound.setInteger("level_dire", this.getDireLevel());	
+		tagCompound.setString("levels", this.getSaveString());			
 	}
 
 	public void readTalentsFromNBT(NBTTagCompound tagCompound) {
-		if(tagCompound.hasKey("level_normal"))
-			this.dog.getDataManager().set(EntityDog.LEVEL, tagCompound.getInteger("level_normal"));
-		
-		if(tagCompound.hasKey("level_dire"))
-			this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, tagCompound.getInteger("level_dire"));
-		
-		//Backwards compatibility
-		if(tagCompound.hasKey("levels", 8)) {
-			String[] split = tagCompound.getString("levels").split(":");
-			this.dog.getDataManager().set(EntityDog.LEVEL, new Integer(split[0]));
-			this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, new Integer(split[1]));
-		}
+		if(tagCompound.hasKey("levels", 8))
+			this.dog.getDataWatcher().updateObject(24, tagCompound.getString("levels"));
+		else
+			this.dog.getDataWatcher().updateObject(24, "0:0");
+	}
+	
+	public String getSaveString() {
+		String saveString = this.dog.getDataWatcher().getWatchableObjectString(24);
+		return Strings.isNullOrEmpty(saveString) ? "0:0" : saveString;
 	}
 	
 	public int getLevel() {
-		return this.dog.getDataManager().get(EntityDog.LEVEL);
+		return Integer.valueOf(this.getSaveString().split(":")[0]);
 	}
 	
 	public int getDireLevel() {
-		return this.dog.getDataManager().get(EntityDog.LEVEL_DIRE);
+		return Integer.valueOf(this.getSaveString().split(":")[1]);
 	}
 	
 	public void increaseLevel() {
@@ -52,12 +48,12 @@ public class LevelUtil {
 	}
 	
 	public void setLevel(int level) {
-		this.dog.getDataManager().set(EntityDog.LEVEL, level);
+		this.dog.getDataWatcher().updateObject(24, level + ":" + this.getDireLevel());
 		this.dog.updateEntityAttributes();
 	}
 	
 	public void setDireLevel(int level) {
-		this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, level);
+		this.dog.getDataWatcher().updateObject(24, this.getLevel() + ":" + level);
 		this.dog.updateEntityAttributes();
 	}
 

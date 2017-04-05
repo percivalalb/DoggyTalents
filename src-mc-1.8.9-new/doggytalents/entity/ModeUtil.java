@@ -34,11 +34,11 @@ public class ModeUtil {
 	}
 	
 	public void setMode(int mode) {	
-		this.dog.getDataManager().set(EntityDog.MODE, mode);
+		this.dog.getDataWatcher().updateObject(27, mode);
 	}
 	
 	protected int getModeID() {
-		return this.dog.getDataManager().get(EntityDog.MODE);
+		return this.dog.getDataWatcher().getWatchableObjectInt(27);
 	}
 	
 	public void writeToNBT(NBTTagCompound tagCompound) {
@@ -46,7 +46,7 @@ public class ModeUtil {
 	}
 	
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		this.setMode(tagCompound.getInteger("mode"));
+		 this.dog.getDataWatcher().updateObject(27, tagCompound.getInteger("mode"));
 	}
 	
 	public enum EnumMode {

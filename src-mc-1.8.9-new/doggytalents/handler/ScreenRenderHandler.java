@@ -8,9 +8,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.renderer.vertex.VertexBuffer;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -25,17 +26,17 @@ public class ScreenRenderHandler {
 	
 	@SubscribeEvent
 	public void onPreRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-		ElementType type = event.getType();
-		ScaledResolution scaling = event.getResolution();
+		ElementType type = event.type;
+		ScaledResolution scaling = event.resolution;
 		
 		
 		
-		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.thePlayer != null && mc.thePlayer.getRidingEntity() instanceof EntityDog) {
-			EntityDog dog = (EntityDog)mc.thePlayer.getRidingEntity();
+		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.thePlayer != null && mc.thePlayer.ridingEntity instanceof EntityDog) {
+			EntityDog dog = (EntityDog)mc.thePlayer.ridingEntity;
 			int width = scaling.getScaledWidth();
 			int height = scaling.getScaledHeight();
 			GL11.glPushMatrix();
-			mc.renderEngine.bindTexture(Gui.ICONS);
+			mc.renderEngine.bindTexture(Gui.icons);
 			
 			GL11.glEnable(GL11.GL_BLEND);
 	        int left = width / 2 + 91;
@@ -64,7 +65,7 @@ public class ScreenRenderHandler {
 	        left = width / 2 + 91;
 	        top = height - GuiIngameForge.right_height;
 	        GL11.glColor4f(1.0F, 1.0F, 0.0F, 1.0F);
-	        if (dog.isInsideOfMaterial(Material.WATER)) {
+	        if (dog.isInsideOfMaterial(Material.water)) {
 	            int air = dog.getAir();
 	            int full = MathHelper.ceiling_double_int((double)(air - 2) * 10.0D / 300.0D);
 	            int partial = MathHelper.ceiling_double_int((double)air * 10.0D / 300.0D) - full;
@@ -82,19 +83,18 @@ public class ScreenRenderHandler {
 		
 	}
 	
-	public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
-    {
-		double zLevel = 0.0D;
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
-        Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer vertexbuffer = tessellator.getBuffer();
-        vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        vertexbuffer.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-        vertexbuffer.pos((double)(x + width), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-        vertexbuffer.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
-        vertexbuffer.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
-        tessellator.draw();
-    }
+	public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
+		float f = 0.00390625F;
+		float f1 = 0.00390625F;
+	    Tessellator tessellator = Tessellator.getInstance();
+		WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+		worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+		worldrenderer.pos((double)(x + 0), (double)(y + height), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + height) * f1)).endVertex();
+	 	worldrenderer.pos((double)(x + width), (double)(y + height), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + height) * f1)).endVertex();
+	  	worldrenderer.pos((double)(x + width), (double)(y + 0), 0.0D).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0) * f1)).endVertex();
+		worldrenderer.pos((double)(x + 0), (double)(y + 0), 0.0D).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f1)).endVertex();
+	   	tessellator.draw();
+	}
+
 
 }

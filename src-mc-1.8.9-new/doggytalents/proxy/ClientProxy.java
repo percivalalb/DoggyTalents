@@ -18,16 +18,16 @@ import doggytalents.lib.Reference;
 import doggytalents.talent.BedFinderHandler;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, new RenderDog(mc.getRenderManager(), new ModelDog(), 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, new RenderSnowball(mc.getRenderManager(), Items.SNOWBALL, mc.getRenderItem()));
+		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, new RenderSnowball(mc.getRenderManager(), Items.snowball, mc.getRenderItem()));
 
 		ModelHelper.registerItem(ModItems.throwBone, 0, "doggytalents:throw_bone");
 		ModelHelper.registerItem(ModItems.throwBone, 1, "doggytalents:throw_bone_wet");

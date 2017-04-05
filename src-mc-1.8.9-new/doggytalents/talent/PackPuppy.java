@@ -8,16 +8,15 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.proxy.CommonProxy;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
@@ -47,9 +46,9 @@ public class PackPuppy extends ITalent {
 
 	    if (dog.isTamed()) {
 	    	if (stack != null) {
-	    		if(stack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && !player.worldObj.isRemote) {
+	    		if(stack.getItem() == Item.getItemFromBlock(Blocks.planks) && !player.worldObj.isRemote) {
 		    		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, dog.worldObj, dog.getEntityId(), 0, 0);
-		    		dog.worldObj.playSound((EntityPlayer)null, dog.posX, dog.posY + 0.5D, dog.posZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.NEUTRAL, 0.5F, dog.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		    		dog.worldObj.playSoundEffect(dog.posX, dog.posY + 0.5D, dog.posZ, "random.chestopen", 0.5F, dog.worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		    		return true;
 	    		}
 	    	}
@@ -68,7 +67,7 @@ public class PackPuppy extends ITalent {
 	            EntityItem entityItem = (EntityItem)list.get(i);
 	            if(!entityItem.isDead && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getEntityItem()))
 	            	if(TileEntityHopper.putDropInInventoryAllSlots(inventory, entityItem)) {
-	            		dog.worldObj.playSound(null, dog.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, ((dog.worldObj.rand.nextFloat() - dog.worldObj.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+	            		dog.worldObj.playSoundAtEntity(dog, "random.pop", 0.2F, ((dog.getRNG().nextFloat() - dog.getRNG().nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	            	}
 	        }
 		}

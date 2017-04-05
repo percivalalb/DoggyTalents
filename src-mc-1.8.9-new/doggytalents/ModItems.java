@@ -44,16 +44,16 @@ public class ModItems {
 	    radioCollar = new ItemDT().setUnlocalizedName("doggytalents.radiocollar");
 	    radar = new ItemRadar().setUnlocalizedName("doggytalents.radar");
 	    
-		GameRegistry.register(throwBone, new ResourceLocation(Reference.MOD_ID, "throw_bone"));
-	    GameRegistry.register(trainingTreat, new ResourceLocation(Reference.MOD_ID, "training_treat"));
-	    GameRegistry.register(superTreat, new ResourceLocation(Reference.MOD_ID, "super_treat"));
-	    GameRegistry.register(masterTreat, new ResourceLocation(Reference.MOD_ID, "master_treat"));
-	    GameRegistry.register(direTreat, new ResourceLocation(Reference.MOD_ID, "dire_treat"));
-	    GameRegistry.register(breedingBone, new ResourceLocation(Reference.MOD_ID, "breeding_bone"));
-	    GameRegistry.register(collarShears, new ResourceLocation(Reference.MOD_ID, "collar_shears"));
-	    GameRegistry.register(commandEmblem, new ResourceLocation(Reference.MOD_ID, "command_emblem"));
-	    GameRegistry.register(doggyCharm, new ResourceLocation(Reference.MOD_ID, "doggy_charm"));
-	    GameRegistry.register(radioCollar, new ResourceLocation(Reference.MOD_ID, "radio_collar"));
-	    GameRegistry.register(radar, new ResourceLocation(Reference.MOD_ID, "radar"));
+		GameRegistry.registerItem(throwBone, new ResourceLocation(Reference.MOD_ID, "throw_bone").toString());
+	    GameRegistry.registerItem(trainingTreat, new ResourceLocation(Reference.MOD_ID, "training_treat").toString());
+	    GameRegistry.registerItem(superTreat, new ResourceLocation(Reference.MOD_ID, "super_treat").toString());
+	    GameRegistry.registerItem(masterTreat, new ResourceLocation(Reference.MOD_ID, "master_treat").toString());
+	    GameRegistry.registerItem(direTreat, new ResourceLocation(Reference.MOD_ID, "dire_treat").toString());
+	    GameRegistry.registerItem(breedingBone, new ResourceLocation(Reference.MOD_ID, "breeding_bone").toString());
+	    GameRegistry.registerItem(collarShears, new ResourceLocation(Reference.MOD_ID, "collar_shears").toString());
+	    GameRegistry.registerItem(commandEmblem, new ResourceLocation(Reference.MOD_ID, "command_emblem").toString());
+	    GameRegistry.registerItem(doggyCharm, new ResourceLocation(Reference.MOD_ID, "doggy_charm").toString());
+	    GameRegistry.registerItem(radioCollar, new ResourceLocation(Reference.MOD_ID, "radio_collar").toString());
+	    GameRegistry.registerItem(radar, new ResourceLocation(Reference.MOD_ID, "radar").toString());
 	}
 }

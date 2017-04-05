@@ -27,12 +27,9 @@ public class ModBlocks {
 		dogBath = new BlockDogBath().setUnlocalizedName("doggytalents.dogbath");
 		foodBowl = new BlockFoodBowl().setUnlocalizedName("doggytalents.foodbowl");
 		
-		GameRegistry.register(dogBed, new ResourceLocation(Reference.MOD_ID, "dog_bed"));
-		GameRegistry.register(new ItemDogBed(dogBed), new ResourceLocation(Reference.MOD_ID, "dog_bed"));
-		GameRegistry.register(dogBath, new ResourceLocation(Reference.MOD_ID, "dog_bath"));
-		GameRegistry.register(new ItemBlock(dogBath), new ResourceLocation(Reference.MOD_ID, "dog_bath"));
-		GameRegistry.register(foodBowl, new ResourceLocation(Reference.MOD_ID, "food_bowl"));
-		GameRegistry.register(new ItemBlock(foodBowl), new ResourceLocation(Reference.MOD_ID, "food_bowl"));
+		GameRegistry.registerBlock(dogBed, ItemDogBed.class, new ResourceLocation(Reference.MOD_ID, "dog_bed").toString());
+		GameRegistry.registerBlock(dogBath, new ResourceLocation(Reference.MOD_ID, "dog_bath").toString());
+		GameRegistry.registerBlock(foodBowl, new ResourceLocation(Reference.MOD_ID, "food_bowl").toString());
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
 		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "doggytalents:dog_bowl");

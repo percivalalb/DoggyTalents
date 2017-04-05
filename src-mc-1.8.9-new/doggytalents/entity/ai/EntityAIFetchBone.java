@@ -12,7 +12,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -20,6 +19,7 @@ import net.minecraft.world.World;
  * @author ProPercivalalb
  */
 public class EntityAIFetchBone extends EntityAIBase {
+	
     private EntityDog theDog;
     private EntityLivingBase theOwner;
     private EntityItem theBone;
@@ -29,7 +29,7 @@ public class EntityAIFetchBone extends EntityAIBase {
     private int tenTickTimer;
     private float maxDist;
     private float minDist;
-    private float oldWaterCost;
+    private boolean preShouldAvoidWater;
 
     public EntityAIFetchBone(EntityDog par1EntityDog, double moveSpeed, float minDistance, float maxDistance) {
         this.theDog = par1EntityDog;
@@ -61,7 +61,7 @@ public class EntityAIFetchBone extends EntityAIBase {
         	this.theBone = null;
             return false;
         }
-        else if(this.theDog.getLowestRidingEntity() instanceof EntityPlayer) {
+        else if(this.theDog.riddenByEntity instanceof EntityPlayer) {
         	this.theBone = null;
             return false;
         }
@@ -102,8 +102,8 @@ public class EntityAIFetchBone extends EntityAIBase {
     public void startExecuting()
     {
         this.tenTickTimer = 0;
-        this.oldWaterCost = this.theDog.getPathPriority(PathNodeType.WATER);
-        this.theDog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.preShouldAvoidWater = ((PathNavigateGround)this.theDog.getNavigator()).getAvoidsWater();
+        ((PathNavigateGround)this.theDog.getNavigator()).setAvoidsWater(false);
     }
 
     /**
@@ -113,7 +113,7 @@ public class EntityAIFetchBone extends EntityAIBase {
     public void resetTask() {
         this.theOwner = null;
         this.petPathfinder.clearPathEntity();
-        this.theDog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        ((PathNavigateGround)this.theDog.getNavigator()).setAvoidsWater(this.preShouldAvoidWater);
     }
     
     public EntityItem getClosestsBone() {

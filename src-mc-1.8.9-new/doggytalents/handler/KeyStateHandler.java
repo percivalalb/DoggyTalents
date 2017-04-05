@@ -48,14 +48,14 @@ public class KeyStateHandler {
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
 	            	if(kb == mc.gameSettings.keyBindJump) {
-	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
-	            			EntityDog dog = (EntityDog)player.getRidingEntity();
+	            		if(player.ridingEntity instanceof EntityDog && mc.currentScreen == null) {
+	            			EntityDog dog = (EntityDog)player.ridingEntity;
 	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
 	            			jumpMessage.process(player, Side.CLIENT);
 	            			PacketDispatcher.sendToServer(jumpMessage);
 	            		}
 	            	}
-	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && (player.getHeldItem() != null && player.getHeldItem().getItem() == ModItems.commandEmblem)) {
 	            	    int command = -1;
 	            	   FMLLog.info("Command");
 	                	if(kb == come) {

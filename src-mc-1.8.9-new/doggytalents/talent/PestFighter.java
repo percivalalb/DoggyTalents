@@ -6,8 +6,8 @@ import java.util.List;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb

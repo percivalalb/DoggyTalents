@@ -15,14 +15,14 @@ public class HappyEater extends ITalent {
 	public int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
 		int level = dog.talents.getLevel(this);
 		if(foodValue == 0) {
-	        if ((stack.getItem() == Items.FISH || stack.getItem() == Items.COOKED_FISH) && level == 5)
+	        if ((stack.getItem() == Items.fish || stack.getItem() == Items.cooked_fish) && level == 5)
 	        	foodValue = 30 + 3 * level;
 	
-	        if (stack.getItem() == Items.ROTTEN_FLESH && level >= 3)
+	        if (stack.getItem() == Items.rotten_flesh && level >= 3)
 	        	foodValue = 30 + 3 * level;
 		}
 		else {
-			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem() instanceof ItemFood) {
+			if(stack.getItem() != Items.rotten_flesh && stack.getItem() instanceof ItemFood) {
 	            ItemFood itemfood = (ItemFood)stack.getItem();
 	
 	            if (itemfood.isWolfsFavoriteMeat())

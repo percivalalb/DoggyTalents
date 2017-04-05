@@ -673,7 +673,7 @@ public class EntityDog extends EntityTameable {
             IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(j, k, l));
 
             if(iblockstate.getMaterial() != Material.AIR) {
-                SoundType soundtype = iblockstate.getBlock().getSoundType(iblockstate, worldObj, new BlockPos(j, k, l), this);
+            	SoundType soundtype = iblockstate.getBlock().getSoundType();
                 this.playSound(soundtype.getFallSound(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
             }
         }

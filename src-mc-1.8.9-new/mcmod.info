@@ -1,0 +1,16 @@
+[
+{
+  "modid": "doggytalents",
+  "name": "Doggy Talents",
+  "description": "Turning your wolves into fun, playful dogs.",
+  "version": "v1.10.1c",
+  "mcversion": "1.9.4",
+  "url": "",
+  "updateUrl": "http://www.minecraftforum.net/topic/1650096/",
+  "authorList": ["ProPercivalalb"],
+  "credits": "RaustBlackDragon for creating the original version",
+  "logoFile": "/assets/doggytalents/textures/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]

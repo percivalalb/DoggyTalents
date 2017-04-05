@@ -11,7 +11,7 @@ Update List Key
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.12.1c | !!!WORK IN PROGRESS!!!
+v1.12.1c | 5th April 2017
 + Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left
@@ -46,7 +46,7 @@ Initial release updated from v1.11.0b
 MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.11.1c | !!!WORK IN PROGRESS!!!
+v1.11.1c | 5th April 2017
 + Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
 * Fixed the dog model being shifted over 1 pixel to the left

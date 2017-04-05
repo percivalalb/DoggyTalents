@@ -22,7 +22,6 @@ public class ConfigurationHandler {
 	public static final String CATEGORY_DOGGYSETTINGS = "doggySettings";
 	public static final String CATEGORY_DT_GENERAL = "general";
 	
-	@SideOnly(Side.CLIENT)
 	public static void init(Configuration configuration) {
 		config = configuration;
 		loadConfig();

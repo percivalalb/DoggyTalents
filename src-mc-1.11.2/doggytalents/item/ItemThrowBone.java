@@ -42,20 +42,15 @@ public class ItemThrowBone extends ItemDT {
 		if(itemStackIn.getItemDamage() == 1) {
     		itemStackIn.setItemDamage(0);
     		playerIn.swingArm(handIn);
-    		  return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+    		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     	}
 		else {
-			
-	        if (!playerIn.capabilities.isCreativeMode)
-	        {
-	        	itemStackIn.shrink(1);
-	        }
 	
 	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 	
 	        if (!worldIn.isRemote)
 	        {
-	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn);
+	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn.copy());
 	            entityitem.setPickupDelay(40);
                 float f = 1.0F;
                 entityitem.motionX = - MathHelper.sin((playerIn.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((playerIn.rotationPitch / 180F) * (float)Math.PI) * f;
@@ -68,10 +63,11 @@ public class ItemThrowBone extends ItemDT {
                 entityitem.motionY += (itemRand.nextFloat() - itemRand.nextFloat()) * 0.1F;
                 entityitem.motionZ += Math.sin(f1) * (double)f;
                 worldIn.spawnEntity(entityitem);
-
-                playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
 	        }
-	
+	        
+	        if (!playerIn.capabilities.isCreativeMode)
+	        	itemStackIn.shrink(1);
+
 	        playerIn.addStat(StatList.getObjectUseStats(this));
 	        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 		}

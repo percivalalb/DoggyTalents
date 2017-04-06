@@ -42,17 +42,12 @@ public class ItemThrowBone extends ItemDT {
     		  return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     	}
 		else {
-			
-	        if (!playerIn.capabilities.isCreativeMode)
-	        {
-	            --itemStackIn.stackSize;
-	        }
 	
 	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 	
 	        if (!worldIn.isRemote)
 	        {
-	        	EntityItem entityitem = new EntityItem(playerIn.worldObj, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn);
+	        	EntityItem entityitem = new EntityItem(playerIn.worldObj, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn.copy());
 	            entityitem.setPickupDelay(40);
                 float f = 1.0F;
                 entityitem.motionX = - MathHelper.sin((playerIn.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((playerIn.rotationPitch / 180F) * (float)Math.PI) * f;
@@ -68,6 +63,9 @@ public class ItemThrowBone extends ItemDT {
 
                 playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
 	        }
+			
+			if(!playerIn.capabilities.isCreativeMode)
+	            --itemStackIn.stackSize;
 	
 	        playerIn.addStat(StatList.getObjectUseStats(this));
 	        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);

@@ -13,6 +13,9 @@ TODO Follow Owner Order when when tool etc look at old 1.8.9 code
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+v1.12.1d | !!!WIP IN PROGRESS!!!
+* Fixed throw bone not working in survival
+
 v1.12.1c | 5th April 2017
 + Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game
 # Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
@@ -47,6 +50,9 @@ Initial release, parent version v1.11.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.11.1d | !!!WIP IN PROGRESS!!!
+* Fixed throw bone not working in survival
 
 v1.11.1c | 5th April 2017
 + Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game
@@ -86,6 +92,9 @@ Initial release, parent version v1.10.0a
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.9.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.10.1d | !!!WIP IN PROGRESS!!!
+* Fixed throw bone not working in survival
 
 v1.10.1c | 5th April 2017
 Initial release, parent version v1.10.1c

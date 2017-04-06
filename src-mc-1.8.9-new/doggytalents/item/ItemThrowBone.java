@@ -34,7 +34,7 @@ public class ItemThrowBone extends ItemDT {
             ItemStack itemstack1 = itemstack;
               
             if (!player.worldObj.isRemote) {
-                EntityItem entityitem = new EntityItem(player.worldObj, player.posX, (player.posY - 0.30000001192092896D) + (double)player.getEyeHeight(), player.posZ, itemstack1);
+                EntityItem entityitem = new EntityItem(player.worldObj, player.posX, (player.posY - 0.30000001192092896D) + (double)player.getEyeHeight(), player.posZ, itemstack1.copy());
                 entityitem.setPickupDelay(40);
                 float f = 1.0F;
                 entityitem.motionX = - MathHelper.sin((player.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((player.rotationPitch / 180F) * (float)Math.PI) * f;

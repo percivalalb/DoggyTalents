@@ -14,7 +14,11 @@ MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.12.1d | !!!WIP IN PROGRESS!!!
++ Dog will now vary his distance from based when you have a tool or sword in your hand
 * Fixed throw bone not working in survival
+* Cleaning up dog code
+* Fetch bone ai is much less derpy
+
 
 v1.12.1c | 5th April 2017
 + Added a config gui to the forge mod list menu, you can now change the mods/doggy settings in game

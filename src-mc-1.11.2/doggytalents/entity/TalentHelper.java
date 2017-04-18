@@ -102,6 +102,13 @@ public class TalentHelper {
 				return true;
 		return false;
 	}
+	
+	public static boolean canTriggerWalking(EntityDog dog) {
+		for(ITalent talent : TalentRegistry.getTalents())
+			if(!talent.canTriggerWalking(dog))
+				return false;
+		return true;
+	}
 
 	public static boolean isImmuneToFalls(EntityDog dog) {
 		for(ITalent talent : TalentRegistry.getTalents())

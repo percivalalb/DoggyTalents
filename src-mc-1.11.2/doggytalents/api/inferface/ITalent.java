@@ -28,6 +28,7 @@ public abstract class ITalent {
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) { return true; }
 	public double addToMoveSpeed(EntityDog dog) { return 0.0D; }
 	public boolean canBreatheUnderwater(EntityDog dog) { return false; }
+	public boolean canTriggerWalking(EntityDog dog) { return true; }
 	public boolean isImmuneToFalls(EntityDog dog) { return false; }
 	public int fallProtection(EntityDog dog) { return 0; }
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }

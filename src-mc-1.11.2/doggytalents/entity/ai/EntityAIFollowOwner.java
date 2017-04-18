@@ -5,6 +5,7 @@ import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,132 +15,153 @@ import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class EntityAIFollowOwner extends EntityAIBase
 {
-    private final EntityDog theDog;
-    private EntityLivingBase theOwner;
-    World theWorld;
+    private final EntityDog dog;
+    private EntityLivingBase owner;
+    private World world;
     private final double followSpeed;
     private final PathNavigate petPathfinder;
     private int timeToRecalcPath;
-    float maxDist;
-    float minDist;
+    private float maxDist;
+    private float minDist;
     private float oldWaterCost;
+    private double oldRangeSense;
 
-    public EntityAIFollowOwner(EntityDog thePetIn, double followSpeedIn, float minDistIn, float maxDistIn)
-    {
-        this.theDog = thePetIn;
-        this.theWorld = thePetIn.world;
+    public EntityAIFollowOwner(EntityDog thePetIn, double followSpeedIn, float minDistIn, float maxDistIn) {
+        this.dog = thePetIn;
+        this.world = thePetIn.world;
         this.followSpeed = followSpeedIn;
         this.petPathfinder = thePetIn.getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
         this.setMutexBits(3);
 
-        if (!(thePetIn.getNavigator() instanceof PathNavigateGround))
-        {
+        if(!(thePetIn.getNavigator() instanceof PathNavigateGround))
             throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
-        }
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
-    public boolean shouldExecute()
-    {
-        EntityLivingBase entitylivingbase = this.theDog.getOwner();
+    @Override
+    public boolean shouldExecute() {
+        EntityLivingBase entitylivingbase = this.dog.getOwner();
         
         if(entitylivingbase == null)
             return false;
         else if(entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator())
             return false;
-        else if(this.theDog.isSitting())
+        else if(this.dog.isSitting())
             return false;
-        else if(this.theDog.mode.isMode(EnumMode.WANDERING))
+        else if(this.dog.mode.isMode(EnumMode.WANDERING))
         	return false;
-        //TODO Bone ai
-        else if(this.theDog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist))
-            return false;
-        else {
-            this.theOwner = entitylivingbase;
-            return true;
-        }
+        else if(this.dog.aiFetchBone.isPlayingFetch())
+        	return false;
+        
+      	int order = this.dog.masterOrder();
+    	double distanceAway = this.dog.getDistanceSqToEntity(entitylivingbase);
+      	
+      	if(!this.dog.hasBone() && (order == 1 || order == 2)) { //Holding Sword or tool
+      		if(distanceAway >= 16D && distanceAway <= 100D)
+      			return false;
+      	}
+      	else
+	      	if(!this.dog.hasBone() && this.dog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist))
+	            return false;
+        
+      	FMLLog.info("" + entitylivingbase.rotationYaw);
+        //Execute
+        this.owner = entitylivingbase;
+        return true;
     }
-
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
-    public boolean continueExecuting()
-    {
-        return !this.petPathfinder.noPath() && this.theDog.getDistanceSqToEntity(this.theOwner) > (double)(this.maxDist * this.maxDist) && !this.theDog.isSitting();
+    
+    @Override
+    public boolean continueExecuting() {
+        return !this.petPathfinder.noPath() && this.dog.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
     }
-
-    /**
-     * Execute a one shot task or start executing a continuous task
-     */
-    public void startExecuting()
-    {
+    
+    @Override
+    public void startExecuting() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.theDog.getPathPriority(PathNodeType.WATER);
-        this.theDog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
+        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.oldRangeSense = this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+      	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
 
-    /**
-     * Resets the task
-     */
-    public void resetTask()
-    {
-        this.theOwner = null;
+    @Override
+    public void resetTask() {
+        this.owner = null;
         this.petPathfinder.clearPathEntity();
-        this.theDog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+      	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 
-    private boolean isEmptyBlock(BlockPos pos)
-    {
-        IBlockState iblockstate = this.theWorld.getBlockState(pos);
+    private boolean isEmptyBlock(BlockPos pos) {
+        IBlockState iblockstate = this.world.getBlockState(pos);
         return iblockstate.getMaterial() == Material.AIR ? true : !iblockstate.isFullCube();
     }
 
-    /**
-     * Updates the task
-     */
-    public void updateTask()
-    {
-        this.theDog.getLookHelper().setLookPositionWithEntity(this.theOwner, 10.0F, (float)this.theDog.getVerticalFaceSpeed());
+    @Override
+    public void updateTask() {
+        this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
-        if (!this.theDog.isSitting())
-        {
-            if (--this.timeToRecalcPath <= 0)
-            {
+        if(!this.dog.isSitting()) {
+            if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                if (!this.petPathfinder.tryMoveToEntityLiving(this.theOwner, this.followSpeed))
-                {
-                    if (!this.theDog.getLeashed())
-                    {
-                        if (this.theDog.getDistanceSqToEntity(this.theOwner) >= 144.0D)
-                        {
-                            int i = MathHelper.floor(this.theOwner.posX) - 2;
-                            int j = MathHelper.floor(this.theOwner.posZ) - 2;
-                            int k = MathHelper.floor(this.theOwner.getEntityBoundingBox().minY);
+            	int order = this.dog.masterOrder();
+               	int masterX = MathHelper.floor(this.owner.posX);
+            	int masterY = MathHelper.floor(this.owner.posY);
+            	int masterZ = MathHelper.floor(this.owner.posZ);
+            	double distanceAway = this.dog.getDistanceSqToEntity(this.owner);
+                
+            	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
+               
+	                if(!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
+	                    if(!this.dog.hasBone() && !this.dog.getLeashed())
+	                        if(distanceAway >= 144.0D)
+	                        	this.teleportDogToOwner();
+	                	
+            	}
+            	else if(order == 1 || order == 2) { //Holding Sword or tool
+            		int dogX = MathHelper.floor(this.dog.posX);
+                    int dogY = MathHelper.floor(this.dog.posY - 0.20000000298023224D - (double)this.dog.getYOffset());
+                    int dogZ = MathHelper.floor(this.dog.posZ);
+                    int dPosX = dogX - masterX;
+                    int dPosZ = dogZ - masterZ;
+                    int j3 = masterX + dPosX * 2;
+                    int k3 = masterZ + dPosZ * 2;
+                    int l3 = masterX + dPosX / 2;
+                    int i4 = masterZ + dPosZ / 2;
+                    if(distanceAway < 25.0D)
+                    	this.petPathfinder.tryMoveToXYZ(j3, dogY, k3, this.followSpeed);
+                    
+                    else if(distanceAway > 100.0D)
+                    	if(!this.dog.getNavigator().tryMoveToXYZ(l3, dogY, i4, this.followSpeed)) 
+        	            	if(!this.dog.getLeashed()) 
+        	                    if(distanceAway >= 350.0D)
+        	                    	this.teleportDogToOwner();
 
-                            for (int l = 0; l <= 4; ++l)
-                            {
-                                for (int i1 = 0; i1 <= 4; ++i1)
-                                {
-                                    if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.theWorld.getBlockState(new BlockPos(i + l, k - 1, j + i1)).isFullyOpaque() && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1)))
-                                    {
-                                        this.theDog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.theDog.rotationYaw, this.theDog.rotationPitch);
-                                        this.petPathfinder.clearPathEntity();
-                                        return;
-                                    }
-                                }
-                            }
-                        }
-                    }
+            	}
+            }
+        }
+    }
+        
+    public void teleportDogToOwner() {
+    	int i = MathHelper.floor(this.owner.posX) - 2;
+        int j = MathHelper.floor(this.owner.posZ) - 2;
+        int k = MathHelper.floor(this.owner.getEntityBoundingBox().minY);
+
+        for(int l = 0; l <= 4; ++l) {
+            for(int i1 = 0; i1 <= 4; ++i1) {
+                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.getBlockState(new BlockPos(i + l, k - 1, j + i1)).isFullyOpaque() && this.isEmptyBlock(new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(new BlockPos(i + l, k + 1, j + i1))) {
+                    this.dog.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.dog.rotationYaw, this.dog.rotationPitch);
+                    this.petPathfinder.clearPathEntity();
+                    return;
                 }
             }
         }
     }
+     
 }

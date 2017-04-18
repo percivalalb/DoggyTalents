@@ -32,6 +32,6 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 	@Override
 	public boolean continueExecuting() {
 		int order = dog.masterOrder();
-        return order == 3 && super.continueExecuting();
+        return order == 3 && super.continueExecuting() && !this.dog.isBeingRidden();
 	}
 }

@@ -32,6 +32,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         super(renderManager, model, shadowSize);
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
+        this.addLayer(new LayerBone(this));
     }
 
     @Override
@@ -67,13 +68,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
 			return ResourceReference.getTameSkin(dog.getTameSkin());
     	
         return ResourceReference.doggyWild;
-    }
-    
-    @Override
-	public void renderName(EntityDog dog, double x, double y, double z) {
-        
-        if(!dog.getDogName().isEmpty())
-        	super.renderName(dog, x, y, z);
     }
     
     @Override

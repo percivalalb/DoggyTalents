@@ -71,7 +71,7 @@ public class GuiDogInfo extends GuiScreen {
 		};
 		nameTextField.setFocused(false);
 		nameTextField.setMaxStringLength(32);
-		nameTextField.setText(this.dog.getDogName());
+		nameTextField.setText(this.dog.getCustomNameTag());
 		this.nameTextField = nameTextField;
 		
 		this.textfieldList.add(nameTextField);

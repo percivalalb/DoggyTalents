@@ -68,8 +68,7 @@ public class EntityAIFollowOwner extends EntityAIBase
       	else
 	      	if(!this.dog.hasBone() && this.dog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist))
 	            return false;
-        
-      	FMLLog.info("" + entitylivingbase.rotationYaw);
+      	
         //Execute
         this.owner = entitylivingbase;
         return true;
@@ -104,7 +103,6 @@ public class EntityAIFollowOwner extends EntityAIBase
 
     @Override
     public void updateTask() {
-        this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
         if(!this.dog.isSitting()) {
             if(--this.timeToRecalcPath <= 0) {
@@ -117,7 +115,7 @@ public class EntityAIFollowOwner extends EntityAIBase
             	double distanceAway = this.dog.getDistanceSqToEntity(this.owner);
                 
             	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
-               
+                    this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 	                if(!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
 	                    if(!this.dog.hasBone() && !this.dog.getLeashed())
 	                        if(distanceAway >= 144.0D)
@@ -126,7 +124,7 @@ public class EntityAIFollowOwner extends EntityAIBase
             	}
             	else if(order == 1 || order == 2) { //Holding Sword or tool
             		int dogX = MathHelper.floor(this.dog.posX);
-                    int dogY = MathHelper.floor(this.dog.posY - 0.20000000298023224D - (double)this.dog.getYOffset());
+                    int dogY = MathHelper.floor(this.dog.posY);
                     int dogZ = MathHelper.floor(this.dog.posZ);
                     int dPosX = dogX - masterX;
                     int dPosZ = dogZ - masterZ;
@@ -134,20 +132,25 @@ public class EntityAIFollowOwner extends EntityAIBase
                     int k3 = masterZ + dPosZ * 2;
                     int l3 = masterX + dPosX / 2;
                     int i4 = masterZ + dPosZ / 2;
-                    if(distanceAway < 25.0D)
-                    	this.petPathfinder.tryMoveToXYZ(j3, dogY, k3, this.followSpeed);
-                    
-                    else if(distanceAway > 100.0D)
-                    	if(!this.dog.getNavigator().tryMoveToXYZ(l3, dogY, i4, this.followSpeed)) 
+                    if(distanceAway < 25.0D) {
+                    	if(this.petPathfinder.tryMoveToXYZ(j3, dogY, k3, this.followSpeed))
+                            this.dog.getLookHelper().setLookPosition(j3, dogY + 1, k3, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+                    }
+                    else if(distanceAway > 100.0D) {
+             
+                    	if(!this.dog.getNavigator().tryMoveToXYZ(l3, dogY, i4, this.followSpeed)) {
         	            	if(!this.dog.getLeashed()) 
         	                    if(distanceAway >= 350.0D)
         	                    	this.teleportDogToOwner();
-
+                    	}
+        	            else 
+        	            	this.dog.getLookHelper().setLookPosition(l3, dogY + 1, i4, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+                    }
             	}
             }
         }
     }
-        
+    
     public void teleportDogToOwner() {
     	int i = MathHelper.floor(this.owner.posX) - 2;
         int j = MathHelper.floor(this.owner.posZ) - 2;
@@ -163,5 +166,4 @@ public class EntityAIFollowOwner extends EntityAIBase
             }
         }
     }
-     
 }

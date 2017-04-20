@@ -15,7 +15,6 @@ import doggytalents.api.IDogTreat.EnumFeedBack;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
 import doggytalents.entity.ai.EntityAIFetch;
-import doggytalents.entity.ai.EntityAIFetchBone;
 import doggytalents.entity.ai.EntityAIFollowOwner;
 import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
@@ -563,8 +562,8 @@ public class EntityDog extends EntityAbstractDog {
         if(TalentHelper.interactWithPlayer(this, player))
         	return true;
         
-        if (this.isTamed()) {
-            if (stack != null) {
+        if(this.isTamed()) {
+            if(!stack.isEmpty()) {
             	int foodValue = this.foodValue(stack);
             	
             	if(foodValue != 0 && this.getDogHunger() < 120 && this.canInteract(player) && !this.isIncapacicated()) {
@@ -575,14 +574,10 @@ public class EntityDog extends EntityAbstractDog {
                     return true;
                 }
             	else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
-            		//if (!this.worldObj.isRemote) {
-                       // if(this.isRiding())
-                        //	this.dismountEntity(player);
-                      	//else
-                        	 this.startRiding(player);
-                        	 if(this.aiSit != null)
-                        		 this.aiSit.setSitting(true);
-                    //}
+            		this.startRiding(player);
+            		if(this.aiSit != null)
+            			this.aiSit.setSitting(true);
+            		
                     return true;
                 }
             	else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {

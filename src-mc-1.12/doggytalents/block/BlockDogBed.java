@@ -216,9 +216,9 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-	public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> stackList) {
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab) {
 		for(String casingId : DogBedRegistry.CASINGS.getKeys())
-			stackList.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
+			tab.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
     }
 	
 	@Override

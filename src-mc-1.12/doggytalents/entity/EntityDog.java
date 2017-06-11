@@ -401,7 +401,10 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     @Override
-    public void moveEntityWithHeading(float strafe, float forward) {
+    //TODO  public void moveEntityWithHeading(float strafe, float forward) {
+    public void func_191986_a(float strafe, float p_191986_2_, float forward) {
+    
+  
         if(this.isControllingPassengerPlayer()) {
         	 EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
              this.rotationYaw = entitylivingbase.rotationYaw;
@@ -411,7 +414,7 @@ public class EntityDog extends EntityAbstractDog {
              this.renderYawOffset = this.rotationYaw;
              this.rotationYawHead = this.renderYawOffset;
              strafe = entitylivingbase.moveStrafing * 0.75F;
-             forward = entitylivingbase.moveForward;
+             forward = entitylivingbase.field_191988_bg;
 
             if (forward <= 0.0F)
                 forward *= 0.5F;
@@ -431,7 +434,7 @@ public class EntityDog extends EntityAbstractDog {
             if (this.canPassengerSteer())
             {
             	this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-                super.moveEntityWithHeading(strafe, forward);
+            	super.func_191986_a(strafe, p_191986_2_, forward);
             }
            	else if (entitylivingbase instanceof EntityPlayer)
            	{
@@ -454,7 +457,7 @@ public class EntityDog extends EntityAbstractDog {
         else {
             this.stepHeight = 0.5F;
             this.jumpMovementFactor = 0.02F;
-            super.moveEntityWithHeading(strafe, forward);
+            super.func_191986_a(strafe, p_191986_2_, forward);
         }
     }
     

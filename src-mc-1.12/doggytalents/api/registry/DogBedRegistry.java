@@ -65,13 +65,15 @@ public class DogBedRegistry {
 			this.textures.put(key, textureLocation);
 			this.craftingItems.put(key, craftingItem);
 			
+			//TODO Recipes
+			/**
 			if("casing".equals(this.key))
 				for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
 					GameRegistry.addRecipe(createItemStack(key, beddingId), new Object[] {"CBC", "CBC", "CCC", 'C', craftingItem, 'B', DogBedRegistry.BEDDINGS.getCraftingItem(beddingId)});
 			else if("bedding".equals(this.key))
 				for(String casingId : DogBedRegistry.CASINGS.getKeys())
 					GameRegistry.addRecipe(createItemStack(casingId, key), new Object[] {"CBC", "CBC", "CCC", 'C', DogBedRegistry.CASINGS.getCraftingItem(casingId), 'B', craftingItem});
-		
+			**/
 			LogHelper.info("Register dog bed %s under the key %s", this.key, key);
 		}
 	}

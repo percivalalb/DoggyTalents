@@ -56,7 +56,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
     }
 
 	@Override
-    protected SoundEvent getHurtSound() {
+	protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.ENTITY_WOLF_HURT;
     }
 

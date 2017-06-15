@@ -7,14 +7,14 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:bone"
+      "item": "minecraft:gold_ingot"
     },
     "i": {
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:bow"
     }
   },
   "result": {
-    "item": "doggytalents:throw_bone",
+    "item": "doggytalents:command_emblem",
     "data": 0,
     "count": 1
   }

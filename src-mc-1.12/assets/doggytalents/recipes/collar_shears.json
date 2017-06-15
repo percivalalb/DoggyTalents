@@ -10,11 +10,11 @@
       "item": "minecraft:bone"
     },
     "i": {
-      "item": "minecraft:slime_ball"
+      "item": "minecraft:shears"
     }
   },
   "result": {
-    "item": "doggytalents:throw_bone",
+    "item": "doggytalents:collar_shears",
     "data": 0,
     "count": 1
   }

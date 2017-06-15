@@ -78,14 +78,14 @@ public class DoggyTalentsMod {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.throwBone);
-		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.breedingBone);
+		DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE);
+		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.throwBone);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.trainingTreat);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.masterTreat);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.superTreat);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.direTreat);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_BONE);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.TRAINING_TREAT);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.SUPER_TREAT);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.DIRE_TREAT);
 		
 		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 0, "minecraft:blocks/planks_oak");
 		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 1, "minecraft:blocks/planks_spruce");

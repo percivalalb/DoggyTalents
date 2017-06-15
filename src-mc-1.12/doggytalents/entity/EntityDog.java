@@ -379,7 +379,7 @@ public class EntityDog extends EntityAbstractDog {
 
                 if (distanceToOwner <= 2F && this.hasBone()) {
                 	if(!this.world.isRemote) {
-                		this.entityDropItem(new ItemStack(ModItems.throwBone, 1, 1), 0.0F);
+                		this.entityDropItem(new ItemStack(ModItems.THROW_BONE, 1, 1), 0.0F);
                 	}
                 	
                     this.setHasBone(false);
@@ -587,7 +587,7 @@ public class EntityDog extends EntityAbstractDog {
             		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.radioCollar && this.canInteract(player) && !this.hasRadarCollar()&& !this.isIncapacicated()) {
+                else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar()&& !this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode)
                 		stack.shrink(1);
                  	this.hasRadarCollar(true);
@@ -599,7 +599,7 @@ public class EntityDog extends EntityAbstractDog {
                  	treat.giveTreat(type, player, stack, this);
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.collarShears && this.isOwner(player)) {
+                else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.isOwner(player)) {
                 	if(!this.world.isRemote) {
                 		this.setTamed(false);
                 	    this.navigator.clearPathEntity();
@@ -610,7 +610,7 @@ public class EntityDog extends EntityAbstractDog {
                         this.setWillObeyOthers(false);
                         this.mode.setMode(EnumMode.DOCILE);
                         if(this.hasRadarCollar())
-                        	this.dropItem(ModItems.radioCollar, 1);
+                        	this.dropItem(ModItems.RADIO_COLLAR, 1);
                         this.hasRadarCollar(false);
                         this.reversionTime = 40;
                      }
@@ -642,7 +642,7 @@ public class EntityDog extends EntityAbstractDog {
                 this.setAttackTarget((EntityLivingBase)null);
             }
         }
-        else if(stack != null && stack.getItem() == ModItems.collarShears && this.reversionTime < 1 && !this.world.isRemote) {
+        else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && !this.world.isRemote) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.world);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);

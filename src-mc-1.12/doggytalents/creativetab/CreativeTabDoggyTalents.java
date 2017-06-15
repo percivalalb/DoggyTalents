@@ -19,6 +19,6 @@ public class CreativeTabDoggyTalents extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getTabIconItem() {
-		return new ItemStack(ModItems.trainingTreat);
+		return new ItemStack(ModItems.TRAINING_TREAT);
 	}
 }

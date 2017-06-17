@@ -60,7 +60,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.doggyTex = this.dog.getTameSkin();
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
-		GuiTextField nameTextField = new GuiTextField(0, this.fontRendererObj, topX - 100, topY + 50, 200, 20) {
+		GuiTextField nameTextField = new GuiTextField(0, this.fontRenderer, topX - 100, topY + 50, 200, 20) {
 			@Override
 			public boolean textboxKeyTyped(char character, int keyId) {
 				boolean typed = super.textboxKeyTyped(character, keyId);
@@ -119,19 +119,19 @@ public class GuiDogInfo extends GuiScreen {
 		//Background
 		int topX = this.width / 2;
 		int topY = this.height / 2;
-		this.fontRendererObj.drawString("New name:", topX - 100, topY + 38, 4210752);
-		this.fontRendererObj.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
-		this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
-		this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+		this.fontRenderer.drawString("New name:", topX - 100, topY + 38, 4210752);
+		this.fontRenderer.drawString("Level: " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
+		this.fontRenderer.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
+		this.fontRenderer.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
+		this.fontRenderer.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
 	    if(this.dog.isOwner(this.player))
-	    	this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
+	    	this.fontRenderer.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
 				
 		for(int i = 0; i < this.btnPerPages; ++i) {
 			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
 		    	continue;
-		    this.fontRendererObj.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
+		    this.fontRenderer.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
 		}
 				
 		for(GuiTextField field : this.textfieldList)
@@ -158,7 +158,7 @@ public class GuiDogInfo extends GuiScreen {
 			    	list.add(TextFormatting.GREEN + talent.getLocalisedName());
 			    	list.add("Level: " + this.dog.talents.getLevel(talent));
 			    	list.add(TextFormatting.GRAY + "--------------------------------");
-		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRendererObj));
+		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRenderer));
 	    		}
 	    		else if(button.id == -1) {
 	    			list.add(TextFormatting.ITALIC + "Previous Page");
@@ -168,10 +168,10 @@ public class GuiDogInfo extends GuiScreen {
 	    		}
 	    		else if(button.id == -6) {
     				String str = I18n.translateToLocal("doggui.modeinfo." + button.displayString.toLowerCase());
-    				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
+    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
     			}
 	    		
-	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRendererObj);
+	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
 	    	}
 	    }
 		GL11.glPopMatrix();

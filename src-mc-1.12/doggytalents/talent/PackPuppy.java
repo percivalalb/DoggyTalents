@@ -66,7 +66,7 @@ public class PackPuppy extends ITalent {
 			List list = dog.world.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(dog.posX - 2.5D, dog.posY - 1.0D, dog.posZ - 2.5D, dog.posX + 2.5D, dog.posY + 1.0D, dog.posZ + 2.5D));
 	        for(int i = 0; i < list.size(); i++) {
 	            EntityItem entityItem = (EntityItem)list.get(i);
-	            if(!entityItem.isDead && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getEntityItem()))
+	            if(!entityItem.isDead && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getItem()))
 	            	if(TileEntityHopper.putDropInInventoryAllSlots(null, inventory, entityItem)) {
 	            		dog.world.playSound(null, dog.getPosition(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.2F, ((dog.world.rand.nextFloat() - dog.world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	            	}

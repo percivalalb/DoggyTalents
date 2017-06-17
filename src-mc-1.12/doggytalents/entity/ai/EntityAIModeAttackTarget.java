@@ -16,7 +16,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	
     private EntityDog dog;
     private EntityLivingBase entityToAttack;
-    private int field_142051_e;
+    private int timestamp;
 
     public EntityAIModeAttackTarget(EntityDog dog) {
         super(dog, true);
@@ -49,9 +49,9 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	           	 	}
             	}
             	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
-            		this.entityToAttack = entitylivingbase.getLastAttacker();
-                    int i = entitylivingbase.getLastAttackerTime();
-                    return i != this.field_142051_e && this.isSuitableTarget(this.entityToAttack, false) && this.dog.shouldAttackEntity(this.entityToAttack, entitylivingbase);
+            		this.entityToAttack = entitylivingbase.getRevengeTarget();
+                    int i = entitylivingbase.getRevengeTimer();
+                    return i != this.timestamp && this.isSuitableTarget(this.entityToAttack, false) && this.dog.shouldAttackEntity(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
             }
@@ -59,8 +59,8 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     }
     
     @Override
-    public boolean continueExecuting() {
-    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
+    public boolean shouldContinueExecuting() {
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.shouldContinueExecuting();
     }
 
     @Override
@@ -69,7 +69,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
         EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
-            this.field_142051_e = entitylivingbase.getLastAttackerTime();
+            this.timestamp = entitylivingbase.getRevengeTimer();
 
         super.startExecuting();
     }

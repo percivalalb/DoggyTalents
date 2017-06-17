@@ -27,7 +27,7 @@ public class GuardDog extends ITalent {
 	
 	@Override
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) {
-		Entity entity = damageSource.getEntity();
+		Entity entity = damageSource.getTrueSource();
 		int guardTime = (Integer)dog.objects.get("guardtime");
 		
 		if (entity != null && guardTime <= 0) {

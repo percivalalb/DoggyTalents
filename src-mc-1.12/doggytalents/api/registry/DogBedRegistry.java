@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import doggytalents.ModBlocks;
 import doggytalents.helper.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -24,7 +26,7 @@ public class DogBedRegistry {
 	private final List<String> keys = new ArrayList<String>();
 	private final Map<String, String> lookupnames = new HashMap<String, String>();
 	private final Map<String, String> textures = new HashMap<String, String>();
-	private final Map<String, ItemStack> craftingItems = new HashMap<String, ItemStack>();
+	private final Map<String, Ingredient> craftingItems = new HashMap<String, Ingredient>();
 	private final String key;
 	
 	public DogBedRegistry(String key) {
@@ -63,7 +65,7 @@ public class DogBedRegistry {
 			this.keys.add(key);
 			this.lookupnames.put(key, lookupname);
 			this.textures.put(key, textureLocation);
-			this.craftingItems.put(key, craftingItem);
+			this.craftingItems.put(key, Ingredient.fromStacks(craftingItem));
 			
 			//TODO Recipes
 			/**
@@ -94,10 +96,18 @@ public class DogBedRegistry {
 		return this.textures.get(id);
 	}
 	
-	public ItemStack getCraftingItem(String id) {
+	public Ingredient getCraftingItem(String id) {
 		if(!this.isValidId(id))
 			return null;
 		return this.craftingItems.get(id);
+	}
+	
+	public String getIdFromCraftingItem(ItemStack stack) {
+		for(Entry<String, Ingredient> entry : craftingItems.entrySet()) {
+			if(entry.getValue().apply(stack))
+				return entry.getKey();
+		}
+		return "";
 	}
 	
 	public static ItemStack createItemStack(String casingId, String beddingId) {

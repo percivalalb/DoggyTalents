@@ -8,6 +8,7 @@ import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.handler.ConfigurationHandler;
 import doggytalents.handler.ConnectionHandler;
 import doggytalents.handler.EntityInteractHandler;
+import doggytalents.inventory.RecipeDogBed;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.proxy.CommonProxy;
@@ -33,6 +34,8 @@ import doggytalents.talent.WolfMount;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -43,6 +46,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -130,6 +134,8 @@ public class DoggyTalentsMod {
 		TalentRegistry.registerTalent(new ShepherdDog());
 		TalentRegistry.registerTalent(new SwimmerDog());
 		TalentRegistry.registerTalent(new WolfMount());
+		
+		GameData.getRecipeRegistry().register(-1, new ResourceLocation(Reference.MOD_ID, "dogbed"), new RecipeDogBed());
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.config);

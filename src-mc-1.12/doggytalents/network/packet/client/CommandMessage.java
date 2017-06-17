@@ -6,9 +6,11 @@ import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.ChatHelper;
+import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -48,7 +50,6 @@ public class CommandMessage extends AbstractServerMessage {
 
 		if((player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM || player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM)) {
 
-			FMLLog.info(this.commandId + " id");
 			if(this.commandId == 1)
 			{
 				world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
@@ -140,27 +141,14 @@ public class CommandMessage extends AbstractServerMessage {
 				{
 					world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 					boolean isDog = false;
-			        List nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
-			        for (Object o : nearEnts)
-			        {
+			        List<Entity> nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(20D, 20D, 20D));
+			        for (Object o : nearEnts) {
 			            if(o instanceof EntityDog)
 			            {
 			            	EntityDog dog = (EntityDog)o;
-			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING))
-			            	{
-			            		 int i = MathHelper.floor(player.posX) - 2;
-			                     int j = MathHelper.floor(player.posZ) - 2;
-			                     int k = MathHelper.floor(player.getEntityBoundingBox().minY);
-			                     for (int l = 0; l <= 4; l++)
-			                     {
-			                         for (int i1 = 0; i1 <= 4; i1++)
-			                         {
-			                             if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && world.getBlockState(new BlockPos(i + l, k - 1, j + i1)).isFullyOpaque() && this.isEmptyBlock(world, new BlockPos(i + l, k, j + i1)) && this.isEmptyBlock(world, new BlockPos(i + l, k + 1, j + i1)))
-			                             {
-			                                 dog.setLocationAndAngles((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, dog.rotationYaw, dog.rotationPitch);
-			                             }
-			                         }
-			                     }
+			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING)) {
+			            		DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
+			            		
 			                    isDog = true;
 			            	}
 			            }
@@ -175,10 +163,5 @@ public class CommandMessage extends AbstractServerMessage {
 			}
 		
 	}
-	
-	private boolean isEmptyBlock(World world, BlockPos pos) {
-        IBlockState iblockstate = world.getBlockState(pos);
-        return iblockstate.getMaterial() == Material.AIR ? true : !iblockstate.isFullCube();
-    }
 }
 	

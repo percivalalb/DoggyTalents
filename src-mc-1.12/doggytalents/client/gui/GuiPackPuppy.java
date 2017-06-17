@@ -30,8 +30,8 @@ public class GuiPackPuppy extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
     	String s = this.inventory.getDisplayName().getUnformattedText();
-        this.fontRendererObj.drawString(s, this.xSize / 2 - 10, 14, 4210752);
-        this.fontRendererObj.drawString(I18n.translateToLocal("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
+        this.fontRenderer.drawString(s, this.xSize / 2 - 10, 14, 4210752);
+        this.fontRenderer.drawString(I18n.translateToLocal("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
     }
     
     @Override

@@ -31,7 +31,7 @@ public class BedFinderHandler {
 						
 						GL11.glPushMatrix();
 						
-						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedPos()).expandXyz(0.5D);
+						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedPos()).grow(0.5D);
 						this.drawSelectionBox(player, event.getPartialTicks(), boundingBox);
 					    GL11.glPopMatrix();
 				    }

@@ -72,7 +72,7 @@ public class EntityAIFetch extends EntityAIBase {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return !this.petPathfinder.noPath() && this.isPlayingFetch() && this.dog.getDistanceSqToEntity(this.fetchableItem) > (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
     }
 
@@ -95,12 +95,12 @@ public class EntityAIFetch extends EntityAIBase {
     }
 
     public EntityItem getNearestFetchableItem() {
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.dog, this.dog.getEntityBoundingBox().expandXyz(this.maxDist));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.dog, this.dog.getEntityBoundingBox().grow(this.maxDist));
         for(Entity entity : list) {
         	if(entity instanceof EntityItem) {
         		EntityItem entityItem = (EntityItem)entity;
         		
-        		if(entityItem.getEntityItem().getItem() == ModItems.THROW_BONE && entityItem.getEntityItem().getItemDamage() == 0)
+        		if(entityItem.getItem().getItem() == ModItems.THROW_BONE && entityItem.getItem().getItemDamage() == 0)
         			return entityItem;
         			
         	}

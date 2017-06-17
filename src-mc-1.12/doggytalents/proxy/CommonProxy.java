@@ -57,7 +57,7 @@ public class CommonProxy implements IGuiHandler {
 	public void postInit() {}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
-		return ctx.getServerHandler().playerEntity;
+		return ctx.getServerHandler().player;
 	}
 	
 	public EntityPlayer getPlayerEntity() {
@@ -65,7 +65,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return (IThreadListener)ctx.getServerHandler().playerEntity.mcServer;
+		return (IThreadListener)ctx.getServerHandler().player.mcServer;
 	}
 	
 	public void spawnCrit(World world, Entity entity) {}

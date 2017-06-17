@@ -12,7 +12,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
 	
     private EntityDog dog;
     private EntityLivingBase theTarget;
-    private int field_142050_e;
+    private int timestamp;
     private static final String __OBFID = "CL_00001625";
 
     public EntityAIOwnerHurtTarget(EntityDog dog)
@@ -32,16 +32,16 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
             if (owner == null)
                 return false;
             else {
-                this.theTarget = owner.getLastAttacker();
-                int i = owner.getLastAttackerTime();
-                return i != this.field_142050_e && this.isSuitableTarget(this.theTarget, false) && this.dog.shouldAttackEntity(this.theTarget, owner);
+                this.theTarget = owner.getRevengeTarget();
+                int i = owner.getRevengeTimer();
+                return i != this.timestamp && this.isSuitableTarget(this.theTarget, false) && this.dog.shouldAttackEntity(this.theTarget, owner);
             }
         }
     }
     
     @Override
-    public boolean continueExecuting() {
-    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.continueExecuting();
+    public boolean shouldContinueExecuting() {
+    	return !this.dog.isIncapacicated() && !this.dog.isSitting() && super.shouldContinueExecuting();
     }
     
     @Override
@@ -50,7 +50,7 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
         EntityLivingBase owner = this.dog.getOwner();
 
         if (owner != null)
-            this.field_142050_e = owner.getLastAttackerTime();
+            this.timestamp = owner.getRevengeTimer();
 
         super.startExecuting();
     }

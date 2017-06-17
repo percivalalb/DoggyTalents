@@ -477,31 +477,8 @@ public class EntityDog extends EntityAbstractDog {
 
     @Override
     public void fall(float distance, float damageMultiplier) {
-        float[] ret = net.minecraftforge.common.ForgeHooks.onLivingFall(this, distance, damageMultiplier);
-        if (ret == null) return;
-        distance = ret[0]; damageMultiplier = ret[1];
-        
-        if(this.isBeingRidden())
-        	 for(Entity entity : this.getPassengers())
-                 entity.fall(distance, damageMultiplier);
-        
-        PotionEffect potioneffect = this.getActivePotionEffect(MobEffects.JUMP_BOOST);
-        float f2 = potioneffect != null ? (float)(potioneffect.getAmplifier() + 1) : 0.0F;
-        int i = MathHelper.ceiling_float_int(((distance - 3.0F - f2) - TalentHelper.fallProtection(this)) * damageMultiplier);
-
-        if (i > 0 && !TalentHelper.isImmuneToFalls(this)) {
-        	this.playSound(this.getFallSound(i), 1.0F, 1.0F);
-            this.attackEntityFrom(DamageSource.fall, (float)i);
-            int j = MathHelper.floor_double(this.posX);
-            int k = MathHelper.floor_double(this.posY - 0.20000000298023224D);
-            int l = MathHelper.floor_double(this.posZ);
-            IBlockState iblockstate = this.worldObj.getBlockState(new BlockPos(j, k, l));
-
-            if(iblockstate.getMaterial() != Material.AIR) {
-                SoundType soundtype = iblockstate.getBlock().getSoundType(iblockstate, worldObj, new BlockPos(j, k, l), this);
-                this.playSound(soundtype.getFallSound(), soundtype.getVolume() * 0.5F, soundtype.getPitch() * 0.75F);
-            }
-        }
+    	if(!TalentHelper.isImmuneToFalls(this))
+    		super.fall(distance - TalentHelper.fallProtection(this), damageMultiplier);
     }
 
     @Override

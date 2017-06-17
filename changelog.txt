@@ -13,13 +13,20 @@ TODO Follow Owner Order when when tool etc look at old 1.8.9 code
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.13.1d | 15th June 2017
+v1.13.1d | 17th June 2017
 Initial release, parent version v1.12.1d
-+ You can now use Cooked Salmon instead of Cooked Fish in the breeding bone recipe
++ You can now use Cooked Salmon instead of/as well as Cooked Fish in the breeding bone recipe
+# Improved checks for wheather a block is solid when a dog tries to teleport
+* Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
+* Fixed crash after using collar shears and sneaking
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.12.1e | 17th June 2017
+* Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
+* Fixed crash after using collar shears and sneaking
 
 v1.12.1d | 20th April 2017
 + Dog will now vary his distance from based when you have a tool or sword in your hand
@@ -63,6 +70,10 @@ Initial release, parent version v1.11.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.11.1e | 17th June 2017
+* Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
+* Fixed crash after using collar shears and sneaking
 
 v1.11.1d | 20th April 2017
 + Dog will now vary his distance from based when you have a tool or sword in your hand

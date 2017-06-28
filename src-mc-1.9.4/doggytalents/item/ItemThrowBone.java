@@ -35,48 +35,70 @@ public class ItemThrowBone extends ItemDT {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+		
 		if(itemStackIn.getItemDamage() == 1) {
     		itemStackIn.setItemDamage(0);
-    		playerIn.swingArm(hand);
-    		  return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
+    		playerIn.swingArm(handIn);
+    		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     	}
 		else {
 	
 	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 	
-	        if (!worldIn.isRemote)
-	        {
+	        if (!worldIn.isRemote) {
 	        	EntityItem entityitem = new EntityItem(playerIn.worldObj, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn.copy());
 	            entityitem.setPickupDelay(40);
-                float f = 1.0F;
-                entityitem.motionX = - MathHelper.sin((playerIn.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((playerIn.rotationPitch / 180F) * (float)Math.PI) * f;
-                entityitem.motionZ = MathHelper.cos((playerIn.rotationYaw / 180F) * (float)Math.PI) * MathHelper.cos((playerIn.rotationPitch / 180F) * (float)Math.PI) * f;
-                entityitem.motionY = - MathHelper.sin((playerIn.rotationPitch / 180F) * (float)Math.PI) * f + 0.1F;
-                f = 0.3F;
-                float f1 = itemRand.nextFloat() * (float)Math.PI * 2.0F;
-                f *= itemRand.nextFloat();
-                entityitem.motionX += Math.cos(f1) * (double)f;
-                entityitem.motionY += (itemRand.nextFloat() - itemRand.nextFloat()) * 0.1F;
-                entityitem.motionZ += Math.sin(f1) * (double)f;
+	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
                 worldIn.spawnEntityInWorld(entityitem);
-
-                playerIn.inventory.setInventorySlotContents(playerIn.inventory.currentItem, null);
 	        }
-			
-			if(!playerIn.capabilities.isCreativeMode)
-	            --itemStackIn.stackSize;
-	
+	        
+	        if(!playerIn.capabilities.isCreativeMode)
+	        	--itemStackIn.stackSize;
+
 	        playerIn.addStat(StatList.getObjectUseStats(this));
 	        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
 		}
     }
 	
+	public void setHeadingFromThrower(EntityItem entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
+        float f = -MathHelper.sin(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
+        float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * 0.017453292F);
+        float f2 = MathHelper.cos(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
+        this.setThrowableHeading(entityItem, (double)f, (double)f1, (double)f2, velocity, inaccuracy);
+        entityItem.motionX += entityThrower.motionX;
+        entityItem.motionZ += entityThrower.motionZ;
+
+        if(!entityThrower.onGround)
+        	entityItem.motionY += entityThrower.motionY;
+    }
+
+    public void setThrowableHeading(EntityItem entityItem, double x, double y, double z, float velocity, float inaccuracy) {
+        float f = MathHelper.sqrt_double(x * x + y * y + z * z);
+        x = x / (double)f;
+        y = y / (double)f;
+        z = z / (double)f;
+        x = x + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        y = y + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        z = z + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        x = x * (double)velocity;
+        y = y * (double)velocity;
+        z = z * (double)velocity;
+        entityItem.motionX = x;
+        entityItem.motionY = y;
+        entityItem.motionZ = z;
+        float f1 = MathHelper.sqrt_double(x * x + z * z);
+        entityItem.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
+        entityItem.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
+        entityItem.prevRotationYaw = entityItem.rotationYaw;
+        entityItem.prevRotationPitch = entityItem.rotationPitch;
+    }
+	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(item, 1, 0));
-        par3List.add(new ItemStack(item, 1, 1));
+	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
+		subItems.add(new ItemStack(itemIn, 1, 0));
+		subItems.add(new ItemStack(itemIn, 1, 1));
     }
     
 	@Override

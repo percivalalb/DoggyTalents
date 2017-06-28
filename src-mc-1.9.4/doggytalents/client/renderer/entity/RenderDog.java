@@ -32,6 +32,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         super(renderManager, model, shadowSize);
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
+        this.addLayer(new LayerBone(this));
     }
 
     @Override
@@ -83,13 +84,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
     
     @Override
-	public void renderName(EntityDog dog, double x, double y, double z) {
-        
-        if(!dog.getDogName().isEmpty())
-        	super.renderName(dog, x, y, z);
-    }
-    
-    @Override
     protected void renderEntityName(EntityDog dog, double x, double y, double z, String name, double distanceFromPlayer) {
 
     	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
@@ -114,8 +108,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
 	    			EntityLivingBase owner = dog.getOwner();
 	    			if(owner != null)
 	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), owner.getDisplayName().getUnformattedText(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-	    			else
+	    			else if(dog.getOwnerId() != null)
 	          		   	this.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getOwnerId().toString(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	    			else
+	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), "A Wild Dog", (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
 	             }
     		}
     	}
@@ -124,41 +120,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
         super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
     }
-    
-    /**
-    @Override
-    protected void renderOffsetLivingLabel(EntityDog dog, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {
-    	super.renderOffsetLivingLabel(dog, x, y, z, displayName, scale, distanceFromPlayer);
-    	
-    	if(distanceFromPlayer < 100.0D) {
-        	
-            y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
-        	
-            String tip = dog.mode.getMode().getTip();
-            
-            if(dog.isImmortal() && dog.getHealth() <= 1)
-            	tip = "(I)";
-            
-            String label = String.format("%s(%d)", tip, dog.getDogHunger());
-            
-            if (dog.isPlayerSleeping())
-                this.renderLivingLabel(dog, label,  x, y - 0.5D, z, 64, 0.7F);
-            else
-                this.renderLivingLabel(dog, label, x, y, z, 64, 0.7F);
-        }
-    	
-    	if(distanceFromPlayer < 100.0D) {
-    		y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.5F);
-              
-           if(this.renderManager.livingPlayer.isSneaking()) {
-        	   EntityLivingBase owner = dog.getOwner();
-        	   if(owner != null)
-        		   this.renderLivingLabel(dog, owner.getDisplayName().getUnformattedText(), x, y, z, 5, 0.5F);
-        	   else
-        		   this.renderLivingLabel(dog, dog.getOwnerId(), x, y, z, 5, 0.5F);
-           }
-    	}
-    }**/
     
     public static void renderLabelWithScale(FontRenderer fontRenderer, String str, float x, float y, float z, int p_189692_5_, float rotateX, float rotateY, boolean reverseRender, boolean depth, float scale) {
         GlStateManager.pushMatrix();

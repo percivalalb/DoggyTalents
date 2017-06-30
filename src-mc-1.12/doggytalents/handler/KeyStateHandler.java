@@ -58,7 +58,7 @@ public class KeyStateHandler {
 	            	}
 	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM))) {
 	            	    int command = -1;
-	            	   FMLLog.info("Command");
+	            	    
 	                	if(kb == come) {
 	                		command = 1;
 	                	}

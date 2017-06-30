@@ -28,7 +28,7 @@ public class ItemCommandEmblem extends ItemDT {
 		worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 		if(!worldIn.isRemote) {
 			EntityDoggyBeam doggyBeam = new EntityDoggyBeam(worldIn, playerIn);
-            doggyBeam.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 5.0F, 1.0F);
+            doggyBeam.setHeadingFromThrower(playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 5.0F, 0F);
             worldIn.spawnEntity(doggyBeam);
 		}
 		

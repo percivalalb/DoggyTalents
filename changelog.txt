@@ -7,13 +7,15 @@ Update List Key
 (*) A bug fix
 (/) Other
 
-TODO Follow Owner Order when when tool etc look at old 1.8.9 code
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.13.1d | 17th June 2017
+v1.13.1f | 30th June 2017
++ Now works with the recommended version of MinecraftForge (there have been alot of internal changes) - build on version #1.12-14.21.1.2387
+# Increased the accuracy of the doggy Command Emblem
+
+v1.13.1e | 17th June 2017
 Initial release, parent version v1.12.1d
 + You can now use Cooked Salmon instead of/as well as Cooked Fish in the breeding bone recipe
 # Improved checks for wheather a block is solid when a dog tries to teleport
@@ -29,7 +31,7 @@ v1.12.1e | 17th June 2017
 * Fixed crash after using collar shears and sneaking
 
 v1.12.1d | 20th April 2017
-+ Dog will now vary his distance from based when you have a tool or sword in your hand
++ Dog will now vary their distance from you based on if you have a tool or sword in your hand
 + Dog now holds a bone in his mouth once he has picked up the throw bone
 * Fixed throw bone not working in survival
 * Cleaning up dog code
@@ -76,7 +78,7 @@ v1.11.1e | 17th June 2017
 * Fixed crash after using collar shears and sneaking
 
 v1.11.1d | 20th April 2017
-+ Dog will now vary his distance from based when you have a tool or sword in your hand
++ Dog will now vary their distance from you based on if you have a tool or sword in your hand
 + Dog now holds a bone in his mouth once he has picked up the throw bone
 * Fixed throw bone not working in survival
 * Cleaning up dog code
@@ -122,8 +124,15 @@ Initial release, parent version v1.10.0a
 MC 1.9.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.10.1d | !!!WIP IN PROGRESS!!!
+v1.10.1e | 18th June 2017
++ Dog will now vary their distance from you based on if you have a tool or sword in your hand
++ Dog now holds a bone in his mouth once he has picked up the throw bone
 * Fixed throw bone not working in survival
+* Cleaning up dog code
+* Fetch bone ai is much less derpy
+* Fixed head not rotation when playing fetch
+* Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
+* Fixed crash after using collar shears and sneaking
 
 v1.10.1c | 5th April 2017
 Initial release, parent version v1.10.1c

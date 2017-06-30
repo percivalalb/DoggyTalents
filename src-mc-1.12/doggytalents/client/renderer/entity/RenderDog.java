@@ -2,6 +2,7 @@ package doggytalents.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
+import doggytalents.client.model.ModelDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceReference;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -28,8 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderDog extends RenderLiving<EntityDog> {
 	
-    public RenderDog(RenderManager renderManager, ModelBase model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RenderDog(RenderManager renderManager) {
+        super(renderManager, new ModelDog(), 0.5F);
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
@@ -41,15 +42,11 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
     
     @Override
-    protected void renderLivingAt(EntityDog p_77039_1_, double p_77039_2_, double p_77039_4_, double p_77039_6_) {
-        if (p_77039_1_.isEntityAlive() && p_77039_1_.isPlayerSleeping())
-        {
-            super.renderLivingAt(p_77039_1_, p_77039_2_, p_77039_4_ + 0.5F, p_77039_6_);
-        }
+    protected void renderLivingAt(EntityDog dog, double x, double y, double z) {
+        if(dog.isEntityAlive() && dog.isPlayerSleeping())
+            super.renderLivingAt(dog, x, y + 0.5F, z);
         else
-        {
-            super.renderLivingAt(p_77039_1_, p_77039_2_, p_77039_4_, p_77039_6_);
-        }
+            super.renderLivingAt(dog, x, y, z);
     }
     
     @Override
@@ -107,41 +104,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
         super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
     }
-    
-    /**
-    @Override
-    protected void renderOffsetLivingLabel(EntityDog dog, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {
-    	super.renderOffsetLivingLabel(dog, x, y, z, displayName, scale, distanceFromPlayer);
-    	
-    	if(distanceFromPlayer < 100.0D) {
-        	
-            y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
-        	
-            String tip = dog.mode.getMode().getTip();
-            
-            if(dog.isImmortal() && dog.getHealth() <= 1)
-            	tip = "(I)";
-            
-            String label = String.format("%s(%d)", tip, dog.getDogHunger());
-            
-            if (dog.isPlayerSleeping())
-                this.renderLivingLabel(dog, label,  x, y - 0.5D, z, 64, 0.7F);
-            else
-                this.renderLivingLabel(dog, label, x, y, z, 64, 0.7F);
-        }
-    	
-    	if(distanceFromPlayer < 100.0D) {
-    		y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.5F);
-              
-           if(this.renderManager.livingPlayer.isSneaking()) {
-        	   EntityLivingBase owner = dog.getOwner();
-        	   if(owner != null)
-        		   this.renderLivingLabel(dog, owner.getDisplayName().getUnformattedText(), x, y, z, 5, 0.5F);
-        	   else
-        		   this.renderLivingLabel(dog, dog.getOwnerId(), x, y, z, 5, 0.5F);
-           }
-    	}
-    }**/
     
     public static void renderLabelWithScale(FontRenderer fontRenderer, String str, float x, float y, float z, int p_189692_5_, float rotateX, float rotateY, boolean reverseRender, boolean depth, float scale) {
         GlStateManager.pushMatrix();

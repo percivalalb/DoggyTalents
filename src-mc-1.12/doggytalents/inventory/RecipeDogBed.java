@@ -19,7 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 
-public class RecipeDogBed extends net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {

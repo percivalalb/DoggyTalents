@@ -8,6 +8,7 @@ import doggytalents.client.gui.GuiPackPuppy;
 import doggytalents.client.model.ModelDog;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.client.renderer.entity.RenderDog;
+import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.ClientHandler;
@@ -29,6 +30,7 @@ import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -47,7 +49,6 @@ public class ClientProxy extends CommonProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		
 		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientHandler());
 		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new RenderHandHandler());
 		ClientRegistry.registerKeyBinding(KeyStateHandler.come);
@@ -56,35 +57,12 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(KeyStateHandler.heel);
 		
 		MinecraftForge.EVENT_BUS.register(new KeyStateHandler());
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
 	}
 	
-	@Override
-	public void init() {
-		Minecraft mc = Minecraft.getMinecraft();
-		
-		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, new RenderDog(mc.getRenderManager(), new ModelDog(), 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, new RenderSnowball(mc.getRenderManager(), Items.SNOWBALL, mc.getRenderItem()));
-
-		ModelHelper.registerItem(ModItems.THROW_BONE, 0, "doggytalents:throw_bone");
-		ModelHelper.registerItem(ModItems.THROW_BONE, 1, "doggytalents:throw_bone_wet");
-		ModelBakery.registerItemVariants(ModItems.THROW_BONE, new ResourceLocation(Reference.MOD_ID, "throw_bone"), new ResourceLocation(Reference.MOD_ID, "throw_bone_wet"));
-		ModelHelper.registerItem(ModItems.COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
-		ModelHelper.registerItem(ModItems.TRAINING_TREAT, 0, "doggytalents:training_treat");
-	    ModelHelper.registerItem(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
-	    ModelHelper.registerItem(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
-	    ModelHelper.registerItem(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
-	    ModelHelper.registerItem(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
-	    ModelHelper.registerItem(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
-	    ModelHelper.registerItem(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
-	    ModelHelper.registerItem(ModItems.RADAR, 0, "doggytalents:radar");
-	    ModelHelper.registerItem(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
-	    
-		ModelHelper.registerBlock(ModBlocks.DOG_BATH, "doggytalents:dog_bath");
-		ModelHelper.registerBlock(ModBlocks.DOG_BED, "doggytalents:dog_bed");
-		ModelHelper.registerBlock(ModBlocks.FOOD_BOWL, "doggytalents:food_bowl");
-		
-		//ModelHelper.getBlockModelShapes().registerBuiltInBlocks(ModBlocks.foodBowl);
-	}
+	
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 

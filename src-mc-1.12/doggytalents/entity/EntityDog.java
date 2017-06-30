@@ -402,7 +402,7 @@ public class EntityDog extends EntityAbstractDog {
     
     @Override
     //TODO  public void moveEntityWithHeading(float strafe, float forward) {
-    public void func_191986_a(float strafe, float p_191986_2_, float forward) {
+    public void travel(float strafe, float p_191986_2_, float forward) {
     
   
         if(this.isControllingPassengerPlayer()) {
@@ -414,7 +414,7 @@ public class EntityDog extends EntityAbstractDog {
              this.renderYawOffset = this.rotationYaw;
              this.rotationYawHead = this.renderYawOffset;
              strafe = entitylivingbase.moveStrafing * 0.75F;
-             forward = entitylivingbase.field_191988_bg;
+             forward = entitylivingbase.moveForward;
 
             if (forward <= 0.0F)
                 forward *= 0.5F;
@@ -434,7 +434,7 @@ public class EntityDog extends EntityAbstractDog {
             if (this.canPassengerSteer())
             {
             	this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-            	super.func_191986_a(strafe, p_191986_2_, forward);
+            	super.travel(strafe, p_191986_2_, forward);
             }
            	else if (entitylivingbase instanceof EntityPlayer)
            	{
@@ -457,9 +457,73 @@ public class EntityDog extends EntityAbstractDog {
         else {
             this.stepHeight = 0.5F;
             this.jumpMovementFactor = 0.02F;
-            super.func_191986_a(strafe, p_191986_2_, forward);
+            super.travel(strafe, p_191986_2_, forward);
         }
     }
+    
+    /**
+    public void travel(float p_191986_1_, float p_191986_2_, float p_191986_3_)
+    {
+        Entity entity = this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+
+        if(this.isBeingRidden() && this.canBeSteered())
+        {
+        	EntityLivingBase entityLiving = (EntityLivingBase)entity;
+            this.rotationYaw = entity.rotationYaw;
+            this.prevRotationYaw = this.rotationYaw;
+            this.rotationPitch = entity.rotationPitch * 0.5F;
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.renderYawOffset = this.rotationYaw;
+            this.rotationYawHead = this.rotationYaw;
+            p_191986_1_ = entityLiving.moveStrafing * 0.75F;
+            p_191986_3_ = entityLiving.moveForward;
+
+           if (p_191986_3_ <= 0.0F)
+        	   p_191986_3_ *= 0.5F;
+            
+            
+            this.stepHeight = 1.0F;
+            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
+
+            if (this.canPassengerSteer())
+            {
+                float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.225F;
+
+               // if (this.boosting)
+                //{
+                //    f += f * 1.15F * MathHelper.sin((float)this.boostTime / (float)this.totalBoostTime * (float)Math.PI);
+                //}
+
+                this.setAIMoveSpeed(f);
+                super.travel(p_191986_1_, p_191986_2_, p_191986_3_);
+            }
+            else
+            {
+                this.motionX = 0.0D;
+                this.motionY = 0.0D;
+                this.motionZ = 0.0D;
+            }
+
+            this.prevLimbSwingAmount = this.limbSwingAmount;
+            double d1 = this.posX - this.prevPosX;
+            double d0 = this.posZ - this.prevPosZ;
+            float f1 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+
+            if (f1 > 1.0F)
+            {
+                f1 = 1.0F;
+            }
+
+            this.limbSwingAmount += (f1 - this.limbSwingAmount) * 0.4F;
+            this.limbSwing += this.limbSwingAmount;
+        }
+        else
+        {
+            this.stepHeight = 0.5F;
+            this.jumpMovementFactor = 0.02F;
+            super.travel(p_191986_1_, p_191986_2_, p_191986_3_);
+        }
+    }**/
     
     @Override
     public float getAIMoveSpeed() {
@@ -470,8 +534,7 @@ public class EntityDog extends EntityAbstractDog {
     	if((!(this.getAttackTarget() instanceof EntityDog) && !(this.getAttackTarget() instanceof EntityPlayer)) || this.isControllingPassengerPlayer())
     		if (this.levels.isDireDog())
     			speed += 0.05D;
-
-        return (float)speed;
+    	 return (float)speed;
     }
     
     public boolean isImmortal() {

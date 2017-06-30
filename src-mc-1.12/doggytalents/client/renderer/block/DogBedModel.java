@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import javax.vecmath.Matrix4f;
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.minecraftforge.client.model.ModelLoader;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
 import jline.internal.Nullable;
@@ -25,8 +26,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
-import net.minecraftforge.client.model.IRetexturableModel;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.FMLLog;
@@ -34,27 +34,28 @@ import net.minecraftforge.fml.common.FMLLog;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import net.minecraftforge.client.model.ModelLoader;
 
-public class DogBedModel implements IPerspectiveAwareModel {
+public class DogBedModel implements IBakedModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 	
-    private IPerspectiveAwareModel variantModel;
-    private IRetexturableModel baseModel;
-
+    private IModel model;
+    private IBakedModel bakedModel;
+    
     private final Function<ResourceLocation, TextureAtlasSprite> textureGetter;
     private final VertexFormat format;
     private final Map<Map<String, EnumFacing>, IBakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(IPerspectiveAwareModel modelDefault, IRetexturableModel modelWooden, VertexFormat format) {
-        this.variantModel = modelDefault;
-        this.baseModel = modelWooden;
+    public DogBedModel(IModel model, IBakedModel bakedModel, VertexFormat format) {
+        this.model = model;
+        this.bakedModel = bakedModel;
         this.textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
         this.format = format;
     }
 
     public IBakedModel getCustomModel(String casingResource, String beddingResource, @Nullable EnumFacing facing) {
-        IBakedModel customModel = this.variantModel;
+        IBakedModel customModel = this.bakedModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
 
@@ -63,12 +64,12 @@ public class DogBedModel implements IPerspectiveAwareModel {
 
         if(this.cache.containsKey(cacheKey))
             customModel = this.cache.get(cacheKey);
-        else if(this.baseModel != null) {
+        else if(this.model != null) {
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
             builder.put("bedding", beddingResource);
             builder.put("casing", casingResource);
             builder.put("particle", casingResource);
-            IModel retexturedModel = this.baseModel.retexture(builder.build());
+            IModel retexturedModel = this.model.retexture(builder.build());
 
             //Likely inventory render
             if(facing == null) facing = EnumFacing.NORTH;
@@ -106,27 +107,27 @@ public class DogBedModel implements IPerspectiveAwareModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return this.variantModel.isAmbientOcclusion();
+        return this.bakedModel.isAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return this.variantModel.isGui3d();
+        return this.bakedModel.isGui3d();
     }
 
     @Override
     public boolean isBuiltInRenderer() {
-        return this.variantModel.isBuiltInRenderer();
+        return this.bakedModel.isBuiltInRenderer();
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return this.variantModel.getParticleTexture();
+        return this.bakedModel.getParticleTexture();
     }
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return this.variantModel.getItemCameraTransforms();
+        return this.bakedModel.getItemCameraTransforms();
     }
 
     @Override
@@ -136,6 +137,6 @@ public class DogBedModel implements IPerspectiveAwareModel {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
+        return Pair.of(this, this.bakedModel.handlePerspective(cameraTransformType).getRight());
     }
 }

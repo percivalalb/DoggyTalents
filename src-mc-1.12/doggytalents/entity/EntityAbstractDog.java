@@ -11,6 +11,7 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
@@ -244,7 +245,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
     @Override
     public boolean canBeSteered() {
-        return true;
+        return this.getControllingPassenger() instanceof EntityPlayer;
     }
 	
 	private void onFinishShaking() {

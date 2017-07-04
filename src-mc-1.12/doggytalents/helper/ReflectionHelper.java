@@ -150,7 +150,17 @@ public class ReflectionHelper {
 		} 
 	}
 	
-	public static Method getMethod(Class<?> class1, String methodName, Class[] argsClass) {
+	//Invoke void method
+	public static void invokeMethod(Class<?> class1, String methodName, Object instance, Class[] argsClass, Object[] args) {
+		try {
+			getMethod(class1, methodName, argsClass).invoke(instance, args);
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	public static Method getMethod(Class<?> class1, String methodName, Class... argsClass) {
 		try {
 			
 	        Method method = class1.getDeclaredMethod(methodName, argsClass);

@@ -60,7 +60,6 @@ public class DoggyTalentsMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
-		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		
 		ModEntities.inti();
 		proxy.preInit();

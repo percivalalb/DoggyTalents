@@ -56,7 +56,7 @@ public class KeyStateHandler {
 	            			PacketDispatcher.sendToServer(jumpMessage);
 	            		}
 	            	}
-	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.commandEmblem) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.commandEmblem))) {
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM))) {
 	            	    int command = -1;
 	            	   FMLLog.info("Command");
 	                	if(kb == come) {

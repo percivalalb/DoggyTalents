@@ -23,7 +23,7 @@ public class EntityInteractHandler {
 			EntityPlayer player = event.getEntityPlayer();
 			ItemStack stack = event.getEntityPlayer().getHeldItem(EnumHand.MAIN_HAND);
 			
-			if(event.getTarget() instanceof EntityWolf && stack.getItem() == ModItems.trainingTreat) {
+			if(event.getTarget() instanceof EntityWolf && stack.getItem() == ModItems.TRAINING_TREAT) {
 				EntityWolf wolf = (EntityWolf)event.getTarget();
 				 
 				if(!wolf.isDead && wolf.isTamed() && wolf.isOwner(player)) {

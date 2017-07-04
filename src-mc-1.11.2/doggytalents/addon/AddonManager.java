@@ -4,6 +4,7 @@ import doggytalents.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.addon.extratrees.ExtraTreesAddon;
 import doggytalents.addon.extrautilites.ExtraUtilitesAddon;
 import doggytalents.addon.forestry.ForestryAddon;
+import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import doggytalents.addon.thaumcraft.ThaumcraftAddon;
 import doggytalents.addon.tropicraft.TropicraftAddon;
 import doggytalents.addon.twilightforest.TwilightForestAddon;
@@ -19,6 +20,7 @@ public class AddonManager {
 	
 	public static void registerAddons() {
 		EVENT_BUS.register(new ForestryAddon());
+		EVENT_BUS.register(new ItemPhysicAddon());
 		EVENT_BUS.register(new ExtraTreesAddon());
 		EVENT_BUS.register(new TropicraftAddon());
 		EVENT_BUS.register(new BiomesOPlentyAddon());

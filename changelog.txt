@@ -11,6 +11,9 @@ Update List Key
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+v1.13.1g | WIP
++ Added Russian language file - thanks to MrShadowJasonRus for the translation
+
 v1.13.1f | 30th June 2017
 + Now works with the recommended version of MinecraftForge (there have been alot of internal changes) - build on version #1.12-14.21.1.2387
 # Increased the accuracy of the doggy Command Emblem
@@ -25,6 +28,11 @@ Initial release, parent version v1.12.1d
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.12.1g | WIP
++ Added Russian language file - thanks to MrShadowJasonRus for the translation
+# Block/Item registration now uses the event registry system
+# Entity renderer registration is now how it should be
 
 v1.12.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -72,6 +80,9 @@ Initial release, parent version v1.11.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.11.1g | WIP
++ Added Russian language file - thanks to MrShadowJasonRus for the translation
 
 v1.11.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -123,6 +134,9 @@ Initial release, parent version v1.10.0a
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.9.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+v1.10.1g | WIP
++ Added Russian language file - thanks to MrShadowJasonRus for the translation
 
 v1.10.1e | 18th June 2017
 + Dog will now vary their distance from you based on if you have a tool or sword in your hand

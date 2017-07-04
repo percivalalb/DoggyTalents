@@ -99,7 +99,7 @@ public class DogBedRegistry {
 	}
 	
 	public static ItemStack createItemStack(String casingId, String beddingId) {
-		ItemStack stack = new ItemStack(ModBlocks.dogBed, 1, 0);
+		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());
 		
 		NBTTagCompound tag = new NBTTagCompound();

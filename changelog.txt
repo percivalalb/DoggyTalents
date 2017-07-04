@@ -12,6 +12,7 @@ MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.13.1g | WIP
++ Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 
 v1.13.1f | 30th June 2017
@@ -30,6 +31,7 @@ MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.12.1g | WIP
++ Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 # Block/Item registration now uses the event registry system
 # Entity renderer registration is now how it should be
@@ -82,7 +84,10 @@ MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.11.1g | WIP
++ Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
+# Block/Item registration now uses the event registry system
+# Entity renderer registration is now how it should be
 
 v1.11.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it

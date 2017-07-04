@@ -18,6 +18,6 @@ public class CreativeTabDoggyTalents extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Item getTabIconItem() {
-		return ModItems.trainingTreat;
+		return ModItems.TRAINING_TREAT;
 	}
 }

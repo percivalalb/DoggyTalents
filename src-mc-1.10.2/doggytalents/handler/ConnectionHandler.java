@@ -27,8 +27,8 @@ public class ConnectionHandler {
 		if(Constants.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
 			persistTag.setBoolean("gotDTStartingItems", true);
 
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.doggyCharm));
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.commandEmblem));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.COMMAND_EMBLEM));
         }
 	}
 }

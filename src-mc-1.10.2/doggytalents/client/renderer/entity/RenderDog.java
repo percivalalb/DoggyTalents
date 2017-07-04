@@ -2,6 +2,7 @@ package doggytalents.client.renderer.entity;
 
 import org.lwjgl.opengl.GL11;
 
+import doggytalents.client.model.ModelDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceReference;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -28,8 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderDog extends RenderLiving<EntityDog> {
 	
-    public RenderDog(RenderManager renderManager, ModelBase model, float shadowSize) {
-        super(renderManager, model, shadowSize);
+    public RenderDog(RenderManager renderManagerIn) {
+        super(renderManagerIn, new ModelDog(), 0.5F);
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));

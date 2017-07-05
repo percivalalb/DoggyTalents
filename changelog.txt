@@ -13,8 +13,11 @@ MC 1.12
 
 v1.13.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
++ Readded support for the wooden planks from Forestry mod to be used as casing in dog bed
++ Added a whole new creative tab just for dog beds, there are hundreds of combinations!
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 * Fixed crash on server startup
+* Fixed dog bed not displaying their tooltip
 
 v1.13.1f | 30th June 2017
 + Now works with the recommended version of MinecraftForge (there have been alot of internal changes) - build on version #1.12-14.21.1.2387
@@ -33,10 +36,13 @@ MC 1.11.2
 
 v1.12.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
++ Readded support for the wooden planks from Forestry mod to be used as casing in dog bed
++ Added a whole new creative tab just for dog beds, there are hundreds of combinations!
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 # Block/Item registration now uses the event registry system
 # Entity renderer registration is now how it should be
 * Fixed crash on server startup
+* Fixed dog bed not displaying their tooltip
 
 v1.12.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -87,10 +93,13 @@ MC 1.10.2
 
 v1.11.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
++ Readded support for the wooden planks from Forestry mod to be used as casing in dog bed
++ Added a whole new creative tab just for dog beds, there are hundreds of combinations!
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 # Block/Item registration now uses the event registry system
 # Entity renderer registration is now how it should be
 * Fixed crash on server startup
+* Fixed dog bed not displaying their tooltip
 
 v1.11.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -145,6 +154,8 @@ MC 1.9.4
 
 v1.10.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
++ Readded support for the wooden planks from Forestry mod to be used as casing in dog bed
++ Added a whole new creative tab just for dog beds, there are hundreds of combinations!
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 
 v1.10.1e | 18th June 2017

@@ -52,7 +52,7 @@ public class ModBlocks {
 	
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(makeItemBlock(DOG_BED));
+		event.getRegistry().register(new ItemDogBed(DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 	    event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    event.getRegistry().register(makeItemBlock(FOOD_BOWL));
 	}

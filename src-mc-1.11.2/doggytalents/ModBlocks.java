@@ -3,6 +3,7 @@ package doggytalents;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
+import doggytalents.block.ItemDogBed;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBath;
@@ -50,7 +51,7 @@ public class ModBlocks {
 	
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(makeItemBlock(DOG_BED));
+		event.getRegistry().register(new ItemDogBed(DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 	    event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    event.getRegistry().register(makeItemBlock(FOOD_BOWL));
 	}

@@ -1,6 +1,9 @@
 package doggytalents.addon.forestry;
 
 import doggytalents.addon.AddonEvent;
+import doggytalents.api.registry.DogBedRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -28,10 +31,14 @@ public class ForestryAddon {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 		
-		//for(int i = 0; i < ForestryLib.PLANKS_1_COUNT; ++i)
-		//	DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_1_ID, i);
-		//for(int i = 0; i < ForestryLib.PLANKS_2_COUNT; ++i)
-		//	DogBedRegistry.CASINGS.registerMaterial(ForestryLib.PLANKS_2_ID, i);
+		Block planks1 = API.getBlockFromName(ForestryLib.ITEM_NAME_1);
+		Block planks2 = API.getBlockFromName(ForestryLib.ITEM_NAME_2);
+		
+		for(int i = 0; i < ForestryLib.PLANKS_1_TEXURE.length; i++)
+			DogBedRegistry.CASINGS.registerMaterial(planks1, i, ForestryLib.TEXTURE_LOCATION + ForestryLib.PLANKS_1_TEXURE[i]);
+		
+		for(int i = 0; i < ForestryLib.PLANKS_2_TEXURE.length; i++)
+			DogBedRegistry.CASINGS.registerMaterial(planks2, i, ForestryLib.TEXTURE_LOCATION + ForestryLib.PLANKS_2_TEXURE[i]);
 		
 	}
 }

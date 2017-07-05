@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 public class DoggyTalentsAPI {
 	
 	public static CreativeTabs CREATIVE_TAB;
+	public static CreativeTabs CREATIVE_TAB_BED;
 	
 	public static ItemList PACKPUPPY_BLACKLIST = new ItemList();
 	

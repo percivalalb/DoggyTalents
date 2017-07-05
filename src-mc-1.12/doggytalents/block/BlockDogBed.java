@@ -56,7 +56,6 @@ public class BlockDogBed extends BlockContainer {
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setSoundType(SoundType.WOOD);
-		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 	

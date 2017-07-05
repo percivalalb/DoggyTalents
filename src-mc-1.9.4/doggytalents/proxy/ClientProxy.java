@@ -65,23 +65,23 @@ public class ClientProxy extends CommonProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, new RenderDog(mc.getRenderManager(), new ModelDog(), 0.5F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, new RenderSnowball(mc.getRenderManager(), Items.SNOWBALL, mc.getRenderItem()));
 
-		ModelHelper.registerItem(ModItems.throwBone, 0, "doggytalents:throw_bone");
-		ModelHelper.registerItem(ModItems.throwBone, 1, "doggytalents:throw_bone_wet");
-		ModelBakery.registerItemVariants(ModItems.throwBone, new ResourceLocation(Reference.MOD_ID, "throw_bone"), new ResourceLocation(Reference.MOD_ID, "throw_bone_wet"));
-		ModelHelper.registerItem(ModItems.commandEmblem, 0, "doggytalents:command_emblem");
-		ModelHelper.registerItem(ModItems.trainingTreat, 0, "doggytalents:training_treat");
-	    ModelHelper.registerItem(ModItems.superTreat, 0, "doggytalents:super_treat");
-	    ModelHelper.registerItem(ModItems.masterTreat, 0, "doggytalents:master_treat");
-	    ModelHelper.registerItem(ModItems.direTreat, 0, "doggytalents:dire_treat");
-	    ModelHelper.registerItem(ModItems.breedingBone, 0, "doggytalents:breeding_bone");
-	    ModelHelper.registerItem(ModItems.collarShears, 0, "doggytalents:collar_shears");
-	    ModelHelper.registerItem(ModItems.doggyCharm, 0, "doggytalents:doggy_charm");
-	    ModelHelper.registerItem(ModItems.radar, 0, "doggytalents:radar");
-	    ModelHelper.registerItem(ModItems.radioCollar, 0, "doggytalents:radio_collar");
+		ModelHelper.registerItem(ModItems.THROW_BONE, 0, "doggytalents:throw_bone");
+		ModelHelper.registerItem(ModItems.THROW_BONE, 1, "doggytalents:throw_bone_wet");
+		ModelBakery.registerItemVariants(ModItems.THROW_BONE, new ResourceLocation(Reference.MOD_ID, "throw_bone"), new ResourceLocation(Reference.MOD_ID, "throw_bone_wet"));
+		ModelHelper.registerItem(ModItems.COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
+		ModelHelper.registerItem(ModItems.TRAINING_TREAT, 0, "doggytalents:training_treat");
+	    ModelHelper.registerItem(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
+	    ModelHelper.registerItem(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
+	    ModelHelper.registerItem(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
+	    ModelHelper.registerItem(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
+	    ModelHelper.registerItem(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
+	    ModelHelper.registerItem(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
+	    ModelHelper.registerItem(ModItems.RADAR, 0, "doggytalents:radar");
+	    ModelHelper.registerItem(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
 	    
-		ModelHelper.registerBlock(ModBlocks.dogBath, "doggytalents:dog_bath");
-		ModelHelper.registerBlock(ModBlocks.dogBed, "doggytalents:dog_bed");
-		ModelHelper.registerBlock(ModBlocks.foodBowl, "doggytalents:food_bowl");
+		ModelHelper.registerBlock(ModBlocks.DOG_BATH, "doggytalents:dog_bath");
+		ModelHelper.registerBlock(ModBlocks.DOG_BED, "doggytalents:dog_bed");
+		ModelHelper.registerBlock(ModBlocks.FOOD_BOWL, "doggytalents:food_bowl");
 		
 		//ModelHelper.getBlockModelShapes().registerBuiltInBlocks(ModBlocks.foodBowl);
 	}

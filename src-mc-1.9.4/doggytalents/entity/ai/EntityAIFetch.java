@@ -100,7 +100,7 @@ public class EntityAIFetch extends EntityAIBase {
         	if(entity instanceof EntityItem) {
         		EntityItem entityItem = (EntityItem)entity;
         		
-        		if(entityItem.getEntityItem().getItem() == ModItems.throwBone && entityItem.getEntityItem().getItemDamage() == 0)
+        		if(entityItem.getEntityItem().getItem() == ModItems.THROW_BONE && entityItem.getEntityItem().getItemDamage() == 0)
         			return entityItem;
         			
         	}

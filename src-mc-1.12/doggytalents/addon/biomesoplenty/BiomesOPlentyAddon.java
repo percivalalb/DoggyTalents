@@ -31,9 +31,12 @@ public class BiomesOPlentyAddon {
 			return;
 		
 		Block planks1 = Block.getBlockFromName(BiomesOPlentyLib.ITEM_NAME_1);
+		Block bambooThatching = Block.getBlockFromName(BiomesOPlentyLib.ITEM_BAMBOO_THATCHING);
 		
 		for(int i = 0; i < BiomesOPlentyLib.PLANKS_1_TEXURE.length; i++)
 			DogBedRegistry.CASINGS.registerMaterial(planks1, i, BiomesOPlentyLib.TEXTURE_LOCATION + BiomesOPlentyLib.PLANKS_1_TEXURE[i]);
+		
+		DogBedRegistry.CASINGS.registerMaterial(bambooThatching, 0, BiomesOPlentyLib.TEXTURE_LOCATION + BiomesOPlentyLib.BAMBOO_THATCHING_TEXURE);
 		
 	}
 }

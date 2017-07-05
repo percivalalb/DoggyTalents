@@ -143,7 +143,7 @@ dogbed.casing.forestry:planks.1.12=Zebrawood Plank Casing
 
 dogbed.casing.biomesoplenty:planks_0.0=Sacred Oak Plank Casing
 dogbed.casing.biomesoplenty:planks_0.1=Cherry Plank Casing
-dogbed.casing.biomesoplenty:planks_0.2=Dark Plank Casing
+dogbed.casing.biomesoplenty:planks_0.2=Umbran Plank Casing
 dogbed.casing.biomesoplenty:planks_0.3=Fir Plank Casing
 dogbed.casing.biomesoplenty:planks_0.4=Ethereal Plank Casing
 dogbed.casing.biomesoplenty:planks_0.5=Magic Plank Casing
@@ -151,39 +151,13 @@ dogbed.casing.biomesoplenty:planks_0.6=Mangrove Plank Casing
 dogbed.casing.biomesoplenty:planks_0.7=Palm Plank Casing
 dogbed.casing.biomesoplenty:planks_0.8=Redwood Plank Casing
 dogbed.casing.biomesoplenty:planks_0.9=Willow Plank Casing
-dogbed.casing.biomesoplenty:planks_0.10=Bamboo Thatching Casing
-dogbed.casing.biomesoplenty:planks_0.11=Pine Plank Casing
-dogbed.casing.biomesoplenty:planks_0.12=Hellbark Plank Casing
-dogbed.casing.biomesoplenty:planks_0.13=Jacaranda Plank Casing
-dogbed.casing.biomesoplenty:planks_0.14=Mahogany Plank Casing
-
-dogbed.casing.ExtraUtilites:colorWoodPlanks.0=White Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.1=Orange Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanksl.2=Magenta Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.3=Light Blue Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.4=Yellow Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.5=Lime Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.6=Pink Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.7=Gray Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.8=Light Gray Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.9=Cyan Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.10=Purple Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.11=Blue Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.12=Brown Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.13=Green Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.14=Red Coloured Plank Casing
-dogbed.casing.ExtraUtilites:colorWoodPlanks.15=Black Coloured Plank Casing
-
-dogbed.casing.Thaumcraft:blockWoodenDevice.6=Greatwood Plank Casing
-dogbed.casing.Thaumcraft:blockWoodenDevice.7=Silverwood Plank Casing
-
-dogbed.casing.TwilightForest:tile.TFTowerStone.0=Towerwood Plank Casing
-dogbed.casing.TwilightForest:tile.TFTowerStone.2=Cracked Towerwood Casing
-dogbed.casing.TwilightForest:tile.TFTowerStone.3=Mossy Towerwood Casing
-dogbed.casing.TwilightForest:tile.TFTowerStone.4=Infested Towerwood Casing
-
-dogbed.casing.tropicraft:tile.plank.0=Palm Plank Casing
-dogbed.casing.tropicraft:tile.bambooBundle.0=Bamboo Bundle Casing
+dogbed.casing.biomesoplenty:planks_0.10=Pine Plank Casing
+dogbed.casing.biomesoplenty:planks_0.11=Hellbark Plank Casing
+dogbed.casing.biomesoplenty:planks_0.12=Jacaranda Plank Casing
+dogbed.casing.biomesoplenty:planks_0.13=Mahogany Plank Casing
+dogbed.casing.biomesoplenty:planks_0.14=Ebony Plank Casing
+dogbed.casing.biomesoplenty:planks_0.15=Eucalyptus Plank Casing
+dogbed.casing.biomesoplenty:bamboo_thatching.0=Bamboo Thatching Casing
 
 dogtreat.levelup=Level up!
 dogtreat.tooyoung=This dog's a bit too young to be learning skills just yet.

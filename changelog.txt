@@ -14,6 +14,7 @@ MC 1.12
 v1.13.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Readded support for the wooden planks from Forestry mod to be used as casing in dog bed
++ Readded support for the wooden planks and bamboo thatching from BiomesoPlenty mod to be used as casing in dog bed
 + Added a whole new creative tab just for dog beds, there are hundreds of combinations!
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 * Fixed crash on server startup

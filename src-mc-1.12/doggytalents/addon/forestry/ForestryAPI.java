@@ -13,8 +13,4 @@ public class ForestryAPI {
 			return;
 		
 	}
-	
-	public Block getBlockFromName(String name) {
-		return Block.getBlockFromName(name);
-	}
 }

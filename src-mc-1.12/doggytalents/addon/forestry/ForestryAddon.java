@@ -31,8 +31,8 @@ public class ForestryAddon {
 		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
 			return;
 		
-		Block planks1 = API.getBlockFromName(ForestryLib.ITEM_NAME_1);
-		Block planks2 = API.getBlockFromName(ForestryLib.ITEM_NAME_2);
+		Block planks1 = Block.getBlockFromName(ForestryLib.ITEM_NAME_1);
+		Block planks2 = Block.getBlockFromName(ForestryLib.ITEM_NAME_2);
 		
 		for(int i = 0; i < ForestryLib.PLANKS_1_TEXURE.length; i++)
 			DogBedRegistry.CASINGS.registerMaterial(planks1, i, ForestryLib.TEXTURE_LOCATION + ForestryLib.PLANKS_1_TEXURE[i]);

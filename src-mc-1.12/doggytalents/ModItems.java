@@ -10,12 +10,10 @@ import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,13 +69,13 @@ public class ModItems {
 		ModelHelper.setModel(ModItems.THROW_BONE, 1, "doggytalents:throw_bone_wet");
 		ModelHelper.setModel(ModItems.COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
 		ModelHelper.setModel(ModItems.TRAINING_TREAT, 0, "doggytalents:training_treat");
-	    ModelHelper.setModel(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
-	    ModelHelper.setModel(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
-	    ModelHelper.setModel(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
-	    ModelHelper.setModel(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
-	    ModelHelper.setModel(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
-	    ModelHelper.setModel(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
-	    ModelHelper.setModel(ModItems.RADAR, 0, "doggytalents:radar");
-	    ModelHelper.setModel(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
+		ModelHelper.setModel(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
+		ModelHelper.setModel(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
+		ModelHelper.setModel(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
+		ModelHelper.setModel(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
+		ModelHelper.setModel(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
+		ModelHelper.setModel(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
+		ModelHelper.setModel(ModItems.RADAR, 0, "doggytalents:radar");
+		ModelHelper.setModel(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
 	}
 }

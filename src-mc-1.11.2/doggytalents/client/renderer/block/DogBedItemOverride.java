@@ -1,8 +1,5 @@
 package doggytalents.client.renderer.block;
 
-import java.util.ArrayList;
-
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import doggytalents.api.registry.DogBedRegistry;

@@ -1,5 +1,8 @@
 package doggytalents;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
@@ -57,12 +60,11 @@ public class DoggyTalentsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
 	
-	public static Configuration config;
+	public static final Logger logger = LogManager.getLogger(Reference.MOD_NAME);
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
-		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 
 		ModEntities.inti();
 		proxy.preInit();

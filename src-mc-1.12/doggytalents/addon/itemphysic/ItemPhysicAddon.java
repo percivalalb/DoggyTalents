@@ -1,12 +1,8 @@
 package doggytalents.addon.itemphysic;
 
-import java.lang.reflect.Field;
-
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.addon.AddonEvent;
-import doggytalents.helper.ReflectionHelper;
-import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

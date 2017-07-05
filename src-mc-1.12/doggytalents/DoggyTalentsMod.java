@@ -1,5 +1,8 @@
 package doggytalents;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
@@ -8,8 +11,6 @@ import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.handler.ConfigurationHandler;
 import doggytalents.handler.ConnectionHandler;
 import doggytalents.handler.EntityInteractHandler;
-import doggytalents.handler.RecipeHandler;
-import doggytalents.inventory.RecipeDogBed;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.proxy.CommonProxy;
@@ -34,10 +35,6 @@ import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
@@ -48,8 +45,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.GameData;
 
 /**
  * @author ProPercivalalb
@@ -62,6 +57,8 @@ public class DoggyTalentsMod {
 	
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
+	
+	public static final Logger logger = LogManager.getLogger(Reference.MOD_NAME);
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

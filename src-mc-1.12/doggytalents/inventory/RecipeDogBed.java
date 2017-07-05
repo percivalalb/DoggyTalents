@@ -1,23 +1,13 @@
 package doggytalents.inventory;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
-import doggytalents.ModBlocks;
 import doggytalents.api.registry.DogBedRegistry;
-
-import java.util.List;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 
 public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 

@@ -3,10 +3,8 @@ package doggytalents.tileentity;
 import java.util.List;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -20,7 +18,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb

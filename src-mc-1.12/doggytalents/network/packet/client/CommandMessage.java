@@ -8,20 +8,13 @@ import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.ChatHelper;
 import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class CommandMessage extends AbstractServerMessage {

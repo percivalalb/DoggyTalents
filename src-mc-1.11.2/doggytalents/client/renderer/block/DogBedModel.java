@@ -1,15 +1,19 @@
 package doggytalents.client.renderer.block;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import javax.vecmath.Matrix4f;
+
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import javax.vecmath.Matrix4f;
-import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
 import jline.internal.Nullable;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -18,22 +22,13 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.FMLLog;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 public class DogBedModel implements IPerspectiveAwareModel {
 	

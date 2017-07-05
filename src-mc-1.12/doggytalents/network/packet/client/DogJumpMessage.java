@@ -6,8 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.potion.Potion;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class DogJumpMessage extends AbstractServerMessage {

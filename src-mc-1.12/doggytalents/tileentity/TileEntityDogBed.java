@@ -3,11 +3,8 @@ package doggytalents.tileentity;
 import java.util.List;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.network.PacketDispatcher;
-import doggytalents.network.packet.client.DogBedUpdateMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;

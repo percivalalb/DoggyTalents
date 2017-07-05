@@ -14,6 +14,7 @@ MC 1.12
 v1.13.1g | WIP
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
+* Fixed crash on server startup
 
 v1.13.1f | 30th June 2017
 + Now works with the recommended version of MinecraftForge (there have been alot of internal changes) - build on version #1.12-14.21.1.2387
@@ -35,6 +36,7 @@ v1.12.1g | WIP
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 # Block/Item registration now uses the event registry system
 # Entity renderer registration is now how it should be
+* Fixed crash on server startup
 
 v1.12.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -88,6 +90,7 @@ v1.11.1g | WIP
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 # Block/Item registration now uses the event registry system
 # Entity renderer registration is now how it should be
+* Fixed crash on server startup
 
 v1.11.1e | 17th June 2017
 * Fixed passengers taking the full amount of fall damage when riding a dog - you will now take the same as your dog, if your dog is immune you are too while riding it
@@ -141,6 +144,7 @@ MC 1.9.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.10.1g | WIP
++ Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
 + Added Russian language file - thanks to MrShadowJasonRus for the translation
 
 v1.10.1e | 18th June 2017

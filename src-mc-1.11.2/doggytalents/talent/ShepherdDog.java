@@ -5,7 +5,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * @author ProPercivalalb

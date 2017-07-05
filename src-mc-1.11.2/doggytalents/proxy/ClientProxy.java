@@ -1,40 +1,29 @@
 package doggytalents.proxy;
 
-import doggytalents.ModBlocks;
-import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
-import doggytalents.client.model.ModelDog;
-import doggytalents.client.model.ModelHelper;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.ClientHandler;
 import doggytalents.handler.KeyStateHandler;
 import doggytalents.handler.RenderHandHandler;
 import doggytalents.handler.ScreenRenderHandler;
-import doggytalents.lib.Reference;
 import doggytalents.talent.BedFinderHandler;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.ModelBakery;
-import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
@@ -48,7 +37,6 @@ public class ClientProxy extends CommonProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		
 		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientHandler());
 		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new RenderHandHandler());
 		ClientRegistry.registerKeyBinding(KeyStateHandler.come);

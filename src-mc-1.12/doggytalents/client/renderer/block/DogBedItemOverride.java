@@ -1,8 +1,5 @@
 package doggytalents.client.renderer.block;
 
-import java.util.ArrayList;
-
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import doggytalents.api.registry.DogBedRegistry;
@@ -13,7 +10,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class DogBedItemOverride extends ItemOverrideList {
 
     public DogBedItemOverride() {

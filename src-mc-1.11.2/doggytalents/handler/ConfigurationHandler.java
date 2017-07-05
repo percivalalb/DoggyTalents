@@ -1,5 +1,8 @@
 package doggytalents.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import doggytalents.client.gui.ConfigGuiFactory;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
@@ -7,11 +10,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author ProPercivalalb, NovaViper

@@ -48,7 +48,6 @@ public class ClientProxy extends CommonProxy {
 		Minecraft mc = Minecraft.getMinecraft();
 		
 		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientHandler());
 		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
 		MinecraftForge.EVENT_BUS.register(new RenderHandHandler());
 		ClientRegistry.registerKeyBinding(KeyStateHandler.come);

@@ -1,9 +1,8 @@
-package doggytalents.client.gui;
+package doggytalents.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import doggytalents.handler.ConfigurationHandler;
 import doggytalents.lib.Reference;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -49,7 +48,7 @@ public class ModGuiConfig extends GuiConfig {
 
 			List<IConfigElement> list = new ArrayList<IConfigElement>();
 			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.config.getCategory(ConfigurationHandler.CATEGORY_DOGGYSETTINGS))).getChildElements());
+			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_DOGGYSETTINGS))).getChildElements());
 			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DOGGYSETTINGS, this.configElement.requiresWorldRestart() ||
 					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
 					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.doggysettings"), I18n.format("modgui.config.doggysettings.tooltip"));
@@ -67,7 +66,7 @@ public class ModGuiConfig extends GuiConfig {
 			
 			List<IConfigElement> list = new ArrayList<IConfigElement>();
 			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); TODO You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.config.getCategory(ConfigurationHandler.CATEGORY_DT_GENERAL))).getChildElements());
+			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_DT_GENERAL))).getChildElements());
 			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DT_GENERAL, this.configElement.requiresWorldRestart() ||
 					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
 					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));

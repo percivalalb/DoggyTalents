@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 /**
  * @author ProPercivalalb
  **/
-public class ScreenRenderHandler {
+public class GameOverlay {
 
 	private static Minecraft mc = Minecraft.getMinecraft();
 	

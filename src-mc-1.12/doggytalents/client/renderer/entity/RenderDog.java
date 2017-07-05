@@ -1,6 +1,6 @@
 package doggytalents.client.renderer.entity;
 
-import doggytalents.client.model.ModelDog;
+import doggytalents.client.model.entity.ModelDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceReference;
 import net.minecraft.client.gui.FontRenderer;

@@ -3,7 +3,6 @@ package doggytalents.addon.forestry;
 import doggytalents.addon.AddonEvent;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

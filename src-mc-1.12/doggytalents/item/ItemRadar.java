@@ -1,7 +1,7 @@
 package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -42,7 +42,7 @@ public class ItemRadar extends ItemDT {
 							builder.append(", east");
 						else
 								builder.append(", west");
-						playerIn.sendMessage(ChatHelper.getChatComponent(builder.toString()));
+						playerIn.sendMessage(ChatUtil.getChatComponent(builder.toString()));
 					}
 				}
 			}

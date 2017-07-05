@@ -12,7 +12,6 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.LogHelper;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
@@ -208,7 +207,6 @@ public class GuiDogInfo extends GuiScreen {
             else {
             	this.doggyTex = 127;
             }
-    		LogHelper.info("action");
             PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
         }
 

@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -28,7 +28,7 @@ public class WolfMount extends ITalent {
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
 		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.isBeingRidden()) {
-			ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
+			ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
 			dog.removePassengers();
 		}	
 	}

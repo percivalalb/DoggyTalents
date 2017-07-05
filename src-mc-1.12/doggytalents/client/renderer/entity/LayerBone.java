@@ -1,6 +1,6 @@
 package doggytalents.client.renderer.entity;
 
-import doggytalents.client.model.ModelDog;
+import doggytalents.client.model.entity.ModelDog;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

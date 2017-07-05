@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
@@ -48,7 +48,7 @@ public class PackPuppy extends ITalent {
 	    if (dog.isTamed()) {
 	    	if (stack != null) {
 	    		if(stack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && !player.world.isRemote) {
-		    		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_PACKPUPPY, dog.world, dog.getEntityId(), 0, 0);
+		    		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_PACKPUPPY, dog.world, dog.getEntityId(), 0, 0);
 		    		dog.world.playSound((EntityPlayer)null, dog.posX, dog.posY + 0.5D, dog.posZ, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.NEUTRAL, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
 		    		return true;
 	    		}

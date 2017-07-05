@@ -2,7 +2,7 @@ package doggytalents.item;
 
 import doggytalents.api.IDogTreat;
 import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -45,20 +45,20 @@ public class ItemTreat extends ItemDT implements IDogTreat {
 	            dog.world.setEntityState(dog, (byte)7);
 	            dog.playTameEffect(true);
 	            if (!player.world.isRemote)
-	            	player.sendMessage(ChatHelper.getChatComponentTranslation("dogtreat.levelup"));
+	            	player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.levelup"));
 			}
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {
 			if (!player.world.isRemote){
 				 dog.playTameEffect(false);
-				 player.sendMessage(ChatHelper.getChatComponentTranslation("dogtreat.tooyoung"));
+				 player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.tooyoung"));
 			}
 		}
 		else if(type == EnumFeedBack.LEVELTOOHIGH) {
             player.world.setEntityState(dog, (byte)6);
             if (!player.world.isRemote) {
             	dog.playTameEffect(false);
-            	player.sendMessage(ChatHelper.getChatComponentTranslation("dogtreat.leveltoohigh"));
+            	player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.leveltoohigh"));
             }
 		}
 	}

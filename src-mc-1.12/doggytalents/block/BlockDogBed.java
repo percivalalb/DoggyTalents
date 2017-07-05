@@ -2,7 +2,6 @@ package doggytalents.block;
 
 import java.util.Random;
 
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;

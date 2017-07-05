@@ -1,4 +1,4 @@
-package doggytalents.client.model;
+package doggytalents.client.model.entity;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.model.ModelBase;

@@ -6,7 +6,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 /**
  * @author ProPercivalalb
  */
-public class ChatHelper {
+public class ChatUtil {
 
 	public static TextComponentTranslation getChatComponentTranslation(String message, Object... format) {
 		return new TextComponentTranslation(message, format);

@@ -7,16 +7,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.EntityInteract;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
  **/
-public class EntityInteractHandler {
+public class EntityInteract {
 	
 	@SubscribeEvent
-	public void rightClickEntity(EntityInteract event) {
+	public void rightClickEntity(PlayerInteractEvent.EntityInteract event) {
 	 	World world = event.getTarget().world;
 		
 	 	if(!world.isRemote) {

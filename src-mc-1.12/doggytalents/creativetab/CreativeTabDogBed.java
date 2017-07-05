@@ -6,7 +6,6 @@ import java.util.Random;
 import doggytalents.ModItems;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;

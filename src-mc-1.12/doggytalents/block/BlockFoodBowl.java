@@ -2,7 +2,7 @@ package doggytalents.block;
 
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 import doggytalents.proxy.CommonProxy;
@@ -76,7 +76,7 @@ public class BlockFoodBowl extends BlockContainer {
         else
         {
             TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-            playerIn.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+            playerIn.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;
         }
     }

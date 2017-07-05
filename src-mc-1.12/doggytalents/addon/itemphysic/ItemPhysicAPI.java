@@ -2,7 +2,7 @@ package doggytalents.addon.itemphysic;
 
 import java.lang.reflect.Method;
 
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.helper.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -32,7 +32,7 @@ public class ItemPhysicAPI {
 		Object sortingList = ReflectionHelper.getField(this.serverPhysicClass, sortingListName).get(null);
 		for(Block block : blocks) {
 			this.addSortingBlock.invoke(sortingList, block);
-			DoggyTalentsMod.logger.info("Successefully registered %s in %s list", block, sortingListName);
+			DoggyTalents.LOGGER.info("Successefully registered %s in %s list", block, sortingListName);
 		}
 	}
 	
@@ -40,7 +40,7 @@ public class ItemPhysicAPI {
 		Object sortingList = ReflectionHelper.getField(this.serverPhysicClass, sortingListName).get(null);
 		for(Item item : items) {
 			this.addSortingItem.invoke(sortingList, item);
-			DoggyTalentsMod.logger.info("Successefully registered %s in %s list", item, sortingListName);
+			DoggyTalents.LOGGER.info("Successefully registered %s in %s list", item, sortingListName);
 		}
 	}
 }

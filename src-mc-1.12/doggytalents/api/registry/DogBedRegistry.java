@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import doggytalents.DoggyTalents;
 import doggytalents.ModBlocks;
-import doggytalents.helper.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
@@ -41,7 +41,7 @@ public class DogBedRegistry {
 	
 	public void registerMaterial(String blockId, int meta, String textureLocation) {
 		if(!Block.REGISTRY.containsKey(new ResourceLocation(blockId)))
-			LogHelper.warning("The block id %s does not exist for a material", blockId);
+			DoggyTalents.LOGGER.warn("The block id %s does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);
 			String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
@@ -59,23 +59,14 @@ public class DogBedRegistry {
 	
 	public void registerMaterial(String key, String lookupname, String textureLocation, ItemStack craftingItem) {
 		if(this.isValidId(key))
-			LogHelper.warning("Tried to register a dog bed material with the id %s more that once", key); 
+			DoggyTalents.LOGGER.warn("Tried to register a dog bed material with the id %s more that once", key); 
 		else {
 			this.keys.add(key);
 			this.lookupnames.put(key, lookupname);
 			this.textures.put(key, textureLocation);
 			this.craftingItems.put(key, Ingredient.fromStacks(craftingItem));
 			
-			//TODO Recipes
-			/**
-			if("casing".equals(this.key))
-				for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
-					GameRegistry.addRecipe(createItemStack(key, beddingId), new Object[] {"CBC", "CBC", "CCC", 'C', craftingItem, 'B', DogBedRegistry.BEDDINGS.getCraftingItem(beddingId)});
-			else if("bedding".equals(this.key))
-				for(String casingId : DogBedRegistry.CASINGS.getKeys())
-					GameRegistry.addRecipe(createItemStack(casingId, key), new Object[] {"CBC", "CBC", "CCC", 'C', DogBedRegistry.CASINGS.getCraftingItem(casingId), 'B', craftingItem});
-			**/
-			LogHelper.info("Register dog bed %s under the key %s", this.key, key);
+			DoggyTalents.LOGGER.info("Register dog bed %s under the key %s", this.key, key);
 		}
 	}
 	

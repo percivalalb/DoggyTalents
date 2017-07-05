@@ -5,7 +5,7 @@ import java.util.List;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
 import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
@@ -67,7 +67,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
             		if(isDog)
             		{
-            			player.sendMessage(ChatHelper.getChatComponentTranslation("dogcommand.come"));
+            			player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.come"));
             		}
 				}
 				else if(this.commandId == 2)
@@ -94,7 +94,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.sendMessage(ChatHelper.getChatComponentTranslation("dogcommand.stay"));
+			        	player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.stay"));
 			        }
 				}
 				else if(this.commandId == 3)
@@ -127,7 +127,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.sendMessage(ChatHelper.getChatComponentTranslation("dogcommand.ok"));
+			        	player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.ok"));
 			        }
 				}
 				else if(this.commandId == 4)
@@ -149,7 +149,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        
 			        if(isDog)
 			        {
-			        	player.sendMessage(ChatHelper.getChatComponentTranslation("dogcommand.heel"));
+			        	player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.heel"));
 			        }
 				}
 					

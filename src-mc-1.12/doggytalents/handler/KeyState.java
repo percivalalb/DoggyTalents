@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * @author ProPercivalalb
  **/
-public class KeyStateHandler {
+public class KeyState {
 	
     public static final KeyBinding come = new KeyBinding("doggytalents.key.come", Keyboard.KEY_UP, "doggytalents.key.category");
     public static final KeyBinding stay = new KeyBinding("doggytalents.key.stay", Keyboard.KEY_DOWN, "doggytalents.key.category");

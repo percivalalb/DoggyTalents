@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
@@ -609,7 +609,7 @@ public class EntityDog extends EntityAbstractDog {
                     return true;
                 }
             	else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
-            		player.openGui(DoggyTalentsMod.instance, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
+            		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar()&& !this.isIncapacicated()) {

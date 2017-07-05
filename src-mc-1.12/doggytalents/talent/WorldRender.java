@@ -10,11 +10,14 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
-public class BedFinderHandler {
+@SideOnly(Side.CLIENT)
+public class WorldRender {
 
 	@SubscribeEvent
 	public void onWorldRenderLast(RenderWorldLastEvent event) {

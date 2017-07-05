@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
+import doggytalents.DoggyTalents;
 import doggytalents.client.renderer.block.DogBedModel;
-import doggytalents.helper.LogHelper;
 import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
-public class ClientHandler {
+public class ModelBake {
 
 	@SubscribeEvent
 	public static void onModelBakeEvent(ModelBakeEvent event) {
@@ -33,13 +33,10 @@ public class ClientHandler {
 		        //Replace 
 		        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
 		        event.getModelRegistry().putObject(modelVariantLocation, customModel);
-		        	
-		        
-		        
 		    }
 	    }
 	    catch(Exception e) {
-	    	LogHelper.warning("Could not get base Dog Bed model. Reverting to default textures...");
+	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
 	    }
 	}
 	

@@ -7,10 +7,9 @@ import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.KeyStateHandler;
-import doggytalents.handler.RenderHandHandler;
-import doggytalents.handler.ScreenRenderHandler;
-import doggytalents.talent.BedFinderHandler;
+import doggytalents.handler.GameOverlay;
+import doggytalents.handler.KeyState;
+import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -24,6 +23,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,25 +34,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-	
 	@Override
-	public void preInit() {
-		Minecraft mc = Minecraft.getMinecraft();
-		
-		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
-		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
-		MinecraftForge.EVENT_BUS.register(new RenderHandHandler());
-		ClientRegistry.registerKeyBinding(KeyStateHandler.come);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.stay);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.ok);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.heel);
-		
-		MinecraftForge.EVENT_BUS.register(new KeyStateHandler());
+	public void preInit(FMLPreInitializationEvent event) {
+		ClientRegistry.registerKeyBinding(KeyState.come);
+		ClientRegistry.registerKeyBinding(KeyState.stay);
+		ClientRegistry.registerKeyBinding(KeyState.ok);
+		ClientRegistry.registerKeyBinding(KeyState.heel);
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
 	}
 	
+	@Override
+    protected void registerEventHandlers() {
+        super.registerEventHandlers();
+        MinecraftForge.EVENT_BUS.register(new WorldRender());
+		MinecraftForge.EVENT_BUS.register(new GameOverlay());
+		MinecraftForge.EVENT_BUS.register(new KeyState());
+    }
 	
 
 	@Override

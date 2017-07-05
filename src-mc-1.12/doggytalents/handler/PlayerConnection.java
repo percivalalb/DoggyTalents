@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 /**
  * @author ProPercivalalb
  */
-public class ConnectionHandler {
+public class PlayerConnection {
 
 	@SubscribeEvent
 	public void playerLoggedIn(PlayerLoggedInEvent event) {

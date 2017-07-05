@@ -1,6 +1,5 @@
 package doggytalents.addon.forestry;
 
-import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.Loader;
 
 /**

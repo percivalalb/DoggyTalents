@@ -1,8 +1,13 @@
 package doggytalents.proxy;
 
+import doggytalents.DoggyTalents;
+import doggytalents.ModEntities;
 import doggytalents.entity.EntityDog;
+import doggytalents.handler.EntityInteract;
+import doggytalents.handler.PlayerConnection;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.inventory.ContainerPackPuppy;
+import doggytalents.network.PacketDispatcher;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +15,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 /**
@@ -18,8 +28,24 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
  */
 public class CommonProxy implements IGuiHandler {
 
-	public static int RENDER_ID_DOG_BED;
-	public static int RENDER_ID_DOG_BATH;
+	public void preInit(FMLPreInitializationEvent event) {
+        ModEntities.init();
+    }
+	
+	public void init(FMLInitializationEvent event) {
+		NetworkRegistry.INSTANCE.registerGuiHandler(DoggyTalents.INSTANCE, DoggyTalents.PROXY);
+		PacketDispatcher.registerPackets();
+        this.registerEventHandlers();
+    }
+
+    public void postInit(FMLPostInitializationEvent event) {
+
+    }
+    
+    protected void registerEventHandlers() {
+		MinecraftForge.EVENT_BUS.register(new EntityInteract());
+		MinecraftForge.EVENT_BUS.register(new PlayerConnection());
+    }
 	
 	public static final int GUI_ID_DOGGY = 1;
 	public static final int GUI_ID_PACKPUPPY = 2;
@@ -51,10 +77,6 @@ public class CommonProxy implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
 		return null;
 	}
-	
-	public void preInit() {}
-	public void init() {}
-	public void postInit() {}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
 		return ctx.getServerHandler().player;

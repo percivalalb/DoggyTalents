@@ -7,13 +7,10 @@ import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.TalentRegistry;
+import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
-import doggytalents.handler.ConfigurationHandler;
-import doggytalents.handler.ConnectionHandler;
-import doggytalents.handler.EntityInteractHandler;
 import doggytalents.lib.Reference;
-import doggytalents.network.PacketDispatcher;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.talent.BedFinder;
 import doggytalents.talent.BlackPelt;
@@ -36,7 +33,6 @@ import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -45,38 +41,32 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 /**
  * @author ProPercivalalb
  */
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.DEPENDENCIES, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY)
-public class DoggyTalentsMod {
+public class DoggyTalents {
 
 	@Instance(value = Reference.MOD_ID)
-	public static DoggyTalentsMod instance;
+	public static DoggyTalents INSTANCE;
 	
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
-    public static CommonProxy proxy;
+    public static CommonProxy PROXY;
 	
-	public static final Logger logger = LogManager.getLogger(Reference.MOD_NAME);
+	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
 		DoggyTalentsAPI.CREATIVE_TAB_BED = new CreativeTabDogBed();
-		ModEntities.inti();
-		proxy.preInit();
-		PacketDispatcher.registerPackets();
+		PROXY.preInit(event);
 	}
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
-		MinecraftForge.EVENT_BUS.register(new EntityInteractHandler());
-		MinecraftForge.EVENT_BUS.register(new ConnectionHandler());
-		proxy.init();
+		PROXY.init(event);
 	}
 	
 	@EventHandler
@@ -135,7 +125,7 @@ public class DoggyTalentsMod {
 		TalentRegistry.registerTalent(new WolfMount());
 		
 		AddonManager.registerAddons();
-		AddonManager.runRegisteredAddons(ConfigurationHandler.config);
-		proxy.postInit();
+		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);
+		PROXY.postInit(event);
 	}
 }

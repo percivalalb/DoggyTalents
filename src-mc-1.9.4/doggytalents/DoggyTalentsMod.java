@@ -4,6 +4,7 @@ import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.TalentRegistry;
+import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.handler.ConfigurationHandler;
 import doggytalents.handler.ConnectionHandler;
@@ -63,6 +64,7 @@ public class DoggyTalentsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
 		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
+		DoggyTalentsAPI.CREATIVE_TAB_BED = new CreativeTabDogBed();
 		ModBlocks.inti();
 		ModItems.inti();
 		ModEntities.inti();

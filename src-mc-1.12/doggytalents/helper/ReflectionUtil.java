@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * For any of these method if it requires an instance but it is a static thing
  * you are try to look up just put the instance as null
  */
-public class ReflectionHelper {
+public class ReflectionUtil {
 
 	public static Field getField(Class<?> class1, int fieldIndex) {
 		try {

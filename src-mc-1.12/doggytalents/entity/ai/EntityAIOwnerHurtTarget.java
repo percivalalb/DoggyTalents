@@ -13,10 +13,8 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
     private EntityDog dog;
     private EntityLivingBase theTarget;
     private int timestamp;
-    private static final String __OBFID = "CL_00001625";
 
-    public EntityAIOwnerHurtTarget(EntityDog dog)
-    {
+    public EntityAIOwnerHurtTarget(EntityDog dog) {
         super(dog, false);
         this.dog = dog;
         this.setMutexBits(1);
@@ -24,12 +22,12 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
+        if(!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
         else {
             EntityLivingBase owner = this.dog.getOwner();
 
-            if (owner == null)
+            if(owner == null)
                 return false;
             else {
                 this.theTarget = owner.getRevengeTarget();

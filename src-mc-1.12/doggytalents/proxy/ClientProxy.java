@@ -36,6 +36,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
 		ClientRegistry.registerKeyBinding(KeyState.come);
 		ClientRegistry.registerKeyBinding(KeyState.stay);
 		ClientRegistry.registerKeyBinding(KeyState.ok);

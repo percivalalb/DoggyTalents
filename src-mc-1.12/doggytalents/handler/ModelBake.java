@@ -41,8 +41,8 @@ public class ModelBake {
 	}
 	
 	@SubscribeEvent
-	public void registerTextures(TextureStitchEvent.Pre event) {
-     
+	public static void registerTextures(TextureStitchEvent.Pre event) {
+		DogTextureLoader.loadYourTexures();
 
 	}
 }

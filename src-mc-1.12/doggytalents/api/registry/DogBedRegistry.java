@@ -41,7 +41,7 @@ public class DogBedRegistry {
 	
 	public void registerMaterial(String blockId, int meta, String textureLocation) {
 		if(!Block.REGISTRY.containsKey(new ResourceLocation(blockId)))
-			DoggyTalents.LOGGER.warn("The block id %s does not exist for a material", blockId);
+			DoggyTalents.LOGGER.warn("The block id {} does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);
 			String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
@@ -59,14 +59,14 @@ public class DogBedRegistry {
 	
 	public void registerMaterial(String key, String lookupname, String textureLocation, ItemStack craftingItem) {
 		if(this.isValidId(key))
-			DoggyTalents.LOGGER.warn("Tried to register a dog bed material with the id %s more that once", key); 
+			DoggyTalents.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", key); 
 		else {
 			this.keys.add(key);
 			this.lookupnames.put(key, lookupname);
 			this.textures.put(key, textureLocation);
 			this.craftingItems.put(key, Ingredient.fromStacks(craftingItem));
 			
-			DoggyTalents.LOGGER.info("Register dog bed %s under the key %s", this.key, key);
+			DoggyTalents.LOGGER.info("Register dog bed {} under the key {}", this.key, key);
 		}
 	}
 	

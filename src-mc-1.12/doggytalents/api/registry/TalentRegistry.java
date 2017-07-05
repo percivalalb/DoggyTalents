@@ -20,15 +20,15 @@ public class TalentRegistry {
 	
 	public static void registerTalent(ITalent talent) {
 		if(talents.contains(talent))
-			DoggyTalents.LOGGER.warn("The talent id %s has already been registered", talent.getKey());
+			DoggyTalents.LOGGER.warn("The talent id {} has already been registered", talent.getKey());
 		else if(talent.getKey().contains(":"))
-			DoggyTalents.LOGGER.warn("A talent id can't have the character ':' in it (%s)", talent.getKey());
+			DoggyTalents.LOGGER.warn("A talent id can't have the character ':' in it ({})", talent.getKey());
 		else {
 			talents.add(talent);
 			idtalent.put(talent.getKey(), talent);
 			talentid.put(talent, talent.getKey());
 			MinecraftForge.EVENT_BUS.register(talent);
-			DoggyTalents.LOGGER.info("Register the talent with the id %s", talent.getKey());
+			DoggyTalents.LOGGER.info("Register the talent with the id {}", talent.getKey());
 		}
 	}
 	

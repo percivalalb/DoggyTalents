@@ -26,12 +26,12 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
+        if(!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
         else {
             EntityLivingBase entitylivingbase = this.dog.getOwner();
 
-            if (entitylivingbase == null)
+            if(entitylivingbase == null)
                 return false;
             else {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {

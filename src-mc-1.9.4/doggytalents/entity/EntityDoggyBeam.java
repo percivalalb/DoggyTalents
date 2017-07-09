@@ -43,7 +43,7 @@ public class EntityDoggyBeam extends EntityThrowable {
     @Override
     protected void onImpact(RayTraceResult result)
     {
-        if (result.entityHit != null)
+        if(result.entityHit instanceof EntityLivingBase) {
         {
         	 byte var2 = 0;
              

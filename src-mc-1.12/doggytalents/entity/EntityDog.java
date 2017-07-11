@@ -19,6 +19,7 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.entity.ai.EntityDogWander;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -86,7 +87,8 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-
+	
+	
     private int hungerTick;
    	private int prevHungerTick;
     private int healingTick;
@@ -125,7 +127,7 @@ public class EntityDog extends EntityAbstractDog {
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(5, this.aiFetchBone);
         this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(8, new EntityDogWander(this, 1.0D));
         this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(10, new EntityAILookIdle(this));
@@ -142,6 +144,7 @@ public class EntityDog extends EntityAbstractDog {
             }
         }));
         this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
+        this.setHomePosAndDistance(BlockPos.ORIGIN, 0);
         this.setTamed(false);
     }
 
@@ -927,6 +930,16 @@ public class EntityDog extends EntityAbstractDog {
     		
 		return super.shouldDismountInWater(rider);
 	}
+
+    @Override
+    public BlockPos getHomePosition() {
+        return this.coords.getBowlPos();
+    }
+    
+    @Override
+    public boolean hasHome() {
+        return this.mode.isMode(EnumMode.WANDERING) && this.coords.hasBowlPos();
+    }
     
 	
 	private void onFinishShaking() {

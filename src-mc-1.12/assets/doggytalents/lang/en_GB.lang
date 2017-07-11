@@ -62,6 +62,7 @@ doggui.talentinfo.puppyeyes=This skill will cause your dog to warm the heart of 
 doggui.talentinfo.swimmerdog=Allows you to ride your dog in water and it to breath longer underwater. Maxing it allows the rider to see easily underwater. 
 
 doggui.modeinfo.wandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one
+doggui.modeinfo.\u00a7cwandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one. \u00a7cNo food bowl currently set!
 doggui.modeinfo.tactical=In this mode your dog will follow you but will not attack anything unless you use the command beam
 doggui.modeinfo.aggresive=In this mode your dog will follow you and attack anything that attacks you or that you attack
 doggui.modeinfo.berserker=In this mode your dog will follow you and if any mob draws near he will attack it without warning

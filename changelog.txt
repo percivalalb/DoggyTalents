@@ -11,10 +11,10 @@ Update List Key
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.13.2a | 11th July 2017
-+ Added
-* Fixed wandering mode
-* Fixed crash with  Animalium mod and other mods
+v1.13.2a | 12th July 2017
++ Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
+* Fixed wandering mode, they will walk around their bowl. If they are too far from their bowl when you set them to wandering mode they will stand still.
+* Fixed crash with Animalium mod and other mods
 
 v1.13.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
@@ -40,7 +40,7 @@ Initial release, parent version v1.12.1d
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.12.1f | 11th July 2017
+v1.12.1f | WIP
 + Readded support for the wooden planks and bamboo thatching from BiomesoPlenty mod to be used as casing in dog bed
 * Fixed crash with  Animalium mod and other mods
 

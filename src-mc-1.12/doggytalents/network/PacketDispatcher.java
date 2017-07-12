@@ -3,6 +3,7 @@ package doggytalents.network;
 import doggytalents.lib.Reference;
 import doggytalents.network.packet.client.CommandMessage;
 import doggytalents.network.packet.client.DogBedUpdateMessage;
+import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogJumpMessage;
 import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
@@ -40,6 +41,7 @@ public class PacketDispatcher {
 		registerMessage(DogTalentMessage.class);
 		registerMessage(DogTextureMessage.class);
 		registerMessage(DogBedUpdateMessage.class);
+		registerMessage(DogFriendlyFireMessage.class);
 	}
 	
 	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {

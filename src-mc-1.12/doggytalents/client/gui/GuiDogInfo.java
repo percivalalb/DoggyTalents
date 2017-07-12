@@ -13,6 +13,7 @@ import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
 import doggytalents.network.packet.client.DogObeyMessage;
@@ -105,9 +106,11 @@ public class GuiDogInfo extends GuiScreen {
 
         this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
         this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
-        if(this.dog.isOwner(this.player)) {
+        if(this.dog.isOwner(this.player))
         	this.buttonList.add(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())));
-        }
+        
+        
+        this.buttonList.add(new GuiButton(-7, this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canFriendlyFire())));
         
         this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, this.dog.mode.getMode().modeName()));
 	}
@@ -126,6 +129,8 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
 	    if(this.dog.isOwner(this.player))
 	    	this.fontRenderer.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
+	    
+	    this.fontRenderer.drawString("Friendly Fire?", this.width - 76, topY - 15, 0xFFFFFF);
 				
 		for(int i = 0; i < this.btnPerPages; ++i) {
 			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
@@ -172,7 +177,7 @@ public class GuiDogInfo extends GuiScreen {
     					if(!this.dog.coords.hasBowlPos())
     						list.add(TextFormatting.RED + "No food bowl currently set.");
     					else 
-    						list.add(TextFormatting.GREEN + this.dog.coords.getBowlPos().toString());
+    						list.add(TextFormatting.GREEN + "Bowl distance: " + (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlPos())));
     				}
     		
     				
@@ -231,15 +236,13 @@ public class GuiDogInfo extends GuiScreen {
         }
         
         if (button.id == -5) {
-        	if(!this.dog.willObeyOthers()) {
-        		button.displayString = "true";
-        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), true));
-        		
-        	}
-        	else {
-        		button.displayString = "false";
-        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), false));
-        	}
+        	button.displayString = String.valueOf(!this.dog.willObeyOthers());
+        	PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), !this.dog.willObeyOthers()));
+        }
+        
+        if (button.id == -7) {
+        	button.displayString = String.valueOf(!this.dog.canFriendlyFire());
+        	PacketDispatcher.sendToServer(new DogFriendlyFireMessage(this.dog.getEntityId(), !this.dog.canFriendlyFire()));
         }
         
         if (button.id == -6) {

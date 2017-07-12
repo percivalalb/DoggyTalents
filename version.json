@@ -7,8 +7,8 @@
         "1.10.2-recommended": "v1.11.1g",
         "1.11.2-latest": "v1.12.1g",
         "1.11.2-recommended": "v1.12.1g",
-		"1.12-latest": "v1.13.1g",
-        "1.12-recommended": "v1.13.1g"
+		"1.12-latest": "v1.13.2a",
+        "1.12-recommended": "v1.13.2a"
     },
 	"1.9.4": {
 		"v1.10.1c": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt",
@@ -35,6 +35,7 @@
 	"1.12": {
 		"v1.13.1e": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt",
 		"v1.13.1f": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt",
-		"v1.13.1g": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"v1.13.1g": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt",
+		"v1.13.2a": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
 	}
 }

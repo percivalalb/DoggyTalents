@@ -40,9 +40,11 @@ Initial release, parent version v1.12.1d
 MC 1.11.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.12.1f | WIP
+v1.12.2a | 14th July 2017
++ Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
 + Readded support for the wooden planks and bamboo thatching from BiomesoPlenty mod to be used as casing in dog bed
-* Fixed crash with  Animalium mod and other mods
+* Fixed wandering mode, they will walk around their bowl. If they are too far from their bowl when you set them to wandering mode they will stand still.
+* Fixed crash with Animalium mod and other mods
 
 v1.12.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn
@@ -101,7 +103,10 @@ Initial release, parent version v1.11.0b
 MC 1.10.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.11.1f | WIP
+v1.11.2a | 14th July 2017
++ Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
++ Readded support for the wooden planks and bamboo thatching from BiomesoPlenty mod to be used as casing in dog bed
+* Fixed wandering mode, they will walk around their bowl. If they are too far from their bowl when you set them to wandering mode they will stand still.
 * Fixed crash with Animalium mod and other mods
 
 v1.11.1g | 5th July 2017
@@ -165,8 +170,12 @@ Initial release, parent version v1.10.0a
 MC 1.9.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.10.1f | WIP
+v1.10.2a | 14th July 2017
++ Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
++ Readded support for the wooden planks and bamboo thatching from BiomesoPlenty mod to be used as casing in dog bed
+* Fixed wandering mode, they will walk around their bowl. If they are too far from their bowl when you set them to wandering mode they will stand still.
 * Fixed crash with Animalium mod and other mods
+This is the last offical update for MC 1.9.4
 
 v1.10.1g | 5th July 2017
 + Added support for ItemPhysic mod, items that you would expect to float now float and blocks that burn now burn

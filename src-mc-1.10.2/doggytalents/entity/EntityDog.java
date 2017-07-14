@@ -14,6 +14,7 @@ import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
+import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFollowOwner;
 import doggytalents.entity.ai.EntityAIModeAttackTarget;
@@ -97,6 +98,7 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
 	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -140,7 +142,7 @@ public class EntityDog extends EntityAbstractDog {
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(5, this.aiFetchBone);
         this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWander(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
         this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(10, new EntityAILookIdle(this));
@@ -193,6 +195,7 @@ public class EntityDog extends EntityAbstractDog {
         this.dataManager.register(HUNGER, Integer.valueOf(60));
         this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
         this.dataManager.register(HAS_BONE, Boolean.valueOf(false));
+        this.dataManager.register(FRIENDLY_FIRE, Boolean.valueOf(false));
         this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
         this.dataManager.register(MODE, Integer.valueOf(0));
         this.dataManager.register(LEVEL, Integer.valueOf(0));
@@ -214,6 +217,7 @@ public class EntityDog extends EntityAbstractDog {
         tagCompound.setInteger("doggyTex", this.getTameSkin());
         tagCompound.setInteger("dogHunger", this.getDogHunger());
         tagCompound.setBoolean("willObey", this.willObeyOthers());
+        tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
         
         this.talents.writeTalentsToNBT(tagCompound);
@@ -231,6 +235,7 @@ public class EntityDog extends EntityAbstractDog {
         this.setTameSkin(tagCompound.getInteger("doggyTex"));
         this.setDogHunger(tagCompound.getInteger("dogHunger"));
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
+        this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
         
         this.talents.readTalentsFromNBT(tagCompound);
@@ -486,10 +491,14 @@ public class EntityDog extends EntityAbstractDog {
         if (this.isEntityInvulnerable(damageSource))
             return false;
         else {
+        	Entity entity = damageSource.getEntity();
+            //Friendly fire
+            if(!this.canFriendlyFire() && entity instanceof EntityPlayer && (this.willObeyOthers() || this.isOwner((EntityPlayer)entity)))
+            	return false;
+        	
         	if(!TalentHelper.attackEntityFrom(this, damageSource, damage))
         		return false;
         	
-            Entity entity = damageSource.getEntity();
             if (this.aiSit != null)
             	this.aiSit.setSitting(false);
 
@@ -781,6 +790,14 @@ public class EntityDog extends EntityAbstractDog {
     
     public boolean willObeyOthers() {
     	return this.dataManager.get(OBEY_OTHERS);
+    }
+    
+    public void setFriendlyFire(boolean flag) {
+    	this.dataManager.set(FRIENDLY_FIRE, flag);
+    }
+    
+    public boolean canFriendlyFire() {
+    	return this.dataManager.get(FRIENDLY_FIRE);
     }
     
     public int points() {

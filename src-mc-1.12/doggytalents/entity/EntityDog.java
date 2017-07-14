@@ -89,7 +89,6 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	
-	
     private int hungerTick;
    	private int prevHungerTick;
     private int healingTick;
@@ -145,7 +144,6 @@ public class EntityDog extends EntityAbstractDog {
             }
         }));
         this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
-        this.setHomePosAndDistance(BlockPos.ORIGIN, 128);
         this.setTamed(false);
     }
 
@@ -946,22 +944,6 @@ public class EntityDog extends EntityAbstractDog {
     		
 		return super.shouldDismountInWater(rider);
 	}
-
-    @Override
-    public BlockPos getHomePosition() {
-        return this.coords.getBowlPos();
-    }
-    
-    @Override
-    public boolean isWithinHomeDistanceFromPosition(BlockPos pos) {
-    	return this.hasHome();
-    }
-    
-    @Override
-    public boolean hasHome() {
-        return this.mode.isMode(EnumMode.WANDERING) && this.coords.hasBowlPos();
-    }
-    
 	
 	private void onFinishShaking() {
 		if(!this.world.isRemote) {

@@ -13,6 +13,7 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 public class EntityAIDogWander extends EntityAIBase {
 	
@@ -62,37 +63,34 @@ public class EntityAIDogWander extends EntityAIBase {
     	Random random = dog.getRNG();
     	BlockPos bowlPos = dog.coords.getBowlPos();
  
+    	int xzRange = 5;
+    	int yRange = 6;
     	
-    	int x = random.nextInt(11) - 5;
-    	int z = random.nextInt(11) - 5;
+    	float bestWeight = -99999.0F;
+    	int x = 0, y = 0, z = 0;
     	
-    	return new Vec3d(bowlPos.getX() + x, bowlPos.getY(), bowlPos.getZ() + z);
+    	for (int attempt = 0; attempt < 10; ++attempt) {
+            int l = random.nextInt(2 * xzRange + 1) - xzRange;
+            int i1 = random.nextInt(2 * yRange + 1) - yRange;
+            int j1 = random.nextInt(2 * xzRange + 1) - xzRange;
+
+            BlockPos testPos = new BlockPos(l + bowlPos.getX(), i1 + bowlPos.getY(), j1 + bowlPos.getZ());
+
+            if(pathnavigate.canEntityStandOnPos(testPos)) {
+            	float weight = dog.getBlockPathWeight(testPos);
+
+            	if(weight > bestWeight) {
+            		bestWeight = weight;
+            		x = l;
+            		y = i1;
+            		z = j1;
+            	}
+            }
+        }
+    	
+    	return new Vec3d(bowlPos.getX() + x, bowlPos.getY() + y, bowlPos.getZ() + z);
     }
     
-    private static BlockPos moveAboveSolid(BlockPos p_191378_0_, EntityCreature p_191378_1_)
-    {
-        if (!p_191378_1_.world.getBlockState(p_191378_0_).getMaterial().isSolid())
-        {
-            return p_191378_0_;
-        }
-        else
-        {
-            BlockPos blockpos;
-
-            for (blockpos = p_191378_0_.up(); blockpos.getY() < p_191378_1_.world.getHeight() && p_191378_1_.world.getBlockState(blockpos).getMaterial().isSolid(); blockpos = blockpos.up())
-            {
-                ;
-            }
-
-            return blockpos;
-        }
-    }
-
-    private static boolean isWaterDestination(BlockPos p_191380_0_, EntityCreature p_191380_1_)
-    {
-        return p_191380_1_.world.getBlockState(p_191380_0_).getMaterial() == Material.WATER;
-    }
-
     @Override
     public boolean shouldContinueExecuting() {
         return !this.dog.getNavigator().noPath();

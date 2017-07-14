@@ -235,12 +235,12 @@ public class GuiDogInfo extends GuiScreen {
             PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
         }
         
-        if (button.id == -5) {
+        if(button.id == -5) {
         	button.displayString = String.valueOf(!this.dog.willObeyOthers());
         	PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), !this.dog.willObeyOthers()));
         }
         
-        if (button.id == -7) {
+        if(button.id == -7) {
         	button.displayString = String.valueOf(!this.dog.canFriendlyFire());
         	PacketDispatcher.sendToServer(new DogFriendlyFireMessage(this.dog.getEntityId(), !this.dog.canFriendlyFire()));
         }

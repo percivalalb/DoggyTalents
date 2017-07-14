@@ -172,8 +172,12 @@ public class GuiDogInfo extends GuiScreen {
 	    			list.add(TextFormatting.ITALIC + "Next Page");
 	    		}
 	    		else if(button.id == -6) {
-    				String str = I18n.translateToLocal("doggui.modeinfo." + button.displayString.toLowerCase());
+	    			String str = I18n.translateToLocal("doggui.modeinfo." + TextFormatting.getTextWithoutFormattingCodes(button.displayString).toLowerCase());
     				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
+    				if(!this.dog.coords.hasBowlPos())
+						list.add(TextFormatting.RED + "No food bowl currently set.");
+					else 
+						list.add(TextFormatting.GREEN + "Bowl distance: " + (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlPos())));
     			}
 	    		
 	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
@@ -241,7 +245,10 @@ public class GuiDogInfo extends GuiScreen {
         if (button.id == -6) {
         	int newMode = (dog.mode.getMode().ordinal() + 1) % EnumMode.values().length;
         	EnumMode mode = EnumMode.values()[newMode];
-        	button.displayString = mode.modeName();
+        	if(mode == EnumMode.WANDERING && !this.dog.coords.hasBowlPos())
+        		button.displayString = TextFormatting.RED + mode.modeName();
+        	else
+        		button.displayString = mode.modeName();
         	PacketDispatcher.sendToServer(new DogModeMessage(this.dog.getEntityId(), newMode));
         }
 	}

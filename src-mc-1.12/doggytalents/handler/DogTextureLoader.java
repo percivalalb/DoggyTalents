@@ -3,8 +3,6 @@ package doggytalents.handler;
 import java.io.File;
 import java.net.URL;
 
-import net.minecraft.client.Minecraft;
-
 /**
  * @author ProPercivalalb
  **/

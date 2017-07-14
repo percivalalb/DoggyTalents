@@ -1,10 +1,7 @@
 package doggytalents.block;
 
-import java.util.List;
-
 import doggytalents.DoggyTalents;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.entity.EntityDog;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.BlockContainer;

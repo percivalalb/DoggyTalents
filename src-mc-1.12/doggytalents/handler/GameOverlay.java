@@ -1,13 +1,12 @@
 package doggytalents.handler;
 
-import org.lwjgl.opengl.GL11;
-
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -34,10 +33,10 @@ public class GameOverlay {
 			EntityDog dog = (EntityDog)mc.player.getRidingEntity();
 			int width = scaling.getScaledWidth();
 			int height = scaling.getScaledHeight();
-			GL11.glPushMatrix();
+			GlStateManager.pushMatrix();
 			mc.renderEngine.bindTexture(Gui.ICONS);
 			
-			GL11.glEnable(GL11.GL_BLEND);
+			GlStateManager.enableBlend();
 	        int left = width / 2 + 91;
 	        int top = height - GuiIngameForge.right_height;
 	        GuiIngameForge.right_height += 10;
@@ -58,12 +57,12 @@ public class GameOverlay {
 	            else if (idx == level)
 	                drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
 	        }
-	        GL11.glDisable(GL11.GL_BLEND);
+	        GlStateManager.disableBlend();
 
-	        GL11.glEnable(GL11.GL_BLEND);
+	        GlStateManager.enableBlend();
 	        left = width / 2 + 91;
 	        top = height - GuiIngameForge.right_height;
-	        GL11.glColor4f(1.0F, 1.0F, 0.0F, 1.0F);
+	        GlStateManager.color(1.0F, 1.0F, 0.0F, 1.0F);
 	        if (dog.isInsideOfMaterial(Material.WATER)) {
 	            int air = dog.getAir();
 	            int full = MathHelper.ceil((double)(air - 2) * 10.0D / 300.0D);
@@ -74,10 +73,10 @@ public class GameOverlay {
 	            }
 	            GuiIngameForge.right_height += 10;
 	        }
-	        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	        GL11.glDisable(GL11.GL_BLEND);
+	        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+	        GlStateManager.disableBlend();
 	        
-    		GL11.glPopMatrix();
+	        GlStateManager.popMatrix();
 		}
 	}
 	

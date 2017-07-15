@@ -7,6 +7,8 @@ Update List Key
 (*) A bug fix
 (/) Other
 
+Bugs: 1.11-1.9 biomes o plenty casing no localisations 
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,7 +18,7 @@ v1.13.2b | 15th July 2017
 + You can dye these collars just like leather armour in the crafting table as well as when the collar is on the dog
 + Wool Collars can be removed by using the collar shears on your dog, if you click again on the dog it will turn it into a wolf like before
 + Added a Whistle item in the creative menu. Currently it does nothing apart from look cool
-- Removed the dog texture index system, for now you will not be able to turn your dog into the brown species
+- Removed the dog texture index system, for the moment you will not be able to turn your dog into the brown species
 * Using AxisAlignedBB#grow instead of AxisAlignedBB#expand, from 1.11.2 to 1.12 there remained a method named 'expand' but its functionally changed, equivalent in 1.12 is AxisAlignedBB#grow
 * Fixed dogs not attack mobs in any mode, due to ^^
 * Fixed CreeperSweeper, PestFighter and Puppy Eyes not working as intended, due to ^^

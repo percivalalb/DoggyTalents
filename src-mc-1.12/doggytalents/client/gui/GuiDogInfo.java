@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
@@ -23,6 +21,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
@@ -134,18 +133,18 @@ public class GuiDogInfo extends GuiScreen {
 				
 		for(GuiTextField field : this.textfieldList)
 			field.drawTextBox();
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		GlStateManager.disableRescaleNormal();
 	    RenderHelper.disableStandardItemLighting();
-	    GL11.glDisable(GL11.GL_LIGHTING);
-	    GL11.glDisable(GL11.GL_DEPTH_TEST);
+	    GlStateManager.disableLighting();
+	    GlStateManager.disableDepth();
 	    super.drawScreen(xMouse, yMouse, partialTickTime);
 	    RenderHelper.enableGUIStandardItemLighting();
 		
 		
 		//Foreground
 
-		GL11.glPushMatrix();
-	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	    GlStateManager.pushMatrix();
+	    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	    for (int k = 0; k < this.buttonList.size(); ++k) {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
 	    	if(button.mousePressed(this.mc, xMouse, yMouse)) {
@@ -181,7 +180,7 @@ public class GuiDogInfo extends GuiScreen {
 	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
 	    	}
 	    }
-		GL11.glPopMatrix();
+	    GlStateManager.popMatrix();
 	}
 	
 	@Override

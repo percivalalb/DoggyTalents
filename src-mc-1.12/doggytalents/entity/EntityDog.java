@@ -20,7 +20,6 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -693,7 +692,7 @@ public class EntityDog extends EntityAbstractDog {
 
                     return true;
                 }
-                else if(stack.getItem() == Items.DYE) {
+                else if(stack.getItem() == Items.DYE && this.canInteract(player)) {
                     if(!this.hasCollar())
                     	return false;
                     
@@ -706,7 +705,7 @@ public class EntityDog extends EntityAbstractDog {
                     else {
                         int[] aint = new int[3];
                         int i = 0;
-                        int count = 0; //The number of different sources of colour
+                        int count = 2; //The number of different sources of colour
                       
                         
                         int l = this.getCollarColour();

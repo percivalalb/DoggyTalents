@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,8 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderDog extends RenderLiving<EntityDog> {
 	
-    public RenderDog(RenderManager renderManager) {
-        super(renderManager, new ModelDog(), 0.5F);
+    public RenderDog(RenderManager renderManagerIn) {
+        super(renderManagerIn, new ModelDog(), 0.5F);
         this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
@@ -48,7 +47,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
     
     @Override
     public void doRender(EntityDog dog, double x, double y, double z, float entityYaw, float partialTicks) {
-    	
     	if(dog.isDogWet()) {
             float f2 = dog.getBrightness() * dog.getShadingWhileWet(partialTicks);
             GlStateManager.color(f2, f2, f2);
@@ -59,9 +57,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     protected ResourceLocation getEntityTexture(EntityDog dog) {
         if(dog.isTamed())
-			return ResourceReference.doggyTame;
+			return ResourceReference.MOB_DOG_TAME;
     	
-        return ResourceReference.doggyWild;
+        return ResourceReference.MOB_DOG_WILD;
     }
     
     @Override
@@ -86,19 +84,17 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	
     		if (distanceFromPlayer <= (double)(5 * 5)) {
 	    		if(this.renderManager.renderViewEntity.isSneaking()) {
-	    			EntityLivingBase owner = dog.getOwner();
-	    			if(owner != null)
-	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), owner.getDisplayName().getUnformattedText(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	    			String ownerName = "A Wild Dog";
+	    			if(dog.getOwner() != null)
+	    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
 	    			else if(dog.getOwnerId() != null)
-	          		   	this.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getOwnerId().toString(), (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-	    			else
-	    				this.renderLabelWithScale(this.getFontRendererFromRenderManager(), "A Wild Dog", (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	          		   	ownerName = dog.getOwnerId().toString();
+	    			
+	    			this.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
 	    		}
     		}
     	}
-    		
     	
-
         super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
     }
     

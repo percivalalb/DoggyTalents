@@ -9,16 +9,16 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ResourceReference {
 	
-	public static final ResourceLocation foodBowl = new ResourceLocation("doggytalents", getGuiTexturePath("food_bowl.png"));
-	public static final ResourceLocation packPuppy = new ResourceLocation("doggytalents", getGuiTexturePath("pack_puppy.png"));
+	public static final ResourceLocation GUI_FOOD_BOWL = new ResourceLocation("doggytalents", getGuiTexturePath("food_bowl.png"));
+	public static final ResourceLocation GUI_PACK_PUPPY = new ResourceLocation("doggytalents", getGuiTexturePath("pack_puppy.png"));
 	
 	public static Hashtable<Integer, ResourceLocation> doggyTameSkins = new Hashtable<Integer, ResourceLocation>();
 	
-	public static final ResourceLocation doggyCollar = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar.png"));
-	public static final ResourceLocation doggyTame = new ResourceLocation("doggytalents", getMobTexturePath("doggy_tame.png"));
-	public static final ResourceLocation doggyHurt = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
-	public static final ResourceLocation doggyWild = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
-	public static final ResourceLocation doggyRadioCollar = new ResourceLocation("doggytalents", getMobTexturePath("doggy_radio_collar.png"));
+	public static final ResourceLocation MOB_LAYER_DOG_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar.png"));
+	public static final ResourceLocation MOB_DOG_TAME = new ResourceLocation("doggytalents", getMobTexturePath("doggy_tame.png"));
+	public static final ResourceLocation MOB_LAYER_DOG_HURT = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
+	public static final ResourceLocation MOB_DOG_WILD = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
+	public static final ResourceLocation MOB_LAYER_RADIO_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_radio_collar.png"));
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))

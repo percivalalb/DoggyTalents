@@ -133,12 +133,8 @@ public class BlockDogBed extends BlockContainer {
     }
 	
 	@SideOnly(Side.CLIENT)
-    public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos)
-    {
-        Block block = worldIn.getBlockState(pos).getBlock();
-        int i = worldIn.getCombinedLight(pos, 0);
-
-            return i;
+    public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
+        return worldIn.getCombinedLight(pos, 0);
     }
 	
 	@Override

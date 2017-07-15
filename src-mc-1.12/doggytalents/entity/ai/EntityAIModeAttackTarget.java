@@ -36,7 +36,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
             else {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {
 	           	 	double distance = 16D;
-	           	 	List list = dog.world.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().expand(distance, distance, distance));
+	           	 	List list = dog.world.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().grow(distance, distance, distance));
 	
 	           	 	for (int count = 0; count < list.size(); count++) {
 	           	 		Entity entity1 = (Entity)list.get(count);

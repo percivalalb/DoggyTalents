@@ -37,11 +37,13 @@ public class CoordUtil {
 	}
 	
 	public void setBedPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
+		if(!this.getBedPos().equals(pos))
+			this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
 	}
 	
 	public void setBowlPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
+		if(!this.getBowlPos().equals(pos))
+			this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
 	}
 
 	

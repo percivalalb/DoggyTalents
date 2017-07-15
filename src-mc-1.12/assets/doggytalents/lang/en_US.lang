@@ -19,7 +19,9 @@ item.doggytalents.doggycharm.name=Doggy Charm
 item.doggytalents.collarshears.name=Collar Shears
 item.doggytalents.commandemblem.name=Command Emblem
 item.doggytalents.radiocollar.name=Radio Collar
+item.doggytalents.woolcollar.name=Wool Collar
 item.doggytalents.radar.name=Radar
+item.doggytalents.whistle.name=Whistle
 
 doggui.talentname.blackpelt=Black Pelt
 doggui.talentname.guarddog=Guard Dog

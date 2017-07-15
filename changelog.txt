@@ -11,6 +11,17 @@ Update List Key
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+v1.13.2b | 15th July 2017
++ Added Wool Collars, crafted with 8 string in the outline of square. This means by default a dog doesnt have a collar.
++ You can dye these collars just like leather armour in the crafting table as well as when the collar is on the dog
++ Wool Collars can be removed by using the collar shears on your dog, if you click again on the dog it will turn it into a wolf like before
++ Added a Whistle item in the creative menu. Currently it does nothing apart from look cool
+- Removed the dog texture index system, for now you will not be able to turn your dog into the brown species
+* Using AxisAlignedBB#grow instead of AxisAlignedBB#expand, from 1.11.2 to 1.12 there remained a method named 'expand' but its functionally changed, equivalent in 1.12 is AxisAlignedBB#grow
+* Fixed dogs not attack mobs in any mode, due to ^^
+* Fixed CreeperSweeper, PestFighter and Puppy Eyes not working as intended, due to ^^
+* Fixed dog hunger being able to go above 120 HP and below 0 HP
+
 v1.13.2a | 12th July 2017
 + Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
 * Fixed wandering mode, they will walk around their bowl. If they are too far from their bowl when you set them to wandering mode they will stand still.

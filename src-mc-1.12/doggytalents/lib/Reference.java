@@ -9,7 +9,7 @@ public class Reference {
 	//Mod Related Constants 
 	public static final String 		 MOD_ID 	      = "doggytalents";
 	public static final String		 MOD_NAME         = "Doggy Talents";
-	public static final String 		 MOD_VERSION      = "v1.13.2a";
+	public static final String 		 MOD_VERSION      = "v1.13.3a";
 	public static final String 		 DEPENDENCIES     = "required-after:forge@[14.21.1.2387,)";
 	public static final String 		 CLIENT_PROXY 	  = "doggytalents.proxy.ClientProxy";
 	public static final String 		 SERVER_PROXY     = "doggytalents.proxy.CommonProxy";

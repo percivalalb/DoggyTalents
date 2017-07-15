@@ -1,6 +1,7 @@
-package doggytalents.client.renderer.entity;
+package doggytalents.client.renderer.entity.layer;
 
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,10 +17,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LayerBone implements LayerRenderer<EntityDog> {
 	
-    protected final RenderDog renderDog;
+    protected final RenderDog dogRenderer;
 
-    public LayerBone(RenderDog renderDog) {
-        this.renderDog = renderDog;
+    public LayerBone(RenderDog dogRendererIn) {
+        this.dogRenderer = dogRendererIn;
     }
 
     @Override
@@ -28,7 +29,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
 	    	
 	        GlStateManager.pushMatrix();
 	
-	        if (this.renderDog.getMainModel().isChild) {
+	        if (this.dogRenderer.getMainModel().isChild) {
 	            float f = 0.5F;
 	            GlStateManager.translate(0.0F, 0.75F, 0.0F);
 	            GlStateManager.scale(0.5F, 0.5F, 0.5F);
@@ -65,7 +66,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
     }
 
     protected void translateToHand(EnumHandSide p_191361_1_) {
-        ((ModelDog)this.renderDog.getMainModel()).wolfHeadMain.postRender(0.0625F);
+        ((ModelDog)this.dogRenderer.getMainModel()).wolfHeadMain.postRender(0.0625F);
     }
 
     @Override

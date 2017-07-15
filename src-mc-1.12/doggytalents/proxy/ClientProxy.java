@@ -1,5 +1,6 @@
 package doggytalents.proxy;
 
+import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
@@ -12,8 +13,10 @@ import doggytalents.handler.KeyState;
 import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
@@ -23,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
@@ -44,6 +48,22 @@ public class ClientProxy extends CommonProxy {
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+	}
+	
+	@Override
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+
+			@Override
+			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+				if(stack.hasTagCompound())
+					if(stack.getTagCompound().hasKey("collar_colour"))
+						return stack.getTagCompound().getInteger("collar_colour");
+				return -1;
+			}
+			
+		}, ModItems.WOOL_COLLAR);
 	}
 	
 	@Override

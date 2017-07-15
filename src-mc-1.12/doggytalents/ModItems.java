@@ -8,6 +8,8 @@ import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTreat;
+import doggytalents.item.ItemWhistle;
+import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -33,7 +35,9 @@ public class ModItems {
     public static Item COLLAR_SHEARS;
     public static Item DOGGY_CHARM;
     public static Item RADIO_COLLAR;
+    public static Item WOOL_COLLAR;
     public static Item RADAR;
+    public static Item WHISTLE;
 	
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<Item> event) {
@@ -47,35 +51,41 @@ public class ModItems {
 	    COLLAR_SHEARS = new ItemDT().setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16).setRegistryName(Reference.MOD_ID + ":collar_shears");
 	    DOGGY_CHARM = new ItemDoggyCharm().setUnlocalizedName("doggytalents.doggycharm").setRegistryName(Reference.MOD_ID + ":doggy_charm");
 	    RADIO_COLLAR = new ItemDT().setUnlocalizedName("doggytalents.radiocollar").setRegistryName(Reference.MOD_ID + ":radio_collar");
+	    WOOL_COLLAR = new ItemWoolCollar().setUnlocalizedName("doggytalents.woolcollar").setRegistryName(Reference.MOD_ID + ":wool_collar");
 	    RADAR = new ItemRadar().setUnlocalizedName("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
-		
-		event.getRegistry().register(ModItems.THROW_BONE);
-	    event.getRegistry().register(ModItems.TRAINING_TREAT);
-	    event.getRegistry().register(ModItems.SUPER_TREAT);
-	    event.getRegistry().register(ModItems.MASTER_TREAT);
-	    event.getRegistry().register(ModItems.DIRE_TREAT);
-	    event.getRegistry().register(ModItems.BREEDING_BONE);
-	    event.getRegistry().register(ModItems.COLLAR_SHEARS);
-	    event.getRegistry().register(ModItems.COMMAND_EMBLEM);
-	    event.getRegistry().register(ModItems.DOGGY_CHARM);
-	    event.getRegistry().register(ModItems.RADIO_COLLAR);
-	    event.getRegistry().register(ModItems.RADAR);
+	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
+	    
+		event.getRegistry().register(THROW_BONE);
+	    event.getRegistry().register(TRAINING_TREAT);
+	    event.getRegistry().register(SUPER_TREAT);
+	    event.getRegistry().register(MASTER_TREAT);
+	    event.getRegistry().register(DIRE_TREAT);
+	    event.getRegistry().register(BREEDING_BONE);
+	    event.getRegistry().register(COLLAR_SHEARS);
+	    event.getRegistry().register(COMMAND_EMBLEM);
+	    event.getRegistry().register(DOGGY_CHARM);
+	    event.getRegistry().register(RADIO_COLLAR);
+	    event.getRegistry().register(WOOL_COLLAR);
+	    event.getRegistry().register(RADAR);
+	    event.getRegistry().register(WHISTLE);
 	}
 	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void setItemModels(ModelRegistryEvent event) {
-		ModelHelper.setModel(ModItems.THROW_BONE, 0, "doggytalents:throw_bone");
-		ModelHelper.setModel(ModItems.THROW_BONE, 1, "doggytalents:throw_bone_wet");
-		ModelHelper.setModel(ModItems.COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
-		ModelHelper.setModel(ModItems.TRAINING_TREAT, 0, "doggytalents:training_treat");
-		ModelHelper.setModel(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
-		ModelHelper.setModel(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
-		ModelHelper.setModel(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
-		ModelHelper.setModel(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
-		ModelHelper.setModel(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
-		ModelHelper.setModel(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
-		ModelHelper.setModel(ModItems.RADAR, 0, "doggytalents:radar");
-		ModelHelper.setModel(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
+		ModelHelper.setModel(THROW_BONE, 0, "doggytalents:throw_bone");
+		ModelHelper.setModel(THROW_BONE, 1, "doggytalents:throw_bone_wet");
+		ModelHelper.setModel(COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
+		ModelHelper.setModel(TRAINING_TREAT, 0, "doggytalents:training_treat");
+		ModelHelper.setModel(SUPER_TREAT, 0, "doggytalents:super_treat");
+		ModelHelper.setModel(MASTER_TREAT, 0, "doggytalents:master_treat");
+		ModelHelper.setModel(DIRE_TREAT, 0, "doggytalents:dire_treat");
+		ModelHelper.setModel(BREEDING_BONE, 0, "doggytalents:breeding_bone");
+		ModelHelper.setModel(COLLAR_SHEARS, 0, "doggytalents:collar_shears");
+		ModelHelper.setModel(DOGGY_CHARM, 0, "doggytalents:doggy_charm");
+		ModelHelper.setModel(RADAR, 0, "doggytalents:radar");
+		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
+		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
+		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
 	}
 }

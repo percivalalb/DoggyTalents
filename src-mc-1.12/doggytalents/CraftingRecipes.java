@@ -1,6 +1,7 @@
 package doggytalents;
 
 import doggytalents.inventory.RecipeDogBed;
+import doggytalents.inventory.RecipeDogCollar;
 import doggytalents.lib.Reference;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
@@ -15,5 +16,6 @@ public class CraftingRecipes {
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new RecipeDogBed().setRegistryName(Reference.MOD_ID + ":dogbed"));
+		event.getRegistry().register(new RecipeDogCollar().setRegistryName(Reference.MOD_ID + ":dogcollar"));
 	}
 }

@@ -25,7 +25,7 @@ public class CreeperSweeper extends ITalent {
 		int level = dog.talents.getLevel(this);
 		
 		if(dog.getAttackTarget() == null && dog.isTamed() && level > 0) {
-            List list = dog.world.getEntitiesWithinAABB(EntityCreeper.class, dog.getEntityBoundingBox().expand(level * 6, level * 6, level * 6));
+            List list = dog.world.getEntitiesWithinAABB(EntityCreeper.class, dog.getEntityBoundingBox().grow(level * 6, level * 6, level * 6));
 
             if (!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1)
             	dog.objects.put("canseecreeper", true);

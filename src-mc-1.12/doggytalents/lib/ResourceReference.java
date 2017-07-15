@@ -14,6 +14,8 @@ public class ResourceReference {
 	
 	public static Hashtable<Integer, ResourceLocation> doggyTameSkins = new Hashtable<Integer, ResourceLocation>();
 	
+	public static final ResourceLocation doggyCollar = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar.png"));
+	public static final ResourceLocation doggyTame = new ResourceLocation("doggytalents", getMobTexturePath("doggy_tame.png"));
 	public static final ResourceLocation doggyHurt = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
 	public static final ResourceLocation doggyWild = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
 	public static final ResourceLocation doggyRadioCollar = new ResourceLocation("doggytalents", getMobTexturePath("doggy_radio_collar.png"));

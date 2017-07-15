@@ -40,7 +40,7 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 	
 	@Override
 	public void update() {
-		List dogs = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 1.0D, this.pos.getZ() + 1.0D).expand(3D, 2D, 3D));
+		List dogs = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 1.0D, this.pos.getZ() + 1.0D).grow(3D, 2D, 3D));
 		 
 	    if (dogs != null && dogs.size() > 0) {
 	    	for (int index = 0; index < dogs.size(); index++) {

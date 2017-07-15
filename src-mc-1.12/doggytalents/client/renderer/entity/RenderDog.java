@@ -1,6 +1,10 @@
 package doggytalents.client.renderer.entity;
 
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.renderer.entity.layer.LayerBone;
+import doggytalents.client.renderer.entity.layer.LayerDogCollar;
+import doggytalents.client.renderer.entity.layer.LayerDogHurt;
+import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceReference;
 import net.minecraft.client.gui.FontRenderer;
@@ -23,6 +27,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 	
     public RenderDog(RenderManager renderManager) {
         super(renderManager, new ModelDog(), 0.5F);
+        this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
@@ -54,7 +59,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     protected ResourceLocation getEntityTexture(EntityDog dog) {
         if(dog.isTamed())
-			return ResourceReference.getTameSkin(dog.getTameSkin());
+			return ResourceReference.doggyTame;
     	
         return ResourceReference.doggyWild;
     }

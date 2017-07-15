@@ -18,7 +18,6 @@ import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
 import doggytalents.network.packet.client.DogObeyMessage;
 import doggytalents.network.packet.client.DogTalentMessage;
-import doggytalents.network.packet.client.DogTextureMessage;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -39,7 +38,6 @@ public class GuiDogInfo extends GuiScreen {
 	private ScaledResolution resolution;
 	private List<GuiTextField> textfieldList = new ArrayList<GuiTextField>();
 	private GuiTextField nameTextField;
-	public int doggyTex;
 	private int currentPage = 0;
 	private int maxPages = 1;
 	public int btnPerPages = 0;
@@ -57,7 +55,6 @@ public class GuiDogInfo extends GuiScreen {
 		this.textfieldList.clear();
 		this.resolution = new ScaledResolution(this.mc);
 		Keyboard.enableRepeatEvents(true);
-		this.doggyTex = this.dog.getTameSkin();
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
 		GuiTextField nameTextField = new GuiTextField(0, this.fontRenderer, topX - 100, topY + 50, 200, 20) {
@@ -104,13 +101,11 @@ public class GuiDogInfo extends GuiScreen {
     	}
     	
 
-        this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
-        this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
         if(this.dog.isOwner(this.player))
         	this.buttonList.add(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())));
         
         
-        this.buttonList.add(new GuiButton(-7, this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canFriendlyFire())));
+        this.buttonList.add(new GuiButton(-7, this.width - 64, topY + 30, 42, 20, String.valueOf(this.dog.canFriendlyFire())));
         
         this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, this.dog.mode.getMode().modeName()));
 	}
@@ -126,11 +121,10 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		this.fontRenderer.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
 	    if(this.dog.isOwner(this.player))
 	    	this.fontRenderer.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
 	    
-	    this.fontRenderer.drawString("Friendly Fire?", this.width - 76, topY - 15, 0xFFFFFF);
+	    this.fontRenderer.drawString("Friendly Fire?", this.width - 76, topY + 20, 0xFFFFFF);
 				
 		for(int i = 0; i < this.btnPerPages; ++i) {
 			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
@@ -214,26 +208,6 @@ public class GuiDogInfo extends GuiScreen {
     			this.initGui();
     		}
 		}
-		if (button.id == -4) {
-            if(this.doggyTex != 0) {
-            	this.doggyTex--;
-            }
-            else {
-            	this.doggyTex = 127;
-            }
-            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
-        }
-
-        if (button.id == -3) {
-            if(this.doggyTex != 127) {
-            	this.doggyTex++;
-            }
-            else {
-            	this.doggyTex = 0;
-            }
-            
-            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
-        }
         
         if(button.id == -5) {
         	button.displayString = String.valueOf(!this.dog.willObeyOthers());

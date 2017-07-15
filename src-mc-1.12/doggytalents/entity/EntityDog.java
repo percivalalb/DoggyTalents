@@ -20,6 +20,7 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -47,6 +48,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFood;
@@ -75,7 +77,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class EntityDog extends EntityAbstractDog {
 	
-	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
+	//public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
+	public static final DataParameter<Integer> COLLAR_COLOUR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
@@ -174,7 +177,7 @@ public class EntityDog extends EntityAbstractDog {
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
-        this.dataManager.register(DOG_TEXTURE, Byte.valueOf((byte)0));
+        this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS, "");
         this.dataManager.register(HUNGER, Integer.valueOf(60));
         this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
@@ -198,7 +201,8 @@ public class EntityDog extends EntityAbstractDog {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setString("version", Reference.MOD_VERSION);
         
-        tagCompound.setInteger("doggyTex", this.getTameSkin());
+        //TODO tagCompound.setInteger("doggyTex", this.getTameSkin());
+        tagCompound.setInteger("collarColour", this.getCollarColour());
         tagCompound.setInteger("dogHunger", this.getDogHunger());
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
@@ -216,7 +220,9 @@ public class EntityDog extends EntityAbstractDog {
         super.readEntityFromNBT(tagCompound);
 
         String lastVersion = tagCompound.getString("version");
-        this.setTameSkin(tagCompound.getInteger("doggyTex"));
+        //TODO this.setTameSkin(tagCompound.getInteger("doggyTex"));
+        if(tagCompound.hasKey("collarColour", 99))
+        	this.setCollarColour(tagCompound.getInteger("collarColour"));
         this.setDogHunger(tagCompound.getInteger("dogHunger"));
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
@@ -620,10 +626,21 @@ public class EntityDog extends EntityAbstractDog {
             		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar()&& !this.isIncapacicated()) {
+                else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode)
                 		stack.shrink(1);
                  	this.hasRadarCollar(true);
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
+                	if(!player.capabilities.isCreativeMode)
+                		stack.shrink(1);
+                	int colour = -1;
+                	
+                	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour"))
+                		colour = stack.getTagCompound().getInteger("collar_colour");
+                	
+                 	this.setCollarColour(colour);
                  	return true;
                 }
                 else if(stack.getItem() instanceof IDogTreat && this.canInteract(player) && !this.isIncapacicated()) {
@@ -634,18 +651,28 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.isOwner(player)) {
                 	if(!this.world.isRemote) {
-                		this.setTamed(false);
-                	    this.navigator.clearPathEntity();
-                        this.setSitting(false);
-                        this.setHealth(8);
-                        this.talents.resetTalents();
-                        this.setOwnerId(null);
-                        this.setWillObeyOthers(false);
-                        this.mode.setMode(EnumMode.DOCILE);
-                        if(this.hasRadarCollar())
-                        	this.dropItem(ModItems.RADIO_COLLAR, 1);
-                        this.hasRadarCollar(false);
-                        this.reversionTime = 40;
+                		if(this.hasCollar()) {
+                			this.reversionTime = 40;
+                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
+                			collarDrop.setTagCompound(new NBTTagCompound());
+                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
+                	     	this.entityDropItem(collarDrop, 1);
+                	     	this.setCollarColour(-2);
+                		}
+                		else if(this.reversionTime < 1) {
+                			this.setTamed(false);
+	                	    this.navigator.clearPathEntity();
+	                        this.setSitting(false);
+	                        this.setHealth(8);
+	                        this.talents.resetTalents();
+	                        this.setOwnerId(null);
+	                        this.setWillObeyOthers(false);
+	                        this.mode.setMode(EnumMode.DOCILE);
+	                        if(this.hasRadarCollar())
+	                        	this.dropItem(ModItems.RADIO_COLLAR, 1);
+	                        this.hasRadarCollar(false);
+	                        this.reversionTime = 40;
+                		}
                      }
 
                 	return true;
@@ -664,6 +691,56 @@ public class EntityDog extends EntityAbstractDog {
                         this.world.setEntityState(this, (byte)7);
                     }
 
+                    return true;
+                }
+                else if(stack.getItem() == Items.DYE) {
+                    if(!this.hasCollar())
+                    	return false;
+                    
+                    
+                    if(this.hasNoColour()) {
+                        int colour = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorValue();
+                    	
+                    	this.setCollarColour(colour);
+                    }
+                    else {
+                        int[] aint = new int[3];
+                        int i = 0;
+                        int count = 0; //The number of different sources of colour
+                      
+                        
+                        int l = this.getCollarColour();
+                        float f = (float)(l >> 16 & 255) / 255.0F;
+                        float f1 = (float)(l >> 8 & 255) / 255.0F;
+                        float f2 = (float)(l & 255) / 255.0F;
+                        i = (int)((float)i + Math.max(f, Math.max(f1, f2)) * 255.0F);
+                        aint[0] = (int)((float)aint[0] + f * 255.0F);
+                        aint[1] = (int)((float)aint[1] + f1 * 255.0F);
+                        aint[2] = (int)((float)aint[2] + f2 * 255.0F);
+                        ++count;
+
+                        float[] afloat = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorComponentValues();
+                        int l1 = (int)(afloat[0] * 255.0F);
+                        int i2 = (int)(afloat[1] * 255.0F);
+                        int j2 = (int)(afloat[2] * 255.0F);
+                        i += Math.max(l1, Math.max(i2, j2));
+                        aint[0] += l1;
+                        aint[1] += i2;
+                        aint[2] += j2;
+                        ++count;
+
+                        int i1 = aint[0] / count;
+                     	int j1 = aint[1] / count;
+                    	int k1 = aint[2] / count;
+                     	float f3 = (float)i / (float)count;
+                     	float f4 = (float)Math.max(i1, Math.max(j1, k1));
+                     	i1 = (int)((float)i1 * f3 / f4);
+                     	j1 = (int)((float)j1 * f3 / f4);
+                     	k1 = (int)((float)k1 * f3 / f4);
+                     	int k2 = (i1 << 8) + j1;
+                     	k2 = (k2 << 8) + k1;
+                     	this.setCollarColour(k2);
+                    }
                     return true;
                 }
             }
@@ -826,14 +903,6 @@ public class EntityDog extends EntityAbstractDog {
     public double effectiveLevel() {
         return (this.levels.getLevel() + this.levels.getDireLevel()) / 10.0D;
     }
-
-    public int getTameSkin() {
-    	 return this.dataManager.get(DOG_TEXTURE);
-    }
-
-    public void setTameSkin(int index) {
-    	this.dataManager.set(DOG_TEXTURE, (byte)index);
-    }
     
     public void setWillObeyOthers(boolean flag) {
     	this.dataManager.set(OBEY_OTHERS, flag);
@@ -897,7 +966,7 @@ public class EntityDog extends EntityAbstractDog {
 	}
     
     public void setDogHunger(int par1) {
-    	this.dataManager.set(HUNGER, Integer.valueOf(par1));
+    	this.dataManager.set(HUNGER, Math.min(120, Math.max(0, par1)));
     }
     
     public void hasRadarCollar(boolean flag) {
@@ -943,6 +1012,37 @@ public class EntityDog extends EntityAbstractDog {
     		
 		return super.shouldDismountInWater(rider);
 	}
+    
+    //Collar related functions
+    public int getCollarColour() {
+    	return this.dataManager.get(COLLAR_COLOUR);
+    }
+    
+    public void setCollarColour(int rgb) {
+    	this.dataManager.set(COLLAR_COLOUR, rgb);
+    }
+    
+	public boolean hasCollar() {
+		return this.getCollarColour() >= -1;
+	}
+	
+	public boolean hasNoColour() {
+		return this.getCollarColour() <= -1;
+	}
+	
+	public void setHasCollar() {
+		this.setCollarColour(-1);
+	}
+	
+	public float[] getCollar() {
+		int argb = this.getCollarColour();
+		
+		int r = (argb >> 16) &0xFF;
+		int g = (argb >> 8) &0xFF;
+		int b = (argb >> 0) &0xFF;
+		
+		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+	}
 	
 	private void onFinishShaking() {
 		if(!this.world.isRemote) {
@@ -953,4 +1053,5 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_FISH : Items.FISH, 1);
 		}
 	}
+
 }

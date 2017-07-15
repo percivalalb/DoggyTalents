@@ -211,16 +211,19 @@ public abstract class EntityAbstractDog extends EntityTameable {
     }
 	
 	@Override
-	public boolean shouldAttackEntity(EntityLivingBase entityToAttack, EntityLivingBase owner) {
-        if(!(entityToAttack instanceof EntityCreeper) && !(entityToAttack instanceof EntityGhast)) {
-            if(entityToAttack instanceof EntityDog) {
-            	EntityDog entitydog = (EntityDog)entityToAttack;
+	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
+        if(!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+            if(target instanceof EntityDog) {
+            	EntityDog entitydog = (EntityDog)target;
 
                 if(entitydog.isTamed() && entitydog.getOwner() == owner)
                     return false;
             }
 
-            return entityToAttack instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)entityToAttack) ? false : !(entityToAttack instanceof AbstractHorse) || !((AbstractHorse)entityToAttack).isTame();
+            if(target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target))
+                return false;
+            else
+                return !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
         }
         
         return false;

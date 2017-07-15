@@ -25,11 +25,11 @@ public class CoordUtil {
 	}
 	
 	public BlockPos getBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).get();
+		return this.dog.getDataManager().get(EntityDog.BED_POS).or(this.dog.world.getSpawnPoint());
 	}
 	
 	public BlockPos getBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).or(dog.getPosition());
+		return this.dog.getDataManager().get(EntityDog.BOWL_POS).or(this.dog.getPosition());
 	}
 
 	public void resetBedPosition() {
@@ -37,13 +37,11 @@ public class CoordUtil {
 	}
 	
 	public void setBedPos(BlockPos pos) {
-		if(!this.getBedPos().equals(pos))
-			this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
+		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
 	}
 	
 	public void setBowlPos(BlockPos pos) {
-		if(!this.getBowlPos().equals(pos))
-			this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
+		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
 	}
 
 	

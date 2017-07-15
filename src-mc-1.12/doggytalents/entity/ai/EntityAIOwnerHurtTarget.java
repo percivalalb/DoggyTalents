@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.EntityAITarget;
 public class EntityAIOwnerHurtTarget extends EntityAITarget {
 	
     private EntityDog dog;
-    private EntityLivingBase theTarget;
+    private EntityLivingBase attacker;
     private int timestamp;
 
     public EntityAIOwnerHurtTarget(EntityDog dog) {
@@ -30,9 +30,9 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
             if(owner == null)
                 return false;
             else {
-                this.theTarget = owner.getRevengeTarget();
-                int i = owner.getRevengeTimer();
-                return i != this.timestamp && this.isSuitableTarget(this.theTarget, false) && this.dog.shouldAttackEntity(this.theTarget, owner);
+                this.attacker = owner.getLastAttackedEntity();
+                int i = owner.getLastAttackedEntityTime();
+                return i != this.timestamp && this.isSuitableTarget(this.attacker, false) && this.dog.shouldAttackEntity(this.attacker, owner);
             }
         }
     }
@@ -44,11 +44,11 @@ public class EntityAIOwnerHurtTarget extends EntityAITarget {
     
     @Override
     public void startExecuting() {
-        this.taskOwner.setAttackTarget(this.theTarget);
+        this.taskOwner.setAttackTarget(this.attacker);
         EntityLivingBase owner = this.dog.getOwner();
 
         if (owner != null)
-            this.timestamp = owner.getRevengeTimer();
+        	this.timestamp = attacker.getLastAttackedEntityTime();
 
         super.startExecuting();
     }

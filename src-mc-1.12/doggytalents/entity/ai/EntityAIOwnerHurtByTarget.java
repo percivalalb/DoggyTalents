@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.EntityAITarget;
  * @author ProPercivalalb
  */
 public class EntityAIOwnerHurtByTarget extends EntityAITarget {
+	
     private EntityDog dog;
     private EntityLivingBase theOwnerAttacker;
     private int timestamp;

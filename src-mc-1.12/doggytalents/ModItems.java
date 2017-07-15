@@ -1,6 +1,7 @@
 package doggytalents;
 
 import doggytalents.client.model.ModelHelper;
+import doggytalents.item.ItemCoinBag;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
@@ -38,6 +39,8 @@ public class ModItems {
     public static Item WOOL_COLLAR;
     public static Item RADAR;
     public static Item WHISTLE;
+    public static Item TREAT_BAG;
+    public static Item CHEW_STICK;
 	
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<Item> event) {
@@ -54,6 +57,8 @@ public class ModItems {
 	    WOOL_COLLAR = new ItemWoolCollar().setUnlocalizedName("doggytalents.woolcollar").setRegistryName(Reference.MOD_ID + ":wool_collar");
 	    RADAR = new ItemRadar().setUnlocalizedName("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
+	    TREAT_BAG = new ItemCoinBag().setUnlocalizedName("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
+	    CHEW_STICK = new ItemDT().setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
 	    
 		event.getRegistry().register(THROW_BONE);
 	    event.getRegistry().register(TRAINING_TREAT);
@@ -68,6 +73,8 @@ public class ModItems {
 	    event.getRegistry().register(WOOL_COLLAR);
 	    event.getRegistry().register(RADAR);
 	    event.getRegistry().register(WHISTLE);
+	    event.getRegistry().register(TREAT_BAG);
+	    event.getRegistry().register(CHEW_STICK);
 	}
 	
 	@SubscribeEvent
@@ -87,5 +94,7 @@ public class ModItems {
 		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
 		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
 		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
+		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
+		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");
 	}
 }

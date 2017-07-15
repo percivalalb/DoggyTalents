@@ -3,7 +3,7 @@ package doggytalents.client.gui;
 import doggytalents.entity.EntityDog;
 import doggytalents.inventory.ContainerPackPuppy;
 import doggytalents.inventory.InventoryPackPuppy;
-import doggytalents.lib.ResourceReference;
+import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -36,7 +36,7 @@ public class GuiPackPuppy extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTickTime, int xMouse, int yMouse) {
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(ResourceReference.GUI_PACK_PUPPY);
+        this.mc.getTextureManager().bindTexture(ResourceLib.GUI_PACK_PUPPY);
         int l = (this.width - this.xSize) / 2;
         int i1 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(l, i1, 0, 0, this.xSize, this.ySize);

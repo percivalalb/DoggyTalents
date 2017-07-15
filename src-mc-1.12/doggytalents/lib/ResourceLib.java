@@ -7,10 +7,11 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author ProPercivalalb
  */
-public class ResourceReference {
+public class ResourceLib {
 	
 	public static final ResourceLocation GUI_FOOD_BOWL = new ResourceLocation("doggytalents", getGuiTexturePath("food_bowl.png"));
 	public static final ResourceLocation GUI_PACK_PUPPY = new ResourceLocation("doggytalents", getGuiTexturePath("pack_puppy.png"));
+	public static final ResourceLocation GUI_TREAT_BAG = new ResourceLocation("doggytalents", getGuiTexturePath("treat_bag.png"));
 	
 	public static Hashtable<Integer, ResourceLocation> doggyTameSkins = new Hashtable<Integer, ResourceLocation>();
 	

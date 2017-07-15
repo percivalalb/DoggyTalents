@@ -13,7 +13,14 @@ Bugs: 1.11-1.9 biomes o plenty casing no localisations
 MC 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.13.2b | 15th July 2017
+v1.13.3b | 15th July 2017
++ Added the Treat Bag which is an extra 5 slots where you can store food, right clicking on a dog will feed the dog from the first slot with food in. Right clicking on a food bowl will put all the contents into the food bowl.
++ Added the Chew stick, this restores 10HP and gives your dog some fancy potion effects
+# Changed all reference to GL11 to use GlStateManager - not sure what effect this has but its what you should do
+* Fixed dog collars losing their colour in survival mode
+* Fixed any player being able to dye a dog collar even when they are not allowed
+
+v1.13.3a | 15th July 2017
 + Added Wool Collars, crafted with 8 string in the outline of square. This means by default a dog doesnt have a collar.
 + You can dye these collars just like leather armour in the crafting table as well as when the collar is on the dog
 + Wool Collars can be removed by using the collar shears on your dog, if you click again on the dog it will turn it into a wolf like before

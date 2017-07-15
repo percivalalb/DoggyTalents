@@ -1,7 +1,9 @@
 package doggytalents.block;
 
 import doggytalents.DoggyTalents;
+import doggytalents.ModItems;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.BlockContainer;
@@ -15,6 +17,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.util.BlockRenderLayer;
@@ -67,14 +70,29 @@ public class BlockFoodBowl extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (worldIn.isRemote) {
+        if(worldIn.isRemote) {
             return true;
         }
-        else
-        {
-            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-            playerIn.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
+        else {
+        	ItemStack stack = playerIn.getHeldItem(hand);
+        	
+        	if(stack.getItem() == ModItems.TREAT_BAG) {
+        		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+        		InventoryTreatBag treatBag = new InventoryTreatBag(stack);
+        		treatBag.openInventory(playerIn);
+        		
+        		for(int i = 0; i < treatBag.getSizeInventory(); i++)
+        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.addItem(treatBag.getStackInSlot(i)));
+        		
+        		treatBag.closeInventory(playerIn);
+        		
+        		return true;
+        	}
+        	else {
+	            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+	            playerIn.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+	            return true;
+        	}
         }
     }
     

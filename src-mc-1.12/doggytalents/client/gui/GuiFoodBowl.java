@@ -1,7 +1,7 @@
 package doggytalents.client.gui;
 
 import doggytalents.inventory.ContainerFoodBowl;
-import doggytalents.lib.ResourceReference;
+import doggytalents.lib.ResourceLib;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -36,7 +36,7 @@ public class GuiFoodBowl extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(ResourceReference.GUI_FOOD_BOWL);
+        this.mc.getTextureManager().bindTexture(ResourceLib.GUI_FOOD_BOWL);
         int var2 = (this.width - this.xSize) / 2;
         int var3 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var2, var3, 0, 0, this.xSize, this.ySize);

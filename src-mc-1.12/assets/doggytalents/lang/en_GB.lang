@@ -22,6 +22,8 @@ item.doggytalents.radiocollar.name=Radio Collar
 item.doggytalents.woolcollar.name=Wool Collar
 item.doggytalents.radar.name=Radar
 item.doggytalents.whistle.name=Whistle
+item.doggytalents.treatbag.name=Treat Bag
+item.doggytalents.chewstick.name=Chew Stick
 
 doggui.talentname.blackpelt=Black Pelt
 doggui.talentname.guarddog=Guard Dog
@@ -183,6 +185,7 @@ entity.doggytalents.doggytalents:dog.name=Dog
 
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
+container.doggytalents.treatbag=Treat Bag
 itemGroup.doggytalents=Doggy Talents
 itemGroup.doggytalents.dogbed=Dog Bed Variants
 doggytalents.updatemessage=A new %s version exists %s. Get it here:

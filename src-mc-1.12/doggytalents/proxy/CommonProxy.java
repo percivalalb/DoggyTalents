@@ -7,6 +7,7 @@ import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.inventory.ContainerPackPuppy;
+import doggytalents.inventory.ContainerTreatBag;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.Entity;
@@ -50,6 +51,7 @@ public class CommonProxy implements IGuiHandler {
 	public static final int GUI_ID_DOGGY = 1;
 	public static final int GUI_ID_PACKPUPPY = 2;
 	public static final int GUI_ID_FOOD_BOWL = 3;
+	public static final int GUI_ID_FOOD_BAG = 4;
 	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -69,10 +71,12 @@ public class CommonProxy implements IGuiHandler {
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
 			return new ContainerFoodBowl(player.inventory, foodBowl);
 		}
+		else if(ID == GUI_ID_FOOD_BAG) {
+			return new ContainerTreatBag(player, x, player.inventory.getStackInSlot(x));
+		}
 		return null;
 	}
 	
-
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
 		return null;

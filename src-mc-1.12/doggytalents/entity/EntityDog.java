@@ -20,6 +20,8 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.helper.DogUtil;
+import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -46,6 +48,7 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -612,6 +615,11 @@ public class EntityDog extends EntityAbstractDog {
                 		stack.shrink(1);
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
+                    if(stack.getItem() == ModItems.CHEW_STICK) {
+                    	this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
+                    	this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
+                    	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+                    }
                     return true;
                 }
             	else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
@@ -626,20 +634,22 @@ public class EntityDog extends EntityAbstractDog {
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
+                 	this.hasRadarCollar(true);
+                 	
                 	if(!player.capabilities.isCreativeMode)
                 		stack.shrink(1);
-                 	this.hasRadarCollar(true);
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
-                	if(!player.capabilities.isCreativeMode)
-                		stack.shrink(1);
                 	int colour = -1;
                 	
                 	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour"))
                 		colour = stack.getTagCompound().getInteger("collar_colour");
                 	
                  	this.setCollarColour(colour);
+                 	
+                   	if(!player.capabilities.isCreativeMode)
+                		stack.shrink(1);
                  	return true;
                 }
                 else if(stack.getItem() instanceof IDogTreat && this.canInteract(player) && !this.isIncapacicated()) {
@@ -648,7 +658,7 @@ public class EntityDog extends EntityAbstractDog {
                  	treat.giveTreat(type, player, stack, this);
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.isOwner(player)) {
+                else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
                 	if(!this.world.isRemote) {
                 		if(this.hasCollar()) {
                 			this.reversionTime = 40;
@@ -694,7 +704,7 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == Items.DYE && this.canInteract(player)) {
                     if(!this.hasCollar())
-                    	return false;
+                    	return true;
                     
                     
                     if(this.hasNoColour()) {
@@ -742,6 +752,18 @@ public class EntityDog extends EntityAbstractDog {
                     }
                     return true;
                 }
+                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < 120 && this.canInteract(player)) {
+                	
+                	InventoryTreatBag treatBag = new InventoryTreatBag(stack);
+            		treatBag.openInventory(player);
+                	
+                	int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);
+                 	if(slotIndex >= 0)
+                 		DogUtil.feedDog(this, treatBag, slotIndex);
+                 	
+            		treatBag.closeInventory(player);
+                 	return true;
+                }
             }
 
             if(!this.world.isRemote && !this.isBreedingItem(stack) && this.canInteract(player)) {
@@ -749,6 +771,7 @@ public class EntityDog extends EntityAbstractDog {
                 this.isJumping = false;
                 this.navigator.clearPathEntity();
                 this.setAttackTarget((EntityLivingBase)null);
+                return true;
             }
         }
         else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && !this.world.isRemote) {
@@ -808,7 +831,7 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public int foodValue(ItemStack stack) {
-    	if(stack.isEmpty() || stack.getItem() == null)
+    	if(stack.isEmpty())
     		return 0;
     	
     	int foodValue = 0;
@@ -820,6 +843,9 @@ public class EntityDog extends EntityAbstractDog {
 
             if (itemfood.isWolfsFavoriteMeat())
             	foodValue = 40;
+        }
+        else if(stack.getItem() == ModItems.CHEW_STICK) {
+        	return 10;
         }
         
         foodValue = TalentHelper.changeFoodValue(this, stack, foodValue);

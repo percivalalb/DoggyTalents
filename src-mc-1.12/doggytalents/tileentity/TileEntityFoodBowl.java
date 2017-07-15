@@ -3,11 +3,10 @@ package doggytalents.tileentity;
 import java.util.List;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.helper.DogUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -80,9 +79,9 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable, IInvent
     	for(EntityDog dog : dogList) {
     		dog.coords.setBowlPos(this.pos);
             	
-         	if(dog.getDogHunger() < 60 && this.getFirstDogFoodStack(dog) >= 0) {
-                this.feedDog(dog, this.getFirstDogFoodStack(dog), 1);
-         	}
+    		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this);
+         	if(dog.getDogHunger() < 60 && slotIndex >= 0)
+         		DogUtil.feedDog(dog, this, slotIndex);
         }
     	
     	this.timeoutCounter = 0;
@@ -271,69 +270,6 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable, IInvent
     public void clear()
     {
         this.bowlContents.clear();
-    }
-    
-    public ItemStack feedDog(EntityDog dog, int i, int j) {
-        if(!getStackInSlot(i).isEmpty()) {
-            ItemStack itemstack = getStackInSlot(i);
-            dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
-
-            if (getStackInSlot(i).getCount() <= j) {
-                ItemStack itemstack1 = getStackInSlot(i);
-                this.setInventorySlotContents(i, ItemStack.EMPTY);
-                return itemstack1;
-            }
-
-            ItemStack itemstack2 = getStackInSlot(i).splitStack(j);
-
-            if(getStackInSlot(i).isEmpty())
-                this.setInventorySlotContents(i, ItemStack.EMPTY);
-            else
-                this.markDirty();
-
-            return itemstack2;
-        }
-        else
-            return ItemStack.EMPTY;
-    }
-  
-    private boolean ContainsFood()
-    {
-        for (int i = 0; i < this.slotsCount; i++)
-        {
-            if (this.getStackInSlot(i).isEmpty())
-            {
-                continue;
-            }
-
-            Item item = this.getStackInSlot(i).getItem();
-
-            if (item != null && (item instanceof ItemFood))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-    
-    public int getFirstDogFoodStack(EntityDog dog) {
-        for (int i = 0; i < this.slotsCount; i++) {
-            if(this.getStackInSlot(i).isEmpty())
-                continue;
-
-            Item item = this.getStackInSlot(i).getItem();
-
-            if (item == null || !(item instanceof ItemFood))
-                continue;
-
-            ItemStack itemstack = getStackInSlot(i);
-
-            if(dog.foodValue(itemstack) != 0)
-                return i;
-        }
-
-        return -1;
     }
 
 }

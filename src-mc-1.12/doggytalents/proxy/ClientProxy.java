@@ -4,6 +4,7 @@ import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
+import doggytalents.client.gui.GuiTreatBag;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
@@ -97,6 +98,9 @@ public class ClientProxy extends CommonProxy {
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
 			return new GuiFoodBowl(player.inventory, foodBowl);
+		}
+		else if(ID == GUI_ID_FOOD_BAG) {
+			return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
 		}
 		return null;
 	}

@@ -6,7 +6,7 @@ import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.ResourceReference;
+import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
@@ -57,9 +57,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     protected ResourceLocation getEntityTexture(EntityDog dog) {
         if(dog.isTamed())
-			return ResourceReference.MOB_DOG_TAME;
+			return ResourceLib.MOB_DOG_TAME;
     	
-        return ResourceReference.MOB_DOG_WILD;
+        return ResourceLib.MOB_DOG_WILD;
     }
     
     @Override

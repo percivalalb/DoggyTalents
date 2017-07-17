@@ -1,5 +1,6 @@
 package doggytalents.client.gui;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.lib.ResourceLib;
 import doggytalents.tileentity.TileEntityFoodBowl;
@@ -22,9 +23,9 @@ public class GuiFoodBowl extends GuiContainer {
     
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
+        ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, true);
         super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+        ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, false);
     }
 
     @Override

@@ -1,11 +1,11 @@
 package doggytalents.handler;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -49,13 +49,13 @@ public class GameOverlay {
 	            int icon = 16;
 	            byte backgound = 12;
 
-	            drawTexturedModalRect(x, y, 16 + backgound * 9, 27, 9, 9);
+	            ObjectLib.METHODS.drawTexturedModalRect(x, y, 16 + backgound * 9, 27, 9, 9);
 
 
 	            if (idx < level)
-	                drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
+	                ObjectLib.METHODS.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
 	            else if (idx == level)
-	                drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
+	            	ObjectLib.METHODS.drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
 	        }
 	        GlStateManager.disableBlend();
 
@@ -69,7 +69,7 @@ public class GameOverlay {
 	            int partial = MathHelper.ceil((double)air * 10.0D / 300.0D) - full;
 
 	            for (int i = 0; i < full + partial; ++i) {
-	                drawTexturedModalRect(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+	            	ObjectLib.METHODS.drawTexturedModalRect(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
 	            }
 	            GuiIngameForge.right_height += 10;
 	        }
@@ -79,19 +79,4 @@ public class GameOverlay {
 	        GlStateManager.popMatrix();
 		}
 	}
-	
-	public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height) {
-		double zLevel = 0.0D;
-		float f = 0.00390625F;
-		float f1 = 0.00390625F;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-		bufferbuilder.pos((double)(x + width), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + height) * 0.00390625F)).endVertex();
-		bufferbuilder.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + width) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
-		bufferbuilder.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + 0) * 0.00390625F), (double)((float)(textureY + 0) * 0.00390625F)).endVertex();
-		tessellator.draw();
-	}
-
 }

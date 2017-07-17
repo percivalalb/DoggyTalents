@@ -1,6 +1,7 @@
 package doggytalents.client.gui;
 
 
+import doggytalents.base.ObjectLib;
 import doggytalents.inventory.ContainerTreatBag;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,9 +19,9 @@ public class GuiTreatBag extends GuiContainer {
 	
 	@Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.renderHoveredToolTip(mouseX, mouseY);
+		ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, true);
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, false);
     }
 	
 	@Override

@@ -1,5 +1,7 @@
 package doggytalents;
 
+import doggytalents.base.ChooseVersion;
+import doggytalents.base.ObjectLib;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
@@ -32,9 +34,10 @@ public class ModBlocks {
 
 	@SubscribeEvent
 	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
-		DOG_BED = new BlockDogBed().setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
-		DOG_BATH = new BlockDogBath().setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
-		FOOD_BOWL = new BlockFoodBowl().setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
+		DoggyTalents.LOGGER.info(ObjectLib.METHODS.getClass().toString());
+		DOG_BED = ChooseVersion.createObject("DogBed", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
+		DOG_BATH = ChooseVersion.createObject("DogBath", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
+		FOOD_BOWL = ChooseVersion.createObject("FoodBowl", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
@@ -51,7 +54,7 @@ public class ModBlocks {
 	
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(new ItemDogBed(DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
+		event.getRegistry().register(ChooseVersion.createObject("DogBedItem", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 	    event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    event.getRegistry().register(makeItemBlock(FOOD_BOWL));
 	}

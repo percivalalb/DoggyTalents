@@ -11,6 +11,7 @@ import doggytalents.DoggyTalents;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
 import doggytalents.entity.ai.EntityAIDogWander;
@@ -388,7 +389,8 @@ public class EntityDog extends EntityAbstractDog {
     public boolean isControllingPassengerPlayer() {
         return this.getControllingPassenger() instanceof EntityPlayer;
     }
-    
+    //TODO
+    /**
     @Override
     //TODO  public void moveEntityWithHeading(float strafe, float forward) {
     public void travel(float strafe, float p_191986_2_, float forward) {
@@ -416,7 +418,7 @@ public class EntityDog extends EntityAbstractDog {
                     this.motionZ += (double)(0.4F * f3 * 0.05F);
                 }
             }
-
+            
             this.stepHeight = 1.0F;
             this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
 
@@ -448,7 +450,7 @@ public class EntityDog extends EntityAbstractDog {
             this.jumpMovementFactor = 0.02F;
             super.travel(strafe, p_191986_2_, forward);
         }
-    }
+    }**/
     
     /**
     public void travel(float p_191986_1_, float p_191986_2_, float p_191986_3_)
@@ -700,7 +702,7 @@ public class EntityDog extends EntityAbstractDog {
                     
                     
                     if(this.hasNoColour()) {
-                        int colour = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorValue();
+                        int colour = ObjectLib.METHODS.getColour(EnumDyeColor.byDyeDamage(stack.getMetadata()));
                     	
                     	this.setCollarColour(colour);
                     }
@@ -720,15 +722,18 @@ public class EntityDog extends EntityAbstractDog {
                         aint[2] = (int)((float)aint[2] + f2 * 255.0F);
                         ++count;
 
-                        float[] afloat = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorComponentValues();
-                        int l1 = (int)(afloat[0] * 255.0F);
-                        int i2 = (int)(afloat[1] * 255.0F);
-                        int j2 = (int)(afloat[2] * 255.0F);
-                        i += Math.max(l1, Math.max(i2, j2));
-                        aint[0] += l1;
-                        aint[1] += i2;
-                        aint[2] += j2;
-                        ++count;
+                        //TODO
+                        /**
+                        float[] afloat = EnumDyeColor.byDyeDamage(stack.getMetadata()).getMapColor().colorValue;
+                        l = this.getCollarColour();
+                        f = (float)(l >> 16 & 255) / 255.0F;
+                        f1 = (float)(l >> 8 & 255) / 255.0F;
+                        f2 = (float)(l & 255) / 255.0F;
+                        i = (int)((float)i + Math.max(f, Math.max(f1, f2)) * 255.0F);
+                        aint[0] = (int)((float)aint[0] + f * 255.0F);
+                        aint[1] = (int)((float)aint[1] + f1 * 255.0F);
+                        aint[2] = (int)((float)aint[2] + f2 * 255.0F);
+                        ++count;**/
 
                         int i1 = aint[0] / count;
                      	int j1 = aint[1] / count;

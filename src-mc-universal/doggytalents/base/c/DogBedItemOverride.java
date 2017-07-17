@@ -1,4 +1,4 @@
-package doggytalents.client.renderer.block;
+package doggytalents.base.c;
 
 import com.google.common.collect.Lists;
 

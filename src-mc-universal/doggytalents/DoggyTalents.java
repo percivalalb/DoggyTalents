@@ -31,6 +31,7 @@ import doggytalents.talent.RescueDog;
 import doggytalents.talent.ShepherdDog;
 import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraftforge.common.config.Configuration;
@@ -45,7 +46,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, dependencies = Reference.DEPENDENCIES, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY)
 public class DoggyTalents {
 
 	@Instance(value = Reference.MOD_ID)
@@ -56,11 +57,12 @@ public class DoggyTalents {
 	
 	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
+	public static CreativeTabs CREATIVE_TAB = new CreativeTabDoggyTalents();
+	public static CreativeTabs CREATIVE_TAB_BED = new CreativeTabDogBed();
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
-		DoggyTalentsAPI.CREATIVE_TAB = new CreativeTabDoggyTalents();
-		DoggyTalentsAPI.CREATIVE_TAB_BED = new CreativeTabDogBed();
 		PROXY.preInit(event);
 	}
 	

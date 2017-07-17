@@ -1,19 +1,18 @@
-package doggytalents.configuration;
+package doggytalents.base.d;
 
 import java.util.Set;
 
+import doggytalents.configuration.ModGuiConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.IModGuiFactory;
+import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement;
 
 /**
- * Created by NovaViper on 4/4/2017.
+ * 1.12 Code
  */
-public class DoggyTalentsGuiFactory implements IModGuiFactory {
-	/**Get Examples from {@link net.minecraftforge.client.gui.ForgeGuiFactory}
-	 *
-	 * Properties are in {@link doggytalents.configuration.ConfigurationHandler}
-	*/
+public class GuiFactory implements IModGuiFactory {
+
 	@Override
 	public void initialize(Minecraft minecraftInstance) {}
 

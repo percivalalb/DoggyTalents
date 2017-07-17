@@ -1,4 +1,4 @@
-package doggytalents.client.renderer.block;
+package doggytalents.base.c;
 
 import java.util.List;
 import java.util.Map;
@@ -25,32 +25,31 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class DogBedModel implements IBakedModel {
+public class DogBedModel implements IPerspectiveAwareModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 	
-    private IModel model;
-    private IBakedModel bakedModel;
-    
+    private IPerspectiveAwareModel variantModel;
+    private IRetexturableModel baseModel;
+
     private final Function<ResourceLocation, TextureAtlasSprite> textureGetter;
     private final VertexFormat format;
     private final Map<Map<String, EnumFacing>, IBakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(IModel model, IBakedModel bakedModel, VertexFormat format) {
-        this.model = model;
-        this.bakedModel = bakedModel;
+    public DogBedModel(IPerspectiveAwareModel modelDefault, IRetexturableModel modelWooden, VertexFormat format) {
+        this.variantModel = modelDefault;
+        this.baseModel = modelWooden;
         this.textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
         this.format = format;
     }
 
     public IBakedModel getCustomModel(String casingResource, String beddingResource, @Nullable EnumFacing facing) {
-        IBakedModel customModel = this.bakedModel;
+        IBakedModel customModel = this.variantModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
 
@@ -59,12 +58,12 @@ public class DogBedModel implements IBakedModel {
 
         if(this.cache.containsKey(cacheKey))
             customModel = this.cache.get(cacheKey);
-        else if(this.model != null) {
+        else if(this.baseModel != null) {
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
             builder.put("bedding", beddingResource);
             builder.put("casing", casingResource);
             builder.put("particle", casingResource);
-            IModel retexturedModel = this.model.retexture(builder.build());
+            IModel retexturedModel = this.baseModel.retexture(builder.build());
 
             //Likely inventory render
             if(facing == null) facing = EnumFacing.NORTH;
@@ -102,27 +101,27 @@ public class DogBedModel implements IBakedModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return this.bakedModel.isAmbientOcclusion();
+        return this.variantModel.isAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return this.bakedModel.isGui3d();
+        return this.variantModel.isGui3d();
     }
 
     @Override
     public boolean isBuiltInRenderer() {
-        return this.bakedModel.isBuiltInRenderer();
+        return this.variantModel.isBuiltInRenderer();
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return this.bakedModel.getParticleTexture();
+        return this.variantModel.getParticleTexture();
     }
 
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
-        return this.bakedModel.getItemCameraTransforms();
+        return this.variantModel.getItemCameraTransforms();
     }
 
     @Override
@@ -132,6 +131,6 @@ public class DogBedModel implements IBakedModel {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return Pair.of(this, this.bakedModel.handlePerspective(cameraTransformType).getRight());
+        return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
     }
 }

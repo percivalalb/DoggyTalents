@@ -1,5 +1,6 @@
 package doggytalents.lib;
 
+import doggytalents.base.ChooseVersion;
 
 /**
  * @author ProPercivalalb
@@ -15,7 +16,7 @@ public class Reference {
 	public static final String 		 SERVER_PROXY     = "doggytalents.proxy.CommonProxy";
 	public static final String 		 UPDATE_URL 	  = "https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/version.json";
 	public static final String       CHANNEL_NAME     = "DOGGY";
-	public static final String       GUI_FACTORY      = "doggytalents.configuration.DoggyTalentsGuiFactory";
+	public static final String       GUI_FACTORY      = "doggytalents.base.c.GuiFactory"; //TODO
 	
 	public static final boolean		 DEBUG 			  = false;
 }

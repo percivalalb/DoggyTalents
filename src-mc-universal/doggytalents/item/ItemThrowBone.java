@@ -88,15 +88,6 @@ public class ItemThrowBone extends ItemDT {
         entityItem.prevRotationYaw = entityItem.rotationYaw;
         entityItem.prevRotationPitch = entityItem.rotationPitch;
     }
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-	    if(this.isInCreativeTab(tab)) {
-			subItems.add(new ItemStack(this, 1, 0));
-			subItems.add(new ItemStack(this, 1, 1));
-	    }
-    }
     
 	@Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {

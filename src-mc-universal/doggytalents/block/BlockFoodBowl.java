@@ -8,7 +8,6 @@ import doggytalents.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -35,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  **/
-public class BlockFoodBowl extends BlockContainer {
+public abstract class BlockFoodBowl extends BlockContainer {
 	
 	protected static final net.minecraft.util.math.AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 1.0D - 0.0625D, 0.5D, 1.0D - 0.0625D);
 	
@@ -43,7 +42,7 @@ public class BlockFoodBowl extends BlockContainer {
         super(Material.IRON);
         this.setHardness(5.0F);
         this.setTickRandomly(true);
-        this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+        this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
 		this.setResistance(5.0F);
     }
     
@@ -122,17 +121,13 @@ public class BlockFoodBowl extends BlockContainer {
 
 	@Override
 	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay(world, pos)) {
+		if(!this.canBlockStay((World)world, pos)) {
 			this.dropBlockAsItem((World)world, pos, world.getBlockState(pos), 0);
 			((World)world).setBlockToAir(pos);
 		}
 	}
 
-	public boolean canBlockStay(IBlockAccess world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos.down());
-
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
+	public abstract boolean canBlockStay(World world, BlockPos pos);
 	
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
@@ -161,9 +156,4 @@ public class BlockFoodBowl extends BlockContainer {
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return BlockFaceShape.UNDEFINED;
-	}
 }

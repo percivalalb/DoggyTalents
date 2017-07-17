@@ -1,8 +1,8 @@
 package doggytalents.helper;
 
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.MobEffects;
@@ -24,19 +24,13 @@ public class DogUtil {
 
         for(int l = 0; l <= 4; ++l) {
             for(int i1 = 0; i1 <= 4; ++i1) {
-                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && DogUtil.isTeleportFriendlyBlock(entity, world, i, j, k, l, i1)) {
+                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && ObjectLib.METHODS.isTeleportFriendlyBlock(entity, world, i, j, k, l, i1)) {
                 	entity.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), entity.rotationYaw, entity.rotationPitch);
                     pathfinder.clearPathEntity();
                     return;
                 }
             }
         }
-    }
-	
-    public static boolean isTeleportFriendlyBlock(Entity entity, World world, int xBase, int zBase, int y, int xAdd, int zAdd) {
-        BlockPos blockpos = new BlockPos(xBase + xAdd, y - 1, zBase + zAdd);
-        IBlockState iblockstate = world.getBlockState(blockpos);
-        return iblockstate.getBlockFaceShape(world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(entity) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
     }
     
     public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {

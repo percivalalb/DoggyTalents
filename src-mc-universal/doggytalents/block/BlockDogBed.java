@@ -11,7 +11,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,7 +42,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class BlockDogBed extends BlockContainer {
+public abstract class BlockDogBed extends BlockContainer {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final PropertyString CASING = PropertyString.create("casing");
@@ -200,17 +199,8 @@ public class BlockDogBed extends BlockContainer {
 		}
 	}
 
-	public boolean canBlockStay(World world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
+	public abstract boolean canBlockStay(World world, BlockPos pos);
 	
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab) {
-		for(String casingId : DogBedRegistry.CASINGS.getKeys())
-			tab.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
-    }
 	
 	@Override
 	public IBlockState withRotation(IBlockState state, Rotation rot) {
@@ -220,10 +210,5 @@ public class BlockDogBed extends BlockContainer {
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return BlockFaceShape.UNDEFINED;
 	}
 }

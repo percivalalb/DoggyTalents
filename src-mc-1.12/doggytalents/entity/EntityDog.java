@@ -308,21 +308,19 @@ public class EntityDog extends EntityAbstractDog {
 	        }
         }
         
-        if (this.getHealth() <= 0 && this.isImmortal()) {
+        if(this.getHealth() <= 0 && this.isImmortal()) {
             this.deathTime = 0;
             this.setHealth(1);
         }
         
-        if(this.getDogHunger() == 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1) {
+        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1) {
             this.attackEntityFrom(DamageSource.GENERIC, 1);
             //this.fleeingTick = 0;
         }
         
-        if (this.levels.isDireDog() && Constants.DIRE_PARTICLES) {
-            for (int i = 0; i < 2; i++) {
-                world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
-            }
-        }
+        if(this.levels.isDireDog() && Constants.DIRE_PARTICLES)
+            for(int i = 0; i < 2; i++)
+                this.world.spawnParticle(EnumParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, (this.posY + rand.nextDouble() * (double)height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double)this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
         
         if(this.reversionTime > 0)
         	this.reversionTime -= 1;
@@ -339,29 +337,23 @@ public class EntityDog extends EntityAbstractDog {
     public void onUpdate() {
         super.onUpdate();
         
-        if(this.rand.nextInt(200) == 0) {
+        if(this.rand.nextInt(200) == 0)
         	this.hiyaMaster = true;
-        }
         
-        if (((this.isBegging()) || (this.hiyaMaster)) && (!this.isWolfHappy))
-        {
+        if(((this.isBegging()) || (this.hiyaMaster)) && (!this.isWolfHappy)) {
         	this.isWolfHappy = true;
           	this.timeWolfIsHappy = 0.0F;
           	this.prevTimeWolfIsHappy = 0.0F;
         }
-        else  {
-        	hiyaMaster = false;
-        }
-        if (this.isWolfHappy)
-        {
-        	if (this.timeWolfIsHappy % 1.0F == 0.0F)
-        	{
+        else
+        	this.hiyaMaster = false;
+        
+        if(this.isWolfHappy) {
+        	if(this.timeWolfIsHappy % 1.0F == 0.0F)
         		this.playSound(SoundEvents.ENTITY_WOLF_PANT, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-        	}
         	this.prevTimeWolfIsHappy = this.timeWolfIsHappy;
         	this.timeWolfIsHappy += 0.05F;
-        	if (this.prevTimeWolfIsHappy >= 8.0F)
-        	{
+        	if (this.prevTimeWolfIsHappy >= 8.0F) {
         		this.isWolfHappy = false;
         		this.prevTimeWolfIsHappy = 0.0F;
         		this.timeWolfIsHappy = 0.0F;
@@ -374,7 +366,7 @@ public class EntityDog extends EntityAbstractDog {
     		if(player != null) {
     			float distanceToOwner = player.getDistanceToEntity(this);
 
-                if (distanceToOwner <= 2F && this.hasBone()) {
+                if(distanceToOwner <= 2F && this.hasBone()) {
                 	if(!this.world.isRemote) {
                 		this.entityDropItem(new ItemStack(ModItems.THROW_BONE, 1, 1), 0.0F);
                 	}
@@ -575,7 +567,7 @@ public class EntityDog extends EntityAbstractDog {
     	int damage = 4 + (MathHelper.floor(this.effectiveLevel()) + 1) / 2;
         damage = TalentHelper.attackEntityAsMob(this, entity, damage);
         
-        if (entity instanceof EntityZombie)
+        if(entity instanceof EntityZombie)
             ((EntityZombie)entity).setAttackTarget(this);
         
         return entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float)damage);

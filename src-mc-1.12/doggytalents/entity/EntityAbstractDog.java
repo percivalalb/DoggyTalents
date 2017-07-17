@@ -9,6 +9,7 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -219,9 +220,17 @@ public abstract class EntityAbstractDog extends EntityTameable {
                 if(entitydog.isTamed() && entitydog.getOwner() == owner)
                     return false;
             }
+            else if(target instanceof EntityWolf) {
+            	EntityWolf entitywolf = (EntityWolf)target;
+
+                if(entitywolf.isTamed() && entitywolf.getOwner() == owner)
+                    return false;
+            }
 
             if(target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target))
                 return false;
+            else if(target == owner)
+            	return false;
             else
                 return !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
         }

@@ -1,0 +1,212 @@
+﻿tile.doggytalents.dogbed.name=Собачья Кровать
+tile.doggytalents.foodbowl.name=Миска с Едой
+tile.doggytalents.dogbath.name=Собачья Ванная
+
+title.doggytalents.config.name=Doggy Talents Конфигурации
+modgui.config.doggysettings=Собачьи Настройки
+modgui.config.doggysettings.tooltip=Здесь вы можете поменять разные детали у вашего пёсика.
+modgui.config.general=Главные настройки
+modgui.config.general.tooltip=Остальное...
+
+item.doggytalents.throwbone0.name=Игрушка
+item.doggytalents.throwbone1.name=Слюнявая Игрушка
+item.doggytalents.trainingtreat.name=Обучающее Лакомство
+item.doggytalents.supertreat.name=Превосходное Лакомство
+item.doggytalents.mastertreat.name=Лакомство Мастера
+item.doggytalents.diretreat.name=Жуткое Лакомство
+item.doggytalents.breedingbone.name=Кость для Размножения
+item.doggytalents.doggycharm.name=Собачий Шарм
+item.doggytalents.collarshears.name=Ножницы для Разрубки Ошейника
+item.doggytalents.commandemblem.name=Инструмент Дрессировщика
+item.doggytalents.radiocollar.name=Ошейник с Радиоприёмником
+item.doggytalents.radar.name=Радар
+
+doggui.talentname.blackpelt=Прочная Шкура
+doggui.talentname.guarddog=Телохранитель
+doggui.talentname.hunterdog=Охотник
+doggui.talentname.hellhound=Адская Гончая
+doggui.talentname.wolfmount=Волчий Наездник
+doggui.talentname.packpuppy=Ходячий Сундучок
+doggui.talentname.pillowpaw=Подушечки Лап
+doggui.talentname.quickhealer=Быстрая Регенерация
+doggui.talentname.creepersweeper=Победитель Криперов
+doggui.talentname.doggydash=Собачий Рывок
+doggui.talentname.fisherdog=Склонность к Рыбалке
+doggui.talentname.happyeater=Весёлый Обжора
+doggui.talentname.bedfinder=Ищейка Кроватей
+doggui.talentname.pestfighter=Борец с Вредителями
+doggui.talentname.poisonfang=Ядовитый Клык
+doggui.talentname.shepherddog=Пастух
+doggui.talentname.rescuedog=Спасатель
+doggui.talentname.puppyeyes=Милые Глазки
+doggui.talentname.swimmerdog=Плывец
+
+doggui.talentinfo.bedfinder=В течение того времени, когда Ваша собака у Вас на голове, она будет смотреть в сторону Вашей кровати. Чтобы собака запрыгнула к Вам на голову, просто нажмите ПКМ, с косточкой в руке. Дальность чутья собаки увеличивается на 200 блоков за уровень, а на уровне 5 расстояние становится бесконечным.
+doggui.talentinfo.blackpelt=Увеличивает критический урон на 1/2 сердца за уровень, при полном освоении бонус - 1 сердце.
+doggui.talentinfo.guarddog=Увеличивает шанс того, что Ваша собака полностью заблокирует физическую атаку.
+doggui.talentinfo.hunterdog=Каждый уровень повышает вероятность того, что дроп жертвы Вашей собаки удвоится. 10% за каждый уровень, при полном освоении бонус - 60%.
+doggui.talentinfo.hellhound=Позволяет Вашей собаке поджигать свою жертву. При повышении повышает длительность горения. Полное освоение наделят собаку иммунитетом к огню.
+doggui.talentinfo.wolfmount=Позволяет Вам стать наезником Вашей собаки. При повышении увеличиват высоту прыжка. Чтобы оседлать собаку, подпрыгните и нажмите ПКМ (с пустыми руками).
+doggui.talentinfo.packpuppy=При повышении открывает 3 дополнительных слота в инвентаре собаки. Чтобы открыть этот инвентарь, нажмите ПКМ по Вашей собаке, имея в руке доску! При полном освоении собака будет автоматически поднимать лежащие на земле предметы.
+doggui.talentinfo.pillowpaw=При повышении увеличивает высоту падения без получения урона. При полном освоении Ваша собака приобретет полную неуязвимость к падению, а так же возможность планировать при падении!
+doggui.talentinfo.quickhealer=Увеличивает количество здоровья, которое будет восстанавливать Ваша собака без отдыха. При полном освоении Ваша собака будет лечиться на 50% быстрее (сидя).
+doggui.talentinfo.creepersweeper=Собака с этим навыком, будет чуять криперов на расстоянии и предупреждать вас, рыча. За каждый уровень это расстояние увеличивается на 6 блоков. При полном освоении, Ваша собака способна атаковать криперов, а при атаке таймер детонации крипера будет сбрасываться.
+doggui.talentinfo.doggydash=Увеличивает скорость Вашей собаке при преследовании цели или при езде. За каждый уровень - увеличение скорости +12%, при полном освоении бонус - 15%.
+doggui.talentinfo.fisherdog=Когда Ваша собака заходит в воду, есть шанс, что она поймает рыбу. Вы получите рыбу, когда собака будет отряхиваться. Шанс вылавливания повышается с уровнем, а так же навык "Адская Гончая" может сразу поджарить рыбу. При полном освоении Ваша собака сможет дышать под водой.
+doggui.talentinfo.happyeater=Увеличивает NP, которые Ваша собака получает с едой на 10% за уровень. При уровне навыка 3 Ваша собака может есть гнилую плоть, а на 5 уровне - рыбу.
+doggui.talentinfo.pestfighter=Наносит 1 единицу урона всем ближайшим чешуйницам. При повышении навыка увеличивается дальность действия, при полном освоении урон возрастает в 2 раза.
+doggui.talentinfo.poisonfang=Атаки Вашей собаки будут отравлять врагов. Длительность эффекта отравления увеличивается с уровнем навыка. На 3 уровне навыка Ваша собака приобретает иммунитет к яду, а полное освоение поможет Вам полностью отчиститься от эффектов зелий, включая отравление (ПКМ по собаке, с паучьим глазом в руке. Стоимость - 30 NP).
+doggui.talentinfo.shepherddog=Возьмите в руку немного пшеницы, и любая тренированная собака-пастух быстро соберет Вам ближайшее стадо домашних животных. Это облегчает транспортировку домашних животных. Эта работа утомляет, поэтому будет требовать много NP Вашей собаки. Стоимость NP уменьшается с уровнем навыка. Чтобы Ваша собака перестала гнать стадо, просто уберите из руки пшеницу.
+doggui.talentinfo.rescuedog=Если Ваше здоровье на критическом уровне, Ваша собака будет предпринимать попытки вылечить Вас (1/2 сердца за уровень. Стоимость - 100 NP). При полном освоении уменьшается стоимость (до 80 NP).
+doggui.talentinfo.puppyeyes=Этот навык поможет Вашей собаке завоевать сердце любого жителя. Так же есть шанс получения подарка.! При повышении Вы получаете более дорогие подарки. Этот навык может быть использован только раз в 2 дня игры (игровое время). При полном освоении навык может быть использован 1 раз в день.
+doggui.talentinfo.swimmerdog=Собака разрешит кататся на себе в воде и позволяет дышать дольше над водой. Maxing it allows the rider to see easily underwater.
+
+doggui.modeinfo.wandering=В этом режиме Ваша собака стоит возле Миски с Едой и ожидает следующей команды. Чтобы "привязать" собаку к миске, просто расположите собаку рядом с миской (1 блок).
+doggui.modeinfo.tactical=В этом режиме Ваша собака будет следовать за Вами, но никого не будет атаковать.
+doggui.modeinfo.aggresive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
+doggui.modeinfo.berserker=В этом режиме Ваша собака будет следовать за Вами и атаковать всех мобов без предупреждения.
+doggui.modeinfo.docile=В этом режиме Ваша собака будет следовать за Вами, но игнорировать всех мобов. Так же, в этом режиме, Ваша собака ждет, когда Вы бросите ей косточку.
+
+
+dogtalent.puppyeyes.1.part1=Житель: Мимими! Какая прелесть! Позаботься о нём... Эээ, или о ней...
+dogtalent.puppyeyes.1.part2=Сюда, у меня немножечко вкусненькой свининки
+dogtalent.puppyeyes.2.part1=Житель: Уиии, кто хороший мальчик?
+dogtalent.puppyeyes.2.part2=КтооХорошийМальчик? Ты, моя прелесть! ТЫЫЫ!
+dogtalent.puppyeyes.2.part3=Да, именно ты! И хороший мальчик должен поесть!
+dogtalent.puppyeyes.3.part1=Житель: Господи! Где ты достал этот преданный комочек шерсти,
+dogtalent.puppyeyes.3.part2=полный счастья и няшности? Держи, немного моего железа,
+dogtalent.puppyeyes.3.part3=создай себе броню и держи своего щеночка в безопасности!
+dogtalent.puppyeyes.4.part1=Житель: Это чувство, будто моё сердце выросло
+dogtalent.puppyeyes.4.part2=до размеров моего высокоподобного носа. Вот, возьми это.
+dogtalent.puppyeyes.4.part3=Нет, я настаиваю! БЕРИ! ЖИВО! Дружко?
+dogtalent.puppyeyes.5.part1=Житель: Я всего лишь хочу сказать тебе, мой друг,
+dogtalent.puppyeyes.5.part2=что ты владелец лучшего пёсика во вселенной!
+dogtalent.puppyeyes.5.part3=И ещё дам тебе эту блестяшку, она мне не нужна.
+dogtalent.puppyeyes.6.part1=Житель: Уууууууууууууууу
+dogtalent.puppyeyes.6.part2=ууууууууууууууууууууууууу
+dogtalent.puppyeyes.6.part3=тииииииииииипууууутиииии!
+
+dogtalent.puppyeyes.wolfmount.outofhunger=%s: Гавв, гав, гав гаввв (Еду пожайлуста)
+
+dogbed.bedding.minecraft:wool.0=Основание кровати с Белой Шерстью
+dogbed.bedding.minecraft:wool.1=Основание кровати с Оранжевой Шерстью
+dogbed.bedding.minecraft:wool.2=Основание кровати с Пурпурной Шерстью
+dogbed.bedding.minecraft:wool.3=Основание кровати с Светло-Голубой Шерстью
+dogbed.bedding.minecraft:wool.4=Основание кровати с Жёлтой Шерстью
+dogbed.bedding.minecraft:wool.5=Основание кровати с Лаймовой Шерстью
+dogbed.bedding.minecraft:wool.6=Основание кровати с Розовой Шерстью
+dogbed.bedding.minecraft:wool.7=Основание кровати с Серой Шерстью
+dogbed.bedding.minecraft:wool.8=Основание кровати с Светло-Серой Шерстью
+dogbed.bedding.minecraft:wool.9=Основание кровати с Голубой Шерстью
+dogbed.bedding.minecraft:wool.10=Основание кровати с Фиолетовой Шерстью
+dogbed.bedding.minecraft:wool.11=Основание кровати с Синий Шерстью
+dogbed.bedding.minecraft:wool.12=Основание кровати с Коричневой Шерстью
+dogbed.bedding.minecraft:wool.13=Основание кровати с Зелёной Шерстью
+dogbed.bedding.minecraft:wool.14=Основание кровати с Красной Шерстью
+dogbed.bedding.minecraft:wool.15=Основание кровати с Чёрной Шерстью
+
+dogbed.casing.minecraft:planks.0=Дубовые Доски Корпуса
+dogbed.casing.minecraft:planks.1=Еловые Доски Корпуса
+dogbed.casing.minecraft:planks.2=Берёзовые Доски Корпуса
+dogbed.casing.minecraft:planks.3=Тропические Доски Корпуса
+dogbed.casing.minecraft:planks.4=Акациевые Доски Корпуса
+dogbed.casing.minecraft:planks.5=Тёмно-Дубовые Доски Корпуса
+
+dogbed.casing.forestry:planks.0.0=Лиственницевые Доски Корпуса
+dogbed.casing.forestry:planks.0.1=Тиковые Доски Корпуса
+dogbed.casing.forestry:planks.0.2=Акациевые Доски Корпуса
+dogbed.casing.forestry:planks.0.3=Лаймовые Доски Корпуса
+dogbed.casing.forestry:planks.0.4=Каштановые Доски Корпуса
+dogbed.casing.forestry:planks.0.5=Тёмно-Коричневые Доски Корпуса
+dogbed.casing.forestry:planks.0.6=Баобабовые Доски Корпуса
+dogbed.casing.forestry:planks.0.7=Секвойские Доски Корпуса
+dogbed.casing.forestry:planks.0.8=Капоковые Доски Корпуса
+dogbed.casing.forestry:planks.0.9=Эбониевык Доски Корпуса
+dogbed.casing.forestry:planks.0.10=Красно-Деревянные Доски Корпуса
+dogbed.casing.forestry:planks.0.11=Бальзамовые Доски Корпуса
+dogbed.casing.forestry:planks.0.12=Ивавые Доски Корпуса
+dogbed.casing.forestry:planks.0.13=Орехо-Деревянные Доски Корпуса
+dogbed.casing.forestry:planks.0.14=Гринхартовые Доски Корпуса
+dogbed.casing.forestry:planks.0.15=Вишнёвые Доски Корпуса
+dogbed.casing.forestry:planks.1.0=Маховые Доски Корпуса
+dogbed.casing.forestry:planks.1.1=Тополинные Доски Корпуса
+dogbed.casing.forestry:planks.1.2=Пальмовые Доски Корпуса
+dogbed.casing.forestry:planks.1.3=Папаевые Доски Корпуса
+dogbed.casing.forestry:planks.1.4=Сосновые Доски Корпуса
+dogbed.casing.forestry:planks.1.5=Сливовые Доски Корпуса
+dogbed.casing.forestry:planks.1.6=Кленовые Доски Корпуса
+dogbed.casing.forestry:planks.1.7=Цитрусовые Доски Корпуса
+dogbed.casing.forestry:planks.1.8=Гигантские Секвойские Доски Корпуса
+dogbed.casing.forestry:planks.1.9=Ифзовые Доски Корпуса
+dogbed.casing.forestry:planks.1.10=Падуковые Доски Корпуса
+dogbed.casing.forestry:planks.1.11=Кокоболовые Доски Корпуса
+dogbed.casing.forestry:planks.1.12=Зебрановые Доски Корпуса
+
+#BiomesoPlenty russian naming needs updating 
+dogbed.casing.biomesoplenty:planks_0.0=Святые Дубовые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.1=Вишнёвые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.2=Темные Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.3=Пихтовые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.4=Внеземные Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.5=Магические Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.6=Мангровые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.7=Пальмовые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.8=Красные-деревянные Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.9=Ивовые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.10=Бамбуковые Thatching Casing
+dogbed.casing.biomesoplenty:planks_0.11=Сосновые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.12=Hellbark Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.13=Палисандровые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.14=Красные Доски Корпуса
+
+dogbed.casing.ExtraUtilites:colorWoodPlanks.0=Белые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.1=Оранжевые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanksl.2=Пурпурные Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.3=Светло-Синие Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.4=Жёлтые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.5=Лаймовые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.6=Розовые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.7=Серые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.8=Светло-Серые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.9=Голубые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.10=Фиолетовые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.11=Синие Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.12=Коричневые Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.13=Зелёные Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.14=Красные Цветные Доски Корпуса
+dogbed.casing.ExtraUtilites:colorWoodPlanks.15=Чёрные Цветные Доски Корпуса
+
+dogbed.casing.Thaumcraft:blockWoodenDevice.6=Великодревесные Доски Корпуса
+dogbed.casing.Thaumcraft:blockWoodenDevice.7=Серебродревесные Доски Корпуса
+
+dogbed.casing.TwilightForest:tile.TFTowerStone.0=Башенные Доски Корпуса
+dogbed.casing.TwilightForest:tile.TFTowerStone.2=Разломанные Башенные Доски Корпуса
+dogbed.casing.TwilightForest:tile.TFTowerStone.3=Мшистые Башенные Доски Корпуса
+dogbed.casing.TwilightForest:tile.TFTowerStone.4=Заражённые Башенные Доски Корпуса
+
+dogbed.casing.tropicraft:tile.plank.0=Пальмовые Доски Корпуса
+dogbed.casing.tropicraft:tile.bambooBundle.0=Бамбуковый Комплект Корпуса
+
+dogtreat.levelup=Повышение!
+dogtreat.tooyoung=Эта собака ещё молода для приобретения навыков.
+dogtreat.leveltoohigh=Ваша собака имеет слишком высокий уровень, чтобы получать опыт от этих Лакомств.
+dogtreat.toomuch=Ваша собака не достаточно опытна, чтобы овладеть всей силой этого Лакомства.
+dogtreat.ultimatelevel=Поздравляем! Ваша собака достигла максимального уровня!
+
+doggytalents.key.come=Команда "Подойди!"
+doggytalents.key.stay=Команда "Сидеть!"
+doggytalents.key.ok=Команда "Отлично!"
+doggytalents.key.heel=Команда "Лечи, Дружок!"
+doggytalents.key.category=Клавиши для Пёсика
+
+dogcommand.come=Подойди!
+dogcommand.stay=Сидеть!
+dogcommand.ok=Отлично!
+dogcommand.heel=Лечи, Дружок!
+
+entity.doggytalents.doggytalents:dog.name=Пёс
+
+container.packpuppy=Контейнер Пёсика
+container.foodBowl=Миска с Едой
+itemGroup.doggytalents=Таланты Пёсика
+doggytalents.updatemessage=Новая %s версия вышла %s. Скачайте её тут:

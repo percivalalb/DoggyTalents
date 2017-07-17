@@ -1,0 +1,94 @@
+{
+	"parent": "block/block",
+    "textures": {
+        "particle": "blocks/planks_oak",
+        "bedding": "blocks/wool_colored_orange",
+        "casing": "blocks/planks_oak"
+    },
+    "elements": [
+        {   "from": [ 1.6, 3.2, 1.6 ],
+            "to": [ 14.4, 6.4, 14.4 ],
+            "faces": {
+                "down":  { "texture": "#bedding" },
+                "up":    { "texture": "#bedding" },
+                "north": { "texture": "#bedding" },
+                "south": { "texture": "#bedding" },
+                "west":  { "texture": "#bedding" },
+                "east":  { "texture": "#bedding" }
+            },
+			"__comment": "Water"
+        },
+		{   "from": [ 0, 0, 0 ],
+            "to": [ 16, 3.2, 16 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing", "cullface": "north" },
+                "south": { "texture": "#casing" },
+                "west":  { "texture": "#casing" },
+                "east":  { "texture": "#casing" }
+            },
+            "__comment": "Bottom Side"
+        },
+		{   "from": [ 11.2, 3.2, 0 ],
+            "to": [ 16, 9.6, 1.6 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing", "cullface": "north" },
+                "south": { "texture": "#casing" },
+                "west":  { "texture": "#casing" },
+                "east":  { "texture": "#casing" }
+            },
+            "__comment": "North Side"
+        },
+		{   "from": [ 0, 3.2, 0 ],
+            "to": [ 4.8, 9.6, 1.6 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing", "cullface": "north" },
+                "south": { "texture": "#casing" },
+                "west":  { "texture": "#casing" },
+                "east":  { "texture": "#casing" }
+            },
+            "__comment": "North Side"
+        },
+		{   "from": [ 14.4, 3.2, 0 ],
+            "to": [ 16, 9.6, 16 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing" },
+                "south": { "texture": "#casing" },
+                "west":  { "texture": "#casing" },
+                "east":  { "texture": "#casing", "cullface": "east" }
+            },
+            "__comment": "East Side"
+        },
+		{   "from": [ 0, 3.2, 14.4 ],
+            "to": [ 16, 9.6, 16 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing" },
+                "south": { "texture": "#casing", "cullface": "south" },
+                "west":  { "texture": "#casing" },
+                "east":  { "texture": "#casing" }
+            },
+            "__comment": "South Side"
+        },
+		{   "from": [ 0, 3.2, 0 ],
+            "to": [ 1.6, 9.6, 16 ],
+            "faces": {
+                "down":  { "texture": "#casing" },
+                "up":    { "texture": "#casing" },
+                "north": { "texture": "#casing" },
+                "south": { "texture": "#casing" },
+                "west":  { "texture": "#casing", "cullface": "west" },
+                "east":  { "texture": "#casing" }
+            },
+            "__comment": "West Side"
+        }
+    ]
+}

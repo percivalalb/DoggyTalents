@@ -75,7 +75,7 @@ public abstract class BlockFoodBowl extends BlockContainer {
         else {
         	ItemStack stack = playerIn.getHeldItem(hand);
         	
-        	if(stack.getItem() == ModItems.TREAT_BAG) {
+        	if(!ObjectLib.STACK_UTIL.isEmpty(stack) && stack.getItem() == ModItems.TREAT_BAG) {
         		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
         		InventoryTreatBag treatBag = new InventoryTreatBag(stack);
         		treatBag.openInventory(playerIn);

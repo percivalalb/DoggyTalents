@@ -1,5 +1,6 @@
 package doggytalents.item;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockLiquid;
@@ -99,7 +100,7 @@ public class ItemDoggyCharm extends ItemDT {
     
     public Entity spawnCreature(World worldIn, double x, double y, double z, EntityPlayer playerIn) {
 
-        EntityDog dog = new EntityDog(worldIn);
+        EntityDog dog = ObjectLib.createDog(worldIn);
 
         dog.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
         dog.rotationYawHead = dog.rotationYaw;

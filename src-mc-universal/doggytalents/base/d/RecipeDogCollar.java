@@ -1,4 +1,4 @@
-package doggytalents.inventory;
+package doggytalents.base.d;
 
 import java.util.List;
 
@@ -13,6 +13,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
+/**
+ * 1.12 Code
+ */
 public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	@Override

@@ -1,11 +1,22 @@
 package doggytalents.base;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class ChooseVersion {
+	
+	public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?> parameterTypes) {
+		try {
+			return clazz.getConstructor(parameterTypes);
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public static <T> T createObject(String name, Class<T> type, Class<?> parameterTypes, Object parameter) {
 		Class<T> path = chooseClassBasedOnVersion(name, type);

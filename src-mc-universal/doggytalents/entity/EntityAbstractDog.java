@@ -54,13 +54,9 @@ public abstract class EntityAbstractDog extends EntityTameable {
     protected SoundEvent getAmbientSound() {
         return (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT);
     }
-
-	//TODO
-	/**
-	@Override
-	protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_WOLF_HURT;
-    }**/
+	
+	/** Hurt sound is version specific can be found in approtrate Dog.class File**/
+	//protected SoundEvent getHurtSound(DamageSource source);
 
 	@Override
     protected SoundEvent getDeathSound() {

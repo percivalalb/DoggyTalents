@@ -1,4 +1,4 @@
-package doggytalents.inventory;
+package doggytalents.base.d;
 
 import com.google.common.base.Strings;
 
@@ -9,6 +9,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
+/**
+ * 1.12 Code
+ */
 public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
 	@Override

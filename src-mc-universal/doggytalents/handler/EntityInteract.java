@@ -1,6 +1,7 @@
 package doggytalents.handler;
 
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +32,7 @@ public class EntityInteract {
 					if(!player.capabilities.isCreativeMode)
 		        		stack.shrink(1);
 					 
-				 	EntityDog dog = new EntityDog(world);
+				 	EntityDog dog = ObjectLib.createDog(world);
 				 	dog.setTamed(true);
 				 	dog.setOwnerId(player.getUniqueID());
 				 	dog.setHealth(dog.getMaxHealth());

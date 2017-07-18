@@ -970,7 +970,7 @@ public class EntityDog extends EntityAbstractDog {
     
     @Override
     public EntityDog createChild(EntityAgeable entityAgeable) {
-    	EntityDog entitydog = new EntityDog(this.world);
+    	EntityDog entitydog = ObjectLib.createDog(this.world);
         UUID uuid = this.getOwnerId();
 
         if(uuid != null) {

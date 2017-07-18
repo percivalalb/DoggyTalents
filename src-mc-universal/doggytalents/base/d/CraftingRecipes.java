@@ -1,14 +1,12 @@
-package doggytalents;
+package doggytalents.base.d;
 
-import doggytalents.inventory.RecipeDogBed;
-import doggytalents.inventory.RecipeDogCollar;
 import doggytalents.lib.Reference;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-//TODO @EventBusSubscriber(modid = Reference.MOD_ID)
+@EventBusSubscriber(modid = Reference.MOD_ID)
 public class CraftingRecipes {
 	
 	//All of the default crafting recipes now are contained in json files

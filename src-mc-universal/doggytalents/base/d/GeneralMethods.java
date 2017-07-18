@@ -50,6 +50,11 @@ public class GeneralMethods implements IGeneralMethods {
 		return colour.getColorValue();
 	}
 	
+	@Override
+	public void registerCraftingRecipes() {
+		
+	}
+	
 	@SideOnly(value = Side.CLIENT)
 	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before) {
 		if(before) guiContainer.drawDefaultBackground();

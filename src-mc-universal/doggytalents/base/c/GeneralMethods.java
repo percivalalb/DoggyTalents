@@ -1,5 +1,7 @@
 package doggytalents.base.c;
 
+import doggytalents.ModBlocks;
+import doggytalents.ModItems;
 import doggytalents.base.IGeneralMethods;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
@@ -13,7 +15,10 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,13 +29,14 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * 1.11.2 Code
  */
-public class GeneralMethods implements IGeneralMethods {
+public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 
 	@Override
 	public boolean isTeleportFriendlyBlock(Entity entity, World world, int xBase, int zBase, int y, int xAdd, int zAdd) {

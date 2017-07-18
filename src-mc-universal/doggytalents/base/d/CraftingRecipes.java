@@ -6,6 +6,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+/**
+ * 1.12 Code
+ */
 @EventBusSubscriber(modid = Reference.MOD_ID)
 public class CraftingRecipes {
 	

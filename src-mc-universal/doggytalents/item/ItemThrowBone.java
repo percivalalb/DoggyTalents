@@ -1,5 +1,6 @@
 package doggytalents.item;
 
+import doggytalents.base.ObjectLib;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -10,7 +11,6 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -27,8 +27,7 @@ public class ItemThrowBone extends ItemDT {
 		this.setMaxStackSize(1);
 	}
 	
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClickGENERAL(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		
 		if(itemStackIn.getItemDamage() == 1) {
@@ -49,7 +48,7 @@ public class ItemThrowBone extends ItemDT {
 	        }
 	        
 	        if (!playerIn.capabilities.isCreativeMode)
-	        	itemStackIn.shrink(1);
+	        	ObjectLib.STACK_UTIL.shrink(itemStackIn, 1);
 
 	        playerIn.addStat(StatList.getObjectUseStats(this));
 	        return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);

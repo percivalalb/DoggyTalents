@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class ModEntities {
 	
 	public static void init() {
-		EntityRegistry.registerModEntity(new ResourceLocation(Reference.MOD_ID, "dog"), ObjectLib.ENTITY_DOG_CLASS, Reference.MOD_ID + ":dog", 0, DoggyTalents.INSTANCE, 120, 1, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(Reference.MOD_ID, "attackbeam"), EntityDoggyBeam.class, Reference.MOD_ID + ":attackbeam", 1, DoggyTalents.INSTANCE, 64, 10, true);
+		ObjectLib.METHODS.registerEntity(ObjectLib.ENTITY_DOG_CLASS, new ResourceLocation(Reference.MOD_ID, "dog"), 0, DoggyTalents.INSTANCE, 120, 1, true);
+		ObjectLib.METHODS.registerEntity(EntityDoggyBeam.class, new ResourceLocation(Reference.MOD_ID, "attackbeam"), 1, DoggyTalents.INSTANCE, 64, 10, true);
 	}
 }

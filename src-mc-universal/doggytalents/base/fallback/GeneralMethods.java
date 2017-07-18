@@ -12,6 +12,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -34,6 +35,11 @@ public class GeneralMethods implements IGeneralMethods {
 	public int getColour(EnumDyeColor colour) {
 		return 0;
 	}
+	
+	@Override
+	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
+		
+	}
 
 	@Override
 	public void registerCraftingRecipes() {
@@ -53,8 +59,8 @@ public class GeneralMethods implements IGeneralMethods {
         GameRegistry.addRecipe(new ItemStack(ModItems.RADIO_COLLAR, 1), new Object[] {"XX", "YX", 'X', Items.IRON_INGOT, 'Y', Items.REDSTONE});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.RADAR, 1), new Object[] {new ItemStack(Items.MAP, 1), new ItemStack(Items.REDSTONE, 1), new ItemStack(ModItems.RADIO_COLLAR, 1)});
 	
-        CraftingManager.getInstance().addRecipe(new RecipeDogBed());
-        CraftingManager.getInstance().addRecipe(new RecipeDogCollar());
+        //TODO CraftingManager.getInstance().addRecipe(new RecipeDogBed());
+        //TODO CraftingManager.getInstance().addRecipe(new RecipeDogCollar());
 	}
 
 	@Override

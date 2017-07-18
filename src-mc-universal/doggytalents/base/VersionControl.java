@@ -1,12 +1,15 @@
 package doggytalents.base;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
-public class ChooseVersion {
+public class VersionControl {
 	
 	public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?> parameterTypes) {
 		try {

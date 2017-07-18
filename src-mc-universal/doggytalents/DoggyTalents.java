@@ -8,6 +8,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
@@ -58,8 +59,8 @@ public class DoggyTalents {
 	
 	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
-	public static CreativeTabs CREATIVE_TAB = new CreativeTabDoggyTalents();
-	public static CreativeTabs CREATIVE_TAB_BED = new CreativeTabDogBed();
+	public static CreativeTabs CREATIVE_TAB = VersionControl.createObject("TabDoggyTalents", CreativeTabDoggyTalents.class);
+	public static CreativeTabs CREATIVE_TAB_BED = VersionControl.createObject("TabDogBed", CreativeTabDoggyTalents.class);
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

@@ -1,6 +1,7 @@
 package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +13,7 @@ public class WolfMount extends ITalent {
 
 	@Override
 	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) { 
-		if(player.getHeldItemMainhand().isEmpty() && dog.canInteract(player)) {
+		if(ObjectLib.STACK_UTIL.isEmpty(player.getHeldItemMainhand()) && dog.canInteract(player)) {
         	if(dog.talents.getLevel(this) > 0 && !player.isRiding() && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.world.isRemote) {
         			dog.getSitAI().setSitting(false);

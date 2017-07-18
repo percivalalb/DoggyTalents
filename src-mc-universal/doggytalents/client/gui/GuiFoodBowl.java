@@ -30,7 +30,7 @@ public class GuiFoodBowl extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-    	String s = this.foodBowl.getDisplayName().getUnformattedText();
+    	String s = this.foodBowl.inventory.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, 10, 8, 4210752);
     }
 

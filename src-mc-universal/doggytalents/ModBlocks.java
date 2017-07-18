@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.base.ChooseVersion;
+import doggytalents.base.VersionControl;
 import doggytalents.base.ObjectLib;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
@@ -25,7 +25,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-@EventBusSubscriber(modid = Reference.MOD_ID)
+@EventBusSubscriber
+//TODO @EventBusSubscriber(modid = Reference.MOD_ID)
 public class ModBlocks {
 
 	public static Block DOG_BED;
@@ -35,9 +36,9 @@ public class ModBlocks {
 	@SubscribeEvent
 	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
 		DoggyTalents.LOGGER.info(ObjectLib.METHODS.getClass().toString());
-		DOG_BED = ChooseVersion.createObject("DogBed", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
-		DOG_BATH = ChooseVersion.createObject("DogBath", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
-		FOOD_BOWL = ChooseVersion.createObject("FoodBowl", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
+		DOG_BED = VersionControl.createObject("DogBed", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
+		DOG_BATH = VersionControl.createObject("DogBath", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
+		FOOD_BOWL = VersionControl.createObject("FoodBowl", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
@@ -54,7 +55,7 @@ public class ModBlocks {
 	
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
-		event.getRegistry().register(ChooseVersion.createObject("DogBedItem", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
+		event.getRegistry().register(VersionControl.createObject("DogBedItem", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 	    event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    event.getRegistry().register(makeItemBlock(FOOD_BOWL));
 	}

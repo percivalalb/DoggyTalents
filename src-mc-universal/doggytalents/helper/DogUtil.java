@@ -34,7 +34,7 @@ public class DogUtil {
     }
     
     public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {
-        if(!inventory.getStackInSlot(slotIndex).isEmpty()) {
+        if(!ObjectLib.STACK_UTIL.isEmpty(inventory.getStackInSlot(slotIndex))) {
             ItemStack itemstack = inventory.getStackInSlot(slotIndex);
             dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
             
@@ -44,23 +44,23 @@ public class DogUtil {
             	dog.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
             }
 
-            if (inventory.getStackInSlot(slotIndex).getCount() <= 1) {
+            if(ObjectLib.STACK_UTIL.getCount(inventory.getStackInSlot(slotIndex)) <= 1) {
                 ItemStack itemstack1 = inventory.getStackInSlot(slotIndex);
-                inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
+                inventory.setInventorySlotContents(slotIndex, ObjectLib.STACK_UTIL.getEmpty());
                 return itemstack1;
             }
 
             ItemStack itemstack2 = inventory.getStackInSlot(slotIndex).splitStack(1);
 
-            if(inventory.getStackInSlot(slotIndex).isEmpty())
-            	inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
+            if(ObjectLib.STACK_UTIL.isEmpty(inventory.getStackInSlot(slotIndex)))
+            	inventory.setInventorySlotContents(slotIndex, ObjectLib.STACK_UTIL.getEmpty());
             else
             	inventory.markDirty();
 
             return itemstack2;
         }
         else
-            return ItemStack.EMPTY;
+            return ObjectLib.STACK_UTIL.getEmpty();
     }
     
     public static boolean doesInventoryContainFood(EntityDog dog, IInventory inventory) {

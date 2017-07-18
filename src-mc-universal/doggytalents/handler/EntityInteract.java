@@ -30,7 +30,7 @@ public class EntityInteract {
 				if(!wolf.isDead && wolf.isTamed() && wolf.isOwner(player)) {
 	
 					if(!player.capabilities.isCreativeMode)
-		        		stack.shrink(1);
+						ObjectLib.STACK_UTIL.shrink(stack, 1);
 					 
 				 	EntityDog dog = ObjectLib.createDog(world);
 				 	dog.setTamed(true);

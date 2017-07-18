@@ -1,12 +1,12 @@
 package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.base.ObjectLib;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
@@ -192,7 +192,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-        return !stack.isEmpty() && DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
+        return !ObjectLib.STACK_UTIL.isEmpty(stack) && DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
     }
 	
 	@Override
@@ -207,33 +207,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
         	EntityAbstractDog entitydog = (EntityAbstractDog)otherAnimal;
             return !entitydog.isTamed() ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
         }
-    }
-	
-	@Override
-	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
-        if(!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
-            if(target instanceof EntityDog) {
-            	EntityDog entitydog = (EntityDog)target;
-
-                if(entitydog.isTamed() && entitydog.getOwner() == owner)
-                    return false;
-            }
-            else if(target instanceof EntityWolf) {
-            	EntityWolf entitywolf = (EntityWolf)target;
-
-                if(entitywolf.isTamed() && entitywolf.getOwner() == owner)
-                    return false;
-            }
-
-            if(target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target))
-                return false;
-            else if(target == owner)
-            	return false;
-            else
-                return !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
-        }
-        
-        return false;
     }
 	
 	@Override

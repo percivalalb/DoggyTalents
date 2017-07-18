@@ -6,6 +6,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -21,6 +22,8 @@ public interface IGeneralMethods {
 	public int getColour(EnumDyeColor colour);
 	
 	public void registerCraftingRecipes();
+	
+	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates);
 	
 	@SideOnly(value = Side.CLIENT)
 	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before);

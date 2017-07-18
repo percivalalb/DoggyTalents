@@ -1,5 +1,6 @@
 package doggytalents.inventory;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -19,7 +20,7 @@ public class ContainerFoodBowl extends Container {
 
         for(int i = 0; i < 1; i++)
             for (int l = 0; l < 5; l++)
-                this.addSlotToContainer(new Slot(tileEntityFoodBowl, l + i * 9, 44 + l * 18, 22 + i * 18));
+                this.addSlotToContainer(new Slot(tileEntityFoodBowl.inventory, l + i * 9, 44 + l * 18, 22 + i * 18));
 
         for(int j = 0; j < 3; j++)
             for (int i1 = 0; i1 < 9; i1++)
@@ -31,12 +32,12 @@ public class ContainerFoodBowl extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return this.tileEntityFoodBowl.isUsableByPlayer(player);
+        return this.tileEntityFoodBowl.inventory.isUsableByPlayer(player);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
         Slot slot = (Slot)this.inventorySlots.get(i);
 
         if(slot != null && slot.getHasStack()) {
@@ -45,20 +46,20 @@ public class ContainerFoodBowl extends Container {
 
             if(i < 5) {
                 if(!mergeItemStack(itemstack1, 5, inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
+                    return ObjectLib.STACK_UTIL.getEmpty();
                 }
             }
             else if(!mergeItemStack(itemstack1, 0, 5, false)) {
-                return ItemStack.EMPTY;
+                return ObjectLib.STACK_UTIL.getEmpty();
             }
 
-            if (itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+            if(ObjectLib.STACK_UTIL.isEmpty(itemstack1))
+            	slot.putStack(ObjectLib.STACK_UTIL.getEmpty());
             else
                 slot.onSlotChanged();
             
-            if(itemstack1.getCount() == itemstack.getCount())
-                return ItemStack.EMPTY;
+            if(ObjectLib.STACK_UTIL.getCount(itemstack1) == ObjectLib.STACK_UTIL.getCount(itemstack))
+                return ObjectLib.STACK_UTIL.getEmpty();
         }
 
         return itemstack;

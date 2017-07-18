@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.item.ItemWoolCollar;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
@@ -18,7 +19,7 @@ public class RecipeDogCollar implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
@@ -85,7 +86,7 @@ public class RecipeDogCollar implements IRecipe {
                 }
                 else {
                     if(itemstack1.getItem() != Items.DYE)
-                        return ItemStack.EMPTY;
+                        return ObjectLib.STACK_UTIL.getEmpty();
 
                     float[] afloat = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(itemstack1.getMetadata()));
                     int l1 = (int)(afloat[0] * 255.0F);
@@ -101,7 +102,7 @@ public class RecipeDogCollar implements IRecipe {
         }
 
         if(itemWoolCollar == null)
-            return ItemStack.EMPTY;
+            return ObjectLib.STACK_UTIL.getEmpty();
         else {
             int i1 = aint[0] / count;
             int j1 = aint[1] / count;
@@ -120,7 +121,7 @@ public class RecipeDogCollar implements IRecipe {
 
 	@Override
     public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
+        return ObjectLib.STACK_UTIL.getEmpty();
     }
 
 	@Override

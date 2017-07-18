@@ -1,6 +1,7 @@
 package doggytalents.entity.ai;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -61,7 +62,7 @@ public class EntityAIDogBeg extends EntityAIBase {
         for(EnumHand enumhand : EnumHand.values()) {
             ItemStack itemstack = player.getHeldItem(enumhand);
 
-            if(this.dog.isTamed() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
+            if(this.dog.isTamed() && !ObjectLib.STACK_UTIL.isEmpty(itemstack) && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
             	return true;
 
             if(this.dog.isBreedingItem(itemstack))

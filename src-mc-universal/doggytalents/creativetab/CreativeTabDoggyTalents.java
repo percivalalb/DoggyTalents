@@ -9,15 +9,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class CreativeTabDoggyTalents extends CreativeTabs {
+public abstract class CreativeTabDoggyTalents extends CreativeTabs {
 
 	public CreativeTabDoggyTalents() {
 		super("doggytalents");
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public ItemStack getTabIconItem() {
-		return new ItemStack(ModItems.TRAINING_TREAT);
 	}
 }

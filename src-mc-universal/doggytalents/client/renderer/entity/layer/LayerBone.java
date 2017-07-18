@@ -1,5 +1,6 @@
 package doggytalents.client.renderer.entity.layer;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -42,7 +43,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
 
     private void renderHeldItem(EntityLivingBase entitylivingbaseIn, ItemStack stack, ItemCameraTransforms.TransformType transform, EnumHandSide handSide) {
  
-    	if(!stack.isEmpty()) {
+    	if(!ObjectLib.STACK_UTIL.isEmpty(stack)) {
             GlStateManager.pushMatrix();
 
             if(entitylivingbaseIn.isSneaking())

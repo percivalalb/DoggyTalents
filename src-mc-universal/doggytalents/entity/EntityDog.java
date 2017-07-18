@@ -593,20 +593,20 @@ public class EntityDog extends EntityAbstractDog {
             entityLiving.startRiding(this);
     }
     
-    @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+    /** A general interact handler version specific methods should invoke this method **/
+    public boolean processInteractGENERAL(EntityPlayer player, EnumHand hand) {
     	ItemStack stack = player.getHeldItem(hand);
     	
         if(TalentHelper.interactWithPlayer(this, player))
         	return true;
         
         if(this.isTamed()) {
-            if(!stack.isEmpty()) {
+            if(!ObjectLib.STACK_UTIL.isEmpty(stack)) {
             	int foodValue = this.foodValue(stack);
             	
             	if(foodValue != 0 && this.getDogHunger() < 120 && this.canInteract(player) && !this.isIncapacicated()) {
             		if(!player.capabilities.isCreativeMode)
-                		stack.shrink(1);
+            			ObjectLib.STACK_UTIL.shrink(stack, 1);
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if(stack.getItem() == ModItems.CHEW_STICK) {
@@ -631,7 +631,7 @@ public class EntityDog extends EntityAbstractDog {
                  	this.hasRadarCollar(true);
                  	
                 	if(!player.capabilities.isCreativeMode)
-                		stack.shrink(1);
+                		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
@@ -643,7 +643,7 @@ public class EntityDog extends EntityAbstractDog {
                  	this.setCollarColour(colour);
                  	
                    	if(!player.capabilities.isCreativeMode)
-                		stack.shrink(1);
+                   		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
                 else if(stack.getItem() instanceof IDogTreat && this.canInteract(player) && !this.isIncapacicated()) {
@@ -682,7 +682,7 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == Items.CAKE && this.canInteract(player) && this.isIncapacicated()) {
                 	if(!player.capabilities.isCreativeMode)
-                		stack.shrink(1);
+                		ObjectLib.STACK_UTIL.shrink(stack, 1);
                 	
                     if(!this.world.isRemote) {
                         this.aiSit.setSitting(true);
@@ -780,7 +780,7 @@ public class EntityDog extends EntityAbstractDog {
         }
         else if(stack != null && stack.getItem() == Items.BONE) {
         	if(!player.capabilities.isCreativeMode)
-        		stack.shrink(1);
+        		ObjectLib.STACK_UTIL.shrink(stack, 1);
 
             if(!this.world.isRemote) {
                 if(this.rand.nextInt(3) == 0) {
@@ -802,7 +802,7 @@ public class EntityDog extends EntityAbstractDog {
             return true;
         }
 
-        return super.processInteract(player, hand);
+        return false;
     }
     
     @Override
@@ -828,7 +828,7 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public int foodValue(ItemStack stack) {
-    	if(stack.isEmpty())
+    	if(ObjectLib.STACK_UTIL.isEmpty(stack))
     		return 0;
     	
     	int foodValue = 0;

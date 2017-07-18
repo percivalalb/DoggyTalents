@@ -16,7 +16,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
+@EventBusSubscriber(value = Side.CLIENT)
+//TODO @EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ModelBake {
 
 	@SubscribeEvent

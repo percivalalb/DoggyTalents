@@ -1,5 +1,6 @@
 package doggytalents.inventory;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -39,7 +40,7 @@ public class ContainerPackPuppy extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
         Slot slot = (Slot)this.inventorySlots.get(i);
         int packpuppyLevel = MathHelper.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
@@ -49,18 +50,18 @@ public class ContainerPackPuppy extends Container {
 
             if (i < 3 * packpuppyLevel) {
                 if(!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
-                    return ItemStack.EMPTY;
+                    return ObjectLib.STACK_UTIL.getEmpty();
             }
             else if(!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
-                return ItemStack.EMPTY;
+                return ObjectLib.STACK_UTIL.getEmpty();
 
-            if (itemstack1.isEmpty())
-                slot.putStack(ItemStack.EMPTY);
+            if(ObjectLib.STACK_UTIL.isEmpty(itemstack1))
+            	slot.putStack(ObjectLib.STACK_UTIL.getEmpty());
             else
                 slot.onSlotChanged();
-
-            if(itemstack1.getCount() == itemstack.getCount())
-                return ItemStack.EMPTY;
+            
+            if(ObjectLib.STACK_UTIL.getCount(itemstack1) == ObjectLib.STACK_UTIL.getCount(itemstack))
+                return ObjectLib.STACK_UTIL.getEmpty();
         }
 
         return itemstack;

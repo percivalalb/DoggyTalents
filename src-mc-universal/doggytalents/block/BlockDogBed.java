@@ -3,6 +3,7 @@ package doggytalents.block;
 import java.util.Random;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.base.ObjectLib;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -26,7 +27,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -159,11 +159,6 @@ public abstract class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Items.AIR;
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
@@ -174,7 +169,7 @@ public abstract class BlockDogBed extends BlockContainer {
         TileEntity tile = world.getTileEntity(pos);
 		
 		if(!(tile instanceof TileEntityDogBed))
-			return ItemStack.EMPTY;
+			return ObjectLib.STACK_UTIL.getEmpty();
 		TileEntityDogBed dogBed = (TileEntityDogBed)tile;
 		
 		return DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());

@@ -1,5 +1,6 @@
 package doggytalents.api.registry;
 
+import doggytalents.base.ObjectLib;
 import net.minecraft.item.ItemStack;
 
 public class CustomIngredient {
@@ -41,7 +42,7 @@ public class CustomIngredient {
         {
             for (ItemStack itemstack : stacks)
             {
-                if (!itemstack.isEmpty())
+                if (!ObjectLib.STACK_UTIL.isEmpty(itemstack))
                 {
                     return new CustomIngredient(stacks);
                 }
@@ -51,11 +52,10 @@ public class CustomIngredient {
         return EMPTY;
     }
 	
-	public static final CustomIngredient EMPTY = new CustomIngredient(new ItemStack[0])
-	{
-		public boolean apply(ItemStack p_apply_1_)
-		{
-			return p_apply_1_.isEmpty();
+	public static final CustomIngredient EMPTY = new CustomIngredient(new ItemStack[0]) {
+		@Override
+		public boolean apply(ItemStack p_apply_1_) {
+			return ObjectLib.STACK_UTIL.isEmpty(p_apply_1_);
 		}
 	};
 }

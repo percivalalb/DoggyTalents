@@ -1,5 +1,7 @@
 package doggytalents.base.d;
 
+import java.util.Random;
+
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
 import net.minecraft.block.Block;
@@ -7,6 +9,8 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -33,9 +37,7 @@ public class DogBed extends BlockDogBed {
 	}
 	
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> tab) {
-		for(String casingId : DogBedRegistry.CASINGS.getKeys())
-			tab.add(DogBedRegistry.createItemStack(casingId, Block.REGISTRY.getNameForObject(Blocks.WOOL) + ".0"));
-    }
+	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+		return Items.AIR;
+	}
 }

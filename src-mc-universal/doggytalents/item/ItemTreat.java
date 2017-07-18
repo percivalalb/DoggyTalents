@@ -1,6 +1,7 @@
 package doggytalents.item;
 
 import doggytalents.api.IDogTreat;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,7 +37,7 @@ public class ItemTreat extends ItemDT implements IDogTreat {
 		
 		if(type == EnumFeedBack.JUSTRIGHT) {
 			if(!player.capabilities.isCreativeMode)
-				stack.shrink(1);
+				ObjectLib.STACK_UTIL.shrink(stack, 1);
 
 			if(!player.world.isRemote) {
 	            dog.levels.increaseLevel();

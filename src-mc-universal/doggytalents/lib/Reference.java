@@ -1,6 +1,6 @@
 package doggytalents.lib;
 
-import doggytalents.base.ChooseVersion;
+import doggytalents.base.VersionControl;
 
 /**
  * @author ProPercivalalb

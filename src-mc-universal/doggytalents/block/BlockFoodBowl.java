@@ -3,6 +3,7 @@ package doggytalents.block;
 import doggytalents.DoggyTalents;
 import doggytalents.ModItems;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.base.ObjectLib;
 import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.tileentity.TileEntityFoodBowl;
@@ -67,8 +68,7 @@ public abstract class BlockFoodBowl extends BlockContainer {
 	    return EnumBlockRenderType.MODEL;
 	}
 
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivatedGENERAL(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(worldIn.isRemote) {
             return true;
         }
@@ -81,7 +81,7 @@ public abstract class BlockFoodBowl extends BlockContainer {
         		treatBag.openInventory(playerIn);
         		
         		for(int i = 0; i < treatBag.getSizeInventory(); i++)
-        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.addItem(treatBag.getStackInSlot(i)));
+        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
         		
         		treatBag.closeInventory(playerIn);
         		
@@ -101,10 +101,14 @@ public abstract class BlockFoodBowl extends BlockContainer {
         
         if(entityIn instanceof EntityItem) {
             EntityItem entityItem = (EntityItem)entityIn;
-            
+            ItemStack itemstack = entityItem.getItem().copy();
+            ItemStack itemstack1 = foodBowl.inventory.addItem(entityItem.getItem());
 
-            if(TileEntityHopper.putDropInInventoryAllSlots((IInventory)null, foodBowl, entityItem)) {
-            	worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            if(!ObjectLib.STACK_UTIL.isEmpty(itemstack1) && ObjectLib.STACK_UTIL.getCount(itemstack1) != 0)
+            	entityItem.setItem(itemstack1);
+            else {
+                entityItem.setDead();
+                worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         }
     }
@@ -134,7 +138,7 @@ public abstract class BlockFoodBowl extends BlockContainer {
 		TileEntity tileentity = worldIn.getTileEntity(pos);
 
 		if(tileentity instanceof TileEntityFoodBowl) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityFoodBowl)tileentity);
+			InventoryHelper.dropInventoryItems(worldIn, pos, ((TileEntityFoodBowl)tileentity).inventory);
 			worldIn.updateComparatorOutputLevel(pos, this);
 		}
 

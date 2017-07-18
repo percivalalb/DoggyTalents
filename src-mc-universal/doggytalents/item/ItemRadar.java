@@ -19,8 +19,7 @@ public class ItemRadar extends ItemDT {
 		this.setMaxStackSize(1);
 	}
 	
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClickGENERAL(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
 		if(!worldIn.isRemote)
 			for(Object entity : worldIn.loadedEntityList) {

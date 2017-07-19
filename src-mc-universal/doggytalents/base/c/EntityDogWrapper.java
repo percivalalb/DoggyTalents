@@ -17,9 +17,9 @@ import net.minecraft.world.World;
 /**
  * 1.11.2 Code
  */
-public class Dog extends EntityDog {
+public class EntityDogWrapper extends EntityDog {
 
-	public Dog(World word) {
+	public EntityDogWrapper(World word) {
 		super(word);
 	}
 

@@ -2,6 +2,7 @@ package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.ChatUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -21,8 +22,8 @@ public class ItemRadar extends ItemDT {
 	
 	public ActionResult<ItemStack> onItemRightClickGENERAL(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
-		if(!worldIn.isRemote)
-			for(Object entity : worldIn.loadedEntityList) {
+		if(!worldIn.isRemote) {
+			for(Entity entity : worldIn.loadedEntityList) {
 				if(entity instanceof EntityDog) {
 					EntityDog dog = (EntityDog)entity;
 	
@@ -45,6 +46,8 @@ public class ItemRadar extends ItemDT {
 					}
 				}
 			}
+		}
+		
     	return new ActionResult(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
     }
 }

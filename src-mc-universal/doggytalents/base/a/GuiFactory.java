@@ -1,4 +1,4 @@
-package doggytalents.base.c;
+package doggytalents.base.a;
 
 import java.util.Set;
 
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement
 import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionGuiHandler;
 
 /**
- * 1.11.2 Code
+ * 1.9.4 & 1.10.2 Code
  */
 public class GuiFactory implements IModGuiFactory {
 	
@@ -20,16 +20,6 @@ public class GuiFactory implements IModGuiFactory {
 	@Override
 	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
 		return null;
-	}
-
-	@Override
-	public boolean hasConfigGui() {
-		return true;
-	}
-
-	@Override
-	public GuiScreen createConfigGui(GuiScreen parentScreen) {
-		return new ModGuiConfig(parentScreen);
 	}
 
 	@Override

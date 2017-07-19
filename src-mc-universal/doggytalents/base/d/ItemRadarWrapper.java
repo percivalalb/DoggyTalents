@@ -1,4 +1,4 @@
-package doggytalents.base.b;
+package doggytalents.base.d;
 
 import doggytalents.item.ItemRadar;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,10 +7,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class Radar extends ItemRadar {
+public class ItemRadarWrapper extends ItemRadar {
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		return this.onItemRightClickGENERAL(worldIn, playerIn, handIn);
 	}
 }

@@ -1,1 +1,6 @@
-1.9.4 
+#Here you need to state what classes are registered to have version specific file
+#My custom mod complier will then figure out with .java files it needs to copy for each version of MC to avoid compile errors
+
+EntityDogWrapper
+
+ItemRadarWrapper

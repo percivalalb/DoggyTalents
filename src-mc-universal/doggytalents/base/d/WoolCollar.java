@@ -22,8 +22,8 @@ public class WoolCollar extends ItemWoolCollar {
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World playerIn, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, worldIn, tooltip, advanced);
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour")) {
 			int rgb = stack.getTagCompound().getInteger("collar_colour");
 			int r = (rgb >> 16) &0xFF;

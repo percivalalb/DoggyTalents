@@ -5,6 +5,7 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import doggytalents.DoggyTalents;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -45,36 +46,51 @@ public class VersionControl {
 		}
 	}
 	
-	public static <T> Class<T> chooseClassBasedOnVersion(String name, Class<T> type) {
-		String path = String.format("%s.%s", getDirectionBaseOnVersion(), name);
-		
+	public static <T> Class<T> forName(String path, Class<T> type) {
 		try {
 			return (Class<T>)Class.forName(path);
 		} 
 		catch(ClassNotFoundException e) {
-			e.printStackTrace();
-			
-			try {
-				return (Class<T>)Class.forName(String.format("doggytalents.base.fallback.%s", name));
-			} 
-			catch(ClassNotFoundException e1) {
-				e1.printStackTrace();
-				return null;
-			}
+			return null;
 		}
+	}
+	
+	public static <T> Class<T> chooseClassBasedOnVersion(String name, Class<T> type) {
+		int index = getIndex();
+		
+		String path;
+		Class<T> clazz;
+		
+		//Tries to find class in current version folder and moves down if it can't find one
+		do {
+			path = String.format("%s.%s", getDirectionBaseOnVersion(index--), name);
+		}
+		while((clazz = forName(path, type)) == null);
+
+		return clazz;
 	}
 	
 	public static Class chooseClassBasedOnVersion(String name) {
 		return chooseClassBasedOnVersion(name, Object.class);
 	}
 	
-	public static String getDirectionBaseOnVersion() { 
+	public static int getIndex() {
 		switch(MinecraftForge.MC_VERSION) {
-		case "1.9.4":	return "doggytalents.base.a";
-		case "1.10.2":	return "doggytalents.base.b";
-		case "1.11.2":	return "doggytalents.base.c";
-		case "1.12":	return "doggytalents.base.d";
-		default:		return "doggytalents.base";
+		case "1.9.4":	return 0;
+		case "1.10.2":	return 1;
+		case "1.11.2":	return 2;
+		case "1.12":	return 3;
+		default:		return 4;
+		}
+	}
+	
+	public static String getDirectionBaseOnVersion(int index) { 
+		switch(index) {
+		case 0:		return "doggytalents.base.a";
+		case 1:		return "doggytalents.base.b";
+		case 2:		return "doggytalents.base.c";
+		case 3:		return "doggytalents.base.d";
+		default:	return "doggytalents.base";
 		}
 	}
 }

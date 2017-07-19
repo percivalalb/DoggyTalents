@@ -19,7 +19,8 @@ public interface IGeneralMethods {
 	
 	public float getBrightness(EntityDog dog, float partialTicks);
 	
-	public int getColour(EnumDyeColor colour);
+	public int getColour(EnumDyeColor dyeColor);
+	public float[] getRGB(EnumDyeColor dyeColor);
 	
 	public void registerCraftingRecipes();
 	
@@ -36,4 +37,5 @@ public interface IGeneralMethods {
 	
 	@SideOnly(value = Side.CLIENT)
 	public void onModelBakeEvent(ModelBakeEvent event) throws Exception;
+
 }

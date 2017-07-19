@@ -1,29 +1,22 @@
-package doggytalents.base.d;
+package doggytalents.base.c;
 
 import doggytalents.block.BlockFoodBowl;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
- * 1.12 Code
+ * 1.11.2 Code
  */
-public class FoodBowl extends BlockFoodBowl {
+public class BlockFoodBowlWrapper extends BlockFoodBowl {
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		return BlockFaceShape.UNDEFINED;
+		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
 	}
 	
 	@Override

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 /**
  * 1.9.4 Code
  */
-public class DogBed extends BlockDogBed {
+public class BlockDogBedWrapper extends BlockDogBed {
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos) {

@@ -1,17 +1,18 @@
-package doggytalents.base.c;
+package doggytalents.base.a;
 
 import doggytalents.block.BlockFoodBowl;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * 1.11.2 Code
+ * 1.9.4 Code
  */
-public class FoodBowl extends BlockFoodBowl {
+public class BlockFoodBowlWrapper extends BlockFoodBowl {
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos) {
@@ -20,7 +21,7 @@ public class FoodBowl extends BlockFoodBowl {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return this.onBlockActivatedGENERAL(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 }

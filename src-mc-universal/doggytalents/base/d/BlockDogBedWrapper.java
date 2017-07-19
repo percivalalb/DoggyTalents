@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * 1.12 Code
  */
-public class DogBed extends BlockDogBed {
+public class BlockDogBedWrapper extends BlockDogBed {
 
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos) {

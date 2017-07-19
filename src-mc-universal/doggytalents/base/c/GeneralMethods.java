@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -57,6 +58,11 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 	@Override
 	public int getColour(EnumDyeColor colour) {
 		return colour.getMapColor().colorValue;
+	}
+	
+	@Override
+	public float[] getRGB(EnumDyeColor dyeColor) {
+		return EntitySheep.getDyeRgb(dyeColor);
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public class GeneralMethods implements IGeneralMethods {
 	}
 
 	@Override
-	public int getColour(EnumDyeColor colour) {
+	public int getColour(EnumDyeColor dyeColor) {
 		return 0;
 	}
 	

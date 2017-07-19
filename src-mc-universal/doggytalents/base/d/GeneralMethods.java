@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
@@ -49,6 +50,11 @@ public class GeneralMethods implements IGeneralMethods {
 	@Override
 	public int getColour(EnumDyeColor colour) {
 		return colour.getColorValue();
+	}
+	
+	@Override
+	public float[] getRGB(EnumDyeColor dyeColor) {
+		return dyeColor.getColorComponentValues();
 	}
 	
 	@Override

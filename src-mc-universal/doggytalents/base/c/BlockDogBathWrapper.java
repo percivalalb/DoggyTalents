@@ -1,4 +1,4 @@
-package doggytalents.base.a;
+package doggytalents.base.c;
 
 import doggytalents.block.BlockDogBath;
 import net.minecraft.block.state.IBlockState;
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 /**
  * 1.11.2 Code
  */
-public class DogBath extends BlockDogBath {
+public class BlockDogBathWrapper extends BlockDogBath {
 	
 	@Override
 	public boolean canBlockStay(World world, BlockPos pos) {

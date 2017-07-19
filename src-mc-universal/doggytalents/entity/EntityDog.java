@@ -389,68 +389,6 @@ public class EntityDog extends EntityAbstractDog {
     public boolean isControllingPassengerPlayer() {
         return this.getControllingPassenger() instanceof EntityPlayer;
     }
-    //TODO
-    /**
-    @Override
-    //TODO  public void moveEntityWithHeading(float strafe, float forward) {
-    public void travel(float strafe, float p_191986_2_, float forward) {
-    
-  
-        if(this.isControllingPassengerPlayer()) {
-        	 EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
-             this.rotationYaw = entitylivingbase.rotationYaw;
-             this.prevRotationYaw = this.rotationYaw;
-             this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
-             this.setRotation(this.rotationYaw, this.rotationPitch);
-             this.renderYawOffset = this.rotationYaw;
-             this.rotationYawHead = this.renderYawOffset;
-             strafe = entitylivingbase.moveStrafing * 0.75F;
-             forward = entitylivingbase.moveForward;
-
-            if (forward <= 0.0F)
-                forward *= 0.5F;
-
-            if (this.onGround) {
-                if (forward > 0.0F) {
-                    float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
-                    float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
-                    this.motionX += (double)(-0.4F * f2 * 0.05F); // May change
-                    this.motionZ += (double)(0.4F * f3 * 0.05F);
-                }
-            }
-            
-            this.stepHeight = 1.0F;
-            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
-
-            if (this.canPassengerSteer())
-            {
-            	this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-            	super.travel(strafe, p_191986_2_, forward);
-            }
-           	else if (entitylivingbase instanceof EntityPlayer)
-           	{
-           		this.motionX = 0.0D;
-           		this.motionY = 0.0D;
-           		this.motionZ = 0.0D;
-           	}
-
-            this.prevLimbSwingAmount = this.limbSwingAmount;
-            double d0 = this.posX - this.prevPosX;
-            double d1 = this.posZ - this.prevPosZ;
-            float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
-
-            if (f4 > 1.0F)
-                f4 = 1.0F;
-
-            this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-            this.limbSwing += this.limbSwingAmount;
-        }
-        else {
-            this.stepHeight = 0.5F;
-            this.jumpMovementFactor = 0.02F;
-            super.travel(strafe, p_191986_2_, forward);
-        }
-    }**/
     
     /**
     public void travel(float p_191986_1_, float p_191986_2_, float p_191986_3_)
@@ -722,9 +660,7 @@ public class EntityDog extends EntityAbstractDog {
                         aint[2] = (int)((float)aint[2] + f2 * 255.0F);
                         ++count;
 
-                        //TODO
-                        /**
-                        float[] afloat = EnumDyeColor.byDyeDamage(stack.getMetadata()).getMapColor().colorValue;
+                        float[] afloat = ObjectLib.METHODS.getRGB(EnumDyeColor.byDyeDamage(stack.getMetadata()));
                         l = this.getCollarColour();
                         f = (float)(l >> 16 & 255) / 255.0F;
                         f1 = (float)(l >> 8 & 255) / 255.0F;
@@ -733,7 +669,7 @@ public class EntityDog extends EntityAbstractDog {
                         aint[0] = (int)((float)aint[0] + f * 255.0F);
                         aint[1] = (int)((float)aint[1] + f1 * 255.0F);
                         aint[2] = (int)((float)aint[2] + f2 * 255.0F);
-                        ++count;**/
+                        ++count;
 
                         int i1 = aint[0] / count;
                      	int j1 = aint[1] / count;

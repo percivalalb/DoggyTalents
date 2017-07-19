@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * 1.10.2 Code
  */
-public class ThrowBone extends ItemThrowBone {
+public class ItemThrowBoneWrapper extends ItemThrowBone {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand handIn) {

@@ -1,8 +1,9 @@
-package doggytalents.base.d;
+package doggytalents.base.c;
 
 import doggytalents.item.ItemThrowBone;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
@@ -12,9 +13,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 1.12 Code
+ * 1.11.2 Code
  */
-public class ThrowBone extends ItemThrowBone {
+public class ItemThrowBoneWrapper extends ItemThrowBone {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
@@ -23,10 +24,8 @@ public class ThrowBone extends ItemThrowBone {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-	    if(this.isInCreativeTab(tab)) {
-			subItems.add(new ItemStack(this, 1, 0));
-			subItems.add(new ItemStack(this, 1, 1));
-	    }
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		subItems.add(new ItemStack(itemIn, 1, 0));
+		subItems.add(new ItemStack(itemIn, 1, 1));
     }
 }

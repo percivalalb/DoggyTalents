@@ -98,19 +98,13 @@ public class GeneralMethods implements IGeneralMethods {
 	}
 	
 	@Override
-	public void registerBlock(IForgeRegistry<Block> registry, Block block) {
+	public void registerBlock(Object registry, Block block) {
 		GameRegistry.register(block);
 	}
 	
 	@Override
-	public void registerItem(IForgeRegistry<Item> registry, Item item) {
+	public void registerItem(Object registry, Item item) {
 		GameRegistry.register(item);
-	}
-	
-	@Override
-	@SideOnly(value = Side.CLIENT)
-	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before) {
-		
 	}
 	
 	@Override

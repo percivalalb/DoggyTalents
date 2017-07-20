@@ -30,9 +30,9 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 /**
  * 1.12 Code
@@ -72,19 +72,13 @@ public class GeneralMethods implements IGeneralMethods {
 	}
 	
 	@Override
-	public void registerBlock(IForgeRegistry<Block> registry, Block block) {
-		registry.register(block);
+	public void registerBlock(Object registry, Block block) {
+		((IForgeRegistry<Block>)registry).register(block);
 	}
 	
 	@Override
-	public void registerItem(IForgeRegistry<Item> registry, Item item) {
-		registry.register(item);
-	}
-	
-	@SideOnly(value = Side.CLIENT)
-	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before) {
-		if(before) guiContainer.drawDefaultBackground();
-		//TODO else guiContainer.renderHoveredToolTip(mouseX, mouseY);
+	public void registerItem(Object registry, Item item) {
+		((IForgeRegistry<Item>)registry).register(item);
 	}
 	
 	@Override

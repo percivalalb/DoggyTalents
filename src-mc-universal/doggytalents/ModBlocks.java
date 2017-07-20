@@ -16,8 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
-import net.minecraftforge.fml.common.registry.PersistentRegistryManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,7 +28,7 @@ public class ModBlocks {
 	public static Block DOG_BATH;
     public static Block FOOD_BOWL;
 
-	public static void onRegisterBlock(IForgeRegistry<Block> registry) {
+	public static void onRegisterBlock(Object registry) {
 		
 		DOG_BED = VersionControl.createObject("BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
 		DOG_BATH = VersionControl.createObject("BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
@@ -49,7 +47,7 @@ public class ModBlocks {
 		ObjectLib.METHODS.registerBlock(registry, ModBlocks.FOOD_BOWL);
 	}
 	
-	public static void onRegisterItem(IForgeRegistry<Item> registry) {
+	public static void onRegisterItem(Object registry) {
 		ObjectLib.METHODS.registerItem(registry, VersionControl.createObject("DogBedItem", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 		ObjectLib.METHODS.registerItem(registry, makeItemBlock(DOG_BATH));
 		ObjectLib.METHODS.registerItem(registry, makeItemBlock(FOOD_BOWL));

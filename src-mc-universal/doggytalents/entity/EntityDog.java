@@ -556,6 +556,7 @@ public class EntityDog extends EntityAbstractDog {
                 }
             	else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
             		this.startRiding(player);
+            		
             		if(this.aiSit != null)
             			this.aiSit.setSitting(true);
             		

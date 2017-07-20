@@ -12,9 +12,13 @@ ItemThrowBoneWrapper
 ItemTreatBagWrapper
 ItemWoolCollarWrapper
 
+GuiFoodBowlWrapper
+GuiPackPuppyWrapper
+GuiTreatBagWrapper
+
 EntityDogWrapper
 
-
+GuiFactory
 ClientMethods
 GeneralMethods
 StackUtil

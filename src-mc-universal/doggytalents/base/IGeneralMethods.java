@@ -12,7 +12,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,11 +28,8 @@ public interface IGeneralMethods {
 	
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates);
 	
-	public void registerBlock(IForgeRegistry<Block> registry, Block block);
-	public void registerItem(IForgeRegistry<Item> registry, Item item);
-	
-	@SideOnly(value = Side.CLIENT)
-	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before);
+	public void registerBlock(Object registry, Block block);
+	public void registerItem(Object registry, Item item);
 	
 	@SideOnly(value = Side.CLIENT)
 	public void renderLabelWithScale(FontRenderer fontRendererIn, String str, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking, float scale);

@@ -97,17 +97,17 @@ public class ClientProxy extends CommonProxy {
             if(!(target instanceof EntityDog)) 
             	return null;
 			EntityDog dog = (EntityDog)target;
-			return new GuiPackPuppy(player, dog);
+			return ObjectLib.createGuiPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
 			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
-			return new GuiFoodBowl(player.inventory, foodBowl);
+			return ObjectLib.createGuiFoodBowl(player.inventory, foodBowl);
 		}
 		else if(ID == GUI_ID_FOOD_BAG) {
-			return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
+			return ObjectLib.createGuiTreatBag(player, x, player.inventory.getStackInSlot(x));
 		}
 		return null;
 	}

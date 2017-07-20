@@ -18,13 +18,6 @@ public class GuiTreatBag extends GuiContainer {
 	}
 	
 	@Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, true);
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, false);
-    }
-	
-	@Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
         this.fontRenderer.drawString(I18n.translateToLocal("container.doggytalents.treatbag"), 10, 8, 4210752);
     }

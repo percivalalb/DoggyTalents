@@ -20,13 +20,6 @@ public class GuiFoodBowl extends GuiContainer {
         this.foodBowl = par2TileEntityFoodBowl;
         this.ySize = 127;
     }
-    
-    @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, true);
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        ObjectLib.METHODS.drawScreen(this, mouseX, mouseY, false);
-    }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {

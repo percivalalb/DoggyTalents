@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class VersionControl {
 	
-	public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?> parameterTypes) {
+	public static <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) {
 		try {
 			return clazz.getConstructor(parameterTypes);
 		} 

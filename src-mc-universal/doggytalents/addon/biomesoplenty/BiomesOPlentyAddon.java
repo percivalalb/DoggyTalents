@@ -27,7 +27,7 @@ public class BiomesOPlentyAddon {
 
 	@SubscribeEvent
 	public void onPost(AddonEvent.Post event) throws Exception {
-		if(!Loader.isModLoaded(BiomesOPlentyLib.MOD_ID))
+		if(!Loader.isModLoaded(BiomesOPlentyLib.MOD_ID) && !Loader.isModLoaded("BiomesOPlenty"))
 			return;
 		
 		Block planks1 = Block.getBlockFromName(BiomesOPlentyLib.ITEM_NAME_1);

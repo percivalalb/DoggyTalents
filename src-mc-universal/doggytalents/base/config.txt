@@ -29,3 +29,6 @@ TabDoggyTalents
 ModBlocksWrapper
 ModItemsWrapper
 ModelBakeWrapper
+
+RecipeDogBed
+RecipeDogCollar

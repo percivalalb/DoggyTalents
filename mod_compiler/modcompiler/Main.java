@@ -264,7 +264,7 @@ public class Main {
 				do {
 					path = String.format("%s\\%s.java", getDirectionBaseOnVersion(index--), line);
 				}
-				while(!(clazz = new File(modSrc, path)).exists() && index > 0);
+				while(!(clazz = new File(modSrc, path)).exists() && index >= 0);
 				
 				if(!clazz.exists()) {
 					Main.output.println("Could not locate %s. This could be an error or simply not required", clazz.getName());

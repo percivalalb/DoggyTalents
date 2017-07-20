@@ -10,13 +10,20 @@ Update List Key
 Bugs: 1.11-1.9 biomes o plenty casing no localisations 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-MC 1.12
+MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.13.3d | WIP
+1.14.0.183 | WIP
++ All minecraft versions above now use the same basic code, this will mean that updates for all these version with be released simulationously. The only thing I have to do is click compile 4 times for the different MC versions
 + Add chew stick recipe SW, WS W = Wheat, S = Sugar
++ As a reminder MC 1.9.4 - 1.11.2 now have the new dyeable collar feature and treat bag which original was only in MC 1.12 version. Now it is in all version as they use the same code!
+# Mod version now indicates which git commit it was built from (the last number)
 * Fixed dogs trying to attack their owner when spamming the command emblem
 * Fixed dogs attacking your pet wolfs
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.12
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 v1.13.3c | 15th July 2017
 * Fixed dogs not attacking anything you attacked (for all hostile modes)

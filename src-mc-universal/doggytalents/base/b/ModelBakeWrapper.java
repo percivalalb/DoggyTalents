@@ -1,8 +1,9 @@
-package doggytalents.handler;
+package doggytalents.base.b;
 
 import doggytalents.DoggyTalents;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.d.DogBedModel;
+import doggytalents.handler.ModelBake;
 import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -17,22 +18,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT)
-//TODO @EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
-public class ModelBake {
+public class ModelBakeWrapper {
 
-	public static void onModelBakeEvent(ModelBakeEvent event) {
-	    
-	    try {
-		    ObjectLib.METHODS.onModelBakeEvent(event);
-	    }
-	    catch(Exception e) {
-	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
-	    }
-	}
-	
 	@SubscribeEvent
-	public static void registerTextures(TextureStitchEvent.Pre event) {
-		DogTextureLoader.loadYourTexures();
-
+	public static void onModelBakeEvent(ModelBakeEvent event) {
+		ModelBake.onModelBakeEvent(event);
 	}
 }

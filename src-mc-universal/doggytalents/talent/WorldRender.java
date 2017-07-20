@@ -1,5 +1,6 @@
 package doggytalents.talent;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -56,7 +57,7 @@ public class WorldRender {
     	double d1 = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)particleTicks;
     	double d2 = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)particleTicks;
 
-    	RenderGlobal.drawSelectionBoundingBox(boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
+    	ObjectLib.METHODS.drawSelectionBoundingBox(boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
     	GlStateManager.color(0.0F, 0.0F, 0.0F, 0.3F);
     	GlStateManager.enableDepth(); //Make the line see thought blocks
         GlStateManager.depthMask(true);

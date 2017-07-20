@@ -1,15 +1,18 @@
 package doggytalents.base;
 
 import doggytalents.entity.EntityDog;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,6 +29,9 @@ public interface IGeneralMethods {
 	
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates);
 	
+	public void registerBlock(IForgeRegistry<Block> registry, Block block);
+	public void registerItem(IForgeRegistry<Item> registry, Item item);
+	
 	@SideOnly(value = Side.CLIENT)
 	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before);
 	
@@ -37,5 +43,8 @@ public interface IGeneralMethods {
 	
 	@SideOnly(value = Side.CLIENT)
 	public void onModelBakeEvent(ModelBakeEvent event) throws Exception;
+
+	@SideOnly(value = Side.CLIENT)
+	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha);
 
 }

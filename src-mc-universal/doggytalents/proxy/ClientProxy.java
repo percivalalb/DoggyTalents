@@ -1,5 +1,5 @@
 package doggytalents.proxy;
-
+import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
@@ -49,6 +49,11 @@ public class ClientProxy extends CommonProxy {
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+		
+		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
+			ModBlocks.setItemModels();
+			ModItems.setItemModels();
+		}
 	}
 	
 	@Override
@@ -73,6 +78,9 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new WorldRender());
 		MinecraftForge.EVENT_BUS.register(new GameOverlay());
 		MinecraftForge.EVENT_BUS.register(new KeyState());
+		//if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
+		//TODO	MinecraftForge.EVENT_BUS.register(new ModBakeWrapper());
+		//}
     }
 	
 

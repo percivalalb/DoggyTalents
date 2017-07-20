@@ -2,6 +2,7 @@ package doggytalents.base.d;
 
 import doggytalents.base.IGeneralMethods;
 import doggytalents.entity.EntityDog;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -27,6 +29,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -65,6 +68,16 @@ public class GeneralMethods implements IGeneralMethods {
 	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
 		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+	}
+	
+	@Override
+	public void registerBlock(IForgeRegistry<Block> registry, Block block) {
+		registry.register(block);
+	}
+	
+	@Override
+	public void registerItem(IForgeRegistry<Item> registry, Item item) {
+		registry.register(item);
 	}
 	
 	@SideOnly(value = Side.CLIENT)

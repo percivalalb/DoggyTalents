@@ -4,11 +4,13 @@ import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.base.IGeneralMethods;
 import doggytalents.entity.EntityDog;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -19,6 +21,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -32,6 +35,7 @@ import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -70,6 +74,17 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 	
+	@Override
+	public void registerBlock(IForgeRegistry<Block> registry, Block block) {
+		GameRegistry.register(block);
+	}
+	
+	@Override
+	public void registerItem(IForgeRegistry<Item> registry, Item item) {
+		GameRegistry.register(item);
+	}
+	
+	@Override
 	@SideOnly(value = Side.CLIENT)
 	public void drawScreen(GuiContainer guiContainer, int mouseX, int mouseY, boolean before) {
 		
@@ -152,5 +167,11 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 	        	}
 	        }
 	    }
+	}
+	
+	@Override
+	@SideOnly(value = Side.CLIENT)
+	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
+		RenderGlobal.func_181563_a(box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
 	}
 }

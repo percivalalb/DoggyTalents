@@ -1,6 +1,7 @@
 package doggytalents.proxy;
 
 import doggytalents.DoggyTalents;
+import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
@@ -30,6 +31,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class CommonProxy implements IGuiHandler {
 
 	public void preInit(FMLPreInitializationEvent event) {
+		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
+			ModBlocks.onRegisterBlock(null);
+			ModBlocks.onRegisterItem(null);
+		}
+			
         ModEntities.init();
     }
 	

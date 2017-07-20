@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * 1.9.4 Code
  */
-public class WoolCollar extends ItemWoolCollar {
+public class ItemWoolCollarWrapper extends ItemWoolCollar {
 
 	@Override
     @SideOnly(Side.CLIENT)

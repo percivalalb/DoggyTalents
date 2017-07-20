@@ -1,13 +1,12 @@
-package doggytalents.base.c;
+package doggytalents.base.d;
 
 import java.util.List;
 
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemWoolCollar;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -17,14 +16,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 1.11.2 Code
+ * 1.12 Code
  */
-public class WoolCollar extends ItemWoolCollar {
+public class ItemWoolCollarWrapper extends ItemWoolCollar {
 
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-		super.addInformation(stack, playerIn, tooltip, advanced);
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag advanced) {
+		super.addInformation(stack, worldIn, tooltip, advanced);
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour")) {
 			int rgb = stack.getTagCompound().getInteger("collar_colour");
 			int r = (rgb >> 16) &0xFF;
@@ -36,12 +35,14 @@ public class WoolCollar extends ItemWoolCollar {
 	}
 	
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		for(EnumDyeColor color : EnumDyeColor.values()) {
-			ItemStack baseColours = new ItemStack(this);
-			baseColours.setTagCompound(new NBTTagCompound());
-			baseColours.getTagCompound().setInteger("collar_colour", color.getMapColor().colorValue);
-			subItems.add(baseColours);
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if(this.isInCreativeTab(tab)) {
+			for(EnumDyeColor color : EnumDyeColor.values()) {
+				ItemStack baseColours = new ItemStack(this);
+				baseColours.setTagCompound(new NBTTagCompound());
+				baseColours.getTagCompound().setInteger("collar_colour", color.getColorValue());
+	            items.add(baseColours);
+	        }
         }
     }
 }

@@ -1,4 +1,4 @@
-package doggytalents.base.c;
+package doggytalents.base.b;
 
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -39,7 +40,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 1.11.2 Code
+ * 1.10.2 Code
  */
 public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 
@@ -59,8 +60,8 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 	}
 	
 	@Override
-	public int getColour(EnumDyeColor colour) {
-		return colour.getMapColor().colorValue;
+	public int getColour(EnumDyeColor dyeColor) {
+		return dyeColor.getMapColor().colorValue;
 	}
 	
 	@Override
@@ -70,7 +71,7 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 	
 	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 	
 	@Override
@@ -165,5 +166,10 @@ public class GeneralMethods extends doggytalents.base.fallback.GeneralMethods {
 	        	}
 	        }
 	    }
+	}
+	
+	@SideOnly(value = Side.CLIENT)
+	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
+		RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
 	}
 }

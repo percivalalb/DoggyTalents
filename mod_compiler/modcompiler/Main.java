@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -276,8 +278,40 @@ public class Main {
 				
 				copyFile(clazz, newFile);
 			}
-			
 		}
+		
+		try {
+			File file = new File(forgeSrc, "doggytalents\\lib\\Reference.java");
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = "", oldtext = "";
+			while((line = reader.readLine()) != null) {
+				oldtext += line + "\r\n";
+			}
+			reader.close();
+			int index = getIndex(forgeEnvi);
+			String path;
+			File clazz;
+			do {
+				path = String.format("%s\\%s.java", getDirectionBaseOnVersion(index--), "GuiFactory");
+			}
+			while(!(clazz = new File(forgeSrc, path)).exists() && index > 0);
+			String guiFactory = clazz.getAbsolutePath();
+			guiFactory = guiFactory.substring(guiFactory.indexOf("java") + 5, guiFactory.length() - 5);
+			Main.output.println(guiFactory);
+			guiFactory = guiFactory.replaceAll("\\\\", ".");
+			Main.output.println(guiFactory);
+			String replacedtext = oldtext.replaceAll("REPLACE_GUI_FACTORY", guiFactory);
+			
+			FileWriter writer = new FileWriter(file.getAbsoluteFile());
+			writer.write(replacedtext);
+
+
+			writer.close();
+
+		}
+     	catch(IOException ioe) {
+     		ioe.printStackTrace();
+     	}
 		
 		Main.output.println("Starting compile sequence... \n\n");
 		

@@ -62,7 +62,7 @@ public class EntityDogWrapper extends EntityDog {
 	}
 	
 	@Override
-	public void travel(float strafe, float p_191986_2_, float forward) {
+	public void moveEntityWithHeading(float strafe, float forward) {
 		if(this.isControllingPassengerPlayer()) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
             this.rotationYaw = entitylivingbase.rotationYaw;
@@ -92,7 +92,7 @@ public class EntityDogWrapper extends EntityDog {
            if (this.canPassengerSteer())
            {
            		this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-           		super.travel(strafe, p_191986_2_, forward);
+           		super.moveEntityWithHeading(strafe, forward);
            }
            else if (entitylivingbase instanceof EntityPlayer)
            {
@@ -115,7 +115,7 @@ public class EntityDogWrapper extends EntityDog {
        else {
            this.stepHeight = 0.5F;
            this.jumpMovementFactor = 0.02F;
-           super.travel(strafe, p_191986_2_, forward);
+           super.moveEntityWithHeading(strafe, forward);
        }
 	}
 }

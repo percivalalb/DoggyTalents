@@ -9,6 +9,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -158,5 +159,10 @@ public class GeneralMethods implements IGeneralMethods {
 	        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
 	        event.getModelRegistry().putObject(modelVariantLocation, customModel);
 	    }
+	}
+
+	@Override
+	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
+		RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
 	}
 }

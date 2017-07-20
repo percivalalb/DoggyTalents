@@ -12,12 +12,9 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(value = Side.CLIENT)
-//TODO @EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ModelBake {
 
 	public static void onModelBakeEvent(ModelBakeEvent event) {
@@ -28,11 +25,5 @@ public class ModelBake {
 	    catch(Exception e) {
 	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
 	    }
-	}
-	
-	@SubscribeEvent
-	public static void registerTextures(TextureStitchEvent.Pre event) {
-		DogTextureLoader.loadYourTexures();
-
 	}
 }

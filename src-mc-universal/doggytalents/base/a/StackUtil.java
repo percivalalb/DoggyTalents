@@ -20,6 +20,11 @@ public class StackUtil implements IStackUtil {
 	}
 	
 	@Override
+	public void setCount(ItemStack stack, int quantity) {
+		stack.stackSize = quantity;
+	}
+	
+	@Override
 	public void shrink(ItemStack stack, int quantity) {
 		stack.stackSize -= quantity;
 	}

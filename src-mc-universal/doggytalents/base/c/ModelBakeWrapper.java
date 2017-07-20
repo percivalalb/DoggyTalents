@@ -1,4 +1,4 @@
-package doggytalents.base.a;
+package doggytalents.base.c;
 
 import doggytalents.DoggyTalents;
 import doggytalents.base.ObjectLib;
@@ -13,13 +13,15 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+@EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ModelBakeWrapper {
 
 	@SubscribeEvent
-	public void onModelBakeEvent(ModelBakeEvent event) {
+	public static void onModelBakeEvent(ModelBakeEvent event) {
 		ModelBake.onModelBakeEvent(event);
 	}
 }

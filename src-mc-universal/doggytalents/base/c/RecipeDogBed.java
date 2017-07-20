@@ -1,8 +1,9 @@
-package doggytalents.base.fallback;
+package doggytalents.base.c;
 
 import com.google.common.base.Strings;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.base.ObjectLib;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -46,7 +47,7 @@ public class RecipeDogBed implements IRecipe {
 
 	@Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
 		
 		String beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInRowAndColumn(1, 0));
 		String casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInRowAndColumn(0, 0));
@@ -56,7 +57,7 @@ public class RecipeDogBed implements IRecipe {
 
 	@Override
     public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
+        return ObjectLib.STACK_UTIL.getEmpty();
     }
 
 	@Override

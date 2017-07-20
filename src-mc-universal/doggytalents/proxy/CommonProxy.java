@@ -3,6 +3,7 @@ package doggytalents.proxy;
 import doggytalents.DoggyTalents;
 import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
+import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;
@@ -34,6 +35,7 @@ public class CommonProxy implements IGuiHandler {
 		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
 			ModBlocks.onRegisterBlock(null);
 			ModBlocks.onRegisterItem(null);
+			ModItems.onRegister(null);
 		}
 			
         ModEntities.init();

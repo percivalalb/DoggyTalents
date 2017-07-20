@@ -18,6 +18,11 @@ public class StackUtil implements IStackUtil {
 	public int getCount(ItemStack stack) {
 		return stack.getCount();
 	}
+	
+	@Override
+	public void setCount(ItemStack stack, int quantity) {
+		stack.setCount(quantity);
+	}
 
 	@Override
 	public void shrink(ItemStack stack, int quantity) {

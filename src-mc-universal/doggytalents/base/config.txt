@@ -15,6 +15,7 @@ ItemWoolCollarWrapper
 EntityDogWrapper
 
 
+ClientMethods
 GeneralMethods
 StackUtil
 

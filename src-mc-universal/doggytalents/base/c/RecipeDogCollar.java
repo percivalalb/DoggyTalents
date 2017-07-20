@@ -1,4 +1,4 @@
-package doggytalents.base.fallback;
+package doggytalents.base.c;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public class RecipeDogCollar implements IRecipe {
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (!itemstack1.isEmpty())
+            if (!ObjectLib.STACK_UTIL.isEmpty(itemstack1))
             {
                 if (itemstack1.getItem() instanceof ItemWoolCollar)
                 {
                 	ItemWoolCollar itemarmor = (ItemWoolCollar)itemstack1.getItem();
 
-                    if(!itemstack.isEmpty())
+                    if(!ObjectLib.STACK_UTIL.isEmpty(itemstack))
                     {
                         return false;
                     }
@@ -51,12 +51,12 @@ public class RecipeDogCollar implements IRecipe {
             }
         }
 
-        return !itemstack.isEmpty() && !list.isEmpty();
+        return !ObjectLib.STACK_UTIL.isEmpty(itemstack) && !list.isEmpty();
     }
 
 	@Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
@@ -65,12 +65,12 @@ public class RecipeDogCollar implements IRecipe {
         for(int k = 0; k < inv.getSizeInventory(); ++k) {
             ItemStack itemstack1 = inv.getStackInSlot(k);
 
-            if(!itemstack1.isEmpty()) {
+            if(!ObjectLib.STACK_UTIL.isEmpty(itemstack1)) {
                 if(itemstack1.getItem() instanceof ItemWoolCollar) {
                     itemWoolCollar = (ItemWoolCollar)itemstack1.getItem();
 
                     itemstack = itemstack1.copy();
-                    itemstack.setCount(1);
+                    ObjectLib.STACK_UTIL.setCount(itemstack, 1);
 
                     if(itemstack1.hasTagCompound() && itemstack1.getTagCompound().hasKey("collar_colour")) {
                         int l = itemstack1.getTagCompound().getInteger("collar_colour");
@@ -88,7 +88,7 @@ public class RecipeDogCollar implements IRecipe {
                     if(itemstack1.getItem() != Items.DYE)
                         return ObjectLib.STACK_UTIL.getEmpty();
 
-                    float[] afloat = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(itemstack1.getMetadata()));
+                    float[] afloat = ObjectLib.METHODS.getRGB(EnumDyeColor.byDyeDamage(itemstack1.getMetadata()));
                     int l1 = (int)(afloat[0] * 255.0F);
                     int i2 = (int)(afloat[1] * 255.0F);
                     int j2 = (int)(afloat[2] * 255.0F);

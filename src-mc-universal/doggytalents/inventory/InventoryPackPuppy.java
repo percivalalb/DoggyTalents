@@ -3,7 +3,6 @@ package doggytalents.inventory;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 

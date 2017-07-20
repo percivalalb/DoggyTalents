@@ -1,6 +1,5 @@
 package doggytalents.base.a;
 
-import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemTreatBag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

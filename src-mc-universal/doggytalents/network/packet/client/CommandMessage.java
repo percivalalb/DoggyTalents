@@ -3,7 +3,6 @@ package doggytalents.network.packet.client;
 import java.util.List;
 
 import doggytalents.ModItems;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.ChatUtil;

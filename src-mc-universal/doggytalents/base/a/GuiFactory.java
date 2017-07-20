@@ -6,8 +6,6 @@ import doggytalents.configuration.ModGuiConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.client.IModGuiFactory;
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement;
-import net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionGuiHandler;
 
 /**
  * 1.9.4 & 1.10.2 Code

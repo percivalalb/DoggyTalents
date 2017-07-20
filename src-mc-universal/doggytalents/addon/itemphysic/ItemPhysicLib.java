@@ -17,4 +17,8 @@ public class ItemPhysicLib {
 	
 	public static final String ADD_SORTING_BLOCK 			= "addSortingByBlock";
 	public static final String ADD_SORTING_ITEM 			= "addSortingByItem";
+	
+
+	public static final String SWIMMING_ITEMS_FIELD_OLD 	= "swimItem";
+	public static final String BURNING_ITEMS_FIELD_OLD 		= "burnItem";
 }

@@ -1,7 +1,6 @@
 package doggytalents.item;
 
 import doggytalents.DoggyTalents;
-import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.item.Item;
 
 /**

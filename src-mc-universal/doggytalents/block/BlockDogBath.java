@@ -1,7 +1,6 @@
 package doggytalents.block;
 
 import doggytalents.DoggyTalents;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 import doggytalents.tileentity.TileEntityDogBath;
 import net.minecraft.block.BlockContainer;
@@ -12,7 +11,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;

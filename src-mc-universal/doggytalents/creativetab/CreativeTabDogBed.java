@@ -3,7 +3,6 @@ package doggytalents.creativetab;
 import java.util.List;
 import java.util.Random;
 
-import doggytalents.ModItems;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;

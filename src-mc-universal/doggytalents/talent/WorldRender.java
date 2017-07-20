@@ -3,7 +3,6 @@ package doggytalents.talent;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;

@@ -1,14 +1,8 @@
 package doggytalents.base;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
-import doggytalents.DoggyTalents;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class VersionControl {
 	

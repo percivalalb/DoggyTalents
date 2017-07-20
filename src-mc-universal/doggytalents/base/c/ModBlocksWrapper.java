@@ -1,8 +1,6 @@
 package doggytalents.base.c;
 
 import doggytalents.ModBlocks;
-import doggytalents.base.VersionControl;
-import doggytalents.block.ItemDogBed;
 import doggytalents.lib.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

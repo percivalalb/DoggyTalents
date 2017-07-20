@@ -1,6 +1,5 @@
 package doggytalents.client.gui;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.lib.ResourceLib;
 import doggytalents.tileentity.TileEntityFoodBowl;

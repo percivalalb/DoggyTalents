@@ -1,7 +1,6 @@
 package doggytalents.api;
 
 import doggytalents.api.registry.ItemList;
-import net.minecraft.creativetab.CreativeTabs;
 
 /**
  * @author ProPercivalalb

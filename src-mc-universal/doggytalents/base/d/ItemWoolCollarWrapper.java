@@ -2,7 +2,6 @@ package doggytalents.base.d;
 
 import java.util.List;
 
-import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemWoolCollar;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;

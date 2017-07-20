@@ -1,7 +1,6 @@
 package doggytalents.base;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;

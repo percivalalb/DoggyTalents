@@ -1,14 +1,8 @@
 package doggytalents.base.d;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.client.gui.GuiFoodBowl;
-import doggytalents.client.gui.GuiPackPuppy;
-import doggytalents.client.gui.GuiTreatBag;
-import doggytalents.entity.EntityDog;
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 public class GuiFoodBowlWrapper extends GuiFoodBowl {
 

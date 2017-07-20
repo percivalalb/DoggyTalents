@@ -1,8 +1,6 @@
 package doggytalents.base.b;
 
 import doggytalents.ModBlocks;
-import doggytalents.base.VersionControl;
-import doggytalents.block.ItemDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;

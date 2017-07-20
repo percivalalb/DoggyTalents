@@ -1,7 +1,7 @@
 package doggytalents;
 
-import doggytalents.base.VersionControl;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
@@ -12,9 +12,7 @@ import doggytalents.tileentity.TileEntityDogBath;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

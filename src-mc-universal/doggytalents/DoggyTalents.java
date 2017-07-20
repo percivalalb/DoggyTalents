@@ -10,7 +10,6 @@ import doggytalents.api.registry.TalentRegistry;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.configuration.ConfigurationHandler;
-import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;

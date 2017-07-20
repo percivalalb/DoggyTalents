@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import doggytalents.base.ObjectLib;
 import doggytalents.item.ItemWoolCollar;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;

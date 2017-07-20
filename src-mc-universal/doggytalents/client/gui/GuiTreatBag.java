@@ -1,7 +1,6 @@
 package doggytalents.client.gui;
 
 
-import doggytalents.base.ObjectLib;
 import doggytalents.inventory.ContainerTreatBag;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.inventory.GuiContainer;

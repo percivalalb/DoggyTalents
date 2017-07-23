@@ -4,6 +4,7 @@ import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,6 +25,7 @@ public class LayerDogHurt implements LayerRenderer<EntityDog> {
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.isTamed() && !dog.isInvisible() && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
             this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_DOG_HURT);
+            GlStateManager.color(1.0F, 1.0F, 1.0F);
         	this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }

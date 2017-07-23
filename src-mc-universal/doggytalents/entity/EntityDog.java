@@ -161,7 +161,7 @@ public class EntityDog extends EntityAbstractDog {
     
     public void updateEntityAttributes() {
     	if(this.isTamed())
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D + (this.effectiveLevel() + 1.0D));
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         else
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
     }

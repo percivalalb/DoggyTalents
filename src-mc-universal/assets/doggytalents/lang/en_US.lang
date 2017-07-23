@@ -181,7 +181,7 @@ doggytalents.key.ok=Command Ok
 doggytalents.key.heel=Command Heal
 doggytalents.key.category=Doggy Talents
 
-entity.doggytalents.doggytalents:dog.name=Dog
+entity.doggytalents:dog.name=Dog
 
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl

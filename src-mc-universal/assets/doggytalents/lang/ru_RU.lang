@@ -204,7 +204,7 @@ dogcommand.stay=Сидеть!
 dogcommand.ok=Отлично!
 dogcommand.heel=Лечи, Дружок!
 
-entity.doggytalents.doggytalents:dog.name=Пёс
+entity.doggytalents:dog.name=Пёс
 
 container.packpuppy=Контейнер Пёсика
 container.foodBowl=Миска с Едой

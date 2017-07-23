@@ -8,18 +8,22 @@ modgui.config.doggysettings.tooltip=Здесь вы можете поменят�
 modgui.config.general=Главные настройки
 modgui.config.general.tooltip=Остальное...
 
-item.doggytalents.throwbone0.name=Игрушка
-item.doggytalents.throwbone1.name=Слюнявая Игрушка
-item.doggytalents.trainingtreat.name=Обучающее Лакомство
-item.doggytalents.supertreat.name=Превосходное Лакомство
-item.doggytalents.mastertreat.name=Лакомство Мастера
-item.doggytalents.diretreat.name=Жуткое Лакомство
-item.doggytalents.breedingbone.name=Кость для Размножения
-item.doggytalents.doggycharm.name=Собачий Шарм
+item.doggytalents.throwbone0.name=Кидательная Кость
+item.doggytalents.throwbone1.name=Слюнявая Кидательная кость
+item.doggytalents.trainingtreat.name=Лакомство для тренировок
+item.doggytalents.supertreat.name=Превосходное лакомство
+item.doggytalents.mastertreat.name=Лакомство мастера
+item.doggytalents.diretreat.name=Лакомство ужаса
+item.doggytalents.breedingbone.name=Кость размножения
+item.doggytalents.doggycharm.name=§6Собачий Амулет
 item.doggytalents.collarshears.name=Ножницы для Разрубки Ошейника
 item.doggytalents.commandemblem.name=Инструмент Дрессировщика
 item.doggytalents.radiocollar.name=Ошейник с Радиоприёмником
+item.doggytalents.woolcollar.name=Ошейник
 item.doggytalents.radar.name=Радар
+item.doggytalents.whistle.name=Свисток
+item.doggytalents.treatbag.name=Мешочек с Пряностями
+item.doggytalents.chewstick.name=Жевательная Кость
 
 doggui.talentname.blackpelt=Прочная Шкура
 doggui.talentname.guarddog=Телохранитель
@@ -78,7 +82,7 @@ dogtalent.puppyeyes.3.part2=полный счастья и няшности? Д�
 dogtalent.puppyeyes.3.part3=создай себе броню и держи своего щеночка в безопасности!
 dogtalent.puppyeyes.4.part1=Житель: Это чувство, будто моё сердце выросло
 dogtalent.puppyeyes.4.part2=до размеров моего высокоподобного носа. Вот, возьми это.
-dogtalent.puppyeyes.4.part3=Нет, я настаиваю! БЕРИ! ЖИВО! Дружко?
+dogtalent.puppyeyes.4.part3=Нет, я настаиваю! БЕРИ! ЖИВО!
 dogtalent.puppyeyes.5.part1=Житель: Я всего лишь хочу сказать тебе, мой друг,
 dogtalent.puppyeyes.5.part2=что ты владелец лучшего пёсика во вселенной!
 dogtalent.puppyeyes.5.part3=И ещё дам тебе эту блестяшку, она мне не нужна.
@@ -88,22 +92,22 @@ dogtalent.puppyeyes.6.part3=тииииииииииипууууутиииии!
 
 dogtalent.puppyeyes.wolfmount.outofhunger=%s: Гавв, гав, гав гаввв (Еду пожайлуста)
 
-dogbed.bedding.minecraft:wool.0=Основание кровати с Белой Шерстью
-dogbed.bedding.minecraft:wool.1=Основание кровати с Оранжевой Шерстью
-dogbed.bedding.minecraft:wool.2=Основание кровати с Пурпурной Шерстью
-dogbed.bedding.minecraft:wool.3=Основание кровати с Светло-Голубой Шерстью
-dogbed.bedding.minecraft:wool.4=Основание кровати с Жёлтой Шерстью
-dogbed.bedding.minecraft:wool.5=Основание кровати с Лаймовой Шерстью
-dogbed.bedding.minecraft:wool.6=Основание кровати с Розовой Шерстью
-dogbed.bedding.minecraft:wool.7=Основание кровати с Серой Шерстью
-dogbed.bedding.minecraft:wool.8=Основание кровати с Светло-Серой Шерстью
-dogbed.bedding.minecraft:wool.9=Основание кровати с Голубой Шерстью
-dogbed.bedding.minecraft:wool.10=Основание кровати с Фиолетовой Шерстью
-dogbed.bedding.minecraft:wool.11=Основание кровати с Синий Шерстью
-dogbed.bedding.minecraft:wool.12=Основание кровати с Коричневой Шерстью
-dogbed.bedding.minecraft:wool.13=Основание кровати с Зелёной Шерстью
-dogbed.bedding.minecraft:wool.14=Основание кровати с Красной Шерстью
-dogbed.bedding.minecraft:wool.15=Основание кровати с Чёрной Шерстью
+dogbed.bedding.minecraft:wool.0=Подстилка с Белой Шерстью
+dogbed.bedding.minecraft:wool.1=Подстилка с Оранжевой Шерстью
+dogbed.bedding.minecraft:wool.2=Подстилка с Пурпурной Шерстью
+dogbed.bedding.minecraft:wool.3=Подстилка с Светло-Голубой Шерстью
+dogbed.bedding.minecraft:wool.4=Подстилка с Жёлтой Шерстью
+dogbed.bedding.minecraft:wool.5=Подстилка с Лаймовой Шерстью
+dogbed.bedding.minecraft:wool.6=Подстилка с Розовой Шерстью
+dogbed.bedding.minecraft:wool.7=Подстилка с Серой Шерстью
+dogbed.bedding.minecraft:wool.8=Подстилка с Светло-Серой Шерстью
+dogbed.bedding.minecraft:wool.9=Подстилка с Голубой Шерстью
+dogbed.bedding.minecraft:wool.10=Подстилка с Фиолетовой Шерстью
+dogbed.bedding.minecraft:wool.11=Подстилка с Синий Шерстью
+dogbed.bedding.minecraft:wool.12=Подстилка с Коричневой Шерстью
+dogbed.bedding.minecraft:wool.13=Подстилка с Зелёной Шерстью
+dogbed.bedding.minecraft:wool.14=Подстилка с Красной Шерстью
+dogbed.bedding.minecraft:wool.15=Подстилка с Чёрной Шерстью
 
 dogbed.casing.minecraft:planks.0=Дубовые Доски Корпуса
 dogbed.casing.minecraft:planks.1=Еловые Доски Корпуса
@@ -142,7 +146,6 @@ dogbed.casing.forestry:planks.1.10=Падуковые Доски Корпуса
 dogbed.casing.forestry:planks.1.11=Кокоболовые Доски Корпуса
 dogbed.casing.forestry:planks.1.12=Зебрановые Доски Корпуса
 
-#BiomesoPlenty russian naming needs updating 
 dogbed.casing.biomesoplenty:planks_0.0=Святые Дубовые Доски Корпуса
 dogbed.casing.biomesoplenty:planks_0.1=Вишнёвые Доски Корпуса
 dogbed.casing.biomesoplenty:planks_0.2=Темные Доски Корпуса
@@ -151,62 +154,37 @@ dogbed.casing.biomesoplenty:planks_0.4=Внеземные Доски Корпу�
 dogbed.casing.biomesoplenty:planks_0.5=Магические Доски Корпуса
 dogbed.casing.biomesoplenty:planks_0.6=Мангровые Доски Корпуса
 dogbed.casing.biomesoplenty:planks_0.7=Пальмовые Доски Корпуса
-dogbed.casing.biomesoplenty:planks_0.8=Красные-деревянные Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.8=Красные Доски Корпуса
 dogbed.casing.biomesoplenty:planks_0.9=Ивовые Доски Корпуса
-dogbed.casing.biomesoplenty:planks_0.10=Бамбуковые Thatching Casing
-dogbed.casing.biomesoplenty:planks_0.11=Сосновые Доски Корпуса
-dogbed.casing.biomesoplenty:planks_0.12=Hellbark Доски Корпуса
-dogbed.casing.biomesoplenty:planks_0.13=Палисандровые Доски Корпуса
-dogbed.casing.biomesoplenty:planks_0.14=Красные Доски Корпуса
-
-dogbed.casing.ExtraUtilites:colorWoodPlanks.0=Белые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.1=Оранжевые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanksl.2=Пурпурные Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.3=Светло-Синие Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.4=Жёлтые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.5=Лаймовые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.6=Розовые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.7=Серые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.8=Светло-Серые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.9=Голубые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.10=Фиолетовые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.11=Синие Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.12=Коричневые Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.13=Зелёные Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.14=Красные Цветные Доски Корпуса
-dogbed.casing.ExtraUtilites:colorWoodPlanks.15=Чёрные Цветные Доски Корпуса
-
-dogbed.casing.Thaumcraft:blockWoodenDevice.6=Великодревесные Доски Корпуса
-dogbed.casing.Thaumcraft:blockWoodenDevice.7=Серебродревесные Доски Корпуса
-
-dogbed.casing.TwilightForest:tile.TFTowerStone.0=Башенные Доски Корпуса
-dogbed.casing.TwilightForest:tile.TFTowerStone.2=Разломанные Башенные Доски Корпуса
-dogbed.casing.TwilightForest:tile.TFTowerStone.3=Мшистые Башенные Доски Корпуса
-dogbed.casing.TwilightForest:tile.TFTowerStone.4=Заражённые Башенные Доски Корпуса
-
-dogbed.casing.tropicraft:tile.plank.0=Пальмовые Доски Корпуса
-dogbed.casing.tropicraft:tile.bambooBundle.0=Бамбуковый Комплект Корпуса
+dogbed.casing.biomesoplenty:planks_0.10=Сосновые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.11=Палисандровые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.12=Ивонные Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.13=Махогонивоевое Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.14=Эбоневые Доски Корпуса
+dogbed.casing.biomesoplenty:planks_0.15=Бамбуковые Доски Корпуса
+dogbed.casing.biomesoplenty:bamboo_thatching.0=Бамбуковый Соломенный Корпус
 
 dogtreat.levelup=Повышение!
 dogtreat.tooyoung=Эта собака ещё молода для приобретения навыков.
-dogtreat.leveltoohigh=Ваша собака имеет слишком высокий уровень, чтобы получать опыт от этих Лакомств.
-dogtreat.toomuch=Ваша собака не достаточно опытна, чтобы овладеть всей силой этого Лакомства.
+dogtreat.leveltoohigh=Ваша собака имеет слишком высокий уровень, чтобы получать опыт от этих Пряностей.
+dogtreat.toomuch=Ваша собака не достаточно опытна, чтобы овладеть всей силой этой Пряности.
 dogtreat.ultimatelevel=Поздравляем! Ваша собака достигла максимального уровня!
 
 doggytalents.key.come=Команда "Подойди!"
 doggytalents.key.stay=Команда "Сидеть!"
 doggytalents.key.ok=Команда "Отлично!"
-doggytalents.key.heel=Команда "Лечи, Дружок!"
+doggytalents.key.heel=Команда "Ко мне!"
 doggytalents.key.category=Клавиши для Пёсика
 
 dogcommand.come=Подойди!
 dogcommand.stay=Сидеть!
 dogcommand.ok=Отлично!
-dogcommand.heel=Лечи, Дружок!
+dogcommand.heel=Ко мне!
 
 entity.doggytalents:dog.name=Пёс
 
-container.packpuppy=Контейнер Пёсика
+container.packpuppy=Рюкзак Пёсика
 container.foodBowl=Миска с Едой
+container.doggytalents.treatbag=Мешочек с Лакомствами
 itemGroup.doggytalents=Таланты Пёсика
-doggytalents.updatemessage=Новая %s версия вышла %s. Скачайте её тут:
+itemGroup.doggytalents.dogbed=Варианты Кроватей Пса

@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
 import doggytalents.DoggyTalents;
-import doggytalents.base.ObjectLib;
+import doggytalents.base.ObjectLibClient;
 import net.minecraftforge.client.event.ModelBakeEvent;
 
 public class ModelBake {
@@ -9,7 +9,7 @@ public class ModelBake {
 	public static void onModelBakeEvent(ModelBakeEvent event) {
 	    
 	    try {
-		    ObjectLib.METHODS.onModelBakeEvent(event);
+	    	ObjectLibClient.METHODS.onModelBakeEvent(event);
 	    }
 	    catch(Exception e) {
 	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");

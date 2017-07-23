@@ -1,4 +1,4 @@
-package doggytalents.base.a;
+package doggytalents.base.c;
 
 import doggytalents.base.IClientMethods;
 import net.minecraft.client.gui.FontRenderer;
@@ -16,7 +16,6 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,7 +24,7 @@ public class ClientMethods implements IClientMethods {
 
 	@Override
 	public void registerEventHandlers() {
-		MinecraftForge.EVENT_BUS.register(new ModelBakeWrapper());
+		
 	}
 	
 	@Override
@@ -103,9 +102,9 @@ public class ClientMethods implements IClientMethods {
 	        }
 	    }
 	}
-	
+
 	@Override
 	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-		RenderGlobal.func_181563_a(box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
+		RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
 	}
 }

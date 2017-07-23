@@ -1,6 +1,6 @@
 package doggytalents.handler;
 
-import doggytalents.base.ObjectLib;
+import doggytalents.base.ObjectLibClient;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -47,13 +47,13 @@ public class GameOverlay {
 	            int icon = 16;
 	            byte backgound = 12;
 
-	            ObjectLib.METHODS.drawTexturedModalRect(x, y, 16 + backgound * 9, 27, 9, 9);
+	            ObjectLibClient.METHODS.drawTexturedModalRect(x, y, 16 + backgound * 9, 27, 9, 9);
 
 
 	            if (idx < level)
-	                ObjectLib.METHODS.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
+	            	ObjectLibClient.METHODS.drawTexturedModalRect(x, y, icon + 36, 27, 9, 9);
 	            else if (idx == level)
-	            	ObjectLib.METHODS.drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
+	            	ObjectLibClient.METHODS.drawTexturedModalRect(x, y, icon + 45, 27, 9, 9);
 	        }
 	        GlStateManager.disableBlend();
 
@@ -67,7 +67,7 @@ public class GameOverlay {
 	            int partial = MathHelper.ceil((double)air * 10.0D / 300.0D) - full;
 
 	            for (int i = 0; i < full + partial; ++i) {
-	            	ObjectLib.METHODS.drawTexturedModalRect(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+	            	ObjectLibClient.METHODS.drawTexturedModalRect(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
 	            }
 	            GuiIngameForge.right_height += 10;
 	        }

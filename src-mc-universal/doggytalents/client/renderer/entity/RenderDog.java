@@ -1,6 +1,7 @@
 package doggytalents.client.renderer.entity;
 
 import doggytalents.base.ObjectLib;
+import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
@@ -77,7 +78,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
     		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
     
-    		ObjectLib.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
     	
     		if (distanceFromPlayer <= (double)(5 * 5)) {
 	    		if(this.renderManager.renderViewEntity.isSneaking()) {
@@ -87,7 +88,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 	    			else if(dog.getOwnerId() != null)
 	          		   	ownerName = dog.getOwnerId().toString();
 	    			
-	    			ObjectLib.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	    			ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
 	    		}
     		}
     	}

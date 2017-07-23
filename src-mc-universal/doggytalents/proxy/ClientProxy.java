@@ -1,7 +1,7 @@
 package doggytalents.proxy;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
-import doggytalents.base.ObjectLib;
+import doggytalents.base.ObjectLibClient;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
@@ -76,7 +76,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new WorldRender());
 		MinecraftForge.EVENT_BUS.register(new GameOverlay());
 		MinecraftForge.EVENT_BUS.register(new KeyState());
-		ObjectLib.CLIENT.registerEventHandlers();
+		ObjectLibClient.METHODS.registerEventHandlers();
     }
 	
 
@@ -94,17 +94,17 @@ public class ClientProxy extends CommonProxy {
             if(!(target instanceof EntityDog)) 
             	return null;
 			EntityDog dog = (EntityDog)target;
-			return ObjectLib.createGuiPackPuppy(player, dog);
+			return ObjectLibClient.createGuiPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
 			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
-			return ObjectLib.createGuiFoodBowl(player.inventory, foodBowl);
+			return ObjectLibClient.createGuiFoodBowl(player.inventory, foodBowl);
 		}
 		else if(ID == GUI_ID_FOOD_BAG) {
-			return ObjectLib.createGuiTreatBag(player, x, player.inventory.getStackInSlot(x));
+			return ObjectLibClient.createGuiTreatBag(player, x, player.inventory.getStackInSlot(x));
 		}
 		return null;
 	}

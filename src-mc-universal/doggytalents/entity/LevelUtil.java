@@ -14,6 +14,7 @@ public class LevelUtil {
 		
 	private EntityDog dog;
 	private static UUID HEALTH_BOOST_ID = UUID.fromString("da97255c-6281-45db-8198-f79226438583");
+	
     public LevelUtil(EntityDog dog) {
 		this.dog = dog;
 	}

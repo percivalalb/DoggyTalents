@@ -2,6 +2,7 @@ package doggytalents.base.c;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -85,12 +86,14 @@ public class EntityDogWrapper extends EntityDog {
            }
            
            this.stepHeight = 1.0F;
-           this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
+           this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
 
            if (this.canPassengerSteer())
            {
-           		this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-           		super.moveEntityWithHeading(strafe, forward);
+        	   float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.5F;
+
+        	   this.setAIMoveSpeed(f);
+        	   super.moveEntityWithHeading(strafe, forward);
            }
            else if (entitylivingbase instanceof EntityPlayer)
            {

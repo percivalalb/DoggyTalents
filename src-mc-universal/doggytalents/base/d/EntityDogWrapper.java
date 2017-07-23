@@ -2,6 +2,7 @@ package doggytalents.base.d;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.passive.AbstractHorse;
@@ -76,8 +77,8 @@ public class EntityDogWrapper extends EntityDog {
            if (forward <= 0.0F)
                forward *= 0.5F;
 
-           if (this.onGround) {
-               if (forward > 0.0F) {
+           if(this.onGround) {
+               if(forward > 0.0F) {
                    float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
                    float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
                    this.motionX += (double)(-0.4F * f2 * 0.05F); // May change
@@ -86,27 +87,26 @@ public class EntityDogWrapper extends EntityDog {
            }
            
            this.stepHeight = 1.0F;
-           this.jumpMovementFactor = this.getAIMoveSpeed() * 0.4F;
+           this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
 
-           if (this.canPassengerSteer())
-           {
-           		this.setAIMoveSpeed(this.getAIMoveSpeed() * 0.4F);
-           		super.travel(strafe, p_191986_2_, forward);
+           if (this.canPassengerSteer()) {
+        	   float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.5F;
+
+        	   this.setAIMoveSpeed(f);
+        	   super.travel(strafe, p_191986_2_, forward);
            }
-           else if (entitylivingbase instanceof EntityPlayer)
-           {
+           else if (entitylivingbase instanceof EntityPlayer) {
         	   this.motionX = 0.0D;
         	   this.motionY = 0.0D;
         	   this.motionZ = 0.0D;
-       		}
+           }
 
            this.prevLimbSwingAmount = this.limbSwingAmount;
            double d0 = this.posX - this.prevPosX;
            double d1 = this.posZ - this.prevPosZ;
            float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
 
-           if (f4 > 1.0F)
-               f4 = 1.0F;
+           f4 = Math.max(f4, 1.0F);
 
            this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
            this.limbSwing += this.limbSwingAmount;

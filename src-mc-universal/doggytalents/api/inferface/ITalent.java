@@ -38,6 +38,8 @@ public abstract class ITalent {
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) { return true; }
+	public void onLevelUpdate(EntityDog dog, int level) {}
+	
 	
 	public int getHighestLevel(EntityDog dog) { return 5; }
 	//public int getTotalCost(EntityDog dog) { return 15; }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import doggytalents.api.inferface.ITalent;
+import doggytalents.api.registry.TalentRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
@@ -27,6 +28,8 @@ public class TalentUtil {
 
     public void readTalentsFromNBT(NBTTagCompound tagCompound) {
     	this.dog.getDataManager().set(EntityDog.TALENTS, tagCompound.getString("talents"));
+    	for(ITalent talent : TalentRegistry.getTalents())
+    		talent.onLevelUpdate(this.dog, this.getLevel(talent));
     }
 	
 	public String getSaveString() {
@@ -67,6 +70,7 @@ public class TalentUtil {
 			return;
 		
 		this.dataMap.put(id, level);
+		TalentRegistry.getTalent(id).onLevelUpdate(this.dog, level);
 		
 		String saveString = "";
 		boolean first = true;
@@ -80,7 +84,6 @@ public class TalentUtil {
 		}
 		
 		this.dog.getDataManager().set(EntityDog.TALENTS, saveString);
-		this.dog.updateEntityAttributes();
 	}
 	
 	public void resetTalents() {

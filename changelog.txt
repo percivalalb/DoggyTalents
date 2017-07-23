@@ -13,13 +13,20 @@ Bugs: 1.11-1.9 biomes o plenty casing no localisations
 MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.14.0.183 | WIP
+1.14.0.193 | WIP
 + All minecraft versions above now use the same basic code, this will mean that updates for all these version with be released simulationously. The only thing I have to do is click compile 4 times for the different MC versions
 + Add chew stick recipe SW, WS W = Wheat, S = Sugar
-+ As a reminder MC 1.9.4 - 1.11.2 now have the new dyeable collar feature and treat bag which original was only in MC 1.12 version. Now it is in all version as they use the same code!
++ As a reminder MC 1.9.4 - 1.11.2 now have the new dyeable collar feature and treat bag which original was only in MC 1.12 version. Now it is in all version as they use the same code
++ Updated ru_RU.lang file
+# Changed the speed doggy dash gives, a bit faster and more noticable 
 # Mod version now indicates which git commit it was built from (the last number)
 * Fixed dogs trying to attack their owner when spamming the command emblem
 * Fixed dogs attacking your pet wolfs
+* Fixed max dog health not being persistent
+* Fixed dog movespeed not being persistent
+* Fixed there being no lang translation for entity dog 
+* Fixed others layers retaining collar colour
+- Removed dogs getting 0.05 extra speed when they become level 30 dire dog
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12

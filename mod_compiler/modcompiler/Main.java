@@ -119,6 +119,30 @@ public class Main {
 				
 				JFrame frame = new JFrame("Custom Mod Compiler");
 				
+				JButton buttonDT = new JButton("Compile ALL versions");
+				buttonDT.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+				buttonDT.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent event) {
+				
+						new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+								try {
+									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12})
+										Main.compileMod(envir, Main.MOD);
+								}
+								catch(IOException e) {
+									e.printStackTrace();
+								}
+							}
+								
+						}).start();
+
+					}
+				});
+				
 				JButton buttonCompile = new JButton("Compile");
 				buttonCompile.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 				buttonCompile.addActionListener(new ActionListener() {
@@ -172,6 +196,7 @@ public class Main {
 				frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 				frame.getContentPane().add(forgeEnviList);
 				frame.getContentPane().add(modList);
+				frame.getContentPane().add(buttonDT);
 				frame.getContentPane().add(buttonCompile);
 		        frame.getContentPane().add(outputTextScroll);
 				frame.pack();
@@ -214,7 +239,6 @@ public class Main {
 		deleteDirectory(forgeSrc);
 		deleteDirectory(forgeResources);
 		if(buildClasses.exists()) deleteDirectory(buildClasses);
-		
 		if(buildResources.exists()) deleteDirectory(buildResources);
 		
 		String versionSpecificLoc = getDirectionBaseOnVersion(getIndex(forgeEnvi));

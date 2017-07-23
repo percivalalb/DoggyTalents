@@ -14,6 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -35,6 +38,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -119,6 +123,9 @@ public class Main {
 				
 				JFrame frame = new JFrame("Custom Mod Compiler");
 				
+				JTextField versionInput = new JTextField("1.14.0");
+				versionInput.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+				
 				JButton buttonDT = new JButton("Compile ALL versions");
 				buttonDT.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 				buttonDT.addActionListener(new ActionListener() {
@@ -131,7 +138,7 @@ public class Main {
 							public void run() {
 								try {
 									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12})
-										Main.compileMod(envir, Main.MOD);
+										Main.compileMod(envir, Main.MOD, versionInput.getText());
 								}
 								catch(IOException e) {
 									e.printStackTrace();
@@ -154,7 +161,7 @@ public class Main {
 							@Override
 							public void run() {
 								try {
-									Main.compileMod(Main.FORGE_ENVIR, Main.MOD);
+									Main.compileMod(Main.FORGE_ENVIR, Main.MOD, versionInput.getText());
 								}
 								catch(IOException e) {
 									e.printStackTrace();
@@ -196,6 +203,8 @@ public class Main {
 				frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
 				frame.getContentPane().add(forgeEnviList);
 				frame.getContentPane().add(modList);
+				frame.getContentPane().add(versionInput);
+				frame.getContentPane().add(buttonDT);
 				frame.getContentPane().add(buttonDT);
 				frame.getContentPane().add(buttonCompile);
 		        frame.getContentPane().add(outputTextScroll);
@@ -211,7 +220,7 @@ public class Main {
 	 * @return Whether the compilation was successful
 	 * @throws IOException 
 	 */
-	public static boolean compileMod(ForgeEnvironment forgeEnvi, Mod mod) throws IOException {
+	public static boolean compileMod(ForgeEnvironment forgeEnvi, Mod mod, String modVersion) throws IOException {
         File minecraftFolder = getMinecraftFolder();
         File modFolder = new File(minecraftFolder, "mods\\" + forgeEnvi.getVersion());
 		
@@ -235,30 +244,37 @@ public class Main {
 		}
 		Main.output.println("----------------------------------------------------------------\n");
 		
+		
 		Main.output.println("Deleting old mod files.");
+		//Deletes previous mod src and build directories
 		deleteDirectory(forgeSrc);
 		deleteDirectory(forgeResources);
 		if(buildClasses.exists()) deleteDirectory(buildClasses);
 		if(buildResources.exists()) deleteDirectory(buildResources);
 		
-		String versionSpecificLoc = getDirectionBaseOnVersion(getIndex(forgeEnvi));
+		String versionSpecificLoc = getDirectionBaseOnVersion(mod, getIndex(forgeEnvi));
 		
 		FileFilter javaFiles = new FileFilter() {
 		    @Override
 		    public boolean accept(File file) {
-		        if(file.isDirectory())
-		            return true;
+		        if(file.isDirectory()) return true;
 		        
-		        return file.getName().endsWith(".java") && (!file.getParentFile().getAbsolutePath().contains("base\\") || file.getAbsolutePath().contains(versionSpecificLoc));
+		        boolean javaFile = file.getName().endsWith(".java");
+		        boolean isSpecific = !file.getParentFile().getAbsolutePath().contains("base\\") || file.getAbsolutePath().contains(versionSpecificLoc);
+		        
+		        return javaFile && isSpecific;
 		    }
 		};
+		
+		boolean is1_12 = forgeEnvi.getVersion().equals("1.12");
 		
 		FileFilter notJavaFiles = new FileFilter() {
 		    @Override
 		    public boolean accept(File file) {
-		        if(file.isDirectory())
-		            return true;
-		        return !file.getName().endsWith(".java") && !file.getName().endsWith(".db");
+		        if(file.isDirectory()) return true;
+		        boolean isJsonRecipes = file.getParentFile().getName().equals("recipes") ? is1_12 : true;
+		        
+		        return !file.getName().endsWith(".java") && !file.getName().endsWith(".db") && !file.getName().equals("compile.cfg") && isJsonRecipes;
 		    }
 		};
 		
@@ -271,7 +287,7 @@ public class Main {
 		Main.output.println("Succesfully copied all resource files.");
 		
 		if(UNIVERSAL) {
-			File config = new File(modSrc, mod.packageLoc + "/base/config.txt");
+			File config = new File(modSrc, mod.packageLoc + "\\base\\compile.cfg");
 			Iterator<String> stream = Files.lines(config.toPath(), StandardCharsets.UTF_8).iterator();
 			Main.output.println("Reading config file to determine which version specific files to copy, this is designed to avoid compile errors");
 			while(stream.hasNext()) {
@@ -289,7 +305,7 @@ public class Main {
 				
 				//Tries to find class in current version folder and moves down if it can't find one
 				do {
-					path = String.format("%s\\%s.java", getDirectionBaseOnVersion(index--), line);
+					path = String.format("%s\\%s.java", getDirectionBaseOnVersion(mod, index--), line);
 				}
 				while(!(clazz = new File(modSrc, path)).exists() && index >= 0);
 				
@@ -307,8 +323,26 @@ public class Main {
 			}
 		}
 		
-		String modVersion = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(Calendar.getInstance().getTime());
+		String content = "";
+		try {
+			URLConnection connection =  new URL("https://github.com/ProPercivalalb/DoggyTalents").openConnection();
+			Scanner scanner = new Scanner(connection.getInputStream());
+			scanner.useDelimiter("\\Z");
+			content = scanner.next();
+		}
+		catch(Exception ex) {
+		    ex.printStackTrace();
+		}
 		
+		Pattern pattern1 = Pattern.compile("\\<span class\\=\"num text-emphasized\"\\>\\s*(\\d+)");
+        Matcher matcher1 = pattern1.matcher(content);
+        if(matcher1.find())
+        	modVersion += "." + matcher1.group(1);
+        else
+    		modVersion = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(Calendar.getInstance().getTime());
+		
+        Main.output.println(" >>>> Mod Version will be: %s", modVersion);
+        
 		try {
 			File file = new File(forgeSrc, "doggytalents\\lib\\Reference.java");
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -321,7 +355,7 @@ public class Main {
 			String path;
 			File clazz;
 			do {
-				path = String.format("%s\\%s.java", getDirectionBaseOnVersion(index--), "GuiFactory");
+				path = String.format("%s\\%s.java", getDirectionBaseOnVersion(mod, index--), "GuiFactory");
 			}
 			while(!(clazz = new File(forgeSrc, path)).exists() && index >= 0);
 			String guiFactory = clazz.getAbsolutePath();
@@ -330,13 +364,9 @@ public class Main {
 			guiFactory = guiFactory.replaceAll("\\\\", ".");
 			Main.output.println(guiFactory);
 			String replacedtext = oldtext.replaceAll("\\$\\{GUI_FACTORY\\}", guiFactory);
-			
-			Pattern pattern = Pattern.compile("MOD_VERSION\\s*=\\s*\"([\\d\\.]*)\"");
-	        Matcher matcher = pattern.matcher(replacedtext);
-	        matcher.find();
-	        modVersion = matcher.group(1);
-	        Main.output.println("Version Found: %s", modVersion);
-			FileWriter writer = new FileWriter(file.getAbsoluteFile());
+			replacedtext = replacedtext.replaceAll("\\$\\{MOD_VERSION\\}", modVersion);
+	        
+	        FileWriter writer = new FileWriter(file.getAbsoluteFile());
 			writer.write(replacedtext);
 
 
@@ -444,13 +474,13 @@ public class Main {
 		}
 	}
 	
-	public static String getDirectionBaseOnVersion(int index) { 
+	public static String getDirectionBaseOnVersion(Mod mod, int index) { 
 		switch(index) {
-		case 0:		return "doggytalents\\base\\a";
-		case 1:		return "doggytalents\\base\\b";
-		case 2:		return "doggytalents\\base\\c";
-		case 3:		return "doggytalents\\base\\d";
-		default:	return "doggytalents.base";
+		case 0:		return mod.packageLoc + "\\base\\a";
+		case 1:		return mod.packageLoc + "\\base\\b";
+		case 2:		return mod.packageLoc + "\\base\\c";
+		case 3:		return mod.packageLoc + "\\base\\d";
+		default: 	return mod.packageLoc + "\\base\\default";
 		}
 	}
 	

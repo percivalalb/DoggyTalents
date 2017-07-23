@@ -27,7 +27,7 @@ public class ModBlocks {
     public static Block FOOD_BOWL;
 
 	public static void onRegisterBlock(Object registry) {
-		
+		DoggyTalents.LOGGER.info("Registering Blocks");
 		DOG_BED = VersionControl.createObject("BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
 		DOG_BATH = VersionControl.createObject("BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
 		FOOD_BOWL = VersionControl.createObject("BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
@@ -40,22 +40,23 @@ public class ModBlocks {
 		DOG_BATH.setHarvestLevel("pickaxe", 0);
 		FOOD_BOWL.setHarvestLevel("pickaxe", 0);
 		
-		ObjectLib.METHODS.registerBlock(registry, ModBlocks.DOG_BED);
-		ObjectLib.METHODS.registerBlock(registry, ModBlocks.DOG_BATH);
-		ObjectLib.METHODS.registerBlock(registry, ModBlocks.FOOD_BOWL);
+		ObjectLib.METHODS.registerBlock(registry, DOG_BED);
+		ObjectLib.METHODS.registerBlock(registry, DOG_BATH);
+		ObjectLib.METHODS.registerBlock(registry, FOOD_BOWL);
 	}
 	
 	public static void onRegisterItem(Object registry) {
-		ObjectLib.METHODS.registerItem(registry, VersionControl.createObject("DogBedItem", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
+		DoggyTalents.LOGGER.info("Registering ItemBlocks");
+		ObjectLib.METHODS.registerItem(registry, VersionControl.createObject("ItemDogBedWrapper", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
 		ObjectLib.METHODS.registerItem(registry, makeItemBlock(DOG_BATH));
 		ObjectLib.METHODS.registerItem(registry, makeItemBlock(FOOD_BOWL));
 	}
 	
 	@SideOnly(Side.CLIENT)
 	public static void setItemModels() {
-		ModelHelper.setModel(ModBlocks.DOG_BATH, 0, "doggytalents:dog_bath");
-		ModelHelper.setModel(ModBlocks.DOG_BED, 0, "doggytalents:dog_bed");
-		ModelHelper.setModel(ModBlocks.FOOD_BOWL, 0, "doggytalents:food_bowl");
+		ModelHelper.setModel(DOG_BATH, 0, "doggytalents:dog_bath");
+		ModelHelper.setModel(DOG_BED, 0, "doggytalents:dog_bed");
+		ModelHelper.setModel(FOOD_BOWL, 0, "doggytalents:food_bowl");
 	}
 	
 	private static ItemBlock makeItemBlock(Block block) {

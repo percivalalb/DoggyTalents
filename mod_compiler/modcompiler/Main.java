@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import javax.swing.BoxLayout;
@@ -81,7 +83,7 @@ public class Main {
 		_1_7_10("1.7.10", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.7.10-10.13.4.1614"),
 		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.8.9-11.15.1.1902"),
 		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.9.4-12.17.0.2051"),
-		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.10.2-12.18.3.2185"),
+		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.10.2"),
 		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.11.2-13.20.0.2282"),
 		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12");
 		
@@ -211,8 +213,9 @@ public class Main {
 		Main.output.println("Deleting old mod files.");
 		deleteDirectory(forgeSrc);
 		deleteDirectory(forgeResources);
-		deleteDirectory(buildClasses);
-		deleteDirectory(buildResources);
+		if(buildClasses.exists()) deleteDirectory(buildClasses);
+		
+		if(buildResources.exists()) deleteDirectory(buildResources);
 		
 		String versionSpecificLoc = getDirectionBaseOnVersion(getIndex(forgeEnvi));
 		
@@ -231,7 +234,7 @@ public class Main {
 		    public boolean accept(File file) {
 		        if(file.isDirectory())
 		            return true;
-		        return !file.getName().endsWith(".java");
+		        return !file.getName().endsWith(".java") && !file.getName().endsWith(".db");
 		    }
 		};
 		
@@ -280,6 +283,8 @@ public class Main {
 			}
 		}
 		
+		String modVersion = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(Calendar.getInstance().getTime());
+		
 		try {
 			File file = new File(forgeSrc, "doggytalents\\lib\\Reference.java");
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -294,14 +299,19 @@ public class Main {
 			do {
 				path = String.format("%s\\%s.java", getDirectionBaseOnVersion(index--), "GuiFactory");
 			}
-			while(!(clazz = new File(forgeSrc, path)).exists() && index > 0);
+			while(!(clazz = new File(forgeSrc, path)).exists() && index >= 0);
 			String guiFactory = clazz.getAbsolutePath();
 			guiFactory = guiFactory.substring(guiFactory.indexOf("java") + 5, guiFactory.length() - 5);
 			Main.output.println(guiFactory);
 			guiFactory = guiFactory.replaceAll("\\\\", ".");
 			Main.output.println(guiFactory);
-			String replacedtext = oldtext.replaceAll("REPLACE_GUI_FACTORY", guiFactory);
+			String replacedtext = oldtext.replaceAll("\\$\\{GUI_FACTORY\\}", guiFactory);
 			
+			Pattern pattern = Pattern.compile("MOD_VERSION\\s*=\\s*\"([\\d\\.]*)\"");
+	        Matcher matcher = pattern.matcher(replacedtext);
+	        matcher.find();
+	        modVersion = matcher.group(1);
+	        Main.output.println("Version Found: %s", modVersion);
 			FileWriter writer = new FileWriter(file.getAbsoluteFile());
 			writer.write(replacedtext);
 
@@ -313,6 +323,29 @@ public class Main {
      		ioe.printStackTrace();
      	}
 		
+		try {
+			File file = new File(forgeResources, "mcmod.info");
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = "", oldtext = "";
+			while((line = reader.readLine()) != null) {
+				oldtext += line + "\r\n";
+			}
+			reader.close();
+			
+			String replacedtext = oldtext.replaceAll("\\$\\{MOD_VERSION\\}", modVersion);
+		
+			FileWriter writer = new FileWriter(file.getAbsoluteFile());
+			writer.write(replacedtext);
+
+
+			writer.close();
+
+		}
+     	catch(IOException ioe) {
+     		ioe.printStackTrace();
+     	}
+		
+		//if(true) return false;
 		Main.output.println("Starting compile sequence... \n\n");
 		
 		String[] command = {"cmd.exe", "/c", "cd \"" + forgeEnvi.getPath() + "\" && gradlew build"};
@@ -327,8 +360,6 @@ public class Main {
             if (line == null) break;
             Main.output.println(line);
         }
-        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm"); 
-        Calendar cal = Calendar.getInstance();
         
         for(File file : modFolder.listFiles()) {
         	if(file.isFile()) {
@@ -339,7 +370,7 @@ public class Main {
         	}
         }
         
-        copyJarFile(new JarFile(finalJar), modFolder, mod.name + "-" + forgeEnvi.getVersion() + "-" + dateFormat.format(cal.getTime()) + "-universal.jar");
+        copyJarFile(new JarFile(finalJar), modFolder, mod.name + "-" + forgeEnvi.getVersion() + "-" + modVersion + "-universal.jar");
         
 		Main.output.println("Deleting current mod files ready for use.");
 		deleteDirectory(forgeSrc);
@@ -365,7 +396,7 @@ public class Main {
 	       JarEntry entry = entries.nextElement();
 	       InputStream is = jarFile.getInputStream(entry);
 	           
-	       if(entry.getName().startsWith("codechicken") || entry.getName().contains("thumbs.db") || entry.getName().contains("Thumbs.db")) continue;
+	       if(entry.getName().startsWith("codechicken")) continue;
 	           
 	       jos.putNextEntry(new JarEntry(entry.getName()));
 	       byte[] buffer = new byte[4096];

@@ -16,9 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * 1.11.2 Code
  */
-public class DogBedItem extends ItemDogBed {
+public class ItemDogBedWrapper extends ItemDogBed {
 
-	public DogBedItem(Block block) {
+	public ItemDogBedWrapper(Block block) {
 		super(block);
 	}
 

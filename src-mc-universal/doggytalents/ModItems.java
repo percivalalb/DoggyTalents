@@ -40,6 +40,7 @@ public class ModItems {
     public static Item CHEW_STICK;
 	
 	public static void onRegister(Object registry) {
+		DoggyTalents.LOGGER.info("Registering Items");
 		THROW_BONE = VersionControl.createObject("ItemThrowBoneWrapper", ItemThrowBone.class).setUnlocalizedName("doggytalents.throwbone").setRegistryName(Reference.MOD_ID + ":throw_bone");
 		COMMAND_EMBLEM = VersionControl.createObject("ItemCommandEmblemWrapper", ItemCommandEmblem.class).setUnlocalizedName("doggytalents.commandemblem").setRegistryName(Reference.MOD_ID + ":command_emblem");
 		TRAINING_TREAT = new ItemTreat(20).setUnlocalizedName("doggytalents.trainingtreat").setRegistryName(Reference.MOD_ID + ":training_treat");

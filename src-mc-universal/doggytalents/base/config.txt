@@ -4,6 +4,8 @@
 BlockDogBathWrapper
 BlockDogBedWrapper
 BlockFoodBowlWrapper
+ItemDogBedWrapper
+
 
 ItemCommandEmblemWrapper
 ItemDoggyCharmWrapper

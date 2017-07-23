@@ -20,7 +20,7 @@ public class VersionControl {
 		Class<T> path = chooseClassBasedOnVersion(name, type);
 		
 		try {
-			return path.getConstructor(parameterTypes).newInstance(parameter);
+			return (T)path.getConstructor(parameterTypes).newInstance(parameter);
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
@@ -32,7 +32,7 @@ public class VersionControl {
 		Class<T> path = chooseClassBasedOnVersion(name, type);
 		
 		try {
-			return path.newInstance();
+			return (T)path.newInstance();
 		} 
 		catch(Exception e) {
 			e.printStackTrace();

@@ -11,6 +11,7 @@ import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
+import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
 import doggytalents.talent.BedFinder;
@@ -59,7 +60,7 @@ public class DoggyTalents {
 	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
 	public static CreativeTabs CREATIVE_TAB = VersionControl.createObject("TabDoggyTalents", CreativeTabDoggyTalents.class);
-	public static CreativeTabs CREATIVE_TAB_BED = VersionControl.createObject("TabDogBed", CreativeTabDoggyTalents.class);
+	public static CreativeTabs CREATIVE_TAB_BED = VersionControl.createObject("TabDogBed", CreativeTabDogBed.class);
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

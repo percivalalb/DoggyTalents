@@ -573,7 +573,6 @@ public class EntityDog extends EntityAbstractDog {
                         int[] aint = new int[3];
                         int i = 0;
                         int count = 2; //The number of different sources of colour
-                      
                         
                         int l = this.getCollarColour();
                         float f = (float)(l >> 16 & 255) / 255.0F;
@@ -583,18 +582,15 @@ public class EntityDog extends EntityAbstractDog {
                         aint[0] = (int)((float)aint[0] + f * 255.0F);
                         aint[1] = (int)((float)aint[1] + f1 * 255.0F);
                         aint[2] = (int)((float)aint[2] + f2 * 255.0F);
-                        ++count;
 
                         float[] afloat = ObjectLib.METHODS.getRGB(EnumDyeColor.byDyeDamage(stack.getMetadata()));
-                        l = this.getCollarColour();
-                        f = (float)(l >> 16 & 255) / 255.0F;
-                        f1 = (float)(l >> 8 & 255) / 255.0F;
-                        f2 = (float)(l & 255) / 255.0F;
-                        i = (int)((float)i + Math.max(f, Math.max(f1, f2)) * 255.0F);
-                        aint[0] = (int)((float)aint[0] + f * 255.0F);
-                        aint[1] = (int)((float)aint[1] + f1 * 255.0F);
-                        aint[2] = (int)((float)aint[2] + f2 * 255.0F);
-                        ++count;
+                        int l1 = (int)(afloat[0] * 255.0F);
+                        int i2 = (int)(afloat[1] * 255.0F);
+                        int j2 = (int)(afloat[2] * 255.0F);
+                        i += Math.max(l1, Math.max(i2, j2));
+                        aint[0] += l1;
+                        aint[1] += i2;
+                        aint[2] += j2;
 
                         int i1 = aint[0] / count;
                      	int j1 = aint[1] / count;

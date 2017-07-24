@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
 import doggytalents.DoggyTalents;
+import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
@@ -94,12 +95,6 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	
-    private int hungerTick;
-   	private int prevHungerTick;
-    private int healingTick;
-    private int prevHealingTick;
-    private int regenerationTick;
-    private int prevRegenerationTick;
     private float timeWolfIsHappy;
     private float prevTimeWolfIsHappy;
     private boolean isWolfHappy;
@@ -112,6 +107,15 @@ public class EntityDog extends EntityAbstractDog {
     public ModeUtil mode;
     public CoordUtil coords;
     public Map<String, Object> objects;
+    
+    //Timers
+    private int hungerTick;
+   	private int prevHungerTick;
+    private int healingTick;
+    private int prevHealingTick;
+    private int regenerationTick;
+    private int prevRegenerationTick;
+    private int foodBowlCheck;
 
     public EntityDog(World word) {
         super(word);
@@ -330,7 +334,16 @@ public class EntityDog extends EntityAbstractDog {
         if(this.getRidingEntity() instanceof EntityPlayer)
         	if(this.getRidingEntity().isSneaking())
         		this.dismountRidingEntity();
+        
+        //Check if dog bowl still exists every 50t/2.5s, if not remove
+        if(this.coords.hasBowlPos() && this.foodBowlCheck++ > 50) {
+        	if(this.world.isBlockLoaded(this.coords.getBowlPos()))
+        		if(this.world.getBlockState(this.coords.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
+        			this.coords.resetBowlPosition();
         	
+        	this.foodBowlCheck = 0;
+        }
+        
         TalentHelper.onLivingUpdate(this);
     }
 

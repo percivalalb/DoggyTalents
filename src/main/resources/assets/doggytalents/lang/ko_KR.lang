@@ -1,0 +1,128 @@
+tile.dt.dogBed.name=강아지 침대
+tile.dt.foodBowl.name=먹이 그릇
+
+item.dt.throwBone0.name=투척용 뼈
+item.dt.throwBone1.name=침묻은 투척용 뼈
+item.dt.trainingTreat.name=훈련용 간식
+item.dt.superTreat.name=강력 간식
+item.dt.masterTreat.name=마스터 간식
+item.dt.direTreat.name=다이어 간식
+item.dt.breedingBone.name=교배의 뼈
+item.dt.doggyCharm.name=강아지 부적
+item.dt.collarShears.name=목걸이 가위
+item.dt.commandEmblem.name=명령 엠블럼
+item.dt.radioCollar.name=라디오 목걸이
+item.dt.radar.name=레이더
+
+doggytalents.key.category=Doggy Talents
+doggytalents.key.come=이리와
+doggytalents.key.stay=가만히
+doggytalents.key.ok=쉬어
+doggytalents.key.heel=따라와
+
+dogGui.noObey=이 개는 더이상 당신의 명령을 듣지 않습니다.
+
+dogTreat.levelup=레벨업!
+dogTreat.tooyoung=스킬을 배우기에 개가 아직 너무 어립니다.
+dogTreat.leveltoohigh=이 간식으로 더이상 레벨업을 할 수 없습니다.
+dogTreat.toomuch=당신의 개는 더이상 이 간식의 위대한 힘을 받을 수 없습니다.
+dogTreat.ultimatelevel=축하드려요! 당신의 개가 최종 레벨에 도달하였습니다.
+
+dogCommand.come=이리와!
+dogCommand.stay=가만히!
+dogCommand.ok=착하지!
+dogCommand.heel=따라와!
+
+dogTalent.puppyeyes.1.part1=주민: 강아지가 귀엽네! 좀 더 잘 대해줘요.
+dogTalent.puppyeyes.1.part2=여기 돼지고기 좀 먹어보렴.
+
+dogTalent.puppyeyes.2.part1=주민: 와아아, 착해라.
+dogTalent.puppyeyes.2.part2=촥하쥐 촥하쥐 촥.하.쥐!
+dogTalent.puppyeyes.2.part3=하하 그렇지! 착한 강아지에게는 간식을 주마!
+
+dogTalent.puppyeyes.3.part1=주민: 맙소사! 어디서 이렇게 작고 착한
+dogTalent.puppyeyes.3.part2=행복덩이를 구했데? 여기 이
+dogTalent.puppyeyes.3.part3=철 가지고 가서 이 아이를 잘 지켜줘!
+
+dogTalent.puppyeyes.4.part1=주민: 아으으... 내 심장이... 심장이...
+dogTalent.puppyeyes.4.part2=너무 귀엽잖아 으억. 이거 가져가.
+dogTalent.puppyeyes.4.part3=얼른 가져가!
+
+dogTalent.puppyeyes.5.part1=주민: 그니깐 내가 얘기하고 싶은건, 자네가
+dogTalent.puppyeyes.5.part2=이 우주에서 가장 좋은 개를 가지고 있단거지!
+dogTalent.puppyeyes.5.part3=이 다이아몬드 좀 가져가라구!
+
+dogTalent.puppyeyes.6.part1=주민: 와아아아아아아아아아아아아아아
+dogTalent.puppyeyes.6.part2=아아아아아아아아아아아아아아아아아
+dogTalent.puppyeyes.6.part3=아아아아아아아아아아아아아아아아앙 귀여워!
+
+dogGui.buttonInfo.1=크리티컬 확률을 높이고 체력 하트를 반절씩 올려줍니다 (마지막에 추가 하트 1개).
+dogGui.buttonInfo.2=당신의 개가 물리적인 공격을 완전히 막을 수 있는 확률을 높여줍니다.
+dogGui.buttonInfo.3=당신의 개가 몬스터를 해치워 두배의 아이템을 획득하는 확률을 10% 올려줍니다 (마지막에 추가 10%로 최대 60%).
+dogGui.buttonInfo.4=당신의 개가 화염 공격을 할 수 있게 됩니다. 스킬 레벨이 높을수록 화염의 지속시간이 길어집니다. 최대 숙련시 개는 화염에 면역성이 생깁니다.
+dogGui.buttonInfo.5=어디서든 개를 탈 수 있게 됩니다. 스킬 레벨이 높을수록 개가 더욱 높이 점프 할 수 있습니다. 탑승하기위해 손을 비우고 점프와 동시에 개를 클릭하십시오.
+dogGui.buttonInfo.6=스킬 레벨 하나당 강아지 가방 창에 3개의 칸이 추가됩니다. 목재로 개를 오른쪽 클릭을 하여 가방을 열 수 있습니다! 레벨 5가 되면 자동으로 주변 아이템을 먹어줍니다.
+dogGui.buttonInfo.7=스킬 레벨 하나당 3 블록을 더 데미지 없이 낙하가 가능해집니다. 최대 숙련시 낙하 데미지를 전혀 받지 않습니다. 그리고... 떨어질때 뜨기도 합니다.
+dogGui.buttonInfo.8=개가 쉬지 않고도 회복하는 속도를 높혀 줍니다. 최대 숙련시 개가 앉지 않고도 50% 더 빨리 회복합니다.
+dogGui.buttonInfo.9=개가 크리퍼의 냄새를 맡으면 으르렁거려 경고해줍니다. 스킬 레벨업시 감지 반경이 6블록 더 추가됩니다. 최대 숙련시 개가 크리퍼를 공격할 수 있게 됨과 동시에 공격 한번 한번이 크리퍼의 폭발을 막아줍니다.
+dogGui.buttonInfo.10=플레이어를 태우거나 타겟을 뒤쫓을 시 달리는 속도가 빨라집니다 스킬 레벨업시 10%의 추가 속도를 얻습니다 (마지막에 추가 15%).
+dogGui.buttonInfo.11=개가 물에 들어갔다 나와 물기를 털을때 생선을 줍니다. 레벨과 함께 생선을 잡는 확률을 높여줍니다. 헬하운드 스킬이 있으면 구운 생선을 잡을 확률이 있습니다. 최대 숙련시 개가 수중 호흡을 할 수 있게 됩니다.
+dogGui.buttonInfo.12=개가 음식을 먹을시 올라가는 NP를 각 스킬 레벨당 10% 더 올려줍니다. 스킬 레벨 3에는 썩은 고기를 먹을 수 있고 스킬 레벨 5때는 생선을 먹을 수 있게 됩니다.
+dogGui.buttonInfo.13=개를 머리위에 올려놓아 집으로 가는 방향을 찾게 합니다. 뼈를 들고 개를 오른쪽 클릭하여 머리위에 올려 놓을 수 있습니다. 스킬 레벨업시 200 블록의 더한 반경을 수색할 수 있고 스킬 레벨 5때는 제한 반경이 사라집니다.
+dogGui.buttonInfo.14=무작위로 주변 모든 좀벌레들에게 1의 데미지를 입힙니다. 3블록의 반경이 스킬 레벨업과 함께 올라갑니다. 최대 숙련시 데미지가 두배가 됩니다.
+dogGui.buttonInfo.15=개의 공격이 적을 중독시킵니다. 스킬 레벨업시 중독 시간이 길어집니다. 스킬 레벨 3에는 개가 독에 면역성이 생깁니다. 최대 숙련시 플레이어가 가진 모든 물약의 효과를 없앨 수 있습니다. 거미눈으로 개를 오른쪽 클릭하면 30NP를 소모하여 물약 효과를 무효화합니다.
+dogGui.buttonInfo.16=밀을 손에 쥐면 양치기 개가 가축을 즉시 당신에게 몰아줍니다. 가축을 먼거리 이동시키기 쉬워집니다. 자칫하면 개가 피로할 수 있기에 많은 량의 먹이를 필요로 할 수도 있습니다. 스킬을 레벨업 할때마다 필요한 배고픔 량이 줄어듭니다. 개가 가축을 더이상 몰지 않게 하려면 밀을 손에 쥐지 않으면 됩니다.
+dogGui.buttonInfo.17=만일 당신의 체력이 낮고 이 스킬을 익힌 개가 따라다닐시, 스킬 레벨당 하트 반개의 체력을 100NP를 소모하여 회복시켜줍니다. 최대 숙련시 80NP만을 사용합니다.
+dogGui.buttonInfo.18=이 스킬로 개가 마을주민들을 매료시켜 선물을 받을 수 있습니다! 높은 스킬 레벨은 무작위로 받는 선물의 질을 높여줍니다. 이 스킬은 이틀에 한번씩 사용가능합니다 (마인크래프트 기준). 최대 숙련시 스킬 쿨다운이 하루로 줄어듭니다.
+
+dogGui.buttonInfo.wandering=개가 먹이 그릇 주위를 서성거리며 다음 명령을 기다립니다.먹이 그릇을 지정하려면 먹이 그릇 1블록 이내로 데려가십시오.
+dogGui.buttonInfo.tactical=당신을 따라다니지만 명령을 하지 않는 이상 그 무엇도 공격하지 않습니다.
+dogGui.buttonInfo.aggresive=당신을 따라다니며 당신이 공격하는 타겟 혹은 당신을 공격하는 타겟을 공격합니다.
+dogGui.buttonInfo.berserker=당신을 따라다니며 경고없이 주변 몬스터를 공격합니다.
+dogGui.buttonInfo.docile=당신을 따라다니지만 그 무엇도 공격하지 않습니다. 당신이 뼈를 던지기를 기다리고 있습니다.
+
+dogGui.talentName.1=검은 가죽
+dogGui.talentName.2=경비견
+dogGui.talentName.3=사냥개
+dogGui.talentName.4=헬 하운드
+dogGui.talentName.5=늑대 라이딩
+dogGui.talentName.6=짐 강아지
+dogGui.talentName.7=푹신한 발
+dogGui.talentName.8=빠른 힐러
+dogGui.talentName.9=크리퍼 청소부
+dogGui.talentName.10=강아지 돌진
+dogGui.talentName.11=어부의 개
+dogGui.talentName.12=행복한 미식견
+dogGui.talentName.13=침대찾기
+dogGui.talentName.14=유해동물 방제견
+dogGui.talentName.15=독니
+dogGui.talentName.16=양치기
+dogGui.talentName.17=구조견
+dogGui.talentName.18=강아지 눈빛
+
+doggytalents.updatemessage=새로운 %s 버전이 존재합니다 %s. 다운받기: %s
+container.packpuppy=강아지 가방
+container.foodBowl=먹이 그릇
+itemGroup.doggytalents=Doggy Talents
+
+dogBed.bedding.whiteWool=하안색 양털 침대
+dogBed.bedding.orangeWool=주황색 양털 침대
+dogBed.bedding.magentaWool=자홍색 양털 침대
+dogBed.bedding.lightBlueWool=하늘색 양털 침대
+dogBed.bedding.yellowWool=노란색 양털 침대
+dogBed.bedding.limeWool=연두색 양털 침대
+dogBed.bedding.pinkWool=분홍색 양털 침대
+dogBed.bedding.grayWool=회색 양털 침대
+dogBed.bedding.lightGrayWool=밝은 회색 양털 침대
+dogBed.bedding.cyanWool=청록색 양털 침대
+dogBed.bedding.purpleWool=보라색 양털 침대
+dogBed.bedding.blueWool=파란색 양털 침대
+dogBed.bedding.brownWool=갈색 양털 침대
+dogBed.bedding.greenWool=초록색 양털 침대
+dogBed.bedding.redWool=빨간색 양털 침대
+dogBed.bedding.blackWool=검정색 양털 침대
+
+dogBed.casing=케이스
+
+dogBed.woolError=에러 (알수없는 양털ID)
+dogBed.woodError=에러 (알수없는 케이스ID)

@@ -51,7 +51,6 @@ public class Main {
 	
 	public static final boolean UNIVERSAL = true;
 	
-	
 	public enum Mod {
 		
 		DOGGY_TALENTS("DoggyTalents", "doggytalents", "C:\\Users\\alexl\\Documents\\GitHub\\DoggyTalents"),

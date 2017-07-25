@@ -13,6 +13,11 @@ Bugs: 1.11-1.9 biomes o plenty casing no localisations
 MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.0.200 | 25th July 2017
++ Added treat bag recipe LCL, LLL C = Chew Stick, L = Leather
+* Fixed there being no wool collar recipe on MC < 1.12
+* Fixed possible crash on 1.12 server
+
 1.14.0.196 | 24th July 2017
 + All minecraft versions above now use the same basic code, this will mean that updates for all these version with be released simulationously. The only thing I have to do is click compile 4 times for the different MC versions
 + Add chew stick recipe SW, WS W = Wheat, S = Sugar

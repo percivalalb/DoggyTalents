@@ -5,7 +5,7 @@
 
 -----------------
 
-### Installation Instructions (MC 1.6 and beyond)
+### Installation Instructions (Only for the new launchers)
 
 #### Client
 - Make sure you have the new Minecraft launcher and have run it at least once.

@@ -13,6 +13,9 @@ Bugs: 1.11-1.9 biomes o plenty casing no localisations
 MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.0.206 | WIP
+* Fixed dog glitch when playing with the throw bone
+
 1.14.0.200 | 25th July 2017
 + Added treat bag recipe LCL, LLL C = Chew Stick, L = Leather
 * Fixed there being no wool collar recipe on MC < 1.12

@@ -23,16 +23,18 @@ public class EntityAIFetch extends EntityAIBase {
     private EntityLivingBase owner;
     private EntityItem fetchableItem;
     private World world;
+    private final double followSpeed;
     private final PathNavigate petPathfinder;
     private int timeToRecalcPath;
     private float maxDist;
     private float oldWaterCost;
     private double oldRangeSense;
 
-    public EntityAIFetch(EntityDog dog, float maxDistIn) {
-        this.dog = dog;
-        this.world = dog.world;
-        this.petPathfinder = dog.getNavigator();
+    public EntityAIFetch(EntityDog dogIn, double followSpeedIn,  float maxDistIn) {
+        this.dog = dogIn;
+        this.world = dogIn.world;
+        this.followSpeed = followSpeedIn;
+        this.petPathfinder = dogIn.getNavigator();
         this.maxDist = maxDistIn;
         this.setMutexBits(3);
 
@@ -68,7 +70,7 @@ public class EntityAIFetch extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.petPathfinder.noPath() && this.isPlayingFetch() && this.dog.getDistanceSqToEntity(this.fetchableItem) > (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
+        return !this.petPathfinder.noPath() && this.isPlayingFetch() && this.dog.getDistanceSqToEntity(this.fetchableItem) < (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
     }
 
     @Override
@@ -112,7 +114,7 @@ public class EntityAIFetch extends EntityAIBase {
              if(--this.timeToRecalcPath <= 0) {
                  this.timeToRecalcPath = 10;
 
-                 this.petPathfinder.tryMoveToEntityLiving(this.fetchableItem, this.dog.getAIMoveSpeed() * 9);
+                 this.petPathfinder.tryMoveToEntityLiving(this.fetchableItem, this.followSpeed);
              }
              
              if(this.dog.getDistanceSqToEntity(this.fetchableItem) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {

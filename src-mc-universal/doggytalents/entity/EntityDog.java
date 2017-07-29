@@ -127,7 +127,7 @@ public class EntityDog extends EntityAbstractDog {
     @Override
     protected void initEntityAI() {
         this.aiSit = new EntityAISit(this);
-        this.aiFetchBone = new EntityAIFetch(this, 20.0F);
+        this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
         		
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);

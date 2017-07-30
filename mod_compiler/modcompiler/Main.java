@@ -49,8 +49,6 @@ public class Main {
 	public static ForgeEnvironment FORGE_ENVIR = ForgeEnvironment._1_7_10;
 	public static Output output;
 	
-	public static final boolean UNIVERSAL = true;
-	
 	public enum Mod {
 		
 		DOGGY_TALENTS("DoggyTalents", "doggytalents", "C:\\Users\\alexl\\Documents\\GitHub\\DoggyTalents"),
@@ -68,7 +66,7 @@ public class Main {
 		}
 		
 		public String getPathToVersion(ForgeEnvironment forgeEnvi) {
-			return this.getPath() + "\\src-mc-" + (UNIVERSAL ? "universal" : forgeEnvi.getVersion());
+			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS ? "universal" : forgeEnvi.getVersion());
 		}
 		
 		public String getPath() {
@@ -246,8 +244,8 @@ public class Main {
 		
 		Main.output.println("Deleting old mod files.");
 		//Deletes previous mod src and build directories
-		deleteDirectory(forgeSrc);
-		deleteDirectory(forgeResources);
+		if(forgeSrc.exists()) deleteDirectory(forgeSrc);
+		if(forgeResources.exists()) deleteDirectory(forgeResources);
 		if(buildClasses.exists()) deleteDirectory(buildClasses);
 		if(buildResources.exists()) deleteDirectory(buildResources);
 		
@@ -285,7 +283,7 @@ public class Main {
 		copyDirectory(modSrc, forgeResources, notJavaFiles);
 		Main.output.println("Succesfully copied all resource files.");
 		
-		if(UNIVERSAL) {
+		if(mod == Mod.DOGGY_TALENTS) {
 			File config = new File(modSrc, mod.packageLoc + "\\base\\compile.cfg");
 			Iterator<String> stream = Files.lines(config.toPath(), StandardCharsets.UTF_8).iterator();
 			Main.output.println("Reading config file to determine which version specific files to copy, this is designed to avoid compile errors");
@@ -322,6 +320,7 @@ public class Main {
 			}
 		}
 		
+		/** Cool but not very practical
 		String content = "";
 		try {
 			URLConnection connection =  new URL("https://github.com/ProPercivalalb/DoggyTalents").openConnection();
@@ -339,30 +338,38 @@ public class Main {
         	modVersion += "." + matcher1.group(1);
         else
     		modVersion = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(Calendar.getInstance().getTime());
+		**/
 		
         Main.output.println(" >>>> Mod Version will be: %s", modVersion);
         
 		try {
-			File file = new File(forgeSrc, "doggytalents\\lib\\Reference.java");
+			File file = new File(forgeSrc, mod.packageLoc + "\\lib\\Reference.java");
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line = "", oldtext = "";
 			while((line = reader.readLine()) != null) {
 				oldtext += line + "\r\n";
 			}
 			reader.close();
-			int index = getIndex(forgeEnvi);
-			String path;
-			File clazz;
-			do {
-				path = String.format("%s\\%s.java", getDirectionBaseOnVersion(mod, index--), "GuiFactory");
+			
+			String replacedtext = oldtext;
+			
+			if(mod == Mod.DOGGY_TALENTS) {
+				int index = getIndex(forgeEnvi);
+				String path;
+				File clazz;
+				do {
+					path = String.format("%s\\%s.java", getDirectionBaseOnVersion(mod, index--), "GuiFactory");
+				}
+				while(!(clazz = new File(forgeSrc, path)).exists() && index >= 0);
+				
+				String guiFactory = clazz.getAbsolutePath();
+				guiFactory = guiFactory.substring(guiFactory.indexOf("java") + 5, guiFactory.length() - 5);
+				Main.output.println(guiFactory);
+				guiFactory = guiFactory.replaceAll("\\\\", ".");
+				Main.output.println(guiFactory);
+				replacedtext = oldtext.replaceAll("\\$\\{GUI_FACTORY\\}", guiFactory);
 			}
-			while(!(clazz = new File(forgeSrc, path)).exists() && index >= 0);
-			String guiFactory = clazz.getAbsolutePath();
-			guiFactory = guiFactory.substring(guiFactory.indexOf("java") + 5, guiFactory.length() - 5);
-			Main.output.println(guiFactory);
-			guiFactory = guiFactory.replaceAll("\\\\", ".");
-			Main.output.println(guiFactory);
-			String replacedtext = oldtext.replaceAll("\\$\\{GUI_FACTORY\\}", guiFactory);
+			
 			replacedtext = replacedtext.replaceAll("\\$\\{MOD_VERSION\\}", modVersion);
 	        
 	        FileWriter writer = new FileWriter(file.getAbsoluteFile());

@@ -10,6 +10,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IThreadListener;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -90,12 +92,12 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 			throw new RuntimeException("Invalid side " + ctx.side.name() + " for " + msg.getClass().getSimpleName());
 		
 		IThreadListener thread = DoggyTalents.PROXY.getThreadFromContext(ctx);
-		// pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
-		thread.addScheduledTask(new Runnable() {
-			public void run() {
-				msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side);
-			}
-		});
+		if(thread.isCallingFromMinecraftThread()) {
+			msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side);
+		}
+		else {
+			thread.addScheduledTask(() -> msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side));
+		}
 		
 		return null;
 	}

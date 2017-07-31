@@ -11,6 +11,12 @@ Update List Key
 MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.1.214 | 31st July 2017
++ Added support for the wooden planks from ExtraTrees mod to be used as casing in dog bed
++ Added support for the wooden planks from Terraqueous mod to be used as casing in dog bed
++ Added Chinese translation file zh_CN.lang, thanks to 317620111 of MC forums
+* Fixed crash when ItemPhysic Lite is loaded without CreativeCore
+
 1.14.0.206 | 29th July 2017
 * Fixed dog glitch when playing with the throw bone
 

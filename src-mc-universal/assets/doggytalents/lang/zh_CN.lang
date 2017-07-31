@@ -66,11 +66,11 @@ doggui.talentinfo.puppyeyes=这项技能将会使你的狗温暖所有村民的�
 doggui.talentinfo.swimmerdog=在水下骑你的狗，你可以水下憋气更长时间。精通这项技能时，你可以很容易地看到水底。
 
 doggui.modeinfo.wandering=在这个模式下，你的小狗会呆在狗食盆附近等待你的命令。只需要把你的小狗带到狗食盆1格内的距离即可
-doggui.modeinfo.\u00a7cwandering=在这个模式下，你的小狗会呆在狗食盆附近等待你的命令。只需要把你的小狗带到狗食盆1格内的距离即可 \u00a7cNo 这是食盆当前设置！
 doggui.modeinfo.tactical=在这个模式下，你的小狗会跟着你但是没有你的命令它不会攻击任何生物
 doggui.modeinfo.aggresive=在这个模式下，你的小狗会跟着你，并攻击任何伤害你的或者你在攻击的生物
 doggui.modeinfo.berserker=在这个模式下，你的小狗会跟着你，任何生物靠近你时，它会直接主动攻击
 doggui.modeinfo.docile=在这个模式下，你的小狗会跟着你，但是并不会攻击任何生物。它已经准备好去捡扔出去的骨头了
+doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
 
 dogtalent.puppyeyes.1.part1=村民：多么可爱的狗！你要好好照顾他（她）
 dogtalent.puppyeyes.1.part2=在这里，可以吃猪肉。

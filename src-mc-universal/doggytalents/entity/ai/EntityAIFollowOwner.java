@@ -52,7 +52,7 @@ public class EntityAIFollowOwner extends EntityAIBase
             return false;
         else if(this.dog.isSitting())
             return false;
-        else if(this.dog.mode.getMode().doesFollowOwner())
+        else if(!this.dog.mode.getMode().doesFollowOwner())
         	return false;
         else if(this.dog.aiFetchBone.isPlayingFetch())
         	return false;

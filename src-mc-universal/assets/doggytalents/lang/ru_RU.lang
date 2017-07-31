@@ -70,7 +70,7 @@ doggui.modeinfo.tactical=В этом режиме Ваша собака буде
 doggui.modeinfo.aggresive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
 doggui.modeinfo.berserker=В этом режиме Ваша собака будет следовать за Вами и атаковать всех мобов без предупреждения.
 doggui.modeinfo.docile=В этом режиме Ваша собака будет следовать за Вами, но игнорировать всех мобов. Так же, в этом режиме, Ваша собака ждет, когда Вы бросите ей косточку.
-
+doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
 
 dogtalent.puppyeyes.1.part1=Житель: Мимими! Какая прелесть! Позаботься о нём... Эээ, или о ней...
 dogtalent.puppyeyes.1.part2=Сюда, у меня немножечко вкусненькой свининки

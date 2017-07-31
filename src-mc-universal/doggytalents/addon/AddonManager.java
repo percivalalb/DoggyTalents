@@ -1,6 +1,7 @@
 package doggytalents.addon;
 
 import doggytalents.addon.biomesoplenty.BiomesOPlentyAddon;
+import doggytalents.addon.extratrees.ExtraTreesAddon;
 import doggytalents.addon.forestry.ForestryAddon;
 import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import net.minecraftforge.common.config.Configuration;
@@ -18,6 +19,7 @@ public class AddonManager {
 		EVENT_BUS.register(new ForestryAddon());
 		EVENT_BUS.register(new ItemPhysicAddon());
 		EVENT_BUS.register(new BiomesOPlentyAddon());
+		EVENT_BUS.register(new ExtraTreesAddon());
 	}
 
 	public static void runRegisteredAddons(Configuration config) {

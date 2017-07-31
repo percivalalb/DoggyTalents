@@ -201,6 +201,17 @@ dogbed.casing.extratrees:planks.2.1=Box Plank Casing
 dogbed.casing.extratrees:planks.2.2=Syzgium Plank Casing
 dogbed.casing.extratrees:planks.2.3=Pinkivory Plank Casing
 
+dogbed.casing.terraqueous:planks.0=Apple Plank Casing
+dogbed.casing.terraqueous:planks.1=Cherry Plank Casing
+dogbed.casing.terraqueous:planks.2=Orange Plank Casing
+dogbed.casing.terraqueous:planks.3=Pear Plank Casing
+dogbed.casing.terraqueous:planks.4=Peach Plank Casing
+dogbed.casing.terraqueous:planks.5=Mango Plank Casing
+dogbed.casing.terraqueous:planks.6=Lemon Plank Casing
+dogbed.casing.terraqueous:planks.7=Plum Plank Casing
+dogbed.casing.terraqueous:planks.8=Coconut Plank Casing
+dogbed.casing.terraqueous:planks.9=Banana Plank Casing
+
 dogtreat.levelup=升级！
 dogtreat.tooyoung=这只小狗太小，还不能学习技能。
 dogtreat.leveltoohigh=你的小狗等级过高，无法获得这些奖励。

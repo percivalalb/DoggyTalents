@@ -1,6 +1,7 @@
 package doggytalents.addon.forestry;
 
 import doggytalents.addon.AddonEvent;
+import doggytalents.addon.AddonManager;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.Loader;
@@ -11,23 +12,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class ForestryAddon {
 
-	private static ForestryAPI API = new ForestryAPI(ForestryLib.MOD_NAME);
-	
-	@SubscribeEvent
-	public void onPre(AddonEvent.Pre event) {
-		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
-			return;
-	}
-	
-	@SubscribeEvent
-	public void onInit(AddonEvent.Init event) {
-		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
-			return;
-	}
-
 	@SubscribeEvent
 	public void onPost(AddonEvent.Post event) throws Exception {
-		if(!Loader.isModLoaded(ForestryLib.MOD_NAME))
+		if(!AddonManager.areModsLoaded(ForestryLib.MOD_NAME))
 			return;
 		
 		Block planks1 = Block.getBlockFromName(ForestryLib.ITEM_NAME_1);

@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import doggytalents.DoggyTalents;
+import doggytalents.addon.AddonManager;
 import doggytalents.helper.ReflectionUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -23,11 +24,9 @@ public class ItemPhysicAPI {
 	public ArrayList addSwimItem;
 	public ArrayList addBurnItem;
 	
-	public ItemPhysicAPI(String modId) {
-		if(!Loader.isModLoaded(modId))
-			return;
-		
+	public ItemPhysicAPI() {
 		this.serverPhysicClass = ReflectionUtil.getClass(ItemPhysicLib.SERVER_PHYSIC_CLASS);
+		
 		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
 			this.addSwimItem = ReflectionUtil.getField(this.serverPhysicClass, ArrayList.class, null, ItemPhysicLib.SWIMMING_ITEMS_FIELD_OLD);
 			this.addBurnItem = ReflectionUtil.getField(this.serverPhysicClass, ArrayList.class, null, ItemPhysicLib.BURNING_ITEMS_FIELD_OLD);

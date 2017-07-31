@@ -1,6 +1,7 @@
 package doggytalents.addon.biomesoplenty;
 
 import doggytalents.addon.AddonEvent;
+import doggytalents.addon.AddonManager;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.Loader;
@@ -11,23 +12,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
  */
 public class BiomesOPlentyAddon {
 
-	private static BiomesOPlentyAPI API = new BiomesOPlentyAPI(BiomesOPlentyLib.MOD_ID);
-	
 	@SubscribeEvent
-	public void onPre(AddonEvent.Pre event) {
-		if(!Loader.isModLoaded(BiomesOPlentyLib.MOD_ID))
-			return;
-	}
-	
-	@SubscribeEvent
-	public void onInit(AddonEvent.Init event) {
-		if(!Loader.isModLoaded(BiomesOPlentyLib.MOD_ID))
-			return;
-	}
-
-	@SubscribeEvent
-	public void onPost(AddonEvent.Post event) throws Exception {
-		if(!Loader.isModLoaded(BiomesOPlentyLib.MOD_ID) && !Loader.isModLoaded("BiomesOPlenty"))
+	public void onPost(AddonEvent.Post event) {
+		if(!AddonManager.areModsLoaded(BiomesOPlentyLib.MOD_ID, BiomesOPlentyLib.MOD_ID_194))
 			return;
 		
 		Block planks1 = Block.getBlockFromName(BiomesOPlentyLib.ITEM_NAME_1);

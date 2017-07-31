@@ -6,6 +6,7 @@ package doggytalents.addon.itemphysic;
 public class ItemPhysicLib {
 
 	public static final String MOD_ID = "itemphysic";
+	public static final String LIB_ID = "creativecore";
 
 	public static final String SERVER_PHYSIC_CLASS 			= "com.creativemd.itemphysic.physics.ServerPhysic";
 	public static final String SORTING_LIST_CLASS 			= "com.creativemd.creativecore.common.utils.sorting.SortingList";

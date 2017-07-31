@@ -4,6 +4,7 @@ import doggytalents.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.addon.forestry.ForestryAddon;
 import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.EventBus;
 
 /**
@@ -23,5 +24,12 @@ public class AddonManager {
 		EVENT_BUS.post(new AddonEvent.Pre(config));
 		EVENT_BUS.post(new AddonEvent.Init(config));
 		EVENT_BUS.post(new AddonEvent.Post(config));
+	}
+	
+	public static boolean areModsLoaded(String... modIds) {
+		for(String modId : modIds)
+			if(!Loader.isModLoaded(modId))
+				return false;
+		return true;
 	}
 }

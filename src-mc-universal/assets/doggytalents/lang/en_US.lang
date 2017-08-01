@@ -212,6 +212,20 @@ dogbed.casing.terraqueous:planks.7=Plum Plank Casing
 dogbed.casing.terraqueous:planks.8=Coconut Plank Casing
 dogbed.casing.terraqueous:planks.9=Banana Plank Casing
 
+dogbed.casing.dendrology:planks0.0=Acemus Plank Casing
+dogbed.casing.dendrology:planks0.1=Cedrum Plank Casing
+dogbed.casing.dendrology:planks0.2=Cerasu Plank Casing
+dogbed.casing.dendrology:planks0.3=Delnas Plank Casing
+dogbed.casing.dendrology:planks0.4=Ewcaly Plank Casing
+dogbed.casing.dendrology:planks0.5=Hekur Plank Casing
+dogbed.casing.dendrology:planks0.6=Kiparis Plank Casing
+dogbed.casing.dendrology:planks0.7=Kulist Plank Casing
+dogbed.casing.dendrology:planks0.8=Lata Plank Casing
+dogbed.casing.dendrology:planks0.9=Nucis Plank Casing
+dogbed.casing.dendrology:planks0.10=Porffor Plank Casing
+dogbed.casing.dendrology:planks0.11=Salyx Plank Casing
+dogbed.casing.dendrology:planks0.12=Tuopa Plank Casing
+
 dogtreat.levelup=Level up!
 dogtreat.tooyoung=This dog's a bit too young to be learning skills just yet.
 dogtreat.leveltoohigh=Your dog is too high level to gain anything from these treats.

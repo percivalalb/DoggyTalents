@@ -5,6 +5,7 @@ import doggytalents.addon.dendrology.DendrologyAddon;
 import doggytalents.addon.extratrees.ExtraTreesAddon;
 import doggytalents.addon.forestry.ForestryAddon;
 import doggytalents.addon.itemphysic.ItemPhysicAddon;
+import doggytalents.addon.natura.NaturaLib;
 import doggytalents.addon.terraqueous.TerraqueousAddon;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
@@ -24,6 +25,7 @@ public class AddonManager {
 		EVENT_BUS.register(new ExtraTreesAddon());
 		EVENT_BUS.register(new TerraqueousAddon());
 		EVENT_BUS.register(new DendrologyAddon());
+		EVENT_BUS.register(new NaturaLib());
 	}
 
 	public static void runRegisteredAddons(Configuration config) {

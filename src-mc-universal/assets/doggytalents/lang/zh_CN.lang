@@ -226,6 +226,20 @@ dogbed.casing.dendrology:planks0.10=Porffor Plank Casing
 dogbed.casing.dendrology:planks0.11=Salyx Plank Casing
 dogbed.casing.dendrology:planks0.12=Tuopa Plank Casing
 
+dogbed.casing.natura:nether_planks.0=Ghostwood Plank Casing
+dogbed.casing.natura:nether_planks.1=Bloodwood Plank Casing
+dogbed.casing.natura:nether_planks.2=Darkwood Plank Casing
+dogbed.casing.natura:nether_planks.3=Fusewood Plank Casing
+dogbed.casing.natura:natura:overworld_planks.0=Maple Plank Casing
+dogbed.casing.natura:natura:overworld_planks.1=Silverbell Plank Casing
+dogbed.casing.natura:natura:overworld_planks.2=Amaranth Plank Casing
+dogbed.casing.natura:natura:overworld_planks.3=Tigerwood Plank Casing
+dogbed.casing.natura:natura:overworld_planks.4=Willow Plank Casing
+dogbed.casing.natura:natura:overworld_planks.5=Eucalyptus Plank Casing
+dogbed.casing.natura:natura:overworld_planks.6=Hopspeed Plank Casing
+dogbed.casing.natura:natura:overworld_planks.7=Sakura Plank Casing
+dogbed.casing.natura:natura:overworld_planks.8=Redwood Plank Casing
+
 dogtreat.levelup=升级！
 dogtreat.tooyoung=这只小狗太小，还不能学习技能。
 dogtreat.leveltoohigh=你的小狗等级过高，无法获得这些奖励。

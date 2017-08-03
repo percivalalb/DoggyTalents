@@ -1,26 +1,22 @@
 package doggytalents.item;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Facing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import doggytalents.DoggyTalentsMod;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
  **/
 public class ItemDoggyCharm extends ItemDT {
 	
-    public ItemDoggyCharm(String iconPath) {
-        super(iconPath);
+    public ItemDoggyCharm() {
+        super("doggy_charm");
         this.setMaxStackSize(1);
-        this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
     }
     
     @Override
@@ -45,26 +41,20 @@ public class ItemDoggyCharm extends ItemDT {
         }
     }
     
-    public static Entity spawnCreature(World par0World, double par2, double par4, double par6, EntityPlayer par7EntityPlayer) {
-    	EntityDog var8 = null;
+    public Entity spawnCreature(World worldIn, double x, double y, double z, EntityPlayer playerIn) {
 
-        for (int var9 = 0; var9 < 1; ++var9) {
-            var8 = new EntityDog(par0World);
+        EntityDog dog = new EntityDog(worldIn);
 
-            if (var8 != null && var8 instanceof EntityLiving) {
-            	EntityDog var10 = (EntityDog)var8;
-                var8.setLocationAndAngles(par2, par4, par6, MathHelper.wrapAngleTo180_float(par0World.rand.nextFloat() * 360.0F), 0.0F);
-                var10.rotationYawHead = var10.rotationYaw;
-                var10.renderYawOffset = var10.rotationYaw;
-                var10.setTamed(true);
-                var10.updateEntityAttributes();
-                var10.func_152115_b(par7EntityPlayer.getUniqueID().toString());
-                par0World.spawnEntityInWorld(var8);
-                var10.playLivingSound();
-            }
-        }
+        dog.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+        dog.rotationYawHead = dog.rotationYaw;
+        dog.renderYawOffset = dog.rotationYaw;
+        dog.setTamed(true);
+        dog.updateEntityAttributes();
+        dog.func_152115_b(playerIn.getUniqueID().toString());
+        worldIn.spawnEntityInWorld(dog);
+        dog.playLivingSound();
 
-        return var8;
+        return dog;
     }
         
 }

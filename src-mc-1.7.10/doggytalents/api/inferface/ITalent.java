@@ -27,15 +27,18 @@ public abstract class ITalent {
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) { return true; }
 	public double addToMoveSpeed(EntityDog dog) { return 0.0D; }
 	public boolean canBreatheUnderwater(EntityDog dog) { return false; }
+	public boolean canTriggerWalking(EntityDog dog) { return true; }
 	public boolean isImmuneToFalls(EntityDog dog) { return false; }
 	public int fallProtection(EntityDog dog) { return 0; }
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }
-	public String getLivingSound(EntityDog dog) { return ""; }
+	public String getLivingSound(EntityDog dog) { return null; }
 	public boolean canAttackClass(EntityDog dog, Class entityClass) { return false; }
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) { return true; }
+	public void onLevelUpdate(EntityDog dog, int level) {}
+	
 	
 	public int getHighestLevel(EntityDog dog) { return 5; }
 	//public int getTotalCost(EntityDog dog) { return 15; }

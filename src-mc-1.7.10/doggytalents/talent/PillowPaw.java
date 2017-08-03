@@ -11,7 +11,7 @@ public class PillowPaw extends ITalent {
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
 		if(dog.talents.getLevel(this) == 5)
-			if(dog.motionY < 0.0F)
+			if(dog.motionY < -0.12F && !dog.isInWater())
 				dog.motionY = -0.12F;
 	}
 	

@@ -68,29 +68,29 @@ public class RenderItemDogBed implements IItemRenderer {
 	public void renderDogBed(RenderBlocks renderBlocks, String casingId, String beddingId) {
 		//Bottom Wood
 		renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.2D, 1.0D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		
 		//Back
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.0D, 0.1D, 0.6D, 1.0D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		
 		//Right
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.0D, 1.0D, 0.6D, 0.1D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		
 		//Left
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.9D, 1.0D, 0.6D, 1.0D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		
 		//Front
 		renderBlocks.setRenderBounds(0.9D, 0.2D, 0.7D, 1.0D, 0.6D, 1.0D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		renderBlocks.setRenderBounds(0.9D, 0.2D, 0.0D, 1.0D, 0.6D, 0.3D);
-		this.renderInvBlockCasing(renderBlocks, ModBlocks.dogBed, casingId);
+		this.renderInvBlockCasing(renderBlocks, ModBlocks.DOG_BED, casingId);
 		
 		//Wool
 		renderBlocks.setRenderBounds(0.1D, 0.2D, 0.1D, 0.9D, 0.4D, 0.9D);
-		this.renderInvBlockBedding(renderBlocks, ModBlocks.dogBed, beddingId);
+		this.renderInvBlockBedding(renderBlocks, ModBlocks.DOG_BED, beddingId);
 	}
 
 	public void renderInvBlockBedding(RenderBlocks renderer, Block block, String beddingId) {

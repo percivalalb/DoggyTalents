@@ -1,9 +1,9 @@
 package doggytalents.talent;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.util.DamageSource;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.DamageSource;
 
 /**
  * @author ProPercivalalb

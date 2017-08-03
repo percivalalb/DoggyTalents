@@ -6,7 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +18,7 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
+//TODO CHEck is the same as 1.12
 public class CommandMessage extends AbstractServerMessage {
 	
 	public int commandId;
@@ -45,7 +46,7 @@ public class CommandMessage extends AbstractServerMessage {
 		if(stack == null)
 			return;
 		
-		if(stack.getItem() == ModItems.commandEmblem) {
+		if(stack.getItem() == ModItems.COMMAND_EMBLEM) {
 
 			if(this.commandId == 1)
 			{
@@ -72,7 +73,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
             		if(isDog)
             		{
-            			player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.come"));
+            			player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.come"));
             		}
 				}
 				else if(this.commandId == 2)
@@ -100,7 +101,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.stay"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.stay"));
 			        }
 				}
 				else if(this.commandId == 3)
@@ -135,7 +136,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.ok"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.ok"));
 			        }
 				}
 				else if(this.commandId == 4)
@@ -170,7 +171,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.heel"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.heel"));
 			        }
 				}
 					

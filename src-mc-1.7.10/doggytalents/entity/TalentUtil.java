@@ -3,9 +3,9 @@ package doggytalents.entity;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.nbt.NBTTagCompound;
 import doggytalents.api.inferface.ITalent;
-import doggytalents.helper.LogHelper;
+import doggytalents.api.registry.TalentRegistry;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author ProPercivalalb
@@ -28,6 +28,8 @@ public class TalentUtil {
 
     public void readTalentsFromNBT(NBTTagCompound tagCompound) {
     	this.dog.getDataWatcher().updateObject(22, tagCompound.getString("talents"));
+    	for(ITalent talent : TalentRegistry.getTalents())
+    		talent.onLevelUpdate(this.dog, this.getLevel(talent));
     }
 	
 	public String getSaveString() {
@@ -64,10 +66,11 @@ public class TalentUtil {
 	}
 	
 	public void setLevel(String id, int level) {
-		if(level == this.getLevel(id))
+		if(level == this.getLevel(id) && level > 5)
 			return;
 		
 		this.dataMap.put(id, level);
+		TalentRegistry.getTalent(id).onLevelUpdate(this.dog, level);
 		
 		String saveString = "";
 		boolean first = true;
@@ -81,7 +84,6 @@ public class TalentUtil {
 		}
 		
 		this.dog.getDataWatcher().updateObject(22, saveString);
-		this.dog.updateEntityAttributes();
 	}
 	
 	public void resetTalents() {

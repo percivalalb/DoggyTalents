@@ -1,9 +1,6 @@
 package doggytalents.network.packet.client;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
@@ -38,7 +35,7 @@ public class DogJumpMessage extends AbstractServerMessage {
         
         EntityDog dog = (EntityDog)target;
 		if(dog.onGround) {
-			
+
 			double verticalVelocity = 0.27D + 0.1D * dog.talents.getLevel("wolfmount");
 			if(dog.talents.getLevel("wolfmount") == 5) verticalVelocity += 0.1D;
 			

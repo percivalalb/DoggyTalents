@@ -4,20 +4,17 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
-import net.minecraft.entity.passive.EntityTameable;
 
 /**
  * @author ProPercivalalb
  */
-public class EntityAIOwnerHurtByTarget extends EntityAITarget
-{
+public class EntityAIOwnerHurtByTarget extends EntityAITarget {
+	
     private EntityDog dog;
     private EntityLivingBase theOwnerAttacker;
-    private int field_142051_e;
-    private static final String __OBFID = "CL_00001624";
+    private int timestamp;
 
-    public EntityAIOwnerHurtByTarget(EntityDog dog)
-    {
+    public EntityAIOwnerHurtByTarget(EntityDog dog) {
         super(dog, false);
         this.dog = dog;
         this.setMutexBits(1);
@@ -25,20 +22,17 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     
     @Override
     public boolean shouldExecute() {
-        if (!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
+        if(!this.dog.isTamed() || !this.dog.mode.isMode(EnumMode.AGGRESIVE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
         else {
             EntityLivingBase owner = this.dog.getOwner();
 
-            if (owner == null)
-            {
+            if(owner == null)
                 return false;
-            }
-            else
-            {
+            else {
                 this.theOwnerAttacker = owner.getAITarget();
                 int i = owner.func_142015_aE();
-                return i != this.field_142051_e && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, owner);
+                return i != this.timestamp && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, owner);
             }
         }
     }
@@ -49,12 +43,12 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget
     }
 
     @Override
-    public void startExecuting(){
+    public void startExecuting() {
         this.taskOwner.setAttackTarget(this.theOwnerAttacker);
         EntityLivingBase owner = this.dog.getOwner();
 
-        if (owner != null)
-            this.field_142051_e = owner.func_142015_aE();
+        if(owner != null)
+            this.timestamp = owner.func_142015_aE();
 
         super.startExecuting();
     }

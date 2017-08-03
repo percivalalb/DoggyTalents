@@ -61,27 +61,27 @@ public class RenderItemDogBath implements IItemRenderer {
 	public void renderdogBath(RenderBlocks renderBlocks) {
 		//Bottom Wood
 		renderBlocks.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 0.2D, 1.0D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, ModBlocks.dogBath.getIcon(1, 0));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, ModBlocks.DOG_BATH.getIcon(1, 0));
 		
 		//Back
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.0D, 0.1D, 0.6D, 1.0D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, ModBlocks.dogBath.getIcon(1, 0));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, ModBlocks.DOG_BATH.getIcon(1, 0));
 		
 		//Right
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.0D, 1.0D, 0.6D, 0.1D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, ModBlocks.dogBath.getIcon(1, 0));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, ModBlocks.DOG_BATH.getIcon(1, 0));
 		
 		//Left
 		renderBlocks.setRenderBounds(0.0D, 0.2D, 0.9D, 1.0D, 0.6D, 1.0D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, ModBlocks.dogBath.getIcon(1, 0));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, ModBlocks.DOG_BATH.getIcon(1, 0));
 		
 		//Front
 		renderBlocks.setRenderBounds(0.9D, 0.2D, 0.0D, 1.0D, 0.6D, 1.0D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, ModBlocks.dogBath.getIcon(1, 0));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, ModBlocks.DOG_BATH.getIcon(1, 0));
 		
 		//Wool
 		renderBlocks.setRenderBounds(0.1D, 0.2D, 0.1D, 0.9D, 0.4D, 0.9D);
-		this.renderStandardInvBlock(renderBlocks, ModBlocks.dogBath, Blocks.water.getBlockTextureFromSide(1));
+		this.renderStandardInvBlock(renderBlocks, ModBlocks.DOG_BATH, Blocks.water.getBlockTextureFromSide(1));
 	}
 
 	public void renderStandardInvBlock(RenderBlocks renderer, Block block, IIcon icon) {

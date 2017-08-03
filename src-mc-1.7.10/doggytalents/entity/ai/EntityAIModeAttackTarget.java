@@ -16,7 +16,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	
     private EntityDog dog;
     private EntityLivingBase entityToAttack;
-    private int field_142051_e;
+    private int timestamp;
 
     public EntityAIModeAttackTarget(EntityDog dog) {
         super(dog, true);
@@ -25,22 +25,15 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
     }
 
     @Override
-    public boolean shouldExecute()
-    {
-        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
-        {
+    public boolean shouldExecute() {
+        if(!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
-        }
-        else
-        {
+        else {
             EntityLivingBase entitylivingbase = this.dog.getOwner();
 
-            if (entitylivingbase == null)
-            {
+            if(entitylivingbase == null)
                 return false;
-            }
-            else
-            {
+            else {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {
 	           	 	double distance = 16D;
 	           	 	List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.boundingBox.expand(distance, distance, distance));
@@ -56,9 +49,9 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	           	 	}
             	}
             	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
-            		this.entityToAttack = entitylivingbase.getLastAttacker();
-                    int i = entitylivingbase.getLastAttackerTime();
-                    return i != this.field_142051_e && this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase);
+            		this.entityToAttack = entitylivingbase.getAITarget();
+                    int i = entitylivingbase.func_142015_aE();
+                    return i != this.timestamp && this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
             }
@@ -76,7 +69,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
         EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
-            this.field_142051_e = entitylivingbase.func_142015_aE();
+            this.timestamp = entitylivingbase.func_142015_aE();
 
         super.startExecuting();
     }

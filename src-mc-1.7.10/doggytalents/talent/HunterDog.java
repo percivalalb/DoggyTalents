@@ -1,11 +1,11 @@
 package doggytalents.talent;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
 /**
  * @author ProPercivalalb
@@ -21,7 +21,7 @@ public class HunterDog extends ITalent {
 
 			if(dog.getRNG().nextInt(10) < level + (level == 5 ? 1 : 0)) {
 				for(EntityItem entityItem : event.drops)
-					event.entityLiving.entityDropItem(entityItem.getEntityItem().copy(), 0.0F);
+					event.entity.entityDropItem(entityItem.getEntityItem().copy(), 0.0F);
 			}
 				
 		}

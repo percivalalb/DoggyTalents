@@ -1,10 +1,9 @@
 package doggytalents.network.packet.client;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.api.inferface.ITalent;
+import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
@@ -42,7 +41,11 @@ public class DogTalentMessage extends AbstractServerMessage {
         	return;
         
 		EntityDog dog = (EntityDog)target;
-        
-		dog.talents.setLevel(this.talentId, dog.talents.getLevel(this.talentId) + 1);
+		int level = dog.talents.getLevel(this.talentId);
+		ITalent talent = TalentRegistry.getTalent(this.talentId);
+		
+		
+		if(level < talent.getHighestLevel(dog) && dog.spendablePoints() >= talent.getCost(dog, level + 1))
+			dog.talents.setLevel(this.talentId, dog.talents.getLevel(this.talentId) + 1);
 	}
 }

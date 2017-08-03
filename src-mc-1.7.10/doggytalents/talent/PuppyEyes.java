@@ -2,16 +2,15 @@ package doggytalents.talent;
 
 import java.util.List;
 
+import doggytalents.api.inferface.ITalent;
+import doggytalents.entity.EntityDog;
+import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
-import doggytalents.inventory.InventoryPackPuppy;
 
 /**
  * @author ProPercivalalb
@@ -54,48 +53,48 @@ public class PuppyEyes extends ITalent {
 
 	            if(j1 == 0)
 	            {
-	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.1.part1"));
-	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.1.part2"));
+	            	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.1.part1"));
+	            	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.1.part2"));
 	                entityliving.dropItem(Items.porkchop, 2);
 	            }
 
 	            if(j1 == 1)
 	            {
-	              	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part1"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part2"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.2.part3"));
+	              	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.2.part1"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.2.part2"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.2.part3"));
 	                entityliving.dropItem(Items.porkchop, 5);
 	            }
 
 	            if(j1 == 2)
 	            {
-	            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part1"));
-	                player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part2"));
-	                player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.3.part3"));
+	            	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.3.part1"));
+	                player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.3.part2"));
+	                player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.3.part3"));
 	                entityliving.dropItem(Items.iron_ingot, 3);
 	            }
 
 	            if(j1 == 3)
 	            {
-	             	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part1"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part2"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.4.part3"));
+	             	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.4.part1"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.4.part2"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.4.part3"));
 	                entityliving.dropItem(Items.gold_ingot, 2);
 	            }
 
 	            if(j1 == 4)
 	            {
-	             	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part1"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part2"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.5.part3"));
+	             	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.5.part1"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.5.part2"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.5.part3"));
 	                entityliving.dropItem(Items.diamond, 1);
 	            }
 
 	            if(j1 == 5)
 	            {
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part1"));
-	               	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part2"));
-	              	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtalent.puppyeyes.6.part3"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.6.part1"));
+	               	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.6.part2"));
+	              	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.6.part3"));
 	                entityliving.dropItem(Items.apple, 1);
 	                entityliving.dropItem(Items.cake, 1);
 	                entityliving.dropItem(Items.slime_ball, 3);
@@ -111,7 +110,7 @@ public class PuppyEyes extends ITalent {
 		double d1 = -1D;
 		EntityPlayer player = (EntityPlayer)dog.getOwner();
 	    EntityLiving entityliving = null;
-	    List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.boundingBox.expand(d, d, d));
+	    List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.getBoundingBox().expand(d, d, d));
 
 	    for (int i = 0; i < list.size(); i++) {
 	    	Entity entity1 = (Entity)list.get(i);

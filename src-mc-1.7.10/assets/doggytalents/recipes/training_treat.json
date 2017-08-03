@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TUV",
+    "XXX",
+    "YYY"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:string"
+    },
+    "U": {
+      "item": "minecraft:bone"
+    },
+    "V": {
+      "item": "minecraft:gunpowder"
+    },
+    "X": {
+      "item": "minecraft:sugar"
+    },
+    "Y": {
+      "item": "minecraft:wheat"
+    }
+  },
+  "result": {
+    "item": "doggytalents:training_treat",
+    "data": 0,
+    "count": 1
+  }
+}

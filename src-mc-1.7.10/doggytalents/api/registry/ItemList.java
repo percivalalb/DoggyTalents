@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import doggytalents.helper.LogHelper;
+import doggytalents.DoggyTalents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -20,10 +20,10 @@ public class ItemList {
 	public void registerItem(Item item, int meta) {
 		List array = Arrays.asList(new Object[] {item, meta});
 		if(this.itemlist.contains(array))
-			LogHelper.warning("The item %s meta %d is already registered in this item list", item, meta);
+			DoggyTalents.LOGGER.warn("The item {} meta {} is already registered in this item list", item, meta);
 		else {
 			this.itemlist.add(array);
-			LogHelper.info("The item %s meta %d was register to an item list", item, meta);
+			DoggyTalents.LOGGER.info("The item {} meta {} was register to an item list", item, meta);
 		}
 	}
 	

@@ -1,57 +1,40 @@
 package doggytalents.block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.DoggyTalents;
+import doggytalents.entity.EntityDog;
+import doggytalents.tileentity.TileEntityDogBath;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.particle.EffectRenderer;
-import net.minecraft.client.particle.EntityDiggingFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import com.google.common.base.Strings;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.DoggyTalentsMod;
-import doggytalents.ModBlocks;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.entity.EntityDog;
-import doggytalents.tileentity.TileEntityDogBath;
-import doggytalents.tileentity.TileEntityDogBed;
-
-/**
+/**;
  * @author ProPercivalalb
  */
 public class BlockDogBath extends BlockContainer {
 
+	protected static final AxisAlignedBB AABB = AxisAlignedBB.getBoundingBox(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+	
 	public BlockDogBath() {
-		super(Material.wood);
-		this.setHardness(2.0F);
+		super(Material.iron);
+		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setStepSound(Block.soundTypeMetal);
 		this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
-		this.setCreativeTab(DoggyTalentsAPI.CREATIVE_TAB);
+		this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
 	}
 
 	@Override
@@ -85,27 +68,22 @@ public class BlockDogBath extends BlockContainer {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister) {}
+	public int getRenderType() {
+	    return DoggyTalents.PROXY.RENDER_ID_DOG_BATH;
+	}
 	
 	@Override
-	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity) {
-		if(par7Entity instanceof EntityDog) {
-		 
-		}
-		else {
-			super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-		}
-    }
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(IIconRegister par1IconRegister) {}
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		if(entity instanceof EntityDog) {
 			EntityDog dog = (EntityDog)entity;
-			dog.forceShake = true;
+			dog.isShaking = true;
 		}
 	}
-
+	
 	@Override
 	public boolean isOpaqueCube() {
         return false;
@@ -115,28 +93,20 @@ public class BlockDogBath extends BlockContainer {
 	public boolean renderAsNormalBlock() {
 		return false;
 	}
+	
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, int x, int y, int z) {
+	    return super.canPlaceBlockAt(worldIn, x, y, z) ? this.canBlockStay(worldIn, x, y, z) : false;
+	}
 
 	@Override
-	public int getRenderType() {
-	    return DoggyTalentsMod.proxy.RENDER_ID_DOG_BATH;
-	}
-	
-	@Override
-    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
-        if (!super.canPlaceBlockAt(world, x, y, z))
-            return false;
-        else
-            return canBlockStay(world, x, y, z);
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if (!this.canBlockStay(world, x, y, z)) {
-			this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
-			world.setBlockToAir(x, y, z);
+	public void onNeighborChange(IBlockAccess worldIn, int x, int y, int z, int tileX, int tileY, int tileZ) {
+		if(!this.canBlockStay((World)worldIn, x, y, z)) {
+			this.dropBlockAsItem((World)worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
+			((World)worldIn).setBlockToAir(x, y, z);
 		}
 	}
-
+	
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z) {
 		Block block = world.getBlock(x, y - 1, z);

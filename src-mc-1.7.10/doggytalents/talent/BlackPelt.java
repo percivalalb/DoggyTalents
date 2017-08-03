@@ -1,9 +1,9 @@
 package doggytalents.talent;
 
-import net.minecraft.entity.Entity;
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 
 /**
  * @author ProPercivalalb
@@ -19,7 +19,7 @@ public class BlackPelt extends ITalent {
         
         if (dog.getRNG().nextInt(6) < critChance) {
         	damage += (damage + 1) / 2;
-        	DoggyTalentsMod.proxy.spawnCrit(dog.worldObj, entity);
+        	DoggyTalents.PROXY.spawnCrit(dog.worldObj, entity);
         }
         return damage;
 	}

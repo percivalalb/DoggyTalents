@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.tileentity.TileEntityDogBed;
 
@@ -120,6 +120,6 @@ public class RenderBlockDogBath implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return DoggyTalentsMod.proxy.RENDER_ID_DOG_BATH;
+		return DoggyTalents.PROXY.RENDER_ID_DOG_BATH;
 	}
 }

@@ -1,12 +1,6 @@
 package doggytalents.network;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.IOException;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
-import net.minecraft.network.PacketBuffer;
 
 import com.google.common.base.Throwables;
 
@@ -14,7 +8,11 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import doggytalents.DoggyTalentsMod;
+import doggytalents.DoggyTalents;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.Packet;
+import net.minecraft.network.PacketBuffer;
 
 /**
  * 
@@ -86,11 +84,12 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	}
 	
 	@Override
-	public final IMessage onMessage(T msg, MessageContext ctx) {
+	public final IMessage onMessage(final T msg, final MessageContext ctx) {
 		if (!msg.isValidOnSide(ctx.side))
 			throw new RuntimeException("Invalid side " + ctx.side.name() + " for " + msg.getClass().getSimpleName());
-		else
-			msg.process(DoggyTalentsMod.proxy.getPlayerEntity(ctx), ctx.side);
+
+		msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side);
+		
 		return null;
 	}
 	

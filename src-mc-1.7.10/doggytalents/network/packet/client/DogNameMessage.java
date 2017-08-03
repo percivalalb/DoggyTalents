@@ -1,10 +1,7 @@
 package doggytalents.network.packet.client;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
@@ -43,6 +40,6 @@ public class DogNameMessage extends AbstractServerMessage {
         
 		EntityDog dog = (EntityDog)target;
         
-		dog.setDogName(this.name);
+		dog.setCustomNameTag(this.name);
 	}
 }

@@ -2,11 +2,10 @@ package doggytalents.talent;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.util.AxisAlignedBB;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
 
 /**
  * @author ProPercivalalb
@@ -40,7 +39,7 @@ public class CreeperSweeper extends ITalent {
 	public String getLivingSound(EntityDog dog) { 
 		if((Boolean)dog.objects.get("canseecreeper"))
 			return "mob.wolf.growl";
-		return "";
+		return null;
 	}
 	
 	@Override

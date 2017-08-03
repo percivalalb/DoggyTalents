@@ -4,14 +4,15 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.lib.Reference;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author ProPercivalalb
  */
 public class ModEntities {
 	
-	public static void inti() {
-		EntityRegistry.registerModEntity(EntityDog.class, Reference.MOD_ID + ":dog", 0, DoggyTalentsMod.instance, 120, 1, true);
-		EntityRegistry.registerModEntity(EntityDoggyBeam.class, Reference.MOD_ID + ":attackbeam", 1, DoggyTalentsMod.instance, 64, 10, true);
+	public static void init() {
+		EntityRegistry.registerModEntity(EntityDog.class, "dog", 0, DoggyTalents.INSTANCE, 120, 1, true);
+		EntityRegistry.registerModEntity(EntityDoggyBeam.class, "attackbeam", 1, DoggyTalents.INSTANCE, 64, 10, true);
 	}
 }

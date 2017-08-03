@@ -46,23 +46,30 @@ public class ModeUtil {
 	}
 	
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		 this.dog.getDataWatcher().updateObject(27, tagCompound.getInteger("mode"));
+		this.setMode(tagCompound.getInteger("mode"));
 	}
 	
 	public enum EnumMode {
 
 		DOCILE("Docile", "(D)"),
-		WANDERING("Wandering", "(W)"),
+		WANDERING("Wandering", "(W)", false),
 		AGGRESIVE("Aggresive", "(A)"),
 		BERSERKER("Berserker", "(B)"),
 		TACTICAL("Tactical", "(T)");
 		
 		private String tip;
 		private String name;
+		/** By default it is true */
+		public boolean followsOwner;
 		
 		private EnumMode(String name, String tip) {
+			this(name, tip, true);
+		}
+		
+		private EnumMode(String name, String tip, boolean followsOwner) {
 			this.name = name;
 			this.tip = tip;
+			this.followsOwner = followsOwner;
 		}
 		
 		public String getTip() {
@@ -71,6 +78,10 @@ public class ModeUtil {
 		
 		public String modeName() {
 			return name;
+		}
+		
+		public boolean doesFollowOwner() {
+			return this.followsOwner;
 		}
 	}
 }

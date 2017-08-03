@@ -19,13 +19,13 @@ public class AddonManager {
 	private static final EventBus EVENT_BUS	= new EventBus();
 	
 	public static void registerAddons() {
-		EVENT_BUS.register(new ForestryAddon());
+		//EVENT_BUS.register(new ForestryAddon());
 		EVENT_BUS.register(new ItemPhysicAddon());
-		EVENT_BUS.register(new BiomesOPlentyAddon());
-		EVENT_BUS.register(new ExtraTreesAddon());
-		EVENT_BUS.register(new TerraqueousAddon());
-		EVENT_BUS.register(new DendrologyAddon());
-		EVENT_BUS.register(new NaturaAddon());
+		//EVENT_BUS.register(new BiomesOPlentyAddon());
+		//EVENT_BUS.register(new ExtraTreesAddon());
+		//EVENT_BUS.register(new TerraqueousAddon());
+		//EVENT_BUS.register(new DendrologyAddon());
+		//EVENT_BUS.register(new NaturaAddon());
 	}
 
 	public static void runRegisteredAddons(Configuration config) {

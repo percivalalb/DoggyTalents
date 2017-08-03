@@ -55,8 +55,8 @@ public class ModeUtil {
 		WANDERING("Wandering", "(W)", false),
 		AGGRESIVE("Aggresive", "(A)"),
 		BERSERKER("Berserker", "(B)"),
-		TACTICAL("Tactical", "(T)"),
-		PATROL("Patrol", "(P)", false);
+		TACTICAL("Tactical", "(T)");
+		//PATROL("Patrol", "(P)", false);
 		
 		private String tip;
 		private String name;

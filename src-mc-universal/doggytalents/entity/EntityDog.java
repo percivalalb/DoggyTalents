@@ -1,6 +1,8 @@
 package doggytalents.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -116,10 +118,13 @@ public class EntityDog extends EntityAbstractDog {
     private int regenerationTick;
     private int prevRegenerationTick;
     private int foodBowlCheck;
-
+    
+    //TODO public List<BlockPos> patrolOutline;
+    
     public EntityDog(World word) {
         super(word);
         this.objects = new HashMap<String, Object>();
+        //TODO this.patrolOutline = new ArrayList<BlockPos>();
         
         TalentHelper.onClassCreation(this);
     }
@@ -128,11 +133,12 @@ public class EntityDog extends EntityAbstractDog {
     protected void initEntityAI() {
         this.aiSit = new EntityAISit(this);
         this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-        		
+        
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+        //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
         this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(5, this.aiFetchBone);
         this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
@@ -472,6 +478,7 @@ public class EntityDog extends EntityAbstractDog {
     public boolean processInteractGENERAL(EntityPlayer player, EnumHand hand) {
     	ItemStack stack = player.getHeldItem(hand);
     	
+    	
         if(TalentHelper.interactWithPlayer(this, player))
         	return true;
         
@@ -499,6 +506,12 @@ public class EntityDog extends EntityAbstractDog {
             		
                     return true;
                 }
+            	//TODO else if(stack.getItem() == Items.BIRCH_DOOR && this.canInteract(player)) {
+            	//	this.patrolOutline.add(this.getPosition());
+            	//}
+            	//else if(stack.getItem() == Items.OAK_DOOR && this.canInteract(player)) {
+            	//	this.patrolOutline.clear();
+            	//}
             	else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
             		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
                  	return true;

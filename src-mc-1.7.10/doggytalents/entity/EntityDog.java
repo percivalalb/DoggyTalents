@@ -140,7 +140,7 @@ public class EntityDog extends EntityAbstractDog {
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
-        this.dataWatcher.addObject(20, new Integer((0))); //Dog Collar
+        this.dataWatcher.addObject(20, new Integer((-2))); //Dog Collar
         this.dataWatcher.addObject(21, new String("")); //Dog Name
         this.dataWatcher.addObject(22, new String("")); //Talent Data
         this.dataWatcher.addObject(23, new Integer(60)); //Dog Hunger

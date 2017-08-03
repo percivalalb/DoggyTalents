@@ -42,7 +42,7 @@ public class DogBedRegistry {
 	public void registerMaterial(Block block, String textureLocation) { this.registerMaterial(block, 0); }
 	
 	public void registerMaterial(String blockId, int meta) {
-		if(!Block.blockRegistry.containsKey(new ResourceLocation(blockId)))
+		if(!Block.blockRegistry.containsKey(blockId))
 			DoggyTalents.LOGGER.warn("The block id {} does not exist for a material", blockId);
 		else {
 			Block block = Block.getBlockFromName(blockId);

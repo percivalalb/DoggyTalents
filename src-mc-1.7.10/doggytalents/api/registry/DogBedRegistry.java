@@ -38,10 +38,10 @@ public class DogBedRegistry {
 		return this.keys.contains(id);
 	}
 	
-	public void registerMaterial(String blockId, String textureLocation) { this.registerMaterial(blockId, 0, textureLocation); }
-	public void registerMaterial(Block block, String textureLocation) { this.registerMaterial(block, 0, textureLocation); }
+	public void registerMaterial(String blockId, String textureLocation) { this.registerMaterial(blockId, 0); }
+	public void registerMaterial(Block block, String textureLocation) { this.registerMaterial(block, 0); }
 	
-	public void registerMaterial(String blockId, int meta, String textureLocation) {
+	public void registerMaterial(String blockId, int meta) {
 		if(!Block.blockRegistry.containsKey(new ResourceLocation(blockId)))
 			DoggyTalents.LOGGER.warn("The block id {} does not exist for a material", blockId);
 		else {
@@ -52,7 +52,7 @@ public class DogBedRegistry {
 		}
 	}
 	
-	public void registerMaterial(Block block, int meta, String textureLocation) {
+	public void registerMaterial(Block block, int meta) {
 		String blockId = Block.blockRegistry.getNameForObject(block);
 		String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 		ItemStack stack = new ItemStack(block, 1, meta);

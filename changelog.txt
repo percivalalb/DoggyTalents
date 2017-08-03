@@ -322,11 +322,27 @@ Initial release, parent version v1.9.0b
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-v1.9.0i | !!!WORK IN PROGRESS!!!
-# Changed the location and name of many textures to match that of new versions (v1.11.0a+) of the mod (sorry texture pack makers)
-# Changed the jump height for each level of Wolf mount so at max rank you will no longer take fall damage when jumping on a static y plane (lvl 1-4: starting at half a block going up to 2 blocks high jump, lvl 5: 3 block high jump)
-* Fixed the dog model being shifted over 1 pixel to the left
-* Fixed the dogs nose being too long
+1.14.1.229 | 3rd August 2017
++ Added new talent swimmer dog
++ When dogs have been sitting for a while they will regen hunger up to 60 NP and can stop being incapcitated
++ Added hunger icons when riding dogs to see what NP they are on
++ Added air icons when riding dogs to see how much breath they have left
++ Added a recipe for dog bath - water bucket surrounded by iron ingots
++ Dog will now vary their distance from you based on if you have a tool or sword in your hand
++ Dog now holds a bone in his mouth once he has picked up the throw bone
++ Added a whole new creative tab just for dog beds, there are hundreds of combinations!
++ Added Russian language file - thanks to MrShadowJasonRus for the translation
++ Added option in dog info screen, you can now enable to disable friendly fire. If the dog is set to obey others they will also not beable to damage it
++ Added Wool Collars, crafted with 8 string in the outline of square. This means by default a dog doesnt have a collar.
++ You can dye these collars just like leather armour in the crafting table as well as when the collar is on the dog
++ Wool Collars can be removed by using the collar shears on your dog, if you click again on the dog it will turn it into a wolf like before
++ Added a Whistle item in the creative menu. Currently it does nothing apart from look cool
++ Added the Treat Bag which is an extra 5 slots where you can store food, right clicking on a dog will feed the dog from the first slot with food in. Right clicking on a food bowl will put all the contents into the food bowl.
++ Added the Chew stick, this restores 10HP and gives your dog some fancy potion effects
++ Add chew stick recipe SW, WS W = Wheat, S = Sugar
++ Added treat bag recipe LCL, LLL C = Chew Stick, L = Leather
++ Added Chinese translation file zh_CN.lang, thanks to 317620111 of the MC forums
+* Many bug fixes just look at all then changes from ~July 2015 to present
 
 v1.9.0h - 16th July 2015
 * Fixed crash on server startup

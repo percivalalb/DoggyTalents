@@ -14,7 +14,7 @@ public class Reference {
 	public static final String 		 SERVER_PROXY     = "doggytalents.proxy.CommonProxy";
 	public static final String 		 UPDATE_URL 	  = "https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/version.json";
 	public static final String       CHANNEL_NAME     = "DOGGY";
-	public static final String       GUI_FACTORY      = "${GUI_FACTORY}";
+	public static final String       GUI_FACTORY      = "${GUI_FACTORY}";//doggytalents.base.d.GuiFactory
 	
 	public static final boolean		 DEBUG 			  = false;
 }

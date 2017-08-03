@@ -17,7 +17,8 @@ public class ConfigurationHandler {
 
 	public static Configuration CONFIG;
 	public static final String CATEGORY_DOGGYSETTINGS = "doggySettings";
-	public static final String CATEGORY_DT_GENERAL = "general";
+	public static final String CATEGORY_TALENT = "talents";
+	public static final String CATEGORY_GENERAL = "general";
 	
 	public static void init(Configuration configuration) {
 		CONFIG = configuration;
@@ -37,7 +38,8 @@ public class ConfigurationHandler {
 	  */
 	public static void loadConfig() {
 		CONFIG.addCustomCategoryComment(CATEGORY_DOGGYSETTINGS, "Here you can change details about your dog.");
-		CONFIG.addCustomCategoryComment(CATEGORY_DT_GENERAL, "Other settings");
+		CONFIG.addCustomCategoryComment(CATEGORY_TALENT, "Enable and disable talents here as you wish");
+		CONFIG.addCustomCategoryComment(CATEGORY_GENERAL, "Other settings");
 		
 		//Creates list for doggy settings
 		List<String> orderDSetting = new ArrayList<String>();
@@ -61,11 +63,21 @@ public class ConfigurationHandler {
 		//Sets the category property order to that of which you have set the list above
 		CONFIG.setCategoryPropertyOrder(CATEGORY_DOGGYSETTINGS, orderDSetting);
 		
+		Constants.DISABLED_TALENTS.clear();
+		
+		String[] talentIds = new String[] {"bedfinder", "blackpelt", "creepersweeper", "doggydash", "fisherdog", "guarddog", "happyeater", "hellhound", 
+											"hunterdog", "packpuppy", "pestfighter", "pillowpaw", "poisonfang", "puppyeyes", "quickhealer", 
+											"rescuedog", "shepherddog", "swimmerdog", "wolfmount"};
+		for(String talentId : talentIds) {
+			boolean enabled = CONFIG.get(CATEGORY_TALENT, talentId, true).getBoolean(true);
+			if(!enabled)
+				Constants.DISABLED_TALENTS.add(talentId);
+		}
 		
 		//Creates list for general settings
 		List<String> orderDTGeneral = new ArrayList<String>();
 		
-		CONFIG.setCategoryPropertyOrder(CATEGORY_DT_GENERAL, orderDTGeneral);
+		CONFIG.setCategoryPropertyOrder(CATEGORY_GENERAL, orderDTGeneral);
 		
 		if(CONFIG.hasChanged())
 			CONFIG.save();

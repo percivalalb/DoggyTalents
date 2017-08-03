@@ -7,6 +7,7 @@ import java.util.Map;
 
 import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.ITalent;
+import doggytalents.lib.Constants;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -19,7 +20,9 @@ public class TalentRegistry {
 	public static Map<ITalent, String> talentid = new LinkedHashMap<ITalent, String>();
 	
 	public static void registerTalent(ITalent talent) {
-		if(talents.contains(talent))
+		if(Constants.DISABLED_TALENTS.contains(talent.getKey()))
+			DoggyTalents.LOGGER.warn("The talent id {} has been disabled in the config file", talent.getKey());
+		else if(talents.contains(talent))
 			DoggyTalents.LOGGER.warn("The talent id {} has already been registered", talent.getKey());
 		else if(talent.getKey().contains(":"))
 			DoggyTalents.LOGGER.warn("A talent id can't have the character ':' in it ({})", talent.getKey());

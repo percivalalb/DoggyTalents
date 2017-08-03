@@ -26,6 +26,7 @@ public class ModGuiConfig extends GuiConfig {
 	private static List<IConfigElement> getConfigElements() {
 		List<IConfigElement> list = new ArrayList<>();
 		list.add(new DummyCategoryElement("doggysettings", "modgui.config.doggysettings", DoggySettingsEntry.class));
+		list.add(new DummyCategoryElement("talents", "modgui.config.talents", DTTalentEntry.class));
 		list.add(new DummyCategoryElement("general", "modgui.config.general", DTGeneralEntry.class));
 		return list;
 	}
@@ -66,10 +67,27 @@ public class ModGuiConfig extends GuiConfig {
 			
 			List<IConfigElement> list = new ArrayList<IConfigElement>();
 			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); TODO You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_DT_GENERAL))).getChildElements());
-			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DT_GENERAL, this.configElement.requiresWorldRestart() ||
+			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_GENERAL))).getChildElements());
+			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_GENERAL, this.configElement.requiresWorldRestart() ||
+					this.owningScreen.allRequireWorldRestart, true, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));
+		}
+	}
+	
+	public static class DTTalentEntry extends CategoryEntry // Load Entry
+	{
+		public DTTalentEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+			super(owningScreen, owningEntryList, prop);
+		}
+		
+		@Override
+		protected GuiScreen buildChildScreen() {
+			
+			List<IConfigElement> list = new ArrayList<IConfigElement>();
+			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); TODO You could also add in subcategories
+			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_TALENT))).getChildElements());
+			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_TALENT, this.configElement.requiresWorldRestart() ||
 					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));
+					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.talents"), I18n.format("modgui.config.talents.tooltip"));
 		}
 	}
 	

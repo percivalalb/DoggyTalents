@@ -7,6 +7,8 @@ modgui.config.doggysettings=狗的设置
 modgui.config.doggysettings.tooltip=在这里你可以改变你的狗的细节。
 modgui.config.general=通用设置
 modgui.config.general.tooltip=杂项
+modgui.config.talents=Talents
+modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=投掷骨头
 item.doggytalents.throwbone1.name=投掷骨头(口水)

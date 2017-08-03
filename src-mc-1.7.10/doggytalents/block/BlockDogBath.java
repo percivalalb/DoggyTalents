@@ -100,10 +100,10 @@ public class BlockDogBath extends BlockContainer {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess worldIn, int x, int y, int z, int tileX, int tileY, int tileZ) {
-		if(!this.canBlockStay((World)worldIn, x, y, z)) {
-			this.dropBlockAsItem((World)worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
-			((World)worldIn).setBlockToAir(x, y, z);
+	public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block block) {
+		if(!this.canBlockStay(worldIn, x, y, z)) {
+			this.dropBlockAsItem(worldIn, x, y, z, worldIn.getBlockMetadata(x, y, z), 0);
+			worldIn.setBlockToAir(x, y, z);
 		}
 	}
 	

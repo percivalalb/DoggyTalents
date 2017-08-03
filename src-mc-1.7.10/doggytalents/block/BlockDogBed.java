@@ -180,15 +180,15 @@ public class BlockDogBed extends BlockContainer {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess worldIn, int x, int y, int z, int tileX, int tileY, int tileZ) {
-		if(!this.canBlockStay((World)worldIn, x, y, z)) {
+	public void onNeighborBlockChange(World worldIn, int x, int y, int z, Block block) {
+		if(!this.canBlockStay(worldIn, x, y, z)) {
 		    TileEntity tile = worldIn.getTileEntity(x, y, z);
 			if(tile instanceof TileEntityDogBed) {
 					
 				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
 				
-		        this.dropBlockAsItem((World)worldIn, x, y, z, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
-		        ((World) worldIn).setBlockToAir(x, y, z);
+		        this.dropBlockAsItem(worldIn, x, y, z, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+		        worldIn.setBlockToAir(x, y, z);
 			}
 		}
 	}

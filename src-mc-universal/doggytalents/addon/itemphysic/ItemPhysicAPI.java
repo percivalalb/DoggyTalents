@@ -4,12 +4,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import doggytalents.DoggyTalents;
-import doggytalents.addon.AddonManager;
 import doggytalents.helper.ReflectionUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 
 /**
  * @author ProPercivalalb

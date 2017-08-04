@@ -6,7 +6,6 @@ import doggytalents.addon.extratrees.ExtraTreesAddon;
 import doggytalents.addon.forestry.ForestryAddon;
 import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import doggytalents.addon.natura.NaturaAddon;
-import doggytalents.addon.natura.NaturaLib;
 import doggytalents.addon.terraqueous.TerraqueousAddon;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;

@@ -5,7 +5,6 @@ import doggytalents.ModItems;
 import doggytalents.addon.AddonEvent;
 import doggytalents.addon.AddonManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**

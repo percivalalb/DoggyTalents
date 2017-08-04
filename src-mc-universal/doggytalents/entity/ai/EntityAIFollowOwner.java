@@ -1,7 +1,6 @@
 package doggytalents.entity.ai;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.DogUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -4,7 +4,6 @@ import doggytalents.addon.AddonEvent;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**

@@ -67,7 +67,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         	
     	String tip = dog.mode.getMode().getTip();
             
-    	if(dog.isImmortal() && dog.getHealth() <= 1)
+    	if(dog.isIncapacicated())
     		tip = "(I)";
             
     	String label = String.format("%s(%d)", tip, dog.getDogHunger());

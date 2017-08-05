@@ -847,8 +847,6 @@ public class EntityDog extends EntityAbstractDog {
         }
     }
     
-    
-    
     @Override
     public EntityDog createChild(EntityAgeable entityAgeable) {
     	EntityDog entitydog = ObjectLib.createDog(this.world);
@@ -905,7 +903,7 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public boolean isIncapacicated() {
-    	return Constants.DOGS_IMMORTAL && this.getHealth() <= 1;
+    	return this.isImmortal() && this.getHealth() <= 1;
     }
     
     @Override

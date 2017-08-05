@@ -1,6 +1,7 @@
 package doggytalents.base.c;
 
 import doggytalents.ModBlocks;
+import doggytalents.ModItems;
 import doggytalents.lib.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @EventBusSubscriber(modid = Reference.MOD_ID)
-public class ModBlocksWrapper {
+public class RegistrySubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterBlock(RegistryEvent.Register<Block> event) {
@@ -22,11 +23,13 @@ public class ModBlocksWrapper {
 	@SubscribeEvent
 	public static void onRegisterItem(RegistryEvent.Register<Item> event) {
 		ModBlocks.onRegisterItem(event.getRegistry());
+		ModItems.onRegister(event.getRegistry());
 	}
 	
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void setItemModels(ModelRegistryEvent event) {
 		ModBlocks.setItemModels();
+		ModItems.setItemModels();
 	}
 }

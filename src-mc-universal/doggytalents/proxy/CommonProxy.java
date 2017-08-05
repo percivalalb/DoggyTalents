@@ -4,6 +4,7 @@ import doggytalents.DoggyTalents;
 import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;
@@ -32,23 +33,21 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class CommonProxy implements IGuiHandler {
 
 	public void preInit(FMLPreInitializationEvent event) {
-		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
-			ModBlocks.onRegisterBlock(null);
-			ModBlocks.onRegisterItem(null);
-			ModItems.onRegister(null);
-		}
+		ObjectLib.INITIALIZATION.preInit(event);
 			
         ModEntities.init();
     }
 	
 	public void init(FMLInitializationEvent event) {
+		ObjectLib.INITIALIZATION.init(event);
+		
 		NetworkRegistry.INSTANCE.registerGuiHandler(DoggyTalents.INSTANCE, DoggyTalents.PROXY);
 		PacketDispatcher.registerPackets();
         this.registerEventHandlers();
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-
+    	ObjectLib.INITIALIZATION.postInit(event);
     }
     
     protected void registerEventHandlers() {

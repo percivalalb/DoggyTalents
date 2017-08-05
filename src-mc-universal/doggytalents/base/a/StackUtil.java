@@ -11,7 +11,7 @@ public class StackUtil implements IStackUtil {
 
 	@Override
 	public boolean isEmpty(ItemStack stack) {
-		return stack == null;
+		return stack == null || stack.stackSize == 0;
 	}
 	
 	@Override

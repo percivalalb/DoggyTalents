@@ -25,6 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -40,6 +41,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
+		ObjectLibClient.INITIALIZATION.preInit(event);
+		
 		ClientRegistry.registerKeyBinding(KeyState.come);
 		ClientRegistry.registerKeyBinding(KeyState.stay);
 		ClientRegistry.registerKeyBinding(KeyState.ok);
@@ -47,16 +50,19 @@ public class ClientProxy extends CommonProxy {
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
-		
-		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
-			ModBlocks.setItemModels();
-			ModItems.setItemModels();
-		}
+	}
+	
+	@Override
+	public void init(FMLInitializationEvent event) {
+		super.init(event);
+		ObjectLibClient.INITIALIZATION.init(event);
 	}
 	
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
+		ObjectLibClient.INITIALIZATION.postInit(event);
+		
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
 
 			@Override

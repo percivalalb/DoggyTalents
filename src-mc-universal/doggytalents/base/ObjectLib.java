@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 
 public class ObjectLib {
 
+	public static final IInitializationEvent INITIALIZATION = VersionControl.createObject("InitEvent", IInitializationEvent.class);
 	public static final IGeneralMethods METHODS = VersionControl.createObject("GeneralMethods", IGeneralMethods.class);
 	public static final IStackUtil STACK_UTIL = VersionControl.createObject("StackUtil", IStackUtil.class);
 

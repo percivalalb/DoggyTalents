@@ -1,8 +1,13 @@
 package doggytalents.base;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class VersionControl {
 	
@@ -87,4 +92,11 @@ public class VersionControl {
 		default:	return "doggytalents.base";
 		}
 	}
+	
+	/** Any class has this annotation will only be copied to the compiler if it has the minecraft version */
+	@Retention(RetentionPolicy.SOURCE)
+    @Target({ElementType.TYPE/**, ElementType.METHOD**/})
+    public @interface VersionConfig {
+        String[] value() default { "" };
+    }
 }

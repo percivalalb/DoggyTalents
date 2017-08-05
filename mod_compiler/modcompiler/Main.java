@@ -250,6 +250,8 @@ public class Main {
 		if(buildResources.exists()) deleteDirectory(buildResources);
 		
 		String versionSpecificLoc = getDirectionBaseOnVersion(mod, getIndex(forgeEnvi));
+		Pattern vp = Pattern.compile("\\\"([0-9\\.]+)\\\"");
+		
 		
 		FileFilter javaFiles = new FileFilter() {
 		    @Override
@@ -257,7 +259,29 @@ public class Main {
 		        if(file.isDirectory()) return true;
 		        
 		        boolean javaFile = file.getName().endsWith(".java");
-		        boolean isSpecific = !file.getParentFile().getAbsolutePath().contains("base\\") || file.getAbsolutePath().contains(versionSpecificLoc);
+		       	boolean isSpecific = !file.getParentFile().getAbsolutePath().contains("base\\") || file.getAbsolutePath().contains(versionSpecificLoc);
+		        
+		        if(javaFile && !isSpecific) {
+			        try {
+			        	boolean flag = false;
+						Iterator<String> stream = Files.lines(file.toPath(), StandardCharsets.UTF_8).filter(line -> line.contains("@VersionConfig")).iterator();
+						label: while(stream.hasNext()) {
+							String line = stream.next();
+						
+							Matcher m = vp.matcher(line);
+							while(m.find()) {
+								if(forgeEnvi.getVersion().equals(m.group(1))) {
+									flag = true;
+									break label;
+								}
+							}
+						}
+						return flag;
+			        } 
+			        catch (IOException e) {
+						e.printStackTrace();
+					}
+		        }
 		        
 		        return javaFile && isSpecific;
 		    }
@@ -414,12 +438,16 @@ public class Main {
         
         Process p = builder.start();
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        boolean successful = false;
         String line;
         while(true) {
             line = r.readLine();
-            if (line == null) break;
+            if(line == null) break;
+            if(line.contains("BUILD SUCCESSFUL")) successful = true;
             Main.output.println(line);
         }
+        
+        if(!successful) return false;
         
         for(File file : modFolder.listFiles()) {
         	if(file.isFile()) {

@@ -16,11 +16,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(value = Side.CLIENT)
 public class ObjectLibClient {
 
+	public static final IInitializationEvent INITIALIZATION = VersionControl.createObject("InitEventClient", IInitializationEvent.class);
+	
 	public static final IClientMethods METHODS = VersionControl.createObject("ClientMethods", IClientMethods.class);
 	
-	public static final Class<GuiFoodBowl> GUI_FOOD_BOWL_CLASS = VersionControl.chooseClassBasedOnVersion("GuiFoodBowlWrapper", GuiFoodBowl.class);
-	public static final Class<GuiPackPuppy> GUI_PACK_PUPPY_CLASS = VersionControl.chooseClassBasedOnVersion("GuiPackPuppyWrapper", GuiPackPuppy.class);
-	public static final Class<GuiTreatBag> GUI_TREAT_BAG_CLASS = VersionControl.chooseClassBasedOnVersion("GuiTreatBagWrapper", GuiTreatBag.class);
+	public static final Class<GuiFoodBowl> GUI_FOOD_BOWL_CLASS = VersionControl.chooseClassBasedOnVersion("GuiWrapper$GuiFoodBowlWrapper", GuiFoodBowl.class);
+	public static final Class<GuiPackPuppy> GUI_PACK_PUPPY_CLASS = VersionControl.chooseClassBasedOnVersion("GuiWrapper$GuiPackPuppyWrapper", GuiPackPuppy.class);
+	public static final Class<GuiTreatBag> GUI_TREAT_BAG_CLASS = VersionControl.chooseClassBasedOnVersion("GuiWrapper$GuiTreatBagWrapper", GuiTreatBag.class);
 	
 	public static final Constructor<GuiFoodBowl> GUI_FOOD_BOWL_CONSTRUCTOR = VersionControl.getConstructor(GUI_FOOD_BOWL_CLASS, InventoryPlayer.class, TileEntityFoodBowl.class);
 	public static final Constructor<GuiPackPuppy> GUI_PACK_PUPPY_CONSTRUCTOR = VersionControl.getConstructor(GUI_PACK_PUPPY_CLASS, EntityPlayer.class, EntityDog.class);

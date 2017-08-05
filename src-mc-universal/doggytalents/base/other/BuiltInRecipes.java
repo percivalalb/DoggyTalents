@@ -2,10 +2,12 @@ package doggytalents.base.other;
 
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
+import doggytalents.base.VersionControl;
 import doggytalents.base.VersionControl.VersionConfig;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @VersionConfig({"1.9.4", "1.10.2", "1.11.2"})
@@ -29,5 +31,8 @@ public class BuiltInRecipes {
         
         GameRegistry.addRecipe(new ItemStack(ModItems.RADIO_COLLAR, 1), new Object[] {"XX", "YX", 'X', Items.IRON_INGOT, 'Y', Items.REDSTONE});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.RADAR, 1), new Object[] {new ItemStack(Items.MAP, 1), new ItemStack(Items.REDSTONE, 1), new ItemStack(ModItems.RADIO_COLLAR, 1)});
+	
+        GameRegistry.addRecipe(VersionControl.createObject("RecipeDogBed", IRecipe.class));
+        GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCollar", IRecipe.class));
 	}
 }

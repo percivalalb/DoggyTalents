@@ -17,8 +17,6 @@ public interface IGeneralMethods {
 	public int getColour(EnumDyeColor dyeColor);
 	public float[] getRGB(EnumDyeColor dyeColor);
 	
-	public void registerCraftingRecipes();
-	
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates);
 	
 	public void registerBlock(Object registry, Block block);

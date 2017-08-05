@@ -1,5 +1,4 @@
 package doggytalents.proxy;
-import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.base.ObjectLibClient;
 import doggytalents.client.gui.GuiDogInfo;
@@ -82,7 +81,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new WorldRender());
 		MinecraftForge.EVENT_BUS.register(new GameOverlay());
 		MinecraftForge.EVENT_BUS.register(new KeyState());
-		ObjectLibClient.METHODS.registerEventHandlers();
     }
 	
 

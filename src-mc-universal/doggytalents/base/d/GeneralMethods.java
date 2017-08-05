@@ -43,11 +43,6 @@ public class GeneralMethods implements IGeneralMethods {
 	}
 	
 	@Override
-	public void registerCraftingRecipes() {
-		
-	}
-	
-	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
 		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}

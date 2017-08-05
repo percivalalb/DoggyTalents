@@ -1,9 +1,7 @@
 package doggytalents.proxy;
 
 import doggytalents.DoggyTalents;
-import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
-import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;

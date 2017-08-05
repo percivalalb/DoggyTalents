@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class VersionControl {
 	

@@ -1,7 +1,5 @@
 package doggytalents.base.b;
 
-import doggytalents.ModBlocks;
-import doggytalents.ModItems;
 import doggytalents.base.IInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

@@ -22,11 +22,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(value = Side.CLIENT)
 public class ClientMethods implements IClientMethods {
-
-	@Override
-	public void registerEventHandlers() {
-		MinecraftForge.EVENT_BUS.register(new ModelBakeWrapper());
-	}
 	
 	@Override
 	public void renderLabelWithScale(FontRenderer fontRendererIn, String str, float x, float y, float z, int verticalShift, float viewerYaw, float viewerPitch, boolean isThirdPersonFrontal, boolean isSneaking, float scale) {

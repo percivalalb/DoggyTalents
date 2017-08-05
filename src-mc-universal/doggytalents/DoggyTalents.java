@@ -7,7 +7,6 @@ import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.TalentRegistry;
-import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.creativetab.CreativeTabDogBed;
@@ -127,8 +126,6 @@ public class DoggyTalents {
 		TalentRegistry.registerTalent(new ShepherdDog());
 		TalentRegistry.registerTalent(new SwimmerDog());
 		TalentRegistry.registerTalent(new WolfMount());
-		
-		ObjectLib.METHODS.registerCraftingRecipes();
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);

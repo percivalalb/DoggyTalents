@@ -9,6 +9,7 @@ import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
 import doggytalents.network.packet.client.DogObeyMessage;
 import doggytalents.network.packet.client.DogTalentMessage;
+import doggytalents.network.packet.server.CustomParticleMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
@@ -40,6 +41,7 @@ public class PacketDispatcher {
 		registerMessage(DogTalentMessage.class);
 		registerMessage(DogBedUpdateMessage.class);
 		registerMessage(DogFriendlyFireMessage.class);
+		registerMessage(CustomParticleMessage.class);
 	}
 	
 	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {

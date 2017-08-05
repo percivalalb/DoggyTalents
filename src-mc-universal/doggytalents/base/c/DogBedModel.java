@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
+import doggytalents.client.model.block.IStateParticleModel;
 import jline.internal.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -30,7 +31,7 @@ import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class DogBedModel implements IPerspectiveAwareModel {
+public class DogBedModel implements IPerspectiveAwareModel, IStateParticleModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 	
@@ -133,4 +134,25 @@ public class DogBedModel implements IPerspectiveAwareModel {
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
         return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
     }
+    
+    @Override
+	public TextureAtlasSprite getParticleTexture(IBlockState state) {
+		String casing = "minecraft:blocks/planks_oak";
+		String bedding = "minecraft:blocks/wool_colored_white";
+        EnumFacing facing = EnumFacing.NORTH;
+        
+		if(state instanceof IExtendedBlockState) {
+            IExtendedBlockState extendedState = (IExtendedBlockState)state;
+ 
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
+            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
+
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
+            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
+            
+            facing = extendedState.getValue(BlockDogBed.FACING);
+        }
+		
+		return this.getCustomModel(casing, bedding, facing).getParticleTexture();
+	}
 }

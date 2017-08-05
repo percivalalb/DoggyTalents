@@ -1,5 +1,7 @@
 package doggytalents.proxy;
 
+import java.util.Random;
+
 import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
 import doggytalents.base.ObjectLib;
@@ -100,5 +102,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public void spawnCrit(World world, Entity entity) {}
+
+	public void spawnCustomParticle(EntityPlayer player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {}
 
 }

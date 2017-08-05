@@ -2,6 +2,10 @@ package doggytalents.block;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.base.ObjectLib;
+import doggytalents.client.model.block.IStateParticleModel;
+import doggytalents.client.renderer.entity.ParticleCustomDigging;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.server.CustomParticleMessage;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
@@ -11,6 +15,12 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,6 +36,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -198,5 +209,86 @@ public abstract class BlockDogBed extends BlockContainer {
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
 		return state.withRotation(mirrorIn.toRotation((EnumFacing)state.getValue(FACING)));
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+		IBlockState state = world.getBlockState(pos);
+		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+		if(model instanceof IStateParticleModel) {
+			state = this.getExtendedState(state.getActualState(world, pos), world, pos);
+			TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(state);
+			if(sprite != null) {
+				for(int j = 0; j < 4; ++j) {
+					for(int k = 0; k < 4; ++k) {
+						for(int l = 0; l < 4; ++l) {
+							double d0 = ((double)j + 0.5D) / 4.0D;
+							double d1 = ((double)k + 0.5D) / 4.0D;
+							double d2 = ((double)l + 0.5D) / 4.0D;
+							manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
+						}
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean addHitEffects(IBlockState state, World world, RayTraceResult target, ParticleManager manager) {
+		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+		if(model instanceof IStateParticleModel) {
+			BlockPos pos = target.getBlockPos();
+			EnumFacing side = target.sideHit;
+
+			state = this.getExtendedState(state.getActualState(world, pos), world, pos);
+			TextureAtlasSprite sprite = ((IStateParticleModel) model).getParticleTexture(state);
+			if(sprite != null) {
+				int x = pos.getX();
+				int y = pos.getY();
+				int z = pos.getZ();
+				AxisAlignedBB axisalignedbb = state.getBoundingBox(world, pos);
+				double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minX;
+				double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minY;
+				double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - 0.20000000298023224D) + 0.10000000149011612D + axisalignedbb.minZ;
+
+				if(side == EnumFacing.DOWN)
+					d1 = (double)y + axisalignedbb.minY - 0.10000000149011612D;
+				
+				if(side == EnumFacing.UP)
+					d1 = (double)y + axisalignedbb.maxY + 0.10000000149011612D;
+
+				if(side == EnumFacing.NORTH)
+					d2 = (double)z + axisalignedbb.minZ - 0.10000000149011612D;
+
+				if(side == EnumFacing.SOUTH)
+					d2 = (double)z + axisalignedbb.maxZ + 0.10000000149011612D;
+
+				if(side == EnumFacing.WEST)
+					d0 = (double)x + axisalignedbb.minX - 0.10000000149011612D;
+
+				if(side == EnumFacing.EAST)
+					d0 = (double)x + axisalignedbb.maxX + 0.10000000149011612D;
+
+				Particle particle = new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
+				manager.addEffect(particle);
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState stateAgain, EntityLivingBase entity, int numberOfParticles) {
+		CustomParticleMessage packet = new CustomParticleMessage(world, pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15f);
+		PacketDispatcher.sendToDimension(packet, world.provider.getDimension());
+		return true;
 	}
 }

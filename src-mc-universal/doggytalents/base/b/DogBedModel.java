@@ -13,7 +13,7 @@ import com.google.common.collect.Maps;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
-import jline.internal.Nullable;
+import doggytalents.client.model.block.IStateParticleModel;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -30,7 +30,7 @@ import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class DogBedModel implements IPerspectiveAwareModel {
+public class DogBedModel implements IPerspectiveAwareModel, IStateParticleModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 	
@@ -48,7 +48,7 @@ public class DogBedModel implements IPerspectiveAwareModel {
         this.format = format;
     }
 
-    public IBakedModel getCustomModel(String casingResource, String beddingResource, @Nullable EnumFacing facing) {
+    public IBakedModel getCustomModel(String casingResource, String beddingResource, EnumFacing facing) {
         IBakedModel customModel = this.variantModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
@@ -77,7 +77,7 @@ public class DogBedModel implements IPerspectiveAwareModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
     	
     	//Defaults
         String casing = "minecraft:blocks/planks_oak";
@@ -133,4 +133,25 @@ public class DogBedModel implements IPerspectiveAwareModel {
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
         return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
     }
+
+	@Override
+	public TextureAtlasSprite getParticleTexture(IBlockState state) {
+		String casing = "minecraft:blocks/planks_oak";
+		String bedding = "minecraft:blocks/wool_colored_white";
+        EnumFacing facing = EnumFacing.NORTH;
+        
+		if(state instanceof IExtendedBlockState) {
+            IExtendedBlockState extendedState = (IExtendedBlockState)state;
+ 
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
+            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
+
+            if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
+            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
+            
+            facing = extendedState.getValue(BlockDogBed.FACING);
+        }
+		
+		return this.getCustomModel(casing, bedding, facing).getParticleTexture();
+	}
 }

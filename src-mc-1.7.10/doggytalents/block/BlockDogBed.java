@@ -1,5 +1,7 @@
 package doggytalents.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
@@ -191,16 +193,37 @@ public class BlockDogBed extends BlockContainer {
 		return false;
 	}
 	
+	public final ThreadLocal<ItemStack> drops = new ThreadLocal<>();
+
 	@Override
-	public void breakBlock(World worldIn, int x, int y, int z, Block block, int side) {
+	public void onBlockHarvested(World worldIn, int x, int y, int z, int metadata, EntityPlayer playerIn) {
 		TileEntity tileentity = worldIn.getTileEntity(x, y, z);
 
 		if(tileentity instanceof TileEntityDogBed) {
 			TileEntityDogBed dogBed = (TileEntityDogBed)tileentity;
-			this.dropBlockAsItem(worldIn, x, y, z, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+			if(!playerIn.capabilities.isCreativeMode)
+				this.drops.set(DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
 		}
+	}
+	
+	@Override
+	public ArrayList<ItemStack> getDrops(World worldIn, int x, int y, int z, int metadata, int fortune) {
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		
+		ItemStack cache = this.drops.get();
+		this.drops.remove();
+		if(cache != null)
+			ret.add(cache);
+		else {
+			TileEntity tileentity = worldIn.getTileEntity(x, y, z);
 
-		super.breakBlock(worldIn, x, y, z, block, side);
+			if(tileentity instanceof TileEntityDogBed) {
+				TileEntityDogBed dogBed = (TileEntityDogBed)tileentity;
+				ret.add(DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+			}
+		}
+		
+		return ret;
 	}
 	
 	@Override

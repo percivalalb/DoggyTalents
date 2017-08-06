@@ -39,7 +39,6 @@ public abstract class BlockDogBath extends BlockContainer {
 	}
 	
 	@Override
-    @SideOnly(Side.CLIENT)
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return AABB;
 	}

@@ -27,7 +27,6 @@ import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
-import jline.internal.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -148,14 +147,7 @@ public class EntityDog extends EntityAbstractDog {
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
         this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, new Predicate<Entity>()
-        {
-        	@Override
-            public boolean apply(@Nullable Entity p_apply_1_)
-            {
-                return p_apply_1_ instanceof EntitySheep || p_apply_1_ instanceof EntityRabbit;
-            }
-        }));
+        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
         this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
         this.setTamed(false);
     }
@@ -255,7 +247,8 @@ public class EntityDog extends EntityAbstractDog {
     	SoundEvent sound = TalentHelper.getLivingSound(this);
         return sound != null ? sound : super.getAmbientSound();
     }
-    @Nullable
+    
+    @Override
     protected ResourceLocation getLootTable() {
         return LootTableList.ENTITIES_WOLF; //TODO DOG Loot
     }
@@ -397,7 +390,6 @@ public class EntityDog extends EntityAbstractDog {
         TalentHelper.onUpdate(this);
     }
     
-    @Nullable
     @Override
     public Entity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);

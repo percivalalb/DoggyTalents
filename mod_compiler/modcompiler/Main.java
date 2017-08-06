@@ -86,7 +86,8 @@ public class Main {
 		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.9.4-12.17.0.2051"),
 		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.10.2"),
 		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.11.2-13.20.0.2282"),
-		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12");
+		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12"),
+		_1_12_1("1.12.1", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12.1");
 		
 		private String pathBase;
 		private String version;
@@ -134,7 +135,7 @@ public class Main {
 							@Override
 							public void run() {
 								try {
-									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12})
+									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12_1})
 										Main.compileMod(envir, Main.MOD, versionInput.getText());
 								}
 								catch(IOException e) {
@@ -287,7 +288,7 @@ public class Main {
 		    }
 		};
 		
-		boolean is1_12 = forgeEnvi.getVersion().equals("1.12");
+		boolean is1_12 = forgeEnvi.getVersion().startsWith("1.12");
 		
 		FileFilter notJavaFiles = new FileFilter() {
 		    @Override
@@ -503,7 +504,8 @@ public class Main {
 		case "1.9.4":	return 0;
 		case "1.10.2":	return 1;
 		case "1.11.2":	return 2;
-		case "1.12":	return 3;
+		case "1.12":
+		case "1.12.1":	return 3;
 		default:		return 4;
 		}
 	}

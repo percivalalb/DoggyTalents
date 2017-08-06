@@ -77,7 +77,8 @@ public class VersionControl {
 		case "1.9.4":	return 0;
 		case "1.10.2":	return 1;
 		case "1.11.2":	return 2;
-		case "1.12":	return 3;
+		case "1.12":
+		case "1.12.1":	return 3;
 		default:		return 4;
 		}
 	}

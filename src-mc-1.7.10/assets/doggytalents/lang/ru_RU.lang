@@ -7,6 +7,8 @@ modgui.config.doggysettings=Собачьи Настройки
 modgui.config.doggysettings.tooltip=Здесь вы можете поменять разные детали у вашего пёсика.
 modgui.config.general=Главные настройки
 modgui.config.general.tooltip=Остальное...
+modgui.config.talents=Talents
+modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Кидательная Кость
 item.doggytalents.throwbone1.name=Слюнявая Кидательная кость

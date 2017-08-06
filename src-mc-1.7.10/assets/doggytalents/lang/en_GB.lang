@@ -7,6 +7,8 @@ modgui.config.doggysettings=Doggy Settings
 modgui.config.doggysettings.tooltip=Here you can change details about your dog.
 modgui.config.general=General Settings
 modgui.config.general.tooltip=Other things
+modgui.config.talents=Talents
+modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Throw Bone
 item.doggytalents.throwbone1.name=Drool Throw Bone

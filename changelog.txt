@@ -327,6 +327,7 @@ MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.1*** | WIP
++ Added options to disable each talent in the config file
 * Fixed dog bed not using correct particle for hit effects
 
 1.14.1.229 | 3rd August 2017

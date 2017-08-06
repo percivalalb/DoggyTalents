@@ -1,13 +1,15 @@
 package doggytalents.entity;
 
+import com.google.common.base.Strings;
+
+import doggytalents.api.inferface.ITalent;
+import doggytalents.api.registry.TalentRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
 
 /**
  * @author ProPercivalalb
@@ -101,6 +103,13 @@ public class TalentHelper {
 				return true;
 		return false;
 	}
+	
+	public static boolean canTriggerWalking(EntityDog dog) {
+		for(ITalent talent : TalentRegistry.getTalents())
+			if(!talent.canTriggerWalking(dog))
+				return false;
+		return true;
+	}
 
 	public static boolean isImmuneToFalls(EntityDog dog) {
 		for(ITalent talent : TalentRegistry.getTalents())
@@ -133,10 +142,10 @@ public class TalentHelper {
 	public static String getLivingSound(EntityDog dog) {
 		for(ITalent talent : TalentRegistry.getTalents()) {
 			String sound = talent.getLivingSound(dog);
-			if(!"".equals(sound))
+			if(!Strings.isNullOrEmpty(sound))
 				return sound;
 		}
-		return "";
+		return null;
 	}
 
 	public static boolean canAttackClass(EntityDog dog, Class entityClass) {

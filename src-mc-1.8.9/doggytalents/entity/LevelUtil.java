@@ -1,8 +1,13 @@
 package doggytalents.entity;
 
-import net.minecraft.nbt.NBTTagCompound;
+import java.util.UUID;
 
 import com.google.common.base.Strings;
+
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author ProPercivalalb
@@ -10,8 +15,9 @@ import com.google.common.base.Strings;
 public class LevelUtil {
 		
 	private EntityDog dog;
+	private static UUID HEALTH_BOOST_ID = UUID.fromString("da97255c-6281-45db-8198-f79226438583");
 	
-	public LevelUtil(EntityDog dog) {
+    public LevelUtil(EntityDog dog) {
 		this.dog = dog;
 	}
 	
@@ -49,12 +55,27 @@ public class LevelUtil {
 	
 	public void setLevel(int level) {
 		this.dog.getDataWatcher().updateObject(24, level + ":" + this.getDireLevel());
-		this.dog.updateEntityAttributes();
+		this.updateHealthModifier();
 	}
 	
 	public void setDireLevel(int level) {
 		this.dog.getDataWatcher().updateObject(24, this.getLevel() + ":" + level);
-		this.dog.updateEntityAttributes();
+		this.updateHealthModifier();
+	}
+	
+	public void updateHealthModifier() {
+		IAttributeInstance iattributeinstance = this.dog.getEntityAttribute(SharedMonsterAttributes.maxHealth);
+
+		AttributeModifier healthModifier = this.createHealthModifier(this.dog.effectiveLevel() + 1.0D);
+		
+        if(iattributeinstance.getModifier(HEALTH_BOOST_ID) != null)
+            iattributeinstance.removeModifier(healthModifier);
+
+        iattributeinstance.applyModifier(healthModifier);
+	}
+	
+	public AttributeModifier createHealthModifier(double health) {
+		return new AttributeModifier(HEALTH_BOOST_ID, "Dog Health", health, 0);
 	}
 
 	public boolean isDireDog() {

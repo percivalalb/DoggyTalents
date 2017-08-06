@@ -2,15 +2,14 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ITickable;
-import doggytalents.entity.EntityDog;
-import doggytalents.network.PacketDispatcher;
-import doggytalents.network.packet.client.DogBedUpdateMessage;
 
 /**
  * @author ProPercivalalb
@@ -60,9 +59,16 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 	}
 	
 	@Override
-    public Packet getDescriptionPacket() {
-		return PacketDispatcher.getPacket(new DogBedUpdateMessage(this.pos, this.casingId, this.beddingId));
-    }
+	public Packet getDescriptionPacket() {
+		NBTTagCompound tagCompound = new NBTTagCompound();
+		this.writeToNBT(tagCompound);
+		return new S35PacketUpdateTileEntity(this.pos, 0, tagCompound);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+	}
 
 	public void setCasingId(String newId) {
 		this.casingId = newId;

@@ -1,8 +1,8 @@
 package doggytalents.talent;
 
-import net.minecraft.entity.player.EntityPlayer;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * @author ProPercivalalb

@@ -5,20 +5,17 @@ import java.util.List;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
+import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
+//TODO CHEck is the same as 1.12
 public class CommandMessage extends AbstractServerMessage {
 	
 	public int commandId;
@@ -46,7 +43,7 @@ public class CommandMessage extends AbstractServerMessage {
 		if(stack == null)
 			return;
 		
-		if(stack.getItem() == ModItems.commandEmblem) {
+		if(stack.getItem() == ModItems.COMMAND_EMBLEM) {
 
 			if(this.commandId == 1)
 			{
@@ -72,7 +69,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
             		if(isDog)
             		{
-            			player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.come"));
+            			player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.come"));
             		}
 				}
 				else if(this.commandId == 2)
@@ -88,7 +85,7 @@ public class CommandMessage extends AbstractServerMessage {
 			            	if(dog.canInteract(player))
 			            	{
 			            		dog.getSitAI().setSitting(true);
-			            		  dog.getNavigator().clearPathEntity();
+			            		dog.getNavigator().clearPathEntity();
 			            	    dog.setAttackTarget((EntityLivingBase)null);
 			            	    if(dog.mode.isMode(EnumMode.WANDERING)) {
 			            	    	dog.mode.setMode(EnumMode.DOCILE);
@@ -99,7 +96,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.stay"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.stay"));
 			        }
 				}
 				else if(this.commandId == 3)
@@ -132,7 +129,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        }
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.ok"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.ok"));
 			        }
 				}
 				else if(this.commandId == 4)
@@ -145,21 +142,9 @@ public class CommandMessage extends AbstractServerMessage {
 			            if(o instanceof EntityDog)
 			            {
 			            	EntityDog dog = (EntityDog)o;
-			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING))
-			            	{
-			            		 int i = MathHelper.floor_double(player.posX) - 2;
-			                     int j = MathHelper.floor_double(player.posZ) - 2;
-			                     int k = MathHelper.floor_double(player.getEntityBoundingBox().minY);
-			                     for (int l = 0; l <= 4; l++)
-			                     {
-			                         for (int i1 = 0; i1 <= 4; i1++)
-			                         {
-			                             if ((l < 1 || i1 < 1 || l > 3 || i1 > 3) && World.doesBlockHaveSolidTopSurface(world, new BlockPos(i + l, k - 1, j + i1)) && !world.getBlockState(new BlockPos(i + l, k, j + i1)).getBlock().isFullBlock() && !world.getBlockState(new BlockPos(i + l, k + 1, j + i1)).getBlock().isFullBlock() && world.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.flowing_lava && world.getBlockState(new BlockPos(i + l, k + 1, j + i1)) != Blocks.lava)
-			                             {
-			                                 dog.setLocationAndAngles((float)(i + l) + 0.5F, k, (float)(j + i1) + 0.5F, dog.rotationYaw, dog.rotationPitch);
-			                             }
-			                         }
-			                     }
+			            	if(dog.canInteract(player) && !dog.isSitting() && !dog.mode.isMode(EnumMode.WANDERING)) {
+			            		DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
+			            		
 			                    isDog = true;
 			            	}
 			            }
@@ -167,7 +152,7 @@ public class CommandMessage extends AbstractServerMessage {
 			        
 			        if(isDog)
 			        {
-			        	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogcommand.heel"));
+			        	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogcommand.heel"));
 			        }
 				}
 					

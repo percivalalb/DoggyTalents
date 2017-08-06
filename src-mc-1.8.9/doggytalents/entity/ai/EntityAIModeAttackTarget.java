@@ -2,12 +2,12 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 import net.minecraft.entity.monster.EntityMob;
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
 
 /**
  * @author ProPercivalalb
@@ -16,7 +16,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	
     private EntityDog dog;
     private EntityLivingBase entityToAttack;
-    private int field_142051_e;
+    private int timestamp;
 
     public EntityAIModeAttackTarget(EntityDog dog) {
         super(dog, true);
@@ -26,12 +26,12 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
+        if(!this.dog.isTamed() || this.dog.mode.isMode(EnumMode.DOCILE) || this.dog.isIncapacicated() || this.dog.isSitting())
             return false;
         else {
             EntityLivingBase entitylivingbase = this.dog.getOwner();
 
-            if (entitylivingbase == null)
+            if(entitylivingbase == null)
                 return false;
             else {
             	if(this.dog.mode.isMode(EnumMode.BERSERKER)) {
@@ -49,9 +49,9 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
 	           	 	}
             	}
             	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
-            		this.entityToAttack = entitylivingbase.getLastAttacker();
-                    int i = entitylivingbase.getLastAttackerTime();
-                    return i != this.field_142051_e && this.isSuitableTarget(this.entityToAttack, false) && this.dog.shouldAttackEntity(this.entityToAttack, entitylivingbase);
+            		this.entityToAttack = entitylivingbase.getAITarget();
+                    int i = entitylivingbase.getRevengeTimer();
+                    return i != this.timestamp && this.isSuitableTarget(this.entityToAttack, false) && this.dog.shouldAttackEntity(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
             }
@@ -69,7 +69,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
         EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
-            this.field_142051_e = entitylivingbase.getLastAttackerTime();
+            this.timestamp = entitylivingbase.getRevengeTimer();
 
         super.startExecuting();
     }

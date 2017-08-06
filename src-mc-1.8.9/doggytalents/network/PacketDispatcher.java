@@ -1,5 +1,13 @@
 package doggytalents.network;
 
+import doggytalents.lib.Reference;
+import doggytalents.network.packet.client.CommandMessage;
+import doggytalents.network.packet.client.DogFriendlyFireMessage;
+import doggytalents.network.packet.client.DogJumpMessage;
+import doggytalents.network.packet.client.DogModeMessage;
+import doggytalents.network.packet.client.DogNameMessage;
+import doggytalents.network.packet.client.DogObeyMessage;
+import doggytalents.network.packet.client.DogTalentMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
@@ -9,15 +17,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
-import doggytalents.lib.Reference;
-import doggytalents.network.packet.client.CommandMessage;
-import doggytalents.network.packet.client.DogBedUpdateMessage;
-import doggytalents.network.packet.client.DogJumpMessage;
-import doggytalents.network.packet.client.DogModeMessage;
-import doggytalents.network.packet.client.DogNameMessage;
-import doggytalents.network.packet.client.DogObeyMessage;
-import doggytalents.network.packet.client.DogTalentMessage;
-import doggytalents.network.packet.client.DogTextureMessage;
 
 /**
  * @author ProPercivalalb
@@ -38,8 +37,7 @@ public class PacketDispatcher {
 		registerMessage(DogNameMessage.class);
 		registerMessage(DogObeyMessage.class);
 		registerMessage(DogTalentMessage.class);
-		registerMessage(DogTextureMessage.class);
-		registerMessage(DogBedUpdateMessage.class);
+		registerMessage(DogFriendlyFireMessage.class);
 	}
 	
 	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {

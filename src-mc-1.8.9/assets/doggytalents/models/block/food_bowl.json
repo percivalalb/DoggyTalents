@@ -1,9 +1,10 @@
 {
+	"parent": "block/block",
     "textures": {
-        "particle": "doggytalents:blocks/foodBottom",
-        "bottom": "doggytalents:blocks/foodBottom",
-        "top": "doggytalents:blocks/foodTop",
-        "side": "doggytalents:blocks/foodSide"
+        "particle": "doggytalents:blocks/food_bottom",
+        "bottom": "doggytalents:blocks/food_bottom",
+        "top": "doggytalents:blocks/food_top",
+        "side": "doggytalents:blocks/food_side"
     },
     "elements": [
         {   "from": [ 1, 0, 1 ],

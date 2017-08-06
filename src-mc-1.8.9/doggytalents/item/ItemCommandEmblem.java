@@ -1,9 +1,9 @@
 package doggytalents.item;
 
+import doggytalents.entity.EntityDoggyBeam;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import doggytalents.entity.EntityDoggyBeam;
 
 /**
  * @author ProPercivalalb
@@ -21,7 +21,7 @@ public class ItemCommandEmblem extends ItemDT {
         if(!world.isRemote) {
             world.spawnEntityInWorld(new EntityDoggyBeam(world, player));
         }
-
+        
         return stack;
     }
 }

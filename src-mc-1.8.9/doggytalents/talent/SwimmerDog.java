@@ -4,7 +4,6 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -19,7 +18,7 @@ public class SwimmerDog extends ITalent {
 		if(dog.talents.getLevel(this) == 5 && dog.riddenByEntity instanceof EntityPlayer) {
 			EntityPlayer rider = (EntityPlayer)dog.riddenByEntity;
 			if(rider.isInsideOfMaterial(Material.water))
-				rider.addPotionEffect(new PotionEffect(Potion.nightVision.id, 80, 1, true, false));
+				rider.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 80, 1, true, false));
 		}
 	}
 	

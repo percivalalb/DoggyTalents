@@ -1,11 +1,12 @@
 package doggytalents.inventory;
 
+
+import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import doggytalents.tileentity.TileEntityFoodBowl;
 
 /**
  * @author ProPercivalalb
@@ -19,7 +20,7 @@ public class ContainerFoodBowl extends Container {
 
         for(int i = 0; i < 1; i++)
             for (int l = 0; l < 5; l++)
-                this.addSlotToContainer(new Slot(tileEntityFoodBowl, l + i * 9, 44 + l * 18, 22 + i * 18));
+                this.addSlotToContainer(new Slot(tileEntityFoodBowl.inventory, l + i * 9, 44 + l * 18, 22 + i * 18));
 
         for(int j = 0; j < 3; j++)
             for (int i1 = 0; i1 < 9; i1++)
@@ -31,7 +32,7 @@ public class ContainerFoodBowl extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return this.tileEntityFoodBowl.isUseableByPlayer(player);
+        return this.tileEntityFoodBowl.inventory.isUseableByPlayer(player);
     }
 
     @Override
@@ -52,12 +53,12 @@ public class ContainerFoodBowl extends Container {
                 return null;
             }
 
-            if (itemstack1.stackSize == 0)
-                slot.putStack((ItemStack)null);
+            if(itemstack1.stackSize == 0)
+            	slot.putStack(null);
             else
                 slot.onSlotChanged();
             
-            if (itemstack1.stackSize == itemstack.stackSize)
+            if(itemstack1.stackSize == itemstack.stackSize)
                 return null;
         }
 

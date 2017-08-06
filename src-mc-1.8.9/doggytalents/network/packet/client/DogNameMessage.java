@@ -40,6 +40,6 @@ public class DogNameMessage extends AbstractServerMessage {
         
 		EntityDog dog = (EntityDog)target;
         
-		dog.setDogName(this.name);
+		dog.setCustomNameTag(this.name);
 	}
 }

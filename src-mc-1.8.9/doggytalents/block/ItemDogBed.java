@@ -2,6 +2,7 @@ package doggytalents.block;
 
 import java.util.List;
 
+import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +12,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import doggytalents.api.registry.DogBedRegistry;
 
 /**
  * @author ProPercivalalb
@@ -24,7 +24,8 @@ public class ItemDogBed extends ItemBlock {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List toolTipList, boolean extraDetail) {
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced) {
+		super.addInformation(stack, playerIn, tooltip, advanced);
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
 		    
@@ -32,15 +33,14 @@ public class ItemDogBed extends ItemBlock {
 		    String beddingId = tag.getString("beddingId");
 		    
 		    if(DogBedRegistry.CASINGS.isValidId(casingId))
-		    	toolTipList.add(StatCollector.translateToLocal(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
+		    	tooltip.add(StatCollector.translateToLocal(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
 		    else
-		    	toolTipList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woodError"));
+		    	tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woodError"));
 		    	
 		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-		    	toolTipList.add(StatCollector.translateToLocal(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
+		    	tooltip.add(StatCollector.translateToLocal(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
 		    else
-		    	toolTipList.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woolError"));
+		    	tooltip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("dogBed.woolError"));
 		}
 	}
-
 }

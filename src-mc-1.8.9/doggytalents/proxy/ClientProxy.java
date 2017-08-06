@@ -1,99 +1,101 @@
 package doggytalents.proxy;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderSnowball;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IThreadListener;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import doggytalents.DoggyTalents;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
-import doggytalents.client.model.ModelDog;
+import doggytalents.client.gui.GuiTreatBag;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.client.renderer.entity.RenderDog;
+import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.ClientHandler;
-import doggytalents.handler.KeyStateHandler;
-import doggytalents.handler.RenderHandHandler;
-import doggytalents.handler.ScreenRenderHandler;
-import doggytalents.talent.BedFinderHandler;
+import doggytalents.handler.GameOverlay;
+import doggytalents.handler.KeyState;
+import doggytalents.handler.ModelBake;
+import doggytalents.network.PacketDispatcher;
+import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.model.ModelBakery;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.IThreadListener;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
-
 	
 	@Override
-	public void preInit() {
-		Minecraft mc = Minecraft.getMinecraft();
+	public void preInit(FMLPreInitializationEvent event) {
+		super.preInit(event);
+		ClientRegistry.registerKeyBinding(KeyState.come);
+		ClientRegistry.registerKeyBinding(KeyState.stay);
+		ClientRegistry.registerKeyBinding(KeyState.ok);
+		ClientRegistry.registerKeyBinding(KeyState.heel);
 		
-		MinecraftForge.EVENT_BUS.register(new BedFinderHandler());
-		MinecraftForge.EVENT_BUS.register(new ClientHandler());
-		MinecraftForge.EVENT_BUS.register(new ScreenRenderHandler());
-		MinecraftForge.EVENT_BUS.register(new RenderHandHandler());
-		ClientRegistry.registerKeyBinding(KeyStateHandler.come);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.stay);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.ok);
-		ClientRegistry.registerKeyBinding(KeyStateHandler.heel);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
 		
-		FMLCommonHandler.instance().bus().register(new KeyStateHandler());
-	}
-	
-	@Override
-	public void init() {
-		Minecraft mc = Minecraft.getMinecraft();
-		
-		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, new RenderDog(mc.getRenderManager(), new ModelDog(), 0.5F));
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, new RenderSnowball(mc.getRenderManager(), Items.snowball, mc.getRenderItem()));
-
-		ModelHelper.registerItem(ModItems.throwBone, 0, "doggytalents:throw_bone");
-		ModelHelper.registerItem(ModItems.throwBone, 1, "doggytalents:throw_bone_wet");
-		ModelBakery.addVariantName(ModItems.throwBone, new String[] {"doggytalents:throw_bone", "doggytalents:throw_bone_wet"});
-		ModelHelper.registerItem(ModItems.commandEmblem, 0, "doggytalents:command_emblem");
-		ModelHelper.registerItem(ModItems.trainingTreat, 0, "doggytalents:training_treat");
-	    ModelHelper.registerItem(ModItems.superTreat, 0, "doggytalents:super_treat");
-	    ModelHelper.registerItem(ModItems.masterTreat, 0, "doggytalents:master_treat");
-	    ModelHelper.registerItem(ModItems.direTreat, 0, "doggytalents:dire_treat");
-	    ModelHelper.registerItem(ModItems.breedingBone, 0, "doggytalents:breeding_bone");
-	    ModelHelper.registerItem(ModItems.collarShears, 0, "doggytalents:collar_shears");
-	    ModelHelper.registerItem(ModItems.doggyCharm, 0, "doggytalents:doggy_charm");
-	    ModelHelper.registerItem(ModItems.radar, 0, "doggytalents:radar");
-	    ModelHelper.registerItem(ModItems.radioCollar, 0, "doggytalents:radio_collar");
+		ModelHelper.setModel(ModItems.THROW_BONE, 0, "doggytalents:throw_bone");
+		ModelHelper.setModel(ModItems.THROW_BONE, 1, "doggytalents:throw_bone_wet");
+		ModelHelper.setModel(ModItems.COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
+		ModelHelper.setModel(ModItems.TRAINING_TREAT, 0, "doggytalents:training_treat");
+	    ModelHelper.setModel(ModItems.SUPER_TREAT, 0, "doggytalents:super_treat");
+	    ModelHelper.setModel(ModItems.MASTER_TREAT, 0, "doggytalents:master_treat");
+	    ModelHelper.setModel(ModItems.DIRE_TREAT, 0, "doggytalents:dire_treat");
+	    ModelHelper.setModel(ModItems.BREEDING_BONE, 0, "doggytalents:breeding_bone");
+	    ModelHelper.setModel(ModItems.COLLAR_SHEARS, 0, "doggytalents:collar_shears");
+	    ModelHelper.setModel(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
+	    ModelHelper.setModel(ModItems.RADAR, 0, "doggytalents:radar");
+	    ModelHelper.setModel(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
 	    
-		ModelHelper.registerBlock(ModBlocks.dogBath, "doggytalents:dog_bath");
-		ModelHelper.registerBlock(ModBlocks.dogBed, "doggytalents:dog_bed");
-		ModelHelper.registerBlock(ModBlocks.foodBowl, "doggytalents:food_bowl");
-		
-		//ModelHelper.getBlockModelShapes().registerBuiltInBlocks(ModBlocks.foodBowl);
+		ModelHelper.setModel(ModBlocks.DOG_BATH, 0, "doggytalents:dog_bath");
+		ModelHelper.setModel(ModBlocks.DOG_BED, 0, "doggytalents:dog_bed");
+		ModelHelper.setModel(ModBlocks.FOOD_BOWL, 0, "doggytalents:food_bowl");
 	}
+	
+	@Override
+	public void init(FMLInitializationEvent event) {
+		super.init(event);
+    }
+	
+	@Override
+	public void postInit(FMLPostInitializationEvent event) {
+		super.postInit(event);
+	}
+	
+	@Override
+    protected void registerEventHandlers() {
+        super.registerEventHandlers();
+        MinecraftForge.EVENT_BUS.register(new WorldRender());
+		MinecraftForge.EVENT_BUS.register(new GameOverlay());
+		MinecraftForge.EVENT_BUS.register(new KeyState());
+		MinecraftForge.EVENT_BUS.register(new ModelBake());
+    }
+	
 
 	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
+	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		if(ID == GUI_ID_DOGGY) {
 			Entity target = player.worldObj.getEntityByID(x);
             if(!(target instanceof EntityDog))
@@ -114,6 +116,9 @@ public class ClientProxy extends CommonProxy {
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
 			return new GuiFoodBowl(player.inventory, foodBowl);
+		}
+		else if(ID == GUI_ID_FOOD_BAG) {
+			return new GuiTreatBag(player, x, player.inventory.getCurrentItem());
 		}
 		return null;
 	}

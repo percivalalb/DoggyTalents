@@ -1,10 +1,10 @@
 package doggytalents.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import doggytalents.api.IDogTreat;
 import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatHelper;
+import doggytalents.helper.ChatUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 
 /**
  * @author ProPercivalalb
@@ -32,39 +32,40 @@ public class ItemDireTreat extends ItemDT implements IDogTreat {
 	}
 
 	@Override
-	public void giveTreat(EnumFeedBack type, EntityPlayer player, EntityDog dog) {
-		ItemStack stack = player.getCurrentEquippedItem();
-		
-		if(type == EnumFeedBack.JUSTRIGHT) {
-			if(!player.capabilities.isCreativeMode && --stack.stackSize <= 0)
-                player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+	public void giveTreat(EnumFeedBack type, EntityPlayer player, ItemStack stack, EntityDog dog) {
 
-            dog.levels.increaseDireLevel();
-            dog.getNavigator().clearPathEntity();
-            dog.setHealth(dog.getMaxHealth());
-            dog.getSitAI().setSitting(true);
-            dog.worldObj.setEntityState(dog, (byte)7);
-            dog.playTameEffect(true);
-            if (!player.worldObj.isRemote)
-            	player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtreat.levelup"));
+		if(type == EnumFeedBack.JUSTRIGHT) {
+			if(!player.capabilities.isCreativeMode)
+				--stack.stackSize;
+
+			if(!player.worldObj.isRemote) {
+	            dog.levels.increaseDireLevel();
+	            dog.setHealth(dog.getMaxHealth());
+	            dog.getSitAI().setSitting(true);
+	            dog.getNavigator().clearPathEntity();
+	            dog.worldObj.setEntityState(dog, (byte)7);
+	            dog.playTameEffect(true);
+	            if (!player.worldObj.isRemote)
+	            	player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtreat.levelup"));
+			}
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {
 			if (!player.worldObj.isRemote){
 				 dog.playTameEffect(false);
-				 player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtreat.tooyoung"));
+				 player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtreat.tooyoung"));
 			}
 		}
 		else if(type == EnumFeedBack.LEVELTOOHIGH) {
             player.worldObj.setEntityState(dog, (byte)6);
             if (!player.worldObj.isRemote) {
             	 dog.playTameEffect(false);
-            	 player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtreat.toomuch"));
+            	 player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtreat.toomuch"));
             }
 		}
 		else if(type == EnumFeedBack.COMPLETE) {
             player.worldObj.setEntityState(dog, (byte)6);
             if (!player.worldObj.isRemote) {
-            	 player.addChatMessage(ChatHelper.getChatComponentTranslation("dogtreat.ultimatelevel"));
+            	 player.addChatMessage(ChatUtil.getChatComponentTranslation("dogtreat.ultimatelevel"));
             }
 		}
 	}

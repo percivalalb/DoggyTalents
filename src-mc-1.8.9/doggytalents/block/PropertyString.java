@@ -1,39 +1,33 @@
 package doggytalents.block;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-
 import net.minecraftforge.common.property.IUnlistedProperty;
 
 
 /**
  * @author ProPercivalalb
  */
-public class PropertyString<V extends Comparable> implements IUnlistedProperty<V> {
+public class PropertyString implements IUnlistedProperty<String> {
 
-	private final Class valueClass;
-    private final String name;
+	private final String name;	
 
     public PropertyString(String name) {
     	this.name = name;
-        this.valueClass = String.class;
     }
 
     public String getName() {
         return this.name;
     }
 
-    public boolean isValid(V value) {
+    public boolean isValid(String value) {
         return true;
     }
 
-    public Class<V> getType() {
-        return this.valueClass;
+    public Class<String> getType() {
+        return String.class;
     }
 
-    public String valueToString(V value){
-        return (String)value;
+    public String valueToString(String value){
+        return value;
     }
     
     public static PropertyString create(String name) {

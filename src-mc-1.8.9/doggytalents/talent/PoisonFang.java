@@ -1,5 +1,7 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.ITalent;
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,8 +9,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
@@ -38,7 +38,7 @@ public class PoisonFang extends ITalent {
         if(dog.talents.getLevel(this) >= 3) {
             int i = potionEffect.getPotionID();
 
-            if (i == Potion.poison.id)
+            if(i == Potion.poison.getId())
                 return false;
         }
         
@@ -50,7 +50,7 @@ public class PoisonFang extends ITalent {
 		int level = dog.talents.getLevel(this);
 		
 		if(entity instanceof EntityLivingBase && level > 0)
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.id, level * 20, 0));
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(Potion.poison.getId(), level * 20, 0));
 	    
 		return damage;
 	}

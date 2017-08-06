@@ -1,9 +1,11 @@
 package doggytalents.network;
 
-import io.netty.buffer.ByteBuf;
-
 import java.io.IOException;
 
+import com.google.common.base.Throwables;
+
+import doggytalents.DoggyTalents;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -12,10 +14,6 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
-
-import com.google.common.base.Throwables;
-
-import doggytalents.DoggyTalentsMod;
 
 /**
  * 
@@ -90,14 +88,14 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 	public final IMessage onMessage(final T msg, final MessageContext ctx) {
 		if (!msg.isValidOnSide(ctx.side))
 			throw new RuntimeException("Invalid side " + ctx.side.name() + " for " + msg.getClass().getSimpleName());
-		
-		IThreadListener thread = DoggyTalentsMod.proxy.getThreadFromContext(ctx);
-		// pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
-		thread.addScheduledTask(new Runnable() {
-			public void run() {
-				msg.process(DoggyTalentsMod.proxy.getPlayerEntity(ctx), ctx.side);
-			}
-		});
+
+		IThreadListener thread = DoggyTalents.PROXY.getThreadFromContext(ctx);
+		if(thread.isCallingFromMinecraftThread()) {
+			msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side);
+		}
+		else {
+			thread.addScheduledTask(() -> msg.process(DoggyTalents.PROXY.getPlayerEntity(ctx), ctx.side));
+		}
 		
 		return null;
 	}

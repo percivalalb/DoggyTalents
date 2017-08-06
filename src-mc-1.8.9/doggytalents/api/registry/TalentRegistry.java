@@ -5,9 +5,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraftforge.common.MinecraftForge;
+import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.ITalent;
-import doggytalents.helper.LogHelper;
+import doggytalents.lib.Constants;
+import net.minecraftforge.common.MinecraftForge;
 
 /**
  * @author ProPercivalalb
@@ -19,16 +20,18 @@ public class TalentRegistry {
 	public static Map<ITalent, String> talentid = new LinkedHashMap<ITalent, String>();
 	
 	public static void registerTalent(ITalent talent) {
+		if(Constants.DISABLED_TALENTS.contains(talent.getKey()))
+			DoggyTalents.LOGGER.warn("The talent id {} has been disabled in the config file", talent.getKey());
 		if(talents.contains(talent))
-			LogHelper.warning("The talent id %s has already been registered", talent.getKey());
+			DoggyTalents.LOGGER.warn("The talent id {} has already been registered", talent.getKey());
 		else if(talent.getKey().contains(":"))
-			LogHelper.warning("A talent id can't have the character ':' in it (%s)", talent.getKey());
+			DoggyTalents.LOGGER.warn("A talent id can't have the character ':' in it ({})", talent.getKey());
 		else {
 			talents.add(talent);
 			idtalent.put(talent.getKey(), talent);
 			talentid.put(talent, talent.getKey());
 			MinecraftForge.EVENT_BUS.register(talent);
-			LogHelper.info("Register the talent with the id %s", talent.getKey());
+			DoggyTalents.LOGGER.info("Register the talent with the id {}", talent.getKey());
 		}
 	}
 	

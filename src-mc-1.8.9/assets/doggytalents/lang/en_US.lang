@@ -2,6 +2,14 @@ tile.doggytalents.dogbed.name=Dog Bed
 tile.doggytalents.foodbowl.name=Food Bowl
 tile.doggytalents.dogbath.name=Dog Bath
 
+title.doggytalents.config.name=Doggy Talents Configurations
+modgui.config.doggysettings=Doggy Settings
+modgui.config.doggysettings.tooltip=Here you can change details about your dog.
+modgui.config.general=General Settings
+modgui.config.general.tooltip=Other things
+modgui.config.talents=Talents
+modgui.config.talents.tooltip=Enable and disable talents
+
 item.doggytalents.throwbone0.name=Throw Bone
 item.doggytalents.throwbone1.name=Drool Throw Bone
 item.doggytalents.trainingtreat.name=Training Treat
@@ -13,7 +21,11 @@ item.doggytalents.doggycharm.name=Doggy Charm
 item.doggytalents.collarshears.name=Collar Shears
 item.doggytalents.commandemblem.name=Command Emblem
 item.doggytalents.radiocollar.name=Radio Collar
+item.doggytalents.woolcollar.name=Wool Collar
 item.doggytalents.radar.name=Radar
+item.doggytalents.whistle.name=Whistle
+item.doggytalents.treatbag.name=Treat Bag
+item.doggytalents.chewstick.name=Chew Stick
 
 doggui.talentname.blackpelt=Black Pelt
 doggui.talentname.guarddog=Guard Dog
@@ -60,7 +72,7 @@ doggui.modeinfo.tactical=In this mode your dog will follow you but will not atta
 doggui.modeinfo.aggresive=In this mode your dog will follow you and attack anything that attacks you or that you attack
 doggui.modeinfo.berserker=In this mode your dog will follow you and if any mob draws near he will attack it without warning
 doggui.modeinfo.docile=In this mode your dog will follow you but not attack anything He is ready for you to throw the bone
-
+doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
 
 dogtalent.puppyeyes.1.part1=Villager: Cute dog! Take good care of him. Or her.
 dogtalent.puppyeyes.1.part2=Here, it can have some pork.
@@ -191,7 +203,16 @@ dogcommand.stay=Stay!
 dogcommand.ok=Okay!
 dogcommand.heel=Heel!
 
+doggytalents.key.come=Command Come
+doggytalents.key.stay=Command Stay
+doggytalents.key.ok=Command Ok
+doggytalents.key.heel=Command Heal
+doggytalents.key.category=Doggy Talents
+
+entity.doggytalents:dog.name=Dog
+
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl
+container.doggytalents.treatbag=Treat Bag
 itemGroup.doggytalents=Doggy Talents
-doggytalents.updatemessage=A new %s version exists %s. Get it here:
+itemGroup.doggytalents.dogbed=Dog Bed Variants

@@ -1,62 +1,74 @@
 package doggytalents.entity.ai;
 
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.entity.EntityDog;
 
-/**
- * @author ProPercivalalb
- */
 public class EntityAIDogBeg extends EntityAIBase {
 	
-	private EntityDog theDog;
-    private EntityPlayer thePlayer;
-    private World worldObject;
-    private float minPlayerDistance;
-    private int field_75384_e;
-    private static final String __OBFID = "CL_00001576";
+    private final EntityDog dog;
+    private EntityPlayer player;
+    private final World world;
+    private final float minPlayerDistance;
+    private int timeoutCounter;
 
-    public EntityAIDogBeg(EntityDog theDog, float minPlayerDistance) {
-        this.theDog = theDog;
-        this.worldObject = theDog.worldObj;
-        this.minPlayerDistance = minPlayerDistance;
+    public EntityAIDogBeg(EntityDog dog, float minDistance) {
+        this.dog = dog;
+        this.world = dog.worldObj;
+        this.minPlayerDistance = minDistance;
         this.setMutexBits(2);
     }
 
     @Override
     public boolean shouldExecute() {
-        this.thePlayer = this.worldObject.getClosestPlayerToEntity(this.theDog, (double)this.minPlayerDistance);
-        return this.thePlayer == null ? false : this.hasPlayerGotBoneInHand(this.thePlayer);
+        this.player = this.world.getClosestPlayerToEntity(this.dog, (double)this.minPlayerDistance);
+        return this.player == null ? false : this.hasTemptationItemInHand(this.player);
     }
 
     @Override
     public boolean continueExecuting() {
-        return !this.thePlayer.isEntityAlive() ? false : (this.theDog.getDistanceSqToEntity(this.thePlayer) > (double)(this.minPlayerDistance * this.minPlayerDistance) ? false : this.field_75384_e > 0 && this.hasPlayerGotBoneInHand(this.thePlayer));
+        if(!this.player.isEntityAlive())
+            return false;
+        else if(this.dog.getDistanceSqToEntity(this.player) > (double)(this.minPlayerDistance * this.minPlayerDistance))
+            return false;
+        else
+            return this.timeoutCounter > 0 && this.hasTemptationItemInHand(this.player);
     }
 
     @Override
     public void startExecuting() {
-        this.theDog.setBegging(true);
-        this.field_75384_e = 40 + this.theDog.getRNG().nextInt(40);
+        this.dog.setBegging(true);
+        this.timeoutCounter = 40 + this.dog.getRNG().nextInt(40);
     }
 
     @Override
     public void resetTask() {
-        this.theDog.setBegging(false);
-        this.thePlayer = null;
+        this.dog.setBegging(false);
+        this.player = null;
     }
 
     @Override
     public void updateTask() {
-        this.theDog.getLookHelper().setLookPosition(this.thePlayer.posX, this.thePlayer.posY + (double)this.thePlayer.getEyeHeight(), this.thePlayer.posZ, 10.0F, (float)this.theDog.getVerticalFaceSpeed());
-        --this.field_75384_e;
+        this.dog.getLookHelper().setLookPosition(this.player.posX, this.player.posY + (double)this.player.getEyeHeight(), this.player.posZ, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+        --this.timeoutCounter;
     }
 
-    private boolean hasPlayerGotBoneInHand(EntityPlayer player) {
-        ItemStack stack = player.inventory.getCurrentItem();
-        return stack != null && (this.theDog.isBreedingItem(stack) || DoggyTalentsAPI.BEG_WHITELIST.containsItem(stack) || this.theDog.foodValue(stack) > 0);
+    private boolean hasTemptationItemInHand(EntityPlayer player) {
+    	ItemStack itemstack = player.getHeldItem();
+
+    	if(this.dog.isTamed() && itemstack != null && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
+    		return true;
+
+    	if(this.dog.isBreedingItem(itemstack))
+    		return true;
+            
+    	if(this.dog.foodValue(itemstack) > 0)
+    		return true;
+        
+
+        return false;
     }
 }

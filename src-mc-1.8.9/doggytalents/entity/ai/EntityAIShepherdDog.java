@@ -1,11 +1,8 @@
 package doggytalents.entity.ai;
 
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-
-import com.google.common.base.Predicate;
-
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 
 /**
  * @author ProPercivalalb
@@ -14,8 +11,8 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 
 	public EntityDog dog;
 	
-	public EntityAIShepherdDog(EntityDog dog, Class target, int targetChance, boolean shouldCheckSight) {
-		super(dog, target, targetChance, shouldCheckSight, true, (Predicate)null);
+	public EntityAIShepherdDog(EntityDog dog, Class target, boolean shouldCheckSight) {
+		super(dog, target, shouldCheckSight, true);
 		this.dog = dog;
 	}
 
@@ -33,6 +30,6 @@ public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
 	@Override
 	public boolean continueExecuting() {
 		int order = dog.masterOrder();
-        return order == 3 && super.continueExecuting();
+        return order == 3 && super.continueExecuting() && this.dog.riddenByEntity == null;
 	}
 }

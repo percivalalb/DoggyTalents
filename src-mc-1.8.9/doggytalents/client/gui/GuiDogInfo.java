@@ -12,13 +12,12 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.LogHelper;
 import doggytalents.network.PacketDispatcher;
+import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogModeMessage;
 import doggytalents.network.packet.client.DogNameMessage;
 import doggytalents.network.packet.client.DogObeyMessage;
 import doggytalents.network.packet.client.DogTalentMessage;
-import doggytalents.network.packet.client.DogTextureMessage;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -39,7 +38,6 @@ public class GuiDogInfo extends GuiScreen {
 	private ScaledResolution resolution;
 	private List<GuiTextField> textfieldList = new ArrayList<GuiTextField>();
 	private GuiTextField nameTextField;
-	public int doggyTex;
 	private int currentPage = 0;
 	private int maxPages = 1;
 	public int btnPerPages = 0;
@@ -57,7 +55,6 @@ public class GuiDogInfo extends GuiScreen {
 		this.textfieldList.clear();
 		this.resolution = new ScaledResolution(this.mc);
 		Keyboard.enableRepeatEvents(true);
-		this.doggyTex = this.dog.getTameSkin();
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
 		GuiTextField nameTextField = new GuiTextField(0, this.fontRendererObj, topX - 100, topY + 50, 200, 20) {
@@ -71,7 +68,7 @@ public class GuiDogInfo extends GuiScreen {
 		};
 		nameTextField.setFocused(false);
 		nameTextField.setMaxStringLength(32);
-		nameTextField.setText(this.dog.getDogName());
+		nameTextField.setText(this.dog.getCustomNameTag());
 		this.nameTextField = nameTextField;
 		
 		this.textfieldList.add(nameTextField);
@@ -104,11 +101,11 @@ public class GuiDogInfo extends GuiScreen {
     	}
     	
 
-        this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
-        this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
-        if(this.dog.isOwner(this.player)) {
+        if(this.dog.isOwner(this.player))
         	this.buttonList.add(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())));
-        }
+        
+        
+        this.buttonList.add(new GuiButton(-7, this.width - 64, topY + 30, 42, 20, String.valueOf(this.dog.canFriendlyFire())));
         
         this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, this.dog.mode.getMode().modeName()));
 	}
@@ -124,9 +121,10 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRendererObj.drawString("Dire Level: " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
 		this.fontRendererObj.drawString("Points Left: " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		this.fontRendererObj.drawString("Texture Index", this.width - 80, topY + 20, 0xFFFFFF);
 	    if(this.dog.isOwner(this.player))
 	    	this.fontRendererObj.drawString("Obey Others?", this.width - 76, topY + 55, 0xFFFFFF);
+	    
+	    this.fontRendererObj.drawString("Friendly Fire?", this.width - 76, topY + 20, 0xFFFFFF);
 				
 		for(int i = 0; i < this.btnPerPages; ++i) {
 			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
@@ -136,7 +134,7 @@ public class GuiDogInfo extends GuiScreen {
 				
 		for(GuiTextField field : this.textfieldList)
 			field.drawTextBox();
-	    GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 	    RenderHelper.disableStandardItemLighting();
 	    GL11.glDisable(GL11.GL_LIGHTING);
 	    GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -146,7 +144,7 @@ public class GuiDogInfo extends GuiScreen {
 		
 		//Foreground
 
-		GL11.glPushMatrix();
+	    GL11.glPushMatrix();
 	    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	    for (int k = 0; k < this.buttonList.size(); ++k) {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
@@ -167,14 +165,23 @@ public class GuiDogInfo extends GuiScreen {
 	    			list.add(EnumChatFormatting.ITALIC + "Next Page");
 	    		}
 	    		else if(button.id == -6) {
-    				String str = StatCollector.translateToLocal("doggui.modeinfo." + button.displayString.toLowerCase());
+    				String str = StatCollector.translateToLocal("doggui.modeinfo." + EnumChatFormatting.getTextWithoutFormattingCodes(button.displayString).toLowerCase());
     				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
+    				if(this.dog.mode.isMode(EnumMode.WANDERING)) {
+    					if(!this.dog.coords.hasBowlPos())
+    						list.add(EnumChatFormatting.RED + "No food bowl currently set.");
+    					else 
+    						list.add(EnumChatFormatting.GREEN + "Bowl distance: " + (int)Math.sqrt(this.dog.getDistanceSq(this.dog.coords.getBowlX(), this.dog.coords.getBowlY(), this.dog.coords.getBowlZ())));
+    				}
+    		
+    				
+    				
     			}
 	    		
 	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRendererObj);
 	    	}
 	    }
-		GL11.glPopMatrix();
+	    GL11.glPopMatrix();
 	}
 	
 	@Override
@@ -201,44 +208,24 @@ public class GuiDogInfo extends GuiScreen {
     			this.initGui();
     		}
 		}
-		if (button.id == -4) {
-            if(this.doggyTex != 0) {
-            	this.doggyTex--;
-            }
-            else {
-            	this.doggyTex = 127;
-            }
-    		LogHelper.info("action");
-            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
-        }
-
-        if (button.id == -3) {
-            if(this.doggyTex != 127) {
-            	this.doggyTex++;
-            }
-            else {
-            	this.doggyTex = 0;
-            }
-            
-            PacketDispatcher.sendToServer(new DogTextureMessage(this.dog.getEntityId(), this.doggyTex));
+        
+        if(button.id == -5) {
+        	button.displayString = String.valueOf(!this.dog.willObeyOthers());
+        	PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), !this.dog.willObeyOthers()));
         }
         
-        if (button.id == -5) {
-        	if(!this.dog.willObeyOthers()) {
-        		button.displayString = "true";
-        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), true));
-        		
-        	}
-        	else {
-        		button.displayString = "false";
-        		PacketDispatcher.sendToServer(new DogObeyMessage(this.dog.getEntityId(), false));
-        	}
+        if(button.id == -7) {
+        	button.displayString = String.valueOf(!this.dog.canFriendlyFire());
+        	PacketDispatcher.sendToServer(new DogFriendlyFireMessage(this.dog.getEntityId(), !this.dog.canFriendlyFire()));
         }
         
         if (button.id == -6) {
         	int newMode = (dog.mode.getMode().ordinal() + 1) % EnumMode.values().length;
         	EnumMode mode = EnumMode.values()[newMode];
-        	button.displayString = mode.modeName();
+        	if(mode == EnumMode.WANDERING && !this.dog.coords.hasBowlPos())
+        		button.displayString = EnumChatFormatting.RED + mode.modeName();
+        	else
+        		button.displayString = mode.modeName();
         	PacketDispatcher.sendToServer(new DogModeMessage(this.dog.getEntityId(), newMode));
         }
 	}

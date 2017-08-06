@@ -2,7 +2,6 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import net.minecraftforge.fml.common.FMLLog;
 
 /**
  * @author ProPercivalalb
@@ -12,7 +11,7 @@ public class PillowPaw extends ITalent {
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
 		if(dog.talents.getLevel(this) == 5)
-			if(dog.motionY < 0.0F)
+			if(dog.motionY < -0.12F && !dog.isInWater())
 				dog.motionY = -0.12F;
 	}
 	

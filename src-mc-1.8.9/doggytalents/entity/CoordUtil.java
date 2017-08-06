@@ -42,6 +42,14 @@ public class CoordUtil {
 		try{return new Integer(this.getSkillsLevels()[5]);}
     	catch(Exception e){e.printStackTrace(); return -1;}
 	}
+	
+	public boolean hasBowlPos() {
+		return this.getBowlX() != -1 && this.getBowlY() != -1 && this.getBowlZ() != -1;
+	}
+	
+	public boolean hasBedPos() {
+		return this.getBedX() != -1 && this.getBedY() != -1 && this.getBedZ() != -1;
+	}
 
 	public void resetBedPosition() {
 		this.dog.getDataWatcher().updateObject(28, this.getDefaultStr());

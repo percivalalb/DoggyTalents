@@ -1,12 +1,12 @@
 package doggytalents.inventory;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
-import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb
@@ -54,12 +54,12 @@ public class ContainerPackPuppy extends Container {
             else if(!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
                 return null;
 
-            if (itemstack1.stackSize == 0)
-                slot.putStack((ItemStack)null);
+            if(itemstack1.stackSize == 0)
+            	slot.putStack(null);
             else
                 slot.onSlotChanged();
-
-            if (itemstack1.stackSize == itemstack.stackSize)
+            
+            if(itemstack1.stackSize == itemstack.stackSize)
                 return null;
         }
 

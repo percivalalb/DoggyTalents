@@ -1,10 +1,10 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.ITalent;
+import doggytalents.entity.EntityDog;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.entity.EntityDog;
 
 /**
  * @author ProPercivalalb

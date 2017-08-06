@@ -11,6 +11,10 @@ Update List Key
 MC 1.9.4, 1.10.2, 1.11.2 and 1.12
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.1.*** | WIP
+* Fixed dog bed dropping in creative mode
+* Dog bed now uses its casing (plank) texture for all its particle effects
+
 1.14.1.228 | 3rd August 2017
 + Added support for the wooden planks from Natura mod to be used as casing in dog bed
 + Added support for the wooden planks from Ancient Trees L (Dendrology) mod to be used as casing in dog bed
@@ -321,6 +325,9 @@ Initial release, parent version v1.9.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.14.1*** | WIP
+* Fixed dog bed not using correct particle for hit effects
 
 1.14.1.229 | 3rd August 2017
 + Added new talent swimmer dog

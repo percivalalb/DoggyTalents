@@ -1,5 +1,6 @@
 package doggytalents.base.c;
 
+import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.registry.DogBedRegistry;
@@ -33,18 +34,22 @@ public class BlockDogBedWrapper extends BlockDogBed {
 	}
 	
 	@Override
-	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
-		ItemStack ret = this.drops.get();
+	public List<ItemStack> getDrops(IBlockAccess worldIn, BlockPos pos, IBlockState state, int fortune) {
+		List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
+		
+		ItemStack cache = this.drops.get();
 		this.drops.remove();
-		if(ret != null)
-			drops.add(ret);
+		if(cache != null)
+			ret.add(cache);
 		else {
 			TileEntity tileentity = worldIn.getTileEntity(pos);
 
 			if(tileentity instanceof TileEntityDogBed) {
 				TileEntityDogBed dogBed = (TileEntityDogBed)tileentity;
-				drops.add(DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+				ret.add(DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
 			}
 		}
+		
+		return ret;
 	}
 }

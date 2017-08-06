@@ -1,6 +1,7 @@
 package doggytalents.base.a;
 
 import doggytalents.base.IClientMethods;
+import doggytalents.base.other.DogBedModel;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;

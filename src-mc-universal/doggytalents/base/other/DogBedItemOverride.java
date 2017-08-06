@@ -1,8 +1,9 @@
-package doggytalents.base.c;
+package doggytalents.base.other;
 
 import com.google.common.collect.Lists;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.base.VersionControl.VersionConfig;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * 1.11.2 Code
  */
 @SideOnly(Side.CLIENT)
+@VersionConfig({"1.9.4", "1.10.2", "1.11.2"})
 public class DogBedItemOverride extends ItemOverrideList {
 
     public DogBedItemOverride() {
@@ -25,7 +27,7 @@ public class DogBedItemOverride extends ItemOverrideList {
 
     @Override
     public IBakedModel handleItemState(IBakedModel modelOriginal, ItemStack stack, World world, EntityLivingBase entity) {
-        if (modelOriginal instanceof DogBedModel) {
+        if(modelOriginal instanceof DogBedModel) {
         	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
     			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
     		    

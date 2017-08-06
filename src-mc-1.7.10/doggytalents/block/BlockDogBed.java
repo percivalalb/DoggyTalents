@@ -113,6 +113,46 @@ public class BlockDogBed extends BlockContainer {
 		return true;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer) {
+		int x = target.blockX;
+		int y = target.blockY;
+		int z = target.blockZ;
+		int sideHit = target.sideHit;
+		
+		TileEntity tile = worldObj.getTileEntity(x, y, z);
+		IIcon icon = Blocks.planks.getIcon(0, 0);
+		if(tile instanceof TileEntityDogBed) {
+			TileEntityDogBed dogBed = (TileEntityDogBed)tile;
+			icon = this.getIconSafe(DogBedRegistry.CASINGS.getIcon(dogBed.getCasingId(), sideHit));
+		}
+		
+		Block block = ModBlocks.DOG_BED;
+		float b = 0.1F;
+		double px = x + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxX() - block.getBlockBoundsMinX() - (b * 2.0F)) + b + block.getBlockBoundsMinX();
+		double py = y + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxY() - block.getBlockBoundsMinY() - (b * 2.0F)) + b + block.getBlockBoundsMinY();
+		double pz = z + worldObj.rand.nextDouble() * (block.getBlockBoundsMaxZ() - block.getBlockBoundsMinZ() - (b * 2.0F)) + b + block.getBlockBoundsMinZ();
+
+		if (sideHit == 0)
+			py = (double) y + block.getBlockBoundsMinY() - (double) b;
+		else if (sideHit == 1)
+			py = (double) y + block.getBlockBoundsMaxY() + (double) b;
+		else if (sideHit == 2)
+			pz = (double) z + block.getBlockBoundsMinZ() - (double) b;
+		else if (sideHit == 3)
+			pz = (double) z + block.getBlockBoundsMaxZ() + (double) b;
+		else if (sideHit == 4)
+			px = (double) x + block.getBlockBoundsMinX() - (double) b;
+		else if (sideHit == 5)
+			px = (double) x + block.getBlockBoundsMaxX() + (double) b;
+
+		EntityDiggingFX fx = new EntityDiggingFX(worldObj, px, py, pz, 0.0D, 0.0D, 0.0D, block, sideHit, worldObj.getBlockMetadata(x, y, z));
+		fx.setParticleIcon(icon);
+		effectRenderer.addEffect(fx.applyColourMultiplier(x, y, z).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+		return true;
+	}
+	
 	@SideOnly(Side.CLIENT)
 	public IIcon getIconSafe(IIcon icon) {
 	    if (icon == null)
@@ -192,7 +232,7 @@ public class BlockDogBed extends BlockContainer {
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean canBlockStay(World world, int x, int y, int z) {
 		Block block = world.getBlock(x, y - 1, z);

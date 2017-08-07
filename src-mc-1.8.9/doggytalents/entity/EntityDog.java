@@ -92,7 +92,7 @@ public class EntityDog extends EntityAbstractDog {
         
         this.aiSit = new EntityAISit(this);
         this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-        		
+        
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -222,7 +222,7 @@ public class EntityDog extends EntityAbstractDog {
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        
+        DoggyTalents.LOGGER.info("Is in water" + this.isInWater());
         if(Constants.IS_HUNGER_ON) {
         	this.prevHungerTick = this.hungerTick;
         	
@@ -426,7 +426,7 @@ public class EntityDog extends EntityAbstractDog {
     @Override
     public void fall(float distance, float damageMultiplier) {
     	if(!TalentHelper.isImmuneToFalls(this))
-    		super.fall(distance - TalentHelper.fallProtection(this), damageMultiplier);
+    		super.fall(distance - TalentHelper.fallProtection(this) - (this.riddenByEntity instanceof EntityPlayer ? 1 : 0), damageMultiplier);
     }
 
     @Override

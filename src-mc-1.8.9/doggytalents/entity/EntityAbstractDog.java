@@ -1,6 +1,7 @@
 package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -11,6 +12,8 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.MathHelper;
@@ -33,12 +36,13 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
-        this.setSize(0.6F, 0.85F);
+		this.setSize(0.6F, 0.85F);
+        ((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
 	}
 	
 	@Override
 	protected void updateAITick() {
-        
+        super.updateAITick();
     }
 	
 	@Override
@@ -46,6 +50,11 @@ public abstract class EntityAbstractDog extends EntityTameable {
         super.entityInit();
         this.dataWatcher.addObject(19, new Byte((byte)0));
 	}
+	
+	@Override
+	protected void playStepSound(BlockPos pos, Block blockIn) {
+        this.playSound("mob.wolf.step", 0.15F, 1.0F);
+    }
 
 	@Override
     protected String getLivingSound() {
@@ -152,7 +161,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
     public float getInterestedAngle(float partialTickTime) {
         return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * partialTickTime) * 0.15F * (float)Math.PI;
     }
-    
 
     @SideOnly(Side.CLIENT)
     public float getTailRotation() {
@@ -183,7 +191,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
     
     @Override
     public double getYOffset() {
-        return this.ridingEntity instanceof EntityPlayer ? -1D : 0.0D;
+        return this.ridingEntity instanceof EntityPlayer ? 0.5D : 0.0D;
     }
 
 	public boolean isBegging() {

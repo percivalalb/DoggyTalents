@@ -1,5 +1,4 @@
 {
-	"parent": "block/block",
     "textures": {
         "particle": "blocks/planks_oak",
         "bedding": "blocks/wool_colored_orange",

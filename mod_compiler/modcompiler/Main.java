@@ -66,7 +66,7 @@ public class Main {
 		}
 		
 		public String getPathToVersion(ForgeEnvironment forgeEnvi) {
-			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") ? "universal" : forgeEnvi.getVersion());
+			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") && !forgeEnvi.getVersion().equals("1.8.9") ? "universal" : forgeEnvi.getVersion());
 		}
 		
 		public String getPath() {
@@ -82,7 +82,7 @@ public class Main {
 	public enum ForgeEnvironment {
 		
 		_1_7_10("1.7.10", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.7.10"),
-		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.8.9-11.15.1.1902"),
+		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.8.9"),
 		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.9.4-12.17.0.2051"),
 		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.10.2"),
 		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.11.2-13.20.0.2282"),
@@ -308,7 +308,7 @@ public class Main {
 		copyDirectory(modSrc, forgeResources, notJavaFiles);
 		Main.output.println("Succesfully copied all resource files.");
 		
-		if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10")) {
+		if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") && !forgeEnvi.getVersion().equals("1.8.9")) {
 			File config = new File(modSrc, mod.packageLoc + "\\base\\compile.cfg");
 			Iterator<String> stream = Files.lines(config.toPath(), StandardCharsets.UTF_8).iterator();
 			Main.output.println("Reading config file to determine which version specific files to copy, this is designed to avoid compile errors");
@@ -449,6 +449,8 @@ public class Main {
         }
         
         if(!successful) return false;
+        
+        if(!modFolder.exists()) modFolder.mkdir();
         
         for(File file : modFolder.listFiles()) {
         	if(file.isFile()) {

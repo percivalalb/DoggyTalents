@@ -68,6 +68,10 @@ public class ClientProxy extends CommonProxy {
 	    ModelHelper.setModel(ModItems.DOGGY_CHARM, 0, "doggytalents:doggy_charm");
 	    ModelHelper.setModel(ModItems.RADAR, 0, "doggytalents:radar");
 	    ModelHelper.setModel(ModItems.RADIO_COLLAR, 0, "doggytalents:radio_collar");
+	    ModelHelper.setModel(ModItems.WOOL_COLLAR, 0, "doggytalents:wool_collar");
+	    ModelHelper.setModel(ModItems.WHISTLE, 0, "doggytalents:whistle");
+	    ModelHelper.setModel(ModItems.CHEW_STICK, 0, "doggytalents:chew_stick");
+	    ModelHelper.setModel(ModItems.TREAT_BAG, 0, "doggytalents:treat_bag");
 	    
 		ModelHelper.setModel(ModBlocks.DOG_BATH, 0, "doggytalents:dog_bath");
 		ModelHelper.setModel(ModBlocks.DOG_BED, 0, "doggytalents:dog_bed");

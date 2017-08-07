@@ -66,37 +66,39 @@ public class RenderDog extends RenderLiving<EntityDog> {
     
     @Override
 	public void renderName(EntityDog dog, double x, double y, double z) {
-    	String name = dog.getDisplayName().getFormattedText();
-    	double distanceFromPlayer = dog.getDistanceSqToEntity(this.renderManager.livingPlayer);
-    	
-    	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
-        	
-    	String tip = dog.mode.getMode().getTip();
-            
-    	if(dog.isIncapacicated())
-    		tip = "(I)";
-            
-    	String label = String.format("%s(%d)", tip, dog.getDogHunger());
-    	if (distanceFromPlayer <= (double)(64 * 64)) {
-    		boolean flag = dog.isSneaking();
-    		float f = this.renderManager.playerViewY;
-    		float f1 = this.renderManager.playerViewX;
-    		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-    		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
-    
-    		this.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-    	
-    		if (distanceFromPlayer <= (double)(5 * 5)) {
-	    		if(this.renderManager.livingPlayer.isSneaking()) {
-	    			String ownerName = "A Wild Dog";
-	    			if(dog.getOwner() != null)
-	    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
-	    			else if(dog.getOwnerId() != null)
-	          		   	ownerName = dog.getOwnerId().toString();
-	    			
-	    			this.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	if(this.canRenderName(dog)) {
+	    	String name = dog.getDisplayName().getFormattedText();
+	    	double distanceFromPlayer = dog.getDistanceSqToEntity(this.renderManager.livingPlayer);
+	    	
+	    	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
+	        	
+	    	String tip = dog.mode.getMode().getTip();
+	            
+	    	if(dog.isIncapacicated())
+	    		tip = "(I)";
+	            
+	    	String label = String.format("%s(%d)", tip, dog.getDogHunger());
+	    	if (distanceFromPlayer <= (double)(64 * 64)) {
+	    		boolean flag = dog.isSneaking();
+	    		float f = this.renderManager.playerViewY;
+	    		float f1 = this.renderManager.playerViewX;
+	    		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
+	    		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
+	    
+	    		this.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+	    	
+	    		if (distanceFromPlayer <= (double)(5 * 5)) {
+		    		if(this.renderManager.livingPlayer.isSneaking()) {
+		    			String ownerName = "A Wild Dog";
+		    			if(dog.getOwner() != null)
+		    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
+		    			else if(dog.getOwnerId() != null)
+		          		   	ownerName = dog.getOwnerId().toString();
+		    			
+		    			this.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+		    		}
 	    		}
-    		}
+	    	}
     	}
     	
         super.renderName(dog, x, y - 0.2, z);

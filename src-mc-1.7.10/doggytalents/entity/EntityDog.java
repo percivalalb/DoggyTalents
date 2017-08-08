@@ -176,7 +176,7 @@ public class EntityDog extends EntityAbstractDog {
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
-        tagCompound.setBoolean("sunglasses", this.hasSunglases());
+        tagCompound.setBoolean("sunglasses", this.hasSunglasses());
         tagCompound.setBoolean("cape", this.hasCape());
         
         this.talents.writeTalentsToNBT(tagCompound);
@@ -198,7 +198,7 @@ public class EntityDog extends EntityAbstractDog {
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
-        this.hasSunglases(tagCompound.getBoolean("sunglasses"));
+        this.hasSunglasses(tagCompound.getBoolean("sunglasses"));
         this.hasCape(tagCompound.getBoolean("cape"));
         
         this.talents.readTalentsFromNBT(tagCompound);
@@ -548,8 +548,8 @@ public class EntityDog extends EntityAbstractDog {
                    		--stack.stackSize;
                  	return true;
                 }
-                else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglases() && !this.isIncapacicated()) { 
-                	this.hasSunglases(true);
+                else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) { 
+                	this.hasSunglasses(true);
                 	if(!player.capabilities.isCreativeMode)
                    		--stack.stackSize;
                  	return true;
@@ -909,11 +909,11 @@ public class EntityDog extends EntityAbstractDog {
     	return this.getCustomData(3);
     }
     
-    public void hasSunglases(boolean hasSunglases) {
-    	this.setCustomData(4, hasSunglases);
+    public void hasSunglasses(boolean hasSunglasses) {
+    	this.setCustomData(4, hasSunglasses);
     }
     
-    public boolean hasSunglases() {
+    public boolean hasSunglasses() {
     	return this.getCustomData(4);
     }
     

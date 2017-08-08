@@ -20,6 +20,10 @@ public class ResourceLib {
 	public static final ResourceLocation MOB_LAYER_DOG_HURT = new ResourceLocation("doggytalents", getMobTexturePath("doggy_hurt.png"));
 	public static final ResourceLocation MOB_DOG_WILD = new ResourceLocation("doggytalents", getMobTexturePath("doggywild.png"));
 	public static final ResourceLocation MOB_LAYER_RADIO_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_radio_collar.png"));
+	public static final ResourceLocation MOB_LAYER_SADDLE = new ResourceLocation("doggytalents", getMobTexturePath("doggy_saddle.png"));
+	public static final ResourceLocation MOB_LAYER_CAPE = new ResourceLocation("doggytalents", getMobTexturePath("doggy_cape.png"));
+	public static final ResourceLocation MOB_LAYER_SUNGLASSES = new ResourceLocation("doggytalents", getMobTexturePath("doggy_sunglasses.png"));
+
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))

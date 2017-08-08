@@ -27,12 +27,12 @@ public class RenderDog extends RenderLiving<EntityDog> {
 	
     public RenderDog(RenderManager renderManagerIn) {
         super(renderManagerIn, new ModelDog(), 0.5F);
+        this.addLayer(new LayerCape(this));
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
-        this.addLayer(new LayerCape(this));
         this.addLayer(new LayerSaddle(this));
     }
 

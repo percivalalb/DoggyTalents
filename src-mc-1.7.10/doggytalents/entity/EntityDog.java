@@ -55,6 +55,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 /**
@@ -350,6 +351,10 @@ public class EntityDog extends EntityAbstractDog {
     		}
     	}
         
+        if(this.talents.getLevel("wolfmount") > 0) {
+        	this.setSize(1.2F, 1.2F);
+        }
+        
         TalentHelper.onUpdate(this);
     }
     
@@ -530,6 +535,18 @@ public class EntityDog extends EntityAbstractDog {
                  	this.setCollarColour(colour);
                  	
                    	if(!player.capabilities.isCreativeMode)
+                   		--stack.stackSize;
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
+                	this.hasCape(true);
+                	if(!player.capabilities.isCreativeMode)
+                   		--stack.stackSize;
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglases() && !this.isIncapacicated()) { 
+                	this.hasSunglases(true);
+                	if(!player.capabilities.isCreativeMode)
                    		--stack.stackSize;
                  	return true;
                 }
@@ -892,6 +909,34 @@ public class EntityDog extends EntityAbstractDog {
     	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
     }
     
+	public void hasCape(boolean hasCape) {
+    	int BIT = 10; //Starts at 0
+    	
+    	int in = this.dataWatcher.getWatchableObjectInt(25);
+    	if(hasCape) in |= (10 << BIT);
+    	else in &= ~(10 << BIT);
+    	this.dataWatcher.updateObject(25, in);
+    }
+    
+    public boolean hasCape() {
+     	int BIT = 10; //Starts at 0
+    	return (this.dataWatcher.getWatchableObjectInt(25) & (10 << BIT)) == (10 << BIT);
+    }
+    
+    public void hasSunglases(boolean hasSunglases) {
+    	int BIT = 12; //Starts at 0
+    	
+    	int in = this.dataWatcher.getWatchableObjectInt(25);
+    	if(hasSunglases) in |= (12 << BIT);
+    	else in &= ~(12 << BIT);
+    	this.dataWatcher.updateObject(25, in);
+    }
+    
+    public boolean hasSunglases() {
+     	int BIT = 12; //Starts at 0
+    	return (this.dataWatcher.getWatchableObjectInt(25) & (12 << BIT)) == (12 << BIT);
+    }
+    
     public void setHasBone(boolean hasBone) {
     	int BIT = 0; //Starts at 0
     	
@@ -974,5 +1019,16 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.cooked_fished : Items.fish, 1);
 		}
 	}
+	
+	public void updateRiderPosition()
+    {
+        if (this.riddenByEntity != null)
+        {
+        	float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f2 = 0.7F * 0.7F;
+            this.riddenByEntity.setPosition(this.posX + (double)(f2 * f), this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ - (double)(f2 * f1));
+        }
+    }
 
 }

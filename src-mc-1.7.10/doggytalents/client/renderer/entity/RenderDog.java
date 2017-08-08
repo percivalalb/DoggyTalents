@@ -4,20 +4,16 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import doggytalents.DoggyTalents;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -26,7 +22,7 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderDog extends RenderLiving {
 	
-    public RenderDog() {
+	public RenderDog() {
         super(new ModelDog(), 0.5F);
         this.setRenderPassModel(new ModelDog());
         //this.addLayer(new LayerRadioCollar(this));
@@ -92,8 +88,35 @@ public class RenderDog extends RenderLiving {
             }
             return 1;
         }
+        else if(renderPass == 2 && dog.talents.getLevel("wolfmount") > 0) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_SADDLE);
+            GL11.glColor3f(brightness, brightness, brightness);
+            return 1;
+        }
+        else if(renderPass == 1 && dog.hasCape()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
+        	GL11.glColor3f(brightness, brightness, brightness);
+            return 1;
+        }
+        else if(renderPass == 1 && dog.hasSunglases()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
+        	GL11.glColor3f(brightness, brightness, brightness);
+            return 1;
+        }
         else
             return -1;
+    }
+    
+    protected void preRenderCallback(EntityDog dog, float p_77041_2_)
+    {
+    	if(dog.talents.getLevel("wolfmount") > 0) {
+        	GL11.glScalef(1.4F, 1.4F, 1.4F);
+        }
+    }
+    
+    protected void preRenderCallback(EntityLivingBase p_77041_1_, float p_77041_2_)
+    {
+        this.preRenderCallback((EntityDog)p_77041_1_, p_77041_2_);
     }
     
     protected ResourceLocation getEntityTexture(Entity entity) {

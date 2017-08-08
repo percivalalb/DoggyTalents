@@ -36,25 +36,33 @@ public class ModelDog extends ModelBase {
     public ModelDog() {
         float scaleFactor = 0.0F;
         float f1 = 13.5F;
+		
+		//Head
         this.wolfHeadMain = new ModelRenderer(this, 0, 0);
-        this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);//Bigger head for new ears
+        this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F);
+		
+		//Bone
         this.wolfHeadMainBone = new ModelRenderer(this, 0, 0);
-        this.wolfHeadMainBone.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);//Bigger head for new ears
+        this.wolfHeadMainBone.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.wolfHeadMainBone.setRotationPoint(-1.0F, f1, -7.0F);
-        
+	
+		//Body
         this.wolfBody = new ModelRenderer(this, 18, 14);
         this.wolfBody.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
         
+		//BodyChest
         this.wolfBodyChest = new ModelRenderer(this, 18, 14);
         this.wolfBodyChest.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBodyChest.setRotationPoint(0.0F, 14.0F, 2.0F);
         
-        this.wolfMane = new ModelRenderer(this, 21, 0);//cause BiggerHead
+		//Mane
+        this.wolfMane = new ModelRenderer(this, 21, 0);
         this.wolfMane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
         this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F);
         
+		//Limbs
         this.wolfLeg1 = new ModelRenderer(this, 0, 18);
         this.wolfLeg1.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
@@ -68,40 +76,47 @@ public class ModelDog extends ModelBase {
         this.wolfLeg4.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
         
+		//Tail1
         this.wolfTail = new ModelRenderer(this, 9, 18);
         this.wolfTail.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
-        this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);
+        this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);              
+
+		//Tail2
+        this.wolfTail.setTextureOffset(52, 5).addBox(0.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);
         
-                 
-        //Child
-        this.wolfHeadMain.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal1
-        this.wolfHeadMain.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal2
+		//Chests
+        this.wolfBodyChest.setTextureOffset(52, 21).addBox(2.0F, -1F, 0F, 2, 7, 4);//Backpack1
+        this.wolfBodyChest.setTextureOffset(52, 21).addBox(-4.0F, -1F, 0F, 2, 7, 4);//Backpack1                
+    			  
+        //HeadMain EarsNormal
+        this.wolfHeadMain.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); 
+        this.wolfHeadMain.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); 
         
-        this.wolfHeadMain.setTextureOffset(52, 8).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
-        this.wolfHeadMain.setTextureOffset(52, 8).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
+		//HeadMain EarsBoni
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
+        this.wolfHeadMain.setTextureOffset(52, 8).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
         
-        this.wolfHeadMain.setTextureOffset(52, 0).addBox(-2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar1
-        this.wolfHeadMain.setTextureOffset(52, 0).addBox(2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar2
+		//HeadMain EarsSmall
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(-2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
+        this.wolfHeadMain.setTextureOffset(52, 0).addBox(2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
         
-        this.wolfHeadMain.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, scaleFactor);//Nose moved
+		//HeadMain Nose
+        this.wolfHeadMain.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, scaleFactor);
         
+		//HeadBone EarsNormal
         this.wolfHeadMainBone.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal1
         this.wolfHeadMainBone.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); //EarNormal2
         
+		//HeadBone EarsBoni
         this.wolfHeadMainBone.setTextureOffset(52, 8).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
         this.wolfHeadMainBone.setTextureOffset(52, 8).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);//EarBoni
         
+		//HeadBone EarsSmall
         this.wolfHeadMainBone.setTextureOffset(52, 0).addBox(-4.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar1
         this.wolfHeadMainBone.setTextureOffset(52, 0).addBox(2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);//SmallEar2
         
+		//HeadBone EarsNose
         this.wolfHeadMainBone.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, scaleFactor);//Nose moved
-        //this.wolfHeadMainBone.setTextureOffset(0, 10).addBox(-1.5F, 0.0F, -6.0F, 8, 2, 2, scaleFactor);//Bone
-        
-        this.wolfTail.setTextureOffset(52, 5).addBox(0.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);//Tail2
-        
-        this.wolfBodyChest.setTextureOffset(52, 21).addBox(2.0F, -1F, 0F, 2, 7, 4);//Backpack1
-        this.wolfBodyChest.setTextureOffset(52, 21).addBox(-4.0F, -1F, 0F, 2, 7, 4);//Backpack1
-                     
     }
 
     @Override
@@ -127,7 +142,7 @@ public class ModelDog extends ModelBase {
              this.wolfTail.renderWithRotation(scale);
              this.wolfMane.render(scale);
              GL11.glPopMatrix();
-        }
+        }        
         else {
         	(dog.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
         	(dog.talents.getLevel("packpuppy") > 0 ? this.wolfBodyChest : this.wolfBody).render(scale);

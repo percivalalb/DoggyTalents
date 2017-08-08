@@ -269,8 +269,9 @@ MC 1.8.9
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.1.242 | 7th August 2017
-Initial release, parent version 1.7.10-1.14.1.240
++ Dog now holds a bone in his mouth once he has picked up the throw bone
 * Fixed dogs having no step sound
+Initial release, parent version 1.7.10-1.14.1.240
 
 v1.10.0a | 16th April 2016
 Initial release, parent version v1.9.1g
@@ -331,6 +332,10 @@ Initial release, parent version v1.9.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.4.1.** | WIP
+* Fixed dogs not having a step sound
+* Fixed crash with PuppyEyes talent
 
 1.14.1.240 | 6th August 2017
 + Added options to disable each talent in the config file

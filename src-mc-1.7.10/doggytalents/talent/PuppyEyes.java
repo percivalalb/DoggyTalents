@@ -110,7 +110,7 @@ public class PuppyEyes extends ITalent {
 		double d1 = -1D;
 		EntityPlayer player = (EntityPlayer)dog.getOwner();
 	    EntityLiving entityliving = null;
-	    List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.getBoundingBox().expand(d, d, d));
+	    List list = dog.worldObj.getEntitiesWithinAABBExcludingEntity(dog, dog.boundingBox.expand(d, d, d));
 
 	    for (int i = 0; i < list.size(); i++) {
 	    	Entity entity1 = (Entity)list.get(i);

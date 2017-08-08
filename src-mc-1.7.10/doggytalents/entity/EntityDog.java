@@ -176,6 +176,8 @@ public class EntityDog extends EntityAbstractDog {
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
+        tagCompound.setBoolean("sunglasses", this.hasSunglases());
+        tagCompound.setBoolean("cape", this.hasCape());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -196,6 +198,8 @@ public class EntityDog extends EntityAbstractDog {
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
+        this.hasSunglases(tagCompound.getBoolean("sunglasses"));
+        this.hasCape(tagCompound.getBoolean("cape"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -910,31 +914,31 @@ public class EntityDog extends EntityAbstractDog {
     }
     
 	public void hasCape(boolean hasCape) {
-    	int BIT = 10; //Starts at 0
+    	int BIT = 3; //Starts at 0
     	
     	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(hasCape) in |= (10 << BIT);
-    	else in &= ~(10 << BIT);
+    	if(hasCape) in |= (1 << BIT);
+    	else in &= ~(1 << BIT);
     	this.dataWatcher.updateObject(25, in);
     }
     
     public boolean hasCape() {
-     	int BIT = 10; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (10 << BIT)) == (10 << BIT);
+     	int BIT = 3; //Starts at 0
+    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
     }
     
     public void hasSunglases(boolean hasSunglases) {
-    	int BIT = 12; //Starts at 0
+    	int BIT = 4; //Starts at 0
     	
     	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(hasSunglases) in |= (12 << BIT);
-    	else in &= ~(12 << BIT);
+    	if(hasSunglases) in |= (1 << BIT);
+    	else in &= ~(1 << BIT);
     	this.dataWatcher.updateObject(25, in);
     }
     
     public boolean hasSunglases() {
-     	int BIT = 12; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (12 << BIT)) == (12 << BIT);
+     	int BIT = 4; //Starts at 0
+    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
     }
     
     public void setHasBone(boolean hasBone) {

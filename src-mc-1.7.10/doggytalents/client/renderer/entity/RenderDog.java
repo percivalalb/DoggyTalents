@@ -25,10 +25,6 @@ public class RenderDog extends RenderLiving {
 	public RenderDog() {
         super(new ModelDog(), 0.5F);
         this.setRenderPassModel(new ModelDog());
-        //this.addLayer(new LayerRadioCollar(this));
-        //this.addLayer(new LayerDogCollar(this));
-        //this.addLayer(new LayerDogHurt(this));
-        //this.addLayer(new LayerBone(this));
     }
 
     @Override
@@ -58,6 +54,35 @@ public class RenderDog extends RenderLiving {
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
+    
+    public float hackTickTime;
+    
+    @Override
+    protected void rotateCorpse(EntityLivingBase p_77043_1_, float p_77043_2_, float p_77043_3_, float p_77043_4_)
+    {
+    	super.rotateCorpse(p_77043_1_, p_77043_2_, p_77043_3_, p_77043_4_);
+    	this.hackTickTime = p_77043_4_;
+    }
+    
+    @Override
+    protected void renderModel(EntityLivingBase entity, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float p_77036_7_) {
+    	EntityDog dog = (EntityDog)entity;
+    	super.renderModel(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+    	
+    	for (int i = 4; i < 8; ++i)
+        {
+            int j = this.shouldRenderPass(entity, i, this.hackTickTime);
+
+            if (j > 0)
+            {
+                this.renderPassModel.setLivingAnimations(entity, p_77036_2_, p_77036_3_, this.hackTickTime);
+                this.renderPassModel.render(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+
+                GL11.glDisable(GL11.GL_BLEND);
+                GL11.glEnable(GL11.GL_ALPHA_TEST);
+            }
+        }
+    }
 
     @Override
     protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTickTime) {
@@ -70,9 +95,9 @@ public class RenderDog extends RenderLiving {
             GL11.glColor3f(brightness, brightness, brightness);
             return 1;
         }
-        else if(renderPass == 1 && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
+        else if(renderPass == 5 && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
         	this.bindTexture(ResourceLib.MOB_LAYER_DOG_HURT);
-            GL11.glColor3f(brightness, brightness, brightness);
+            GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
         else if(renderPass == 2 && dog.hasRadarCollar()) {
@@ -88,19 +113,19 @@ public class RenderDog extends RenderLiving {
             }
             return 1;
         }
-        else if(renderPass == 2 && dog.talents.getLevel("wolfmount") > 0) {
+        else if(renderPass == 4 && dog.talents.getLevel("wolfmount") > 0) {
         	this.bindTexture(ResourceLib.MOB_LAYER_SADDLE);
-            GL11.glColor3f(brightness, brightness, brightness);
+        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
         else if(renderPass == 1 && dog.hasCape()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
-        	GL11.glColor3f(brightness, brightness, brightness);
+        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
-        else if(renderPass == 1 && dog.hasSunglases()) {
+        else if(renderPass == 6 && dog.hasSunglases()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
-        	GL11.glColor3f(brightness, brightness, brightness);
+        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
         else
@@ -114,6 +139,7 @@ public class RenderDog extends RenderLiving {
         }
     }
     
+    @Override
     protected void preRenderCallback(EntityLivingBase p_77041_1_, float p_77041_2_)
     {
         this.preRenderCallback((EntityDog)p_77041_1_, p_77041_2_);
@@ -127,8 +153,6 @@ public class RenderDog extends RenderLiving {
     	
         return ResourceLib.MOB_DOG_WILD;
     }
-    //TODO
-    
     
     @Override
     protected void func_96449_a(EntityLivingBase entityLivingBase, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {

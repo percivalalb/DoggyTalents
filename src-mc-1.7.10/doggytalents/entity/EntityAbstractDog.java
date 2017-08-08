@@ -3,6 +3,7 @@ package doggytalents.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.api.DoggyTalentsAPI;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -37,7 +38,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
 	@Override
 	protected void updateAITick() {
-        
+        super.updateAITick();
     }
 	
 	@Override
@@ -49,6 +50,11 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
     public boolean isAIEnabled() {
         return true;
+    }
+	
+	@Override
+	protected void func_145780_a(int x, int y, int z, Block block) {
+        this.playSound("mob.wolf.step", 0.15F, 1.0F);
     }
 
 	@Override

@@ -562,13 +562,25 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
                 	if(!this.worldObj.isRemote) {
-                		if(this.hasCollar()) {
+                		if(this.hasCollar() || this.hasCape() || this.hasSunglasses()) {
                 			this.reversionTime = 40;
-                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
-                			collarDrop.setTagCompound(new NBTTagCompound());
-                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
-                	     	this.entityDropItem(collarDrop, 1);
-                	     	this.setCollarColour(-2);
+                			if(this.hasCollar()) {
+	                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
+	                			collarDrop.setTagCompound(new NBTTagCompound());
+	                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
+	                	     	this.entityDropItem(collarDrop, 1);
+	                	     	this.setCollarColour(-2);
+                			}
+                			
+                			if(this.hasCape()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.CAPE, 1, 0), 1);
+	                	     	this.hasCape(false);
+                			}
+                			
+                			if(this.hasSunglasses()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.SUNGLASSES, 1, 0), 1);
+	                	     	this.hasSunglasses(false);
+                			}
                 		}
                 		else if(this.reversionTime < 1) {
                 			this.setTamed(false);

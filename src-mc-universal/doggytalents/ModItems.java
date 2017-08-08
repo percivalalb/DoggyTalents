@@ -38,6 +38,8 @@ public class ModItems {
     public static Item WHISTLE;
     public static Item TREAT_BAG;
     public static Item CHEW_STICK;
+    public static Item CAPE;
+	public static Item SUNGLASSES;
 	
 	public static void onRegister(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -56,6 +58,8 @@ public class ModItems {
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
 	    TREAT_BAG = VersionControl.createObject("ItemTreatBagWrapper", ItemTreatBag.class).setUnlocalizedName("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
 	    CHEW_STICK = new ItemDT().setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
+	    CAPE = new ItemDT().setUnlocalizedName("doggytalents.cape").setRegistryName(Reference.MOD_ID + ":cape");
+	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	    
 		ObjectLib.METHODS.registerItem(registry, THROW_BONE);
 	    ObjectLib.METHODS.registerItem(registry, TRAINING_TREAT);
@@ -72,6 +76,8 @@ public class ModItems {
 	    ObjectLib.METHODS.registerItem(registry, WHISTLE);
 	    ObjectLib.METHODS.registerItem(registry, TREAT_BAG);
 	    ObjectLib.METHODS.registerItem(registry, CHEW_STICK);
+	    ObjectLib.METHODS.registerItem(registry, CAPE);
+	    ObjectLib.METHODS.registerItem(registry, SUNGLASSES);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -92,5 +98,7 @@ public class ModItems {
 		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
 		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
 		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");
+		ModelHelper.setModel(CAPE, 0, "doggytalents:cape");
+		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
 	}
 }

@@ -4,9 +4,12 @@ import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.layer.LayerBone;
+import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
+import doggytalents.client.renderer.entity.layer.LayerSaddle;
+import doggytalents.client.renderer.entity.layer.LayerSunglasses;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,6 +31,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
+        this.addLayer(new LayerSunglasses(this));
+        this.addLayer(new LayerCape(this));
+        this.addLayer(new LayerSaddle(this));
     }
 
     @Override

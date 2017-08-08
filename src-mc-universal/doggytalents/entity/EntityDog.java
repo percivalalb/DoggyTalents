@@ -90,6 +90,8 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> CAPE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> SUNGLASSES = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -192,6 +194,8 @@ public class EntityDog extends EntityAbstractDog {
         this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
         this.dataManager.register(BOWL_POS, Optional.absent());
         this.dataManager.register(BED_POS, Optional.absent());
+        this.dataManager.register(CAPE, false);
+        this.dataManager.register(SUNGLASSES, false);
     }
 
     @Override
@@ -210,6 +214,8 @@ public class EntityDog extends EntityAbstractDog {
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
+        tagCompound.setBoolean("sunglasses", this.hasSunglasses());
+        tagCompound.setBoolean("cape", this.hasCape());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -230,6 +236,8 @@ public class EntityDog extends EntityAbstractDog {
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
+        this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
+        this.setHasCape(tagCompound.getBoolean("cape"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -523,6 +531,18 @@ public class EntityDog extends EntityAbstractDog {
                  	
                    	if(!player.capabilities.isCreativeMode)
                    		ObjectLib.STACK_UTIL.shrink(stack, 1);
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
+                	this.setHasCape(true);
+                	if(!player.capabilities.isCreativeMode)
+                		ObjectLib.STACK_UTIL.shrink(stack, 1);
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) { 
+                	this.setHasSunglasses(true);
+                	if(!player.capabilities.isCreativeMode)
+                		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
                 else if(stack.getItem() instanceof IDogTreat && this.canInteract(player) && !this.isIncapacicated()) {
@@ -876,6 +896,22 @@ public class EntityDog extends EntityAbstractDog {
     
     public boolean hasBone() {
     	return ((Boolean)this.dataManager.get(HAS_BONE)).booleanValue();
+    }
+    
+    public void setHasSunglasses(boolean hasSunglasses) {
+    	this.dataManager.set(SUNGLASSES, hasSunglasses);
+    }
+    
+    public boolean hasSunglasses() {
+    	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
+    }
+    
+    public void setHasCape(boolean hasCape) {
+    	this.dataManager.set(CAPE, hasCape);
+    }
+    
+    public boolean hasCape() {
+    	return ((Boolean)this.dataManager.get(CAPE)).booleanValue();
     }
 
     @Override

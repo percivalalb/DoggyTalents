@@ -244,6 +244,12 @@ dogbed.casing.natura:overworld_planks.6=Hopspeed Plank Casing
 dogbed.casing.natura:overworld_planks.7=Sakura Plank Casing
 dogbed.casing.natura:overworld_planks.8=Redwood Plank Casing
 
+dogbed.casing.botania:shimmerwoodplanks.0=Shimmerwood Plank Casing
+dogbed.casing.botania:livingwood.1=Livingwood Plank Casing
+dogbed.casing.botania:livingwood.2=Mossy Livingwood Plank Casing
+dogbed.casing.botania:dreamwood.1=Livingwood Plank Casing
+dogbed.casing.botania:dreamwood.2=Mossy Livingwood Plank Casing
+
 dogtreat.levelup=Повышение!
 dogtreat.tooyoung=Эта собака ещё молода для приобретения навыков.
 dogtreat.leveltoohigh=Ваша собака имеет слишком высокий уровень, чтобы получать опыт от этих Пряностей.

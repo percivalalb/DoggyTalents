@@ -11,6 +11,9 @@ Update List Key
 MC 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.1.*** | WIP
++ Added support for the wooden planks from Botania mod to be used as casing in dog bed
+
 1.14.1.240 | 6th August 2017
 + Added support for MC 1.12.1
 * Fixed dog bed dropping in creative mode

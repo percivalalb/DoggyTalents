@@ -839,17 +839,11 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public void setFriendlyFire(boolean flag) {
-    	int BIT = 2; //Starts at 0
-    	
-    	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(flag) in |= (1 << BIT);
-    	else in &= ~(1 << BIT);
-    	this.dataWatcher.updateObject(25, in);
+    	this.setCustomData(2, flag);
     }
     
     public boolean canFriendlyFire() {
-    	int BIT = 2; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
+    	return this.getCustomData(2);
     }
     
     public int points() {
@@ -900,58 +894,45 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public void hasRadarCollar(boolean flag) {
-    	int BIT = 1; //Starts at 0
-    	
+    	this.setCustomData(1, flag);
+    }
+    
+    public boolean hasRadarCollar() {
+      	return this.getCustomData(1);
+    }
+    
+	public void hasCape(boolean hasCape) {
+		this.setCustomData(3, hasCape);
+    }
+    
+    public boolean hasCape() {
+    	return this.getCustomData(3);
+    }
+    
+    public void hasSunglases(boolean hasSunglases) {
+    	this.setCustomData(4, hasSunglases);
+    }
+    
+    public boolean hasSunglases() {
+    	return this.getCustomData(4);
+    }
+    
+    public void setHasBone(boolean hasBone) {
+    	this.setCustomData(0, hasBone);
+    }
+    
+    public boolean hasBone() {
+    	return this.getCustomData(0);
+    }
+    
+    public void setCustomData(int BIT, boolean flag) {
     	int in = this.dataWatcher.getWatchableObjectInt(25);
     	if(flag) in |= (1 << BIT);
     	else in &= ~(1 << BIT);
     	this.dataWatcher.updateObject(25, in);
     }
     
-    public boolean hasRadarCollar() {
-     	int BIT = 1; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
-    }
-    
-	public void hasCape(boolean hasCape) {
-    	int BIT = 3; //Starts at 0
-    	
-    	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(hasCape) in |= (1 << BIT);
-    	else in &= ~(1 << BIT);
-    	this.dataWatcher.updateObject(25, in);
-    }
-    
-    public boolean hasCape() {
-     	int BIT = 3; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
-    }
-    
-    public void hasSunglases(boolean hasSunglases) {
-    	int BIT = 4; //Starts at 0
-    	
-    	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(hasSunglases) in |= (1 << BIT);
-    	else in &= ~(1 << BIT);
-    	this.dataWatcher.updateObject(25, in);
-    }
-    
-    public boolean hasSunglases() {
-     	int BIT = 4; //Starts at 0
-    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
-    }
-    
-    public void setHasBone(boolean hasBone) {
-    	int BIT = 0; //Starts at 0
-    	
-    	int in = this.dataWatcher.getWatchableObjectInt(25);
-    	if(hasBone) in |= (1 << BIT);
-    	else in &= ~(1 << BIT);
-    	this.dataWatcher.updateObject(25, in);
-    }
-    
-    public boolean hasBone() {
-    	int BIT = 0; //Starts at 0
+    public boolean getCustomData(int BIT) {
     	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
     }
 

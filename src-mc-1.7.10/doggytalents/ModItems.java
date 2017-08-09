@@ -1,19 +1,17 @@
 package doggytalents;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import doggytalents.item.ItemCape;
+import doggytalents.item.ItemCape2;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemRadar;
-import doggytalents.item.ItemSunglasses;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
-import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
 
 /**
@@ -37,7 +35,9 @@ public class ModItems {
     public static Item TREAT_BAG;
     public static Item CHEW_STICK;
     public static Item CAPE;
+    public static Item CAPE1;
 	public static Item SUNGLASSES;
+	public static Item LEATHER_JACKET;
 	
 	public static void init() {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -56,8 +56,10 @@ public class ModItems {
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle");
 	    TREAT_BAG =  new ItemTreatBag().setUnlocalizedName("doggytalents.treatbag");
 	    CHEW_STICK = new ItemDT("chew_stick").setUnlocalizedName("doggytalents.chewstick");
-	    CAPE = new ItemCape().setUnlocalizedName("doggytalents.cape");
-	    SUNGLASSES = new ItemSunglasses().setUnlocalizedName("doggytalents.sunglasses");
+	    CAPE = new ItemDT("cape").setUnlocalizedName("doggytalents.cape");
+	    SUNGLASSES = new ItemDT("sunglasses").setUnlocalizedName("doggytalents.sunglasses");
+	    CAPE1 = new ItemCape2().setUnlocalizedName("doggytalents.cape1");
+	    LEATHER_JACKET = new ItemDT("leather_jacket").setUnlocalizedName("doggytalents.leather_jacket");
 	    
 		GameRegistry.registerItem(THROW_BONE, "throw_bone");
 	    GameRegistry.registerItem(TRAINING_TREAT, "training_treat");
@@ -76,5 +78,7 @@ public class ModItems {
 	    GameRegistry.registerItem(CHEW_STICK, "chew_stick");
 	    GameRegistry.registerItem(CAPE, "cape");
 	    GameRegistry.registerItem(SUNGLASSES, "sunglasses");
+	    GameRegistry.registerItem(CAPE1, "cape1");
+	    GameRegistry.registerItem(LEATHER_JACKET, "leather_jacket");
 	}
 }

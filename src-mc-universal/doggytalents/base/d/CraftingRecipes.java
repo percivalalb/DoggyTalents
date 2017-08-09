@@ -18,5 +18,6 @@ public class CraftingRecipes {
 	public static void onRegister(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new RecipeDogBed().setRegistryName(Reference.MOD_ID + ":dogbed"));
 		event.getRegistry().register(new RecipeDogCollar().setRegistryName(Reference.MOD_ID + ":dogcollar"));
+		event.getRegistry().register(new RecipeDogCape().setRegistryName(Reference.MOD_ID + ":dogcape"));
 	}
 }

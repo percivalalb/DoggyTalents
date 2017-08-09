@@ -26,8 +26,10 @@ item.doggytalents.radar.name=雷达
 item.doggytalents.whistle.name=口哨
 item.doggytalents.treatbag.name=奖励袋
 item.doggytalents.chewstick.name=磨牙棒
-item.doggytalents.cape.name=Dog Cape
+item.doggytalents.cape.name=Fancy Cape
 item.doggytalents.sunglasses.name=Dog Sunglasses
+item.doggytalents.capecoloured.name=Coloured Cape
+item.doggytalents.leatherjacket.name=Leather Jacket
 
 doggui.talentname.blackpelt=致命一击
 doggui.talentname.guarddog=看门狗

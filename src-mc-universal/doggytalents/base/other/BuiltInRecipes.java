@@ -34,5 +34,6 @@ public class BuiltInRecipes {
 	
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogBed", IRecipe.class));
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCollar", IRecipe.class));
+        GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCape", IRecipe.class));
 	}
 }

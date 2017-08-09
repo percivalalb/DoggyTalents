@@ -3,6 +3,7 @@ package doggytalents;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.client.model.ModelHelper;
+import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
@@ -39,7 +40,9 @@ public class ModItems {
     public static Item TREAT_BAG;
     public static Item CHEW_STICK;
     public static Item CAPE;
+    public static Item CAPE_COLOURED;
 	public static Item SUNGLASSES;
+	public static Item LEATHER_JACKET;
 	
 	public static void onRegister(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -60,6 +63,8 @@ public class ModItems {
 	    CHEW_STICK = new ItemDT().setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
 	    CAPE = new ItemDT().setUnlocalizedName("doggytalents.cape").setRegistryName(Reference.MOD_ID + ":cape");
 	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
+	    CAPE_COLOURED = new ItemCapeColoured().setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
+	 	LEATHER_JACKET = new ItemDT().setUnlocalizedName("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
 	    
 		ObjectLib.METHODS.registerItem(registry, THROW_BONE);
 	    ObjectLib.METHODS.registerItem(registry, TRAINING_TREAT);
@@ -78,6 +83,8 @@ public class ModItems {
 	    ObjectLib.METHODS.registerItem(registry, CHEW_STICK);
 	    ObjectLib.METHODS.registerItem(registry, CAPE);
 	    ObjectLib.METHODS.registerItem(registry, SUNGLASSES);
+	    ObjectLib.METHODS.registerItem(registry, CAPE_COLOURED);
+	    ObjectLib.METHODS.registerItem(registry, LEATHER_JACKET);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -100,5 +107,7 @@ public class ModItems {
 		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");
 		ModelHelper.setModel(CAPE, 0, "doggytalents:cape");
 		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
+		ModelHelper.setModel(CAPE_COLOURED, 0, "doggytalents:cape_coloured");
+		ModelHelper.setModel(LEATHER_JACKET, 0, "doggytalents:leather_jacket");
 	}
 }

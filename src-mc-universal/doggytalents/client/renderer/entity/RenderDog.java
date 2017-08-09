@@ -61,7 +61,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     protected ResourceLocation getEntityTexture(EntityDog dog) {
         if(dog.isTamed())
-			return ResourceLib.MOB_DOG_TAME;
+			return ResourceLib.getTameSkin(dog.getTameSkin());
     	
         return ResourceLib.MOB_DOG_WILD;
     }

@@ -26,8 +26,10 @@ item.doggytalents.radar.name=Радар
 item.doggytalents.whistle.name=Свисток
 item.doggytalents.treatbag.name=Мешочек с Пряностями
 item.doggytalents.chewstick.name=Жевательная Кость
-item.doggytalents.cape.name=Dog Cape
+item.doggytalents.cape.name=Fancy Cape
 item.doggytalents.sunglasses.name=Dog Sunglasses
+item.doggytalents.capecoloured.name=Coloured Cape
+item.doggytalents.leatherjacket.name=Leather Jacket
 
 doggui.talentname.blackpelt=Прочная Шкура
 doggui.talentname.guarddog=Телохранитель

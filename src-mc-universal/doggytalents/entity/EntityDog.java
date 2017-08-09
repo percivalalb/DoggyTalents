@@ -80,7 +80,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class EntityDog extends EntityAbstractDog {
 	
-	//public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
+	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
 	public static final DataParameter<Integer> COLLAR_COLOUR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
@@ -90,7 +90,7 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> CAPE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Integer> CAPE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> SUNGLASSES = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -182,6 +182,7 @@ public class EntityDog extends EntityAbstractDog {
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
+        this.dataManager.register(DOG_TEXTURE, (byte)0);
         this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS, "");
         this.dataManager.register(HUNGER, Integer.valueOf(60));
@@ -194,7 +195,7 @@ public class EntityDog extends EntityAbstractDog {
         this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
         this.dataManager.register(BOWL_POS, Optional.absent());
         this.dataManager.register(BED_POS, Optional.absent());
-        this.dataManager.register(CAPE, false);
+        this.dataManager.register(CAPE, -2);
         this.dataManager.register(SUNGLASSES, false);
     }
 
@@ -208,14 +209,14 @@ public class EntityDog extends EntityAbstractDog {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setString("version", Reference.MOD_VERSION);
         
-        //TODO tagCompound.setInteger("doggyTex", this.getTameSkin());
+        tagCompound.setInteger("doggyTex", this.getTameSkin());
         tagCompound.setInteger("collarColour", this.getCollarColour());
         tagCompound.setInteger("dogHunger", this.getDogHunger());
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
         tagCompound.setBoolean("sunglasses", this.hasSunglasses());
-        tagCompound.setBoolean("cape", this.hasCape());
+        tagCompound.setInteger("capeData", this.getCapeData());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -229,15 +230,14 @@ public class EntityDog extends EntityAbstractDog {
         super.readEntityFromNBT(tagCompound);
 
         String lastVersion = tagCompound.getString("version");
-        //TODO this.setTameSkin(tagCompound.getInteger("doggyTex"));
-        if(tagCompound.hasKey("collarColour", 99))
-        	this.setCollarColour(tagCompound.getInteger("collarColour"));
+        this.setTameSkin(tagCompound.getInteger("doggyTex"));
+        if(tagCompound.hasKey("collarColour", 99)) this.setCollarColour(tagCompound.getInteger("collarColour"));
         this.setDogHunger(tagCompound.getInteger("dogHunger"));
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
         this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
-        this.setHasCape(tagCompound.getBoolean("cape"));
+        if(tagCompound.hasKey("capeData", 99)) this.setCapeData(tagCompound.getInteger("capeData"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -341,7 +341,7 @@ public class EntityDog extends EntityAbstractDog {
         		this.dismountRidingEntity();
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
-        if(this.coords.hasBowlPos() && this.foodBowlCheck++ > 50) {
+        if(this.foodBowlCheck++ > 50 && this.coords.hasBowlPos()) {
         	if(this.world.isBlockLoaded(this.coords.getBowlPos()))
         		if(this.world.getBlockState(this.coords.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
         			this.coords.resetBowlPosition();
@@ -534,9 +534,27 @@ public class EntityDog extends EntityAbstractDog {
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
-                	this.setHasCape(true);
+                	this.setFancyCape();
                 	if(!player.capabilities.isCreativeMode)
                 		ObjectLib.STACK_UTIL.shrink(stack, 1);
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.LEATHER_JACKET && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
+                	this.setLeatherJacket();
+                	if(!player.capabilities.isCreativeMode)
+                		ObjectLib.STACK_UTIL.shrink(stack, 1);
+                 	return true;
+                }
+                else if(stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
+                	int colour = -1;
+                	
+                	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("cape_colour"))
+                		colour = stack.getTagCompound().getInteger("cape_colour");
+                	
+                 	this.setCapeData(colour);
+                 	
+                   	if(!player.capabilities.isCreativeMode)
+                   		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) { 
@@ -553,7 +571,7 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
                 	if(!this.world.isRemote) {
-                		if(this.hasCollar() || this.hasCape() || this.hasSunglasses()) {
+                		if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                 			this.reversionTime = 40;
                 			if(this.hasCollar()) {
 	                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
@@ -563,9 +581,22 @@ public class EntityDog extends EntityAbstractDog {
 	                	     	this.setCollarColour(-2);
                 			}
                 			
-                			if(this.hasCape()) {
+                			if(this.hasFancyCape()) {
 	                	     	this.entityDropItem(new ItemStack(ModItems.CAPE, 1, 0), 1);
-	                	     	this.setHasCape(false);
+	                	     	this.setNoCape();
+                			}
+                			
+                			if(this.hasCapeColoured()) {
+                				ItemStack capeDrop = new ItemStack(ModItems.CAPE_COLOURED, 1, 0);
+	                			capeDrop.setTagCompound(new NBTTagCompound());
+	                			capeDrop.getTagCompound().setInteger("cape_colour", this.getCapeData());
+	                	     	this.entityDropItem(capeDrop, 1);
+	                	     	this.setNoCape();
+                			}
+                			
+                			if(this.hasLeatherJacket()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.LEATHER_JACKET, 1, 0), 1);
+	                	     	this.setNoCape();
                 			}
                 			
                 			if(this.hasSunglasses()) {
@@ -831,6 +862,14 @@ public class EntityDog extends EntityAbstractDog {
         return (this.levels.getLevel() + this.levels.getDireLevel()) / 10.0D;
     }
     
+    public int getTameSkin() {
+   	 	return this.dataManager.get(DOG_TEXTURE);
+    }
+
+    public void setTameSkin(int index) {
+   		this.dataManager.set(DOG_TEXTURE, (byte)index);
+    }
+    
     public void setWillObeyOthers(boolean flag) {
     	this.dataManager.set(OBEY_OTHERS, flag);
     }
@@ -918,14 +957,6 @@ public class EntityDog extends EntityAbstractDog {
     	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
     }
     
-    public void setHasCape(boolean hasCape) {
-    	this.dataManager.set(CAPE, hasCape);
-    }
-    
-    public boolean hasCape() {
-    	return ((Boolean)this.dataManager.get(CAPE)).booleanValue();
-    }
-
     @Override
     public boolean shouldAttackEntity(EntityLivingBase entityToAttack, EntityLivingBase owner) {
     	if(TalentHelper.canAttackEntity(this, entityToAttack))
@@ -977,6 +1008,62 @@ public class EntityDog extends EntityAbstractDog {
 	
 	public float[] getCollar() {
 		int argb = this.getCollarColour();
+		
+		int r = (argb >> 16) &0xFF;
+		int g = (argb >> 8) &0xFF;
+		int b = (argb >> 0) &0xFF;
+		
+		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+	}
+	
+	//Cape related functions
+    public int getCapeData() {
+    	return this.dataManager.get(CAPE);
+    }
+    
+    public void setCapeData(int rgb) {
+    	this.dataManager.set(CAPE, rgb);
+    }
+    
+    public boolean hasCape() {
+		return this.getCapeData() != -2;
+	}
+    
+	public boolean hasCapeColoured() {
+		return this.getCapeData() >= -1;
+	}
+	
+	public boolean hasFancyCape() {
+		return this.getCapeData() == -3;
+	}
+	
+	public boolean hasLeatherJacket() {
+		return this.getCapeData() == -4;
+	}
+	
+	public boolean isCapeColoured() {
+		return this.getCapeData() >= -1;
+	}
+	
+	public void setFancyCape() {
+		this.setCapeData(-3);
+	}
+	
+	public void setLeatherJacket() {
+		this.setCapeData(-4);
+	}
+	
+	public void setCapeColoured() {
+		this.setCapeData(-1);
+	}
+	
+    public void setNoCape() {
+    	this.setCapeData(-2);
+	}
+	
+	
+	public float[] getCapeColour() {
+		int argb = this.getCapeData();
 		
 		int r = (argb >> 16) &0xFF;
 		int g = (argb >> 8) &0xFF;

@@ -123,8 +123,21 @@ public class RenderDog extends RenderLiving {
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
+        else if(renderPass == 1 && dog.hasCape1()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_CAPE2);
+            if(!dog.hasNoCapeColour()) {
+	            float[] afloat = dog.getCape();
+	            GL11.glColor3f(afloat[0], afloat[1], afloat[2]);
+            }
+            return 1;
+        }
         else if(renderPass == 6 && dog.hasSunglasses()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
+        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
+            return 1;
+        }
+        else if(renderPass == 1 && dog.hasLeatherJacket()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }

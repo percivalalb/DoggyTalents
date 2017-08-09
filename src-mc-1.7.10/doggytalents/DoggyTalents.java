@@ -19,6 +19,7 @@ import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.creativetab.CreativeTabDogBed;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.inventory.RecipeDogBed;
+import doggytalents.inventory.RecipeDogCape;
 import doggytalents.inventory.RecipeDogCollar;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -151,6 +152,7 @@ public class DoggyTalents {
 	
         CraftingManager.getInstance().getRecipeList().add(new RecipeDogBed());
         CraftingManager.getInstance().getRecipeList().add(new RecipeDogCollar());
+        CraftingManager.getInstance().getRecipeList().add(new RecipeDogCape());
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);

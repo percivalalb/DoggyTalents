@@ -58,10 +58,9 @@ public class RenderDog extends RenderLiving {
     public float hackTickTime;
     
     @Override
-    protected void rotateCorpse(EntityLivingBase p_77043_1_, float p_77043_2_, float p_77043_3_, float p_77043_4_)
-    {
-    	super.rotateCorpse(p_77043_1_, p_77043_2_, p_77043_3_, p_77043_4_);
-    	this.hackTickTime = p_77043_4_;
+    protected void rotateCorpse(EntityLivingBase entity, float p_77043_2_, float p_77043_3_, float partialTickTime) {
+    	super.rotateCorpse(entity, p_77043_2_, p_77043_3_, partialTickTime);
+    	this.hackTickTime = partialTickTime;
     }
     
     @Override
@@ -69,7 +68,7 @@ public class RenderDog extends RenderLiving {
     	EntityDog dog = (EntityDog)entity;
     	super.renderModel(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
     	
-    	for (int i = 4; i < 8; ++i)
+    	for (int i = 4; i < 9; ++i)
         {
             int j = this.shouldRenderPass(entity, i, this.hackTickTime);
 
@@ -123,7 +122,7 @@ public class RenderDog extends RenderLiving {
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
-        else if(renderPass == 1 && dog.hasCape1()) {
+        else if(renderPass == 6 && dog.hasCape1()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_CAPE2);
             if(!dog.hasNoCapeColour()) {
 	            float[] afloat = dog.getCape();
@@ -136,7 +135,7 @@ public class RenderDog extends RenderLiving {
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
-        else if(renderPass == 1 && dog.hasLeatherJacket()) {
+        else if(renderPass == 7 && dog.hasLeatherJacket()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
@@ -145,18 +144,14 @@ public class RenderDog extends RenderLiving {
             return -1;
     }
     
-    protected void preRenderCallback(EntityDog dog, float p_77041_2_)
-    {
+    @Override
+    protected void preRenderCallback(EntityLivingBase entity, float partialTickTime) {
+    	EntityDog dog = (EntityDog)entity;
+    	
     	if(dog.talents.getLevel("wolfmount") > 0) {
-    		float size = 1.0F + dog.talents.getLevel("wolfmount")/11F;
+    		float size = 1.0F + dog.talents.getLevel("wolfmount") / 11F;
         	GL11.glScalef(size, size, size);
         }
-    }
-    
-    @Override
-    protected void preRenderCallback(EntityLivingBase p_77041_1_, float p_77041_2_)
-    {
-        this.preRenderCallback((EntityDog)p_77041_1_, p_77041_2_);
     }
     
     protected ResourceLocation getEntityTexture(Entity entity) {

@@ -135,7 +135,8 @@ public class RenderDog extends RenderLiving {
     protected void preRenderCallback(EntityDog dog, float p_77041_2_)
     {
     	if(dog.talents.getLevel("wolfmount") > 0) {
-        	GL11.glScalef(1.4F, 1.4F, 1.4F);
+    		float size = 1.0F + dog.talents.getLevel("wolfmount")/11F;
+        	GL11.glScalef(size, size, size);
         }
     }
     

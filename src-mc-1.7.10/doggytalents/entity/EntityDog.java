@@ -1024,7 +1024,8 @@ public class EntityDog extends EntityAbstractDog {
         	float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
             float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
             float f2 = 0.7F * 0.7F;
-            this.riddenByEntity.setPosition(this.posX + (double)(f2 * f), this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ - (double)(f2 * f1));
+            float Ysize = (float)((this.talents.getLevel("wolfmount"))/11.0F);
+            this.riddenByEntity.setPosition(this.posX + (double)(f2 * f), this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + Ysize, this.posZ - (double)(f2 * f1));
         }
     }
 

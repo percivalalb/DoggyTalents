@@ -3,6 +3,7 @@ package doggytalents.client.renderer.entity;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.renderer.entity.layer.LayerArmor;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
@@ -26,14 +27,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderDog extends RenderLiving<EntityDog> {
 	
     public RenderDog(RenderManager renderManagerIn) {
-        super(renderManagerIn, new ModelDog(), 0.5F);
+        super(renderManagerIn, new ModelDog(0.0F), 0.5F);
         this.addLayer(new LayerCape(this));
         this.addLayer(new LayerRadioCollar(this));
         this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
-        this.addLayer(new LayerSaddle(this));
+        //this.addLayer(new LayerSaddle(this));
+        this.addLayer(new LayerArmor(this));
     }
 
     @Override

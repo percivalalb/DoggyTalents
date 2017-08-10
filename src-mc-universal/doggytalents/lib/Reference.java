@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.helper.ReflectionUtil;
+
 /**
  * @author ProPercivalalb
  */
@@ -17,4 +19,12 @@ public class Reference {
 	public static final String       GUI_FACTORY      = "${GUI_FACTORY}";//doggytalents.base.d.GuiFactory
 	
 	public static final boolean		 DEBUG 			  = false;
+	
+	public static boolean IS_DEV_ENVIR = false;
+	
+	static {
+		if(ReflectionUtil.getClass("doggytalents.base.c.RegistrySubscriber") != null && ReflectionUtil.getClass("doggytalents.base.b.RegistrySubscriber") != null)
+			IS_DEV_ENVIR = true;
+		
+	}
 }

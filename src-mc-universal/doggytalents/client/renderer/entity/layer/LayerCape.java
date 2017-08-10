@@ -26,8 +26,8 @@ public class LayerCape implements LayerRenderer<EntityDog> {
         if(dog.hasCape()) {
         	if(dog.hasCapeColoured()) {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
-        		if(!dog.hasNoColour()) {
-    	            float[] afloat = dog.getCollar();
+        		if(dog.isCapeColoured()) {
+    	            float[] afloat = dog.getCapeColour();
     	            GlStateManager.color(afloat[0], afloat[1], afloat[2]);
                 }
         	}

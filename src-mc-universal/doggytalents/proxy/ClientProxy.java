@@ -82,6 +82,18 @@ public class ClientProxy extends CommonProxy {
 			}
 			
 		}, ModItems.WOOL_COLLAR);
+		
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+
+		@Override
+			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+				if(stack.hasTagCompound())
+					if(stack.getTagCompound().hasKey("cape_colour"))
+						return stack.getTagCompound().getInteger("cape_colour");
+				return -1;
+			}
+			
+		}, ModItems.CAPE_COLOURED);
 	}
 	
 	@Override

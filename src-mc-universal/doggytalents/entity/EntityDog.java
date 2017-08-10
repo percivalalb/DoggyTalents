@@ -1042,7 +1042,7 @@ public class EntityDog extends EntityAbstractDog {
 	}
 	
 	public boolean isCapeColoured() {
-		return this.getCapeData() >= -1;
+		return this.getCapeData() > -1;
 	}
 	
 	public void setFancyCape() {

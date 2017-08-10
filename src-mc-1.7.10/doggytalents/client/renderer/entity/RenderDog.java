@@ -9,11 +9,14 @@ import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -22,9 +25,14 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderDog extends RenderLiving {
 	
+	public ModelDog modelDogMain;
+    public ModelDog modelDogArmor;
+    
 	public RenderDog() {
-        super(new ModelDog(), 0.5F);
-        this.setRenderPassModel(new ModelDog());
+        super(new ModelDog(0.0F), 0.5F);
+        this.modelDogMain = (ModelDog)this.mainModel;
+        this.modelDogArmor = new ModelDog(0.5F);
+        this.setRenderPassModel(modelDogMain);
     }
 
     @Override
@@ -68,7 +76,7 @@ public class RenderDog extends RenderLiving {
     	EntityDog dog = (EntityDog)entity;
     	super.renderModel(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
     	
-    	for (int i = 4; i < 9; ++i)
+    	for (int i = 4; i < 10; ++i)
         {
             int j = this.shouldRenderPass(entity, i, this.hackTickTime);
 
@@ -86,6 +94,7 @@ public class RenderDog extends RenderLiving {
     @Override
     protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTickTime) {
     	EntityDog dog = (EntityDog)entity;
+    	ModelDog modelArmor = renderPass == 1 ? this.modelDogMain : this.modelDogArmor;
     	
         float brightness = dog.getBrightness(partialTickTime) * dog.getShadingWhileWet(partialTickTime);
     	
@@ -112,11 +121,6 @@ public class RenderDog extends RenderLiving {
             }
             return 1;
         }
-        else if(renderPass == 4 && dog.talents.getLevel("wolfmount") > 0) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_SADDLE);
-        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            return 1;
-        }
         else if(renderPass == 1 && dog.hasCape()) {
         	this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
@@ -130,15 +134,31 @@ public class RenderDog extends RenderLiving {
             }
             return 1;
         }
-        else if(renderPass == 6 && dog.hasSunglasses()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
+        else if(renderPass == 7 && dog.hasCape1()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_CAPE2_1);
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
-        else if(renderPass == 7 && dog.hasLeatherJacket()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
-        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        else if(renderPass == 8 && dog.hasLeatherJacket()) {
+    		this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+    		GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        	return 1;
+    	}
+        else if(renderPass == 6 && dog.hasSunglasses()) {
+        	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
+    		GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
+        }
+        else if(renderPass == 8 && dog.talents.getLevel("guarddog") > 0) {
+        	
+        	this.bindTexture(ResourceLib.MOB_LAYER_ARMOR);
+            this.setRenderPassModel(modelArmor);
+        	
+        	return 1;
+        }
+        else if(renderPass == 6 && !dog.hasLeatherJacket()) {
+        	this.setRenderPassModel(mainModel);
+        	return 1;
         }
         else
             return -1;

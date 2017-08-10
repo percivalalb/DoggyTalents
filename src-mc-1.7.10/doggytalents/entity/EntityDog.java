@@ -360,10 +360,6 @@ public class EntityDog extends EntityAbstractDog {
                 }
     		}
     	}
-        
-        if(this.talents.getLevel("wolfmount") > 0)
-        	this.setSize(1.2F, 1.2F); // Normal is 0.6F, 0.85F this seems to large
-        
         TalentHelper.onUpdate(this);
     }
     

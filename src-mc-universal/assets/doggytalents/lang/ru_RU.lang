@@ -71,12 +71,40 @@ doggui.talentinfo.rescuedog=Если Ваше здоровье на критич
 doggui.talentinfo.puppyeyes=Этот навык поможет Вашей собаке завоевать сердце любого жителя. Так же есть шанс получения подарка.! При повышении Вы получаете более дорогие подарки. Этот навык может быть использован только раз в 2 дня игры (игровое время). При полном освоении навык может быть использован 1 раз в день.
 doggui.talentinfo.swimmerdog=Собака разрешит кататся на себе в воде и позволяет дышать дольше над водой. Maxing it allows the rider to see easily underwater.
 
+doggui.modename.wandering=Wandering
+doggui.modename.tactical=Tactical
+doggui.modename.aggressive=Aggressive
+doggui.modename.berserker=Berserker
+doggui.modename.docile=Docile
+doggui.modename.patrol=Patrol
+
+doggui.modetip.wandering=(W)
+doggui.modetip.tactical=(T)
+doggui.modetip.aggressive=(A)
+doggui.modetip.berserker=(B)
+doggui.modetip.docile=(D)
+doggui.modetip.patrol=(P)
+doggui.modetip.incapacitated=(I)
+
 doggui.modeinfo.wandering=В этом режиме Ваша собака стоит возле Миски с Едой и ожидает следующей команды. Чтобы "привязать" собаку к миске, просто расположите собаку рядом с миской (1 блок).
 doggui.modeinfo.tactical=В этом режиме Ваша собака будет следовать за Вами, но никого не будет атаковать.
-doggui.modeinfo.aggresive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
+doggui.modeinfo.aggressive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
 doggui.modeinfo.berserker=В этом режиме Ваша собака будет следовать за Вами и атаковать всех мобов без предупреждения.
 doggui.modeinfo.docile=В этом режиме Ваша собака будет следовать за Вами, но игнорировать всех мобов. Так же, в этом режиме, Ваша собака ждет, когда Вы бросите ей косточку.
 doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
+
+doggui.mode.docile.nobowl=No food bowl currently set.
+doggui.mode.docile.bowl=Bowl distance: %d
+
+doggui.prevpage=Previous Page
+doggui.nextpage=Next Page
+doggui.newname=New name:
+doggui.level=Level:
+doggui.leveldire=Dire Level:
+doggui.pointsleft=Points Left:
+doggui.textureindex=Texture Index
+doggui.obeyothers=Obey Others?
+doggui.friendlyfire=Friendly Fire?
 
 dogtalent.puppyeyes.1.part1=Житель: Мимими! Какая прелесть! Позаботься о нём... Эээ, или о ней...
 dogtalent.puppyeyes.1.part2=Сюда, у меня немножечко вкусненькой свининки
@@ -270,6 +298,7 @@ dogcommand.ok=Отлично!
 dogcommand.heel=Ко мне!
 
 entity.doggytalents:dog.name=Пёс
+entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=Рюкзак Пёсика
 container.foodBowl=Миска с Едой

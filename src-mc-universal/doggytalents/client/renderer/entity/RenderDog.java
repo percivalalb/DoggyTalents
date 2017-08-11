@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -76,9 +77,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	String tip = dog.mode.getMode().getTip();
             
     	if(dog.isIncapacicated())
-    		tip = "(I)";
+    		tip = "doggui.modetip.incapacitated";
             
-    	String label = String.format("%s(%d)", tip, dog.getDogHunger());
+    	String label = String.format("%s(%d)", I18n.translateToLocal(tip), dog.getDogHunger());
     	if (distanceFromPlayer <= (double)(64 * 64)) {
     		boolean flag = dog.isSneaking();
     		float f = this.renderManager.playerViewY;
@@ -95,6 +96,8 @@ public class RenderDog extends RenderLiving<EntityDog> {
 	    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
 	    			else if(dog.getOwnerId() != null)
 	          		   	ownerName = dog.getOwnerId().toString();
+	    			else
+	    				ownerName = I18n.translateToLocal("entity.doggytalents:dog.lost.name");
 	    			
 	    			ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
 	    		}

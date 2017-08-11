@@ -34,7 +34,7 @@ public class ModeUtil {
 	}
 	
 	public void setMode(int mode) {	
-		this.dog.getDataManager().set(EntityDog.MODE, mode);
+		this.dog.getDataManager().set(EntityDog.MODE, Math.min(mode, EnumMode.values().length - 1));
 	}
 	
 	protected int getModeID() {
@@ -51,34 +51,48 @@ public class ModeUtil {
 	
 	public enum EnumMode {
 
-		DOCILE("Docile", "(D)"),
-		WANDERING("Wandering", "(W)", false),
-		AGGRESIVE("Aggresive", "(A)"),
-		BERSERKER("Berserker", "(B)"),
-		TACTICAL("Tactical", "(T)");
-		//PATROL("Patrol", "(P)", false);
+		DOCILE("docile"),
+		WANDERING("wandering", false),
+		AGGRESIVE("aggressive"),
+		BERSERKER("berserker"),
+		TACTICAL("tactical");
+		//PATROL("patrol", false);
 		
-		private String tip;
-		private String name;
+		private String unlocalisedTip;
+		private String unlocalisedName;
+		private String unlocalisedInfo;
 		/** By default it is true */
 		public boolean followsOwner;
 		
-		private EnumMode(String name, String tip) {
-			this(name, tip, true);
+		private EnumMode(String name) {
+			this(name, true);
 		}
 		
-		private EnumMode(String name, String tip, boolean followsOwner) {
-			this.name = name;
-			this.tip = tip;
+		private EnumMode(String name, boolean followsOwner) {
+			this("doggui.modename." + name, "doggui.modetip." + name, "doggui.modeinfo." + name, followsOwner);
+		}
+		
+		private EnumMode(String name, String tip, String info) {
+			this(name, tip, info, true);
+		}
+		
+		private EnumMode(String unlocalisedName, String tip, String info, boolean followsOwner) {
+			this.unlocalisedName = unlocalisedName;
+			this.unlocalisedTip = tip;
+			this.unlocalisedInfo = info;
 			this.followsOwner = followsOwner;
 		}
 		
 		public String getTip() {
-			return tip;
+			return this.unlocalisedTip;
 		}
 		
-		public String modeName() {
-			return name;
+		public String getUnlocalisedName() {
+			return this.unlocalisedName;
+		}
+		
+		public String getUnlocalisedInfo() {
+			return this.unlocalisedInfo;
 		}
 		
 		public boolean doesFollowOwner() {

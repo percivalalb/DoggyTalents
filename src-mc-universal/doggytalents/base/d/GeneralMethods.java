@@ -44,19 +44,4 @@ public class GeneralMethods implements IGeneralMethods {
 	public float[] getRGB(EnumDyeColor dyeColor) {
 		return EntitySheep.getDyeRgb(dyeColor);
 	}
-	
-	@Override
-	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
-	}
-	
-	@Override
-	public String translateToLocal(String key) {
-		return I18n.translateToLocal(key);
-	}
-
-	@Override
-	public String translateToLocalFormatted(String key, Object... format) {
-		return I18n.translateToLocalFormatted(key);
-	}
 }

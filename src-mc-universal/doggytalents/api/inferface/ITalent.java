@@ -59,11 +59,11 @@ public abstract class ITalent {
 	}
 	
 	public String getLocalisedName() {
-		return ObjectLib.METHODS.translateToLocal("doggui.talentname." + this.getKey());
+		return ObjectLib.BRIDGE.translateToLocal("doggui.talentname." + this.getKey());
 	}
 	
 	public String getLocalisedInfo() {
-		return ObjectLib.METHODS.translateToLocal("doggui.talentinfo." + this.getKey());
+		return ObjectLib.BRIDGE.translateToLocal("doggui.talentinfo." + this.getKey());
 	}
 	
 	/**

@@ -69,7 +69,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -445,7 +444,7 @@ public class EntityDog extends EntityAbstractDog {
     	if(!TalentHelper.shouldDamageMob(this, entity))
     		return false;
     	
-    	int damage = 4 + (MathHelper.floor(this.effectiveLevel()) + 1) / 2;
+    	int damage = 4 + (ObjectLib.BRIDGE.floor(this.effectiveLevel()) + 1) / 2;
         damage = TalentHelper.attackEntityAsMob(this, entity, damage);
         
         if(entity instanceof EntityZombie)
@@ -511,7 +510,7 @@ public class EntityDog extends EntityAbstractDog {
             	//	this.patrolOutline.clear();
             	//}
             	else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
-            		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
+            		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_DOGGY, this.world, this.getEntityId(), ObjectLib.BRIDGE.floor(this.posY), ObjectLib.BRIDGE.floor(this.posZ));
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
@@ -812,7 +811,7 @@ public class EntityDog extends EntityAbstractDog {
         float f = (this.prevTimeWolfIsHappy + (this.timeWolfIsHappy - this.prevTimeWolfIsHappy) * partialTickTime + offset) / 2.0F;
         if(f < 0.0F) f = 0.0F;
         else if(f > 2.0F) f %= 2.0F;
-        return MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.3F * (float)Math.PI;
+        return ObjectLib.BRIDGE.sin(f * (float)Math.PI * 11.0F) * 0.3F * (float)Math.PI;
     }
 
     @Override
@@ -838,10 +837,10 @@ public class EntityDog extends EntityAbstractDog {
         int amount = 0;
 
         if (this.getDogHunger() > 0) {
-            amount = 40 + 4 * (MathHelper.floor(this.effectiveLevel()) + 1);
+            amount = 40 + 4 * (ObjectLib.BRIDGE.floor(this.effectiveLevel()) + 1);
 
             if (isSitting() && this.talents.getLevel("quickhealer") == 5) {
-                amount += 20 + 2 * (MathHelper.floor(this.effectiveLevel()) + 1);
+                amount += 20 + 2 * (ObjectLib.BRIDGE.floor(this.effectiveLevel()) + 1);
             }
 
             if (!this.isSitting()) {

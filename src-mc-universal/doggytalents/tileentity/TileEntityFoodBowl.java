@@ -10,12 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityFoodBowl extends TileEntity implements ITickable {
+public abstract class TileEntityFoodBowl extends TileEntity implements ITickable {
    
 	public InventoryBasic inventory;
 
@@ -41,8 +40,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
         }
     }
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBTGENERAL(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagList nbttaglist = new NBTTagList();
 

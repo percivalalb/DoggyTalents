@@ -3,6 +3,7 @@ package doggytalents.proxy;
 import java.util.Random;
 
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.model.block.IStateParticleModel;
@@ -20,7 +21,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -71,30 +70,6 @@ public class ClientProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
 		ObjectLibClient.INITIALIZATION.postInit(event);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("collar_colour"))
-						return stack.getTagCompound().getInteger("collar_colour");
-				return -1;
-			}
-			
-		}, ModItems.WOOL_COLLAR);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-		@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("cape_colour"))
-						return stack.getTagCompound().getInteger("cape_colour");
-				return -1;
-			}
-			
-		}, ModItems.CAPE_COLOURED);
 	}
 	
 	@Override
@@ -123,7 +98,7 @@ public class ClientProxy extends CommonProxy {
 			return ObjectLibClient.createGuiPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
+			TileEntity target = ObjectLib.BRIDGE.getTileEntity(world, x, y, z);
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
@@ -156,7 +131,7 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void spawnCustomParticle(EntityPlayer player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
 		TextureAtlasSprite sprite;
 
 		IBlockState state = player.world.getBlockState(pos);

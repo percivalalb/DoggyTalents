@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -72,7 +71,7 @@ public class CommonProxy implements IGuiHandler {
 			return new ContainerPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
+			TileEntity target = ObjectLib.BRIDGE.getTileEntity(world, x, y, z);
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
@@ -103,6 +102,6 @@ public class CommonProxy implements IGuiHandler {
 	
 	public void spawnCrit(World world, Entity entity) {}
 
-	public void spawnCustomParticle(EntityPlayer player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {}
+	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {}
 
 }

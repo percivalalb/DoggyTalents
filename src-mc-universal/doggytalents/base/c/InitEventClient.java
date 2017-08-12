@@ -3,6 +3,7 @@ package doggytalents.base.c;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.base.IInitializationEvent;
+import doggytalents.base.other.ItemColours;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -24,6 +25,6 @@ public class InitEventClient implements IInitializationEvent {
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		
+		ItemColours.postInit(event);
 	}
 }

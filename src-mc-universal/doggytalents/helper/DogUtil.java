@@ -9,15 +9,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class DogUtil {
 
 	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder) {
-    	int i = MathHelper.floor(owner.posX) - 2;
-        int j = MathHelper.floor(owner.posZ) - 2;
-        int k = MathHelper.floor(owner.getEntityBoundingBox().minY);
+    	int i = ObjectLib.BRIDGE.floor(owner.posX) - 2;
+        int j = ObjectLib.BRIDGE.floor(owner.posZ) - 2;
+        int k = ObjectLib.BRIDGE.floor(owner.getEntityBoundingBox().minY);
 
         for(int l = 0; l <= 4; ++l) {
             for(int i1 = 0; i1 <= 4; ++i1) {

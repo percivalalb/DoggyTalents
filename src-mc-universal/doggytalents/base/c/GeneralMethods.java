@@ -26,7 +26,6 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
@@ -66,20 +65,5 @@ public class GeneralMethods implements IGeneralMethods {
 	@Override
 	public float[] getRGB(EnumDyeColor dyeColor) {
 		return EntitySheep.getDyeRgb(dyeColor);
-	}
-	
-	@Override
-	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
-	}
-	
-	@Override
-	public String translateToLocal(String key) {
-		return I18n.translateToLocal(key);
-	}
-
-	@Override
-	public String translateToLocalFormatted(String key, Object... format) {
-		return I18n.translateToLocalFormatted(key);
 	}
 }

@@ -8,6 +8,7 @@ import org.lwjgl.input.Keyboard;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.network.PacketDispatcher;
@@ -25,8 +26,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 
 /**
  * @author ProPercivalalb
@@ -111,7 +110,7 @@ public class GuiDogInfo extends GuiScreen {
         
         this.buttonList.add(new GuiButton(-7, this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canFriendlyFire())));
         
-        this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, I18n.translateToLocal(this.dog.mode.getMode().getUnlocalisedName())));
+        this.buttonList.add(new GuiButton(-6, topX + 40, topY + 25, 60, 20, ObjectLib.BRIDGE.translateToLocal(this.dog.mode.getMode().getUnlocalisedName())));
 	}
 	
 	@Override
@@ -120,17 +119,17 @@ public class GuiDogInfo extends GuiScreen {
 		//Background
 		int topX = this.width / 2;
 		int topY = this.height / 2;
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.newname"), topX - 100, topY + 38, 4210752);
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.level") + " " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.leveldire") + " " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+		this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.newname"), topX - 100, topY + 38, 4210752);
+		this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.level") + " " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
+		this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.leveldire") + " " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
+		this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
+		this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
 		
 	    if(this.dog.isOwner(this.player))
-	    	this.fontRenderer.drawString(I18n.translateToLocal("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
+	    	this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
 	    
-	    this.fontRenderer.drawString(I18n.translateToLocal("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
+	    this.fontRenderer.drawString(ObjectLib.BRIDGE.translateToLocal("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 				
 		for(int i = 0; i < this.btnPerPages; ++i) {
 			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
@@ -165,19 +164,19 @@ public class GuiDogInfo extends GuiScreen {
 		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRenderer));
 	    		}
 	    		else if(button.id == -1) {
-	    			list.add(TextFormatting.ITALIC + I18n.translateToLocal("doggui.prevpage"));
+	    			list.add(TextFormatting.ITALIC + ObjectLib.BRIDGE.translateToLocal("doggui.prevpage"));
 	    		}
 	    		else if(button.id == -2) {
-	    			list.add(TextFormatting.ITALIC + I18n.translateToLocal("doggui.nextpage"));
+	    			list.add(TextFormatting.ITALIC + ObjectLib.BRIDGE.translateToLocal("doggui.nextpage"));
 	    		}
 	    		else if(button.id == -6) {
-    				String str = I18n.translateToLocal(dog.mode.getMode().getUnlocalisedInfo());
+    				String str = ObjectLib.BRIDGE.translateToLocal(dog.mode.getMode().getUnlocalisedInfo());
     				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
     				if(this.dog.mode.isMode(EnumMode.WANDERING)) {
     					if(!this.dog.coords.hasBowlPos())
-    						list.add(TextFormatting.RED + I18n.translateToLocal("doggui.mode.docile.nobowl"));
+    						list.add(TextFormatting.RED + ObjectLib.BRIDGE.translateToLocal("doggui.mode.docile.nobowl"));
     					else 
-    						list.add(TextFormatting.GREEN + I18n.translateToLocalFormatted("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlPos()))));
+    						list.add(TextFormatting.GREEN + ObjectLib.BRIDGE.translateToLocalFormatted("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlPos()))));
     				}
     		
     				
@@ -234,9 +233,9 @@ public class GuiDogInfo extends GuiScreen {
         	int newMode = (dog.mode.getMode().ordinal() + 1) % EnumMode.values().length;
         	EnumMode mode = EnumMode.values()[newMode];
         	if(mode == EnumMode.WANDERING && !this.dog.coords.hasBowlPos())
-        		button.displayString = TextFormatting.RED + I18n.translateToLocal(mode.getUnlocalisedName());
+        		button.displayString = TextFormatting.RED + ObjectLib.BRIDGE.translateToLocal(mode.getUnlocalisedName());
         	else
-        		button.displayString = I18n.translateToLocal(mode.getUnlocalisedName());
+        		button.displayString = ObjectLib.BRIDGE.translateToLocal(mode.getUnlocalisedName());
         	PacketDispatcher.sendToServer(new DogModeMessage(this.dog.getEntityId(), newMode));
         }
 	}

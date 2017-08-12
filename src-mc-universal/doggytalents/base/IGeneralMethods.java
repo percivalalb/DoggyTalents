@@ -16,9 +16,4 @@ public interface IGeneralMethods {
 	
 	public int getColour(EnumDyeColor dyeColor);
 	public float[] getRGB(EnumDyeColor dyeColor);
-	
-	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates);
-	
-	public String translateToLocal(String key);
-	public String translateToLocalFormatted(String key, Object... args);
 }

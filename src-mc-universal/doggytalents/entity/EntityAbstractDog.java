@@ -15,7 +15,6 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -110,7 +109,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 
             if(this.timeWolfIsShaking > 0.4F) {
                 float f = (float)this.getEntityBoundingBox().minY;
-                int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
+                int i = (int)(ObjectLib.BRIDGE.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
 
                 for(int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
@@ -135,9 +134,9 @@ public abstract class EntityAbstractDog extends EntityTameable {
     public float getShakeAngle(float partialTickTime, float p_70923_2_) {
         float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTickTime + p_70923_2_) / 1.8F;
 
-        f = MathHelper.clamp(f, 0.0F, 1.0F);
+        f = ObjectLib.BRIDGE.clamp(f, 0.0F, 1.0F);
 
-        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+        return ObjectLib.BRIDGE.sin(f * (float)Math.PI) * ObjectLib.BRIDGE.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
     }
 
     @SideOnly(Side.CLIENT)

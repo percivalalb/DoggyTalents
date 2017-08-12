@@ -14,7 +14,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
@@ -100,7 +99,7 @@ public class ItemDoggyCharm extends ItemDT {
 
         EntityDog dog = ObjectLib.createDog(worldIn);
 
-        dog.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+        dog.setLocationAndAngles(x, y, z, ObjectLib.BRIDGE.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
         dog.rotationYawHead = dog.rotationYaw;
         dog.renderYawOffset = dog.rotationYaw;
         dog.setTamed(true);

@@ -74,21 +74,23 @@ public class VersionControl {
 	
 	public static int getIndex() {
 		switch(MinecraftForge.MC_VERSION) {
-		case "1.9.4":	return 0;
-		case "1.10.2":	return 1;
-		case "1.11.2":	return 2;
+		case "1.8.9":	return 0;
+		case "1.9.4":	return 1;
+		case "1.10.2":	return 2;
+		case "1.11.2":	return 3;
 		case "1.12":
-		case "1.12.1":	return 3;
-		default:		return 4;
+		case "1.12.1":	return 4;
+		default:		return 5;
 		}
 	}
 	
 	public static String getDirectionBaseOnVersion(int index) { 
 		switch(index) {
-		case 0:		return "doggytalents.base.a";
-		case 1:		return "doggytalents.base.b";
-		case 2:		return "doggytalents.base.c";
-		case 3:		return "doggytalents.base.d";
+		case 0:		return "doggytalents.base.b";
+		case 1:		return "doggytalents.base.c";
+		case 2:		return "doggytalents.base.d";
+		case 3:		return "doggytalents.base.e";
+		case 4:		return "doggytalents.base.f";
 		default:	return "doggytalents.base";
 		}
 	}

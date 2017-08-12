@@ -252,7 +252,7 @@ public class EntityDog extends EntityAbstractDog {
     
     @Override
     protected SoundEvent getAmbientSound() {
-    	SoundEvent sound = TalentHelper.getLivingSound(this);
+    	SoundEvent sound = (SoundEvent)TalentHelper.getLivingSound(this);
         return sound != null ? sound : super.getAmbientSound();
     }
     

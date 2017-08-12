@@ -2,15 +2,15 @@ package doggytalents.base.c;
 
 import doggytalents.ModItems;
 import doggytalents.creativetab.CreativeTabDoggyTalents;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 
 /**
- * 1.11.2 & 1.12 Code
+ * 1.9.4 & 1.10.2 Code
  */
 public class TabDoggyTalents extends CreativeTabDoggyTalents {
 	
 	@Override
-	public ItemStack getTabIconItem() {
-		return new ItemStack(ModItems.TRAINING_TREAT);
+	public Item getTabIconItem() {
+		return ModItems.TRAINING_TREAT;
 	}
 }

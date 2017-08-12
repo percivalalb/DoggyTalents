@@ -35,12 +35,11 @@ import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 1.11.2 Code
+ * 1.9.4 Code
  */
 public class GeneralMethods implements IGeneralMethods {
 
@@ -60,8 +59,8 @@ public class GeneralMethods implements IGeneralMethods {
 	}
 	
 	@Override
-	public int getColour(EnumDyeColor colour) {
-		return colour.getMapColor().colorValue;
+	public int getColour(EnumDyeColor dyeColor) {
+		return dyeColor.getMapColor().colorValue;
 	}
 	
 	@Override
@@ -71,17 +70,7 @@ public class GeneralMethods implements IGeneralMethods {
 	
 	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
-	}
-	
-	@Override
-	public void registerBlock(Object registry, Block block) {
-		((IForgeRegistry<Block>)registry).register(block);
-	}
-	
-	@Override
-	public void registerItem(Object registry, Item item) {
-		((IForgeRegistry<Item>)registry).register(item);
+		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 	
 	@Override

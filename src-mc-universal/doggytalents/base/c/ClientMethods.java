@@ -17,6 +17,7 @@ import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -98,9 +99,9 @@ public class ClientMethods implements IClientMethods {
 	        }
 	    }
 	}
-
+	
 	@Override
 	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha) {
-		RenderGlobal.drawSelectionBoundingBox((AxisAlignedBB)box, red, green, blue, alpha);
+		RenderGlobal.func_181563_a((AxisAlignedBB)box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
 	}
 }

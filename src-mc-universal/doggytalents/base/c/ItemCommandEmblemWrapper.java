@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class ItemCommandEmblemWrapper extends ItemCommandEmblem {
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		return this.onItemRightClickGENERAL(worldIn, playerIn, handIn);
 	}
 }

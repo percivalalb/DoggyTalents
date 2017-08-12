@@ -11,7 +11,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class RecipeDogCollar implements IRecipe {
@@ -124,15 +123,15 @@ public class RecipeDogCollar implements IRecipe {
     }
 
 	@Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
 
-        for(int i = 0; i < nonnulllist.size(); ++i) {
+        for (int i = 0; i < aitemstack.length; ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
         }
 
-        return nonnulllist;
+        return aitemstack;
     }
 
 	@Override

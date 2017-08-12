@@ -28,9 +28,9 @@ public class ModBlocks {
 
 	public static void onRegisterBlock(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Blocks");
-		DOG_BED = VersionControl.createObject("BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
-		DOG_BATH = VersionControl.createObject("BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
-		FOOD_BOWL = VersionControl.createObject("BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
+		DOG_BED = VersionControl.createObject("BlockWrapper$BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
+		DOG_BATH = VersionControl.createObject("BlockWrapper$BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
+		FOOD_BOWL = VersionControl.createObject("BlockWrapper$BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
@@ -40,16 +40,16 @@ public class ModBlocks {
 		DOG_BATH.setHarvestLevel("pickaxe", 0);
 		FOOD_BOWL.setHarvestLevel("pickaxe", 0);
 		
-		ObjectLib.METHODS.registerBlock(registry, DOG_BED);
-		ObjectLib.METHODS.registerBlock(registry, DOG_BATH);
-		ObjectLib.METHODS.registerBlock(registry, FOOD_BOWL);
+		ObjectLib.REGISTRY.registerBlock(registry, DOG_BED);
+		ObjectLib.REGISTRY.registerBlock(registry, DOG_BATH);
+		ObjectLib.REGISTRY.registerBlock(registry, FOOD_BOWL);
 	}
 	
 	public static void onRegisterItem(Object registry) {
 		DoggyTalents.LOGGER.info("Registering ItemBlocks");
-		ObjectLib.METHODS.registerItem(registry, VersionControl.createObject("ItemDogBedWrapper", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
-		ObjectLib.METHODS.registerItem(registry, makeItemBlock(DOG_BATH));
-		ObjectLib.METHODS.registerItem(registry, makeItemBlock(FOOD_BOWL));
+		ObjectLib.REGISTRY.registerItem(registry, VersionControl.createObject("ItemDogBedWrapper", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
+		ObjectLib.REGISTRY.registerItem(registry, makeItemBlock(DOG_BATH));
+		ObjectLib.REGISTRY.registerItem(registry, makeItemBlock(FOOD_BOWL));
 	}
 	
 	@SideOnly(Side.CLIENT)

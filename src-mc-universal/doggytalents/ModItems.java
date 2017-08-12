@@ -66,25 +66,25 @@ public class ModItems {
 	    CAPE_COLOURED = new ItemCapeColoured().setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
 	 	LEATHER_JACKET = new ItemDT().setUnlocalizedName("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
 	    
-		ObjectLib.METHODS.registerItem(registry, THROW_BONE);
-	    ObjectLib.METHODS.registerItem(registry, TRAINING_TREAT);
-	    ObjectLib.METHODS.registerItem(registry, SUPER_TREAT);
-	    ObjectLib.METHODS.registerItem(registry, MASTER_TREAT);
-	    ObjectLib.METHODS.registerItem(registry, DIRE_TREAT);
-	    ObjectLib.METHODS.registerItem(registry, BREEDING_BONE);
-	    ObjectLib.METHODS.registerItem(registry, COLLAR_SHEARS);
-	    ObjectLib.METHODS.registerItem(registry, COMMAND_EMBLEM);
-	    ObjectLib.METHODS.registerItem(registry, DOGGY_CHARM);
-	    ObjectLib.METHODS.registerItem(registry, RADIO_COLLAR);
-	    ObjectLib.METHODS.registerItem(registry, WOOL_COLLAR);
-	    ObjectLib.METHODS.registerItem(registry, RADAR);
-	    ObjectLib.METHODS.registerItem(registry, WHISTLE);
-	    ObjectLib.METHODS.registerItem(registry, TREAT_BAG);
-	    ObjectLib.METHODS.registerItem(registry, CHEW_STICK);
-	    ObjectLib.METHODS.registerItem(registry, CAPE);
-	    ObjectLib.METHODS.registerItem(registry, SUNGLASSES);
-	    ObjectLib.METHODS.registerItem(registry, CAPE_COLOURED);
-	    ObjectLib.METHODS.registerItem(registry, LEATHER_JACKET);
+		ObjectLib.REGISTRY.registerItem(registry, THROW_BONE);
+	    ObjectLib.REGISTRY.registerItem(registry, TRAINING_TREAT);
+	    ObjectLib.REGISTRY.registerItem(registry, SUPER_TREAT);
+	    ObjectLib.REGISTRY.registerItem(registry, MASTER_TREAT);
+	    ObjectLib.REGISTRY.registerItem(registry, DIRE_TREAT);
+	    ObjectLib.REGISTRY.registerItem(registry, BREEDING_BONE);
+	    ObjectLib.REGISTRY.registerItem(registry, COLLAR_SHEARS);
+	    ObjectLib.REGISTRY.registerItem(registry, COMMAND_EMBLEM);
+	    ObjectLib.REGISTRY.registerItem(registry, DOGGY_CHARM);
+	    ObjectLib.REGISTRY.registerItem(registry, RADIO_COLLAR);
+	    ObjectLib.REGISTRY.registerItem(registry, WOOL_COLLAR);
+	    ObjectLib.REGISTRY.registerItem(registry, RADAR);
+	    ObjectLib.REGISTRY.registerItem(registry, WHISTLE);
+	    ObjectLib.REGISTRY.registerItem(registry, TREAT_BAG);
+	    ObjectLib.REGISTRY.registerItem(registry, CHEW_STICK);
+	    ObjectLib.REGISTRY.registerItem(registry, CAPE);
+	    ObjectLib.REGISTRY.registerItem(registry, SUNGLASSES);
+	    ObjectLib.REGISTRY.registerItem(registry, CAPE_COLOURED);
+	    ObjectLib.REGISTRY.registerItem(registry, LEATHER_JACKET);
 	}
 	
 	@SideOnly(Side.CLIENT)

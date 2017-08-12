@@ -1,6 +1,7 @@
 package doggytalents.base.c;
 
 import doggytalents.tileentity.TileEntityDogBed;
+import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -34,6 +35,14 @@ public class TileEntityWrapper {
 		@Override
 		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
 			this.readFromNBT(pkt.getNbtCompound());
+		}
+	}
+	
+	public static class TileEntityFoodBowlWrapper extends TileEntityFoodBowl {
+		
+		@Override
+		public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+			return this.writeToNBTGENERAL(tag);
 		}
 	}
 }

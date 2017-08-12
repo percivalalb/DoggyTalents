@@ -32,9 +32,9 @@ public class ModBlocks {
 		DOG_BATH = VersionControl.createObject("BlockWrapper$BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
 		FOOD_BOWL = VersionControl.createObject("BlockWrapper$BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
-		GameRegistry.registerTileEntity(VersionControl.chooseClassBasedOnVersion("TileEntityWrapper$TileEntityDogBedWrapper", TileEntityDogBed.class), "doggytalents:dog_bed");
+		GameRegistry.registerTileEntity(ObjectLib.TILE_DOG_BED_CLASS, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
-		GameRegistry.registerTileEntity(VersionControl.chooseClassBasedOnVersion("TileEntityWrapper$TileEntityDogBedWrapper", TileEntityFoodBowl.class), "doggytalents:dog_bowl");
+		GameRegistry.registerTileEntity(ObjectLib.TILE_FOOD_BOWL_CLASS, "doggytalents:dog_bowl");
 		
 		DOG_BED.setHarvestLevel("axe", 0);
 		DOG_BATH.setHarvestLevel("pickaxe", 0);

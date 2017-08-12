@@ -3,6 +3,8 @@ package doggytalents.base;
 import java.lang.reflect.Constructor;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.tileentity.TileEntityDogBed;
+import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.world.World;
 
 public class ObjectLib {
@@ -13,6 +15,9 @@ public class ObjectLib {
 	public static final IRegistryMethods REGISTRY = VersionControl.createObject("RegistryMethods", IRegistryMethods.class);
 	public static final IBridge BRIDGE = VersionControl.createObject("Bridge", IBridge.class);
 
+	public static final Class<TileEntityDogBed> TILE_DOG_BED_CLASS = VersionControl.chooseClassBasedOnVersion("TileEntityWrapper$TileEntityDogBedWrapper", TileEntityDogBed.class);
+	public static final Class<TileEntityFoodBowl> TILE_FOOD_BOWL_CLASS = VersionControl.chooseClassBasedOnVersion("TileEntityWrapper$TileEntityFoodBowlWrapper", TileEntityFoodBowl.class);
+	
 	public static final Class<EntityDog> ENTITY_DOG_CLASS = VersionControl.chooseClassBasedOnVersion("EntityDogWrapper", EntityDog.class);
 	public static final Constructor<EntityDog> ENTITY_DOG_CONSTRUCTOR = VersionControl.getConstructor(ENTITY_DOG_CLASS, World.class);
 	
@@ -25,5 +30,4 @@ public class ObjectLib {
 			return null;
 		}
 	}
-	
 }

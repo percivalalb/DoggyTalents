@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.base.other.BlockDogBathBridge;
+import doggytalents.base.other.BlockDogBedBridge;
+import doggytalents.base.other.BlockFoodBowlBridge;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
@@ -22,7 +25,7 @@ import net.minecraft.world.World;
 
 public class BlockWrapper {
 
-	public static class BlockDogBathWrapper extends BlockDogBath {
+	public static class BlockDogBathWrapper extends BlockDogBathBridge {
 		
 		@Override
 		public boolean canBlockStay(World world, BlockPos pos) {
@@ -31,7 +34,7 @@ public class BlockWrapper {
 		}
 	}
 
-	public static class BlockDogBedWrapper extends BlockDogBed {
+	public static class BlockDogBedWrapper extends BlockDogBedBridge {
 
 		@Override
 		public boolean canBlockStay(World world, BlockPos pos) {
@@ -65,7 +68,7 @@ public class BlockWrapper {
 		}
 	}
 	
-	public static class BlockFoodBowlWrapper extends BlockFoodBowl {
+	public static class BlockFoodBowlWrapper extends BlockFoodBowlBridge {
 
 		@Override
 		public boolean canBlockStay(World world, BlockPos pos) {

@@ -63,7 +63,7 @@ public abstract class TileEntityFoodBowl extends TileEntity implements ITickable
     	//Only run update code every 5 ticks (0.25s)
     	if(++this.timeoutCounter < 5) { return; }
     	
-    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 0.5D + 0.05000000074505806D, this.pos.getZ() + 1.0D).grow(5));
+    	List<EntityDog> dogList = ObjectLib.BRIDGE.getEntitiesWithinAABB(this.world, ObjectLib.ENTITY_DOG_CLASS, this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 5, 5, 5);
 
     	for(EntityDog dog : dogList) {
     		dog.coords.setBowlPos(this.pos);

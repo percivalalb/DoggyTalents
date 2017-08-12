@@ -686,7 +686,7 @@ public class EntityDog extends EntityAbstractDog {
                 }
                 else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < 120 && this.canInteract(player)) {
                 	
-                	InventoryTreatBag treatBag = new InventoryTreatBag(stack);
+                	InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
             		treatBag.openInventory(player);
                 	
                 	int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);

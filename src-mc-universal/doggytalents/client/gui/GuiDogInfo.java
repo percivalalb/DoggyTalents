@@ -11,6 +11,7 @@ import doggytalents.api.registry.TalentRegistry;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.lib.TextFormatting;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogModeMessage;
@@ -157,7 +158,7 @@ public class GuiDogInfo extends GuiScreen {
 	    		List list = new ArrayList();
 	    		if(button.id >= 1 && button.id <= TalentRegistry.getTalents().size()) {
 	    			ITalent talent = TalentRegistry.getTalent(button.id - 1);
-	    			 
+	    			
 			    	list.add(TextFormatting.GREEN + talent.getLocalisedName());
 			    	list.add("Level: " + this.dog.talents.getLevel(talent));
 			    	list.add(TextFormatting.GRAY + "--------------------------------");

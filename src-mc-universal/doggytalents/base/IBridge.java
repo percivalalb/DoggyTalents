@@ -1,5 +1,8 @@
 package doggytalents.base;
 
+import java.util.List;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -12,7 +15,7 @@ public interface IBridge {
 	public Object createBlockPos(int x, int y, int z);
 	
 	public TileEntity getTileEntity(World world, int x, int y, int z);
-	
+	public <T extends Entity> List<T> getEntitiesWithinAABB(World world, Class<? extends T> classEntity, double x, double y, double z, int xG, int yG, int zG);
 	
 	public String translateToLocal(String key);
 	public String translateToLocalFormatted(String key, Object... format);

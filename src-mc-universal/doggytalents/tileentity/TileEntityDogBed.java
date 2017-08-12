@@ -2,6 +2,7 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -37,7 +38,7 @@ public abstract class TileEntityDogBed extends TileEntity implements ITickable {
 	
 	@Override
 	public void update() {
-		List dogs = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 1.0D, this.pos.getZ() + 1.0D).grow(3D, 2D, 3D));
+		List dogs =  ObjectLib.BRIDGE.getEntitiesWithinAABB(this.world, ObjectLib.ENTITY_DOG_CLASS, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 3, 2, 3);
 		 
 	    if (dogs != null && dogs.size() > 0) {
 	    	for (int index = 0; index < dogs.size(); index++) {

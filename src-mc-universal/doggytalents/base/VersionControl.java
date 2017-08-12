@@ -33,7 +33,10 @@ public class VersionControl {
 	}
 	
 	public static <T> T createObject(String name, Class<T> type) {
-		Class<T> path = chooseClassBasedOnVersion(name, type);
+		return createObject(chooseClassBasedOnVersion(name, type));
+	}
+	
+	public static <T> T createObject(Class<T> path) {
 		
 		try {
 			return (T)path.newInstance();

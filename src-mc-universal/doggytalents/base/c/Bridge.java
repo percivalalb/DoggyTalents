@@ -1,7 +1,12 @@
 package doggytalents.base.c;
 
+import java.util.List;
+
 import doggytalents.base.IBridge;
+import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.translation.I18n;
@@ -17,6 +22,11 @@ public class Bridge implements IBridge {
 	@Override
 	public TileEntity getTileEntity(World world, int x, int y, int z) {
 		return world.getTileEntity(new BlockPos(x, y, z));
+	}
+	
+	@Override
+	public <T extends Entity> List<T> getEntitiesWithinAABB(World world, Class<? extends T> classEntity, double x, double y, double z, int xG, int yG, int zG) {
+		return world.getEntitiesWithinAABB(classEntity, new AxisAlignedBB(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).grow(xG, yG, zG));
 	}
 
 	@Override

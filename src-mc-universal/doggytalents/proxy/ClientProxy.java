@@ -28,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -134,10 +135,10 @@ public class ClientProxy extends CommonProxy {
 	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
 		TextureAtlasSprite sprite;
 
-		IBlockState state = player.world.getBlockState(pos);
+		IBlockState state = player.world.getBlockState((BlockPos)pos);
 		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
 		if(model instanceof IStateParticleModel) {
-			state = state.getBlock().getExtendedState(state.getActualState(player.world, pos), player.world, pos);
+			state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
 			sprite = ((IStateParticleModel)model).getParticleTexture(state);
 		} 
 		else
@@ -150,7 +151,7 @@ public class ClientProxy extends CommonProxy {
 			double ySpeed = rand.nextGaussian() * particleSpeed;
 			double zSpeed = rand.nextGaussian() * particleSpeed;
 			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite);
+			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
 			manager.addEffect(particle);
 		}
 	}

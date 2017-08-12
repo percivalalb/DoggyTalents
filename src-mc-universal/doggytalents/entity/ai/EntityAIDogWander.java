@@ -56,7 +56,9 @@ public class EntityAIDogWander extends EntityAIBase {
     private static Vec3d generateRandomPos(EntityDog dog) {
         PathNavigate pathnavigate = dog.getNavigator();
     	Random random = dog.getRNG();
-    	BlockPos bowlPos = dog.coords.getBowlPos();
+    	int bowlPosX = dog.coords.getBowlX();
+    	int bowlPosY = dog.coords.getBowlY();
+    	int bowlPosZ = dog.coords.getBowlZ();
  
     	int xzRange = 5;
     	int yRange = 6;
@@ -69,7 +71,7 @@ public class EntityAIDogWander extends EntityAIBase {
             int i1 = random.nextInt(2 * yRange + 1) - yRange;
             int j1 = random.nextInt(2 * xzRange + 1) - xzRange;
 
-            BlockPos testPos = new BlockPos(l + bowlPos.getX(), i1 + bowlPos.getY(), j1 + bowlPos.getZ());
+            BlockPos testPos = new BlockPos(l + bowlPosX, i1 + bowlPosY, j1 + bowlPosZ);
 
             if(pathnavigate.canEntityStandOnPos(testPos)) {
             	float weight = dog.getBlockPathWeight(testPos);
@@ -83,7 +85,7 @@ public class EntityAIDogWander extends EntityAIBase {
             }
         }
     	
-    	return new Vec3d(bowlPos.getX() + x, bowlPos.getY() + y, bowlPos.getZ() + z);
+    	return new Vec3d(bowlPosX + x, bowlPosY + y, bowlPosZ + z);
     }
     
     @Override

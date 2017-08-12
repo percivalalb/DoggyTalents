@@ -6,7 +6,6 @@ import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
-import doggytalents.helper.ChatUtil;
 import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
@@ -62,7 +61,7 @@ public class CommandMessage extends AbstractServerMessage {
 			    }
 			
 			    if(sucessful)
-			    	player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.come"));
+			    	ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.come");
 			}
 			else if(this.commandId == 2) {
 				for(EntityDog dog : nearEnts) {
@@ -78,7 +77,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				
 		        if(sucessful)
-		        	player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.stay"));
+		        	ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.stay");
 			}
 			else if(this.commandId == 3) {
 				for(EntityDog dog : nearEnts) {
@@ -99,7 +98,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				
 				if(sucessful)
-					player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.ok"));
+					ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.ok");
 			}
 			else if(this.commandId == 4) {
 				for(EntityDog dog : nearEnts) {
@@ -112,7 +111,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 			        
 				if(sucessful)
-					player.sendMessage(ChatUtil.getChatComponentTranslation("dogcommand.heel"));
+					ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.heel");
 			}
 		}
 	}

@@ -1,7 +1,10 @@
 package doggytalents.base.b;
 
+import com.google.common.base.Strings;
+
 import doggytalents.base.IDataTracker;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.util.MathHelper;
 
@@ -19,6 +22,7 @@ public class DataTrackerWrapper implements IDataTracker {
 	
 	@Override
 	public void entityInit() {
+        this.getDataWatcher().addObject(19, new Integer((-2))); //Dog Cape
 		this.getDataWatcher().addObject(20, new Integer((-2))); //Dog Collar
         this.getDataWatcher().addObject(21, new String("")); //Dog Name
         this.getDataWatcher().addObject(22, new String("")); //Talent Data
@@ -28,8 +32,17 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataWatcher().addObject(26, 0); //Texture index
         this.getDataWatcher().addObject(27, new Integer(0)); //Dog Mode
         this.getDataWatcher().addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
-        this.getDataWatcher().addObject(29, new Integer((-2))); //Dog Cape
 		
+	}
+	
+	@Override
+	public void setBegging(boolean flag) {
+		this.setCustomData(5, flag);
+	}
+	
+	@Override
+	public boolean isBegging() {
+		return this.getCustomData(5);
 	}
 
 	@Override
@@ -115,12 +128,12 @@ public class DataTrackerWrapper implements IDataTracker {
 
 	@Override
 	public void setCapeData(int value) {
-		this.getDataWatcher().updateObject(29, value);
+		this.getDataWatcher().updateObject(19, value);
 	}
 
 	@Override
 	public int getCapeData() {
-		return this.getDataWatcher().getWatchableObjectInt(29);
+		return this.getDataWatcher().getWatchableObjectInt(19);
 	}
 	
 	public void setCustomData(int BIT, boolean flag) {
@@ -134,4 +147,122 @@ public class DataTrackerWrapper implements IDataTracker {
     	return (this.getDataWatcher().getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
     }
 
+	@Override
+	public void setLevel(int level) {
+		this.getDataWatcher().updateObject(24, level + ":" + this.getDireLevel());
+	}
+
+	@Override
+	public int getLevel() {
+		return Integer.valueOf(this.getSaveString().split(":")[0]);
+	}
+
+	@Override
+	public void setDireLevel(int level) {
+		this.getDataWatcher().updateObject(24, this.getLevel() + ":" + level);
+	}
+
+	@Override
+	public int getDireLevel() {
+		return Integer.valueOf(this.getSaveString().split(":")[1]);
+	}
+	
+	public String getSaveString() {
+		String saveString = this.dog.getDataWatcher().getWatchableObjectString(24);
+		return Strings.isNullOrEmpty(saveString) ? "0:0" : saveString;
+	}
+
+	@Override
+	public void setModeId(int mode) {
+		this.dog.getDataWatcher().updateObject(27, Math.min(mode, EnumMode.values().length - 1));
+	}
+
+	@Override
+	public int getModeId() {
+		return this.dog.getDataWatcher().getWatchableObjectInt(27);
+	}
+	
+	@Override
+	public void setTalentString(String data) {
+		this.dog.getDataWatcher().updateObject(22, data);
+	}
+
+	@Override
+	public String getTalentString() {
+		return this.dog.getDataWatcher().getWatchableObjectString(22);
+	}
+
+	@Override
+	public boolean hasBowlPos() {
+		return this.getBowlX() != -1 && this.getBowlY() != -1 && this.getBowlZ() != -1;
+	}
+	
+	@Override
+	public boolean hasBedPos() {
+		return this.getBedX() != -1 && this.getBedY() != -1 && this.getBedZ() != -1;
+	}
+
+	@Override
+	public int getBedX() {
+		try{return new Integer(this.getSkillsLevels()[0]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	@Override
+	public int getBedY() {
+		try{return new Integer(this.getSkillsLevels()[1]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	@Override
+	public int getBedZ() {
+		try{return new Integer(this.getSkillsLevels()[2]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	@Override
+	public int getBowlX() {
+		try{return new Integer(this.getSkillsLevels()[3]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	@Override
+	public int getBowlY() {
+		try{return new Integer(this.getSkillsLevels()[4]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	@Override
+	public int getBowlZ() {
+		try{return new Integer(this.getSkillsLevels()[5]);}
+    	catch(Exception e){e.printStackTrace(); return -1;}
+	}
+	
+	private String[] getSkillsLevels() {
+		return this.dog.getDataWatcher().getWatchableObjectString(28).split(":");
+	}
+	
+	@Override
+	public void resetBedPosition() {
+		this.dog.getDataWatcher().updateObject(28, "-1:-1:-1:" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ());
+	}
+	
+	@Override
+	public void resetBowlPosition() {
+		this.dog.getDataWatcher().updateObject(28, getBedX() + ":" +  getBedY() + ":" + getBedZ() + "-:-1:-1:-1");
+	}
+
+	@Override
+	public void setBedPos(int x, int y, int z) {
+		String structure = "";
+		structure = x + ":" + y + ":" + z+ ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
+	
+	@Override
+	public void setBowlPos(int x, int y, int z) {
+		String structure = "";
+		structure = getBedX() + ":" + getBedY() + ":" + getBedZ() + ":" + x+ ":" + y + ":" + z;
+		this.dog.getDataWatcher().updateObject(28, structure);
+	}
 }

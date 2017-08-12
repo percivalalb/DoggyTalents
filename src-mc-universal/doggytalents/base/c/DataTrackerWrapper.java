@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 
 import doggytalents.base.IDataTracker;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class DataTrackerWrapper implements IDataTracker {
 
+	public static final DataParameter<Boolean> BEGGING = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
 	public static final DataParameter<Integer> COLLAR_COLOUR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
@@ -34,11 +36,22 @@ public class DataTrackerWrapper implements IDataTracker {
 	}
 		
 	public EntityDataManager getDataManager() {
-		return this.dog.getDataWatcher();
+		return this.dog.getDataManager();
+	}
+	
+	@Override
+	public void setBegging(boolean flag) {
+		this.getDataManager().set(BEGGING, flag);
+	}
+	
+	@Override
+	public boolean isBegging() {
+		return this.getDataManager().get(BEGGING);
 	}
 	
 	@Override
 	public void entityInit() {
+        this.getDataManager().register(BEGGING, Boolean.valueOf(false));
 		this.getDataManager().register(DOG_TEXTURE, (byte)0);
         this.getDataManager().register(COLLAR_COLOUR, -2);
         this.getDataManager().register(TALENTS, "");
@@ -145,4 +158,114 @@ public class DataTrackerWrapper implements IDataTracker {
     public void setCapeData(int value) {
     	this.getDataManager().set(CAPE, value);
     }
+    
+    @Override
+	public void setLevel(int level) {
+    	this.getDataManager().set(LEVEL, level);
+		
+	}
+
+	@Override
+	public int getLevel() {
+		return this.getDataManager().get(LEVEL);
+	}
+
+	@Override
+	public void setDireLevel(int level) {
+		this.getDataManager().set(LEVEL_DIRE, level);
+	}
+
+	@Override
+	public int getDireLevel() {
+		return this.getDataManager().get(LEVEL_DIRE);
+	}
+
+	@Override
+	public void setModeId(int mode) {
+		this.getDataManager().set(MODE, Math.min(mode, EnumMode.values().length - 1));
+	}
+
+	@Override
+	public int getModeId() {
+		return this.getDataManager().get(MODE);
+	}
+
+	@Override
+	public void setTalentString(String data) {
+		this.getDataManager().set(TALENTS, data);
+	}
+
+	@Override
+	public String getTalentString() {
+		return this.getDataManager().get(TALENTS);
+	}
+
+	@Override
+	public boolean hasBedPos() {
+		return this.getDataManager().get(BED_POS).isPresent();
+	}
+
+	@Override
+	public boolean hasBowlPos() {
+		return this.getDataManager().get(BOWL_POS).isPresent();
+	}
+
+	public BlockPos getBedPos() {
+		return this.getDataManager().get(BED_POS).or(this.dog.world.getSpawnPoint());
+	}
+	
+	public BlockPos getBowlPos() {
+		return this.getDataManager().get(BOWL_POS).or(this.dog.getPosition());
+	}
+	
+	@Override
+	public int getBedX() {
+		return this.getBedPos().getX();
+	}
+
+	@Override
+	public int getBedY() {
+		return this.getBedPos().getY();
+	}
+
+	@Override
+	public int getBedZ() {
+		return this.getBedPos().getZ();
+	}
+
+	@Override
+	public int getBowlX() {
+		return this.getBowlPos().getX();
+	}
+
+	@Override
+	public int getBowlY() {
+		return this.getBowlPos().getY();
+	}
+
+	@Override
+	public int getBowlZ() {
+		return this.getBowlPos().getZ();
+	}
+
+	@Override
+	public void resetBedPosition() {
+		this.getDataManager().set(BED_POS, Optional.absent());
+	}
+
+	@Override
+	public void resetBowlPosition() {
+		this.getDataManager().set(BOWL_POS, Optional.absent());
+	}
+
+	@Override
+	public void setBedPos(int x, int y, int z) {
+		this.getDataManager().set(BED_POS, Optional.fromNullable(new BlockPos(x, y, z)));
+	}
+
+
+	@Override
+	public void setBowlPos(int x, int y, int z) {
+		this.getDataManager().set(BOWL_POS, Optional.fromNullable(new BlockPos(x, y, z)));
+	}
 }

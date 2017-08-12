@@ -82,7 +82,6 @@ public abstract class EntityDog extends EntityAbstractDog {
     public LevelUtil levels;
     public ModeUtil mode;
     public CoordUtil coords;
-    public IDataTracker dataTracker;
     public Map<String, Object> objects;
     
     //Timers
@@ -106,7 +105,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             this.tasks.addTask(1, new EntityAISwimming(this));
             this.tasks.addTask(2, this.aiSit);
             this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-            this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+            this.addAIMeleeAttack(4, 1.0D, true);
             //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
             this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
             this.tasks.addTask(5, this.aiFetchBone);
@@ -126,10 +125,20 @@ public abstract class EntityDog extends EntityAbstractDog {
         
         //TODO this.patrolOutline = new ArrayList<BlockPos>();
         this.objects = new HashMap<String, Object>();
-        this.dataTracker = VersionControl.createObject("DataTracker", IDataTracker.class, EntityDog.class, this);
         TalentHelper.onClassCreation(this);
     }
-
+    
+    public void addAIMeleeAttack(int priority, double speedIn, boolean useLongMemory) {
+    	
+    }
+    
+    //Do not put an override annotation here
+	public abstract boolean isBeingRidden();
+	
+	public abstract void setOwnerUUID(UUID uuid);
+	
+	public abstract UUID getOwnerUUID();
+	
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
@@ -159,11 +168,6 @@ public abstract class EntityDog extends EntityAbstractDog {
         this.coords = new CoordUtil(this);
         
         this.dataTracker.entityInit();
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
     }
 
     @Override
@@ -210,17 +214,6 @@ public abstract class EntityDog extends EntityAbstractDog {
         //Backwards Compatibility
         if(tagCompound.hasKey("dogName"))
         	this.setCustomNameTag(tagCompound.getString("dogName"));
-    }
-    
-    @Override
-    protected SoundEvent getAmbientSound() {
-    	SoundEvent sound = (SoundEvent)TalentHelper.getLivingSound(this);
-        return sound != null ? sound : super.getAmbientSound();
-    }
-    
-    @Override
-    protected ResourceLocation getLootTable() {
-        return LootTableList.ENTITIES_WOLF; //TODO DOG Loot
     }
     
     public EntityAISit getSitAI() {
@@ -304,8 +297,8 @@ public abstract class EntityDog extends EntityAbstractDog {
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
         if(this.foodBowlCheck++ > 50 && this.coords.hasBowlPos()) {
-        	if(this.world.isBlockLoaded(this.coords.getBowlPos()))
-        		if(this.world.getBlockState(this.coords.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
+        	if(ObjectLib.BRIDGE.isBlockLoaded(this.world, this.coords.getBowlX(), this.coords.getBowlY(), this.coords.getBowlZ()))
+        		if(ObjectLib.BRIDGE.getBlock(this.world, this.coords.getBowlX(), this.coords.getBowlY(), this.coords.getBowlZ()) != ModBlocks.FOOD_BOWL)
         			this.coords.resetBowlPosition();
         	
         	this.foodBowlCheck = 0;
@@ -314,7 +307,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         TalentHelper.onLivingUpdate(this);
     }
 
-    @Override
+	@Override
     public void onUpdate() {
         super.onUpdate();
         
@@ -331,7 +324,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         
         if(this.isWolfHappy) {
         	if(this.timeWolfIsHappy % 1.0F == 0.0F)
-        		this.playSound(SoundEvents.ENTITY_WOLF_PANT, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        		ObjectLib.BRIDGE.playSound(this, "mob.wolf.panting", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
         	this.prevTimeWolfIsHappy = this.timeWolfIsHappy;
         	this.timeWolfIsHappy += 0.05F;
         	if (this.prevTimeWolfIsHappy >= 8.0F) {
@@ -348,9 +341,8 @@ public abstract class EntityDog extends EntityAbstractDog {
     			float distanceToOwner = player.getDistanceToEntity(this);
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
-                	if(!this.world.isRemote) {
+                	if(!this.world.isRemote)
                 		this.entityDropItem(new ItemStack(ModItems.THROW_BONE, 1, 1), 0.0F);
-                	}
                 	
                     this.setHasBone(false);
                 }
@@ -437,7 +429,7 @@ public abstract class EntityDog extends EntityAbstractDog {
     /** A general interact handler version specific methods should invoke this method **/
     public boolean processInteractGENERAL(EntityPlayer player, ItemStack stack) {
     	
-        if(TalentHelper.interactWithPlayer(this, player))
+        if(TalentHelper.interactWithPlayer(this, player, stack))
         	return true;
         
         if(this.isTamed()) {
@@ -450,9 +442,9 @@ public abstract class EntityDog extends EntityAbstractDog {
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if(stack.getItem() == ModItems.CHEW_STICK) {
-                    	this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
-                    	this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
-                    	this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+                    	//TODO this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
+                    	//this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
+                    	//this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
                     }
                     return true;
                 }
@@ -685,7 +677,7 @@ public abstract class EntityDog extends EntityAbstractDog {
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
-                    this.setOwnerId(player.getUniqueID());
+                    this.setOwnerUUID(player.getUniqueID());
                     this.playTameEffect(true);
                     this.world.setEntityState(this, (byte)7);
                 }
@@ -873,10 +865,10 @@ public abstract class EntityDog extends EntityAbstractDog {
     @Override
     public EntityDog createChild(EntityAgeable entityAgeable) {
     	EntityDog entitydog = ObjectLib.createDog(this.world);
-        UUID uuid = this.getOwnerId();
+        UUID uuid = this.getOwnerUUID();
 
         if(uuid != null) {
-            entitydog.setOwnerId(uuid);
+            entitydog.setOwnerUUID(uuid);
             entitydog.setTamed(true);
         }
          

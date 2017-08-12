@@ -17,8 +17,7 @@ import net.minecraft.potion.PotionEffect;
 public class PoisonFang extends ITalent {
 
 	@Override
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) {
-		ItemStack stack = player.inventory.getCurrentItem();
+	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		int level = dog.talents.getLevel(this);
 		
 	    if (dog.isTamed()) {

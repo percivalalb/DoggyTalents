@@ -27,13 +27,13 @@ public class TalentUtil {
     }
 
     public void readTalentsFromNBT(NBTTagCompound tagCompound) {
-    	this.dog.getDataWatcher().set(EntityDog.TALENTS, tagCompound.getString("talents"));
+    	this.dog.dataTracker.setTalentString(tagCompound.getString("talents"));
     	for(ITalent talent : TalentRegistry.getTalents())
     		talent.onLevelUpdate(this.dog, this.getLevel(talent));
     }
 	
 	public String getSaveString() {
-		String saveString = this.dog.getDataWatcher().get(EntityDog.TALENTS);
+		String saveString = this.dog.dataTracker.getTalentString();
 		return saveString == null ? "" : saveString;
 	}
 	
@@ -83,11 +83,11 @@ public class TalentUtil {
 			first = false;
 		}
 		
-		this.dog.getDataWatcher().set(EntityDog.TALENTS, saveString);
+		this.dog.dataTracker.setTalentString(saveString);
 	}
 	
 	public void resetTalents() {
 		this.dataMap.clear();
-		this.dog.getDataWatcher().set(EntityDog.TALENTS, "");
+		this.dog.dataTracker.setTalentString("");
 	}
 }

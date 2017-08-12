@@ -19,7 +19,7 @@ public class BedFinder extends ITalent {
 			EntityPlayer player = (EntityPlayer)dog.getRidingEntity();
 			BlockPos bedLocation = player.getBedLocation(player.dimension);
 			if(player != null && bedLocation != null) {
-	            dog.coords.setBedPos(bedLocation);
+	            dog.coords.setBedPos(bedLocation.getX(), bedLocation.getY(), bedLocation.getZ());
 	        }
 	    }
 	}

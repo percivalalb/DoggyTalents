@@ -4,10 +4,13 @@ import java.util.List;
 
 import doggytalents.base.IBridge;
 import doggytalents.entity.EntityDog;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -25,8 +28,23 @@ public class Bridge implements IBridge {
 	}
 	
 	@Override
+	public boolean isBlockLoaded(World world, int x, int y, int z) {
+		return world.isBlockLoaded(new BlockPos(x, y, z));
+	}
+	
+	@Override
+	public Block getBlock(World world, int x, int y, int z) {
+		return world.getBlockState(new BlockPos(x, y, z)).getBlock();
+	}
+	
+	@Override
 	public <T extends Entity> List<T> getEntitiesWithinAABB(World world, Class<? extends T> classEntity, double x, double y, double z, int xG, int yG, int zG) {
 		return world.getEntitiesWithinAABB(classEntity, AxisAlignedBB.fromBounds(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D).grow(xG, yG, zG));
+	}
+	
+	@Override
+	public void playSound(Entity entity, String name, float volume, float pitch) {
+		entity.playSound(name, volume, pitch);
 	}
 	
 	@Override
@@ -37,6 +55,11 @@ public class Bridge implements IBridge {
 	@Override
 	public String translateToLocalFormatted(String key, Object... format) {
 		return StatCollector.translateToLocalFormatted(key, format);
+	}
+	
+	@Override
+	public void addTranslatedMessage(EntityPlayer player, String key, Object... format) {
+		player.addChatComponentMessage(new ChatComponentTranslation(key, format));
 	}
 
 	@Override

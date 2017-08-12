@@ -1,5 +1,6 @@
 package doggytalents.base.f;
 
+import doggytalents.base.other.EntityDogBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -18,7 +19,7 @@ import net.minecraft.world.World;
 /**
  * 1.12 Code
  */
-public class EntityDogWrapper extends EntityDog {
+public class EntityDogWrapper extends EntityDogBridge {
 
 	public EntityDogWrapper(World word) {
 		super(word);

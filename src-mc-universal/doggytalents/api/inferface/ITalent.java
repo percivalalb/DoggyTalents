@@ -17,7 +17,7 @@ public abstract class ITalent {
 	public void onClassCreation(EntityDog dog) {}
 	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {}
 	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {}
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) { return false; }
+	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) { return false; }
 	public void onUpdate(EntityDog dog) {}
 	public void onLivingUpdate(EntityDog dog) {}
 	public int onHungerTick(EntityDog dog, int totalInTick) { return totalInTick; }

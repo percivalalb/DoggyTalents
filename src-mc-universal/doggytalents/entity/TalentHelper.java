@@ -29,9 +29,9 @@ public class TalentHelper {
 			talent.readFromNBT(dog, tagCompound);
 	}
 	
-	public static boolean interactWithPlayer(EntityDog dog, EntityPlayer player) {
+	public static boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		for(ITalent talent : TalentRegistry.getTalents())
-			if(talent.interactWithPlayer(dog, player))
+			if(talent.interactWithPlayer(dog, player, stack))
 				return true;
 		return false;
 	}

@@ -26,12 +26,12 @@ public class WorldRender {
 				EntityDog dog = (EntityDog)passenger;
 				if(dog.coords.hasBedPos()) {
 					int level = dog.talents.getLevel("bedfinder");
-					double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.coords.getBedPos()));
+					double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.coords.getBedX(), dog.coords.getBedY(), dog.coords.getBedZ()));
 				    if(level == 5 || distance >= 0.0D) {
 						
 				    	GlStateManager.pushMatrix();
 						
-						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedPos()).grow(0.5D);
+						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.coords.getBedX(), dog.coords.getBedY(), dog.coords.getBedZ(), dog.coords.getBedX() + 1, dog.coords.getBedY() + 1, dog.coords.getBedZ() + 1).grow(0.5D);
 						this.drawSelectionBox(player, event.getPartialTicks(), boundingBox);
 						GlStateManager.popMatrix();
 				    }

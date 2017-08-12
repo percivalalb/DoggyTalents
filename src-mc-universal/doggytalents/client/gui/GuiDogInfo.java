@@ -177,7 +177,7 @@ public class GuiDogInfo extends GuiScreen {
     					if(!this.dog.coords.hasBowlPos())
     						list.add(TextFormatting.RED + ObjectLib.BRIDGE.translateToLocal("doggui.mode.docile.nobowl"));
     					else 
-    						list.add(TextFormatting.GREEN + ObjectLib.BRIDGE.translateToLocalFormatted("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlPos()))));
+    						list.add(TextFormatting.GREEN + ObjectLib.BRIDGE.translateToLocalFormatted("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.coords.getBowlX(), this.dog.coords.getBowlY(), this.dog.coords.getBowlZ()))));
     				}
     		
     				

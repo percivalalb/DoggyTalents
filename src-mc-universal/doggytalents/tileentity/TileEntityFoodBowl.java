@@ -66,7 +66,7 @@ public abstract class TileEntityFoodBowl extends TileEntity implements ITickable
     	List<EntityDog> dogList = ObjectLib.BRIDGE.getEntitiesWithinAABB(this.world, ObjectLib.ENTITY_DOG_CLASS, this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 5, 5, 5);
 
     	for(EntityDog dog : dogList) {
-    		dog.coords.setBowlPos(this.pos);
+    		dog.coords.setBowlPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
             	
     		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
          	if(dog.getDogHunger() < 60 && slotIndex >= 0)

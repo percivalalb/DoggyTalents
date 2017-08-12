@@ -18,16 +18,16 @@ import net.minecraft.world.World;
  */
 public class EntityDoggyBeam extends EntityThrowable {
 	
-    public EntityDoggyBeam(World par1World) {
-        super(par1World);
+    public EntityDoggyBeam(World worldIn) {
+        super(worldIn);
     }
 
-    public EntityDoggyBeam(World par1World, EntityLivingBase par2EntityLivingBase) {
-        super(par1World, par2EntityLivingBase);
+    public EntityDoggyBeam(World worldIn, EntityLivingBase throwerIn) {
+        super(worldIn, throwerIn);
     }
 
-    public EntityDoggyBeam(World par1World, double par2, double par4, double par6) {
-        super(par1World, par2, par4, par6);
+    public EntityDoggyBeam(World worldIn, double x, double y, double z) {
+        super(worldIn, x, y, z);
     }
 
     

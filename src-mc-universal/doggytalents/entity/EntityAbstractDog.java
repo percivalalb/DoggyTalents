@@ -41,7 +41,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataTracker = VersionControl.createObject("DataTracker", IDataTracker.class, EntityDog.class, this);
+		this.dataTracker = VersionControl.createObject("DataTrackerWrapper", IDataTracker.class, EntityDog.class, this);
 	}
 
 	@Override

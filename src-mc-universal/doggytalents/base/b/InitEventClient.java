@@ -1,20 +1,20 @@
-package doggytalents.base.c;
+package doggytalents.base.b;
 
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.base.IInitializationEvent;
-import doggytalents.base.other.BuiltInRecipes;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class InitEvent implements IInitializationEvent {
+public class InitEventClient implements IInitializationEvent {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		ModBlocks.onRegisterBlock(null);
-		ModBlocks.onRegisterItem(null);
-		ModItems.onRegister(null);
+		ModBlocks.setItemModels();
+		ModItems.setItemModels();
+		MinecraftForge.EVENT_BUS.register(new ModelBakeWrapper());
 	}
 
 	@Override
@@ -24,6 +24,6 @@ public class InitEvent implements IInitializationEvent {
 
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
-		BuiltInRecipes.init();
+		
 	}
 }

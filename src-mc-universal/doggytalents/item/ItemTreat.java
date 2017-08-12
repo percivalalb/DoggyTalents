@@ -45,19 +45,19 @@ public class ItemTreat extends ItemDT implements IDogTreat {
 	            dog.getSitAI().setSitting(true);
 	            dog.world.setEntityState(dog, (byte)7);
 	            dog.playTameEffect(true);
-	            if (!player.world.isRemote)
+	            if(!player.world.isRemote)
 	            	player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.levelup"));
 			}
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {
-			if (!player.world.isRemote){
+			if(!player.world.isRemote){
 				 dog.playTameEffect(false);
 				 player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.tooyoung"));
 			}
 		}
 		else if(type == EnumFeedBack.LEVELTOOHIGH) {
             player.world.setEntityState(dog, (byte)6);
-            if (!player.world.isRemote) {
+            if(!player.world.isRemote) {
             	dog.playTameEffect(false);
             	player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.leveltoohigh"));
             }

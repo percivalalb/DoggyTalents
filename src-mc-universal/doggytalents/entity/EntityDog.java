@@ -12,7 +12,9 @@ import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
+import doggytalents.base.IDataTracker;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
 import doggytalents.entity.ai.EntityAIDogWander;
@@ -32,7 +34,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -49,8 +50,6 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
@@ -59,41 +58,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
-public class EntityDog extends EntityAbstractDog {
-	
-	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
-	public static final DataParameter<Integer> COLLAR_COLOUR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
-	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Integer> CAPE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Boolean> SUNGLASSES = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+public abstract class EntityDog extends EntityAbstractDog {
 	
     private float timeWolfIsHappy;
     private float prevTimeWolfIsHappy;
@@ -106,6 +82,7 @@ public class EntityDog extends EntityAbstractDog {
     public LevelUtil levels;
     public ModeUtil mode;
     public CoordUtil coords;
+    public IDataTracker dataTracker;
     public Map<String, Object> objects;
     
     //Timers
@@ -119,38 +96,38 @@ public class EntityDog extends EntityAbstractDog {
     
     //TODO public List<BlockPos> patrolOutline;
     
-    public EntityDog(World word) {
-        super(word);
-        this.objects = new HashMap<String, Object>();
+    public EntityDog(World world) {
+        super(world);
+
+        if(world != null && !world.isRemote) {
+        	this.aiSit = new EntityAISit(this);
+            this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
+            
+            this.tasks.addTask(1, new EntityAISwimming(this));
+            this.tasks.addTask(2, this.aiSit);
+            this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
+            this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+            //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
+            this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+            this.tasks.addTask(5, this.aiFetchBone);
+            this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
+            this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
+            this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
+            this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+            this.tasks.addTask(10, new EntityAILookIdle(this));
+            this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+            this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+            this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
+            this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
+            this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
+            this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
+            this.setTamed(false);
+        }
+        
         //TODO this.patrolOutline = new ArrayList<BlockPos>();
-        
+        this.objects = new HashMap<String, Object>();
+        this.dataTracker = VersionControl.createObject("DataTracker", IDataTracker.class, EntityDog.class, this);
         TalentHelper.onClassCreation(this);
-    }
-    
-    @Override
-    protected void initEntityAI() {
-        this.aiSit = new EntityAISit(this);
-        this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-        
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, this.aiSit);
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
-        //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-        this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-        this.tasks.addTask(5, this.aiFetchBone);
-        this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
-        this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(10, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
-        this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
-        this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
-        this.setTamed(false);
     }
 
     @Override
@@ -181,21 +158,7 @@ public class EntityDog extends EntityAbstractDog {
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
-        this.dataManager.register(DOG_TEXTURE, (byte)0);
-        this.dataManager.register(COLLAR_COLOUR, -2);
-        this.dataManager.register(TALENTS, "");
-        this.dataManager.register(HUNGER, Integer.valueOf(60));
-        this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
-        this.dataManager.register(FRIENDLY_FIRE, Boolean.valueOf(false));
-        this.dataManager.register(HAS_BONE, Boolean.valueOf(false));
-        this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
-        this.dataManager.register(MODE, Integer.valueOf(0));
-        this.dataManager.register(LEVEL, Integer.valueOf(0));
-        this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
-        this.dataManager.register(BOWL_POS, Optional.absent());
-        this.dataManager.register(BED_POS, Optional.absent());
-        this.dataManager.register(CAPE, -2);
-        this.dataManager.register(SUNGLASSES, false);
+        this.dataTracker.entityInit();
     }
 
     @Override
@@ -472,9 +435,7 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     /** A general interact handler version specific methods should invoke this method **/
-    public boolean processInteractGENERAL(EntityPlayer player, EnumHand hand) {
-    	ItemStack stack = player.getHeldItem(hand);
-    	
+    public boolean processInteractGENERAL(EntityPlayer player, ItemStack stack) {
     	
         if(TalentHelper.interactWithPlayer(this, player))
         	return true;
@@ -862,27 +823,27 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public int getTameSkin() {
-   	 	return this.dataManager.get(DOG_TEXTURE);
+   	 	return this.dataTracker.getTameSkin();
     }
 
     public void setTameSkin(int index) {
-   		this.dataManager.set(DOG_TEXTURE, (byte)index);
+   		this.dataTracker.setTameSkin(index);
     }
     
     public void setWillObeyOthers(boolean flag) {
-    	this.dataManager.set(OBEY_OTHERS, flag);
+    	this.dataTracker.setWillObeyOthers(flag);
     }
     
     public boolean willObeyOthers() {
-    	return this.dataManager.get(OBEY_OTHERS);
+    	return this.dataTracker.willObeyOthers();
     }
     
     public void setFriendlyFire(boolean flag) {
-    	this.dataManager.set(FRIENDLY_FIRE, flag);
+    	this.dataTracker.setFriendlyFire(flag);
     }
     
     public boolean canFriendlyFire() {
-    	return this.dataManager.get(FRIENDLY_FIRE);
+    	return this.dataTracker.canFriendlyFire();
     }
     
     public int points() {
@@ -925,35 +886,35 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public int getDogHunger() {
-		return ((Integer)this.dataManager.get(HUNGER)).intValue();
+		return this.dataTracker.getDogHunger();
 	}
     
-    public void setDogHunger(int par1) {
-    	this.dataManager.set(HUNGER, Math.min(120, Math.max(0, par1)));
+    public void setDogHunger(int value) {
+    	this.dataTracker.setDogHunger(value);
     }
     
     public void hasRadarCollar(boolean flag) {
-    	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
+    	this.dataTracker.hasRadarCollar(flag);
     }
     
     public boolean hasRadarCollar() {
-    	return ((Boolean)this.dataManager.get(RADAR_COLLAR)).booleanValue();
+    	return this.dataTracker.hasRadarCollar();
     }
     
-    public void setHasBone(boolean hasBone) {
-    	this.dataManager.set(HAS_BONE, hasBone);
+    public void setHasBone(boolean flag) {
+    	this.dataTracker.setHasBone(flag);
     }
     
     public boolean hasBone() {
-    	return ((Boolean)this.dataManager.get(HAS_BONE)).booleanValue();
+    	return this.dataTracker.hasBone();
     }
     
-    public void setHasSunglasses(boolean hasSunglasses) {
-    	this.dataManager.set(SUNGLASSES, hasSunglasses);
+    public void setHasSunglasses(boolean flag) {
+    	this.dataTracker.setHasSunglasses(flag);
     }
     
     public boolean hasSunglasses() {
-    	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
+    	return this.dataTracker.hasSunglasses();
     }
     
     @Override
@@ -986,11 +947,11 @@ public class EntityDog extends EntityAbstractDog {
     
     //Collar related functions
     public int getCollarColour() {
-    	return this.dataManager.get(COLLAR_COLOUR);
+    	return this.dataTracker.getCollarColour();
     }
     
-    public void setCollarColour(int rgb) {
-    	this.dataManager.set(COLLAR_COLOUR, rgb);
+    public void setCollarColour(int value) {
+    	this.dataTracker.setCollarColour(value);
     }
     
 	public boolean hasCollar() {
@@ -1017,11 +978,11 @@ public class EntityDog extends EntityAbstractDog {
 	
 	//Cape related functions
     public int getCapeData() {
-    	return this.dataManager.get(CAPE);
+    	return this.dataTracker.getCapeData();
     }
     
-    public void setCapeData(int rgb) {
-    	this.dataManager.set(CAPE, rgb);
+    public void setCapeData(int value) {
+    	this.dataTracker.setCapeData(value);
     }
     
     public boolean hasCape() {
@@ -1080,5 +1041,4 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_FISH : Items.FISH, 1);
 		}
 	}
-
 }

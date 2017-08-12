@@ -57,7 +57,7 @@ public class EntityDogWrapper extends EntityDog {
 	
 	@Override
 	public boolean processInteract(EntityPlayer player, EnumHand hand) {
-		return processInteractGENERAL(player, hand) ? true : super.processInteract(player, hand);
+		return processInteractGENERAL(player, player.getHeldItem(hand)) ? true : super.processInteract(player, hand);
 	}
 	
 	@Override

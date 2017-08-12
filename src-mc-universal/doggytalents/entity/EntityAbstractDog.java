@@ -1,5 +1,7 @@
 package doggytalents.entity;
 
+import java.util.UUID;
+
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.base.ObjectLib;
 import net.minecraft.entity.Entity;

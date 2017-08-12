@@ -17,35 +17,35 @@ public class CoordUtil {
 	}
 	
 	public boolean hasBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).isPresent();
+		return this.dog.getDataWatcher().get(EntityDog.BED_POS).isPresent();
 	}
 	
 	public boolean hasBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).isPresent();
+		return this.dog.getDataWatcher().get(EntityDog.BOWL_POS).isPresent();
 	}
 	
 	public BlockPos getBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).or(this.dog.world.getSpawnPoint());
+		return this.dog.getDataWatcher().get(EntityDog.BED_POS).or(this.dog.world.getSpawnPoint());
 	}
 	
 	public BlockPos getBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).or(this.dog.getPosition());
+		return this.dog.getDataWatcher().get(EntityDog.BOWL_POS).or(this.dog.getPosition());
 	}
 	
 	public void resetBedPosition() {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.absent());
+		this.dog.getDataWatcher().set(EntityDog.BED_POS, Optional.absent());
 	}
 	
 	public void resetBowlPosition() {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.absent());
+		this.dog.getDataWatcher().set(EntityDog.BOWL_POS, Optional.absent());
 	}
 	
 	public void setBedPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
+		this.dog.getDataWatcher().set(EntityDog.BED_POS, Optional.fromNullable(pos));
 	}
 	
 	public void setBowlPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
+		this.dog.getDataWatcher().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
 	}
 
 	

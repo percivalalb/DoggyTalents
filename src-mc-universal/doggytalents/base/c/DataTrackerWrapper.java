@@ -1,0 +1,148 @@
+package doggytalents.base.c;
+
+import com.google.common.base.Optional;
+
+import doggytalents.base.IDataTracker;
+import doggytalents.entity.EntityDog;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
+
+public class DataTrackerWrapper implements IDataTracker {
+
+	public static final DataParameter<Byte> DOG_TEXTURE = EntityDataManager.<Byte>createKey(EntityDog.class, DataSerializers.BYTE);
+	public static final DataParameter<Integer> COLLAR_COLOUR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
+	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Integer> CAPE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Boolean> SUNGLASSES = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	
+	public EntityDog dog;
+	
+	public DataTrackerWrapper(EntityDog dogIn) {
+		this.dog = dogIn;
+	}
+		
+	public EntityDataManager getDataManager() {
+		return this.dog.getDataWatcher();
+	}
+	
+	@Override
+	public void entityInit() {
+		this.getDataManager().register(DOG_TEXTURE, (byte)0);
+        this.getDataManager().register(COLLAR_COLOUR, -2);
+        this.getDataManager().register(TALENTS, "");
+        this.getDataManager().register(HUNGER, Integer.valueOf(60));
+        this.getDataManager().register(OBEY_OTHERS, Boolean.valueOf(false));
+        this.getDataManager().register(FRIENDLY_FIRE, Boolean.valueOf(false));
+        this.getDataManager().register(HAS_BONE, Boolean.valueOf(false));
+        this.getDataManager().register(RADAR_COLLAR, Boolean.valueOf(false));
+        this.getDataManager().register(MODE, Integer.valueOf(0));
+        this.getDataManager().register(LEVEL, Integer.valueOf(0));
+        this.getDataManager().register(LEVEL_DIRE, Integer.valueOf(0));
+        this.getDataManager().register(BOWL_POS, Optional.absent());
+        this.getDataManager().register(BED_POS, Optional.absent());
+        this.getDataManager().register(CAPE, -2);
+        this.getDataManager().register(SUNGLASSES, false);
+	}
+	
+	@Override
+	public int getTameSkin() {
+   	 	return this.getDataManager().get(DOG_TEXTURE);
+    }
+
+	@Override
+    public void setTameSkin(int index) {
+   		this.getDataManager().set(DOG_TEXTURE, (byte)index);
+    }
+    
+	@Override
+    public void setWillObeyOthers(boolean flag) {
+    	this.getDataManager().set(OBEY_OTHERS, flag);
+    }
+    
+	@Override
+    public boolean willObeyOthers() {
+    	return this.getDataManager().get(OBEY_OTHERS);
+    }
+    
+	@Override
+    public void setFriendlyFire(boolean flag) {
+    	this.getDataManager().set(FRIENDLY_FIRE, flag);
+    }
+    
+	@Override
+    public boolean canFriendlyFire() {
+    	return this.getDataManager().get(FRIENDLY_FIRE);
+    }
+    
+	@Override
+    public int getDogHunger() {
+		return ((Integer)this.getDataManager().get(HUNGER)).intValue();
+	}
+    
+    @Override
+    public void setDogHunger(int par1) {
+    	this.getDataManager().set(HUNGER, Math.min(120, Math.max(0, par1)));
+    }
+    
+    @Override
+    public void hasRadarCollar(boolean flag) {
+    	this.getDataManager().set(RADAR_COLLAR, Boolean.valueOf(flag));
+    }
+    
+    @Override
+    public boolean hasRadarCollar() {
+    	return ((Boolean)this.getDataManager().get(RADAR_COLLAR)).booleanValue();
+    }
+    
+    @Override
+    public void setHasBone(boolean hasBone) {
+    	this.getDataManager().set(HAS_BONE, hasBone);
+    }
+    
+    @Override
+    public boolean hasBone() {
+    	return ((Boolean)this.getDataManager().get(HAS_BONE)).booleanValue();
+    }
+    
+    @Override
+    public void setHasSunglasses(boolean hasSunglasses) {
+    	this.getDataManager().set(SUNGLASSES, hasSunglasses);
+    }
+    
+    @Override
+    public boolean hasSunglasses() {
+    	return ((Boolean)this.getDataManager().get(SUNGLASSES)).booleanValue();
+    }
+    
+    @Override
+    public int getCollarColour() {
+    	return this.getDataManager().get(COLLAR_COLOUR);
+    }
+    
+    @Override
+    public void setCollarColour(int value) {
+    	this.getDataManager().set(COLLAR_COLOUR, value);
+    }
+    
+    @Override
+    public int getCapeData() {
+    	return this.getDataManager().get(CAPE);
+    }
+    
+    @Override
+    public void setCapeData(int value) {
+    	this.getDataManager().set(CAPE, value);
+    }
+}

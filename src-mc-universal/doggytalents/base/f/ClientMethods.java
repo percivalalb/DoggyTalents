@@ -9,11 +9,13 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -95,5 +97,10 @@ public class ClientMethods implements IClientMethods {
 	@Override
 	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha) {
 		RenderGlobal.drawSelectionBoundingBox((AxisAlignedBB)box, red, green, blue, alpha);
+	}
+	
+	@Override
+	public void setModel(Item item, int meta, String modelName) {
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
 	}
 }

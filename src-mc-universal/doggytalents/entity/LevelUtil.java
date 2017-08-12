@@ -40,11 +40,11 @@ public class LevelUtil {
 	}
 	
 	public int getLevel() {
-		return this.dog.getDataManager().get(EntityDog.LEVEL);
+		return this.dog.getDataWatcher().get(EntityDog.LEVEL);
 	}
 	
 	public int getDireLevel() {
-		return this.dog.getDataManager().get(EntityDog.LEVEL_DIRE);
+		return this.dog.getDataWatcher().get(EntityDog.LEVEL_DIRE);
 	}
 	
 	public void increaseLevel() {
@@ -56,12 +56,12 @@ public class LevelUtil {
 	}
 	
 	public void setLevel(int level) {
-		this.dog.getDataManager().set(EntityDog.LEVEL, level);
+		this.dog.getDataWatcher().set(EntityDog.LEVEL, level);
 		this.updateHealthModifier();
 	}
 	
 	public void setDireLevel(int level) {
-		this.dog.getDataManager().set(EntityDog.LEVEL_DIRE, level);
+		this.dog.getDataWatcher().set(EntityDog.LEVEL_DIRE, level);
 		this.updateHealthModifier();
 	}
 	

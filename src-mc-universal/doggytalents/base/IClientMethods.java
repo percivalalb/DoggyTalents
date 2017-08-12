@@ -1,6 +1,7 @@
 package doggytalents.base;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,4 +16,6 @@ public interface IClientMethods {
 	public void onModelBakeEvent(ModelBakeEvent event) throws Exception;
 
 	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha);
+
+	public void setModel(Item item, int meta, String modelName);
 }

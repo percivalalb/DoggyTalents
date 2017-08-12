@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
 
 @VersionConfig({"1.9.4", "1.10.2", "1.11.2", "1.12", "1.12.1"})
-public class EntityDogBridge extends EntityDog {
+public abstract class EntityDogBridge extends EntityDog {
 
 	public EntityDogBridge(World world) {
 		super(world);

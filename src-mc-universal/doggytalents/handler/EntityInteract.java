@@ -34,7 +34,7 @@ public class EntityInteract {
 					 
 				 	EntityDog dog = ObjectLib.createDog(world);
 				 	dog.setTamed(true);
-				 	dog.setOwnerId(player.getUniqueID());
+				 	dog.setOwnerUUID(player.getUniqueID());
 				 	dog.setHealth(dog.getMaxHealth());
 				 	dog.setSitting(false);
 				 	dog.setGrowingAge(wolf.getGrowingAge());

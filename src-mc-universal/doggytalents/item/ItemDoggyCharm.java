@@ -104,7 +104,7 @@ public class ItemDoggyCharm extends ItemDT {
         dog.renderYawOffset = dog.rotationYaw;
         dog.setTamed(true);
         dog.updateEntityAttributes();
-        dog.setOwnerId(playerIn.getUniqueID());
+        dog.setOwnerUUID(playerIn.getUniqueID());
         worldIn.spawnEntity(dog);
         dog.playLivingSound();
 

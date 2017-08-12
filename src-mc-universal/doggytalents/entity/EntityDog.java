@@ -409,10 +409,10 @@ public abstract class EntityDog extends EntityAbstractDog {
     }
 
     @Override
-    public void setTamed(boolean p_70903_1_) {
-        super.setTamed(p_70903_1_);
+    public void setTamed(boolean flag) {
+        super.setTamed(flag);
 
-        if (p_70903_1_)
+        if(flag)
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
         else
             this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);

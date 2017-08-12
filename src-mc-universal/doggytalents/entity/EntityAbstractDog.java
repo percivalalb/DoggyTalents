@@ -36,8 +36,12 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
-        
-        this.dataTracker = VersionControl.createObject("DataTracker", IDataTracker.class, EntityDog.class, this);
+	}
+	
+	@Override
+	protected void entityInit() {
+		super.entityInit();
+		this.dataTracker = VersionControl.createObject("DataTracker", IDataTracker.class, EntityDog.class, this);
 	}
 
 	@Override

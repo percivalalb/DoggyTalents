@@ -28,6 +28,7 @@ public class ResourceLib {
 	public static final ResourceLocation MOB_LAYER_LEATHER_JACKET = new ResourceLocation("doggytalents", getMobTexturePath("doggy_leather_jacket.png"));
 	public static final ResourceLocation MOB_LAYER_CAPE2_1 = new ResourceLocation("doggytalents", getMobTexturePath("doggy_cape1_1.png"));
 	public static final ResourceLocation MOB_LAYER_ARMOR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_armor.png"));
+	public static final ResourceLocation MOB_LAYER_WINGS = new ResourceLocation("doggytalents", getMobTexturePath("doggy_wings.png"));
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))

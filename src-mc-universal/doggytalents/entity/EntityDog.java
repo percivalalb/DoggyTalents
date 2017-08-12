@@ -95,7 +95,8 @@ public class EntityDog extends EntityAbstractDog {
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	
+	public static final DataParameter<Integer> SIZE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+
     private float timeWolfIsHappy;
     private float prevTimeWolfIsHappy;
     private boolean isWolfHappy;
@@ -197,6 +198,7 @@ public class EntityDog extends EntityAbstractDog {
         this.dataManager.register(BED_POS, Optional.absent());
         this.dataManager.register(CAPE, -2);
         this.dataManager.register(SUNGLASSES, false);
+        this.dataManager.register(SIZE, Integer.valueOf(3));
     }
 
     @Override
@@ -217,6 +219,7 @@ public class EntityDog extends EntityAbstractDog {
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
         tagCompound.setBoolean("sunglasses", this.hasSunglasses());
         tagCompound.setInteger("capeData", this.getCapeData());
+        tagCompound.setInteger("dogSize", this.getDogSize());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -238,6 +241,7 @@ public class EntityDog extends EntityAbstractDog {
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
         this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
         if(tagCompound.hasKey("capeData", 99)) this.setCapeData(tagCompound.getInteger("capeData"));
+        this.setDogSize(tagCompound.getInteger("dogSize"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -933,6 +937,14 @@ public class EntityDog extends EntityAbstractDog {
     	this.dataManager.set(HUNGER, Math.min(120, Math.max(0, par1)));
     }
     
+    public int getDogSize() {
+		return ((Integer)this.dataManager.get(SIZE)).intValue();
+	}
+    
+    public void setDogSize(int par1) {
+    	this.dataManager.set(SIZE, Math.min(5, Math.max(1, par1)));
+    }
+    
     public void hasRadarCollar(boolean flag) {
     	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
     }
@@ -1081,5 +1093,17 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_FISH : Items.FISH, 1);
 		}
 	}
+	
+	public void updatePassenger(Entity passenger)
+    {
+        if (this.isPassenger(passenger))
+        {
+        	float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f2 = 0.7F * 0.7F;
+        	double parY = this.posY + this.getMountedYOffset() + passenger.getYOffset() + (double) ((this.getDogSize()*0.3F)-1.0F);
 
+            passenger.setPosition(this.posX + (double)(f2 * f), parY , this.posZ - (double)(f2 * f1));
+        }
+    }
 }

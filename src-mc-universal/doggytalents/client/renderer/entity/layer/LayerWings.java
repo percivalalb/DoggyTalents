@@ -1,6 +1,7 @@
 package doggytalents.client.renderer.entity.layer;
 
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.model.entity.ModelWings;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
@@ -16,24 +17,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  */
 @SideOnly(Side.CLIENT)
-public class LayerArmor implements LayerRenderer<EntityDog> {
+public class LayerWings implements LayerRenderer<EntityDog> {
 
     private final RenderDog dogRenderer;
-    private final ModelDog armorModel = new ModelDog(0.4F);
+    private final ModelWings wingsModel = new ModelWings();
 
-    public LayerArmor(RenderDog dogRendererIn) {
+    public LayerWings(RenderDog dogRendererIn) {
         this.dogRenderer = dogRendererIn;
     }
 
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(dog.talents.getLevel("guarddog") > 0) {
-        	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_ARMOR);
+        if(dog.talents.getLevel("pillowpaw") > 0) {
+        	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_WINGS);
         	GlStateManager.color(1.0F, 1.0F, 1.0F);
 
-        	this.armorModel.setModelAttributes(this.dogRenderer.getMainModel());
-            this.armorModel.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
-            this.armorModel.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        	this.wingsModel.setModelAttributes(this.dogRenderer.getMainModel());
+            this.wingsModel.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
+            this.wingsModel.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

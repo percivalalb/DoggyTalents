@@ -101,7 +101,7 @@ public class ClientMethods implements IClientMethods {
 	}
 	
 	@Override
-	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-		RenderGlobal.func_181563_a(box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
+	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha) {
+		RenderGlobal.func_181563_a((AxisAlignedBB)box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
 	}
 }

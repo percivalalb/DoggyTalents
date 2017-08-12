@@ -21,4 +21,7 @@ public interface IGeneralMethods {
 	
 	public void registerBlock(Object registry, Block block);
 	public void registerItem(Object registry, Item item);
+	
+	public String translateToLocal(String key);
+	public String translateToLocalFormatted(String key, Object... args);
 }

@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
 
 /**
  * @author ProPercivalalb
@@ -138,10 +137,10 @@ public class TalentHelper {
 		return true;
 	}
 
-	public static SoundEvent getLivingSound(EntityDog dog) {
+	public static Object getLivingSound(EntityDog dog) {
 		for(ITalent talent : TalentRegistry.getTalents()) {
-			SoundEvent sound = talent.getLivingSound(dog);
-			if(sound != null)
+			Object sound = talent.getLivingSound(dog);
+			if(sound != null && !sound.equals(""))
 				return sound;
 		}
 		return null;

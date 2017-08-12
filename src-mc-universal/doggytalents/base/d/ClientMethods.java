@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
@@ -92,7 +93,7 @@ public class ClientMethods implements IClientMethods {
 	}
 
 	@Override
-	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-		RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
+	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha) {
+		RenderGlobal.drawSelectionBoundingBox((AxisAlignedBB)box, red, green, blue, alpha);
 	}
 }

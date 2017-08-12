@@ -43,7 +43,7 @@ public class CommandMessage extends AbstractServerMessage {
 
 		if((player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM || player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM)) {
 
-			List<Entity> nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().grow(20D));
+			List<Entity> nearEnts = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().grow(20D, 20D, 20D));
 			
 			if(this.commandId == 1)
 			{

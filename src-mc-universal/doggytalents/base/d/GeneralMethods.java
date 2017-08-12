@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -55,5 +56,15 @@ public class GeneralMethods implements IGeneralMethods {
 	@Override
 	public void registerItem(Object registry, Item item) {
 		((IForgeRegistry<Item>)registry).register(item);
+	}
+
+	@Override
+	public String translateToLocal(String key) {
+		return I18n.translateToLocal(key);
+	}
+
+	@Override
+	public String translateToLocalFormatted(String key, Object... format) {
+		return I18n.translateToLocalFormatted(key);
 	}
 }

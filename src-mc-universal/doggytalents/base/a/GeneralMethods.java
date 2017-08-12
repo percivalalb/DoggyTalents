@@ -26,6 +26,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
@@ -80,5 +81,15 @@ public class GeneralMethods implements IGeneralMethods {
 	@Override
 	public void registerItem(Object registry, Item item) {
 		GameRegistry.register(item);
+	}
+	
+	@Override
+	public String translateToLocal(String key) {
+		return I18n.translateToLocal(key);
+	}
+
+	@Override
+	public String translateToLocalFormatted(String key, Object... format) {
+		return I18n.translateToLocalFormatted(key);
 	}
 }

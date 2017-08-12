@@ -1,4 +1,5 @@
 package doggytalents.proxy;
+
 import java.util.Random;
 
 import doggytalents.ModItems;

@@ -35,10 +35,11 @@ The following with happen to this type of issues:
 # Contributing to the Source code
 While help is appreciated, source code submissions will be checked and decided on. When doing submissions, please use forks and create pull requests.
 ### Guidelines
-Issues that fail to follow the following guidelines will be **automatically closed and marked as invalid**:
+Changes that fail to follow the following guidelines will be **automatically closed and marked as invalid**:
 - **DO NOT** include malicious code, you **will** be immediately dealt with
 - Include comments in your code
 - Please leave a note that the code is a work in process (WIP) and bugs may occur
+- Pleae use forks and pull requests
 
 ### Processing
 The following with happen to this type of issues:
@@ -48,9 +49,11 @@ The following with happen to this type of issues:
 # Contributing to the Locales
 Please check to see if the lang files have been changed over time. When doing locale submissions, please use forks and create pull requests.
 ### Guidelines
-Issues that fail to follow the following guidelines will be **automatically closed and marked as invalid**:
+Changes that fail to follow the following guidelines will be **automatically closed and marked as invalid**:
 - **DO NOT** inappropriate language
 - Please leave a note that the code is a work in process (WIP) and that not all translations are finished
+- Pleae use forks and pull requests
+
 
 ### Processing
 The following with happen to this type of issues:

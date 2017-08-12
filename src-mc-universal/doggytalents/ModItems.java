@@ -3,6 +3,7 @@ package doggytalents;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.client.model.ModelHelper;
+import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
@@ -10,6 +11,7 @@ import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
+import doggytalents.item.ItemTinyBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
@@ -43,6 +45,8 @@ public class ModItems {
     public static Item CAPE_COLOURED;
 	public static Item SUNGLASSES;
 	public static Item LEATHER_JACKET;
+	public static Item TINY_BONE;
+	public static Item BIG_BONE;
 	
 	public static void onRegister(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -65,7 +69,9 @@ public class ModItems {
 	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	    CAPE_COLOURED = new ItemCapeColoured().setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
 	 	LEATHER_JACKET = new ItemDT().setUnlocalizedName("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
-	    
+	 	TINY_BONE = new ItemTinyBone().setUnlocalizedName("doggytalents.tinybone").setRegistryName(Reference.MOD_ID + ":tinybone");
+	 	BIG_BONE = new ItemBigBone().setUnlocalizedName("doggytalents.bigbone").setRegistryName(Reference.MOD_ID + ":bigbone");
+
 		ObjectLib.METHODS.registerItem(registry, THROW_BONE);
 	    ObjectLib.METHODS.registerItem(registry, TRAINING_TREAT);
 	    ObjectLib.METHODS.registerItem(registry, SUPER_TREAT);
@@ -85,6 +91,8 @@ public class ModItems {
 	    ObjectLib.METHODS.registerItem(registry, SUNGLASSES);
 	    ObjectLib.METHODS.registerItem(registry, CAPE_COLOURED);
 	    ObjectLib.METHODS.registerItem(registry, LEATHER_JACKET);
+	    ObjectLib.METHODS.registerItem(registry, TINY_BONE);
+	    ObjectLib.METHODS.registerItem(registry, BIG_BONE);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -109,5 +117,7 @@ public class ModItems {
 		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
 		ModelHelper.setModel(CAPE_COLOURED, 0, "doggytalents:cape_coloured");
 		ModelHelper.setModel(LEATHER_JACKET, 0, "doggytalents:leather_jacket");
+		ModelHelper.setModel(TINY_BONE, 0, "doggytalents:tinybone");
+		ModelHelper.setModel(BIG_BONE, 0, "doggytalents:bigbone");
 	}
 }

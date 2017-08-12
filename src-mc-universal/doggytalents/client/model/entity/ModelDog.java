@@ -28,8 +28,6 @@ public class ModelDog extends ModelBase {
     public ModelRenderer wolfLeg4;
     public ModelRenderer wolfTail;
     public ModelRenderer wolfMane;
-	public ModelRenderer wolfWing1;
-	public ModelRenderer wolfWing2;
 	
 	public ModelDog(float scaleFactor) {
         float f1 = 13.5F;
@@ -83,16 +81,6 @@ public class ModelDog extends ModelBase {
         this.wolfLeg4.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
         
-        //Wing1
-        this.wolfWing1 = new ModelRenderer(this, 40, 27);
-        this.wolfWing1.addBox(0F, 0F, -2F, 8, 1, 4, scaleFactor);
-        this.wolfWing1.setRotationPoint(-4F, 11F, -2F);
-        
-        //Wing2
-        this.wolfWing2 = new ModelRenderer(this, 40, 27);
-        this.wolfWing2.addBox(-1F, 0F, -2F, 8, 1, 4, scaleFactor);
-        this.wolfWing2.setRotationPoint(4F, 11F, -2F);
-        
 		//Tail1
         this.wolfTail = new ModelRenderer(this, 9, 18);
         this.wolfTail.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
@@ -107,15 +95,15 @@ public class ModelDog extends ModelBase {
     	
         //Saddles
         this.wolfBodySaddle.setTextureOffset(52, 11).addBox(-2.5F, 0F, 3F, 5, 6, 1);//Saddle1
-        this.wolfBodySaddle.setTextureOffset(52, 18).addBox(-2.0F, 0F, 4F, 4, 1, 1);//Saddle2
-        this.wolfBodySaddle.setTextureOffset(52, 18).addBox(-2.0F, 5F, 4F, 4, 1, 1);//Saddle3
+        this.wolfBodySaddle.setTextureOffset(52, 18).addBox(-2.0F, 0F, 3.5F, 4, 1, 1);//Saddle2
+        this.wolfBodySaddle.setTextureOffset(52, 18).addBox(-2.0F, 5F, 3.5F, 4, 1, 1);//Saddle3
 
         //Chest+Saddles
         this.wolfBodySaddleChest.setTextureOffset(52, 0).addBox(3.0F, -1F, -2F, 2, 7, 4);//Backpack1
         this.wolfBodySaddleChest.setTextureOffset(52, 0).addBox(-5.0F, -1F, -2F, 2, 7, 4);//Backpack1                
         this.wolfBodySaddleChest.setTextureOffset(52, 11).addBox(-2.5F, 0F, 3F, 5, 6, 1);//Saddle1
-        this.wolfBodySaddleChest.setTextureOffset(52, 18).addBox(-2.0F, 0F, 4F, 4, 1, 1);//Saddle2
-        this.wolfBodySaddleChest.setTextureOffset(52, 18).addBox(-2.0F, 5F, 4F, 4, 1, 1);//Saddle3
+        this.wolfBodySaddleChest.setTextureOffset(52, 18).addBox(-2.0F, 0F, 3.5F, 4, 1, 1);//Saddle2
+        this.wolfBodySaddleChest.setTextureOffset(52, 18).addBox(-2.0F, 5F, 3.5F, 4, 1, 1);//Saddle3
 
         //HeadMain EarsNormal
         this.wolfHeadMain.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor); 
@@ -206,11 +194,6 @@ public class ModelDog extends ModelBase {
             this.wolfTail.renderWithRotation(scale);
             this.wolfMane.render(scale);
         }
-        
-        if(dog.talents.getLevel("pillowpaw") > 4) {
-        	//this.wolfWing1.render(scale); 
-        	//this.wolfWing2.render(scale);
-        }
     }
 
     @Override
@@ -278,12 +261,6 @@ public class ModelDog extends ModelBase {
         		wagAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         	this.wolfTail.rotateAngleY = wagAngleY;
         }
-        this.wolfWing1.rotateAngleY = (float)Math.PI;
-        this.wolfWing2.rotateAngleY = -(float)Math.PI;
-     	if(dog.onGround) {
-     		this.wolfWing1.rotateAngleZ = -1.5F; 
-     		this.wolfWing2.rotateAngleZ = 0.75F;
-     	}
     }
 
     @Override
@@ -294,12 +271,5 @@ public class ModelDog extends ModelBase {
         this.wolfHeadMainBone.rotateAngleX = this.wolfHeadMain.rotateAngleX;
         this.wolfHeadMainBone.rotateAngleY = this.wolfHeadMain.rotateAngleY;
         this.wolfTail.rotateAngleX = ageInTicks;
-        
-        this.wolfWing1.rotateAngleY = (float)Math.PI;
-        this.wolfWing2.rotateAngleY = -(float)Math.PI;
-     	if(entityIn.onGround) {
-     		this.wolfWing1.rotateAngleZ = -1.5F; 
-     		this.wolfWing2.rotateAngleZ = 0.75F;
-     	}
     }
 }

@@ -11,11 +11,14 @@ import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.client.renderer.entity.layer.LayerSaddle;
 import doggytalents.client.renderer.entity.layer.LayerSunglasses;
+import doggytalents.client.renderer.entity.layer.LayerWings;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,6 +39,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerSunglasses(this));
         //this.addLayer(new LayerSaddle(this));
         this.addLayer(new LayerArmor(this));
+        this.addLayer(new LayerWings(this));
     }
 
     @Override
@@ -102,5 +106,12 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	}
     	
         super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
+    }
+    
+    protected void preRenderCallback(EntityDog entitylivingbaseIn, float partialTickTime) {
+    	EntityDog dog = (EntityDog)entitylivingbaseIn;
+		float size = dog.getDogSize() * 0.3F + 0.1F;
+		GlStateManager.scale(size, size, size);
+		this.shadowSize = size*0.5F;
     }
 }

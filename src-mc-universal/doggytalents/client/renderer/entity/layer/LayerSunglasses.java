@@ -1,5 +1,6 @@
 package doggytalents.client.renderer.entity.layer;
 
+import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerSunglasses implements LayerRenderer<EntityDog> {
 
     private final RenderDog dogRenderer;
+    private final ModelDog armorModel = new ModelDog(0.4F);
 
     public LayerSunglasses(RenderDog dogRendererIn) {
         this.dogRenderer = dogRendererIn;
@@ -29,7 +31,9 @@ public class LayerSunglasses implements LayerRenderer<EntityDog> {
         	else
         		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
         	GlStateManager.color(1.0F, 1.0F, 1.0F);
-        	this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        	this.armorModel.setModelAttributes(this.dogRenderer.getMainModel());
+            this.armorModel.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
+            this.armorModel.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

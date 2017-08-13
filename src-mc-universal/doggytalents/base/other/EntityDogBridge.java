@@ -2,6 +2,7 @@ package doggytalents.base.other;
 
 import java.util.UUID;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl.VersionConfig;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.TalentHelper;
@@ -93,6 +94,15 @@ public abstract class EntityDogBridge extends EntityDog {
         if(passenger instanceof EntityLiving) {
             EntityLiving entityliving = (EntityLiving)passenger;
             this.renderYawOffset = entityliving.renderYawOffset;
+        }
+        
+        if(this.isPassenger(passenger)) {
+        	float f = ObjectLib.BRIDGE.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f1 = ObjectLib.BRIDGE.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
+            float f2 = 0.7F * 0.7F;
+        	double parY = this.posY + this.getMountedYOffset() + passenger.getYOffset() + (double) ((this.getDogSize()*0.3F)-1.0F);
+
+            passenger.setPosition(this.posX + (double)(f2 * f), parY, this.posZ - (double)(f2 * f1));
         }
     }
 }

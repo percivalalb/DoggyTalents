@@ -3,6 +3,7 @@ package doggytalents;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.client.model.ModelHelper;
+import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemCommandEmblem;
@@ -11,6 +12,7 @@ import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
+import doggytalents.item.ItemTinyBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
@@ -44,6 +46,8 @@ public class ModItems {
     public static Item CAPE_COLOURED;
 	public static Item SUNGLASSES;
 	public static Item LEATHER_JACKET;
+	public static Item TINY_BONE;
+	public static Item BIG_BONE;
 	
 	public static void onRegister(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -63,10 +67,13 @@ public class ModItems {
 	    TREAT_BAG = VersionControl.createObject("ItemTreatBagWrapper", ItemTreatBag.class).setUnlocalizedName("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
 	    CHEW_STICK = VersionControl.createObject("ItemChewStickWrapper", ItemChewStick.class).setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
 	    CAPE = new ItemDT().setUnlocalizedName("doggytalents.cape").setRegistryName(Reference.MOD_ID + ":cape");
-	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	    CAPE_COLOURED = VersionControl.createObject("ItemCapeColouredWrapper", ItemCapeColoured.class).setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
+	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	 	LEATHER_JACKET = new ItemDT().setUnlocalizedName("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
-	    
+	 	TINY_BONE = new ItemTinyBone().setUnlocalizedName("doggytalents.tinybone").setRegistryName(Reference.MOD_ID + ":tinybone");
+		BIG_BONE = new ItemBigBone().setUnlocalizedName("doggytalents.bigbone").setRegistryName(Reference.MOD_ID + ":bigbone");
+	 	
+	 	
 		ObjectLib.REGISTRY.registerItem(registry, THROW_BONE);
 	    ObjectLib.REGISTRY.registerItem(registry, TRAINING_TREAT);
 	    ObjectLib.REGISTRY.registerItem(registry, SUPER_TREAT);
@@ -86,6 +93,8 @@ public class ModItems {
 	    ObjectLib.REGISTRY.registerItem(registry, SUNGLASSES);
 	    ObjectLib.REGISTRY.registerItem(registry, CAPE_COLOURED);
 	    ObjectLib.REGISTRY.registerItem(registry, LEATHER_JACKET);
+	    ObjectLib.REGISTRY.registerItem(registry, TINY_BONE);
+	    ObjectLib.REGISTRY.registerItem(registry, BIG_BONE);
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -107,8 +116,10 @@ public class ModItems {
 		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
 		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");
 		ModelHelper.setModel(CAPE, 0, "doggytalents:cape");
-		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
 		ModelHelper.setModel(CAPE_COLOURED, 0, "doggytalents:cape_coloured");
+		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
 		ModelHelper.setModel(LEATHER_JACKET, 0, "doggytalents:leather_jacket");
+		ModelHelper.setModel(TINY_BONE, 0, "doggytalents:tiny_bone");
+		ModelHelper.setModel(BIG_BONE, 0, "doggytalents:big_bone");
 	}
 }

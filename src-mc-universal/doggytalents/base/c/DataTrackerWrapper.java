@@ -28,6 +28,7 @@ public class DataTrackerWrapper implements IDataTracker {
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	public static final DataParameter<Integer> SIZE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	
 	public EntityDog dog;
 	
@@ -67,6 +68,7 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataManager().register(BED_POS, Optional.absent());
         this.getDataManager().register(CAPE, -2);
         this.getDataManager().register(SUNGLASSES, false);
+        this.getDataManager().register(SIZE, Integer.valueOf(3));
 	}
 	
 	@Override
@@ -157,6 +159,16 @@ public class DataTrackerWrapper implements IDataTracker {
     @Override
     public void setCapeData(int value) {
     	this.getDataManager().set(CAPE, value);
+    }
+    
+    @Override
+	public void setDogSize(int value) {
+    	this.getDataManager().set(SIZE, Math.min(5, Math.max(1, value)));
+    }
+    
+    @Override
+	public int getDogSize() {
+    	return this.getDataManager().get(SIZE);
     }
     
     @Override

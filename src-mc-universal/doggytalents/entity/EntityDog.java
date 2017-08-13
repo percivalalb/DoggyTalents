@@ -175,6 +175,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
         tagCompound.setBoolean("sunglasses", this.hasSunglasses());
         tagCompound.setInteger("capeData", this.getCapeData());
+        tagCompound.setInteger("dogSize", this.getDogSize());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -196,6 +197,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
         this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
         if(tagCompound.hasKey("capeData", 99)) this.setCapeData(tagCompound.getInteger("capeData"));
+        if(tagCompound.hasKey("dogSize", 99)) this.setDogSize(tagCompound.getInteger("dogSize"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -1007,6 +1009,14 @@ public abstract class EntityDog extends EntityAbstractDog {
 		int b = (argb >> 0) &0xFF;
 		
 		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+	}
+	
+	public int getDogSize() {
+		return this.dataTracker.getDogSize();
+	}
+   
+	public void setDogSize(int value) {
+		this.dataTracker.setDogSize(value);
 	}
 	
 	private void onFinishShaking() {

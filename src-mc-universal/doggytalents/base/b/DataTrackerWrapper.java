@@ -32,7 +32,7 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataWatcher().addObject(26, 0); //Texture index
         this.getDataWatcher().addObject(27, new Integer(0)); //Dog Mode
         this.getDataWatcher().addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
-		
+        this.getDataWatcher().addObject(29, 3); //Size
 	}
 	
 	@Override
@@ -134,6 +134,16 @@ public class DataTrackerWrapper implements IDataTracker {
 	@Override
 	public int getCapeData() {
 		return this.getDataWatcher().getWatchableObjectInt(19);
+	}
+
+	@Override
+	public void setDogSize(int value) {
+		this.getDataWatcher().updateObject(29, Math.min(5, Math.max(1, value)));
+	}
+	    
+	@Override
+	public int getDogSize() {
+	    return this.getDataWatcher().getWatchableObjectInt(29);
 	}
 	
 	public void setCustomData(int BIT, boolean flag) {

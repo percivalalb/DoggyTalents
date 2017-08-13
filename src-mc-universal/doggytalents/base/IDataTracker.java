@@ -34,6 +34,9 @@ public interface IDataTracker {
     public void setCapeData(int value);
     public int getCapeData();
     
+	public void setDogSize(int value);
+	public int getDogSize();
+    
     public void setLevel(int level);
 	public int getLevel();
 	
@@ -62,4 +65,5 @@ public interface IDataTracker {
 
 	public void setBedPos(int x, int y, int z);
 	public void setBowlPos(int x, int y, int z) ;
+
 }

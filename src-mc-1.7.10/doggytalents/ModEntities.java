@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class ModEntities {
 	
 	public static void init() {
-		EntityRegistry.registerModEntity(EntityDog.class, "dog", 0, DoggyTalents.INSTANCE, 120, 1, true);
+		EntityRegistry.registerModEntity(EntityDog.class, "dog", 0, DoggyTalents.INSTANCE, 80, 3, true);
 		EntityRegistry.registerModEntity(EntityDoggyBeam.class, "attackbeam", 1, DoggyTalents.INSTANCE, 64, 10, true);
 	}
 }

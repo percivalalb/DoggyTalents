@@ -1,4 +1,4 @@
-package doggytalents.base.d;
+package doggytalents.base.e;
 
 import doggytalents.base.IRegistryMethods;
 import net.minecraft.block.Block;
@@ -26,9 +26,9 @@ public class RegistryMethods implements IRegistryMethods {
 	public void registerItem(Object registry, Item item) {
 		((IForgeRegistry<Item>)registry).register(item);
 	}
-
+	
 	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 }

@@ -8,28 +8,25 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.SearchTreeManager.Key;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.client.settings.KeyBindingMap;
 
 public class ModelWings extends ModelBase {
 	
-	public ModelRenderer WingA;
-	public ModelRenderer WingB;
+	public ModelRenderer wingA;
+	public ModelRenderer wingB;
   
 	public ModelWings() {   
-		WingA = new ModelRenderer(this, 50, 14);
-		WingA.addBox(-3F, -3F, 0F, 6, 17, 1);
-		WingA.setRotationPoint(2F, 10F, -2F);
-		this.setRotation(WingA, 1.570796F, 0F, 0F);     
+		wingA = new ModelRenderer(this, 50, 14);
+		wingA.addBox(-3F, -3F, 0F, 6, 17, 1);
+		wingA.setRotationPoint(2F, 10F, -2F);
+		this.setRotation(wingA, 1.570796F, 0F, 0F);     
       
-		WingB = new ModelRenderer(this, 50, 14);
-		WingB.mirror = true;
-		WingB.addBox(-3F, -3F, 0F, 6, 17, 1);
-		WingB.setRotationPoint(-2F, 10F, -2F);
-		this.setRotation(WingB, 1.570796F, 0F, 0F);     
+		wingB = new ModelRenderer(this, 50, 14);
+		wingB.mirror = true;
+		wingB.addBox(-3F, -3F, 0F, 6, 17, 1);
+		wingB.setRotationPoint(-2F, 10F, -2F);
+		this.setRotation(wingB, 1.570796F, 0F, 0F);     
 	}
   
 	@Override
@@ -37,8 +34,8 @@ public class ModelWings extends ModelBase {
 		super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
-		WingA.render(scale);         
-		WingB.render(scale);
+		wingA.render(scale);         
+		wingB.render(scale);
 	}
   
 	@Override
@@ -46,27 +43,27 @@ public class ModelWings extends ModelBase {
 		EntityDog dog = (EntityDog)entitylivingbaseIn;
 
 		if(dog.isSitting()) {
-			this.WingA.setRotationPoint(2F, 12.0F, -2.0F);
-			setRotation(WingA, ((float)Math.PI * 2F / 5F), 0F, 0F);          
-			this.WingB.setRotationPoint(-2F, 12.0F, -2.0F);
-			setRotation(WingB, ((float)Math.PI * 2F / 5F), 0F, 0F);
+			this.wingA.setRotationPoint(2F, 12.0F, -2.0F);
+			setRotation(wingA, ((float)Math.PI * 2F / 5F), 0F, 0F);          
+			this.wingB.setRotationPoint(-2F, 12.0F, -2.0F);
+			setRotation(wingB, ((float)Math.PI * 2F / 5F), 0F, 0F);
 		} 	
 		else {
-			WingA.setRotationPoint(2F, 10F, -2F);
-			setRotation(WingA, 1.570796F, 0F, 0F);
-			WingB.setRotationPoint(-2F, 10F, -2F);
-			setRotation(WingB, 1.570796F, 0F, 0F); 
+			wingA.setRotationPoint(2F, 10F, -2F);
+			setRotation(wingA, 1.570796F, 0F, 0F);
+			wingB.setRotationPoint(-2F, 10F, -2F);
+			setRotation(wingB, 1.570796F, 0F, 0F); 
     	  
 			if(!dog.onGround) {
 				if(!Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown()) {
 					float c = 4.0F;
-					WingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
-					WingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
+					wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
+					wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
 				} 
 				else {
 					float c2 = 0.5F;
-					WingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
-					WingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
+					wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
+					wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
 				}
 			}     
 		}

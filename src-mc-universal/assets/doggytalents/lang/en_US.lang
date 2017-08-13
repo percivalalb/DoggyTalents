@@ -30,6 +30,8 @@ item.doggytalents.cape.name=Fancy Cape
 item.doggytalents.sunglasses.name=Dog Sunglasses
 item.doggytalents.capecoloured.name=Coloured Cape
 item.doggytalents.leatherjacket.name=Leather Jacket
+item.doggytalents.tinybone.name=Tiny Bone
+item.doggytalents.bigbone.name=Big Bone
 
 doggui.talentname.blackpelt=Black Pelt
 doggui.talentname.guarddog=Guard Dog

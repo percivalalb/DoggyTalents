@@ -1,10 +1,10 @@
 package doggytalents.base.b;
 
+import java.util.Collection;
+
 import com.google.common.collect.ImmutableSet;
 
 import net.minecraft.block.properties.PropertyHelper;
-
-import java.util.Collection;
 
 public class PropertyStringListed extends PropertyHelper<String> {
 	

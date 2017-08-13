@@ -1,11 +1,8 @@
 package doggytalents.base;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public interface IGeneralMethods {

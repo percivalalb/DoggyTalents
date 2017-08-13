@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.lib.Constants;
-import doggytalents.lib.Reference;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author ProPercivalalb, NovaViper

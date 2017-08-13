@@ -1,7 +1,6 @@
 package doggytalents.base.f;
 
 import doggytalents.base.other.ItemRadarBridge;
-import doggytalents.item.ItemRadar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;

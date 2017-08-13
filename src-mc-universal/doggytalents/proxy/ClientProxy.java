@@ -2,26 +2,18 @@ package doggytalents.proxy;
 
 import java.util.Random;
 
-import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
 import doggytalents.base.VersionControl;
-import doggytalents.base.other.ParticleCustomLanding;
 import doggytalents.client.gui.GuiDogInfo;
-import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.GameOverlay;
 import doggytalents.handler.KeyState;
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;

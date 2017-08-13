@@ -6,7 +6,6 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.PotionEffect;
 
 /**
  * @author ProPercivalalb

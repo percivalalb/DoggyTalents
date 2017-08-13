@@ -5,8 +5,6 @@ import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;

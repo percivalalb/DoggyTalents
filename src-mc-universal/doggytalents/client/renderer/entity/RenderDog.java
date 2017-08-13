@@ -9,7 +9,6 @@ import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
-import doggytalents.client.renderer.entity.layer.LayerSaddle;
 import doggytalents.client.renderer.entity.layer.LayerSunglasses;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;

@@ -6,7 +6,6 @@ import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
-import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;

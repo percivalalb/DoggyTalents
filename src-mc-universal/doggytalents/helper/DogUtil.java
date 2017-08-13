@@ -8,7 +8,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 public class DogUtil {

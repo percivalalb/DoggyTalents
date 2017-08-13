@@ -3,7 +3,6 @@ package doggytalents.client.model;
 import doggytalents.base.ObjectLibClient;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

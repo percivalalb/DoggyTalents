@@ -3,15 +3,12 @@ package doggytalents.base.b;
 import doggytalents.base.IGeneralMethods;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public class GeneralMethods implements IGeneralMethods {

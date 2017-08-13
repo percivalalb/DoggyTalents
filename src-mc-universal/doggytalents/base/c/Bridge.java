@@ -63,6 +63,8 @@ public class Bridge implements IBridge {
 			entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, volume, pitch);
 		else if(name.equals("mob.wolf.panting"))
 			entity.playSound(SoundEvents.ENTITY_WOLF_PANT, volume, pitch);
+		else if(name.equals("mob.wolf.growl"))
+			entity.playSound(SoundEvents.ENTITY_WOLF_GROWL, volume, pitch);
 		else if(name.equals("random.bow"))
 			entity.playSound(SoundEvents.ENTITY_ARROW_SHOOT, volume, pitch);
 	}

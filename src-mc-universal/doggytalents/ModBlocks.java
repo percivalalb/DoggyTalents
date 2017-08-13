@@ -9,8 +9,6 @@ import doggytalents.block.ItemDogBed;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBath;
-import doggytalents.tileentity.TileEntityDogBed;
-import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;

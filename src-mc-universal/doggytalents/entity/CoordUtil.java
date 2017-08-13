@@ -1,7 +1,5 @@
 package doggytalents.entity;
 
-import com.google.common.base.Optional;
-
 import net.minecraft.nbt.NBTTagCompound;
 
 /**

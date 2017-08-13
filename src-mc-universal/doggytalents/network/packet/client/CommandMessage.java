@@ -8,7 +8,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

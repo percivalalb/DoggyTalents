@@ -5,7 +5,6 @@ import java.util.List;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 

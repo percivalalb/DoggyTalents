@@ -1,7 +1,6 @@
 package doggytalents.base.f;
 
 import doggytalents.base.other.ItemThrowBoneBridge;
-import doggytalents.item.ItemThrowBone;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

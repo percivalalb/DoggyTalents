@@ -1,13 +1,10 @@
 package doggytalents.entity;
 
-import java.util.UUID;
-
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.base.IDataTracker;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;

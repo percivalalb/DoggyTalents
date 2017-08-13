@@ -2,14 +2,8 @@ package doggytalents.item;
 
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 /**

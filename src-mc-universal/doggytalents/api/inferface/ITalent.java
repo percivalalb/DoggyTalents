@@ -32,7 +32,6 @@ public abstract class ITalent {
 	public int fallProtection(EntityDog dog) { return 0; }
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }
-	public Object getLivingSound(EntityDog dog) { return null; }
 	public boolean canAttackClass(EntityDog dog, Class entityClass) { return false; }
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }

@@ -3,10 +3,7 @@ package doggytalents.item;
 import doggytalents.base.ObjectLib;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
-import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb

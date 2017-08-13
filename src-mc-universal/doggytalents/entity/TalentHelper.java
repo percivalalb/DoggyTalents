@@ -137,15 +137,6 @@ public class TalentHelper {
 		return true;
 	}
 
-	public static Object getLivingSound(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents()) {
-			Object sound = talent.getLivingSound(dog);
-			if(sound != null && !sound.equals(""))
-				return sound;
-		}
-		return null;
-	}
-
 	public static boolean canAttackClass(EntityDog dog, Class entityClass) {
 		for(ITalent talent : TalentRegistry.getTalents())
 			if(talent.canAttackClass(dog, entityClass))

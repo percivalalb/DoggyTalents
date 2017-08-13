@@ -1,7 +1,6 @@
 package doggytalents;
 
 import doggytalents.base.ObjectLib;
-import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 

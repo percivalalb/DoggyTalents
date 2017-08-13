@@ -70,8 +70,7 @@ public abstract class EntityDogBridge extends EntityDog {
 	
     @Override
     protected SoundEvent getAmbientSound() {
-    	SoundEvent sound = (SoundEvent)TalentHelper.getLivingSound(this);
-        return sound != null ? sound : (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT);
+        return this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT;
     }
 	
 	/** Hurt sound is version specific can be found in appropriate EntityDogWrapper.class File**/

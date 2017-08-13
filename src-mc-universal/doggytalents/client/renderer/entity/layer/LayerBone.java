@@ -1,7 +1,5 @@
 package doggytalents.client.renderer.entity.layer;
 
-import doggytalents.base.ObjectLib;
-import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -9,9 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

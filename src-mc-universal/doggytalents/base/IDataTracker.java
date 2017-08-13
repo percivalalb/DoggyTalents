@@ -1,8 +1,5 @@
 package doggytalents.base;
 
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
-
 public interface IDataTracker {
 	
 	public void entityInit();

@@ -5,7 +5,6 @@ import java.util.List;
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.TextFormatting;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;

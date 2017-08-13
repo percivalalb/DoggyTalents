@@ -480,6 +480,13 @@ public abstract class EntityDog extends EntityAbstractDog {
                    		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
+                else if(stack.getItem() == ModItems.FANCY_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
+                	this.setCollarColour(-3);
+                 	
+                   	if(!player.capabilities.isCreativeMode)
+                   		ObjectLib.STACK_UTIL.shrink(stack, 1);
+                   	return true;
+                }
                 else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
                 	this.setFancyCape();
                 	if(!player.capabilities.isCreativeMode)
@@ -520,12 +527,19 @@ public abstract class EntityDog extends EntityAbstractDog {
                 	if(!this.world.isRemote) {
                 		if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                 			this.reversionTime = 40;
-                			if(this.hasCollar()) {
+                			if(this.hasCollarColoured()) {
 	                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
-	                			collarDrop.setTagCompound(new NBTTagCompound());
-	                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
+	                			if(this.isCollarColoured()) {
+		                			collarDrop.setTagCompound(new NBTTagCompound());
+		                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
+	                			}
 	                	     	this.entityDropItem(collarDrop, 1);
 	                	     	this.setCollarColour(-2);
+                			}
+                			
+                			if(this.getCollarColour() == -3) {
+                				this.entityDropItem(new ItemStack(ModItems.FANCY_COLLAR, 1, 0), 1);
+                				this.setCollarColour(-2);
                 			}
                 			
                 			if(this.hasFancyCape()) {
@@ -535,8 +549,10 @@ public abstract class EntityDog extends EntityAbstractDog {
                 			
                 			if(this.hasCapeColoured()) {
                 				ItemStack capeDrop = new ItemStack(ModItems.CAPE_COLOURED, 1, 0);
-	                			capeDrop.setTagCompound(new NBTTagCompound());
-	                			capeDrop.getTagCompound().setInteger("cape_colour", this.getCapeData());
+                				if(this.isCapeColoured()) {
+		                			capeDrop.setTagCompound(new NBTTagCompound());
+		                			capeDrop.getTagCompound().setInteger("cape_colour", this.getCapeData());
+                				}
 	                	     	this.entityDropItem(capeDrop, 1);
 	                	     	this.setNoCape();
                 			}
@@ -586,11 +602,11 @@ public abstract class EntityDog extends EntityAbstractDog {
                     return true;
                 }
                 else if(stack.getItem() == Items.DYE && this.canInteract(player)) {
-                    if(!this.hasCollar())
+                    if(!this.hasCollarColoured())
                     	return true;
                     
                     
-                    if(this.hasNoColour()) {
+                    if(!this.isCollarColoured()) {
                         int colour = ObjectLib.METHODS.getColour(EnumDyeColor.byDyeDamage(stack.getMetadata()));
                     	
                     	this.setCollarColour(colour);
@@ -949,12 +965,16 @@ public abstract class EntityDog extends EntityAbstractDog {
     	this.dataTracker.setCollarColour(value);
     }
     
-	public boolean hasCollar() {
+    public boolean hasCollar() {
+		return this.getCollarColour() != -2;
+	}
+    
+    public boolean hasCollarColoured() {
 		return this.getCollarColour() >= -1;
 	}
-	
-	public boolean hasNoColour() {
-		return this.getCollarColour() <= -1;
+    
+    public boolean isCollarColoured() {
+		return this.getCapeData() > -1;
 	}
 	
 	public void setHasCollar() {

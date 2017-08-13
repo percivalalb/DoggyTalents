@@ -10,6 +10,7 @@ import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
+import doggytalents.item.ItemFancyCollar;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTinyBone;
@@ -38,6 +39,7 @@ public class ModItems {
     public static Item DOGGY_CHARM;
     public static Item RADIO_COLLAR;
     public static Item WOOL_COLLAR;
+    public static Item FANCY_COLLAR;
     public static Item RADAR;
     public static Item WHISTLE;
     public static Item TREAT_BAG;
@@ -62,6 +64,7 @@ public class ModItems {
 	    DOGGY_CHARM = VersionControl.createObject("ItemDoggyCharmWrapper", ItemDoggyCharm.class).setUnlocalizedName("doggytalents.doggycharm").setRegistryName(Reference.MOD_ID + ":doggy_charm");
 	    RADIO_COLLAR = new ItemDT().setUnlocalizedName("doggytalents.radiocollar").setRegistryName(Reference.MOD_ID + ":radio_collar");
 	    WOOL_COLLAR = VersionControl.createObject("ItemWoolCollarWrapper", ItemWoolCollar.class).setUnlocalizedName("doggytalents.woolcollar").setRegistryName(Reference.MOD_ID + ":wool_collar");
+	    FANCY_COLLAR = new ItemFancyCollar().setUnlocalizedName("doggytalents.fancycollar").setRegistryName(Reference.MOD_ID + ":fancy_collar");
 	    RADAR = VersionControl.createObject("ItemRadarWrapper", ItemRadar.class).setUnlocalizedName("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
 	    TREAT_BAG = VersionControl.createObject("ItemTreatBagWrapper", ItemTreatBag.class).setUnlocalizedName("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
@@ -85,6 +88,7 @@ public class ModItems {
 	    ObjectLib.REGISTRY.registerItem(registry, DOGGY_CHARM);
 	    ObjectLib.REGISTRY.registerItem(registry, RADIO_COLLAR);
 	    ObjectLib.REGISTRY.registerItem(registry, WOOL_COLLAR);
+	    ObjectLib.REGISTRY.registerItem(registry, FANCY_COLLAR);
 	    ObjectLib.REGISTRY.registerItem(registry, RADAR);
 	    ObjectLib.REGISTRY.registerItem(registry, WHISTLE);
 	    ObjectLib.REGISTRY.registerItem(registry, TREAT_BAG);
@@ -114,6 +118,7 @@ public class ModItems {
 		ModelHelper.setModel(RADAR, 0, "doggytalents:radar");
 		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
 		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
+		ModelHelper.setModel(FANCY_COLLAR, 0, "doggytalents:greyscale_collar");
 		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
 		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
 		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");

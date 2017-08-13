@@ -28,7 +28,7 @@ public class RegistryMethods implements IRegistryMethods {
 
 	@Override
 	public void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+		EntityRegistry.registerModEntity(entityClass, entityName.getResourcePath(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 
 }

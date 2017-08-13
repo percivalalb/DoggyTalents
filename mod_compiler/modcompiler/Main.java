@@ -135,7 +135,7 @@ public class Main {
 							@Override
 							public void run() {
 								try {
-									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12_1})
+									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_8_9, ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12_1})
 										Main.compileMod(envir, Main.MOD, versionInput.getText());
 								}
 								catch(IOException e) {

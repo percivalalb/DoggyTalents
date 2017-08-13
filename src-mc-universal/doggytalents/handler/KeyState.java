@@ -63,7 +63,7 @@ public class KeyState {
 	            		List<ItemStack> heldStacks = ObjectLib.BRIDGE.getHeldItems(player);
 	            		
 	            		for(ItemStack heldStack : heldStacks) {
-	            			if(heldStacks != ModItems.COMMAND_EMBLEM) continue;
+	            			if(heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
 		            	    int command = -1;
 		            	    
 		                	if(kb == come) {

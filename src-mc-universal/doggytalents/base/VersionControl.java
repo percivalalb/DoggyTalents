@@ -20,6 +20,10 @@ public class VersionControl {
 		}
 	}
 	
+	public static <T> Constructor<T> getConstructor(String name, Class<T> type, Class<?>... parameterTypes) {
+		return getConstructor(chooseClassBasedOnVersion(name, type), parameterTypes);
+	}
+	
 	public static <T> T createObject(String name, Class<T> type, Class<?> parameterTypes, Object parameter) {
 		Class<T> path = chooseClassBasedOnVersion(name, type);
 		
@@ -32,8 +36,25 @@ public class VersionControl {
 		}
 	}
 	
+	public static <T> T createObject(Constructor<T> constructor, Object... parameters) {
+		try {
+			return constructor.newInstance(parameters);
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static Object createObject(String name) {
+		return createObject(name, Object.class);
+	}
+	
 	public static <T> T createObject(String name, Class<T> type) {
-		Class<T> path = chooseClassBasedOnVersion(name, type);
+		return createObject(chooseClassBasedOnVersion(name, type));
+	}
+	
+	public static <T> T createObject(Class<T> path) {
 		
 		try {
 			return (T)path.newInstance();
@@ -74,21 +95,23 @@ public class VersionControl {
 	
 	public static int getIndex() {
 		switch(MinecraftForge.MC_VERSION) {
-		case "1.9.4":	return 0;
-		case "1.10.2":	return 1;
-		case "1.11.2":	return 2;
+		case "1.8.9":	return 0;
+		case "1.9.4":	return 1;
+		case "1.10.2":	return 2;
+		case "1.11.2":	return 3;
 		case "1.12":
-		case "1.12.1":	return 3;
-		default:		return 4;
+		case "1.12.1":	return 4;
+		default:		return 5;
 		}
 	}
 	
 	public static String getDirectionBaseOnVersion(int index) { 
 		switch(index) {
-		case 0:		return "doggytalents.base.a";
-		case 1:		return "doggytalents.base.b";
-		case 2:		return "doggytalents.base.c";
-		case 3:		return "doggytalents.base.d";
+		case 0:		return "doggytalents.base.b";
+		case 1:		return "doggytalents.base.c";
+		case 2:		return "doggytalents.base.d";
+		case 3:		return "doggytalents.base.e";
+		case 4:		return "doggytalents.base.f";
 		default:	return "doggytalents.base";
 		}
 	}

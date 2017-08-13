@@ -3,6 +3,8 @@ package doggytalents.entity.ai;
 import java.util.List;
 
 import doggytalents.ModItems;
+import doggytalents.base.IWaterMovement;
+import doggytalents.base.VersionControl;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
@@ -13,7 +15,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
@@ -27,8 +28,8 @@ public class EntityAIFetch extends EntityAIBase {
     private final PathNavigate petPathfinder;
     private int timeToRecalcPath;
     private float maxDist;
-    private float oldWaterCost;
     private double oldRangeSense;
+    private IWaterMovement waterMovement;
 
     public EntityAIFetch(EntityDog dogIn, double followSpeedIn,  float maxDistIn) {
         this.dog = dogIn;
@@ -36,6 +37,7 @@ public class EntityAIFetch extends EntityAIBase {
         this.followSpeed = followSpeedIn;
         this.petPathfinder = dogIn.getNavigator();
         this.maxDist = maxDistIn;
+        this.waterMovement = VersionControl.createObject("WaterMovementHandler", IWaterMovement.class, EntityDog.class, this.dog);
         this.setMutexBits(3);
 
         if (!(this.petPathfinder instanceof PathNavigateGround))
@@ -76,8 +78,7 @@ public class EntityAIFetch extends EntityAIBase {
     @Override
     public void startExecuting() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.waterMovement.startExecuting();
         this.oldRangeSense = this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.maxDist);
     }
@@ -87,12 +88,12 @@ public class EntityAIFetch extends EntityAIBase {
         this.owner = null;
         this.fetchableItem = null;
         this.petPathfinder.clearPathEntity();
-        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.waterMovement.resetTask();
         this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 
     public EntityItem getNearestFetchableItem() {
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.dog, this.dog.getEntityBoundingBox().grow(this.maxDist));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this.dog, this.dog.getEntityBoundingBox().grow(this.maxDist, this.maxDist, this.maxDist));
         for(Entity entity : list) {
         	if(entity instanceof EntityItem) {
         		EntityItem entityItem = (EntityItem)entity;

@@ -1,22 +1,36 @@
 package doggytalents.base.c;
 
+import java.util.Random;
+
 import doggytalents.base.IClientMethods;
 import doggytalents.base.other.DogBedModel;
+import doggytalents.base.other.ParticleCustomLanding;
+import doggytalents.client.model.block.IStateParticleModel;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.client.model.IRetexturableModel;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -98,9 +112,39 @@ public class ClientMethods implements IClientMethods {
 	        }
 	    }
 	}
-
+	
 	@Override
-	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha) {
-		RenderGlobal.drawSelectionBoundingBox(box, red, green, blue, alpha);
+	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha) {
+		RenderGlobal.func_181563_a((AxisAlignedBB)box, (int)(red * 255.0F), (int)(green * 255.0F), (int)(blue * 255.0F), (int)(alpha * 255.0F));
+	}
+	
+	@Override
+	public void setModel(Item item, int meta, String modelName) {
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+	}
+	
+	@Override
+	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+		TextureAtlasSprite sprite;
+
+		IBlockState state = player.world.getBlockState((BlockPos)pos);
+		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+		if(model instanceof IStateParticleModel) {
+			state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
+			sprite = ((IStateParticleModel)model).getParticleTexture(state);
+		} 
+		else
+			sprite = model.getParticleTexture();
+		
+		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
+
+		for(int i = 0; i < numberOfParticles; i++) {
+			double xSpeed = rand.nextGaussian() * particleSpeed;
+			double ySpeed = rand.nextGaussian() * particleSpeed;
+			double zSpeed = rand.nextGaussian() * particleSpeed;
+			
+			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
+			manager.addEffect(particle);
+		}
 	}
 }

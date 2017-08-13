@@ -298,6 +298,7 @@ doggytalents.key.heel=Command Heal
 doggytalents.key.category=Doggy Talents
 
 entity.doggytalents:dog.name=Dog
+entity.doggytalents.dog.name=Dog
 entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=Pack Puppy

@@ -1,10 +1,12 @@
 package doggytalents.handler;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.CommandMessage;
@@ -12,6 +14,7 @@ import doggytalents.network.packet.client.DogJumpMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -47,32 +50,39 @@ public class KeyState {
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
 	            	if(kb == mc.gameSettings.keyBindJump) {
-	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
-	            			EntityDog dog = (EntityDog)player.getRidingEntity();
+	            		if(ObjectLib.BRIDGE.getRidingEntity(player) instanceof EntityDog && mc.currentScreen == null) {
+	            			EntityDog dog = (EntityDog)ObjectLib.BRIDGE.getRidingEntity(player);
 	
 	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
 	            			jumpMessage.process(player, Side.CLIENT);
 	            			PacketDispatcher.sendToServer(jumpMessage);
 	            		}
 	            	}
-	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM))) {
-	            	    int command = -1;
-	            	    
-	                	if(kb == come) {
-	                		command = 1;
-	                	}
-	                	else if(kb == stay) {
-	                		command = 2;
-	                	}
-	                	else if(kb == ok) {
-	                		command = 3;
-	                	}
-	                	else if(kb == heel) {
-	                		command = 4;
-	                	}
-
-	                	if(command != -1)
-	                		PacketDispatcher.sendToServer(new CommandMessage(command));
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null) {
+	            		
+	            		List<ItemStack> heldStacks = ObjectLib.BRIDGE.getHeldItems(player);
+	            		
+	            		for(ItemStack heldStack : heldStacks) {
+	            			if(heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
+		            	    int command = -1;
+		            	    
+		                	if(kb == come) {
+		                		command = 1;
+		                	}
+		                	else if(kb == stay) {
+		                		command = 2;
+		                	}
+		                	else if(kb == ok) {
+		                		command = 3;
+		                	}
+		                	else if(kb == heel) {
+		                		command = 4;
+		                	}
+	
+		                	if(command != -1)
+		                		PacketDispatcher.sendToServer(new CommandMessage(command));
+		                	break;
+	            		}
 	               }
 	            }
 	            else if(!tickEnd) {

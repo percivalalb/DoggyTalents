@@ -9,8 +9,6 @@ import doggytalents.block.ItemDogBed;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBath;
-import doggytalents.tileentity.TileEntityDogBed;
-import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -28,28 +26,28 @@ public class ModBlocks {
 
 	public static void onRegisterBlock(Object registry) {
 		DoggyTalents.LOGGER.info("Registering Blocks");
-		DOG_BED = VersionControl.createObject("BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
-		DOG_BATH = VersionControl.createObject("BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
-		FOOD_BOWL = VersionControl.createObject("BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
+		DOG_BED = VersionControl.createObject("BlockWrapper$BlockDogBedWrapper", BlockDogBed.class).setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
+		DOG_BATH = VersionControl.createObject("BlockWrapper$BlockDogBathWrapper", BlockDogBath.class).setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
+		FOOD_BOWL = VersionControl.createObject("BlockWrapper$BlockFoodBowlWrapper", BlockFoodBowl.class).setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
-		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
+		GameRegistry.registerTileEntity(ObjectLib.TILE_DOG_BED_CLASS, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
-		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "doggytalents:dog_bowl");
+		GameRegistry.registerTileEntity(ObjectLib.TILE_FOOD_BOWL_CLASS, "doggytalents:dog_bowl");
 		
 		DOG_BED.setHarvestLevel("axe", 0);
 		DOG_BATH.setHarvestLevel("pickaxe", 0);
 		FOOD_BOWL.setHarvestLevel("pickaxe", 0);
 		
-		ObjectLib.METHODS.registerBlock(registry, DOG_BED);
-		ObjectLib.METHODS.registerBlock(registry, DOG_BATH);
-		ObjectLib.METHODS.registerBlock(registry, FOOD_BOWL);
+		ObjectLib.REGISTRY.registerBlock(registry, DOG_BED, VersionControl.chooseClassBasedOnVersion("ItemDogBedWrapper", ItemDogBed.class));
+		ObjectLib.REGISTRY.registerBlock(registry, DOG_BATH);
+		ObjectLib.REGISTRY.registerBlock(registry, FOOD_BOWL);
 	}
 	
 	public static void onRegisterItem(Object registry) {
 		DoggyTalents.LOGGER.info("Registering ItemBlocks");
-		ObjectLib.METHODS.registerItem(registry, VersionControl.createObject("ItemDogBedWrapper", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
-		ObjectLib.METHODS.registerItem(registry, makeItemBlock(DOG_BATH));
-		ObjectLib.METHODS.registerItem(registry, makeItemBlock(FOOD_BOWL));
+		ObjectLib.REGISTRY.registerItem(registry, VersionControl.createObject("ItemDogBedWrapper", ItemDogBed.class, Block.class, DOG_BED).setRegistryName(DOG_BED.getRegistryName()));
+		ObjectLib.REGISTRY.registerItem(registry, makeItemBlock(DOG_BATH));
+		ObjectLib.REGISTRY.registerItem(registry, makeItemBlock(FOOD_BOWL));
 	}
 	
 	@SideOnly(Side.CLIENT)

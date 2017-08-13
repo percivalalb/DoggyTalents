@@ -3,13 +3,13 @@ package doggytalents.base.c;
 import java.util.List;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.base.ObjectLib;
 import doggytalents.block.ItemDogBed;
+import doggytalents.lib.TextFormatting;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -33,14 +33,14 @@ public class ItemDogBedWrapper extends ItemDogBed {
 		    String beddingId = tag.getString("beddingId");
 		    
 		    if(DogBedRegistry.CASINGS.isValidId(casingId))
-		    	tooltip.add(I18n.translateToLocal(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
+		    	tooltip.add(ObjectLib.BRIDGE.translateToLocal(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
 		    else
-		    	tooltip.add(TextFormatting.RED + I18n.translateToLocal("dogBed.woodError"));
+		    	tooltip.add(TextFormatting.RED + ObjectLib.BRIDGE.translateToLocal("dogBed.woodError"));
 		    	
 		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-		    	tooltip.add(I18n.translateToLocal(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
+		    	tooltip.add(ObjectLib.BRIDGE.translateToLocal(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
 		    else
-		    	tooltip.add(TextFormatting.RED + I18n.translateToLocal("dogBed.woolError"));
+		    	tooltip.add(TextFormatting.RED + ObjectLib.BRIDGE.translateToLocal("dogBed.woolError"));
 		}
 	}
 }

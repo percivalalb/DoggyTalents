@@ -3,21 +3,19 @@ package doggytalents.helper;
 import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
+import doggytalents.item.ItemChewStick;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class DogUtil {
 
 	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder) {
-    	int i = MathHelper.floor(owner.posX) - 2;
-        int j = MathHelper.floor(owner.posZ) - 2;
-        int k = MathHelper.floor(owner.getEntityBoundingBox().minY);
+    	int i = ObjectLib.BRIDGE.floor(owner.posX) - 2;
+        int j = ObjectLib.BRIDGE.floor(owner.posZ) - 2;
+        int k = ObjectLib.BRIDGE.floor(owner.getEntityBoundingBox().minY);
 
         for(int l = 0; l <= 4; ++l) {
             for(int i1 = 0; i1 <= 4; ++i1) {
@@ -35,10 +33,8 @@ public class DogUtil {
             ItemStack itemstack = inventory.getStackInSlot(slotIndex);
             dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
             
-            if(itemstack.getItem() == ModItems.CHEW_STICK) {
-            	dog.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
-            	dog.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
-            	dog.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+            if(itemstack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
+            	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(null, dog);
             }
 
             if(ObjectLib.STACK_UTIL.getCount(inventory.getStackInSlot(slotIndex)) <= 1) {
@@ -76,5 +72,41 @@ public class DogUtil {
          }
 
         return -1;
+    }
+    
+    public static ItemStack addItem(IInventory inventory, ItemStack stack) {
+    	if(ObjectLib.STACK_UTIL.isEmpty(stack)) return ObjectLib.STACK_UTIL.getEmpty();
+    	
+        ItemStack itemstack = stack.copy();
+
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            ItemStack itemstack1 = inventory.getStackInSlot(i);
+
+            if(ObjectLib.STACK_UTIL.isEmpty(itemstack1)) {
+            	inventory.setInventorySlotContents(i, itemstack);
+            	inventory.markDirty();
+                return ObjectLib.STACK_UTIL.getEmpty();
+            }
+
+            if(ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+                int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
+                int k = Math.min(ObjectLib.STACK_UTIL.getCount(itemstack), j - ObjectLib.STACK_UTIL.getCount(itemstack1));
+
+                if(k > 0) {
+                	ObjectLib.STACK_UTIL.grow(itemstack1, k);
+                	ObjectLib.STACK_UTIL.shrink(itemstack1, k);
+
+                    if(ObjectLib.STACK_UTIL.isEmpty(itemstack)) {
+                    	inventory.markDirty();
+                        return ObjectLib.STACK_UTIL.getEmpty();
+                    }
+                }
+            }
+        }
+
+        if(ObjectLib.STACK_UTIL.getCount(itemstack) != ObjectLib.STACK_UTIL.getCount(stack))
+        	inventory.markDirty();
+
+        return itemstack;
     }
 }

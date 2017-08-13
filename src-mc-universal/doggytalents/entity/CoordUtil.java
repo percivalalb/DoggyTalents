@@ -1,9 +1,6 @@
 package doggytalents.entity;
 
-import com.google.common.base.Optional;
-
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 
 /**
  * @author ProPercivalalb
@@ -17,64 +14,80 @@ public class CoordUtil {
 	}
 	
 	public boolean hasBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).isPresent();
+		return this.dog.dataTracker.hasBedPos();
 	}
 	
 	public boolean hasBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).isPresent();
+		return this.dog.dataTracker.hasBowlPos();
 	}
 	
-	public BlockPos getBedPos() {
-		return this.dog.getDataManager().get(EntityDog.BED_POS).or(this.dog.world.getSpawnPoint());
+	public void setBedPos(int x, int y, int z) {
+		this.dog.dataTracker.setBedPos(x, y, z);
 	}
 	
-	public BlockPos getBowlPos() {
-		return this.dog.getDataManager().get(EntityDog.BOWL_POS).or(this.dog.getPosition());
+	public void setBowlPos(int x, int y, int z) {
+		this.dog.dataTracker.setBowlPos(x, y, z);
+	}
+	
+	public int getBedX() {
+		return this.dog.dataTracker.getBedX();
+	}
+	
+	public int getBedY() {
+		return this.dog.dataTracker.getBedY();
+	}
+	
+	public int getBedZ() {
+		return this.dog.dataTracker.getBedZ();
+	}
+	
+	public int getBowlX() {
+		return this.dog.dataTracker.getBowlX();
+	}
+	
+	public int getBowlY() {
+		return this.dog.dataTracker.getBowlY();
+	}
+	
+	public int getBowlZ() {
+		return this.dog.dataTracker.getBowlZ();
 	}
 	
 	public void resetBedPosition() {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.absent());
+		this.dog.dataTracker.resetBedPosition();
 	}
 	
 	public void resetBowlPosition() {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.absent());
+		this.dog.dataTracker.resetBedPosition();
 	}
-	
-	public void setBedPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BED_POS, Optional.fromNullable(pos));
-	}
-	
-	public void setBowlPos(BlockPos pos) {
-		this.dog.getDataManager().set(EntityDog.BOWL_POS, Optional.fromNullable(pos));
-	}
-
 	
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		if(this.hasBedPos()) {
-			tagCompound.setInteger("bedPosX", this.getBedPos().getX());
-			tagCompound.setInteger("bedPosY", this.getBedPos().getY());
-			tagCompound.setInteger("bedPosZ", this.getBedPos().getZ());
+			tagCompound.setInteger("bedPosX", this.getBedX());
+			tagCompound.setInteger("bedPosY", this.getBedY());
+			tagCompound.setInteger("bedPosZ", this.getBedZ());
 		}
 		
 		if(this.hasBowlPos()) {
-			tagCompound.setInteger("bowlPosX", this.getBowlPos().getX());
-			tagCompound.setInteger("bowlPosY", this.getBowlPos().getY());
-			tagCompound.setInteger("bowlPosZ", this.getBowlPos().getZ());
+			tagCompound.setInteger("bowlPosX", this.getBowlX());
+			tagCompound.setInteger("bowlPosY", this.getBowlY());
+			tagCompound.setInteger("bowlPosZ", this.getBowlZ());
 		}
 	}
 	
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		if(tagCompound.hasKey("bedPosX"))
-			this.setBedPos(new BlockPos(tagCompound.getInteger("bedPosX"), tagCompound.getInteger("bedPosY"), tagCompound.getInteger("bedPosZ")));
+		if(tagCompound.hasKey("bedPosX")) {
+			this.setBedPos(tagCompound.getInteger("bedPosX"), tagCompound.getInteger("bedPosY"), tagCompound.getInteger("bedPosZ"));
+		}
+		if(tagCompound.hasKey("bowlPosX")) {
+			this.setBowlPos(tagCompound.getInteger("bowlPosX"), tagCompound.getInteger("bowlPosY"), tagCompound.getInteger("bowlPosZ"));
+		}
 		
-		if(tagCompound.hasKey("bowlPosX"))
-			this.setBowlPos(new BlockPos(tagCompound.getInteger("bowlPosX"), tagCompound.getInteger("bowlPosY"), tagCompound.getInteger("bowlPosZ")));
-	
 		//Backwards compatibility
 		if(tagCompound.hasKey("coords")) {
 			String[] split = tagCompound.getString("coords").split(":");
-			this.setBedPos(new BlockPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2])));
-			this.setBowlPos(new BlockPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5])));
+			this.setBedPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2]));
+			this.setBowlPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5]));
 		}
 	}
 }

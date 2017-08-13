@@ -3,19 +3,18 @@ package doggytalents.base.c;
 import java.util.List;
 
 import doggytalents.item.ItemWoolCollar;
+import doggytalents.lib.TextFormatting;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * 1.11.2 Code
+ * 1.8.9 Code
  */
 public class ItemWoolCollarWrapper extends ItemWoolCollar {
 
@@ -34,7 +33,7 @@ public class ItemWoolCollarWrapper extends ItemWoolCollar {
 	}
 	
 	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
 		for(EnumDyeColor color : EnumDyeColor.values()) {
 			ItemStack baseColours = new ItemStack(this);
 			baseColours.setTagCompound(new NBTTagCompound());

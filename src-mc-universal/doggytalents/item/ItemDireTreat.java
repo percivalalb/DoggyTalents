@@ -3,7 +3,6 @@ package doggytalents.item;
 import doggytalents.api.IDogTreat;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
-import doggytalents.helper.ChatUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -47,26 +46,26 @@ public class ItemDireTreat extends ItemDT implements IDogTreat {
 	            dog.world.setEntityState(dog, (byte)7);
 	            dog.playTameEffect(true);
 	            if (!player.world.isRemote)
-	            	player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.levelup"));
+	            	ObjectLib.BRIDGE.addTranslatedMessage(player, "dogtreat.levelup");
 			}
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {
 			if (!player.world.isRemote){
 				 dog.playTameEffect(false);
-				 player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.tooyoung"));
+				 ObjectLib.BRIDGE.addTranslatedMessage(player, "dogtreat.tooyoung");
 			}
 		}
 		else if(type == EnumFeedBack.LEVELTOOHIGH) {
             player.world.setEntityState(dog, (byte)6);
             if (!player.world.isRemote) {
             	 dog.playTameEffect(false);
-            	 player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.toomuch"));
+            	 ObjectLib.BRIDGE.addTranslatedMessage(player, "dogtreat.toomuch");
             }
 		}
 		else if(type == EnumFeedBack.COMPLETE) {
             player.world.setEntityState(dog, (byte)6);
             if (!player.world.isRemote) {
-            	 player.sendMessage(ChatUtil.getChatComponentTranslation("dogtreat.ultimatelevel"));
+            	 ObjectLib.BRIDGE.addTranslatedMessage(player, "dogtreat.ultimatelevel");
             }
 		}
 	}

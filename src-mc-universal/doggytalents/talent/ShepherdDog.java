@@ -26,7 +26,7 @@ public class ShepherdDog extends ITalent {
 	        }
 			
 			if(dog.isTamed() && masterOrder != 3 && dog.getControllingPassenger() instanceof EntityAnimal) {
-				dog.removePassengers();
+				dog.removeEntityRidingUs();
 			}
 		}
 	}

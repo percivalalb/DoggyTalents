@@ -1,6 +1,11 @@
 {
     "variants": {
-        "facing=north": { "model": "doggytalents:dog_bed" },
+        "facing=north,version=1.8": { "model": "doggytalents:1.8.9/dog_bed" },
+        "facing=south,version=1.8": { "model": "doggytalents:1.8.9/dog_bed", "y": 180 },
+        "facing=west,version=1.8":  { "model": "doggytalents:1.8.9/dog_bed", "y": 270 },
+        "facing=east,version=1.8":  { "model": "doggytalents:1.8.9/dog_bed", "y": 90 },
+        "inventory,version=1.8":  { "model": "doggytalents:1.8.9/dog_bed", "y": 90 },
+		"facing=north": { "model": "doggytalents:dog_bed" },
         "facing=south": { "model": "doggytalents:dog_bed", "y": 180 },
         "facing=west":  { "model": "doggytalents:dog_bed", "y": 270 },
         "facing=east":  { "model": "doggytalents:dog_bed", "y": 90 },

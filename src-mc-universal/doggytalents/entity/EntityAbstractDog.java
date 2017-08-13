@@ -1,29 +1,22 @@
 package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.base.IDataTracker;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class EntityAbstractDog extends EntityTameable {
-
-	public static final DataParameter<Boolean> BEGGING = EntityDataManager.<Boolean>createKey(EntityAbstractDog.class, DataSerializers.BOOLEAN);
-
+	
     /** Float used to smooth the rotation of the wolf head */
     private float headRotationCourse;
     private float headRotationCourseOld;
@@ -34,30 +27,31 @@ public abstract class EntityAbstractDog extends EntityTameable {
     /** This time increases while wolf is shaking and emitting water particles. */
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
+    
+    public IDataTracker dataTracker;
 	
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
 	}
 	
+	public abstract Entity getEntityWeAreRiding();
+	
+	public abstract void dismountEntityWeAreRiding();
+	
+    //Do not put an override annotation here
+	public abstract Entity getControllingPassenger();
+	
+    //Do not put an override annotation here
+	public abstract boolean isBeingRidden();
+	public abstract void removeEntityRidingUs();
+	
+	
 	@Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataManager.register(BEGGING, Boolean.valueOf(false));
+	protected void entityInit() {
+		super.entityInit();
+		this.dataTracker = VersionControl.createObject("DataTrackerWrapper", IDataTracker.class, EntityDog.class, this);
 	}
-	
-	@Override
-    protected SoundEvent getAmbientSound() {
-        return (this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT);
-    }
-	
-	/** Hurt sound is version specific can be found in appropriate EntityDogWrapper.class File**/
-	//protected SoundEvent getHurtSound(DamageSource source);
-
-	@Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_WOLF_DEATH;
-    }
 
 	@Override
 	public float getSoundVolume() {
@@ -93,8 +87,8 @@ public abstract class EntityAbstractDog extends EntityTameable {
             this.prevTimeWolfIsShaking = 0.0F;
         }
         else if((this.isWet || this.isShaking) && this.isShaking) {
-            if (this.timeWolfIsShaking == 0.0F)
-                this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            if(this.timeWolfIsShaking == 0.0F)
+                ObjectLib.BRIDGE.playSound(this, "mob.wolf.shake", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 
             this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
             this.timeWolfIsShaking += 0.05F;
@@ -110,7 +104,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 
             if(this.timeWolfIsShaking > 0.4F) {
                 float f = (float)this.getEntityBoundingBox().minY;
-                int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
+                int i = (int)(ObjectLib.BRIDGE.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
 
                 for(int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
@@ -135,9 +129,9 @@ public abstract class EntityAbstractDog extends EntityTameable {
     public float getShakeAngle(float partialTickTime, float p_70923_2_) {
         float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTickTime + p_70923_2_) / 1.8F;
 
-        f = MathHelper.clamp(f, 0.0F, 1.0F);
+        f = ObjectLib.BRIDGE.clamp(f, 0.0F, 1.0F);
 
-        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+        return ObjectLib.BRIDGE.sin(f * (float)Math.PI) * ObjectLib.BRIDGE.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
     }
 
     @SideOnly(Side.CLIENT)
@@ -175,15 +169,15 @@ public abstract class EntityAbstractDog extends EntityTameable {
     
     @Override
     public double getYOffset() {
-        return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
+        return this.getEntityWeAreRiding() instanceof EntityPlayer ? 0.5D : 0.0D;
     }
 
 	public boolean isBegging() {
-	    return ((Boolean)this.dataManager.get(BEGGING)).booleanValue();
+	    return this.dataTracker.isBegging();
 	}
 	    
-	public void setBegging(boolean beg) {
-	    this.dataManager.set(BEGGING, Boolean.valueOf(beg));
+	public void setBegging(boolean flag) {
+	    this.dataTracker.setBegging(flag);
 	}
 	
     @Override
@@ -202,16 +196,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
         else {
         	EntityAbstractDog entitydog = (EntityAbstractDog)otherAnimal;
             return !entitydog.isTamed() ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
-        }
-    }
-	
-	@Override
-    public void updatePassenger(Entity passenger){
-        super.updatePassenger(passenger);
-
-        if(passenger instanceof EntityLiving) {
-            EntityLiving entityliving = (EntityLiving)passenger;
-            this.renderYawOffset = entityliving.renderYawOffset;
         }
     }
     

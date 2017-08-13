@@ -10,12 +10,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityFoodBowl extends TileEntity implements ITickable {
+public abstract class TileEntityFoodBowl extends TileEntity implements ITickable {
    
 	public InventoryBasic inventory;
 
@@ -41,8 +40,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
         }
     }
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBTGENERAL(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -65,10 +63,10 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
     	//Only run update code every 5 ticks (0.25s)
     	if(++this.timeoutCounter < 5) { return; }
     	
-    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 0.5D + 0.05000000074505806D, this.pos.getZ() + 1.0D).grow(5));
+    	List<EntityDog> dogList = ObjectLib.BRIDGE.getEntitiesWithinAABB(this.world, ObjectLib.ENTITY_DOG_CLASS, this.pos.getX(), this.pos.getY() + 0.5D, this.pos.getZ(), 5, 5, 5);
 
     	for(EntityDog dog : dogList) {
-    		dog.coords.setBowlPos(this.pos);
+    		dog.coords.setBowlPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
             	
     		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
          	if(dog.getDogHunger() < 60 && slotIndex >= 0)

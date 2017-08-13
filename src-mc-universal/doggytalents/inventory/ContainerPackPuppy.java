@@ -7,7 +7,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
 
 /**
  * @author ProPercivalalb
@@ -20,7 +19,7 @@ public class ContainerPackPuppy extends Container {
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
         inventory.openInventory(player);
-        int packpuppyLevel = MathHelper.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = ObjectLib.BRIDGE.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         for (int j = 0; j < 3; j++) {
             for (int i1 = 0; i1 < packpuppyLevel; i1++)
@@ -42,7 +41,7 @@ public class ContainerPackPuppy extends Container {
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
         ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
         Slot slot = (Slot)this.inventorySlots.get(i);
-        int packpuppyLevel = MathHelper.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = ObjectLib.BRIDGE.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();

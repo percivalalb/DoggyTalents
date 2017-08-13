@@ -1,5 +1,7 @@
 package doggytalents.base.b;
 
+import doggytalents.ModBlocks;
+import doggytalents.ModItems;
 import doggytalents.base.IInitializationEvent;
 import doggytalents.base.other.BuiltInRecipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -10,7 +12,8 @@ public class InitEvent implements IInitializationEvent {
 
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
-		
+		ModBlocks.onRegisterBlock(null);
+		ModItems.onRegister(null);
 	}
 
 	@Override

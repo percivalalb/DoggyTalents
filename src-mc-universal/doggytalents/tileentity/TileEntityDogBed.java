@@ -2,18 +2,16 @@ package doggytalents.tileentity;
 
 import java.util.List;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
  */
-public class TileEntityDogBed extends TileEntity implements ITickable {
+public abstract class TileEntityDogBed extends TileEntity implements ITickable {
 
 	private String casingId;
 	private String beddingId;
@@ -30,8 +28,7 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 		this.beddingId = tag.getString("beddingId");
     }
 
-	@Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBTGENERAL(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setString("casingId", this.casingId);
 		tag.setString("beddingId", this.beddingId);
@@ -40,7 +37,7 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 	
 	@Override
 	public void update() {
-		List dogs = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.pos.getX() + 1.0D, this.pos.getY() + 1.0D, this.pos.getZ() + 1.0D).grow(3D, 2D, 3D));
+		List dogs =  ObjectLib.BRIDGE.getEntitiesWithinAABB(this.world, ObjectLib.ENTITY_DOG_CLASS, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 3, 2, 3);
 		 
 	    if (dogs != null && dogs.size() > 0) {
 	    	for (int index = 0; index < dogs.size(); index++) {
@@ -56,28 +53,6 @@ public class TileEntityDogBed extends TileEntity implements ITickable {
 	        }
 	    }
 
-	}
-	
-	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
-	}
-	
-	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
-		super.handleUpdateTag(tag);
-	}
-
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		return writeToNBT(new NBTTagCompound());
-	}
-
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 	public void setCasingId(String newId) {

@@ -7,7 +7,6 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.AxisAlignedBB;
 
 /**
  * @author ProPercivalalb
@@ -24,7 +23,7 @@ public class PestFighter extends ITalent {
             if (level == 5)
                 damage = 2;
 
-            List list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, new AxisAlignedBB(dog.posX, dog.posY, dog.posZ, dog.posX + 1.0D, dog.posY + 1.0D, dog.posZ + 1.0D).grow(level * 3, 4D, level * 3));
+            List list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, dog.getEntityBoundingBox().grow(level * 3, 4D, level * 3));
             Iterator iterator = list.iterator();
             
             while(iterator.hasNext()) {

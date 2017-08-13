@@ -17,7 +17,7 @@ public class ContainerTreatBag extends Container {
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn;
-		this.inventoryTreatBag = new InventoryTreatBag(this.itemstack);
+		this.inventoryTreatBag = new InventoryTreatBag(playerIn, slotIn, this.itemstack);
 		
         for(int l = 0; l < 5; l++)
         	this.addSlotToContainer(new Slot(this.inventoryTreatBag, l, 44 + l * 18, 22) {

@@ -66,7 +66,7 @@ public class Main {
 		}
 		
 		public String getPathToVersion(ForgeEnvironment forgeEnvi) {
-			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") && !forgeEnvi.getVersion().equals("1.8.9") ? "universal" : forgeEnvi.getVersion());
+			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") ? "universal" : forgeEnvi.getVersion());
 		}
 		
 		public String getPath() {
@@ -135,7 +135,7 @@ public class Main {
 							@Override
 							public void run() {
 								try {
-									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12_1})
+									for(ForgeEnvironment envir : new ForgeEnvironment[] {ForgeEnvironment._1_8_9, ForgeEnvironment._1_9_4, ForgeEnvironment._1_10_2, ForgeEnvironment._1_11_2, ForgeEnvironment._1_12_1})
 										Main.compileMod(envir, Main.MOD, versionInput.getText());
 								}
 								catch(IOException e) {
@@ -287,7 +287,8 @@ public class Main {
 		        return javaFile && isSpecific;
 		    }
 		};
-		
+
+		boolean is1_8 = forgeEnvi.getVersion().startsWith("1.8");
 		boolean is1_12 = forgeEnvi.getVersion().startsWith("1.12");
 		
 		FileFilter notJavaFiles = new FileFilter() {
@@ -308,7 +309,7 @@ public class Main {
 		copyDirectory(modSrc, forgeResources, notJavaFiles);
 		Main.output.println("Succesfully copied all resource files.");
 		
-		if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") && !forgeEnvi.getVersion().equals("1.8.9")) {
+		if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10")) {
 			File config = new File(modSrc, mod.packageLoc + "\\base\\compile.cfg");
 			Iterator<String> stream = Files.lines(config.toPath(), StandardCharsets.UTF_8).iterator();
 			Main.output.println("Reading config file to determine which version specific files to copy, this is designed to avoid compile errors");
@@ -503,21 +504,23 @@ public class Main {
 	
 	public static int getIndex(ForgeEnvironment forgeEnvi) {
 		switch(forgeEnvi.version) {
-		case "1.9.4":	return 0;
-		case "1.10.2":	return 1;
-		case "1.11.2":	return 2;
+		case "1.8.9":	return 0;
+		case "1.9.4":	return 1;
+		case "1.10.2":	return 2;
+		case "1.11.2":	return 3;
 		case "1.12":
-		case "1.12.1":	return 3;
-		default:		return 4;
+		case "1.12.1":	return 4;
+		default:		return 5;
 		}
 	}
 	
 	public static String getDirectionBaseOnVersion(Mod mod, int index) { 
 		switch(index) {
-		case 0:		return mod.packageLoc + "\\base\\a";
-		case 1:		return mod.packageLoc + "\\base\\b";
-		case 2:		return mod.packageLoc + "\\base\\c";
-		case 3:		return mod.packageLoc + "\\base\\d";
+		case 0:		return mod.packageLoc + "\\base\\b";
+		case 1:		return mod.packageLoc + "\\base\\c";
+		case 2:		return mod.packageLoc + "\\base\\d";
+		case 3:		return mod.packageLoc + "\\base\\e";
+		case 4:		return mod.packageLoc + "\\base\\f";
 		default: 	return mod.packageLoc + "\\base\\default";
 		}
 	}

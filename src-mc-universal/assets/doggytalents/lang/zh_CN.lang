@@ -298,6 +298,7 @@ doggytalents.key.heel=命令 跟我来
 doggytalents.key.category=小狗天才
 
 entity.doggytalents:dog.name=狗
+entity.doggytalents.dog.name=狗
 entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=小狗背包

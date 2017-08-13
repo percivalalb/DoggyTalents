@@ -1,7 +1,6 @@
 package doggytalents;
 
 import doggytalents.base.ObjectLib;
-import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 
@@ -11,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class ModEntities {
 	
 	public static void init() {
-		ObjectLib.METHODS.registerEntity(ObjectLib.ENTITY_DOG_CLASS, new ResourceLocation(Reference.MOD_ID, "dog"), 0, DoggyTalents.INSTANCE, 120, 1, true);
-		ObjectLib.METHODS.registerEntity(EntityDoggyBeam.class, new ResourceLocation(Reference.MOD_ID, "attackbeam"), 1, DoggyTalents.INSTANCE, 64, 10, true);
+		ObjectLib.REGISTRY.registerEntity(ObjectLib.ENTITY_DOG_CLASS, new ResourceLocation(Reference.MOD_ID, "dog"), 0, DoggyTalents.INSTANCE, 80, 3, true);
+		ObjectLib.REGISTRY.registerEntity(ObjectLib.ENTITY_DOGGY_BEAM_CLASS, new ResourceLocation(Reference.MOD_ID, "attackbeam"), 1, DoggyTalents.INSTANCE, 64, 10, true);
 	}
 }

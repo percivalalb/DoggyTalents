@@ -5,13 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * 1.9.4 Code
+ * 1.8.9 Code
  */
 public class StackUtil implements IStackUtil {
 
 	@Override
 	public boolean isEmpty(ItemStack stack) {
-		return stack == null;
+		return stack == null || stack.stackSize == 0;
 	}
 	
 	@Override

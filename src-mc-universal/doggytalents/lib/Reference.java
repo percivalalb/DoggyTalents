@@ -23,7 +23,7 @@ public class Reference {
 	public static boolean IS_DEV_ENVIR = false;
 	
 	static {
-		if(ReflectionUtil.getClass("doggytalents.base.c.RegistrySubscriber") != null && ReflectionUtil.getClass("doggytalents.base.b.RegistrySubscriber") != null)
+		if(ReflectionUtil.getClass("doggytalents.base.d.RegistrySubscriber") != null && ReflectionUtil.getClass("doggytalents.base.e.RegistrySubscriber") != null)
 			IS_DEV_ENVIR = true;
 		
 	}

@@ -9,7 +9,6 @@ import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
-import doggytalents.client.renderer.entity.layer.LayerSaddle;
 import doggytalents.client.renderer.entity.layer.LayerSunglasses;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
@@ -17,7 +16,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -70,40 +68,43 @@ public class RenderDog extends RenderLiving<EntityDog> {
     }
     
     @Override
-    protected void renderEntityName(EntityDog dog, double x, double y, double z, String name, double distanceFromPlayer) {
-
-    	y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
+    public void renderName(EntityDog dog, double x, double y, double z) {
+        if(this.canRenderName(dog)) {
+        	GlStateManager.alphaFunc(516, 0.1F);
+            double d0 = dog.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+            
+            y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	
-    	String tip = dog.mode.getMode().getTip();
-            
-    	if(dog.isIncapacicated())
-    		tip = "doggui.modetip.incapacitated";
-            
-    	String label = String.format("%s(%d)", I18n.translateToLocal(tip), dog.getDogHunger());
-    	if (distanceFromPlayer <= (double)(64 * 64)) {
-    		boolean flag = dog.isSneaking();
-    		float f = this.renderManager.playerViewY;
-    		float f1 = this.renderManager.playerViewX;
-    		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-    		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
-    
-    		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-    	
-    		if (distanceFromPlayer <= (double)(5 * 5)) {
-	    		if(this.renderManager.renderViewEntity.isSneaking()) {
-	    			String ownerName = "A Wild Dog";
-	    			if(dog.getOwner() != null)
-	    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
-	    			else if(dog.getOwnerId() != null)
-	          		   	ownerName = dog.getOwnerId().toString();
-	    			else
-	    				ownerName = I18n.translateToLocal("entity.doggytalents:dog.lost.name");
-	    			
-	    			ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-	    		}
-    		}
-    	}
-    	
-        super.renderEntityName(dog, x, y - 0.2, z, name, distanceFromPlayer);
+        	String tip = dog.mode.getMode().getTip();
+                
+        	if(dog.isIncapacicated())
+        		tip = "doggui.modetip.incapacitated";
+                
+        	String label = String.format("%s(%d)", ObjectLib.BRIDGE.translateToLocal(tip), dog.getDogHunger());
+        	if(d0 <= (double)(64 * 64)) {
+        		boolean flag = dog.isSneaking();
+        		float f = this.renderManager.playerViewY;
+        		float f1 = this.renderManager.playerViewX;
+        		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
+        		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
+        
+        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
+        		
+        		if(d0 <= (double)(5 * 5)) {
+    	    		if(this.renderManager.renderViewEntity.isSneaking()) {
+    	    			String ownerName = "A Wild Dog";
+    	    			if(dog.getOwner() != null)
+    	    				ownerName = dog.getOwner().getDisplayName().getUnformattedText();
+    	    			else if(dog.getOwnerId() != null)
+    	          		   	ownerName = dog.getOwnerId().toString();
+    	    			else
+    	    				ownerName = ObjectLib.BRIDGE.translateToLocal("entity.doggytalents:dog.lost.name");
+    	    			
+    	    			ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	    		}
+        		}
+        	}
+        }
     }
 }

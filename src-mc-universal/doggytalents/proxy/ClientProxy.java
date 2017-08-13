@@ -1,33 +1,22 @@
 package doggytalents.proxy;
+
 import java.util.Random;
 
-import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
+import doggytalents.base.VersionControl;
 import doggytalents.client.gui.GuiDogInfo;
-import doggytalents.client.model.block.IStateParticleModel;
-import doggytalents.client.renderer.entity.ParticleCustomLanding;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.GameOverlay;
 import doggytalents.handler.KeyState;
-import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -56,8 +45,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(KeyState.ok);
 		ClientRegistry.registerKeyBinding(KeyState.heel);
 		
-		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOG_CLASS, RenderDog::new);
+		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOGGY_BEAM_CLASS, RenderDogBeam::new);
 	}
 	
 	@Override
@@ -70,37 +59,12 @@ public class ClientProxy extends CommonProxy {
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
 		ObjectLibClient.INITIALIZATION.postInit(event);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("collar_colour"))
-						return stack.getTagCompound().getInteger("collar_colour");
-				return -1;
-			}
-			
-		}, ModItems.WOOL_COLLAR);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-		@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("cape_colour"))
-						return stack.getTagCompound().getInteger("cape_colour");
-				return -1;
-			}
-			
-		}, ModItems.CAPE_COLOURED);
 	}
 	
 	@Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
-        MinecraftForge.EVENT_BUS.register(new WorldRender());
-		MinecraftForge.EVENT_BUS.register(new GameOverlay());
+        MinecraftForge.EVENT_BUS.register(VersionControl.createObject("WorldRender"));
 		MinecraftForge.EVENT_BUS.register(new KeyState());
     }
 	
@@ -122,7 +86,7 @@ public class ClientProxy extends CommonProxy {
 			return ObjectLibClient.createGuiPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
+			TileEntity target = ObjectLib.BRIDGE.getTileEntity(world, x, y, z);
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
@@ -155,27 +119,7 @@ public class ClientProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void spawnCustomParticle(EntityPlayer player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		TextureAtlasSprite sprite;
-
-		IBlockState state = player.world.getBlockState(pos);
-		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
-		if(model instanceof IStateParticleModel) {
-			state = state.getBlock().getExtendedState(state.getActualState(player.world, pos), player.world, pos);
-			sprite = ((IStateParticleModel)model).getParticleTexture(state);
-		} 
-		else
-			sprite = model.getParticleTexture();
-		
-		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
-
-		for(int i = 0; i < numberOfParticles; i++) {
-			double xSpeed = rand.nextGaussian() * particleSpeed;
-			double ySpeed = rand.nextGaussian() * particleSpeed;
-			double zSpeed = rand.nextGaussian() * particleSpeed;
-			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite);
-			manager.addEffect(particle);
-		}
+	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+		ObjectLibClient.METHODS.spawnCustomParticle(player, pos, rand, posX, posY, posZ, numberOfParticles, particleSpeed);
 	}
 }

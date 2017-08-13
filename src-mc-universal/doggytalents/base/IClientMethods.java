@@ -1,7 +1,10 @@
 package doggytalents.base;
 
+import java.util.Random;
+
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,5 +18,9 @@ public interface IClientMethods {
 	
 	public void onModelBakeEvent(ModelBakeEvent event) throws Exception;
 
-	public void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha);
+	public void drawSelectionBoundingBox(Object box, float red, float green, float blue, float alpha);
+	
+	public void setModel(Item item, int meta, String modelName);
+
+	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed);
 }

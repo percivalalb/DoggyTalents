@@ -1,18 +1,16 @@
 package doggytalents.entity.ai;
 
+import doggytalents.base.IWaterMovement;
+import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIBase
@@ -25,8 +23,8 @@ public class EntityAIFollowOwner extends EntityAIBase
     private int timeToRecalcPath;
     private float maxDist;
     private float minDist;
-    private float oldWaterCost;
     private double oldRangeSense;
+    private IWaterMovement waterMovement;
 
     public EntityAIFollowOwner(EntityDog thePetIn, double followSpeedIn, float minDistIn, float maxDistIn) {
         this.dog = thePetIn;
@@ -35,6 +33,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         this.petPathfinder = thePetIn.getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
+        this.waterMovement = VersionControl.createObject("WaterMovementHandler", IWaterMovement.class, EntityDog.class, this.dog);
         this.setMutexBits(3);
 
         if(!(thePetIn.getNavigator() instanceof PathNavigateGround))
@@ -80,8 +79,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void startExecuting() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.waterMovement.startExecuting();
         this.oldRangeSense = this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
@@ -90,13 +88,8 @@ public class EntityAIFollowOwner extends EntityAIBase
     public void resetTask() {
         this.owner = null;
         this.petPathfinder.clearPathEntity();
-        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.waterMovement.resetTask();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
-    }
-
-    private boolean isEmptyBlock(BlockPos pos) {
-        IBlockState iblockstate = this.world.getBlockState(pos);
-        return iblockstate.getMaterial() == Material.AIR ? true : !iblockstate.isFullCube();
     }
 
     @Override
@@ -107,9 +100,9 @@ public class EntityAIFollowOwner extends EntityAIBase
                 this.timeToRecalcPath = 10;
 
             	int order = this.dog.masterOrder();
-               	int masterX = MathHelper.floor(this.owner.posX);
-            	int masterY = MathHelper.floor(this.owner.posY);
-            	int masterZ = MathHelper.floor(this.owner.posZ);
+               	int masterX = ObjectLib.BRIDGE.floor(this.owner.posX);
+            	int masterY = ObjectLib.BRIDGE.floor(this.owner.posY);
+            	int masterZ = ObjectLib.BRIDGE.floor(this.owner.posZ);
             	double distanceAway = this.dog.getDistanceSqToEntity(this.owner);
                 
             	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
@@ -121,9 +114,9 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                	
             	}
             	else if(order == 1 || order == 2) { //Holding Sword or tool
-            		int dogX = MathHelper.floor(this.dog.posX);
-                    int dogY = MathHelper.floor(this.dog.posY);
-                    int dogZ = MathHelper.floor(this.dog.posZ);
+            		int dogX = ObjectLib.BRIDGE.floor(this.dog.posX);
+                    int dogY = ObjectLib.BRIDGE.floor(this.dog.posY);
+                    int dogZ = ObjectLib.BRIDGE.floor(this.dog.posZ);
                     int dPosX = dogX - masterX;
                     int dPosZ = dogZ - masterZ;
                     int j3 = masterX + dPosX * 2;

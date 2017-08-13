@@ -21,7 +21,7 @@ public class ItemPhysicAddon {
 		
 		API = new ItemPhysicAPI();
 		
-		if(MinecraftForge.MC_VERSION.equals("1.9.4")) {
+		if(MinecraftForge.MC_VERSION.equals("1.9.4") || MinecraftForge.MC_VERSION.equals("1.8.9")) {
 			API.addBurnObjects(ModBlocks.DOG_BED, ModItems.BREEDING_BONE, ModItems.DIRE_TREAT, ModItems.MASTER_TREAT, ModItems.SUPER_TREAT, ModItems.TRAINING_TREAT, ModItems.COLLAR_SHEARS, ModItems.THROW_BONE, ModItems.RADAR, ModItems.WOOL_COLLAR, ModItems.TREAT_BAG, ModItems.CHEW_STICK);
 			
 			

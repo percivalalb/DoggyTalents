@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
 
 /**
  * @author ProPercivalalb
@@ -30,9 +29,9 @@ public class TalentHelper {
 			talent.readFromNBT(dog, tagCompound);
 	}
 	
-	public static boolean interactWithPlayer(EntityDog dog, EntityPlayer player) {
+	public static boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		for(ITalent talent : TalentRegistry.getTalents())
-			if(talent.interactWithPlayer(dog, player))
+			if(talent.interactWithPlayer(dog, player, stack))
 				return true;
 		return false;
 	}
@@ -136,15 +135,6 @@ public class TalentHelper {
 			if(!talent.shouldDamageMob(dog, entity))
 				return false;
 		return true;
-	}
-
-	public static SoundEvent getLivingSound(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents()) {
-			SoundEvent sound = talent.getLivingSound(dog);
-			if(sound != null)
-				return sound;
-		}
-		return null;
 	}
 
 	public static boolean canAttackClass(EntityDog dog, Class entityClass) {

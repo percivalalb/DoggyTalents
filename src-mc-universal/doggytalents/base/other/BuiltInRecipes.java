@@ -9,8 +9,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.RecipeSorter;
 
-@VersionConfig({"1.9.4", "1.10.2", "1.11.2"})
+@VersionConfig({"1.8.9", "1.9.4", "1.10.2", "1.11.2"})
 public class BuiltInRecipes {
 
 	public static void init() {
@@ -35,5 +36,9 @@ public class BuiltInRecipes {
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogBed", IRecipe.class));
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCollar", IRecipe.class));
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCape", IRecipe.class));
+        
+        RecipeSorter.register("doggytalents:dogbed", VersionControl.chooseClassBasedOnVersion("RecipeDogBed", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcollar", VersionControl.chooseClassBasedOnVersion("RecipeDogCollar", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcape", VersionControl.chooseClassBasedOnVersion("RecipeDogCape", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
 	}
 }

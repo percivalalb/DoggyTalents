@@ -5,42 +5,42 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * 1.11.2 Code
+ * 1.9.4 Code
  */
 public class StackUtil implements IStackUtil {
 
 	@Override
 	public boolean isEmpty(ItemStack stack) {
-		return stack.isEmpty();
+		return stack == null || stack.stackSize == 0;
 	}
 	
 	@Override
 	public int getCount(ItemStack stack) {
-		return stack.getCount();
+		return stack.stackSize;
 	}
 	
 	@Override
 	public void setCount(ItemStack stack, int quantity) {
-		stack.setCount(quantity);
+		stack.stackSize = quantity;
 	}
-
+	
 	@Override
 	public void shrink(ItemStack stack, int quantity) {
-		stack.shrink(quantity);
+		stack.stackSize -= quantity;
 	}
 
 	@Override
 	public void grow(ItemStack stack, int quantity) {
-		stack.grow(quantity);
-	}
-	
-	@Override
-	public ItemStack getEmpty() {
-		return ItemStack.EMPTY;
+		stack.stackSize += quantity;
 	}
 
 	@Override
+	public ItemStack getEmpty() {
+		return (ItemStack)null;
+	}
+	
+	@Override
 	public ItemStack readFromNBT(NBTTagCompound tagCompound) {
-		return new ItemStack(tagCompound);
+		return ItemStack.func_77949_a(tagCompound);
 	}
 }

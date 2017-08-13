@@ -1,23 +1,25 @@
 package doggytalents.base.c;
 
+import doggytalents.base.other.EntityDogBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * 1.11.2 Code
+ * 1.9.4 Code
  */
-public class EntityDogWrapper extends EntityDog {
+public class EntityDogWrapper extends EntityDogBridge {
 
 	public EntityDogWrapper(World word) {
 		super(word);
@@ -49,15 +51,15 @@ public class EntityDogWrapper extends EntityDog {
             else if(target == owner)
             	return false;
             else
-                return !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
+                return !(target instanceof EntityHorse) || !((EntityHorse)target).isTame();
         }
         
         return false;
     }
 	
 	@Override
-	public boolean processInteract(EntityPlayer player, EnumHand hand) {
-		return processInteractGENERAL(player, hand) ? true : super.processInteract(player, hand);
+	public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
+		return processInteractGENERAL(player, player.getHeldItem(hand) ? true : super.processInteract(player, hand, stack);
 	}
 	
 	@Override
@@ -95,12 +97,12 @@ public class EntityDogWrapper extends EntityDog {
         	   this.setAIMoveSpeed(f);
         	   super.moveEntityWithHeading(strafe, forward);
            }
-           else if (entitylivingbase instanceof EntityPlayer)
-           {
-        	   this.motionX = 0.0D;
-        	   this.motionY = 0.0D;
-        	   this.motionZ = 0.0D;
-       		}
+          	else if (entitylivingbase instanceof EntityPlayer)
+          	{
+          		this.motionX = 0.0D;
+          		this.motionY = 0.0D;
+          		this.motionZ = 0.0D;
+          	}
 
            this.prevLimbSwingAmount = this.limbSwingAmount;
            double d0 = this.posX - this.prevPosX;

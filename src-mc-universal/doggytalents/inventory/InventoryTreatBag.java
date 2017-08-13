@@ -13,11 +13,15 @@ import net.minecraft.nbt.NBTTagList;
 
 public class InventoryTreatBag extends InventoryBasic {
 
+	public EntityPlayer player;
+	public int slot;
 	public ItemStack itemstack;
 	
-	public InventoryTreatBag(ItemStack itemstackIn) {
+	public InventoryTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
 		super("doggytalents:coin_bag", false, 5);
-		this.itemstack = itemstackIn;
+		this.player = playerIn;
+		this.slot = slotIn;
+		this.itemstack = itemstackIn.copy();
 	}
 	
 	@Override
@@ -62,6 +66,7 @@ public class InventoryTreatBag extends InventoryBasic {
         	this.itemstack.getTagCompound().setTag("inventory", new NBTTagCompound());
         
         this.itemstack.getTagCompound().getCompoundTag("inventory").setTag("Items", nbttaglist);
-       
+        
+        this.player.inventory.setInventorySlotContents(this.slot, this.itemstack);
 	}
 }

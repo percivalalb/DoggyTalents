@@ -1,5 +1,6 @@
 package doggytalents.api.inferface;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,8 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.text.translation.I18n;
 
 /**
  * @author ProPercivalalb
@@ -18,7 +17,7 @@ public abstract class ITalent {
 	public void onClassCreation(EntityDog dog) {}
 	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {}
 	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {}
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) { return false; }
+	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) { return false; }
 	public void onUpdate(EntityDog dog) {}
 	public void onLivingUpdate(EntityDog dog) {}
 	public int onHungerTick(EntityDog dog, int totalInTick) { return totalInTick; }
@@ -33,7 +32,6 @@ public abstract class ITalent {
 	public int fallProtection(EntityDog dog) { return 0; }
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }
-	public SoundEvent getLivingSound(EntityDog dog) { return null; }
 	public boolean canAttackClass(EntityDog dog, Class entityClass) { return false; }
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
@@ -60,11 +58,11 @@ public abstract class ITalent {
 	}
 	
 	public String getLocalisedName() {
-		return I18n.translateToLocal("doggui.talentname." + this.getKey());
+		return ObjectLib.BRIDGE.translateToLocal("doggui.talentname." + this.getKey());
 	}
 	
 	public String getLocalisedInfo() {
-		return I18n.translateToLocal("doggui.talentinfo." + this.getKey());
+		return ObjectLib.BRIDGE.translateToLocal("doggui.talentinfo." + this.getKey());
 	}
 	
 	/**

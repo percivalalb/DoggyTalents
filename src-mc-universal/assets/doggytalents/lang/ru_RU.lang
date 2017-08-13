@@ -298,6 +298,7 @@ dogcommand.ok=Отлично!
 dogcommand.heel=Ко мне!
 
 entity.doggytalents:dog.name=Пёс
+entity.doggytalents.dog.name=Пёс
 entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=Рюкзак Пёсика

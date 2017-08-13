@@ -2,7 +2,6 @@ package doggytalents.network;
 
 import doggytalents.lib.Reference;
 import doggytalents.network.packet.client.CommandMessage;
-import doggytalents.network.packet.client.DogBedUpdateMessage;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogJumpMessage;
 import doggytalents.network.packet.client.DogModeMessage;
@@ -10,7 +9,6 @@ import doggytalents.network.packet.client.DogNameMessage;
 import doggytalents.network.packet.client.DogObeyMessage;
 import doggytalents.network.packet.client.DogTalentMessage;
 import doggytalents.network.packet.client.DogTextureMessage;
-import doggytalents.network.packet.server.CustomParticleMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
@@ -40,13 +38,11 @@ public class PacketDispatcher {
 		registerMessage(DogNameMessage.class);
 		registerMessage(DogObeyMessage.class);
 		registerMessage(DogTalentMessage.class);
-		registerMessage(DogBedUpdateMessage.class);
 		registerMessage(DogFriendlyFireMessage.class);
 		registerMessage(DogTextureMessage.class);
-		registerMessage(CustomParticleMessage.class);
 	}
 	
-	private static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {
+	public static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {
 		if (AbstractMessage.AbstractClientMessage.class.isAssignableFrom(clazz)) {
 			PacketDispatcher.dispatcher.registerMessage(clazz, clazz, packetId++, Side.CLIENT);
 		} else if (AbstractMessage.AbstractServerMessage.class.isAssignableFrom(clazz)) {

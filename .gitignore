@@ -232,3 +232,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+src-mc-universal/usercache.json
+src-mc-universal/usernamecache.json

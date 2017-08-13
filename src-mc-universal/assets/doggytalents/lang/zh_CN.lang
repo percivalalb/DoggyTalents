@@ -12,6 +12,8 @@ modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=投掷骨头
 item.doggytalents.throwbone1.name=投掷骨头(口水)
+item.doggytalents.throwbone2.name=Throw Stick
+item.doggytalents.throwbone3.name=Drool Throw Stick
 item.doggytalents.trainingtreat.name=训练奖励
 item.doggytalents.supertreat.name=超级奖励
 item.doggytalents.mastertreat.name=主人奖励

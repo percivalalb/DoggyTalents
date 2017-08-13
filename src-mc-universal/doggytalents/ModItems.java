@@ -101,6 +101,8 @@ public class ModItems {
 	public static void setItemModels() {
 		ModelHelper.setModel(THROW_BONE, 0, "doggytalents:throw_bone");
 		ModelHelper.setModel(THROW_BONE, 1, "doggytalents:throw_bone_wet");
+		ModelHelper.setModel(THROW_BONE, 2, "doggytalents:throw_stick");
+		ModelHelper.setModel(THROW_BONE, 3, "doggytalents:throw_stick_wet");
 		ModelHelper.setModel(COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
 		ModelHelper.setModel(TRAINING_TREAT, 0, "doggytalents:training_treat");
 		ModelHelper.setModel(SUPER_TREAT, 0, "doggytalents:super_treat");

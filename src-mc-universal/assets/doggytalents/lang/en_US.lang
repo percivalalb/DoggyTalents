@@ -12,6 +12,8 @@ modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Throw Bone
 item.doggytalents.throwbone1.name=Drool Throw Bone
+item.doggytalents.throwbone2.name=Throw Stick
+item.doggytalents.throwbone3.name=Drool Throw Stick
 item.doggytalents.trainingtreat.name=Training Treat
 item.doggytalents.supertreat.name=Super Treat
 item.doggytalents.mastertreat.name=Master Treat

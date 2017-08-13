@@ -22,7 +22,9 @@ public interface IDataTracker {
     public void hasRadarCollar(boolean flag);
     public boolean hasRadarCollar();
     
-    public void setHasBone(boolean flag);
+    public void setNoFetchItem();
+	public void setBoneVariant(int value);
+    public int getBoneVariant();
     public boolean hasBone();
     
     public void setHasSunglasses(boolean flag);

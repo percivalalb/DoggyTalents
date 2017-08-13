@@ -33,6 +33,7 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataWatcher().addObject(27, new Integer(0)); //Dog Mode
         this.getDataWatcher().addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
         this.getDataWatcher().addObject(29, 3); //Size
+        this.getDataWatcher().addObject(30, 3); //Bone Variant
 	}
 	
 	@Override
@@ -94,15 +95,25 @@ public class DataTrackerWrapper implements IDataTracker {
     public boolean hasRadarCollar() {
       	return this.getCustomData(1);
     }
-
+	
 	@Override
-	public void setHasBone(boolean flag) {
-		this.setCustomData(2, flag);
+	public void setNoFetchItem() {
+		this.getDataWatcher().updateObject(30, -1);
 	}
-
+	
+	@Override    
+	public void setBoneVariant(int value) {
+		this.getDataWatcher().updateObject(30, value);
+	}
+	
+	@Override
+	public int getBoneVariant() {
+		return this.getDataWatcher().getWatchableObjectInt(30);
+	}
+	    
 	@Override
 	public boolean hasBone() {
-		return this.getCustomData(2);
+	   	return this.getBoneVariant() >= 0;
 	}
 
 	@Override

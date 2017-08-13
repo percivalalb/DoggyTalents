@@ -20,7 +20,7 @@ public class DataTrackerWrapper implements IDataTracker {
 	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
 	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<Boolean> HAS_BONE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Integer> BONE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Integer> CAPE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
@@ -59,7 +59,7 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataManager().register(HUNGER, Integer.valueOf(60));
         this.getDataManager().register(OBEY_OTHERS, Boolean.valueOf(false));
         this.getDataManager().register(FRIENDLY_FIRE, Boolean.valueOf(false));
-        this.getDataManager().register(HAS_BONE, Boolean.valueOf(false));
+        this.getDataManager().register(BONE, -1);
         this.getDataManager().register(RADAR_COLLAR, Boolean.valueOf(false));
         this.getDataManager().register(MODE, Integer.valueOf(0));
         this.getDataManager().register(LEVEL, Integer.valueOf(0));
@@ -122,13 +122,23 @@ public class DataTrackerWrapper implements IDataTracker {
     }
     
     @Override
-    public void setHasBone(boolean hasBone) {
-    	this.getDataManager().set(HAS_BONE, hasBone);
+    public void setNoFetchItem() {
+    	this.getDataManager().set(BONE, -1);
+    }
+    
+    @Override    
+	public void setBoneVariant(int value) {
+    	this.getDataManager().set(BONE, value);
+	}
+    
+    @Override
+    public int getBoneVariant() {
+    	return this.getDataManager().get(BONE);
     }
     
     @Override
     public boolean hasBone() {
-    	return ((Boolean)this.getDataManager().get(HAS_BONE)).booleanValue();
+    	return this.getBoneVariant() >= 0;
     }
     
     @Override

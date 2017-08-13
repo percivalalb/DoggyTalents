@@ -12,6 +12,8 @@ modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Кидательная Кость
 item.doggytalents.throwbone1.name=Слюнявая Кидательная кость
+item.doggytalents.throwbone2.name=Throw Stick
+item.doggytalents.throwbone3.name=Drool Throw Stick
 item.doggytalents.trainingtreat.name=Лакомство для тренировок
 item.doggytalents.supertreat.name=Превосходное лакомство
 item.doggytalents.mastertreat.name=Лакомство мастера

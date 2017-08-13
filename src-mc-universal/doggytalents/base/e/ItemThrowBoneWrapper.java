@@ -26,7 +26,7 @@ public class ItemThrowBoneWrapper extends ItemThrowBoneBridge {
 	@Override
     @SideOnly(Side.CLIENT)
 	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
-		subItems.add(new ItemStack(itemIn, 1, 0));
-		subItems.add(new ItemStack(itemIn, 1, 1));
+		for(int i = 0; i < 4; i++)
+			subItems.add(new ItemStack(itemIn, 1, i));
     }
 }

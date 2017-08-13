@@ -335,10 +335,18 @@ public abstract class EntityDog extends EntityAbstractDog {
     			float distanceToOwner = player.getDistanceToEntity(this);
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
-                	if(!this.world.isRemote)
-                		this.entityDropItem(new ItemStack(ModItems.THROW_BONE, 1, 1), 0.0F);
+                	if(!this.world.isRemote) {
+                		ItemStack fetchItem = ObjectLib.STACK_UTIL.getEmpty();
+                		
+                		switch(this.getBoneVariant()) {
+                		case 0: fetchItem = new ItemStack(ModItems.THROW_BONE, 1, 1); break;
+                		case 1: fetchItem = new ItemStack(ModItems.THROW_BONE, 1, 3); break;
+                		}
+                		
+                		this.entityDropItem(fetchItem, 0.0F);
+                	}
                 	
-                    this.setHasBone(false);
+                    this.setNoFetchItem();
                 }
     		}
     	}
@@ -880,9 +888,17 @@ public abstract class EntityDog extends EntityAbstractDog {
     	return this.dataTracker.hasRadarCollar();
     }
     
-    public void setHasBone(boolean flag) {
-    	this.dataTracker.setHasBone(flag);
+    public void setNoFetchItem() {
+    	this.dataTracker.setNoFetchItem();
     }
+    
+    public int getBoneVariant() {
+    	return this.dataTracker.getBoneVariant();
+    }
+    
+	public void setBoneVariant(int value) {
+		this.dataTracker.setBoneVariant(value);
+	}
     
     public boolean hasBone() {
     	return this.dataTracker.hasBone();

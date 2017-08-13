@@ -1,5 +1,6 @@
 package doggytalents.client.renderer.entity.layer;
 
+import doggytalents.ModItems;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -16,11 +17,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerBone implements LayerRenderer<EntityDog> {
 	
     protected final RenderDog dogRenderer;
-    public ItemStack itemToRender;
+    public ItemStack[] itemToRender;
     
     public LayerBone(RenderDog dogRendererIn) {
         this.dogRenderer = dogRendererIn;
-        this.itemToRender = new ItemStack(Items.BONE);
+        this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_BONE, 1, 2)};
     }
 
     @Override
@@ -46,7 +47,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
             GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager.translate(0.20, -0.10, -0.10);
-            Minecraft.getMinecraft().getItemRenderer().renderItem(dog, this.itemToRender, ItemCameraTransforms.TransformType.NONE);
+            Minecraft.getMinecraft().getItemRenderer().renderItem(dog, this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
 	        GlStateManager.popMatrix();
     	}
     }

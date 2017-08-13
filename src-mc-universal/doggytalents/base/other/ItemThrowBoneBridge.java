@@ -28,8 +28,8 @@ public class ItemThrowBoneBridge extends ItemThrowBone {
 	public ActionResult<ItemStack> onItemRightClickGENERAL(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		
-		if(itemStackIn.getItemDamage() == 1) {
-    		itemStackIn.setItemDamage(0);
+		if(itemStackIn.getItemDamage() % 2 == 1) {
+    		itemStackIn.setItemDamage(itemStackIn.getItemDamage() - 1);
     		playerIn.swingArm(handIn);
     		return new ActionResult(EnumActionResult.SUCCESS, itemStackIn);
     	}
@@ -37,15 +37,14 @@ public class ItemThrowBoneBridge extends ItemThrowBone {
 	
 	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 	
-	        if (!worldIn.isRemote)
-	        {
+	        if(!worldIn.isRemote) {
 	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn.copy());
 	            entityitem.setPickupDelay(40);
 	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
                 worldIn.spawnEntity(entityitem);
 	        }
 	        
-	        if (!playerIn.capabilities.isCreativeMode)
+	        if(!playerIn.capabilities.isCreativeMode)
 	        	ObjectLib.STACK_UTIL.shrink(itemStackIn, 1);
 
 	        playerIn.addStat(StatList.getObjectUseStats(this));

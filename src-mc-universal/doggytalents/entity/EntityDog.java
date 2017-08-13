@@ -17,7 +17,6 @@ import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
-import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFollowOwner;
 import doggytalents.entity.ai.EntityAIModeAttackTarget;
@@ -34,6 +33,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
@@ -110,7 +110,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
             this.tasks.addTask(5, this.aiFetchBone);
             this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-            this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
+            this.tasks.addTask(8, VersionControl.createObject("EntityAIDogWander", EntityAIBase.class, new Class[] {EntityDog.class, Integer.TYPE}, new Object[] {this, 1.0D}));
             this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
             this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
             this.tasks.addTask(10, new EntityAILookIdle(this));
@@ -131,9 +131,6 @@ public abstract class EntityDog extends EntityAbstractDog {
     public void addAIMeleeAttack(int priority, double speedIn, boolean useLongMemory) {
     	
     }
-    
-    //Do not put an override annotation here
-	public abstract boolean isBeingRidden();
 	
 	public abstract void setOwnerUUID(UUID uuid);
 	
@@ -291,9 +288,9 @@ public abstract class EntityDog extends EntityAbstractDog {
         	this.reversionTime -= 1;
         
         //Remove dog from players head if sneaking
-        if(this.getRidingEntity() instanceof EntityPlayer)
-        	if(this.getRidingEntity().isSneaking())
-        		this.dismountRidingEntity();
+        //TODOif(this.getEntityWeAreRiding() instanceof EntityPlayer)
+        	//if(this.getEntityWeAreRiding().isSneaking())
+        		//this.dismountRidingEntity();
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
         if(this.foodBowlCheck++ > 50 && this.coords.hasBowlPos()) {
@@ -350,11 +347,6 @@ public abstract class EntityDog extends EntityAbstractDog {
     	}
         
         TalentHelper.onUpdate(this);
-    }
-    
-    @Override
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
     }
     
     public boolean isControllingPassengerPlayer() {

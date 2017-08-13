@@ -5,9 +5,9 @@ import java.util.Random;
 import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
+import doggytalents.base.other.ParticleCustomLanding;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.model.block.IStateParticleModel;
-import doggytalents.client.renderer.entity.ParticleCustomLanding;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.entity.EntityDog;
@@ -18,9 +18,6 @@ import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -76,8 +72,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
-        MinecraftForge.EVENT_BUS.register(new WorldRender());
-		MinecraftForge.EVENT_BUS.register(new GameOverlay());
+        //TODO MinecraftForge.EVENT_BUS.register(new WorldRender());
 		MinecraftForge.EVENT_BUS.register(new KeyState());
     }
 	
@@ -133,26 +128,6 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		TextureAtlasSprite sprite;
-
-		IBlockState state = player.world.getBlockState((BlockPos)pos);
-		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
-		if(model instanceof IStateParticleModel) {
-			state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
-			sprite = ((IStateParticleModel)model).getParticleTexture(state);
-		} 
-		else
-			sprite = model.getParticleTexture();
-		
-		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
-
-		for(int i = 0; i < numberOfParticles; i++) {
-			double xSpeed = rand.nextGaussian() * particleSpeed;
-			double ySpeed = rand.nextGaussian() * particleSpeed;
-			double zSpeed = rand.nextGaussian() * particleSpeed;
-			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
-			manager.addEffect(particle);
-		}
+		ObjectLibClient.METHODS.spawnCustomParticle(player, pos, rand, posX, posY, posZ, numberOfParticles, particleSpeed);
 	}
 }

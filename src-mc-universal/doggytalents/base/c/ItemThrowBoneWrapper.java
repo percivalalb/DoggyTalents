@@ -2,6 +2,7 @@ package doggytalents.base.c;
 
 import java.util.List;
 
+import doggytalents.base.other.ItemThrowBoneBridge;
 import doggytalents.item.ItemThrowBone;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * 1.10.2 Code
  */
-public class ItemThrowBoneWrapper extends ItemThrowBone {
+public class ItemThrowBoneWrapper extends ItemThrowBoneBridge {
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn, EnumHand handIn) {

@@ -32,6 +32,18 @@ public class VersionControl {
 		}
 	}
 	
+	public static <T> T createObject(String name, Class<T> type, Class<?>[] parameterTypes, Object[] parameter) {
+		Class<T> path = chooseClassBasedOnVersion(name, type);
+		
+		try {
+			return (T)path.getConstructor(parameterTypes).newInstance(parameter);
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public static <T> T createObject(String name, Class<T> type) {
 		return createObject(chooseClassBasedOnVersion(name, type));
 	}

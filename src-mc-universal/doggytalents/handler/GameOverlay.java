@@ -12,21 +12,22 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  **/
+@SideOnly(value = Side.CLIENT)
 public class GameOverlay {
 
 	private static Minecraft mc = Minecraft.getMinecraft();
 	
-	@SubscribeEvent
-	public void onPreRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-		ElementType type = event.getType();
-		ScaledResolution scaling = event.getResolution();
+	public static void onPreRenderGameOverlay(ElementType type, ScaledResolution scaling) {
 		
 		
-		
+		//TODO
+		/**
 		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
 			EntityDog dog = (EntityDog)mc.player.getRidingEntity();
 			int width = scaling.getScaledWidth();
@@ -75,6 +76,6 @@ public class GameOverlay {
 	        GlStateManager.disableBlend();
 	        
 	        GlStateManager.popMatrix();
-		}
+		}**/
 	}
 }

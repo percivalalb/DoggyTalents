@@ -1,4 +1,4 @@
-package doggytalents.entity.ai;
+package doggytalents.base.b;
 
 import java.util.Random;
 
@@ -7,8 +7,8 @@ import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 
 public class EntityAIDogWander extends EntityAIBase {
 	
@@ -36,24 +36,24 @@ public class EntityAIDogWander extends EntityAIBase {
         }
 
         
-        Vec3d vec3d = this.dog.mode.isMode(EnumMode.WANDERING) ? generateRandomPos(this.dog) : this.getPosition(10);
+        Vec3 vec3d = this.dog.mode.isMode(EnumMode.WANDERING) ? generateRandomPos(this.dog) : this.getPosition(10);
 
         if (vec3d == null)
             return false;
         else {
-            this.x = vec3d.x;
-            this.y = vec3d.y;
-            this.z = vec3d.z;
+            this.x = vec3d.xCoord;
+            this.y = vec3d.yCoord;
+            this.z = vec3d.zCoord;
             this.mustUpdate = false;
             return true;
         }
     }
 
-    protected Vec3d getPosition(int xz) {
+    protected Vec3 getPosition(int xz) {
         return RandomPositionGenerator.findRandomTarget(this.dog, xz, 7);
     }
     
-    private static Vec3d generateRandomPos(EntityDog dog) {
+    private static Vec3 generateRandomPos(EntityDog dog) {
         PathNavigate pathnavigate = dog.getNavigator();
     	Random random = dog.getRNG();
     	int bowlPosX = dog.coords.getBowlX();
@@ -73,19 +73,19 @@ public class EntityAIDogWander extends EntityAIBase {
 
             BlockPos testPos = new BlockPos(l + bowlPosX, i1 + bowlPosY, j1 + bowlPosZ);
 
-            if(pathnavigate.canEntityStandOnPos(testPos)) {
-            	float weight = dog.getBlockPathWeight(testPos);
+          
+        	float weight = dog.getBlockPathWeight(testPos);
 
-            	if(weight > bestWeight) {
-            		bestWeight = weight;
-            		x = l;
-            		y = i1;
-            		z = j1;
-            	}
-            }
+        	if(weight > bestWeight) {
+        		bestWeight = weight;
+        		x = l;
+        		y = i1;
+        		z = j1;
+        	}
+            
         }
     	
-    	return new Vec3d(bowlPosX + x, bowlPosY + y, bowlPosZ + z);
+    	return new Vec3(bowlPosX + x, bowlPosY + y, bowlPosZ + z);
     }
     
     @Override

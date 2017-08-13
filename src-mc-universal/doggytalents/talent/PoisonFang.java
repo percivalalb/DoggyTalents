@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -36,10 +35,10 @@ public class PoisonFang extends ITalent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
         if(dog.talents.getLevel(this) >= 3) {
-            Potion i = potionEffect.getPotion();
+           //TODO Potion i = potionEffect.getPotion();
 
-            if (i.equals(MobEffects.POISON))
-                return false;
+            //if (i.equals(MobEffects.POISON))
+            //    return false;
         }
         
         return true;
@@ -49,8 +48,8 @@ public class PoisonFang extends ITalent {
 	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
 		int level = dog.talents.getLevel(this);
 		
-		if(entity instanceof EntityLivingBase && level > 0)
-			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, level * 20, 0));
+		//TODO if(entity instanceof EntityLivingBase && level > 0)
+			// ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, level * 20, 0));
 	    
 		return damage;
 	}

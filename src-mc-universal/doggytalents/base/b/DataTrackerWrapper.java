@@ -52,7 +52,7 @@ public class DataTrackerWrapper implements IDataTracker {
 
 	@Override
 	public int getTameSkin() {
-		return this.getDataWatcher().getWatchableObjectByte(26);
+		return this.getDataWatcher().getWatchableObjectInt(26);
 	}
 
 	@Override

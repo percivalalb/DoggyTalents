@@ -5,6 +5,8 @@ import java.util.Random;
 import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
+import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;
@@ -50,6 +52,7 @@ public class CommonProxy implements IGuiHandler {
     }
     
     protected void registerEventHandlers() {
+    	MinecraftForge.EVENT_BUS.register(VersionControl.createObject("EventHandlerWrapper", Object.class));
 		MinecraftForge.EVENT_BUS.register(new EntityInteract());
 		MinecraftForge.EVENT_BUS.register(new PlayerConnection());
     }

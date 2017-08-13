@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@VersionConfig({"1.9.4", "1.10.2", "1.11.2"})
+@VersionConfig({"1.8.9", "1.9.4", "1.10.2", "1.11.2"})
 public class BuiltInRecipes {
 
 	public static void init() {

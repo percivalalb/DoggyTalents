@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.lwjgl.input.Keyboard;
 
 import doggytalents.ModItems;
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.CommandMessage;
@@ -47,15 +48,17 @@ public class KeyState {
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
 	            	if(kb == mc.gameSettings.keyBindJump) {
+	            		//TODO
+	            		/**
 	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.getRidingEntity();
 	
 	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
 	            			jumpMessage.process(player, Side.CLIENT);
 	            			PacketDispatcher.sendToServer(jumpMessage);
-	            		}
+	            		}**/
 	            	}
-	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ((player.getHeldItemMainhand() != null && player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM) || (player.getHeldItemOffhand() != null && player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM))) {
+	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null && ObjectLib.BRIDGE.getHeldItems(player).contains(ModItems.COMMAND_EMBLEM)) {
 	            	    int command = -1;
 	            	    
 	                	if(kb == come) {

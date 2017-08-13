@@ -1,4 +1,4 @@
-package doggytalents.base.c;
+package doggytalents.base.b;
 
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;

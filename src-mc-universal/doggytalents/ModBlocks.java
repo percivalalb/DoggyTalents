@@ -40,7 +40,7 @@ public class ModBlocks {
 		DOG_BATH.setHarvestLevel("pickaxe", 0);
 		FOOD_BOWL.setHarvestLevel("pickaxe", 0);
 		
-		ObjectLib.REGISTRY.registerBlock(registry, DOG_BED);
+		ObjectLib.REGISTRY.registerBlock(registry, DOG_BED, VersionControl.chooseClassBasedOnVersion("ItemDogBedWrapper", ItemDogBed.class));
 		ObjectLib.REGISTRY.registerBlock(registry, DOG_BATH);
 		ObjectLib.REGISTRY.registerBlock(registry, FOOD_BOWL);
 	}

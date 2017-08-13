@@ -90,7 +90,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
         
         		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y, (float)z, 0, f, f1, flag1, flag, 0.026F);
+        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
         		
         		if(d0 <= (double)(5 * 5)) {
     	    		if(this.renderManager.renderViewEntity.isSneaking()) {

@@ -2,13 +2,17 @@ package doggytalents.base.c;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import doggytalents.base.IBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -55,6 +59,11 @@ public class Bridge implements IBridge {
 			entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, volume, pitch);
 		else if(name.equals("mob.wolf.panting"))
 			entity.playSound(SoundEvents.ENTITY_WOLF_PANT, volume, pitch);
+	}
+	
+	@Override
+	public List<ItemStack> getHeldItems(EntityPlayer player) {
+		return Lists.<ItemStack>newArrayList(player.getHeldItem(EnumHand.MAIN_HAND), player.getHeldItem(EnumHand.OFF_HAND));
 	}
 
 	@Override

@@ -2,11 +2,14 @@ package doggytalents.base.b;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import doggytalents.base.IBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -45,6 +48,11 @@ public class Bridge implements IBridge {
 	@Override
 	public void playSound(Entity entity, String name, float volume, float pitch) {
 		entity.playSound(name, volume, pitch);
+	}
+	
+	@Override
+	public List<ItemStack> getHeldItems(EntityPlayer player) {
+		return Lists.<ItemStack>newArrayList(player.getHeldItem());
 	}
 	
 	@Override

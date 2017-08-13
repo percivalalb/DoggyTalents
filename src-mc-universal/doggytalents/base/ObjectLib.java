@@ -3,8 +3,10 @@ package doggytalents.base;
 import java.lang.reflect.Constructor;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public class ObjectLib {
@@ -24,6 +26,19 @@ public class ObjectLib {
 	public static final EntityDog createDog(World worldIn) {
 		try {
 			return ObjectLib.ENTITY_DOG_CONSTRUCTOR.newInstance(worldIn);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static final Class<EntityDoggyBeam> ENTITY_DOGGY_BEAM_CLASS = VersionControl.chooseClassBasedOnVersion("EntityDoggyBeamWrapper", EntityDoggyBeam.class);
+	public static final Constructor<EntityDoggyBeam> ENTITY_DOGGY_BEAM_CONSTRUCTOR = VersionControl.getConstructor(ENTITY_DOGGY_BEAM_CLASS, World.class, EntityPlayer.class);
+	
+	public static final EntityDoggyBeam createDoggyBeam(World worldIn, EntityPlayer playerIn) {
+		try {
+			return ObjectLib.ENTITY_DOGGY_BEAM_CONSTRUCTOR.newInstance(worldIn, playerIn);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

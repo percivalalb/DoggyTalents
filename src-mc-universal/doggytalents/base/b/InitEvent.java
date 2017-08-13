@@ -13,7 +13,6 @@ public class InitEvent implements IInitializationEvent {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		ModBlocks.onRegisterBlock(null);
-		ModBlocks.onRegisterItem(null);
 		ModItems.onRegister(null);
 	}
 

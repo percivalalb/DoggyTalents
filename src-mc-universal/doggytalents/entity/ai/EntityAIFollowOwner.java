@@ -1,6 +1,8 @@
 package doggytalents.entity.ai;
 
+import doggytalents.base.IWaterMovement;
 import doggytalents.base.ObjectLib;
+import doggytalents.base.VersionControl;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import net.minecraft.block.material.Material;
@@ -11,7 +13,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIBase
@@ -24,8 +25,8 @@ public class EntityAIFollowOwner extends EntityAIBase
     private int timeToRecalcPath;
     private float maxDist;
     private float minDist;
-    private float oldWaterCost;
     private double oldRangeSense;
+    private IWaterMovement waterMovement;
 
     public EntityAIFollowOwner(EntityDog thePetIn, double followSpeedIn, float minDistIn, float maxDistIn) {
         this.dog = thePetIn;
@@ -34,6 +35,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         this.petPathfinder = thePetIn.getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
+        this.waterMovement = VersionControl.createObject("WaterMovementHandler", IWaterMovement.class, EntityDog.class, this.dog);
         this.setMutexBits(3);
 
         if(!(thePetIn.getNavigator() instanceof PathNavigateGround))
@@ -79,8 +81,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void startExecuting() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.waterMovement.startExecuting();
         this.oldRangeSense = this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32.0D);
     }
@@ -89,7 +90,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     public void resetTask() {
         this.owner = null;
         this.petPathfinder.clearPathEntity();
-        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.waterMovement.resetTask();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 

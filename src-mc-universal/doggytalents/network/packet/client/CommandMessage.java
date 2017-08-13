@@ -11,9 +11,7 @@ import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -41,10 +39,10 @@ public class CommandMessage extends AbstractServerMessage {
 	public void process(EntityPlayer player, Side side) {
 		World world = player.world;
 
-		if((player.getHeldItemMainhand().getItem() == ModItems.COMMAND_EMBLEM || player.getHeldItemOffhand().getItem() == ModItems.COMMAND_EMBLEM)) {
+		if(ObjectLib.BRIDGE.getHeldItems(player).contains(ModItems.COMMAND_EMBLEM)) {
 
 			List<EntityDog> nearEnts = world.getEntitiesWithinAABB(ObjectLib.ENTITY_DOG_CLASS, player.getEntityBoundingBox().grow(20D, 20D, 20D));
-			world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+			//TODO world.playSound(player, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 			
 			boolean sucessful = false;
 			

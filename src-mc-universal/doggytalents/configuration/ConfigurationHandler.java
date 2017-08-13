@@ -23,7 +23,6 @@ public class ConfigurationHandler {
 	public static void init(Configuration configuration) {
 		CONFIG = configuration;
 		loadConfig();
-		MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
 	}
 	
 	 /** TODO NOTE from NovaViper
@@ -81,11 +80,5 @@ public class ConfigurationHandler {
 		
 		if(CONFIG.hasChanged())
 			CONFIG.save();
-	}
-	
-	@SubscribeEvent
-	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(Reference.MOD_ID))
-			loadConfig();
 	}
 }

@@ -33,6 +33,16 @@ public abstract class EntityDogBridge extends EntityDog {
 		return !this.getPassengers().isEmpty();
 	}
 	
+    @Override
+    public Entity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
+    }
+	
+	@Override
+	public Entity getEntityWeAreRiding() {
+        return this.getRidingEntity();
+    }
+	
 	@Override
 	public void setOwnerUUID(UUID uuid) {
 		this.setOwnerId(uuid);

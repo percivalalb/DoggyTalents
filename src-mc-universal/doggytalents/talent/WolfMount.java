@@ -32,13 +32,13 @@ public class WolfMount extends ITalent {
 			if(dog.getOwner() instanceof EntityPlayer)
 				ObjectLib.BRIDGE.addTranslatedMessage((EntityPlayer)dog.getOwner(), "dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
 			
-			dog.removePassengers();
+			//TODO dog.removePassengers();
 		}	
 	}
 	
 	@Override
 	public int onHungerTick(EntityDog dog, int totalInTick) { 
-		if(dog.getLowestRidingEntity() instanceof EntityPlayer)
+		if(dog.getControllingPassenger() instanceof EntityPlayer)
 			if(dog.talents.getLevel(this) >= 5)
 				totalInTick += 1;
 			else

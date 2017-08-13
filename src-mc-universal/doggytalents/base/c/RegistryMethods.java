@@ -4,6 +4,7 @@ import doggytalents.base.IRegistryMethods;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -12,6 +13,11 @@ public class RegistryMethods implements IRegistryMethods {
 
 	@Override
 	public void registerBlock(Object registry, Block block) {
+		GameRegistry.register(block);
+	}
+	
+	@Override
+	public void registerBlock(Object registry, Block block, Class<? extends ItemBlock> itemBlock) {
 		GameRegistry.register(block);
 	}
 	

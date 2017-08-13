@@ -1,5 +1,6 @@
 package doggytalents.base.e;
 
+import doggytalents.base.other.ItemDoggyCharmBridge;
 import doggytalents.item.ItemDoggyCharm;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -10,7 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemDoggyCharmWrapper extends ItemDoggyCharm {
+public class ItemDoggyCharmWrapper extends ItemDoggyCharmBridge {
 
 	@Override
 	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand handIn, EnumFacing facing, float hitX, float hitY, float hitZ) {

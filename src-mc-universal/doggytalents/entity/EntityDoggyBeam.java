@@ -10,13 +10,12 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb
  */
-public class EntityDoggyBeam extends EntityThrowable {
+public abstract class EntityDoggyBeam extends EntityThrowable {
 	
     public EntityDoggyBeam(World worldIn) {
         super(worldIn);
@@ -29,25 +28,17 @@ public class EntityDoggyBeam extends EntityThrowable {
     public EntityDoggyBeam(World worldIn, double x, double y, double z) {
         super(worldIn, x, y, z);
     }
-
     
-    //TODO
-   // public static void func_189662_a(DataFixer p_189662_0_)
-    //{
-    //    EntityThrowable.func_189661_a(p_189662_0_, "Snowball");
-    //}
-    
-    @Override
-    protected void onImpact(RayTraceResult result) {
-    	if(result.entityHit instanceof EntityLivingBase) {
+    public void onImpactGENERAL(Entity entityHit) {
+    	if(entityHit instanceof EntityLivingBase) {
  
     		List<Entity> nearEnts = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(100D, 10D, 100D));
     		for(Object o : nearEnts) {
     			if(o instanceof EntityDog) {
                  	EntityDog dog = (EntityDog)o;
-                 	if(!dog.isSitting() && result.entityHit != dog && dog.shouldAttackEntity((EntityLivingBase)result.entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
-                 		if(dog.getDistanceToEntity(result.entityHit) < this.getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
-                 			dog.setAttackTarget((EntityLivingBase)result.entityHit);
+                 	if(!dog.isSitting() && entityHit != dog && dog.shouldAttackEntity((EntityLivingBase)entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
+                 		if(dog.getDistanceToEntity(entityHit) < this.getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
+                 			dog.setAttackTarget((EntityLivingBase)entityHit);
                  		}
                  	}
                  }

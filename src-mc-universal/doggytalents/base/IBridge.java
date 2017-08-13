@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -23,6 +24,8 @@ public interface IBridge {
 	public <T extends Entity> List<T> getEntitiesWithinAABB(World world, Class<? extends T> classEntity, double x, double y, double z, int xG, int yG, int zG);
 	
 	public void playSound(Entity entity, String name, float volume, float pitch);
+	
+	public List<ItemStack> getHeldItems(EntityPlayer player);
 	
 	public String translateToLocal(String key);
 	public String translateToLocalFormatted(String key, Object... format);

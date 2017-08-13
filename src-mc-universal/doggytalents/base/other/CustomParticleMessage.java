@@ -1,10 +1,11 @@
-package doggytalents.network.packet.server;
+package doggytalents.base.other;
 
 import java.util.Random;
 
 import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
+import doggytalents.base.VersionControl.VersionConfig;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractClientMessage;
 import net.minecraft.entity.Entity;
@@ -15,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
+@VersionConfig({"1.9.4", "1.10.2", "1.11.2", "1.12", "1.12.1"})
 public class CustomParticleMessage extends AbstractClientMessage {
 	
     private World world;

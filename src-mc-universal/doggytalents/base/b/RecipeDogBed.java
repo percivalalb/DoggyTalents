@@ -1,4 +1,4 @@
-package doggytalents.base.c;
+package doggytalents.base.b;
 
 import com.google.common.base.Strings;
 

@@ -1,6 +1,7 @@
 package doggytalents.client.renderer.entity.layer;
 
 import doggytalents.base.ObjectLib;
+import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -49,7 +50,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
             GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager.translate(0.20, -0.10, -0.10);
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(dog, this.itemToRender, ItemCameraTransforms.TransformType.NONE, false);
+            Minecraft.getMinecraft().getItemRenderer().renderItem(dog, this.itemToRender, ItemCameraTransforms.TransformType.NONE);
 	        GlStateManager.popMatrix();
     	}
     }

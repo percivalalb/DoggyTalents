@@ -2,6 +2,7 @@ package doggytalents.base.b;
 
 import java.util.UUID;
 
+import net.minecraft.pathfinding.PathNavigateGround;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,7 @@ public class EntityDogWrapper extends EntityDog {
 
 	public EntityDogWrapper(World world) {
 		super(world);
+		((PathNavigateGround)this.getNavigator()).setAvoidsWater(true);
 	}
 
 	@Override

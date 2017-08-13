@@ -110,7 +110,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
             this.tasks.addTask(5, this.aiFetchBone);
             this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-            this.tasks.addTask(8, VersionControl.createObject("EntityAIDogWander", EntityAIBase.class, new Class[] {EntityDog.class, Integer.TYPE}, new Object[] {this, 1.0D}));
+            this.tasks.addTask(8, VersionControl.createObject(VersionControl.getConstructor("EntityAIDogWander", EntityAIBase.class, EntityDog.class, Double.TYPE), this, 1.0D));
             this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
             this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
             this.tasks.addTask(10, new EntityAILookIdle(this));
@@ -554,7 +554,7 @@ public abstract class EntityDog extends EntityAbstractDog {
 	                        this.setSitting(false);
 	                        this.setHealth(8);
 	                        this.talents.resetTalents();
-	                        this.setOwnerId(null);
+	                        this.setOwnerUUID(UUID.randomUUID());
 	                        this.setWillObeyOthers(false);
 	                        this.mode.setMode(EnumMode.DOCILE);
 	                        if(this.hasRadarCollar())
@@ -732,20 +732,20 @@ public abstract class EntityDog extends EntityAbstractDog {
     
     public int masterOrder() {
     	int order = 0;
+    	
         EntityPlayer player = (EntityPlayer)this.getOwner();
-
-        if (player != null) {
-        	
+    	
+        if(player != null) {
             float distanceAway = player.getDistanceToEntity(this);
             ItemStack itemstack = player.inventory.getCurrentItem();
 
-            if (itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)
+            if(itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)
                 order = 1;
 
-            if (itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
+            if(itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
                 order = 2;
 
-            if (itemstack != null && itemstack.getItem() == Items.WHEAT)
+            if(itemstack != null && itemstack.getItem() == Items.WHEAT)
                 order = 3;
         }
 

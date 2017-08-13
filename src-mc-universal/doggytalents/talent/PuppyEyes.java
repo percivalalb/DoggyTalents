@@ -35,9 +35,10 @@ public class PuppyEyes extends ITalent {
 	
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
+		if(!dog.isTamed()) return;
 		
 		int charmerCharge = (Integer)dog.objects.get("charmercharge");
-		if(charmerCharge > 0 && dog.isTamed()) {
+		if(charmerCharge > 0) {
 			charmerCharge -= 1;
 			dog.objects.put("charmercharge", charmerCharge);
         }
@@ -108,7 +109,6 @@ public class PuppyEyes extends ITalent {
 	
 	public EntityLiving charmVillagers(EntityDog dog, double d) {
 		double d1 = -1D;
-		EntityPlayer player = (EntityPlayer)dog.getOwner();
 	    EntityLiving entityliving = null;
 	    List list = dog.world.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().grow(d, d, d));
 

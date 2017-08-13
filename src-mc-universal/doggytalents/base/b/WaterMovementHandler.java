@@ -16,7 +16,7 @@ public class WaterMovementHandler implements IWaterMovement {
 	@Override
 	public void startExecuting() {
 		this.preShouldAvoidWater = ((PathNavigateGround)this.dog.getNavigator()).getAvoidsWater();
-	      ((PathNavigateGround)this.dog.getNavigator()).setAvoidsWater(false);
+		((PathNavigateGround)this.dog.getNavigator()).setAvoidsWater(false);
 	}
 
 	@Override

@@ -7,6 +7,10 @@ import net.minecraft.world.World;
 
 public class EntityDoggyBeamWrapper extends EntityDoggyBeam {
 
+	public EntityDoggyBeamWrapper(World worldIn) {
+		super(worldIn);
+	}
+	
 	public EntityDoggyBeamWrapper(World worldIn, EntityPlayer throwerIn) {
 		super(worldIn, throwerIn);
 	}

@@ -1,11 +1,10 @@
-package doggytalents.base.b;
+package doggytalents.base.c;
 
 import java.util.List;
 
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.TextFormatting;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -42,12 +41,4 @@ public class ItemWoolCollarWrapper extends ItemWoolCollar {
 			subItems.add(baseColours);
         }
     }
-	
-    @Override
-	public int getColorFromItemStack(ItemStack stack, int pass) {
-		if(stack.hasTagCompound())
-			if(stack.getTagCompound().hasKey("collar_colour"))
-				return stack.getTagCompound().getInteger("collar_colour");
-		return -1;
-	}
 }

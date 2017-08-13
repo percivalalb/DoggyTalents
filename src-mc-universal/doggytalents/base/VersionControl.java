@@ -20,6 +20,10 @@ public class VersionControl {
 		}
 	}
 	
+	public static <T> Constructor<T> getConstructor(String name, Class<T> type, Class<?>... parameterTypes) {
+		return getConstructor(chooseClassBasedOnVersion(name, type), parameterTypes);
+	}
+	
 	public static <T> T createObject(String name, Class<T> type, Class<?> parameterTypes, Object parameter) {
 		Class<T> path = chooseClassBasedOnVersion(name, type);
 		
@@ -32,11 +36,9 @@ public class VersionControl {
 		}
 	}
 	
-	public static <T> T createObject(String name, Class<T> type, Class<?>[] parameterTypes, Object[] parameter) {
-		Class<T> path = chooseClassBasedOnVersion(name, type);
-		
+	public static <T> T createObject(Constructor<T> constructor, Object... parameters) {
 		try {
-			return (T)path.getConstructor(parameterTypes).newInstance(parameter);
+			return constructor.newInstance(parameters);
 		} 
 		catch(Exception e) {
 			e.printStackTrace();

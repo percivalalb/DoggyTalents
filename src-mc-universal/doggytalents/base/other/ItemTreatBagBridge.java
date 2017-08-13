@@ -1,4 +1,4 @@
-package doggytalents.item;
+package doggytalents.base.other;
 
 import doggytalents.DoggyTalents;
 import doggytalents.base.VersionControl.VersionConfig;

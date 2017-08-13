@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import doggytalents.DoggyTalents;
 import doggytalents.base.IClientMethods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -13,7 +14,9 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +24,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -39,7 +44,7 @@ public class ClientMethods implements IClientMethods {
         GlStateManager.scale(-scale, -scale, scale);
         GlStateManager.disableLighting();
         GlStateManager.depthMask(false);
-
+        
         if (!isSneaking)
             GlStateManager.disableDepth();
 
@@ -87,7 +92,15 @@ public class ClientMethods implements IClientMethods {
 
 	@Override
 	public void onModelBakeEvent(ModelBakeEvent event) throws Exception {
+		TextureAtlasSprite base = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/slime");
+
+		IFlexibleBakedModel model = (IFlexibleBakedModel)event.modelRegistry.getObject(new ModelResourceLocation("doggytalents:1.8.9/dog_bed", "inventory"));
+    	event.modelRegistry.putObject(new ModelResourceLocation("doggytalents:1.8.9/dog_bed", "inventory"), new DogBedModel.Builder(model, base, base).makeBakedModel());
 		
+	    for(String thing : new String[] {"facing=north,version=1.8", "facing=south,version=1.8", "facing=east,version=1.8", "facing=west,version=1.8"}) {
+	    	model = (IFlexibleBakedModel)event.modelRegistry.getObject(new ModelResourceLocation("doggytalents:dog_bed", thing));
+	    	event.modelRegistry.putObject(new ModelResourceLocation("doggytalents:dog_bed", thing), new DogBedModel.Builder(model, base, base).makeBakedModel());
+	    }
 	}
 
 	@Override
@@ -97,7 +110,8 @@ public class ClientMethods implements IClientMethods {
 
 	@Override
 	public void setModel(Item item, int meta, String modelName) {
-		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+		ResourceLocation oldLoc = new ResourceLocation(modelName);
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(oldLoc.getResourceDomain() + ":1.8.9/" + oldLoc.getResourcePath()), "inventory"));
 	}
 
 	@Override

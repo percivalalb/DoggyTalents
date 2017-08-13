@@ -6,6 +6,7 @@ import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
+import doggytalents.block.PropertyString;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryTreatBag;
@@ -45,13 +46,31 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWrapper {
 
+	public static final PropertyStringListed VERSION = PropertyStringListed.create("version");
+	
 	public static class BlockDogBathWrapper extends BlockDogBath {
 		
 		public BlockDogBathWrapper() {
 			super();
 			this.setStepSound(Block.soundTypeMetal);
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
+			this.setDefaultState(this.blockState.getBaseState().withProperty(VERSION, "1.8"));
 		}
+		
+		@Override
+		protected BlockState createBlockState() {
+	        return new BlockState(this, new IProperty[] {VERSION});
+	    }
+		
+		@Override
+		public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+			return state.withProperty(VERSION, "1.8");
+		}
+		
+		@Override
+		public int getMetaFromState(IBlockState state) {
+	        return 0;
+	    }
 		
 		@Override
 		public int getRenderType() {
@@ -101,6 +120,7 @@ public class BlockWrapper {
 			super();
 			this.setStepSound(Block.soundTypeWood);
 			this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.6F, 1.0F);
+			this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(VERSION, "1.8"));
 		}
 		
 		@Override
@@ -147,7 +167,7 @@ public class BlockWrapper {
 		
 		@Override
 		protected BlockState createBlockState() {
-			return new ExtendedBlockState(this, new IProperty[] {FACING}, new IUnlistedProperty[] {CASING, BEDDING});
+			return new ExtendedBlockState(this, new IProperty[] {FACING, VERSION}, new IUnlistedProperty[] {CASING, BEDDING});
 		}
 		
 		@Override
@@ -160,6 +180,11 @@ public class BlockWrapper {
 	        }
 	        return super.getExtendedState(state, world, pos);
 	    }
+		
+		@Override
+		public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+			return state.withProperty(VERSION, "1.8");
+		}
 		
 		@SideOnly(Side.CLIENT)
 	    public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
@@ -318,6 +343,22 @@ public class BlockWrapper {
 	    public BlockFoodBowlWrapper() {
 	        super();
 			this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 1.0F - 0.0625F, 0.5F, 1.0F - 0.0625F);
+			this.setDefaultState(this.blockState.getBaseState().withProperty(VERSION, "1.8"));
+	    }
+	    
+		@Override
+		protected BlockState createBlockState() {
+	        return new BlockState(this, new IProperty[] {VERSION});
+	    }
+	    
+	    @Override
+		public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+			return state.withProperty(VERSION, "1.8");
+		}
+	    
+	    @Override
+		public int getMetaFromState(IBlockState state) {
+	        return 0;
 	    }
 	    
 	    @Override

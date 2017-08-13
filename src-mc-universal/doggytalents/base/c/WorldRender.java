@@ -1,4 +1,4 @@
-package doggytalents.talent;
+package doggytalents.base.c;
 
 import doggytalents.base.ObjectLibClient;
 import doggytalents.entity.EntityDog;

@@ -5,6 +5,7 @@ import java.util.Random;
 import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.base.ObjectLibClient;
+import doggytalents.base.VersionControl;
 import doggytalents.base.other.ParticleCustomLanding;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.model.block.IStateParticleModel;
@@ -14,7 +15,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.GameOverlay;
 import doggytalents.handler.KeyState;
-import doggytalents.talent.WorldRender;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -53,8 +53,8 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.registerKeyBinding(KeyState.ok);
 		ClientRegistry.registerKeyBinding(KeyState.heel);
 		
-		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOG_CLASS, RenderDog::new);
+		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOGGY_BEAM_CLASS, RenderDogBeam::new);
 	}
 	
 	@Override
@@ -72,7 +72,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
-        //TODO MinecraftForge.EVENT_BUS.register(new WorldRender());
+        MinecraftForge.EVENT_BUS.register(VersionControl.createObject("WorldRender"));
 		MinecraftForge.EVENT_BUS.register(new KeyState());
     }
 	

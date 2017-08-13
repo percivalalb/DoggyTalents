@@ -1,5 +1,6 @@
 package doggytalents.base.other;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl.VersionConfig;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemRadar;
@@ -43,7 +44,8 @@ public class ItemRadarBridge extends ItemRadar {
 							builder.append(", east");
 						else
 								builder.append(", west");
-						//TODO playerIn.sendMessage(ChatUtil.getChatComponent(builder.toString()));
+						
+						ObjectLib.BRIDGE.addMessage(playerIn, builder.toString());
 					}
 				}
 			}

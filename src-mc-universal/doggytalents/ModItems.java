@@ -4,6 +4,7 @@ import doggytalents.base.ObjectLib;
 import doggytalents.base.VersionControl;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.item.ItemCapeColoured;
+import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
@@ -60,7 +61,7 @@ public class ModItems {
 	    RADAR = VersionControl.createObject("ItemRadarWrapper", ItemRadar.class).setUnlocalizedName("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
 	    TREAT_BAG = VersionControl.createObject("ItemTreatBagWrapper", ItemTreatBag.class).setUnlocalizedName("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
-	    CHEW_STICK = new ItemDT().setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
+	    CHEW_STICK = VersionControl.createObject("ItemChewStickWrapper", ItemChewStick.class).setUnlocalizedName("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
 	    CAPE = new ItemDT().setUnlocalizedName("doggytalents.cape").setRegistryName(Reference.MOD_ID + ":cape");
 	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	    CAPE_COLOURED = VersionControl.createObject("ItemCapeColouredWrapper", ItemCapeColoured.class).setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");

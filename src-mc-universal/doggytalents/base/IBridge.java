@@ -2,10 +2,13 @@ package doggytalents.base;
 
 import java.util.List;
 
+import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -31,6 +34,16 @@ public interface IBridge {
 	public String translateToLocalFormatted(String key, Object... format);
 	
 	public void addTranslatedMessage(EntityPlayer player, String key, Object... format);
+	public void addMessage(EntityPlayer player, String message);
+	
+	public void addJumpFromPotion(EntityDog dog);
+	public Entity getRidingEntity(EntityPlayer player);
+	
+	//Talents
+	public boolean isPosion(PotionEffect potionEffect);
+	public void addPosion(EntityLivingBase entity, int effectDuration, int effectAmplifier);
+	public void addNightVision(EntityLivingBase entity, int effectDuration, int effectAmplifier);
+	
 	
 	//Math functions
 	

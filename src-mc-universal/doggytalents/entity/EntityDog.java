@@ -25,6 +25,7 @@ import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryTreatBag;
+import doggytalents.item.ItemChewStick;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
@@ -288,9 +289,9 @@ public abstract class EntityDog extends EntityAbstractDog {
         	this.reversionTime -= 1;
         
         //Remove dog from players head if sneaking
-        //TODOif(this.getEntityWeAreRiding() instanceof EntityPlayer)
-        	//if(this.getEntityWeAreRiding().isSneaking())
-        		//this.dismountRidingEntity();
+        if(this.getEntityWeAreRiding() instanceof EntityPlayer)
+        	if(this.getEntityWeAreRiding().isSneaking())
+        		this.dismountEntityWeAreRiding();
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
         if(this.foodBowlCheck++ > 50 && this.coords.hasBowlPos()) {
@@ -434,9 +435,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if(stack.getItem() == ModItems.CHEW_STICK) {
-                    	//TODO this.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
-                    	//this.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
-                    	//this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+                    	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(player, this);
                     }
                     return true;
                 }

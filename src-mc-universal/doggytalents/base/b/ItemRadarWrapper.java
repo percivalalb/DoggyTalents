@@ -1,5 +1,6 @@
 package doggytalents.base.b;
 
+import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemRadar;
 import net.minecraft.entity.Entity;
@@ -32,7 +33,8 @@ public class ItemRadarWrapper extends ItemRadar {
 							builder.append(", east");
 						else
 								builder.append(", west");
-						//TODO playerIn.addChatMessage(ChatUtil.getChatComponent(builder.toString()));
+						
+						ObjectLib.BRIDGE.addMessage(playerIn, builder.toString());
 					}
 				}
 			}

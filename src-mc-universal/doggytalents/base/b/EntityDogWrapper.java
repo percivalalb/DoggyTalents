@@ -42,6 +42,18 @@ public class EntityDogWrapper extends EntityDog {
 	}
 	
 	@Override
+	public void dismountEntityWeAreRiding() {
+		this.ridingEntity.riddenByEntity = null;
+		this.ridingEntity = null;
+	}
+	
+	@Override
+	public void removeEntityRidingUs() {
+		this.riddenByEntity.ridingEntity = null;
+		this.riddenByEntity = null;
+	}
+	
+	@Override
 	public void setOwnerUUID(UUID uuid) {
 		this.setOwnerId(uuid.toString());
 	}

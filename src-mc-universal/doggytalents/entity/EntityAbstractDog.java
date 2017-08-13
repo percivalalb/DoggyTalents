@@ -40,11 +40,14 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
 	public abstract Entity getEntityWeAreRiding();
 	
+	public abstract void dismountEntityWeAreRiding();
+	
     //Do not put an override annotation here
 	public abstract Entity getControllingPassenger();
 	
     //Do not put an override annotation here
 	public abstract boolean isBeingRidden();
+	public abstract void removeEntityRidingUs();
 	
 	
 	@Override

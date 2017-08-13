@@ -25,11 +25,8 @@ public class GameOverlay {
 	
 	public static void onPreRenderGameOverlay(ElementType type, ScaledResolution scaling) {
 		
-		
-		//TODO
-		/**
-		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
-			EntityDog dog = (EntityDog)mc.player.getRidingEntity();
+		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && ObjectLib.BRIDGE.getRidingEntity(mc.player) instanceof EntityDog) {
+			EntityDog dog = (EntityDog)ObjectLib.BRIDGE.getRidingEntity(mc.player);
 			int width = scaling.getScaledWidth();
 			int height = scaling.getScaledHeight();
 			GlStateManager.pushMatrix();
@@ -76,6 +73,6 @@ public class GameOverlay {
 	        GlStateManager.disableBlend();
 	        
 	        GlStateManager.popMatrix();
-		}**/
+		}
 	}
 }

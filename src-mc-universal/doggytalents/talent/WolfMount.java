@@ -32,7 +32,7 @@ public class WolfMount extends ITalent {
 			if(dog.getOwner() instanceof EntityPlayer)
 				ObjectLib.BRIDGE.addTranslatedMessage((EntityPlayer)dog.getOwner(), "dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
 			
-			//TODO dog.removePassengers();
+			dog.removeEntityRidingUs();
 		}	
 	}
 	

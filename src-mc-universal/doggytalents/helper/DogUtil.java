@@ -3,6 +3,7 @@ package doggytalents.helper;
 import doggytalents.ModItems;
 import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
+import doggytalents.item.ItemChewStick;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -33,10 +34,8 @@ public class DogUtil {
             ItemStack itemstack = inventory.getStackInSlot(slotIndex);
             dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
             
-            if(itemstack.getItem() == ModItems.CHEW_STICK) {
-            	//TODO dog.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
-            	//dog.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
-            	//dog.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+            if(itemstack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
+            	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(null, dog);
             }
 
             if(ObjectLib.STACK_UTIL.getCount(inventory.getStackInSlot(slotIndex)) <= 1) {

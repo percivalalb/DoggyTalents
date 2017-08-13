@@ -8,11 +8,15 @@ import doggytalents.base.IBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.StatCollector;
@@ -68,6 +72,37 @@ public class Bridge implements IBridge {
 	@Override
 	public void addTranslatedMessage(EntityPlayer player, String key, Object... format) {
 		player.addChatComponentMessage(new ChatComponentTranslation(key, format));
+	}
+	
+	@Override
+	public void addMessage(EntityPlayer player, String message) {
+		player.addChatComponentMessage(new ChatComponentText(message));
+	}
+	
+	@Override
+	public void addJumpFromPotion(EntityDog dog) {
+		if(dog.isPotionActive(Potion.jump))
+			dog.motionY += (double)((float)(dog.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+	}
+	
+	@Override
+	public Entity getRidingEntity(EntityPlayer player) {
+		return player.ridingEntity;
+	}
+	
+	@Override
+	public boolean isPosion(PotionEffect potionEffect) {
+		return potionEffect.getPotionID() == Potion.poison.getId();
+	}
+	
+	@Override
+	public void addPosion(EntityLivingBase entity, int effectDuration, int effectAmplifier) {
+		entity.addPotionEffect(new PotionEffect(Potion.poison.getId(), effectDuration, effectAmplifier));
+	}
+	
+	@Override
+	public void addNightVision(EntityLivingBase entity, int effectDuration, int effectAmplifier) {
+		entity.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), effectDuration, effectAmplifier, true, false));
 	}
 
 	@Override

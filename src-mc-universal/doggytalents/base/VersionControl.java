@@ -46,6 +46,10 @@ public class VersionControl {
 		}
 	}
 	
+	public static Object createObject(String name) {
+		return createObject(name, Object.class);
+	}
+	
 	public static <T> T createObject(String name, Class<T> type) {
 		return createObject(chooseClassBasedOnVersion(name, type));
 	}

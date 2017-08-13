@@ -44,6 +44,16 @@ public abstract class EntityDogBridge extends EntityDog {
     }
 	
 	@Override
+	public void dismountEntityWeAreRiding() {
+		this.dismountRidingEntity();
+	}
+	
+	@Override
+	public void removeEntityRidingUs() {
+		this.removePassengers();
+	}
+	
+	@Override
 	public void setOwnerUUID(UUID uuid) {
 		this.setOwnerId(uuid);
 	}

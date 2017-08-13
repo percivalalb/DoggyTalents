@@ -8,14 +8,18 @@ import doggytalents.base.IBridge;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
@@ -59,6 +63,8 @@ public class Bridge implements IBridge {
 			entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, volume, pitch);
 		else if(name.equals("mob.wolf.panting"))
 			entity.playSound(SoundEvents.ENTITY_WOLF_PANT, volume, pitch);
+		else if(name.equals("random.bow"))
+			entity.playSound(SoundEvents.ENTITY_ARROW_SHOOT, volume, pitch);
 	}
 	
 	@Override
@@ -79,6 +85,37 @@ public class Bridge implements IBridge {
 	@Override
 	public void addTranslatedMessage(EntityPlayer player, String key, Object... format) {
 		player.sendMessage(new TextComponentTranslation(key, format));
+	}
+	
+	@Override
+	public void addMessage(EntityPlayer player, String message) {
+		player.sendMessage(new TextComponentString(message));
+	}
+	
+	@Override
+	public void addJumpFromPotion(EntityDog dog) {
+		if(dog.isPotionActive(MobEffects.JUMP_BOOST))
+			dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+	}
+	
+	@Override
+	public Entity getRidingEntity(EntityPlayer player) {
+		return player.getRidingEntity();
+	}
+	
+	@Override
+	public boolean isPosion(PotionEffect potionEffect) {
+		return potionEffect.getPotion() == MobEffects.POISON;
+	}
+	
+	@Override
+	public void addPosion(EntityLivingBase entity, int effectDuration, int effectAmplifier) {
+		entity.addPotionEffect(new PotionEffect(MobEffects.POISON, effectDuration, effectAmplifier));
+	}
+	
+	@Override
+	public void addNightVision(EntityLivingBase entity, int effectDuration, int effectAmplifier) {
+		entity.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, effectDuration, effectAmplifier, true, false));
 	}
 	
 	@Override

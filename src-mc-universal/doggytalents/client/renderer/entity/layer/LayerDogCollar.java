@@ -24,6 +24,10 @@ public class LayerDogCollar implements LayerRenderer<EntityDog> {
         		 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_GREYSCALE_COLLAR);
         		 GlStateManager.color(1.0F, 1.0F, 1.0F);
         	}
+        	else if(dog.getCollarColour() == -4) {
+        		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_MULTICOLOUR_COLLAR);
+        		GlStateManager.color(1.0F, 1.0F, 1.0F);
+        	}
         	else if(dog.hasCollarColoured()) {
 	            this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_DOG_COLLAR);
 	            if(dog.isCollarColoured()) {

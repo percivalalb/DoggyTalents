@@ -481,7 +481,7 @@ public abstract class EntityDog extends EntityAbstractDog {
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.FANCY_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
-                	this.setCollarColour(-3);
+                	this.setCollarColour(-3 - stack.getItemDamage());
                  	
                    	if(!player.capabilities.isCreativeMode)
                    		ObjectLib.STACK_UTIL.shrink(stack, 1);
@@ -537,8 +537,8 @@ public abstract class EntityDog extends EntityAbstractDog {
 	                	     	this.setCollarColour(-2);
                 			}
                 			
-                			if(this.getCollarColour() == -3) {
-                				this.entityDropItem(new ItemStack(ModItems.FANCY_COLLAR, 1, 0), 1);
+                			if(this.getCollarColour() <= -3) {
+                				this.entityDropItem(new ItemStack(ModItems.FANCY_COLLAR, 1, -3 - this.getCollarColour()), 1);
                 				this.setCollarColour(-2);
                 			}
                 			

@@ -117,8 +117,8 @@ public class ModItems {
 		ModelHelper.setModel(RADAR, 0, "doggytalents:radar");
 		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
 		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
-		ModelHelper.setModel(FANCY_COLLAR, 0, "doggytalents:greyscale_collar");
-		ModelHelper.setModel(FANCY_COLLAR, 1, "doggytalents:multicolour_collar");
+		for(int i = 0; i < ItemFancyCollar.NO_COLLAR; i++)
+			ModelHelper.setModel(FANCY_COLLAR, i, "doggytalents:fancy_collar_" + i);
 		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
 		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
 		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");

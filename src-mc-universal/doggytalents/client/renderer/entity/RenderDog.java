@@ -35,7 +35,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
         //this.addLayer(new LayerSaddle(this));
-        this.addLayer(new LayerArmor(this));
+        //this.addLayer(new LayerArmor(this));
         this.addLayer(new LayerWings(this));
     }
 

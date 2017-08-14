@@ -12,6 +12,11 @@ MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.1.*** | WIP
++ Added Creative Collar which gives your dog 1000 points to spend on talents (only available in creative obviously)
++ Added Spotted Collar and Multicolour Collar
++ Readded doggy texture index (for now) you can add your own skins assets/doggytalents/textures/mob/dog/doggytex$NO.png up to 128 textures
++ Added throw stick that you can play fetch with your dog
++ Added support for MC 1.8.9
 + Added support for the wooden planks from Botania mod to be used as casing in dog bed
 * Fixed no message being displayed when riding a dog and it runs out of hunger
 

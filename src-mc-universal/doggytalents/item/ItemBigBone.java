@@ -29,7 +29,6 @@ public class ItemBigBone extends ItemDT implements IDogTreat {
 
 			if(!player.world.isRemote) {
 				dog.setDogSize(dog.getDogSize() + 1);
-				ObjectLib.BRIDGE.addTranslatedMessage(player, "dogtreat.levelup");
 			}
 		}
 		else if(type == EnumFeedBack.TOOYOUNG) {

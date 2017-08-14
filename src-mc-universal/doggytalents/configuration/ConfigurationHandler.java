@@ -46,6 +46,7 @@ public class ConfigurationHandler {
 		Constants.DIRE_PARTICLES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "direParticles", true, "Enables the particle effect on Dire Level 30 dogs.").getBoolean(true);
 		Constants.STARTING_ITEMS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isStartingItemsEnabled", true, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(true);
 		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will bleed while incapacitated.").getBoolean(true);
+		Constants.DOGGY_WINGS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyWings", true, "When enabled, Dogs will have wings when at level 5 pillow paw").getBoolean(true);
 		
 		//Add Everything in the current list in whatever way you want
 		orderDSetting.add("isDogImmortal");
@@ -54,6 +55,7 @@ public class ConfigurationHandler {
 		orderDSetting.add("direParticles");
 		orderDSetting.add("isStartingItemsEnabled");
 		orderDSetting.add("bloodWhenIncapacitated");
+		orderDSetting.add("doggyWings");
 		
 		//Sets the category property order to that of which you have set the list above
 		CONFIG.setCategoryPropertyOrder(CATEGORY_DOGGYSETTINGS, orderDSetting);

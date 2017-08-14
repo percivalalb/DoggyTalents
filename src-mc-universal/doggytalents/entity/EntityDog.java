@@ -410,11 +410,7 @@ public abstract class EntityDog extends EntityAbstractDog {
     @Override
     public void setTamed(boolean flag) {
         super.setTamed(flag);
-
-        if(flag)
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        else
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(flag ? 20.0D : 8.0D);
     }
 
     public void mountTo(EntityLivingBase entityLiving) {
@@ -1053,7 +1049,6 @@ public abstract class EntityDog extends EntityAbstractDog {
     public void setNoCape() {
     	this.setCapeData(-2);
 	}
-	
 	
 	public float[] getCapeColour() {
 		int argb = this.getCapeData();

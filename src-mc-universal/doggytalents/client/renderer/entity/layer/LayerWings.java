@@ -28,7 +28,7 @@ public class LayerWings implements LayerRenderer<EntityDog> {
 
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(dog.talents.getLevel("pillowpaw") > 0) {
+        if(Constants.DOGGY_WINGS && dog.talents.getLevel("pillowpaw") > 0) {
         	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_WINGS);
         	GlStateManager.color(1.0F, 1.0F, 1.0F);
 

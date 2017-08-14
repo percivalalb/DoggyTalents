@@ -15,7 +15,7 @@ public class ItemTinyBone extends ItemDT implements IDogTreat {
 	
 	@Override
 	public EnumFeedBack canGiveToDog(EntityPlayer player, EntityDog dog, int level, int direLevel) {
-		if (dog.getGrowingAge() >= 0)
+		if(dog.getGrowingAge() >= 0)
 			return EnumFeedBack.JUSTRIGHT;
 		else
 			return EnumFeedBack.TOOYOUNG;		

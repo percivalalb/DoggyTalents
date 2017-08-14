@@ -20,13 +20,9 @@ public class LayerDogCollar implements LayerRenderer<EntityDog> {
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.isTamed() && !dog.isInvisible() && dog.hasCollar()) {
-        	if(dog.getCollarColour() == -3) {
-        		 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_GREYSCALE_COLLAR);
+        	if(dog.hasFancyCollar()) {
+        		 this.dogRenderer.bindTexture(ResourceLib.getFancyCollar(dog.getFancyCollarIndex()));
         		 GlStateManager.color(1.0F, 1.0F, 1.0F);
-        	}
-        	else if(dog.getCollarColour() == -4) {
-        		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_MULTICOLOUR_COLLAR);
-        		GlStateManager.color(1.0F, 1.0F, 1.0F);
         	}
         	else if(dog.hasCollarColoured()) {
 	            this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_DOG_COLLAR);

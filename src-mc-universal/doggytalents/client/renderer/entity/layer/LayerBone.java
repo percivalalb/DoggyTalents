@@ -35,8 +35,6 @@ public class LayerBone implements LayerRenderer<EntityDog> {
 	            GlStateManager.translate(0.0F, 0.75F, 0.0F);
 	            GlStateManager.scale(0.5F, 0.5F, 0.5F);
 	        }
-	
-	        GlStateManager.pushMatrix();
 
             if(dog.isSneaking())
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);

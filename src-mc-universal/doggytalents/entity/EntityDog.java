@@ -168,7 +168,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         tagCompound.setString("version", Reference.MOD_VERSION);
         
         tagCompound.setInteger("doggyTex", this.getTameSkin());
-        tagCompound.setInteger("collarColour", this.getCollarColour());
+        tagCompound.setInteger("collarColour", this.getCollarData());
         tagCompound.setInteger("dogHunger", this.getDogHunger());
         tagCompound.setBoolean("willObey", this.willObeyOthers());
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
@@ -190,7 +190,7 @@ public abstract class EntityDog extends EntityAbstractDog {
 
         String lastVersion = tagCompound.getString("version");
         this.setTameSkin(tagCompound.getInteger("doggyTex"));
-        if(tagCompound.hasKey("collarColour", 99)) this.setCollarColour(tagCompound.getInteger("collarColour"));
+        if(tagCompound.hasKey("collarColour", 99)) this.setCollarData(tagCompound.getInteger("collarColour"));
         this.setDogHunger(tagCompound.getInteger("dogHunger"));
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
@@ -474,14 +474,14 @@ public abstract class EntityDog extends EntityAbstractDog {
                 	if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour"))
                 		colour = stack.getTagCompound().getInteger("collar_colour");
                 	
-                 	this.setCollarColour(colour);
+                 	this.setCollarData(colour);
                  	
                    	if(!player.capabilities.isCreativeMode)
                    		ObjectLib.STACK_UTIL.shrink(stack, 1);
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.FANCY_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
-                	this.setCollarColour(-3 - stack.getItemDamage());
+                	this.setCollarData(-3 - stack.getItemDamage());
                  	
                    	if(!player.capabilities.isCreativeMode)
                    		ObjectLib.STACK_UTIL.shrink(stack, 1);
@@ -531,15 +531,15 @@ public abstract class EntityDog extends EntityAbstractDog {
 	                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
 	                			if(this.isCollarColoured()) {
 		                			collarDrop.setTagCompound(new NBTTagCompound());
-		                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarColour());
+		                			collarDrop.getTagCompound().setInteger("collar_colour", this.getCollarData());
 	                			}
 	                	     	this.entityDropItem(collarDrop, 1);
-	                	     	this.setCollarColour(-2);
+	                	     	this.setNoCollar();
                 			}
                 			
-                			if(this.getCollarColour() <= -3) {
-                				this.entityDropItem(new ItemStack(ModItems.FANCY_COLLAR, 1, -3 - this.getCollarColour()), 1);
-                				this.setCollarColour(-2);
+                			if(this.hasFancyCollar()) {
+                				this.entityDropItem(new ItemStack(ModItems.FANCY_COLLAR, 1, this.getFancyCollarIndex()), 1);
+                				this.setNoCollar();
                 			}
                 			
                 			if(this.hasFancyCape()) {
@@ -609,14 +609,14 @@ public abstract class EntityDog extends EntityAbstractDog {
                     if(!this.isCollarColoured()) {
                         int colour = ObjectLib.METHODS.getColour(EnumDyeColor.byDyeDamage(stack.getMetadata()));
                     	
-                    	this.setCollarColour(colour);
+                    	this.setCollarData(colour);
                     }
                     else {
                         int[] aint = new int[3];
                         int i = 0;
                         int count = 2; //The number of different sources of colour
                         
-                        int l = this.getCollarColour();
+                        int l = this.getCollarData();
                         float f = (float)(l >> 16 & 255) / 255.0F;
                         float f1 = (float)(l >> 8 & 255) / 255.0F;
                         float f2 = (float)(l & 255) / 255.0F;
@@ -644,7 +644,7 @@ public abstract class EntityDog extends EntityAbstractDog {
                      	k1 = (int)((float)k1 * f3 / f4);
                      	int k2 = (i1 << 8) + j1;
                      	k2 = (k2 << 8) + k1;
-                     	this.setCollarColour(k2);
+                     	this.setCollarData(k2);
                     }
                     return true;
                 }
@@ -957,20 +957,24 @@ public abstract class EntityDog extends EntityAbstractDog {
 	}
     
     //Collar related functions
-    public int getCollarColour() {
+    public int getCollarData() {
     	return this.dataTracker.getCollarColour();
     }
     
-    public void setCollarColour(int value) {
+    public void setCollarData(int value) {
     	this.dataTracker.setCollarColour(value);
     }
     
+    public void setNoCollar() {
+    	this.setCollarData(-2);
+    }
+    
     public boolean hasCollar() {
-		return this.getCollarColour() != -2;
+		return this.getCollarData() != -2;
 	}
     
     public boolean hasCollarColoured() {
-		return this.getCollarColour() >= -1;
+		return this.getCollarData() >= -1;
 	}
     
     public boolean isCollarColoured() {
@@ -978,11 +982,19 @@ public abstract class EntityDog extends EntityAbstractDog {
 	}
 	
 	public void setHasCollar() {
-		this.setCollarColour(-1);
+		this.setCollarData(-1);
+	}
+	
+	public boolean hasFancyCollar() {
+		return this.getCollarData() < -2;
+	}
+	
+	public int getFancyCollarIndex() {
+		return -3 - this.getCollarData();
 	}
 	
 	public float[] getCollar() {
-		int argb = this.getCollarColour();
+		int argb = this.getCollarData();
 		
 		int r = (argb >> 16) &0xFF;
 		int g = (argb >> 8) &0xFF;

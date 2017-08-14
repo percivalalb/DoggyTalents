@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "doggytalents:items/greyscale_collar"
+        "layer0": "doggytalents:items/fancy_collar_0"
     },
     "display": {
         "thirdperson": {

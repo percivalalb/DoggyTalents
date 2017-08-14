@@ -14,6 +14,7 @@ public class ResourceLib {
 	public static final ResourceLocation GUI_TREAT_BAG = new ResourceLocation("doggytalents", getGuiTexturePath("treat_bag.png"));
 	
 	public static Hashtable<Integer, ResourceLocation> doggyTameSkins = new Hashtable<Integer, ResourceLocation>();
+	public static Hashtable<Integer, ResourceLocation> doggyFancyCollars = new Hashtable<Integer, ResourceLocation>();
 	
 	public static final ResourceLocation MOB_LAYER_DOG_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar.png"));
 	public static final ResourceLocation MOB_DOG_TAME = new ResourceLocation("doggytalents", getMobTexturePath("doggy_tame.png"));
@@ -29,13 +30,17 @@ public class ResourceLib {
 	public static final ResourceLocation MOB_LAYER_CAPE2_1 = new ResourceLocation("doggytalents", getMobTexturePath("doggy_cape1_1.png"));
 	public static final ResourceLocation MOB_LAYER_ARMOR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_armor.png"));
 	public static final ResourceLocation MOB_LAYER_WINGS = new ResourceLocation("doggytalents", getMobTexturePath("doggy_wings.png"));
-	public static final ResourceLocation MOB_LAYER_GREYSCALE_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar_greyscale.png"));
-	public static final ResourceLocation MOB_LAYER_MULTICOLOUR_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar_multicolour.png"));
 	
 	public static ResourceLocation getTameSkin(int index) {
 		if(!doggyTameSkins.containsKey(index))
 			doggyTameSkins.put(index, new ResourceLocation("doggytalents", getMobTexturePath("dog/doggytex" + index + ".png")));
 		return doggyTameSkins.get(index);
+	}
+	
+	public static ResourceLocation getFancyCollar(int index) {
+		if(!doggyFancyCollars.containsKey(index))
+			doggyFancyCollars.put(index, new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar_" + index + ".png")));
+		return doggyFancyCollars.get(index);
 	}
 	
 	 /**

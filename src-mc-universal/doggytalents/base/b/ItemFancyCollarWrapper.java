@@ -11,7 +11,7 @@ public class ItemFancyCollarWrapper extends ItemFancyCollar {
 
 	@Override
 	public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems) {
-		for(int i = 0; i < 2; i++)
+		for(int i = 0; i < this.NO_COLLAR; i++)
 			subItems.add(new ItemStack(itemIn, 1, i));
 	}
 }

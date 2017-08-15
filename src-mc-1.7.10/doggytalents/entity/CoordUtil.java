@@ -51,10 +51,6 @@ public class CoordUtil {
 		return this.getBedX() != -1 && this.getBedY() != -1 && this.getBedZ() != -1;
 	}
 
-	public void resetBedPosition() {
-		this.dog.getDataWatcher().updateObject(28, this.getDefaultStr());
-	}
-	
 	public String getDefaultStr() {
 		return "-1:-1:-1:-1:-1:-1";
 	}
@@ -99,6 +95,14 @@ public class CoordUtil {
 		String structure = this.getBedX() + ":" + this.getBedY() + ":" + this.getBedZ() + ":" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ();
 		this.dog.getDataWatcher().updateObject(28, structure);
 		return structure;
+	}
+	
+	public void resetBedPosition() {
+		this.dog.getDataWatcher().updateObject(28, "-1:-1:-1:" + getBowlX()+ ":" + getBowlY() + ":" + getBowlZ());
+	}
+	
+	public void resetBowlPosition() {
+		this.dog.getDataWatcher().updateObject(28, getBedX() + ":" +  getBedY() + ":" + getBedZ() + "-:-1:-1:-1");
 	}
 	
 	private String[] getSkillsLevels() {

@@ -6,6 +6,7 @@ import java.util.Map;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalents;
+import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
@@ -149,7 +150,7 @@ public class EntityDog extends EntityAbstractDog {
         this.dataWatcher.addObject(24, new String("0:0")); //Level Data
         this.dataWatcher.addObject(26, 0); //Texture index
         this.dataWatcher.addObject(27, new Integer(0)); //Dog Mode
-        this.dataWatcher.addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
+        this.dataWatcher.addObject(28, "-1:-1:-1:-1:-1:-1"); //Bowl and bed pos
         this.dataWatcher.addObject(29, 3); //Size
         this.dataWatcher.addObject(30, -1); //Bone Variant
     }
@@ -290,14 +291,15 @@ public class EntityDog extends EntityAbstractDog {
         	}
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
-        //TOOD
-        /**if(this.coords.hasBowlPos() && this.foodBowlCheck++ > 50) {
-        	if(this.worldObj.isBlockLoaded(this.coords.getBowlPos()))
-        		if(this.worldObj.getBlockState(this.coords.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
+        if(this.coords.hasBowlPos() && this.foodBowlCheck++ > 50) {
+        	if(this.worldObj.blockExists(this.coords.getBowlX(), this.coords.getBowlY(), this.coords.getBowlZ()))
+        		if(this.worldObj.getBlock(this.coords.getBowlX(), this.coords.getBowlY(), this.coords.getBowlZ()) != ModBlocks.FOOD_BOWL)
         			this.coords.resetBowlPosition();
         	
         	this.foodBowlCheck = 0;
-        }*/
+        }
+        
+        this.updateBoundingBox();
         
         TalentHelper.onLivingUpdate(this);
     }

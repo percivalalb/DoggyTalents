@@ -24,8 +24,8 @@ import net.minecraft.util.StatCollector;
 public class RenderDog extends RenderLiving {
 	
 	public RenderDog() {
-        super(new ModelDog(0.0F), 0.5F);
-        this.setRenderPassModel(new ModelDog(0.0F));
+        super(new ModelDog(0.0F, true), 0.5F);
+        this.setRenderPassModel(new ModelDog(0.0F, false));
     }
 
     @Override
@@ -150,11 +150,9 @@ public class RenderDog extends RenderLiving {
     @Override
     protected void preRenderCallback(EntityLivingBase entity, float partialTickTime) {
     	EntityDog dog = (EntityDog)entity;
-    	
-    	if(dog.talents.getLevel("wolfmount") > 0) {
-    		float size = 1.0F + dog.talents.getLevel("wolfmount") / 11F;
-        	GL11.glScalef(size, size, size);
-        }
+    	float size = dog.getDogSize() * 0.3F + 0.1F;
+    	GL11.glScalef(size, size, size);
+    	this.shadowSize = size*0.5F;
     }
     
     protected ResourceLocation getEntityTexture(Entity entity) {

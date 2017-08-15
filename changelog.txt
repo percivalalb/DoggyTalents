@@ -11,7 +11,9 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.14.2.*** | WIP
+1.14.2.295 | 15th July 2017
+- Removed unnecessary model files that are not required for the version you are on 
+# Wings only render at level 5 pillow paw
 # Changed crafting recipes of spotted and multicollar collar so that they work in all versions - now need some string
 * Fixed creative, spotted and multicoloured collar being in all the creative tabs in MC 1.12 
 * Fixed name off multicoloured collar being only multicolour collar
@@ -359,9 +361,28 @@ Initial release, parent version v1.9.0b
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.4.1.** | WIP
+1.14.2.295 | 15th July 2017
++ Added Dog Sunglasses
++ Added Dog Leather Jacket - turn your dog into a secret agent!
++ Added Creative Collar which gives your dog 1000 points to spend on talents (only available in creative obviously)
++ Added Spotted Collar and Multicolour Collar
++ Readded doggy texture index (for now) you can add your own skins assets/doggytalents/textures/mob/dog/doggytex$NO.png up to 128 textures
++ Added 8 new textures for dogs - 2 of the textures are from an old mod "Extended Wolves". We are trying to contact the owner, it is unlikely he will reply, he hasn't been on his MCF account in over a year. Hopefully he doesn't mind, if he wants us to remove them we will. 
++ Added dyeable capes that you can put on the dog 
++ Added tartan cape that you can put on the dog
++ Added throw stick that you can play fetch with your dog
++ Collar shears now remove all items on your dog
++ Added wings on your dog when you have level 5 Pillow paw (can be disabled in config file/gui)
++ Added 3D saddle when you have at least 1 level in wolf mount
++ Added Tiny Bone and Big Bone this decreases and increases your dogs size respectively
++ Added support for MC 1.8.9
++ Added support for the wooden planks from Botania mod to be used as casing in dog bed
++ Added lots more translation keys to the language files
+# Changed incapacitated blood to look much better
+* Fixed no message being displayed when riding a dog and it runs out of hunger
 * Fixed dogs not having a step sound
 * Fixed crash with PuppyEyes talent
+Special thanks to knuckles001 for lots of the content in this update
 
 1.14.1.240 | 6th August 2017
 + Added options to disable each talent in the config file

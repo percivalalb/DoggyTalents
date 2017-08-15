@@ -2,6 +2,7 @@ package doggytalents.entity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -354,9 +355,6 @@ public class EntityDog extends EntityAbstractDog {
     		}
     	}
         
-        if(this.talents.getLevel("wolfmount") > 0)
-        	this.setSize(1.2F, 1.2F); // Normal is 0.6F, 0.85F this seems to large
-        
         TalentHelper.onUpdate(this);
     }
     
@@ -633,7 +631,7 @@ public class EntityDog extends EntityAbstractDog {
 	                        this.setSitting(false);
 	                        this.setHealth(8);
 	                        this.talents.resetTalents();
-	                        this.func_152115_b(null);
+	                        this.func_152115_b(UUID.randomUUID().toString());
 	                        this.setWillObeyOthers(false);
 	                        this.mode.setMode(EnumMode.DOCILE);
 	                        if(this.hasRadarCollar())
@@ -1161,17 +1159,4 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.cooked_fished : Items.fish, 1);
 		}
 	}
-	
-	public void updateRiderPosition()
-    {
-        if (this.riddenByEntity != null)
-        {
-        	float f = MathHelper.sin(this.renderYawOffset * (float)Math.PI / 180.0F);
-            float f1 = MathHelper.cos(this.renderYawOffset * (float)Math.PI / 180.0F);
-            float f2 = 0.7F * 0.7F;
-            float Ysize = (float)((this.talents.getLevel("wolfmount"))/11.0F);
-            this.riddenByEntity.setPosition(this.posX + (double)(f2 * f), this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + Ysize, this.posZ - (double)(f2 * f1));
-        }
-    }
-
 }

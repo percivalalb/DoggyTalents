@@ -55,7 +55,7 @@ public class ModelWings extends ModelBase {
 			setRotation(wingB, 1.570796F, 0F, 0F); 
     	  
 			if(!dog.onGround) {
-				if(!Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown()) {
+				if(!Minecraft.getMinecraft().gameSettings.keyBindBack.getIsKeyPressed()) {
 					float c = 4.0F;
 					wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
 					wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));

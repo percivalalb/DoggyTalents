@@ -47,8 +47,8 @@ public class BuiltInRecipes {
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCollar", IRecipe.class));
         GameRegistry.addRecipe(VersionControl.createObject("RecipeDogCape", IRecipe.class));
         
-        RecipeSorter.register("doggytalents:dogbed", VersionControl.chooseClassBasedOnVersion("RecipeDogBed", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-        RecipeSorter.register("doggytalents:dogcollar", VersionControl.chooseClassBasedOnVersion("RecipeDogCollar", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-        RecipeSorter.register("doggytalents:dogcape", VersionControl.chooseClassBasedOnVersion("RecipeDogCape", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogbed", VersionControl.chooseClassBasedOnVersion("RecipeDogBed", IRecipe.class), RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcollar", VersionControl.chooseClassBasedOnVersion("RecipeDogCollar", IRecipe.class), RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcape", VersionControl.chooseClassBasedOnVersion("RecipeDogCape", IRecipe.class), RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 }

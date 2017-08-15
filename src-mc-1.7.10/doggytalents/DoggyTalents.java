@@ -48,6 +48,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.RecipeSorter;
 
 /**
  * @author ProPercivalalb
@@ -164,6 +165,10 @@ public class DoggyTalents {
         CraftingManager.getInstance().getRecipeList().add(new RecipeDogCollar());
         CraftingManager.getInstance().getRecipeList().add(new RecipeDogCape());
 		
+        RecipeSorter.register("doggytalents:dogbed", RecipeDogBed.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcollar", RecipeDogCollar.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+        RecipeSorter.register("doggytalents:dogcape", RecipeDogCape.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+        
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);
 		PROXY.postInit(event);

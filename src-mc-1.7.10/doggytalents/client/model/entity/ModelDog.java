@@ -6,6 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import doggytalents.DoggyTalents;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
+import doggytalents.lib.ResourceLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -34,8 +36,14 @@ public class ModelDog extends ModelBase {
     public ModelRenderer wolfLeg4;
     public ModelRenderer wolfTail;
     public ModelRenderer wolfMane;
+    public ModelWings wingsModel;
+    public boolean wings;
+    public Minecraft mc;
 	
-	public ModelDog(float scaleFactor) {
+	public ModelDog(float scaleFactor, boolean wings) {
+		this.wings = wings;
+		if(this.wings) this.wingsModel = new ModelWings();
+		this.mc = Minecraft.getMinecraft();
         float f1 = 13.5F;
 		
 		//Head
@@ -199,6 +207,9 @@ public class ModelDog extends ModelBase {
             this.wolfTail.renderWithRotation(scale);
             this.wolfMane.render(scale);
         }
+        
+        this.mc.renderEngine.bindTexture(ResourceLib.MOB_LAYER_WINGS);
+        if(this.wings && Constants.DOGGY_WINGS && dog.talents.getLevel("pillowpaw") == 5) this.wingsModel.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
     }
 
     @Override
@@ -267,6 +278,8 @@ public class ModelDog extends ModelBase {
         		wagAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         	this.wolfTail.rotateAngleY = wagAngleY;
         }
+        
+        if(this.wings) this.wingsModel.setLivingAnimations(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTickTime);
     }
 
     @Override
@@ -277,5 +290,7 @@ public class ModelDog extends ModelBase {
         this.wolfHeadMainBone.rotateAngleX = this.wolfHeadMain.rotateAngleX;
         this.wolfHeadMainBone.rotateAngleY = this.wolfHeadMain.rotateAngleY;
         this.wolfTail.rotateAngleX = ageInTicks;
+        
+        if(this.wings) this.wingsModel.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
     }
 }

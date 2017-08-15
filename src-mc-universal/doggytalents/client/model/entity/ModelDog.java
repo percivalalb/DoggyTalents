@@ -177,14 +177,13 @@ public class ModelDog extends ModelBase {
         	ModelRenderer bodyRender = this.wolfBody;
             
             if(dog.talents.getLevel("packpuppy") > 0) {
-           	 if(dog.talents.getLevel("wolfmount") > 0)
-           		 bodyRender = this.wolfBodySaddleChest;
-           	 else
-           		 bodyRender = this.wolfBodyChest;
+           	 	if(dog.talents.getLevel("wolfmount") > 0)
+           	 		bodyRender = this.wolfBodySaddleChest;
+           	 	else
+           	 		bodyRender = this.wolfBodyChest;
             }
             else if(dog.talents.getLevel("wolfmount") > 0)
-           	 bodyRender = this.wolfBodySaddle;
-            
+           	 	bodyRender = this.wolfBodySaddle;
             
             bodyRender.render(scale);
             this.wolfLeg1.render(scale);

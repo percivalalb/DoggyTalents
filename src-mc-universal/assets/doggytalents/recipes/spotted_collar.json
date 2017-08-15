@@ -3,7 +3,7 @@
   "pattern": [
     "BWB",
     "WCW",
-    "BWB"
+    "BSB"
   ],
   "key": {
     "C": {
@@ -16,6 +16,9 @@
     "W": {
       "item": "minecraft:dye",
       "data": 15
+    },
+    "S": {
+      "item": "minecraft:string"
     }
   },
   "result": {

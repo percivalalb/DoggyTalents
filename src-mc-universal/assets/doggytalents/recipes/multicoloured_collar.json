@@ -27,6 +27,9 @@
     {
       "item": "minecraft:dye",
       "data": 5
+    },
+    {
+      "item": "minecraft:string"
     }
   ],
   "result": {

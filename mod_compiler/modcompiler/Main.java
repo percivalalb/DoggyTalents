@@ -296,8 +296,15 @@ public class Main {
 		    public boolean accept(File file) {
 		        if(file.isDirectory()) return true;
 		        boolean isJsonRecipes = file.getParentFile().getName().equals("recipes") ? is1_12 : true;
+		        boolean isCorrectModels = false;
+		        if(file.getParentFile().getPath().contains("assets\\" + mod.packageLoc  +"\\models")) {
+		        	if(file.getParentFile().getName().equals("1.8.9") && is1_8)
+		        		isCorrectModels = true;
+		        	else if((file.getParentFile().getName().equals("item") || file.getParentFile().getName().equals("block")) && !is1_8)
+		        		isCorrectModels = true;
+		        }
 		        
-		        return !file.getName().endsWith(".java") && !file.getName().endsWith(".db") && !file.getName().equals("compile.cfg") && isJsonRecipes;
+		        return !file.getName().endsWith(".java") && !file.getName().endsWith(".db") && !file.getName().equals("compile.cfg") && isJsonRecipes && isCorrectModels;
 		    }
 		};
 		

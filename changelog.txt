@@ -11,6 +11,11 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.*** | WIP
+# Changed crafting recipes of spotted and multicollar collar so that they work in all versions - now need some string
+* Fixed creative, spotted and multicoloured collar being in all the creative tabs in MC 1.12 
+* Fixed name off multicoloured collar being only multicolour collar
+
 1.14.2.290 | 15th July 2017
 + Added Dog Sunglasses
 + Added Dog Leather Jacket - turn your dog into a secret agent!
@@ -27,6 +32,7 @@ MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 + Added Tiny Bone and Big Bone this decreases and increases your dogs size respectively
 + Added support for MC 1.8.9
 + Added support for the wooden planks from Botania mod to be used as casing in dog bed
++ Added lots more translation keys to the language files
 # Changed incapacitated blood to look much better
 * Fixed no message being displayed when riding a dog and it runs out of hunger
 Special thanks to knuckles001 for lots of the content in this update

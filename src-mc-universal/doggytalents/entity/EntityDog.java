@@ -976,7 +976,7 @@ public abstract class EntityDog extends EntityAbstractDog {
 	}
     
     public boolean isCollarColoured() {
-		return this.getCapeData() > -1;
+		return this.getCollarData() > -1;
 	}
 	
 	public void setHasCollar() {

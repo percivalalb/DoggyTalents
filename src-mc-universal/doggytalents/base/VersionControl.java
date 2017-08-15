@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 
+import doggytalents.DoggyTalents;
 import net.minecraftforge.common.MinecraftForge;
 
 public class VersionControl {
@@ -84,8 +85,10 @@ public class VersionControl {
 		do {
 			path = String.format("%s.%s", getDirectionBaseOnVersion(index--), name);
 		}
-		while((clazz = forName(path, type)) == null);
+		while((clazz = forName(path, type)) == null && index >= 0);
 
+		//DoggyTalents.LOGGER.info("Looking for {} found {}", name, clazz);
+		
 		return clazz;
 	}
 	

@@ -8,6 +8,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.BlockPos;
@@ -82,6 +86,28 @@ public class EntityDogWrapper extends EntityDog {
     protected String getDeathSound() {
         return "mob.wolf.death";
     }
+	
+	@Override
+	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
+		if(!(target instanceof EntityCreeper) && !(target instanceof EntityGhast)) {
+			if(target instanceof EntityDog) {
+            	EntityDog entitydog = (EntityDog)target;
+
+                if(entitydog.isTamed() && entitydog.getOwner() == owner)
+                    return false;
+            }
+			else if (target instanceof EntityWolf) {
+				EntityWolf entitywolf = (EntityWolf)target;
+
+				if (entitywolf.isTamed() && entitywolf.getOwner() == owner)
+					return false;
+			}
+	
+			return target instanceof EntityPlayer && owner instanceof EntityPlayer && !((EntityPlayer)owner).canAttackPlayer((EntityPlayer)target) ? false : !(target instanceof EntityHorse) || !((EntityHorse)target).isTame();
+		}
+		
+		return super.shouldAttackEntity(target, owner);
+	}
 	
 	@Override
 	public void moveEntityWithHeading(float strafe, float forward) {

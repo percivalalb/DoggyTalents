@@ -17,16 +17,12 @@ import net.minecraft.world.World;
  */
 public abstract class EntityDoggyBeam extends EntityThrowable {
 	
-    public EntityDoggyBeam(World worldIn) {
-        super(worldIn);
-    }
-
+	public EntityDoggyBeam(World worldIn) {
+		super(worldIn);
+	}
+	
     public EntityDoggyBeam(World worldIn, EntityLivingBase throwerIn) {
         super(worldIn, throwerIn);
-    }
-
-    public EntityDoggyBeam(World worldIn, double x, double y, double z) {
-        super(worldIn, x, y, z);
     }
     
     public void onImpactGENERAL(Entity entityHit) {

@@ -54,7 +54,7 @@ public class EntityDogWrapper extends EntityDogBridge {
                 return !(target instanceof AbstractHorse) || !((AbstractHorse)target).isTame();
         }
         
-        return false;
+        return super.shouldAttackEntity(target, owner);
     }
 	
 	@Override

@@ -6,6 +6,7 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -34,7 +35,7 @@ public class ObjectLib {
 	}
 	
 	public static final Class<EntityDoggyBeam> ENTITY_DOGGY_BEAM_CLASS = VersionControl.chooseClassBasedOnVersion("EntityDoggyBeamWrapper", EntityDoggyBeam.class);
-	public static final Constructor<EntityDoggyBeam> ENTITY_DOGGY_BEAM_CONSTRUCTOR = VersionControl.getConstructor(ENTITY_DOGGY_BEAM_CLASS, World.class, EntityPlayer.class);
+	public static final Constructor<EntityDoggyBeam> ENTITY_DOGGY_BEAM_CONSTRUCTOR = VersionControl.getConstructor(ENTITY_DOGGY_BEAM_CLASS, World.class, EntityLivingBase.class);
 	
 	public static final EntityDoggyBeam createDoggyBeam(World worldIn, EntityPlayer playerIn) {
 		try {

@@ -33,7 +33,7 @@ public class DataTrackerWrapper implements IDataTracker {
         this.getDataWatcher().addObject(27, new Integer(0)); //Dog Mode
         this.getDataWatcher().addObject(28, "-1:-1:-1:-1:-1:-1"); //Dog Mode
         this.getDataWatcher().addObject(29, 3); //Size
-        this.getDataWatcher().addObject(30, 3); //Bone Variant
+        this.getDataWatcher().addObject(30, -1); //Bone Variant
 	}
 	
 	@Override

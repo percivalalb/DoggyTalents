@@ -58,7 +58,7 @@ public class CoordUtil {
 	}
 	
 	public void resetBowlPosition() {
-		this.dog.dataTracker.resetBedPosition();
+		this.dog.dataTracker.resetBowlPosition();
 	}
 	
 	public void writeToNBT(NBTTagCompound tagCompound) {

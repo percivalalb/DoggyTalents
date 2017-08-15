@@ -30,8 +30,12 @@ public class BuiltInRecipes {
         GameRegistry.addRecipe(new ItemStack(ModItems.WOOL_COLLAR, 1), new Object[] {"SSS", "S S", "SSS", 'S', Items.STRING});
         GameRegistry.addRecipe(new ItemStack(ModItems.TREAT_BAG, 1), new Object[] {"LCL", "LLL", 'L', Items.LEATHER, 'C', ModItems.CHEW_STICK});
         
+        GameRegistry.addRecipe(new ItemStack(ModItems.CAPE, 1), new Object[] {"S S", "LWL", "WLW", 'L', Items.LEATHER, 'S', Items.STRING, 'W', Blocks.WOOL});
         GameRegistry.addRecipe(new ItemStack(ModItems.CAPE_COLOURED, 1), new Object[] {"S S", "LLL", "LLL", 'L', Items.LEATHER, 'S', Items.STRING});
         GameRegistry.addRecipe(new ItemStack(ModItems.LEATHER_JACKET, 1), new Object[] {"L L", "LWL", "LWL", 'L', Items.LEATHER, 'W', new ItemStack(Blocks.WOOL)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 1), new Object[] {"BWB", "WCW", "BWB", 'C', new ItemStack(ModItems.WOOL_COLLAR), 'B', new ItemStack(Items.DYE, 1, 0), 'W', new ItemStack(Items.DYE, 1, 15)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 1), new Object[] {"WBW", "BCB", "WBW", 'C', new ItemStack(ModItems.WOOL_COLLAR), 'B', new ItemStack(Items.DYE, 1, 0), 'W', new ItemStack(Items.DYE, 1, 15)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 2), new Object[] {new ItemStack(ModItems.WOOL_COLLAR), new ItemStack(ModItems.WOOL_COLLAR, 1, 4), new ItemStack(ModItems.WOOL_COLLAR, 1, 10), new ItemStack(ModItems.WOOL_COLLAR, 1, 11), new ItemStack(ModItems.WOOL_COLLAR, 1, 14), new ItemStack(ModItems.WOOL_COLLAR, 1, 1), new ItemStack(ModItems.WOOL_COLLAR, 1, 5)});
         GameRegistry.addRecipe(new ItemStack(ModItems.SUNGLASSES, 1), new Object[] {"S S", "GSG", 'S', Items.STICK, 'G', new ItemStack(Blocks.GLASS_PANE)});
         GameRegistry.addRecipe(new ItemStack(ModItems.TINY_BONE, 1), new Object[] {"BI", "IB", 'B', Items.BONE, 'I', Items.IRON_INGOT});
         GameRegistry.addRecipe(new ItemStack(ModItems.BIG_BONE, 1), new Object[] {"BI", "IB", "BI", 'B', Items.BONE, 'I', Items.IRON_INGOT});

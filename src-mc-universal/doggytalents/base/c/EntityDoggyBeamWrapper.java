@@ -1,6 +1,7 @@
 package doggytalents.base.c;
 
 import doggytalents.entity.EntityDoggyBeam;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -11,7 +12,7 @@ public class EntityDoggyBeamWrapper extends EntityDoggyBeam {
 		super(worldIn);
 	}
 	
-	public EntityDoggyBeamWrapper(World worldIn, EntityPlayer throwerIn) {
+	public EntityDoggyBeamWrapper(World worldIn, EntityLivingBase throwerIn) {
 		super(worldIn, throwerIn);
 	}
 

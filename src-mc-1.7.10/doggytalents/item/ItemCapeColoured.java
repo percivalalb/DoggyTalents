@@ -12,10 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class ItemCape2 extends ItemDT {
+public class ItemCapeColoured extends ItemDT {
 	
-	public ItemCape2() {
-		super("cape1");
+	public ItemCapeColoured() {
+		super("cape_coloured");
 	} 
 
 	public boolean hasColor(ItemStack stack) {
@@ -45,21 +45,6 @@ public class ItemCape2 extends ItemDT {
 			tooltip.add("Colour: " + EnumChatFormatting.RED + "" + r + EnumChatFormatting.GREEN + " " + g + EnumChatFormatting.BLUE + " " + b);
 		}
 	}
-	
-	@Override
-	public void getSubItems(Item itemIn, CreativeTabs tab, List subItems) {
-		for(int i = 0; i < 16; i++) {
-			float[] rgb = EntitySheep.fleeceColorTable[i];
-			
-			ItemStack baseColours = new ItemStack(this);
-			baseColours.setTagCompound(new NBTTagCompound());
-			int i1 = (int)(rgb[0] * 255F);
-            int j1 = (int)(rgb[1] * 255F);
-            int k1 = (int)(rgb[2] * 255F);
-			baseColours.getTagCompound().setInteger("cape_colour", (((i1 << 8) + j1) << 8) + k1);
-			subItems.add(baseColours);
-        }
-    }
 
     public int getColor(ItemStack stack) {
        

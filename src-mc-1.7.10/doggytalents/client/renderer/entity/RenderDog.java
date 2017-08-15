@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 /**
  * @author ProPercivalalb
@@ -23,8 +24,8 @@ import net.minecraft.util.ResourceLocation;
 public class RenderDog extends RenderLiving {
 	
 	public RenderDog() {
-        super(new ModelDog(), 0.5F);
-        this.setRenderPassModel(new ModelDog());
+        super(new ModelDog(0.0F), 0.5F);
+        this.setRenderPassModel(new ModelDog(0.0F));
     }
 
     @Override
@@ -65,15 +66,13 @@ public class RenderDog extends RenderLiving {
     
     @Override
     protected void renderModel(EntityLivingBase entity, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float p_77036_7_) {
-    	EntityDog dog = (EntityDog)entity;
     	super.renderModel(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
+    	EntityDog dog = (EntityDog)entity;
     	
-    	for (int i = 4; i < 9; ++i)
-        {
+    	for(int i = 4; i < 6; ++i) {
             int j = this.shouldRenderPass(entity, i, this.hackTickTime);
 
-            if (j > 0)
-            {
+            if(j > 0) {
                 this.renderPassModel.setLivingAnimations(entity, p_77036_2_, p_77036_3_, this.hackTickTime);
                 this.renderPassModel.render(entity, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, p_77036_7_);
 
@@ -86,15 +85,14 @@ public class RenderDog extends RenderLiving {
     @Override
     protected int shouldRenderPass(EntityLivingBase entity, int renderPass, float partialTickTime) {
     	EntityDog dog = (EntityDog)entity;
-    	
         float brightness = dog.getBrightness(partialTickTime) * dog.getShadingWhileWet(partialTickTime);
     	
-        if(renderPass == 0 && dog.isShaking) {
-            this.bindTexture(this.getEntityTexture(dog));
-            GL11.glColor3f(brightness, brightness, brightness);
-            return 1;
-        }
-        else if(renderPass == 5 && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
+        //if(renderPass == 0 && dog.isShaking) {
+        //    this.bindTexture(this.getEntityTexture(dog));
+        //    GL11.glColor3f(brightness, brightness, brightness);
+        //    return 1;
+        //}
+        if(renderPass == 4 && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
         	this.bindTexture(ResourceLib.MOB_LAYER_DOG_HURT);
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
@@ -104,39 +102,44 @@ public class RenderDog extends RenderLiving {
             GL11.glColor3f(brightness, brightness, brightness);
             return 1;
         }
-        else if(renderPass == 3 && dog.hasCollar()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_DOG_COLLAR);
-            if(!dog.hasNoColour()) {
-	            float[] afloat = dog.getCollar();
-	            GL11.glColor3f(afloat[0], afloat[1], afloat[2]);
-            }
-            return 1;
+        else if(renderPass == 1 && !dog.isInvisible() && dog.hasCollar()) {
+        	if(dog.hasFancyCollar()) {
+        		 this.bindTexture(ResourceLib.getFancyCollar(dog.getFancyCollarIndex()));
+        	     GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        	}
+        	else if(dog.hasCollarColoured()) {
+	            this.bindTexture(ResourceLib.MOB_LAYER_DOG_COLLAR);
+	            if(dog.isCollarColoured()) {
+		            float[] afloat = dog.getCollar();
+		            GL11.glColor3f(afloat[0], afloat[1], afloat[2]);
+	            }
+        	}
+        	return 1;
         }
-        else if(renderPass == 4 && dog.talents.getLevel("wolfmount") > 0) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_SADDLE);
-        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            return 1;
+        else if(renderPass == 0 && dog.hasCape()) {
+        	if(dog.hasCapeColoured()) {
+        		this.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
+        		if(dog.isCapeColoured()) {
+    	            float[] afloat = dog.getCapeColour();
+    	            GL11.glColor3f(afloat[0], afloat[1], afloat[2]);
+                }
+        	}
+        	else if(dog.hasFancyCape()) {
+        		this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        	}
+        	else if(dog.hasLeatherJacket()) {
+        		this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+        	}
+
+        	return 1;
         }
-        else if(renderPass == 1 && dog.hasCape()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
-        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            return 1;
-        }
-        else if(renderPass == 6 && dog.hasCape1()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_CAPE2);
-            if(!dog.hasNoCapeColour()) {
-	            float[] afloat = dog.getCape();
-	            GL11.glColor3f(afloat[0], afloat[1], afloat[2]);
-            }
-            return 1;
-        }
-        else if(renderPass == 6 && dog.hasSunglasses()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
-        	GL11.glColor3f(1.0F, 1.0F, 1.0F);
-            return 1;
-        }
-        else if(renderPass == 7 && dog.hasLeatherJacket()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+        else if(renderPass == 3 && dog.hasSunglasses()) {
+        	if(dog.worldObj.getWorldTime() >= 12000)
+        		this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES_NIGHT);
+        	else
+        		this.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
         	GL11.glColor3f(1.0F, 1.0F, 1.0F);
             return 1;
         }
@@ -158,7 +161,7 @@ public class RenderDog extends RenderLiving {
     	EntityDog dog = (EntityDog)entity;
     	
         if(dog.isTamed())
-			return ResourceLib.MOB_DOG_TAME;
+        	return ResourceLib.getTameSkin(dog.getTameSkin());
     	
         return ResourceLib.MOB_DOG_WILD;
     }
@@ -172,13 +175,13 @@ public class RenderDog extends RenderLiving {
     	if (distanceFromPlayer < 100.0D) {
         	
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
-        	
-            String tip = dog.mode.getMode().getTip();
             
-            if(dog.isImmortal() && dog.getHealth() <= 1)
-            	tip = "(I)";
+        	String tip = dog.mode.getMode().getTip();
             
-            String label = String.format("%s(%d)", tip, dog.getDogHunger());
+        	if(dog.isIncapacicated())
+        		tip = "doggui.modetip.incapacitated";
+                
+        	String label = String.format("%s(%d)", StatCollector.translateToLocal(tip), dog.getDogHunger());
             
             if (entityLivingBase.isPlayerSleeping())
                 this.renderLivingLabel(entityLivingBase, label,  x, y - 0.5D, z, 64, 0.7F);
@@ -194,6 +197,8 @@ public class RenderDog extends RenderLiving {
         		   ownerName = dog.getOwner().func_145748_c_().getUnformattedText();
    				else if(dog.func_152113_b() != null)
    					ownerName = dog.func_152113_b().toString();
+   				else
+   					ownerName = StatCollector.translateToLocal("entity.doggytalents:dog.lost.name");
         	   
         	   this.renderLivingLabel(dog, ownerName, x, y - 0.34F, z, 5, 0.5F);
            }

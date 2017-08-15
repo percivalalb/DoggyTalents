@@ -22,6 +22,8 @@ import net.minecraft.world.World;
 public class ItemThrowBone extends ItemDT {
 
 	private IIcon droolBone;
+	private IIcon throwStick;	
+	private IIcon droolThrowStick;
 	
 	public ItemThrowBone() {
 		super("error");
@@ -33,6 +35,8 @@ public class ItemThrowBone extends ItemDT {
 	public void registerIcons(IIconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon("doggytalents:throw_bone");
 		this.droolBone = par1IconRegister.registerIcon("doggytalents:throw_bone_wet");
+		this.throwStick = par1IconRegister.registerIcon("doggytalents:throw_stick");
+		this.droolThrowStick = par1IconRegister.registerIcon("doggytalents:throw_stick_wet");
 	}
 	
 	@Override
@@ -40,22 +44,24 @@ public class ItemThrowBone extends ItemDT {
 		switch(meta) {
 		case 0: return this.itemIcon;
 		case 1: return this.droolBone;
+		case 2: return this.throwStick;
+		case 3: return this.droolThrowStick;
 		default: return null;
 		}
     }
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List par3List) {
-        par3List.add(new ItemStack(item, 1, 0));
-        par3List.add(new ItemStack(item, 1, 1));
+    public void getSubItems(Item itemIn, CreativeTabs par2CreativeTabs, List subItems) {
+		for(int i = 0; i < 4; i++)
+			subItems.add(new ItemStack(itemIn, 1, i));
     }
     
 	//TOOD onItemRightClick
 	@Override
     public ItemStack onItemRightClick(ItemStack itemstack, World worldIn, EntityPlayer playerIn) {
-    	if(itemstack.getItemDamage() == 1) {
-    		itemstack.setItemDamage(0);
+		if(itemstack.getItemDamage() % 2 == 1) {
+    		itemstack.setItemDamage(itemstack.getItemDamage() - 1);
     		playerIn.swingItem();
     	}
     	else {

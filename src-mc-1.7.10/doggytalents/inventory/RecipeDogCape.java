@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import doggytalents.item.ItemCape2;
-import doggytalents.item.ItemCape2;
+import doggytalents.item.ItemCapeColoured;
+import doggytalents.item.ItemCapeColoured;
 import net.minecraft.block.BlockColored;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
@@ -27,9 +27,9 @@ public class RecipeDogCape implements IRecipe {
 
             if (itemstack1 != null)
             {
-                if (itemstack1.getItem() instanceof ItemCape2)
+                if (itemstack1.getItem() instanceof ItemCapeColoured)
                 {
-                	ItemCape2 itemarmor = (ItemCape2)itemstack1.getItem();
+                	ItemCapeColoured itemarmor = (ItemCapeColoured)itemstack1.getItem();
 
                     if(itemstack != null)
                     {
@@ -59,14 +59,14 @@ public class RecipeDogCape implements IRecipe {
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
-        ItemCape2 itemWoolCollar = null;
+        ItemCapeColoured itemWoolCollar = null;
 
         for(int k = 0; k < inv.getSizeInventory(); ++k) {
             ItemStack itemstack1 = inv.getStackInSlot(k);
 
             if(itemstack1 != null) {
-                if(itemstack1.getItem() instanceof ItemCape2) {
-                    itemWoolCollar = (ItemCape2)itemstack1.getItem();
+                if(itemstack1.getItem() instanceof ItemCapeColoured) {
+                    itemWoolCollar = (ItemCapeColoured)itemstack1.getItem();
 
                     itemstack = itemstack1.copy();
                     itemstack.stackSize = 1;

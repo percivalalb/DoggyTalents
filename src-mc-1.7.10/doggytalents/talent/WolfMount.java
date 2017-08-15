@@ -28,7 +28,8 @@ public class WolfMount extends ITalent {
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
 		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.riddenByEntity != null) {
-			ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getCommandSenderName());
+			if(dog.getOwner() instanceof EntityPlayer)
+				((EntityPlayer)dog.getOwner()).addChatComponentMessage(ChatUtil.getChatComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getCommandSenderName()));
 			dog.riddenByEntity.ridingEntity = null;
 			dog.riddenByEntity = null;
 		}	

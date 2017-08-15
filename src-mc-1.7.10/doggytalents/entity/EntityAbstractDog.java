@@ -44,7 +44,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
     protected void entityInit() {
         super.entityInit();
-        this.dataWatcher.addObject(19, new Byte((byte)0));
+        this.dataWatcher.addObject(25, new Integer(0)); //Boolean data
 	}
 	
 	@Override
@@ -197,15 +197,23 @@ public abstract class EntityAbstractDog extends EntityTameable {
     }
 
 	public boolean isBegging() {
-	    return this.dataWatcher.getWatchableObjectByte(19) == 1;
+		return this.getCustomData(5);
 	}
 	
 	public void setBegging(boolean beg) {
-		if(beg)
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte)1));
-        else
-            this.dataWatcher.updateObject(19, Byte.valueOf((byte)0));
+		this.setCustomData(5, beg);
 	}
+	
+    public void setCustomData(int BIT, boolean flag) {
+    	int in = this.dataWatcher.getWatchableObjectInt(25);
+    	if(flag) in |= (1 << BIT);
+    	else in &= ~(1 << BIT);
+    	this.dataWatcher.updateObject(25, in);
+    }
+    
+    public boolean getCustomData(int BIT) {
+    	return (this.dataWatcher.getWatchableObjectInt(25) & (1 << BIT)) == (1 << BIT);
+    }
 	
     @Override
     public boolean isBreedingItem(ItemStack stack) {

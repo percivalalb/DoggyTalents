@@ -12,6 +12,8 @@ modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Throw Bone
 item.doggytalents.throwbone1.name=Drool Throw Bone
+item.doggytalents.throwbone2.name=Throw Stick
+item.doggytalents.throwbone3.name=Drool Throw Stick
 item.doggytalents.trainingtreat.name=Training Treat
 item.doggytalents.supertreat.name=Super Treat
 item.doggytalents.mastertreat.name=Master Treat
@@ -22,12 +24,19 @@ item.doggytalents.collarshears.name=Collar Shears
 item.doggytalents.commandemblem.name=Command Emblem
 item.doggytalents.radiocollar.name=Radio Collar
 item.doggytalents.woolcollar.name=Wool Collar
+item.doggytalents.fancycollar0.name=Creative Collar
+item.doggytalents.fancycollar1.name=Spotted Collar
+item.doggytalents.fancycollar2.name=Multicoloured Collar
 item.doggytalents.radar.name=Radar
 item.doggytalents.whistle.name=Whistle
 item.doggytalents.treatbag.name=Treat Bag
 item.doggytalents.chewstick.name=Chew Stick
-item.doggytalents.cape.name=Dog Cape
+item.doggytalents.cape.name=Tartan Cape
 item.doggytalents.sunglasses.name=Dog Sunglasses
+item.doggytalents.capecoloured.name=Coloured Cape
+item.doggytalents.leatherjacket.name=Leather Jacket
+item.doggytalents.tinybone.name=Tiny Bone
+item.doggytalents.bigbone.name=Big Bone
 
 doggui.talentname.blackpelt=Black Pelt
 doggui.talentname.guarddog=Guard Dog
@@ -69,12 +78,40 @@ doggui.talentinfo.rescuedog=If you're at critical health and a dog with this ski
 doggui.talentinfo.puppyeyes=This skill will cause your dog to warm the heart of any villager, prompting the villager to give you presents! Higher levels in the skill increase the quality of the random gifts. This can only be done once every two Minecraft days. Mastering the skill allows you to do this once every Minecraft day.
 doggui.talentinfo.swimmerdog=Allows you to ride your dog in water and it to breath longer underwater. Maxing it allows the rider to see easily underwater. 
 
+doggui.modename.wandering=Wandering
+doggui.modename.tactical=Tactical
+doggui.modename.aggressive=Aggressive
+doggui.modename.berserker=Berserker
+doggui.modename.docile=Docile
+doggui.modename.patrol=Patrol
+
+doggui.modetip.wandering=(W)
+doggui.modetip.tactical=(T)
+doggui.modetip.aggressive=(A)
+doggui.modetip.berserker=(B)
+doggui.modetip.docile=(D)
+doggui.modetip.patrol=(P)
+doggui.modetip.incapacitated=(I)
+
 doggui.modeinfo.wandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one
 doggui.modeinfo.tactical=In this mode your dog will follow you but will not attack anything unless you use the command beam
-doggui.modeinfo.aggresive=In this mode your dog will follow you and attack anything that attacks you or that you attack
+doggui.modeinfo.aggressive=In this mode your dog will follow you and attack anything that attacks you or that you attack
 doggui.modeinfo.berserker=In this mode your dog will follow you and if any mob draws near he will attack it without warning
 doggui.modeinfo.docile=In this mode your dog will follow you but not attack anything He is ready for you to throw the bone
 doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
+
+doggui.mode.docile.nobowl=No food bowl currently set.
+doggui.mode.docile.bowl=Bowl distance: %d
+
+doggui.prevpage=Previous Page
+doggui.nextpage=Next Page
+doggui.newname=New name:
+doggui.level=Level:
+doggui.leveldire=Dire Level:
+doggui.pointsleft=Points Left:
+doggui.textureindex=Texture Index
+doggui.obeyothers=Obey Others?
+doggui.friendlyfire=Friendly Fire?
 
 dogtalent.puppyeyes.1.part1=Villager: Cute dog! Take good care of him. Or her.
 dogtalent.puppyeyes.1.part2=Here, it can have some pork.
@@ -212,6 +249,8 @@ doggytalents.key.heel=Command Heal
 doggytalents.key.category=Doggy Talents
 
 entity.doggytalents:dog.name=Dog
+entity.doggytalents.dog.name=Dog
+entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=Pack Puppy
 container.foodBowl=Food Bowl

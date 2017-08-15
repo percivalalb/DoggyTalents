@@ -12,6 +12,8 @@ modgui.config.talents.tooltip=Enable and disable talents
 
 item.doggytalents.throwbone0.name=Кидательная Кость
 item.doggytalents.throwbone1.name=Слюнявая Кидательная кость
+item.doggytalents.throwbone2.name=Throw Stick
+item.doggytalents.throwbone3.name=Drool Throw Stick
 item.doggytalents.trainingtreat.name=Лакомство для тренировок
 item.doggytalents.supertreat.name=Превосходное лакомство
 item.doggytalents.mastertreat.name=Лакомство мастера
@@ -22,12 +24,19 @@ item.doggytalents.collarshears.name=Ножницы для Разрубки Ош�
 item.doggytalents.commandemblem.name=Инструмент Дрессировщика
 item.doggytalents.radiocollar.name=Ошейник с Радиоприёмником
 item.doggytalents.woolcollar.name=Ошейник
+item.doggytalents.fancycollar0.name=Creative Collar
+item.doggytalents.fancycollar1.name=Spotted Collar
+item.doggytalents.fancycollar2.name=Multicoloured Collar
 item.doggytalents.radar.name=Радар
 item.doggytalents.whistle.name=Свисток
 item.doggytalents.treatbag.name=Мешочек с Пряностями
 item.doggytalents.chewstick.name=Жевательная Кость
-item.doggytalents.cape.name=Dog Cape
+item.doggytalents.cape.name=Tartan Cape
 item.doggytalents.sunglasses.name=Dog Sunglasses
+item.doggytalents.capecoloured.name=Coloured Cape
+item.doggytalents.leatherjacket.name=Leather Jacket
+item.doggytalents.tinybone.name=Tiny Bone
+item.doggytalents.bigbone.name=Big Bone
 
 doggui.talentname.blackpelt=Прочная Шкура
 doggui.talentname.guarddog=Телохранитель
@@ -69,12 +78,40 @@ doggui.talentinfo.rescuedog=Если Ваше здоровье на критич
 doggui.talentinfo.puppyeyes=Этот навык поможет Вашей собаке завоевать сердце любого жителя. Так же есть шанс получения подарка.! При повышении Вы получаете более дорогие подарки. Этот навык может быть использован только раз в 2 дня игры (игровое время). При полном освоении навык может быть использован 1 раз в день.
 doggui.talentinfo.swimmerdog=Собака разрешит кататся на себе в воде и позволяет дышать дольше над водой. Maxing it allows the rider to see easily underwater.
 
+doggui.modename.wandering=Wandering
+doggui.modename.tactical=Tactical
+doggui.modename.aggressive=Aggressive
+doggui.modename.berserker=Berserker
+doggui.modename.docile=Docile
+doggui.modename.patrol=Patrol
+
+doggui.modetip.wandering=(W)
+doggui.modetip.tactical=(T)
+doggui.modetip.aggressive=(A)
+doggui.modetip.berserker=(B)
+doggui.modetip.docile=(D)
+doggui.modetip.patrol=(P)
+doggui.modetip.incapacitated=(I)
+
 doggui.modeinfo.wandering=В этом режиме Ваша собака стоит возле Миски с Едой и ожидает следующей команды. Чтобы "привязать" собаку к миске, просто расположите собаку рядом с миской (1 блок).
 doggui.modeinfo.tactical=В этом режиме Ваша собака будет следовать за Вами, но никого не будет атаковать.
-doggui.modeinfo.aggresive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
+doggui.modeinfo.aggressive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
 doggui.modeinfo.berserker=В этом режиме Ваша собака будет следовать за Вами и атаковать всех мобов без предупреждения.
 doggui.modeinfo.docile=В этом режиме Ваша собака будет следовать за Вами, но игнорировать всех мобов. Так же, в этом режиме, Ваша собака ждет, когда Вы бросите ей косточку.
 doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
+
+doggui.mode.docile.nobowl=No food bowl currently set.
+doggui.mode.docile.bowl=Bowl distance: %d
+
+doggui.prevpage=Previous Page
+doggui.nextpage=Next Page
+doggui.newname=New name:
+doggui.level=Level:
+doggui.leveldire=Dire Level:
+doggui.pointsleft=Points Left:
+doggui.textureindex=Texture Index
+doggui.obeyothers=Obey Others?
+doggui.friendlyfire=Friendly Fire?
 
 dogtalent.puppyeyes.1.part1=Житель: Мимими! Какая прелесть! Позаботься о нём... Эээ, или о ней...
 dogtalent.puppyeyes.1.part2=Сюда, у меня немножечко вкусненькой свининки
@@ -96,29 +133,29 @@ dogtalent.puppyeyes.6.part3=тииииииииииипууууутиииии!
 
 dogtalent.puppyeyes.wolfmount.outofhunger=%s: Гавв, гав, гав гаввв (Еду пожайлуста)
 
-dogbed.bedding.minecraft:wool.0=Подстилка с Белой Шерстью
-dogbed.bedding.minecraft:wool.1=Подстилка с Оранжевой Шерстью
-dogbed.bedding.minecraft:wool.2=Подстилка с Пурпурной Шерстью
-dogbed.bedding.minecraft:wool.3=Подстилка с Светло-Голубой Шерстью
-dogbed.bedding.minecraft:wool.4=Подстилка с Жёлтой Шерстью
-dogbed.bedding.minecraft:wool.5=Подстилка с Лаймовой Шерстью
-dogbed.bedding.minecraft:wool.6=Подстилка с Розовой Шерстью
-dogbed.bedding.minecraft:wool.7=Подстилка с Серой Шерстью
-dogbed.bedding.minecraft:wool.8=Подстилка с Светло-Серой Шерстью
-dogbed.bedding.minecraft:wool.9=Подстилка с Голубой Шерстью
-dogbed.bedding.minecraft:wool.10=Подстилка с Фиолетовой Шерстью
-dogbed.bedding.minecraft:wool.11=Подстилка с Синий Шерстью
-dogbed.bedding.minecraft:wool.12=Подстилка с Коричневой Шерстью
-dogbed.bedding.minecraft:wool.13=Подстилка с Зелёной Шерстью
-dogbed.bedding.minecraft:wool.14=Подстилка с Красной Шерстью
-dogbed.bedding.minecraft:wool.15=Подстилка с Чёрной Шерстью
+dogbed.bedding.minecraft:wool.0=White Wool Bedding
+dogbed.bedding.minecraft:wool.1=Orange Wool Bedding
+dogbed.bedding.minecraft:wool.2=Magenta Wool Bedding
+dogbed.bedding.minecraft:wool.3=Light Blue Wool Bedding
+dogbed.bedding.minecraft:wool.4=Yellow Wool Bedding
+dogbed.bedding.minecraft:wool.5=Lime Wool Bedding
+dogbed.bedding.minecraft:wool.6=Pink Wool Bedding
+dogbed.bedding.minecraft:wool.7=Gray Wool Bedding
+dogbed.bedding.minecraft:wool.8=Light Gray Wool Bedding
+dogbed.bedding.minecraft:wool.9=Cyan Wool Bedding
+dogbed.bedding.minecraft:wool.10=Purple Wool Bedding
+dogbed.bedding.minecraft:wool.11=Blue Wool Bedding
+dogbed.bedding.minecraft:wool.12=Brown Wool Bedding
+dogbed.bedding.minecraft:wool.13=Green Wool Bedding
+dogbed.bedding.minecraft:wool.14=Red Wool Bedding
+dogbed.bedding.minecraft:wool.15=Black Wool Bedding
 
-dogbed.casing.minecraft:planks.0=Дубовые Доски Корпуса
-dogbed.casing.minecraft:planks.1=Еловые Доски Корпуса
-dogbed.casing.minecraft:planks.2=Берёзовые Доски Корпуса
-dogbed.casing.minecraft:planks.3=Тропические Доски Корпуса
-dogbed.casing.minecraft:planks.4=Акациевые Доски Корпуса
-dogbed.casing.minecraft:planks.5=Тёмно-Дубовые Доски Корпуса
+dogbed.casing.minecraft:planks.0=Oak Plank Casing
+dogbed.casing.minecraft:planks.1=Spruce Plank Casing
+dogbed.casing.minecraft:planks.2=Birch Plank Casing
+dogbed.casing.minecraft:planks.3=Jungle Plank Casing
+dogbed.casing.minecraft:planks.4=Acacia Plank Casing
+dogbed.casing.minecraft:planks.5=Dark Oak Plank Casing
 
 dogbed.casing.Forestry:planks.0=Larch Plank Casing
 dogbed.casing.Forestry:planks.1=Teak Plank Casing
@@ -212,6 +249,8 @@ dogcommand.ok=Отлично!
 dogcommand.heel=Ко мне!
 
 entity.doggytalents:dog.name=Пёс
+entity.doggytalents.dog.name=Пёс
+entity.doggytalents:dog.lost.name=Has no Owner
 
 container.packpuppy=Рюкзак Пёсика
 container.foodBowl=Миска с Едой

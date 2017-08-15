@@ -147,6 +147,16 @@ public class DoggyTalents {
         GameRegistry.addRecipe(new ItemStack(ModItems.WOOL_COLLAR, 1), new Object[] {"SSS", "S S", "SSS", 'S', Items.string});
         GameRegistry.addRecipe(new ItemStack(ModItems.TREAT_BAG, 1), new Object[] {"LCL", "LLL", 'L', Items.leather, 'C', ModItems.CHEW_STICK});
         
+        GameRegistry.addRecipe(new ItemStack(ModItems.CAPE, 1), new Object[] {"S S", "LWL", "WLW", 'L', Items.leather, 'S', Items.string, 'W', Blocks.wool});
+        GameRegistry.addRecipe(new ItemStack(ModItems.CAPE_COLOURED, 1), new Object[] {"S S", "LLL", "LLL", 'L', Items.leather, 'S', Items.string});
+        GameRegistry.addRecipe(new ItemStack(ModItems.LEATHER_JACKET, 1), new Object[] {"L L", "LWL", "LWL", 'L', Items.leather, 'W', new ItemStack(Blocks.wool)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 1), new Object[] {"BWB", "WCW", "BSB", 'C', new ItemStack(ModItems.WOOL_COLLAR), 'B', new ItemStack(Items.dye, 1, 0), 'W', new ItemStack(Items.dye, 1, 15), 'S', new ItemStack(Items.string)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 1), new Object[] {"WBW", "BCB", "WSW", 'C', new ItemStack(ModItems.WOOL_COLLAR), 'B', new ItemStack(Items.dye, 1, 0), 'W', new ItemStack(Items.dye, 1, 15), 'S', new ItemStack(Items.string)});
+        GameRegistry.addShapelessRecipe(new ItemStack(ModItems.FANCY_COLLAR, 1, 2), new Object[] {new ItemStack(ModItems.WOOL_COLLAR), new ItemStack(Items.string), new ItemStack(ModItems.WOOL_COLLAR, 1, 4), new ItemStack(ModItems.WOOL_COLLAR, 1, 10), new ItemStack(ModItems.WOOL_COLLAR, 1, 11), new ItemStack(ModItems.WOOL_COLLAR, 1, 14), new ItemStack(ModItems.WOOL_COLLAR, 1, 1), new ItemStack(ModItems.WOOL_COLLAR, 1, 5)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.SUNGLASSES, 1), new Object[] {"S S", "GSG", 'S', Items.stick, 'G', new ItemStack(Blocks.glass_pane)});
+        GameRegistry.addRecipe(new ItemStack(ModItems.TINY_BONE, 1), new Object[] {"BI", "IB", 'B', Items.bone, 'I', Items.iron_ingot});
+        GameRegistry.addRecipe(new ItemStack(ModItems.BIG_BONE, 1), new Object[] {"BI", "IB", "BI", 'B', Items.bone, 'I', Items.iron_ingot});
+        
         GameRegistry.addRecipe(new ItemStack(ModItems.RADIO_COLLAR, 1), new Object[] {"XX", "YX", 'X', Items.iron_ingot, 'Y', Items.redstone});
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.RADAR, 1), new Object[] {new ItemStack(Items.map, 1), new ItemStack(Items.redstone, 1), new ItemStack(ModItems.RADIO_COLLAR, 1)});
 	

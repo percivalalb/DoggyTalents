@@ -1,13 +1,16 @@
 package doggytalents;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import doggytalents.item.ItemCape2;
+import doggytalents.item.ItemBigBone;
+import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
+import doggytalents.item.ItemFancyCollar;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
+import doggytalents.item.ItemTinyBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
@@ -30,14 +33,17 @@ public class ModItems {
     public static Item DOGGY_CHARM;
     public static Item RADIO_COLLAR;
     public static Item WOOL_COLLAR;
+    public static Item FANCY_COLLAR;
     public static Item RADAR;
     public static Item WHISTLE;
     public static Item TREAT_BAG;
     public static Item CHEW_STICK;
     public static Item CAPE;
-    public static Item CAPE1;
+    public static Item CAPE_COLOURED;
 	public static Item SUNGLASSES;
 	public static Item LEATHER_JACKET;
+	public static Item TINY_BONE;
+	public static Item BIG_BONE;
 	
 	public static void init() {
 		DoggyTalents.LOGGER.info("Registering Items");
@@ -52,14 +58,17 @@ public class ModItems {
 	    DOGGY_CHARM = new ItemDoggyCharm().setUnlocalizedName("doggytalents.doggycharm");
 	    RADIO_COLLAR = new ItemDT("radio_collar").setUnlocalizedName("doggytalents.radiocollar");
 	    WOOL_COLLAR = new ItemWoolCollar().setUnlocalizedName("doggytalents.woolcollar");
+	    FANCY_COLLAR = new ItemFancyCollar().setUnlocalizedName("doggytalents.fancycollar");
 	    RADAR = new ItemRadar().setUnlocalizedName("doggytalents.radar");
 	    WHISTLE = new ItemWhistle().setUnlocalizedName("doggytalents.whistle");
 	    TREAT_BAG =  new ItemTreatBag().setUnlocalizedName("doggytalents.treatbag");
 	    CHEW_STICK = new ItemDT("chew_stick").setUnlocalizedName("doggytalents.chewstick");
 	    CAPE = new ItemDT("cape").setUnlocalizedName("doggytalents.cape");
+	    CAPE_COLOURED = new ItemCapeColoured().setUnlocalizedName("doggytalents.capecoloured");
 	    SUNGLASSES = new ItemDT("sunglasses").setUnlocalizedName("doggytalents.sunglasses");
-	    CAPE1 = new ItemCape2().setUnlocalizedName("doggytalents.cape1");
-	    LEATHER_JACKET = new ItemDT("leather_jacket").setUnlocalizedName("doggytalents.leather_jacket");
+	 	LEATHER_JACKET = new ItemDT("leather_jacket").setUnlocalizedName("doggytalents.leatherjacket");
+	 	TINY_BONE = new ItemTinyBone().setUnlocalizedName("doggytalents.tinybone");
+		BIG_BONE = new ItemBigBone().setUnlocalizedName("doggytalents.bigbone");
 	    
 		GameRegistry.registerItem(THROW_BONE, "throw_bone");
 	    GameRegistry.registerItem(TRAINING_TREAT, "training_treat");
@@ -72,13 +81,16 @@ public class ModItems {
 	    GameRegistry.registerItem(DOGGY_CHARM, "doggy_charm");
 	    GameRegistry.registerItem(RADIO_COLLAR, "radio_collar");
 	    GameRegistry.registerItem(WOOL_COLLAR, "wool_collar");
+	    GameRegistry.registerItem(FANCY_COLLAR, "fancy_collar");
 	    GameRegistry.registerItem(RADAR, "radar");
 	    GameRegistry.registerItem(WHISTLE, "whistle");
 	    GameRegistry.registerItem(TREAT_BAG, "treat_bag");
 	    GameRegistry.registerItem(CHEW_STICK, "chew_stick");
 	    GameRegistry.registerItem(CAPE, "cape");
+	    GameRegistry.registerItem(CAPE_COLOURED, "cape_coloured");
 	    GameRegistry.registerItem(SUNGLASSES, "sunglasses");
-	    GameRegistry.registerItem(CAPE1, "cape1");
 	    GameRegistry.registerItem(LEATHER_JACKET, "leather_jacket");
+	    GameRegistry.registerItem(TINY_BONE, "tiny_bone");
+	    GameRegistry.registerItem(BIG_BONE, "big_bone");
 	}
 }

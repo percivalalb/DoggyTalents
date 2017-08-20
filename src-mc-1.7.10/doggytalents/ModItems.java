@@ -54,7 +54,7 @@ public class ModItems {
 	    MASTER_TREAT = new ItemTreat("master_treat", 60).setUnlocalizedName("doggytalents.mastertreat");
 	    DIRE_TREAT = new ItemDireTreat("dire_treat").setUnlocalizedName("doggytalents.diretreat");
 	    BREEDING_BONE = new ItemDT("breeding_bone").setUnlocalizedName("doggytalents.breedingbone");
-	    COLLAR_SHEARS = new ItemDT("collar_shears").setUnlocalizedName("doggytalents.collarshears").setMaxDamage(16);
+	    COLLAR_SHEARS = new ItemDT("collar_shears").setUnlocalizedName("doggytalents.collarshears").setMaxDurability(16);
 	    DOGGY_CHARM = new ItemDoggyCharm().setUnlocalizedName("doggytalents.doggycharm");
 	    RADIO_COLLAR = new ItemDT("radio_collar").setUnlocalizedName("doggytalents.radiocollar");
 	    WOOL_COLLAR = new ItemWoolCollar().setUnlocalizedName("doggytalents.woolcollar");

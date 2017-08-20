@@ -29,7 +29,7 @@ public class GuiPackPuppy extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-    	String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName() : StatCollector.translateToLocal(this.inventory.getInventoryName());
+    	String s = this.inventory.isCustomInventoryName() ? this.inventory.getInventoryName() : StatCollector.translateToLocal(this.inventory.getInventoryName());
         this.fontRendererObj.drawString(s, this.xSize / 2 - 10, 14, 4210752);
         this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
     }
@@ -46,6 +46,6 @@ public class GuiPackPuppy extends GuiContainer {
             for (int k1 = 0; k1 < MathHelper.clamp_int(this.dog.talents.getLevel("packpuppy"), 0, 5); k1++)
             	this.drawTexturedModalRect(l + 78 + 18 * k1, i1 + 9 + 18 * j1 + 15, 197, 2, 18, 18);
 
-        GuiInventory.func_147046_a(l + 42, i1 + 51, 30, (float)(l + 51) - xMouse, (float)((i1 + 75) - 50) - yMouse, this.dog);
+        GuiInventory.drawEntityOnScreen(l + 42, i1 + 51, 30, (float)(l + 51) - xMouse, (float)((i1 + 75) - 50) - yMouse, this.dog);
     }
 }

@@ -1,36 +1,36 @@
 {
     "homepage": "http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287584",
 	    "promos": {
-		"1.8.9-latest": "1.14.2.295",
-        "1.8.9-recommended": "1.14.2.295",
-		"1.9.4-latest": "1.14.2.295",
-        "1.9.4-recommended": "1.14.2.295",
-        "1.10.2-latest": "1.14.2.295",
-        "1.10.2-recommended": "1.14.2.295",
-        "1.11.2-latest": "1.14.2.295",
-        "1.11.2-recommended": "1.14.2.295",
-		"1.12-latest": "1.14.2.295",
-        "1.12-recommended": "1.14.2.295",
-		"1.12.1-latest": "1.14.2.295",
-        "1.12.1-recommended": "1.14.2.295"
+		"1.8.9-latest": "1.14.2.298",
+        "1.8.9-recommended": "1.14.2.298",
+		"1.9.4-latest": "1.14.2.298",
+        "1.9.4-recommended": "1.14.2.298",
+        "1.10.2-latest": "1.14.2.298",
+        "1.10.2-recommended": "1.14.2.298",
+        "1.11.2-latest": "1.14.2.298",
+        "1.11.2-recommended": "1.14.2.298",
+		"1.12-latest": "1.14.2.298",
+        "1.12-recommended": "1.14.2.298",
+		"1.12.1-latest": "1.14.2.298",
+        "1.12.1-recommended": "1.14.2.298"
 		
     },
 	"1.8.9": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
     },
 	"1.9.4": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
     },
     "1.10.2": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
     },
     "1.11.2": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
     },
 	"1.12": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.12.1": {
-		"1.14.2.295": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.298": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
 	}
 }

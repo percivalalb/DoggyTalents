@@ -5,8 +5,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class RegistryMethods implements IRegistryMethods {
@@ -24,6 +26,11 @@ public class RegistryMethods implements IRegistryMethods {
 	@Override
 	public void registerItem(Object registry, Item item) {
 		((IForgeRegistry<Item>)registry).register(item);
+	}
+	
+	@Override
+	public void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String key, String... alternatives) {
+		GameRegistry.registerTileEntity(tileEntityClass, key);
 	}
 
 	@Override

@@ -87,7 +87,7 @@ public class RecipeDogCape implements IRecipe {
                     if(itemstack1.getItem() != Items.dye)
                         return null;
 
-                    float[] afloat = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(itemstack1.getItemDamage())];
+                    float[] afloat = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(itemstack1.getMetadata())];
                     int l1 = (int)(afloat[0] * 255.0F);
                     int i2 = (int)(afloat[1] * 255.0F);
                     int j2 = (int)(afloat[2] * 255.0F);

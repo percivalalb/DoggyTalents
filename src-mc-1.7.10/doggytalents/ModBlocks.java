@@ -22,13 +22,13 @@ public class ModBlocks {
 
 	public static void init() {
 		DoggyTalents.LOGGER.info("Registering Blocks");
-		DOG_BED = new BlockDogBed().setBlockName("doggytalents.dogbed");
-		DOG_BATH = new BlockDogBath().setBlockName("doggytalents.dogbath");
-		FOOD_BOWL = new BlockFoodBowl().setBlockName("doggytalents.foodbowl");
+		DOG_BED = new BlockDogBed().setUnlocalizedName("doggytalents.dogbed");
+		DOG_BATH = new BlockDogBath().setUnlocalizedName("doggytalents.dogbath");
+		FOOD_BOWL = new BlockFoodBowl().setUnlocalizedName("doggytalents.foodbowl");
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
-		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "doggytalents:dog_bowl");
+		GameRegistry.registerTileEntityWithAlternatives(TileEntityDogBed.class, "doggytalents:dog_bowl", "doggytalents.dog_bowl");
 		
 		DOG_BED.setHarvestLevel("axe", 0);
 		DOG_BATH.setHarvestLevel("pickaxe", 0);

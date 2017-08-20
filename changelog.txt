@@ -11,6 +11,10 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12 and 1.12.1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.298 | 20th July 2017
++ Two new dog skins that look like dobermans species - thanks to oitsjustjose
+* Fixed dogs disapearing when loading up from older versions of the mod - v1.10.0a (only 1.8.9)
+
 1.14.2.295 | 15th July 2017
 - Removed unnecessary model files that are not required for the version you are on 
 # Wings only render at level 5 pillow paw
@@ -360,6 +364,10 @@ Initial release, parent version v1.9.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.14.2.298 | 20th July 2017
++ Two new dog skins that look like dobermans species - thanks to oitsjustjose
+* Fixed dogs disapearing when loading up from older versions of the mod - v1.9.0h
 
 1.14.2.295 | 15th July 2017
 + Added Dog Sunglasses

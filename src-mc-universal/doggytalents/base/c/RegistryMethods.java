@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -24,6 +25,11 @@ public class RegistryMethods implements IRegistryMethods {
 	@Override
 	public void registerItem(Object registry, Item item) {
 		GameRegistry.register(item);
+	}
+	
+	@Override
+	public void registerTileEntity(Class<? extends TileEntity> tileEntityClass, String key, String... alternatives) {
+		GameRegistry.registerTileEntityWithAlternatives(tileEntityClass, key, alternatives);
 	}
 
 	@Override

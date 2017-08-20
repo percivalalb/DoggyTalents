@@ -24,12 +24,12 @@ public class ItemFancyCollar extends ItemDT {
 	
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
-        return stack.getItemDamage() == 0 ? EnumRarity.epic : super.getRarity(stack);
+        return stack.getMetadata() == 0 ? EnumRarity.epic : super.getRarity(stack);
     }
 	
 	@Override
 	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		return this.getUnlocalizedName() + par1ItemStack.getItemDamage();
+		return this.getUnlocalizedName() + par1ItemStack.getMetadata();
 	}
 
 	@Override

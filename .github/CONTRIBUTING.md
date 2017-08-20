@@ -29,7 +29,7 @@ Issues that fail to follow the following guidelines will be **automatically clos
 
 ### Processing
 The following with happen to this type of issues:
-- Automatically be labeled as "Enhancement" and moved under the [Suggestions Project](https://github.com/ProPercivalalb/DoggyTalents/projects/2) for easier access and better organization.
+- Automatically be labeled as "Feature Request" and moved under the [Suggestions Project](https://github.com/ProPercivalalb/DoggyTalents/projects/2) for easier access and better organization.
 - It may take a few hours or so for the authors to respond, so be patient
 
 # Contributing to the Source code

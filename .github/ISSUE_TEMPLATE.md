@@ -1,3 +1,14 @@
+--------------------------------------------------------------------------------
+
+**BEFORE SUBMITTING!**
+
+You must ensure the view the following guidelines at this link: https://github.com/ProPercivalalb/DoggyTalents/blob/master/.github/CONTRIBUTING.md
+
+After viewing the guidelines, you may delete this header
+
+--------------------------------------------------------------------------------
+
+
 ## Environment And Mod Information:
 
 * Minecraft Version: (i.e. 1.12.1)

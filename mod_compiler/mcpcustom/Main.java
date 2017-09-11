@@ -21,9 +21,6 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-
 public class Main {
 
 	public static final String[] _1_7_10 = new String[] {"12", "1.7.10", "10.13.4.1614-1.7.10", "690fe46a9208004f0336c0378b223ffd5f9b2cae"};

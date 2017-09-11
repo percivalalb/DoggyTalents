@@ -81,13 +81,13 @@ public class Main {
 	
 	public enum ForgeEnvironment {
 		
-		_1_7_10("1.7.10", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.7.10"),
-		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.8.9"),
-		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.9.4-12.17.0.2051"),
-		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.10.2"),
-		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.11.2-13.20.0.2282"),
-		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12"),
-		_1_12_1("1.12.1", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge\\forge-1.12.1");
+		_1_7_10("1.7.10", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.7.10"),
+		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.8.9"),
+		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.9.4"),
+		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.10.2"),
+		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.11.2"),
+		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.12"),
+		_1_12_1("1.12.1", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.12.1");
 		
 		private String pathBase;
 		private String version;

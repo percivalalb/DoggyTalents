@@ -17,16 +17,16 @@ public class ModelWings extends ModelBase {
 	public ModelRenderer wingB;
   
 	public ModelWings() {   
-		wingA = new ModelRenderer(this, 50, 14);
-		wingA.addBox(-3F, -3F, 0F, 6, 17, 1);
-		wingA.setRotationPoint(2F, 10F, -2F);
-		this.setRotation(wingA, 1.570796F, 0F, 0F);     
+		this.wingA = new ModelRenderer(this, 50, 14);
+		this.wingA.addBox(-3F, -3F, 0F, 6, 17, 1);
+		this.wingA.setRotationPoint(2F, 10F, -2F);
+		this.setRotation(this.wingA, 1.570796F, 0F, 0F);     
       
-		wingB = new ModelRenderer(this, 50, 14);
-		wingB.mirror = true;
-		wingB.addBox(-3F, -3F, 0F, 6, 17, 1);
-		wingB.setRotationPoint(-2F, 10F, -2F);
-		this.setRotation(wingB, 1.570796F, 0F, 0F);     
+		this.wingB = new ModelRenderer(this, 50, 14);
+		this.wingB.mirror = true;
+		this.wingB.addBox(-3F, -3F, 0F, 6, 17, 1);
+		this.wingB.setRotationPoint(-2F, 10F, -2F);
+		this.setRotation(this.wingB, 1.570796F, 0F, 0F);     
 	}
   
 	@Override
@@ -34,8 +34,8 @@ public class ModelWings extends ModelBase {
 		super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
-		wingA.render(scale);         
-		wingB.render(scale);
+		this.wingA.render(scale);         
+		this.wingB.render(scale);
 	}
   
 	@Override
@@ -44,26 +44,26 @@ public class ModelWings extends ModelBase {
 
 		if(dog.isSitting()) {
 			this.wingA.setRotationPoint(2F, 12.0F, -2.0F);
-			setRotation(wingA, ((float)Math.PI * 2F / 5F), 0F, 0F);          
+			this.setRotation(this.wingA, ((float)Math.PI * 2F / 5F), 0F, 0F);          
 			this.wingB.setRotationPoint(-2F, 12.0F, -2.0F);
-			setRotation(wingB, ((float)Math.PI * 2F / 5F), 0F, 0F);
+			this.setRotation(this.wingB, ((float)Math.PI * 2F / 5F), 0F, 0F);
 		} 	
 		else {
-			wingA.setRotationPoint(2F, 10F, -2F);
-			setRotation(wingA, 1.570796F, 0F, 0F);
-			wingB.setRotationPoint(-2F, 10F, -2F);
-			setRotation(wingB, 1.570796F, 0F, 0F); 
+			this.wingA.setRotationPoint(2F, 10F, -2F);
+			this.setRotation(this.wingA, 1.570796F, 0F, 0F);
+			this.wingB.setRotationPoint(-2F, 10F, -2F);
+			this.setRotation(this.wingB, 1.570796F, 0F, 0F); 
     	  
 			if(!dog.onGround) {
 				if(!Minecraft.getMinecraft().gameSettings.keyBindBack.isKeyDown()) {
 					float c = 4.0F;
-					wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
-					wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
+					this.wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
+					this.wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c)+Math.abs(dog.motionZ*c))));
 				} 
 				else {
 					float c2 = 0.5F;
-					wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
-					wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
+					this.wingA.rotateAngleY = 1.570796F - (float) ((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
+					this.wingB.rotateAngleY = -1.570796F - (float) -((Math.atan(Math.abs(dog.motionX*c2)+Math.abs(dog.motionZ*c2))));
 				}
 			}
 		}

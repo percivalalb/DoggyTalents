@@ -39,7 +39,13 @@ public class ItemWoolCollarWrapper extends ItemWoolCollar {
 			for(EnumDyeColor color : EnumDyeColor.values()) {
 				ItemStack baseColours = new ItemStack(this);
 				baseColours.setTagCompound(new NBTTagCompound());
-				baseColours.getTagCompound().setInteger("collar_colour", color.getColorValue());
+				float[] colourComponents = color.getColorComponentValues();
+				int colour = (int) (colourComponents[0] * 255F);
+				colour = (int) ((colour << 8) + colourComponents[1] * 255F);
+				colour = (int) ((colour << 8) + colourComponents[2] * 255F);
+				
+				
+				baseColours.getTagCompound().setInteger("collar_colour", colour);
 	            items.add(baseColours);
 	        }
         }

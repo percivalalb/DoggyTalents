@@ -44,16 +44,18 @@ import javax.swing.UIManager;
 
 public class Main {
 	
-	public static final String FINAL_DES = "C:\\Users\\alexl\\Documents\\Minecraft\\CompiledMods";
+	public static final String USER_DOCS = "C:\\Users\\Alex Barter\\Documents";
+	
+	public static final String FINAL_DES = USER_DOCS + "\\Minecraft\\CompiledMods";
 	public static Mod MOD = Mod.DOGGY_TALENTS;
 	public static ForgeEnvironment FORGE_ENVIR = ForgeEnvironment._1_7_10;
 	public static Output output;
 	
 	public enum Mod {
 		
-		DOGGY_TALENTS("DoggyTalents", "doggytalents", "C:\\Users\\alexl\\Documents\\GitHub\\DoggyTalents"),
-		MAP_MAKING_TOOLS("MapMakingTools", "mapmakingtools", "C:\\Users\\alexl\\Documents\\GitHub\\MapMakingTools"),
-		TRAPCRAFT("Trapcraft", "trapcraft", "C:\\Users\\alexl\\Documents\\GitHub\\Trapcraft");
+		DOGGY_TALENTS("DoggyTalents", "doggytalents", USER_DOCS + "\\GitHub\\DoggyTalents"),
+		MAP_MAKING_TOOLS("MapMakingTools", "mapmakingtools", USER_DOCS + "\\GitHub\\MapMakingTools"),
+		TRAPCRAFT("Trapcraft", "trapcraft", USER_DOCS + "\\GitHub\\Trapcraft");
 		
 		public String name;
 		public String packageLoc;
@@ -81,13 +83,13 @@ public class Main {
 	
 	public enum ForgeEnvironment {
 		
-		_1_7_10("1.7.10", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.7.10"),
-		_1_8_9("1.8.9", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.8.9"),
-		_1_9_4("1.9.4", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.9.4"),
-		_1_10_2("1.10.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.10.2"),
-		_1_11_2("1.11.2", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.11.2"),
-		_1_12("1.12", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.12"),
-		_1_12_1("1.12.1", "C:\\Users\\alexl\\Documents\\Minecraft\\Forge MDK\\forge-1.12.1");
+		_1_7_10("1.7.10", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.7.10"),
+		_1_8_9("1.8.9", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.8.9"),
+		_1_9_4("1.9.4", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.9.4"),
+		_1_10_2("1.10.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.10.2"),
+		_1_11_2("1.11.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.11.2"),
+		_1_12("1.12", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12"),
+		_1_12_1("1.12.1", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.1");
 		
 		private String pathBase;
 		private String version;
@@ -386,7 +388,7 @@ public class Main {
 			
 			String replacedtext = oldtext;
 			
-			if(mod == Mod.DOGGY_TALENTS) {
+			if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10")) {
 				int index = getIndex(forgeEnvi);
 				String path;
 				File clazz;
@@ -458,7 +460,7 @@ public class Main {
         
         if(!successful) return false;
         
-        if(!modFolder.exists()) modFolder.mkdir();
+        if(!modFolder.exists()) modFolder.mkdirs();
         
         for(File file : modFolder.listFiles()) {
         	if(file.isFile()) {

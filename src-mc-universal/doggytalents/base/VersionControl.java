@@ -103,7 +103,8 @@ public class VersionControl {
 		case "1.10.2":	return 2;
 		case "1.11.2":	return 3;
 		case "1.12":
-		case "1.12.1":	return 4;
+		case "1.12.1":
+		case "1.12.2":  return 4;
 		default:		return 5;
 		}
 	}

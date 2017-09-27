@@ -931,7 +931,7 @@ public abstract class EntityDog extends EntityAbstractDog {
     	if(TalentHelper.canAttackEntity(this, entityToAttack))
     		return true;
     	
-        return super.shouldAttackEntity(entityToAttack, owner);
+        return false;
     }
     
     @Override

@@ -42,7 +42,7 @@ public class CommandMessage extends AbstractServerMessage {
 		List<ItemStack> heldStacks = ObjectLib.BRIDGE.getHeldItems(player);
 		
 		for(ItemStack heldStack : heldStacks) {
-			if(heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
+			if(ObjectLib.STACK_UTIL.isEmpty(heldStack) || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
 			
 			List<EntityDog> nearEnts = world.getEntitiesWithinAABB(ObjectLib.ENTITY_DOG_CLASS, player.getEntityBoundingBox().grow(20D, 20D, 20D));
 			ObjectLib.BRIDGE.playSound(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));

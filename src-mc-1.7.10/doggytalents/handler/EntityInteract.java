@@ -22,7 +22,7 @@ public class EntityInteract {
 			EntityPlayer player = event.entityPlayer;
 			ItemStack stack = player.getHeldItem();
 			
-			if(event.target instanceof EntityWolf && stack.getItem() == ModItems.TRAINING_TREAT) {
+			if(event.target instanceof EntityWolf && stack != null && stack.getItem() == ModItems.TRAINING_TREAT) {
 				EntityWolf wolf = (EntityWolf)event.target;
 				 
 				if(!wolf.isDead && wolf.isTamed() && wolf.func_152114_e(player)) {

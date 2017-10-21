@@ -2,18 +2,18 @@
 tile.doggytalents.foodbowl.name=Миска с Едой
 tile.doggytalents.dogbath.name=Собачья Ванная
 
-title.doggytalents.config.name=Doggy Talents Конфигурации
+title.doggytalents.config.name=Конфигурация Doggy Talents
 modgui.config.doggysettings=Собачьи Настройки
 modgui.config.doggysettings.tooltip=Здесь вы можете поменять разные детали у вашего пёсика.
 modgui.config.general=Главные настройки
 modgui.config.general.tooltip=Остальное...
-modgui.config.talents=Talents
-modgui.config.talents.tooltip=Enable and disable talents
+modgui.config.talents=Таланты
+modgui.config.talents.tooltip=Включить или отключить таланты при прокачки
 
 item.doggytalents.throwbone0.name=Кидательная Кость
-item.doggytalents.throwbone1.name=Слюнявая Кидательная кость
-item.doggytalents.throwbone2.name=Throw Stick
-item.doggytalents.throwbone3.name=Drool Throw Stick
+item.doggytalents.throwbone1.name=Слюнявая Кидательная Кость
+item.doggytalents.throwbone2.name=Кидательная Палочка
+item.doggytalents.throwbone3.name=Слюнявая Кидательная Палочка
 item.doggytalents.trainingtreat.name=Лакомство для тренировок
 item.doggytalents.supertreat.name=Превосходное лакомство
 item.doggytalents.mastertreat.name=Лакомство мастера
@@ -24,19 +24,19 @@ item.doggytalents.collarshears.name=Ножницы для Разрубки Ош�
 item.doggytalents.commandemblem.name=Инструмент Дрессировщика
 item.doggytalents.radiocollar.name=Ошейник с Радиоприёмником
 item.doggytalents.woolcollar.name=Ошейник
-item.doggytalents.fancycollar0.name=Creative Collar
+item.doggytalents.fancycollar0.name=Творческий Ошейник
 item.doggytalents.fancycollar1.name=Spotted Collar
-item.doggytalents.fancycollar2.name=Multicoloured Collar
+item.doggytalents.fancycollar2.name=Разноцветный Ошейник
 item.doggytalents.radar.name=Радар
 item.doggytalents.whistle.name=Свисток
 item.doggytalents.treatbag.name=Мешочек с Пряностями
 item.doggytalents.chewstick.name=Жевательная Кость
-item.doggytalents.cape.name=Tartan Cape
-item.doggytalents.sunglasses.name=Dog Sunglasses
-item.doggytalents.capecoloured.name=Coloured Cape
-item.doggytalents.leatherjacket.name=Leather Jacket
-item.doggytalents.tinybone.name=Tiny Bone
-item.doggytalents.bigbone.name=Big Bone
+item.doggytalents.cape.name=Шотландский Плед
+item.doggytalents.sunglasses.name=Солнечныйе Очки для Пса
+item.doggytalents.capecoloured.name=Разноцветный Плед
+item.doggytalents.leatherjacket.name=Кожаная Куртка
+item.doggytalents.tinybone.name=Маленькая Кость
+item.doggytalents.bigbone.name=Большая Кость
 
 doggui.talentname.blackpelt=Прочная Шкура
 doggui.talentname.guarddog=Телохранитель
@@ -78,40 +78,41 @@ doggui.talentinfo.rescuedog=Если Ваше здоровье на критич
 doggui.talentinfo.puppyeyes=Этот навык поможет Вашей собаке завоевать сердце любого жителя. Так же есть шанс получения подарка.! При повышении Вы получаете более дорогие подарки. Этот навык может быть использован только раз в 2 дня игры (игровое время). При полном освоении навык может быть использован 1 раз в день.
 doggui.talentinfo.swimmerdog=Собака разрешит кататся на себе в воде и позволяет дышать дольше над водой. Maxing it allows the rider to see easily underwater.
 
-doggui.modename.wandering=Wandering
-doggui.modename.tactical=Tactical
-doggui.modename.aggressive=Aggressive
-doggui.modename.berserker=Berserker
-doggui.modename.docile=Docile
-doggui.modename.patrol=Patrol
+doggui.modename.wandering=Скиталец
+doggui.modename.tactical=Боевой
+doggui.modename.aggressive=Агрессивный
+doggui.modename.berserker=Бешеный
+doggui.modename.docile=Послушный
+doggui.modename.patrol=Патрульный
+doggui.modename.incapacitated=Раненый
 
-doggui.modetip.wandering=(W)
-doggui.modetip.tactical=(T)
+doggui.modetip.wandering=(С)
+doggui.modetip.tactical=(Б)
 doggui.modetip.aggressive=(A)
-doggui.modetip.berserker=(B)
-doggui.modetip.docile=(D)
-doggui.modetip.patrol=(P)
-doggui.modetip.incapacitated=(I)
+doggui.modetip.berserker=(Б)
+doggui.modetip.docile=(По)
+doggui.modetip.patrol=(Па)
+doggui.modetip.incapacitated=(Р)
 
 doggui.modeinfo.wandering=В этом режиме Ваша собака стоит возле Миски с Едой и ожидает следующей команды. Чтобы "привязать" собаку к миске, просто расположите собаку рядом с миской (1 блок).
 doggui.modeinfo.tactical=В этом режиме Ваша собака будет следовать за Вами, но никого не будет атаковать.
 doggui.modeinfo.aggressive=В этом режиме Ваша собака будет следовать за Вами и атаковать мобов, которых Вы атакуете, или которые атакуют Вас.
 doggui.modeinfo.berserker=В этом режиме Ваша собака будет следовать за Вами и атаковать всех мобов без предупреждения.
 doggui.modeinfo.docile=В этом режиме Ваша собака будет следовать за Вами, но игнорировать всех мобов. Так же, в этом режиме, Ваша собака ждет, когда Вы бросите ей косточку.
-doggui.modeinfo.patrol=In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view
+doggui.modeinfo.patrol=В этом режиме ваша собака будет патрулировать между 2-4 путями (использую командную эмблему) и атакуя монстров.
 
-doggui.mode.docile.nobowl=No food bowl currently set.
-doggui.mode.docile.bowl=Bowl distance: %d
+doggui.mode.docile.nobowl=Нет привязаной миски.
+doggui.mode.docile.bowl=Дистанция до миски: %d
 
-doggui.prevpage=Previous Page
-doggui.nextpage=Next Page
-doggui.newname=New name:
-doggui.level=Level:
-doggui.leveldire=Dire Level:
-doggui.pointsleft=Points Left:
-doggui.textureindex=Texture Index
-doggui.obeyothers=Obey Others?
-doggui.friendlyfire=Friendly Fire?
+doggui.prevpage=Предыдущая страница
+doggui.nextpage=Следующая страница
+doggui.newname=Новое имя:
+doggui.level=Уровень:
+doggui.leveldire=Крайний Уровень:
+doggui.pointsleft=Очки Ушли:
+doggui.textureindex=Смена текстуры
+doggui.obeyothers=Бить остальный?
+doggui.friendlyfire=Дружелюбный Огонь?
 
 dogtalent.puppyeyes.1.part1=Житель: Мимими! Какая прелесть! Позаботься о нём... Эээ, или о ней...
 dogtalent.puppyeyes.1.part2=Сюда, у меня немножечко вкусненькой свининки
@@ -306,7 +307,7 @@ dogcommand.heel=Ко мне!
 
 entity.doggytalents:dog.name=Пёс
 entity.doggytalents.dog.name=Пёс
-entity.doggytalents:dog.lost.name=Has no Owner
+entity.doggytalents:dog.lost.name=Нету владельца!
 
 container.packpuppy=Рюкзак Пёсика
 container.foodBowl=Миска с Едой

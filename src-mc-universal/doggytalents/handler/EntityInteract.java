@@ -18,7 +18,7 @@ public class EntityInteract {
 		
 	 	if(!world.isRemote) {
 			
-			if(target instanceof EntityWolf && stack.getItem() == ModItems.TRAINING_TREAT) {
+			if(target instanceof EntityWolf && !ObjectLib.STACK_UTIL.isEmpty(stack) && stack.getItem() == ModItems.TRAINING_TREAT) {
 				EntityWolf wolf = (EntityWolf)target;
 				 
 				if(!wolf.isDead && wolf.isTamed() && wolf.isOwner(player)) {

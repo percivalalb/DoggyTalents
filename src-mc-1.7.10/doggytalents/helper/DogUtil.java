@@ -87,26 +87,24 @@ public class DogUtil {
     	
         ItemStack itemstack = stack.copy();
         
-        
-
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
             ItemStack itemstack1 = inventory.getStackInSlot(i);
-
-            if (itemstack1 == null) {
+            
+            if(itemstack1 == null) {
             	inventory.setInventorySlotContents(i, itemstack);
             	inventory.markDirty();
                 return null;
             }
 
-            if (ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+            if(areStacksEqual(itemstack1, itemstack)) {
                 int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
                 int k = Math.min(itemstack.stackSize, j - itemstack1.stackSize);
 
-                if (k > 0) {
+                if(k > 0) {
                     itemstack1.stackSize += k;
                     itemstack.stackSize -= k;
 
-                    if (itemstack.stackSize == 0) {
+                    if(itemstack.stackSize == 0) {
                     	inventory.markDirty();
                         return null;
                     }
@@ -118,5 +116,9 @@ public class DogUtil {
         	inventory.markDirty();
 
         return itemstack;
+    }
+    
+    public static boolean areStacksEqual(ItemStack p_145894_0_, ItemStack p_145894_1_) {
+        return p_145894_0_.getItem() != p_145894_1_.getItem() ? false : (p_145894_0_.getMetadata() != p_145894_1_.getMetadata() ? false : (p_145894_0_.stackSize > p_145894_0_.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(p_145894_0_, p_145894_1_)));
     }
 }

@@ -66,7 +66,6 @@ public class PackPuppy extends ITalent {
 	            EntityItem entityItem = (EntityItem)list.get(i);
 	            if(entityItem.isDead || DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getEntityItem())) continue;
 	            
-	            ItemStack itemstack = entityItem.getEntityItem().copy();
 	            ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getEntityItem());
 
 	            if(itemstack1 != null && itemstack1.stackSize != 0)

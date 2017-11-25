@@ -79,7 +79,7 @@ public class DogUtil {
     	
         ItemStack itemstack = stack.copy();
 
-        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+        for(int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack itemstack1 = inventory.getStackInSlot(i);
 
             if(ObjectLib.STACK_UTIL.isEmpty(itemstack1)) {
@@ -88,13 +88,13 @@ public class DogUtil {
                 return ObjectLib.STACK_UTIL.getEmpty();
             }
 
-            if(ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
+            if(ItemStack.areItemsEqual(itemstack1, itemstack)) {
                 int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
                 int k = Math.min(ObjectLib.STACK_UTIL.getCount(itemstack), j - ObjectLib.STACK_UTIL.getCount(itemstack1));
 
                 if(k > 0) {
                 	ObjectLib.STACK_UTIL.grow(itemstack1, k);
-                	ObjectLib.STACK_UTIL.shrink(itemstack1, k);
+                	ObjectLib.STACK_UTIL.shrink(itemstack, k);
 
                     if(ObjectLib.STACK_UTIL.isEmpty(itemstack)) {
                     	inventory.markDirty();

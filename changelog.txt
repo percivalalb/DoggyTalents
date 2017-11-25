@@ -12,6 +12,7 @@ MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.2.*** | **th November 2017
+* Fixed items not stacked when being picked up by the Pack Puppy Talent
 * Fixed crash with Terraqueous when trees are disabled
 
 1.14.2.311 | 20th October 2017

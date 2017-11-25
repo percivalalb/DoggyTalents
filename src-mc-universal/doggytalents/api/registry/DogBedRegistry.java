@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import doggytalents.DoggyTalents;
 import doggytalents.ModBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -50,6 +51,11 @@ public class DogBedRegistry {
 	}
 	
 	public void registerMaterial(Block block, int meta, String textureLocation) {
+		if(block == null || block == Blocks.AIR) {
+			DoggyTalents.LOGGER.warn("Null block cannot be registered for a material");
+			return;
+		}
+		
 		String blockId = ((ResourceLocation)Block.REGISTRY.getNameForObject(block)).toString();
 		String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 		ItemStack stack = new ItemStack(block, 1, meta);

@@ -11,6 +11,7 @@ import doggytalents.ModBlocks;
 import doggytalents.api.inferface.DefaultDogBedIcon;
 import doggytalents.api.inferface.IDogBedIcon;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -53,6 +54,11 @@ public class DogBedRegistry {
 	}
 	
 	public void registerMaterial(Block block, int meta) {
+		if(block == null || block == Blocks.air) {
+			DoggyTalents.LOGGER.warn("Null block cannot be registered for a material");
+			return;
+		}
+		
 		String blockId = Block.blockRegistry.getNameForObject(block);
 		String lookupname = String.format("dogbed.%s.%s.%d", this.key, blockId, meta);
 		ItemStack stack = new ItemStack(block, 1, meta);

@@ -11,6 +11,9 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.*** | **th November 2017
+* Fixed crash with Terraqueous when trees are disabled
+
 1.14.2.311 | 20th October 2017
 + Added recipe for throw stick, same as throw bone but sticks instead of bones
 # Updated Russian Translation files to be more accurate and include some of the newer translations keys

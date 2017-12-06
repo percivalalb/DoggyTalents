@@ -51,7 +51,7 @@ public class DogBedRegistry {
 	}
 	
 	public void registerMaterial(Block block, int meta, String textureLocation) {
-		if(block == null || block == Blocks.AIR) {
+		if(block == null) {
 			DoggyTalents.LOGGER.warn("Null block cannot be registered for a material");
 			return;
 		}

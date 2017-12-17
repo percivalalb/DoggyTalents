@@ -13,7 +13,7 @@ public class WolfMount extends ITalent {
 	@Override
 	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player) { 
 		if(player.getHeldItem() == null && dog.canInteract(player)) {
-        	if(dog.talents.getLevel(this) > 0 && !player.isRiding() && !player.onGround && !dog.isIncapacicated()) {
+        	if(dog.talents.getLevel(this) > 0 && !player.isRiding() && !player.onGround && !dog.isIncapacicated() && dog.ridingEntity == null) {
         		if(!dog.worldObj.isRemote) {
         			dog.getSitAI().setSitting(false);
         			player.mountEntity(dog);

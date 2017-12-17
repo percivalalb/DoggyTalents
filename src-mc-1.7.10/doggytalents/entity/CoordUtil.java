@@ -102,7 +102,7 @@ public class CoordUtil {
 	}
 	
 	public void resetBowlPosition() {
-		this.dog.getDataWatcher().updateObject(28, getBedX() + ":" +  getBedY() + ":" + getBedZ() + "-:-1:-1:-1");
+		this.dog.getDataWatcher().updateObject(28, getBedX() + ":" +  getBedY() + ":" + getBedZ() + ":-1:-1:-1");
 	}
 	
 	private String[] getSkillsLevels() {

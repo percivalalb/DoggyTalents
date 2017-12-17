@@ -28,7 +28,7 @@ public class ModBlocks {
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
-		GameRegistry.registerTileEntityWithAlternatives(TileEntityDogBed.class, "doggytalents:dog_bowl", "doggytalents.dog_bowl");
+		GameRegistry.registerTileEntityWithAlternatives(TileEntityFoodBowl.class, "doggytalents:dog_bowl", "doggytalents.dog_bowl");
 		
 		DOG_BED.setHarvestLevel("axe", 0);
 		DOG_BATH.setHarvestLevel("pickaxe", 0);

@@ -73,7 +73,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     public void renderName(EntityDog dog, double x, double y, double z) {
         if(this.canRenderName(dog)) {
         	GlStateManager.alphaFunc(516, 0.1F);
-            double d0 = dog.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+            double d0 = dog.getDistanceSq(this.renderManager.renderViewEntity);
             
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	

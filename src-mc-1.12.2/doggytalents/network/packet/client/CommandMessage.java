@@ -53,7 +53,7 @@ public class CommandMessage extends AbstractServerMessage {
 			    for(EntityDog dog : nearEnts) {
 			    	if(dog.canInteract(player)) {
 			    		dog.getSitAI().setSitting(false);
-			    		dog.getNavigator().clearPathEntity();
+			    		dog.getNavigator().clearPath();
 			    		dog.setAttackTarget((EntityLivingBase)null);
 			    		if(dog.mode.isMode(EnumMode.WANDERING))
 			    			dog.mode.setMode(EnumMode.DOCILE);
@@ -69,7 +69,7 @@ public class CommandMessage extends AbstractServerMessage {
 		
 					if(dog.canInteract(player)) {
 						dog.getSitAI().setSitting(true);
-						dog.getNavigator().clearPathEntity();
+						dog.getNavigator().clearPath();
 						dog.setAttackTarget((EntityLivingBase)null);
 						if(dog.mode.isMode(EnumMode.WANDERING))
 							dog.mode.setMode(EnumMode.DOCILE);
@@ -85,12 +85,12 @@ public class CommandMessage extends AbstractServerMessage {
 					if(dog.canInteract(player)) {
 						if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
 							dog.getSitAI().setSitting(true);
-							dog.getNavigator().clearPathEntity();
+							dog.getNavigator().clearPath();
 							dog.setAttackTarget((EntityLivingBase)null);
 						}
 						else {
 							dog.getSitAI().setSitting(false);
-							dog.getNavigator().clearPathEntity();
+							dog.getNavigator().clearPath();
 							dog.setAttackTarget((EntityLivingBase)null);
 						}
 						sucessful = true;

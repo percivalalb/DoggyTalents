@@ -75,7 +75,7 @@ public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEn
     }
 
 	@Override
-    public boolean isHidden() {
+    public boolean isDynamic() {
         return true;
     }
 

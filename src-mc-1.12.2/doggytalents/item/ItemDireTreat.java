@@ -42,7 +42,7 @@ public class ItemDireTreat extends ItemDT implements IDogTreat {
 	            dog.levels.increaseDireLevel();
 	            dog.setHealth(dog.getMaxHealth());
 	            dog.getSitAI().setSitting(true);
-	            dog.getNavigator().clearPathEntity();
+	            dog.getNavigator().clearPath();
 	            dog.world.setEntityState(dog, (byte)7);
 	            dog.playTameEffect(true);
 	            if (!player.world.isRemote)

@@ -334,7 +334,7 @@ public abstract class EntityDog extends EntityAbstractDog {
     		EntityPlayer player = (EntityPlayer)this.getOwner();
     		
     		if(player != null) {
-    			float distanceToOwner = player.getDistanceToEntity(this);
+    			float distanceToOwner = player.getDistance(this);
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
                 	if(!this.world.isRemote) {
@@ -567,7 +567,7 @@ public abstract class EntityDog extends EntityAbstractDog {
                 		}
                 		else if(this.reversionTime < 1) {
                 			this.setTamed(false);
-	                	    this.navigator.clearPathEntity();
+	                	    this.navigator.clearPath();
 	                        this.setSitting(false);
 	                        this.setHealth(8);
 	                        this.talents.resetTalents();
@@ -663,7 +663,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             if(!this.world.isRemote && !this.isBreedingItem(stack) && this.canInteract(player)) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
-                this.navigator.clearPathEntity();
+                this.navigator.clearPath();
                 this.setAttackTarget((EntityLivingBase)null);
                 return true;
             }
@@ -682,7 +682,7 @@ public abstract class EntityDog extends EntityAbstractDog {
             if(!this.world.isRemote) {
                 if(this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
-                    this.navigator.clearPathEntity();
+                    this.navigator.clearPath();
                     this.setAttackTarget((EntityLivingBase)null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
@@ -753,7 +753,7 @@ public abstract class EntityDog extends EntityAbstractDog {
         EntityPlayer player = (EntityPlayer)this.getOwner();
     	
         if(player != null) {
-            float distanceAway = player.getDistanceToEntity(this);
+            float distanceAway = player.getDistance(this);
             ItemStack itemstack = player.inventory.getCurrentItem();
 
             if(itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)

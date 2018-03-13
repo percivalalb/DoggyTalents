@@ -72,7 +72,7 @@ public class EntityAIFetch extends EntityAIBase {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.petPathfinder.noPath() && this.isPlayingFetch() && this.dog.getDistanceSqToEntity(this.fetchableItem) < (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
+        return !this.petPathfinder.noPath() && this.isPlayingFetch() && this.dog.getDistanceSq(this.fetchableItem) < (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class EntityAIFetch extends EntityAIBase {
     public void resetTask() {
         this.owner = null;
         this.fetchableItem = null;
-        this.petPathfinder.clearPathEntity();
+        this.petPathfinder.clearPath();
         this.waterMovement.resetTask();
         this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
@@ -118,12 +118,12 @@ public class EntityAIFetch extends EntityAIBase {
                  this.petPathfinder.tryMoveToEntityLiving(this.fetchableItem, this.followSpeed);
              }
              
-             if(this.dog.getDistanceSqToEntity(this.fetchableItem) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
+             if(this.dog.getDistanceSq(this.fetchableItem) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
               	if(this.fetchableItem.isEntityAlive()) {
               		this.fetchableItem.attackEntityFrom(DamageSource.GENERIC, 12F);
               		this.dog.setBoneVariant(this.fetchableItem.getItem().getItemDamage() / 2);
               		this.fetchableItem = null;
-              	    this.dog.getNavigator().clearPathEntity();
+              	    this.dog.getNavigator().clearPath();
               	}
               }
          }

@@ -33,7 +33,7 @@ public abstract class EntityDoggyBeam extends EntityThrowable {
     			if(o instanceof EntityDog) {
                  	EntityDog dog = (EntityDog)o;
                  	if(!dog.isSitting() && entityHit != dog && dog.shouldAttackEntity((EntityLivingBase)entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
-                 		if(dog.getDistanceToEntity(entityHit) < this.getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
+                 		if(dog.getDistance(entityHit) < this.getTargetDistance(dog) && (dog.mode.isMode(EnumMode.AGGRESIVE) || dog.mode.isMode(EnumMode.TACTICAL))) {
                  			dog.setAttackTarget((EntityLivingBase)entityHit);
                  		}
                  	}

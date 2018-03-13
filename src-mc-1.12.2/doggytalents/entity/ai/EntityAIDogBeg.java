@@ -33,7 +33,7 @@ public class EntityAIDogBeg extends EntityAIBase {
     public boolean shouldContinueExecuting() {
         if(!this.player.isEntityAlive())
             return false;
-        else if(this.dog.getDistanceSqToEntity(this.player) > (double)(this.minPlayerDistance * this.minPlayerDistance))
+        else if(this.dog.getDistanceSq(this.player) > (double)(this.minPlayerDistance * this.minPlayerDistance))
             return false;
         else
             return this.timeoutCounter > 0 && this.hasTemptationItemInHand(this.player);

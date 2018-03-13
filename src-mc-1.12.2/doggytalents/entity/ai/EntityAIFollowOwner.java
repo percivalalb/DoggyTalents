@@ -56,14 +56,14 @@ public class EntityAIFollowOwner extends EntityAIBase
         	return false;
         
       	int order = this.dog.masterOrder();
-    	double distanceAway = this.dog.getDistanceSqToEntity(entitylivingbase);
+    	double distanceAway = this.dog.getDistanceSq(entitylivingbase);
       	
       	if(!this.dog.hasBone() && (order == 1 || order == 2)) { //Holding Sword or tool
       		if(distanceAway >= 16D && distanceAway <= 100D)
       			return false;
       	}
       	else
-	      	if(!this.dog.hasBone() && this.dog.getDistanceSqToEntity(entitylivingbase) < (double)(this.minDist * this.minDist))
+	      	if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist))
 	            return false;
       	
         //Execute
@@ -73,7 +73,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.petPathfinder.noPath() && this.dog.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
+        return !this.petPathfinder.noPath() && this.dog.getDistanceSq(this.owner) > (double)(this.maxDist * this.maxDist) && !this.dog.isSitting();
     }
     
     @Override
@@ -87,7 +87,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     @Override
     public void resetTask() {
         this.owner = null;
-        this.petPathfinder.clearPathEntity();
+        this.petPathfinder.clearPath();
         this.waterMovement.resetTask();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
@@ -103,7 +103,7 @@ public class EntityAIFollowOwner extends EntityAIBase
                	int masterX = ObjectLib.BRIDGE.floor(this.owner.posX);
             	int masterY = ObjectLib.BRIDGE.floor(this.owner.posY);
             	int masterZ = ObjectLib.BRIDGE.floor(this.owner.posZ);
-            	double distanceAway = this.dog.getDistanceSqToEntity(this.owner);
+            	double distanceAway = this.dog.getDistanceSq(this.owner);
                 
             	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
                     this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());

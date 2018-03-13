@@ -138,7 +138,7 @@ public class RecipeDogCape extends net.minecraftforge.registries.IForgeRegistryE
     }
 
 	@Override
-    public boolean isHidden() {
+    public boolean isDynamic() {
         return true;
     }
 

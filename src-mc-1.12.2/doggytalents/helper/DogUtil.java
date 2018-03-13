@@ -21,7 +21,7 @@ public class DogUtil {
             for(int i1 = 0; i1 <= 4; ++i1) {
                 if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && ObjectLib.METHODS.isTeleportFriendlyBlock(entity, world, i, j, k, l, i1)) {
                 	entity.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), entity.rotationYaw, entity.rotationPitch);
-                    pathfinder.clearPathEntity();
+                    pathfinder.clearPath();
                     return;
                 }
             }

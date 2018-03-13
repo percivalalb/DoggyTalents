@@ -15,7 +15,7 @@ public class ItemColours {
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
 
 			@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				if(stack.hasTagCompound())
 					if(stack.getTagCompound().hasKey("collar_colour"))
 						return stack.getTagCompound().getInteger("collar_colour");
@@ -27,7 +27,7 @@ public class ItemColours {
 		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
 
 		@Override
-			public int getColorFromItemstack(ItemStack stack, int tintIndex) {
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
 				if(stack.hasTagCompound())
 					if(stack.getTagCompound().hasKey("cape_colour"))
 						return stack.getTagCompound().getInteger("cape_colour");

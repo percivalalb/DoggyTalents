@@ -17,7 +17,6 @@ import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.Reference;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;

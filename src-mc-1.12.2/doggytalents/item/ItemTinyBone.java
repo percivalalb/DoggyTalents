@@ -1,7 +1,6 @@
 package doggytalents.item;
 
 import doggytalents.api.IDogTreat;
-import doggytalents.api.IDogTreat.EnumFeedBack;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

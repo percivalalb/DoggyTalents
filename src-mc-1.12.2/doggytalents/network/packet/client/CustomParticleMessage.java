@@ -1,18 +1,11 @@
 package doggytalents.network.packet.client;
 
-import java.util.Random;
-
 import doggytalents.DoggyTalents;
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
-import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractClientMessage;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class CustomParticleMessage extends AbstractClientMessage {

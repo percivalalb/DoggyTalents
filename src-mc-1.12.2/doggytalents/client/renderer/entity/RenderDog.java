@@ -2,7 +2,6 @@ package doggytalents.client.renderer.entity;
 
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.RenderUtil;
-import doggytalents.client.renderer.entity.layer.LayerArmor;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;

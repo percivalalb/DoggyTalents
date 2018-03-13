@@ -1,7 +1,6 @@
 package doggytalents.handler;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 

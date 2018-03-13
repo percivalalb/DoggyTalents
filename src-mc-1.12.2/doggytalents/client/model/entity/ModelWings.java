@@ -1,13 +1,9 @@
 package doggytalents.client.model.entity;
 
-import org.lwjgl.input.Keyboard;
-
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 

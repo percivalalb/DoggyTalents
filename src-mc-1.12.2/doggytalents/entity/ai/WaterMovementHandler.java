@@ -2,8 +2,6 @@ package doggytalents.entity.ai;
 
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 
 public class WaterMovementHandler implements IWaterMovement {

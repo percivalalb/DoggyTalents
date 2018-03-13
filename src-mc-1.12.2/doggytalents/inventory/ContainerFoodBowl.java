@@ -1,6 +1,5 @@
 package doggytalents.inventory;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -37,7 +36,7 @@ public class ContainerFoodBowl extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(i);
 
         if(slot != null && slot.getHasStack()) {
@@ -46,20 +45,20 @@ public class ContainerFoodBowl extends Container {
 
             if(i < 5) {
                 if(!mergeItemStack(itemstack1, 5, inventorySlots.size(), true)) {
-                    return ObjectLib.STACK_UTIL.getEmpty();
+                    return ItemStack.EMPTY;
                 }
             }
             else if(!mergeItemStack(itemstack1, 0, 5, false)) {
-                return ObjectLib.STACK_UTIL.getEmpty();
+                return ItemStack.EMPTY;
             }
 
-            if(ObjectLib.STACK_UTIL.isEmpty(itemstack1))
-            	slot.putStack(ObjectLib.STACK_UTIL.getEmpty());
+            if(itemstack1.isEmpty())
+            	slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             
-            if(ObjectLib.STACK_UTIL.getCount(itemstack1) == ObjectLib.STACK_UTIL.getCount(itemstack))
-                return ObjectLib.STACK_UTIL.getEmpty();
+            if(itemstack1.getCount() == itemstack.getCount())
+                return ItemStack.EMPTY;
         }
 
         return itemstack;

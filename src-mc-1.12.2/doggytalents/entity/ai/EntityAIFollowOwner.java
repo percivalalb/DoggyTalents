@@ -1,8 +1,6 @@
 package doggytalents.entity.ai;
 
-import doggytalents.base.IWaterMovement;
-import doggytalents.base.ObjectLib;
-import doggytalents.base.VersionControl;
+import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +9,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityAIFollowOwner extends EntityAIBase
@@ -33,7 +32,7 @@ public class EntityAIFollowOwner extends EntityAIBase
         this.petPathfinder = thePetIn.getNavigator();
         this.minDist = minDistIn;
         this.maxDist = maxDistIn;
-        this.waterMovement = VersionControl.createObject("WaterMovementHandler", IWaterMovement.class, EntityDog.class, this.dog);
+        this.waterMovement = new WaterMovementHandler(this.dog);
         this.setMutexBits(3);
 
         if(!(thePetIn.getNavigator() instanceof PathNavigateGround))
@@ -100,9 +99,9 @@ public class EntityAIFollowOwner extends EntityAIBase
                 this.timeToRecalcPath = 10;
 
             	int order = this.dog.masterOrder();
-               	int masterX = ObjectLib.BRIDGE.floor(this.owner.posX);
-            	int masterY = ObjectLib.BRIDGE.floor(this.owner.posY);
-            	int masterZ = ObjectLib.BRIDGE.floor(this.owner.posZ);
+               	int masterX = MathHelper.floor(this.owner.posX);
+            	int masterY = MathHelper.floor(this.owner.posY);
+            	int masterZ = MathHelper.floor(this.owner.posZ);
             	double distanceAway = this.dog.getDistanceSq(this.owner);
                 
             	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
@@ -114,9 +113,9 @@ public class EntityAIFollowOwner extends EntityAIBase
 	                	
             	}
             	else if(order == 1 || order == 2) { //Holding Sword or tool
-            		int dogX = ObjectLib.BRIDGE.floor(this.dog.posX);
-                    int dogY = ObjectLib.BRIDGE.floor(this.dog.posY);
-                    int dogZ = ObjectLib.BRIDGE.floor(this.dog.posZ);
+            		int dogX = MathHelper.floor(this.dog.posX);
+                    int dogY = MathHelper.floor(this.dog.posY);
+                    int dogZ = MathHelper.floor(this.dog.posZ);
                     int dPosX = dogX - masterX;
                     int dPosZ = dogZ - masterZ;
                     int j3 = masterX + dPosX * 2;

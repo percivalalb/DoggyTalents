@@ -3,8 +3,7 @@ package doggytalents.entity.ai;
 import java.util.List;
 
 import doggytalents.ModItems;
-import doggytalents.base.IWaterMovement;
-import doggytalents.base.VersionControl;
+import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import net.minecraft.entity.Entity;
@@ -37,7 +36,7 @@ public class EntityAIFetch extends EntityAIBase {
         this.followSpeed = followSpeedIn;
         this.petPathfinder = dogIn.getNavigator();
         this.maxDist = maxDistIn;
-        this.waterMovement = VersionControl.createObject("WaterMovementHandler", IWaterMovement.class, EntityDog.class, this.dog);
+        this.waterMovement = new WaterMovementHandler(this.dog);
         this.setMutexBits(3);
 
         if (!(this.petPathfinder instanceof PathNavigateGround))

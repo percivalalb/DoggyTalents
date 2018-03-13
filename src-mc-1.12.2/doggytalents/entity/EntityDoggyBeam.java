@@ -10,12 +10,13 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb
  */
-public abstract class EntityDoggyBeam extends EntityThrowable {
+public class EntityDoggyBeam extends EntityThrowable {
 	
 	public EntityDoggyBeam(World worldIn) {
 		super(worldIn);
@@ -25,7 +26,12 @@ public abstract class EntityDoggyBeam extends EntityThrowable {
         super(worldIn, throwerIn);
     }
     
-    public void onImpactGENERAL(Entity entityHit) {
+    @Override
+    public void onImpact(RayTraceResult rayTraceResult) {
+    	if(rayTraceResult.typeOfHit != RayTraceResult.Type.ENTITY) return;
+    	
+    	Entity entityHit = rayTraceResult.entityHit;
+    	
     	if(entityHit instanceof EntityLivingBase) {
  
     		List<Entity> nearEnts = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(100D, 10D, 100D));

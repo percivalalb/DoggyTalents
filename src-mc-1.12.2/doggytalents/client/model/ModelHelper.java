@@ -1,8 +1,9 @@
 package doggytalents.client.model;
 
-import doggytalents.base.ObjectLibClient;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -14,7 +15,7 @@ public class ModelHelper {
 	
 	@SideOnly(Side.CLIENT)
     public static void setModel(Item item, int meta, String modelName) {
-		ObjectLibClient.METHODS.setModel(item, meta, modelName);
+		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
     }
 	
 	@SideOnly(Side.CLIENT)

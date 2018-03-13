@@ -1,15 +1,33 @@
 package doggytalents.handler;
 
 import doggytalents.DoggyTalents;
-import doggytalents.base.ObjectLibClient;
+import doggytalents.client.model.block.DogBedModel;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ModelBake {
 
+	@SubscribeEvent
 	public static void onModelBakeEvent(ModelBakeEvent event) {
 	    
 	    try {
-	    	ObjectLibClient.METHODS.onModelBakeEvent(event);
+	    	IModel model = ModelLoaderRegistry.getModel(new ResourceLocation("doggytalents:block/dog_bed"));
+	    	
+	    	for(String thing : new String[] {"inventory", "facing=north", "facing=south", "facing=east", "facing=west"}) {
+		    	ModelResourceLocation modelVariantLocation = new ModelResourceLocation("doggytalents:dog_bed", thing);
+		
+		        IBakedModel bakedModel = event.getModelRegistry().getObject(modelVariantLocation);
+
+		        //Replace 
+		        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
+		        event.getModelRegistry().putObject(modelVariantLocation, customModel);
+		    }
 	    }
 	    catch(Exception e) {
 	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");

@@ -1,7 +1,6 @@
 package doggytalents.entity.ai;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -58,9 +57,9 @@ public class EntityAIDogBeg extends EntityAIBase {
     }
 
     private boolean hasTemptationItemInHand(EntityPlayer player) {
-        for(ItemStack heldStacks : ObjectLib.BRIDGE.getHeldItems(player)) {
+        for(ItemStack heldStacks : player.getHeldEquipment()) {
 
-            if(this.dog.isTamed() && !ObjectLib.STACK_UTIL.isEmpty(heldStacks) && DoggyTalentsAPI.BEG_WHITELIST.containsItem(heldStacks))
+            if(this.dog.isTamed() && !heldStacks.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(heldStacks))
             	return true;
 
             if(this.dog.isBreedingItem(heldStacks))

@@ -4,9 +4,8 @@ import java.util.Random;
 
 import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
-import doggytalents.base.ObjectLib;
-import doggytalents.base.VersionControl;
 import doggytalents.entity.EntityDog;
+import doggytalents.handler.DTEventHandler;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.inventory.ContainerFoodBowl;
@@ -18,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IThreadListener;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -33,13 +33,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class CommonProxy implements IGuiHandler {
 
 	public void preInit(FMLPreInitializationEvent event) {
-		ObjectLib.INITIALIZATION.preInit(event);
 			
         ModEntities.init();
     }
 	
 	public void init(FMLInitializationEvent event) {
-		ObjectLib.INITIALIZATION.init(event);
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(DoggyTalents.INSTANCE, DoggyTalents.PROXY);
 		PacketDispatcher.registerPackets();
@@ -47,11 +45,11 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
-    	ObjectLib.INITIALIZATION.postInit(event);
+    	
     }
     
     protected void registerEventHandlers() {
-    	MinecraftForge.EVENT_BUS.register(VersionControl.createObject("EventHandlerWrapper", Object.class));
+    	MinecraftForge.EVENT_BUS.register(new DTEventHandler());
 		MinecraftForge.EVENT_BUS.register(new EntityInteract());
 		MinecraftForge.EVENT_BUS.register(new PlayerConnection());
     }
@@ -73,7 +71,7 @@ public class CommonProxy implements IGuiHandler {
 			return new ContainerPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = ObjectLib.BRIDGE.getTileEntity(world, x, y, z);
+			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;

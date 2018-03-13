@@ -1,16 +1,16 @@
 package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.base.IDataTracker;
-import doggytalents.base.ObjectLib;
-import doggytalents.base.VersionControl;
+import doggytalents.api.inferface.IDataTracker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,7 +50,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataTracker = VersionControl.createObject("DataTrackerWrapper", IDataTracker.class, EntityDog.class, this);
+		this.dataTracker = new DogDataTracker(this);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
         }
         else if((this.isWet || this.isShaking) && this.isShaking) {
             if(this.timeWolfIsShaking == 0.0F)
-                ObjectLib.BRIDGE.playSound(this, "mob.wolf.shake", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            	this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 
             this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
             this.timeWolfIsShaking += 0.05F;
@@ -104,7 +104,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 
             if(this.timeWolfIsShaking > 0.4F) {
                 float f = (float)this.getEntityBoundingBox().minY;
-                int i = (int)(ObjectLib.BRIDGE.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
+                int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
 
                 for(int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
@@ -129,9 +129,9 @@ public abstract class EntityAbstractDog extends EntityTameable {
     public float getShakeAngle(float partialTickTime, float p_70923_2_) {
         float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTickTime + p_70923_2_) / 1.8F;
 
-        f = ObjectLib.BRIDGE.clamp(f, 0.0F, 1.0F);
+        f = MathHelper.clamp(f, 0.0F, 1.0F);
 
-        return ObjectLib.BRIDGE.sin(f * (float)Math.PI) * ObjectLib.BRIDGE.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
     }
 
     @SideOnly(Side.CLIENT)
@@ -182,7 +182,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-        return !ObjectLib.STACK_UTIL.isEmpty(stack) && DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
+        return !stack.isEmpty() && DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
     }
 	
 	@Override

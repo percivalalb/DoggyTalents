@@ -2,6 +2,7 @@ package doggytalents.network;
 
 import doggytalents.lib.Reference;
 import doggytalents.network.packet.client.CommandMessage;
+import doggytalents.network.packet.client.CustomParticleMessage;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogJumpMessage;
 import doggytalents.network.packet.client.DogModeMessage;
@@ -40,6 +41,7 @@ public class PacketDispatcher {
 		registerMessage(DogTalentMessage.class);
 		registerMessage(DogFriendlyFireMessage.class);
 		registerMessage(DogTextureMessage.class);
+		registerMessage(CustomParticleMessage.class);
 	}
 	
 	public static final <T extends AbstractMessage<T> & IMessageHandler<T, IMessage>> void registerMessage(Class<T> clazz) {

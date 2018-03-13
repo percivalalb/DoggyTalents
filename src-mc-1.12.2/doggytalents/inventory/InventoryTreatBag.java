@@ -2,7 +2,6 @@ package doggytalents.inventory;
 
 import doggytalents.ModItems;
 import doggytalents.api.IDogTreat;
-import doggytalents.base.ObjectLib;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
@@ -39,7 +38,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	            int j = nbttagcompound.getByte("Slot") & 255;
 	
 	            if(j >= 0 && j < this.getSizeInventory())
-	                this.setInventorySlotContents(j, ObjectLib.STACK_UTIL.readFromNBT(nbttagcompound));
+	                this.setInventorySlotContents(j, new ItemStack(nbttagcompound));
 	        }
 		}
 	}
@@ -51,7 +50,7 @@ public class InventoryTreatBag extends InventoryBasic {
         for(int i = 0; i < this.getSizeInventory(); ++i) {
             ItemStack itemstack = this.getStackInSlot(i);
 
-            if(!ObjectLib.STACK_UTIL.isEmpty(itemstack)) {
+            if(!itemstack.isEmpty()) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte)i);
                 itemstack.writeToNBT(nbttagcompound);

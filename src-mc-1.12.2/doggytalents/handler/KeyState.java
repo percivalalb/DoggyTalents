@@ -6,7 +6,6 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import doggytalents.ModItems;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.CommandMessage;
@@ -50,8 +49,8 @@ public class KeyState {
 	            	EntityPlayer player = FMLClientHandler.instance().getClientPlayerEntity();
 	            	
 	            	if(kb == mc.gameSettings.keyBindJump) {
-	            		if(ObjectLib.BRIDGE.getRidingEntity(player) instanceof EntityDog && mc.currentScreen == null) {
-	            			EntityDog dog = (EntityDog)ObjectLib.BRIDGE.getRidingEntity(player);
+	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
+	            			EntityDog dog = (EntityDog)player.getRidingEntity();
 	
 	            			DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
 	            			jumpMessage.process(player, Side.CLIENT);
@@ -60,10 +59,8 @@ public class KeyState {
 	            	}
 	            	else if(FMLClientHandler.instance().getClient().inGameHasFocus && player != null) {
 	            		
-	            		List<ItemStack> heldStacks = ObjectLib.BRIDGE.getHeldItems(player);
-	            		
-	            		for(ItemStack heldStack : heldStacks) {
-	            			if(ObjectLib.STACK_UTIL.isEmpty(heldStack) || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
+	            		for(ItemStack heldStack : player.getHeldEquipment()) {
+	            			if(heldStack.isEmpty() || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
 		            	    int command = -1;
 		            	    
 		                	if(kb == come) {

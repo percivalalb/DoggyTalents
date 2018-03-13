@@ -16,15 +16,7 @@ public class Reference {
 	public static final String 		 SERVER_PROXY     = "doggytalents.proxy.CommonProxy";
 	public static final String 		 UPDATE_URL 	  = "https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/version.json";
 	public static final String       CHANNEL_NAME     = "DOGGY";
-	public static final String       GUI_FACTORY      = "${GUI_FACTORY}";//doggytalents.base.d.GuiFactory
+	public static final String       GUI_FACTORY      = "doggytalents.client.gui.GuiFactory";//doggytalents.base.d.GuiFactory
 	
 	public static final boolean		 DEBUG 			  = false;
-	
-	public static boolean IS_DEV_ENVIR = false;
-	
-	static {
-		if(ReflectionUtil.getClass("doggytalents.base.d.RegistrySubscriber") != null && ReflectionUtil.getClass("doggytalents.base.e.RegistrySubscriber") != null)
-			IS_DEV_ENVIR = true;
-		
-	}
 }

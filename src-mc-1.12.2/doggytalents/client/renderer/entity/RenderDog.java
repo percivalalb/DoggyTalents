@@ -1,8 +1,7 @@
 package doggytalents.client.renderer.entity;
 
-import doggytalents.base.ObjectLib;
-import doggytalents.base.ObjectLibClient;
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.renderer.RenderUtil;
 import doggytalents.client.renderer.entity.layer.LayerArmor;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
@@ -17,6 +16,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -55,7 +55,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     @Override
     public void doRender(EntityDog dog, double x, double y, double z, float entityYaw, float partialTicks) {
     	if(dog.isDogWet()) {
-            float f2 = ObjectLib.METHODS.getBrightness(dog, partialTicks) * dog.getShadingWhileWet(partialTicks);
+            float f2 = dog.getBrightness() * dog.getShadingWhileWet(partialTicks);
             GlStateManager.color(f2, f2, f2);
         }
 
@@ -82,7 +82,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         	if(dog.isIncapacicated())
         		tip = "doggui.modetip.incapacitated";
                 
-        	String label = String.format("%s(%d)", ObjectLib.BRIDGE.translateToLocal(tip), dog.getDogHunger());
+        	String label = String.format("%s(%d)", I18n.translateToLocal(tip), dog.getDogHunger());
         	if(d0 <= (double)(64 * 64)) {
         		boolean flag = dog.isSneaking();
         		float f = this.renderManager.playerViewY;
@@ -90,8 +90,8 @@ public class RenderDog extends RenderLiving<EntityDog> {
         		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
         		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
         
-        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-        		ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
+        		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+        		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
         		
         		if(d0 <= (double)(5 * 5)) {
     	    		if(this.renderManager.renderViewEntity.isSneaking()) {
@@ -101,9 +101,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	    			else if(dog.getOwnerId() != null)
     	          		   	ownerName = dog.getOwnerId().toString();
     	    			else
-    	    				ownerName = ObjectLib.BRIDGE.translateToLocal("entity.doggytalents:dog.lost.name");
+    	    				ownerName = I18n.translateToLocal("entity.doggytalents:dog.lost.name");
     	    			
-    	    			ObjectLibClient.METHODS.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	    			RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
     	    		}
         		}
         	}
@@ -115,6 +115,6 @@ public class RenderDog extends RenderLiving<EntityDog> {
     	EntityDog dog = (EntityDog)entitylivingbaseIn;
     	float size = dog.getDogSize() * 0.3F + 0.1F;
     	GlStateManager.scale(size, size, size);
-    	this.shadowSize = size*0.5F;
+    	this.shadowSize = size * 0.5F;
 	}
 }

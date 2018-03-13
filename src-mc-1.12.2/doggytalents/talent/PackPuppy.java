@@ -5,7 +5,6 @@ import java.util.List;
 import doggytalents.DoggyTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.ITalent;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
@@ -13,6 +12,7 @@ import doggytalents.proxy.CommonProxy;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,10 +42,10 @@ public class PackPuppy extends ITalent {
 	@Override
 	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
 	    if(dog.isTamed()) {
-	    	if(!ObjectLib.STACK_UTIL.isEmpty(stack)) {
+	    	if(!stack.isEmpty()) {
 	    		if(stack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && !player.world.isRemote) {
 		    		player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_PACKPUPPY, dog.world, dog.getEntityId(), 0, 0);
-		    		ObjectLib.BRIDGE.playSound(dog, "random.chestopen", 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
+		    		dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
 		    		return true;
 	    		}
 	    	}
@@ -65,11 +65,11 @@ public class PackPuppy extends ITalent {
 	            
 	            ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getItem());
 
-	            if(!ObjectLib.STACK_UTIL.isEmpty(itemstack1))
+	            if(!itemstack1.isEmpty())
 	            	entityItem.setItem(itemstack1);
 	            else {
 	                entityItem.setDead();
-	                ObjectLib.BRIDGE.playSound(dog, "random.pop", 0.25F, ((dog.world.rand.nextFloat() - dog.world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+	                dog.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.25F, ((dog.world.rand.nextFloat() - dog.world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
 	            }
 	        }
 		}

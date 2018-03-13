@@ -1,10 +1,10 @@
 package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentTranslation;
 
 /**
  * @author ProPercivalalb
@@ -13,7 +13,7 @@ public class WolfMount extends ITalent {
 
 	@Override
 	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) { 
-		if(ObjectLib.STACK_UTIL.isEmpty(stack) && dog.canInteract(player)) {
+		if(stack.isEmpty() && dog.canInteract(player)) {
         	if(dog.talents.getLevel(this) > 0 && !player.isRiding() && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.world.isRemote) {
         			dog.getSitAI().setSitting(false);
@@ -30,7 +30,7 @@ public class WolfMount extends ITalent {
 	public void onLivingUpdate(EntityDog dog) {
 		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.isBeingRidden()) {
 			if(dog.getOwner() instanceof EntityPlayer)
-				ObjectLib.BRIDGE.addTranslatedMessage((EntityPlayer)dog.getOwner(), "dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName());
+				((EntityPlayer)dog.getOwner()).sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.wolfmount.outofhunger", dog.getName()));
 			
 			dog.removeEntityRidingUs();
 		}	

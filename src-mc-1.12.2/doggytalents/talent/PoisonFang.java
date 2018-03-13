@@ -1,12 +1,12 @@
 package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 
@@ -35,7 +35,7 @@ public class PoisonFang extends ITalent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
         if(dog.talents.getLevel(this) >= 3)
-        	return ObjectLib.BRIDGE.isPosion(potionEffect);
+        	return potionEffect.getPotion() == MobEffects.POISON;
         
         return true;
 	}
@@ -45,7 +45,7 @@ public class PoisonFang extends ITalent {
 		int level = dog.talents.getLevel(this);
 		
 		if(entity instanceof EntityLivingBase && level > 0)
-			ObjectLib.BRIDGE.addPosion(((EntityLivingBase)entity), level * 20, 0);
+			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, level * 20, 0));
 	    
 		return damage;
 	}

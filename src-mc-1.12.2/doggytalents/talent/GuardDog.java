@@ -1,9 +1,9 @@
 package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 
 /**
@@ -36,7 +36,7 @@ public class GuardDog extends ITalent {
             
             if (dog.getRNG().nextInt(12) < blockChance) {
             	dog.objects.put("guardtime", 10);
-            	ObjectLib.BRIDGE.playSound(entity, "random.break", dog.getSoundVolume(), (dog.getRNG().nextFloat() - dog.getRNG().nextFloat()) * 0.2F + 1.0F);
+            	dog.playSound(SoundEvents.ENTITY_ITEM_BREAK, dog.getSoundVolume(), (dog.getRNG().nextFloat() - dog.getRNG().nextFloat()) * 0.2F + 1.0F);
             	
                 return false;
             }

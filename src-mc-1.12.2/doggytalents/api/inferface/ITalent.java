@@ -1,6 +1,5 @@
 package doggytalents.api.inferface;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.translation.I18n;
 
 /**
  * @author ProPercivalalb
@@ -58,11 +58,11 @@ public abstract class ITalent {
 	}
 	
 	public String getLocalisedName() {
-		return ObjectLib.BRIDGE.translateToLocal("doggui.talentname." + this.getKey());
+		return I18n.translateToLocal("doggui.talentname." + this.getKey());
 	}
 	
 	public String getLocalisedInfo() {
-		return ObjectLib.BRIDGE.translateToLocal("doggui.talentinfo." + this.getKey());
+		return I18n.translateToLocal("doggui.talentinfo." + this.getKey());
 	}
 	
 	/**

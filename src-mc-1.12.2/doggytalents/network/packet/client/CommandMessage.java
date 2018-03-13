@@ -3,15 +3,16 @@ package doggytalents.network.packet.client;
 import java.util.List;
 
 import doggytalents.ModItems;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.DogUtil;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -39,13 +40,13 @@ public class CommandMessage extends AbstractServerMessage {
 	public void process(EntityPlayer player, Side side) {
 		World world = player.world;
 
-		List<ItemStack> heldStacks = ObjectLib.BRIDGE.getHeldItems(player);
+		Iterable<ItemStack> heldStacks = player.getHeldEquipment();
 		
 		for(ItemStack heldStack : heldStacks) {
-			if(ObjectLib.STACK_UTIL.isEmpty(heldStack) || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
+			if(heldStack.isEmpty() || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;
 			
-			List<EntityDog> nearEnts = world.getEntitiesWithinAABB(ObjectLib.ENTITY_DOG_CLASS, player.getEntityBoundingBox().grow(20D, 20D, 20D));
-			ObjectLib.BRIDGE.playSound(player, "random.bow", 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
+			List<EntityDog> nearEnts = world.getEntitiesWithinAABB(EntityDog.class, player.getEntityBoundingBox().grow(20D, 20D, 20D));
+			player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (world.rand.nextFloat() * 0.4F + 0.8F));
 			
 			boolean sucessful = false;
 			
@@ -62,7 +63,7 @@ public class CommandMessage extends AbstractServerMessage {
 			    }
 			
 			    if(sucessful)
-			    	ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.come");
+			    	player.sendMessage(new TextComponentTranslation("dogcommand.come"));
 			}
 			else if(this.commandId == 2) {
 				for(EntityDog dog : nearEnts) {
@@ -78,7 +79,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				
 		        if(sucessful)
-		        	ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.stay");
+		        	player.sendMessage(new TextComponentTranslation("dogcommand.stay"));
 			}
 			else if(this.commandId == 3) {
 				for(EntityDog dog : nearEnts) {
@@ -99,7 +100,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 				
 				if(sucessful)
-					ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.ok");
+					player.sendMessage(new TextComponentTranslation("dogcommand.ok"));
 			}
 			else if(this.commandId == 4) {
 				for(EntityDog dog : nearEnts) {
@@ -112,7 +113,7 @@ public class CommandMessage extends AbstractServerMessage {
 				}
 			        
 				if(sucessful)
-					ObjectLib.BRIDGE.addTranslatedMessage(player, "dogcommand.heel");
+					player.sendMessage(new TextComponentTranslation("dogcommand.heel"));
 			}
 			
 			break;

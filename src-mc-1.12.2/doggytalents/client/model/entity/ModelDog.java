@@ -1,12 +1,12 @@
 package doggytalents.client.model.entity;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -199,7 +199,7 @@ public class ModelDog extends ModelBase {
     public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
     	EntityDog dog = (EntityDog)entitylivingbaseIn;
 
-    	this.wolfTail.rotateAngleY = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+    	this.wolfTail.rotateAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
         if (dog.isSitting()) {
         	this.wolfMane.setRotationPoint(-1.0F, 16.0F, -3.0F);
@@ -239,10 +239,10 @@ public class ModelDog extends ModelBase {
             this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F);
             this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
             this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
-            this.wolfLeg1.rotateAngleX = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.wolfLeg2.rotateAngleX = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.wolfLeg3.rotateAngleX = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.wolfLeg4.rotateAngleX = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.wolfLeg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.wolfLeg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.wolfLeg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.wolfLeg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         }
 
         this.wolfHeadMain.rotateAngleZ = dog.getInterestedAngle(partialTickTime) + dog.getShakeAngle(partialTickTime, 0.0F);
@@ -257,7 +257,7 @@ public class ModelDog extends ModelBase {
         if((dog.isSitting() || (dog.motionX == 0.0F && dog.motionZ == 0.0F)) && dog.getHealth() > 1) {
         	float wagAngleY = dog.getWagAngle(partialTickTime, 0.0F);
         	if(wagAngleY == 0.0F)
-        		wagAngleY = ObjectLib.BRIDGE.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        		wagAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         	this.wolfTail.rotateAngleY = wagAngleY;
         }
     }

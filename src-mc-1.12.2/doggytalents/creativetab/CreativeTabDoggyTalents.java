@@ -1,13 +1,20 @@
 package doggytalents.creativetab;
 
+import doggytalents.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 
 /**
  * @author ProPercivalalb
  */
-public abstract class CreativeTabDoggyTalents extends CreativeTabs {
+public class CreativeTabDoggyTalents extends CreativeTabs {
 
 	public CreativeTabDoggyTalents() {
 		super("doggytalents");
+	}
+	
+	@Override
+	public ItemStack getTabIconItem() {
+		return new ItemStack(ModItems.TRAINING_TREAT);
 	}
 }

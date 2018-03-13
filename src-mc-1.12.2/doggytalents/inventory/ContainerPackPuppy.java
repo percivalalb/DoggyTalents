@@ -1,12 +1,12 @@
 package doggytalents.inventory;
 
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 
 /**
  * @author ProPercivalalb
@@ -19,7 +19,7 @@ public class ContainerPackPuppy extends Container {
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
         inventory.openInventory(player);
-        int packpuppyLevel = ObjectLib.BRIDGE.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = MathHelper.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         for (int j = 0; j < 3; j++) {
             for (int i1 = 0; i1 < packpuppyLevel; i1++)
@@ -39,9 +39,9 @@ public class ContainerPackPuppy extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ObjectLib.STACK_UTIL.getEmpty();
+        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(i);
-        int packpuppyLevel = ObjectLib.BRIDGE.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = MathHelper.clamp(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -49,18 +49,18 @@ public class ContainerPackPuppy extends Container {
 
             if (i < 3 * packpuppyLevel) {
                 if(!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
-                    return ObjectLib.STACK_UTIL.getEmpty();
+                    return ItemStack.EMPTY;
             }
             else if(!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
-                return ObjectLib.STACK_UTIL.getEmpty();
+                return ItemStack.EMPTY;
 
-            if(ObjectLib.STACK_UTIL.isEmpty(itemstack1))
-            	slot.putStack(ObjectLib.STACK_UTIL.getEmpty());
+            if(itemstack1.isEmpty())
+            	slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             
-            if(ObjectLib.STACK_UTIL.getCount(itemstack1) == ObjectLib.STACK_UTIL.getCount(itemstack))
-                return ObjectLib.STACK_UTIL.getEmpty();
+            if(itemstack1.getCount() == itemstack.getCount())
+                return ItemStack.EMPTY;
         }
 
         return itemstack;

@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.inferface.ITalent;
-import doggytalents.base.ObjectLib;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.init.SoundEvents;
 
 /**
  * @author ProPercivalalb
@@ -34,7 +34,7 @@ public class CreeperSweeper extends ITalent {
         }
 		
 		if((int)dog.objects.get("creeper_timer") >= (int)dog.objects.get("random_time")) {
-			ObjectLib.BRIDGE.playSound(dog, "mob.wolf.growl", dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+			dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			dog.objects.put("creeper_timer", 0);
 			dog.objects.put("random_time", 30 + this.rand.nextInt(20));
 		}

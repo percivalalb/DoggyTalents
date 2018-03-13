@@ -3,16 +3,18 @@ package doggytalents.creativetab;
 import java.util.List;
 import java.util.Random;
 
+import doggytalents.ModItems;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  */
-public abstract class CreativeTabDogBed extends CreativeTabs {
+public class CreativeTabDogBed extends CreativeTabs {
 
 	private Random random = new Random();
 	
@@ -35,4 +37,18 @@ public abstract class CreativeTabDogBed extends CreativeTabs {
 	public String pickRandomString(List<String> strs) {
 		return strs.get(random.nextInt(strs.size()));
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public ItemStack getTabIconItem() {
+		return new ItemStack(ModItems.TRAINING_TREAT);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void displayAllRelevantItems(NonNullList<ItemStack> p_78018_1_) {
+		for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
+			for(String casingId : DogBedRegistry.CASINGS.getKeys())
+				p_78018_1_.add(DogBedRegistry.createItemStack(casingId, beddingId));
+    }
 }

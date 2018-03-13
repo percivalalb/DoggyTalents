@@ -2,8 +2,14 @@ package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 
-public abstract class ItemChewStick extends ItemDT {
+public class ItemChewStick extends ItemDT {
 	
-	public abstract void addChewStickEffects(EntityPlayer player, EntityDog dog);
+	public void addChewStickEffects(EntityPlayer player, EntityDog dog) {
+		dog.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
+		dog.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
+		dog.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));
+	}
 }

@@ -2,21 +2,35 @@ package doggytalents.proxy;
 
 import java.util.Random;
 
-import doggytalents.base.ObjectLib;
-import doggytalents.base.ObjectLibClient;
-import doggytalents.base.VersionControl;
+import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
+import doggytalents.client.gui.GuiFoodBowl;
+import doggytalents.client.gui.GuiPackPuppy;
+import doggytalents.client.gui.GuiTreatBag;
+import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
+import doggytalents.client.renderer.particle.ParticleCustomLanding;
+import doggytalents.client.renderer.world.WorldRender;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.KeyState;
+import doggytalents.handler.ModelBake;
 import doggytalents.tileentity.TileEntityFoodBowl;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.color.IItemColor;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -38,34 +52,56 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
-		ObjectLibClient.INITIALIZATION.preInit(event);
 		
 		ClientRegistry.registerKeyBinding(KeyState.come);
 		ClientRegistry.registerKeyBinding(KeyState.stay);
 		ClientRegistry.registerKeyBinding(KeyState.ok);
 		ClientRegistry.registerKeyBinding(KeyState.heel);
 		
-		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOG_CLASS, RenderDog::new);
-		RenderingRegistry.registerEntityRenderingHandler(ObjectLib.ENTITY_DOGGY_BEAM_CLASS, RenderDogBeam::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
 	}
 	
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
-		ObjectLibClient.INITIALIZATION.init(event);
 	}
 	
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
-		ObjectLibClient.INITIALIZATION.postInit(event);
+		
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+
+			@Override
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
+				if(stack.hasTagCompound())
+					if(stack.getTagCompound().hasKey("collar_colour"))
+						return stack.getTagCompound().getInteger("collar_colour");
+				return -1;
+			}
+			
+		}, ModItems.WOOL_COLLAR);
+		
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
+
+		@Override
+			public int colorMultiplier(ItemStack stack, int tintIndex) {
+				if(stack.hasTagCompound())
+					if(stack.getTagCompound().hasKey("cape_colour"))
+						return stack.getTagCompound().getInteger("cape_colour");
+				return -1;
+			}
+			
+		}, ModItems.CAPE_COLOURED);
 	}
 	
 	@Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
-        MinecraftForge.EVENT_BUS.register(VersionControl.createObject("WorldRender"));
+        MinecraftForge.EVENT_BUS.register(new WorldRender());
 		MinecraftForge.EVENT_BUS.register(new KeyState());
+		MinecraftForge.EVENT_BUS.register(new ModelBake());
     }
 	
 
@@ -83,17 +119,17 @@ public class ClientProxy extends CommonProxy {
             if(!(target instanceof EntityDog)) 
             	return null;
 			EntityDog dog = (EntityDog)target;
-			return ObjectLibClient.createGuiPackPuppy(player, dog);
+			return new GuiPackPuppy(player, dog);
 		}
 		else if(ID == GUI_ID_FOOD_BOWL) {
-			TileEntity target = ObjectLib.BRIDGE.getTileEntity(world, x, y, z);
+			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
-			return ObjectLibClient.createGuiFoodBowl(player.inventory, foodBowl);
+			return new GuiFoodBowl(player.inventory, foodBowl);
 		}
 		else if(ID == GUI_ID_FOOD_BAG) {
-			return ObjectLibClient.createGuiTreatBag(player, x, player.inventory.getStackInSlot(x));
+			return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
 		}
 		return null;
 	}
@@ -120,6 +156,26 @@ public class ClientProxy extends CommonProxy {
 	
 	@Override
 	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		ObjectLibClient.METHODS.spawnCustomParticle(player, pos, rand, posX, posY, posZ, numberOfParticles, particleSpeed);
+		TextureAtlasSprite sprite;
+
+		IBlockState state = player.world.getBlockState((BlockPos)pos);
+		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+		if(model instanceof IStateParticleModel) {
+			state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
+			sprite = ((IStateParticleModel)model).getParticleTexture(state);
+		} 
+		else
+			sprite = model.getParticleTexture();
+		
+		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
+
+		for(int i = 0; i < numberOfParticles; i++) {
+			double xSpeed = rand.nextGaussian() * particleSpeed;
+			double ySpeed = rand.nextGaussian() * particleSpeed;
+			double zSpeed = rand.nextGaussian() * particleSpeed;
+			
+			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
+			manager.addEffect(particle);
+		}
 	}
 }

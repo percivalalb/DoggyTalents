@@ -21,6 +21,13 @@ public class GuiFoodBowl extends GuiContainer {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+		this.drawDefaultBackground();
+		super.drawScreen(mouseX, mouseY, partialTicks);
+		this.renderHoveredToolTip(mouseX, mouseY);
+    }
+    
+    @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
     	String s = this.foodBowl.inventory.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, 10, 8, 4210752);

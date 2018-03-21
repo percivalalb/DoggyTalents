@@ -1,6 +1,5 @@
 {
     "variants": {
-        "normal": { "model": "doggytalents:dog_bath" },
-        "version=1.8": { "model": "doggytalents:1.8.9/dog_bath" }
+        "normal": { "model": "doggytalents:dog_bath" }
     }
 }

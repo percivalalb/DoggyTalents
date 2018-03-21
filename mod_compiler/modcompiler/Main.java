@@ -44,7 +44,7 @@ import javax.swing.UIManager;
 
 public class Main {
 	
-	public static final String USER_DOCS = "C:\\Users\\Alex Barter\\Documents";
+	public static final String USER_DOCS = "C:\\Users\\u1705332\\Documents";
 	
 	public static final String FINAL_DES = USER_DOCS + "\\Minecraft\\CompiledMods";
 	public static Mod MOD = Mod.DOGGY_TALENTS;
@@ -68,7 +68,7 @@ public class Main {
 		}
 		
 		public String getPathToVersion(ForgeEnvironment forgeEnvi) {
-			return this.getPath() + "\\src-mc-" + (this == DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10") ? "universal" : forgeEnvi.getVersion());
+			return this.getPath() + "\\src-mc-" + forgeEnvi.getVersion();
 		}
 		
 		public String getPath() {
@@ -89,7 +89,8 @@ public class Main {
 		_1_10_2("1.10.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.10.2"),
 		_1_11_2("1.11.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.11.2"),
 		_1_12("1.12", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12"),
-		_1_12_1("1.12.1", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.1");
+		_1_12_1("1.12.1", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.1"),
+		_1_12_2("1.12.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.2");
 		
 		private String pathBase;
 		private String version;
@@ -318,6 +319,7 @@ public class Main {
 		copyDirectory(modSrc, forgeResources, notJavaFiles);
 		Main.output.println("Succesfully copied all resource files.");
 		
+		/**
 		if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10")) {
 			File config = new File(modSrc, mod.packageLoc + "\\base\\compile.cfg");
 			Iterator<String> stream = Files.lines(config.toPath(), StandardCharsets.UTF_8).iterator();
@@ -353,7 +355,7 @@ public class Main {
 				
 				copyFile(clazz, newFile);
 			}
-		}
+		}**/
 		
 		/** Cool but not very practical
 		String content = "";
@@ -388,6 +390,7 @@ public class Main {
 			
 			String replacedtext = oldtext;
 			
+			/**
 			if(mod == Mod.DOGGY_TALENTS && !forgeEnvi.getVersion().equals("1.7.10")) {
 				int index = getIndex(forgeEnvi);
 				String path;
@@ -403,7 +406,7 @@ public class Main {
 				guiFactory = guiFactory.replaceAll("\\\\", ".");
 				Main.output.println(guiFactory);
 				replacedtext = oldtext.replaceAll("\\$\\{GUI_FACTORY\\}", guiFactory);
-			}
+			}**/
 			
 			replacedtext = replacedtext.replaceAll("\\$\\{MOD_VERSION\\}", modVersion);
 	        

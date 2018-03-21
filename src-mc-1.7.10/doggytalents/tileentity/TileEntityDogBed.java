@@ -66,7 +66,7 @@ public class TileEntityDogBed extends TileEntity {
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		this.readFromNBT(pkt.getNbtCompound());
+		this.readFromNBT(pkt.func_148857_g());
 	}
 
 	public void setCasingId(String newId) {

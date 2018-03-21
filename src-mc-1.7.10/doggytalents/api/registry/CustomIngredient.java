@@ -22,9 +22,9 @@ public class CustomIngredient {
             {
                 if (itemstack.getItem() == p_apply_1_.getItem())
                 {
-                    int i = itemstack.getMetadata();
+                    int i = itemstack.getItemDamage();
 
-                    if (i == 32767 || i == p_apply_1_.getMetadata())
+                    if (i == 32767 || i == p_apply_1_.getItemDamage())
                     {
                         return true;
                     }

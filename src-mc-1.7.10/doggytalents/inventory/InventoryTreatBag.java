@@ -29,7 +29,7 @@ public class InventoryTreatBag extends InventoryBasic {
     }
 
 	@Override
-	public void openChest() {
+	public void openInventory() {
 		if(this.itemstack.hasTagCompound() && this.itemstack.getTagCompound().hasKey("inventory", 10)) {
 			NBTTagList nbttaglist = this.itemstack.getTagCompound().getCompoundTag("inventory").getTagList("Items", 10);
 	
@@ -44,7 +44,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	}
 
 	@Override
-	public void closeChest() {
+	public void closeInventory() {
 		NBTTagList nbttaglist = new NBTTagList();
 
         for(int i = 0; i < this.getSizeInventory(); ++i) {

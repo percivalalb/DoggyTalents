@@ -2,6 +2,7 @@ package doggytalents.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import doggytalents.DoggyTalents;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemMap;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ public class ItemRadar extends ItemMap {
 	
 	public ItemRadar() {
 		super();
+		this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
 		this.setMaxStackSize(1);
 	}
 		

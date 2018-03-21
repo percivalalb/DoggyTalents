@@ -29,10 +29,10 @@ public class CreeperSweeper extends ITalent {
             List<EntityCreeper> list = dog.worldObj.getEntitiesWithinAABB(EntityCreeper.class, dog.boundingBox.expand(level * 5, level * 2, level * 5));
 
             if(!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1)
-            	dog.objects.put("creeper_timer", (int)dog.objects.get("creeper_timer") + 1);
+            	dog.objects.put("creeper_timer", (Integer)dog.objects.get("creeper_timer") + 1);
         }
 		
-		if((int)dog.objects.get("creeper_timer") >= (int)dog.objects.get("random_time")) {
+		if((Integer)dog.objects.get("creeper_timer") >= (Integer)dog.objects.get("random_time")) {
 			dog.playSound("mob.wolf.growl", dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			dog.objects.put("creeper_timer", 0);
 			dog.objects.put("random_time", 30 + this.rand.nextInt(20));

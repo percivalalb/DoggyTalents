@@ -165,8 +165,8 @@ public class RenderDog extends RenderLiving {
     }
     
     @Override
-    protected void renderOffsetLivingLabel(EntityLivingBase entityLivingBase, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {
-    	super.renderOffsetLivingLabel(entityLivingBase, x, y, z, displayName, scale, distanceFromPlayer);
+    protected void func_96449_a(EntityLivingBase entityLivingBase, double x, double y, double z, String displayName, float scale, double distanceFromPlayer) {
+    	super.func_96449_a(entityLivingBase, x, y, z, displayName, scale, distanceFromPlayer);
         
     	EntityDog dog = (EntityDog)entityLivingBase;
     	
@@ -192,7 +192,7 @@ public class RenderDog extends RenderLiving {
            if(this.renderManager.livingPlayer.isSneaking()) {
         	   String ownerName = "A Wild Dog";
         	   if(dog.getOwner() != null)
-        		   ownerName = dog.getOwner().getFormattedCommandSenderName().getUnformattedText();
+        		   ownerName = dog.getOwner().func_145748_c_().getUnformattedText();
    				else if(dog.func_152113_b() != null)
    					ownerName = dog.func_152113_b().toString();
    				else

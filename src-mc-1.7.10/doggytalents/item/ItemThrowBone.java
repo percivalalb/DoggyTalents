@@ -60,8 +60,8 @@ public class ItemThrowBone extends ItemDT {
 	//TOOD onItemRightClick
 	@Override
     public ItemStack onItemRightClick(ItemStack itemstack, World worldIn, EntityPlayer playerIn) {
-		if(itemstack.getMetadata() % 2 == 1) {
-    		itemstack.setMetadata(itemstack.getMetadata() - 1);
+		if(itemstack.getItemDamage() % 2 == 1) {
+    		itemstack.setItemDamage(itemstack.getItemDamage() - 1);
     		playerIn.swingItem();
     	}
     	else {
@@ -118,6 +118,6 @@ public class ItemThrowBone extends ItemDT {
 	
 	@Override
     public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return this.getUnlocalizedName() + par1ItemStack.getMetadata();
+        return this.getUnlocalizedName() + par1ItemStack.getItemDamage();
     }
 }

@@ -170,7 +170,7 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister par1IconRegister) {}
+	public void registerBlockIcons(IIconRegister par1IconRegister) {}
 
 	@Override
     @SideOnly(Side.CLIENT)
@@ -193,7 +193,7 @@ public class BlockDogBed extends BlockContainer {
 		return false;
 	}
 	
-	public final ThreadLocal<ItemStack> drops = new ThreadLocal<>();
+	public final ThreadLocal<ItemStack> drops = new ThreadLocal<ItemStack>();
 
 	@Override
 	public void onBlockHarvested(World worldIn, int x, int y, int z, int metadata, EntityPlayer playerIn) {

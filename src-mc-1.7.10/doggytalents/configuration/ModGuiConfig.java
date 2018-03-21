@@ -24,7 +24,7 @@ public class ModGuiConfig extends GuiConfig {
 	}
 
 	private static List<IConfigElement> getConfigElements() {
-		List<IConfigElement> list = new ArrayList<>();
+		List<IConfigElement> list = new ArrayList<IConfigElement>();
 		list.add(new DummyCategoryElement("doggysettings", "modgui.config.doggysettings", DoggySettingsEntry.class));
 		list.add(new DummyCategoryElement("talents", "modgui.config.talents", DTTalentEntry.class));
 		list.add(new DummyCategoryElement("general", "modgui.config.general", DTGeneralEntry.class));

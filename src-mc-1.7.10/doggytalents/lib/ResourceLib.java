@@ -13,8 +13,8 @@ public class ResourceLib {
 	public static final ResourceLocation GUI_PACK_PUPPY = new ResourceLocation("doggytalents", getGuiTexturePath("pack_puppy.png"));
 	public static final ResourceLocation GUI_TREAT_BAG = new ResourceLocation("doggytalents", getGuiTexturePath("treat_bag.png"));
 	
-	public static HashMap<Integer, ResourceLocation> doggyTameSkins = new HashMap<>();
-	public static HashMap<Integer, ResourceLocation> doggyFancyCollars = new HashMap<>();
+	public static HashMap<Integer, ResourceLocation> doggyTameSkins = new HashMap<Integer, ResourceLocation>();
+	public static HashMap<Integer, ResourceLocation> doggyFancyCollars = new HashMap<Integer, ResourceLocation>();
 	
 	public static final ResourceLocation MOB_LAYER_DOG_COLLAR = new ResourceLocation("doggytalents", getMobTexturePath("doggy_collar.png"));
 	public static final ResourceLocation MOB_DOG_TAME = new ResourceLocation("doggytalents", getMobTexturePath("doggy_tame.png"));

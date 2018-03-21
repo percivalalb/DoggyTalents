@@ -31,7 +31,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget {
                 return false;
             else {
                 this.theOwnerAttacker = owner.getAITarget();
-                int i = owner.getRevengeTimer();
+                int i = owner.func_142015_aE();
                 return i != this.timestamp && this.isSuitableTarget(this.theOwnerAttacker, false) && this.dog.func_142018_a(this.theOwnerAttacker, owner);
             }
         }
@@ -48,7 +48,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget {
         EntityLivingBase owner = this.dog.getOwner();
 
         if(owner != null)
-            this.timestamp = owner.getRevengeTimer();
+            this.timestamp = owner.func_142015_aE();
 
         super.startExecuting();
     }

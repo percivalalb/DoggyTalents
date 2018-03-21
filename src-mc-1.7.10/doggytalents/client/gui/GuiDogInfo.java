@@ -163,7 +163,7 @@ public class GuiDogInfo extends GuiScreen {
 			    	list.add(EnumChatFormatting.GREEN + talent.getLocalisedName());
 			    	list.add("Level: " + this.dog.talents.getLevel(talent));
 			    	list.add(EnumChatFormatting.GRAY + "--------------------------------");
-		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRendererObj));
+		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRenderer));
 	    		}
 	    		else if(button.id == -1) {
 	    			list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("doggui.prevpage"));
@@ -173,7 +173,7 @@ public class GuiDogInfo extends GuiScreen {
 	    		}
 	    		else if(button.id == -6) {
     				String str = StatCollector.translateToLocal(dog.mode.getMode().getUnlocalisedInfo());
-    				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
+    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
     				if(this.dog.mode.isMode(EnumMode.WANDERING)) {
     					if(!this.dog.coords.hasBowlPos())
     						list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("doggui.mode.docile.nobowl"));
@@ -185,7 +185,7 @@ public class GuiDogInfo extends GuiScreen {
     				
     			}
 	    		
-	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRendererObj);
+	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
 	    	}
 	    }
 	    GL11.glPopMatrix();

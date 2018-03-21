@@ -24,7 +24,7 @@ public class GuiFoodBowl extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-    	String s = this.foodBowl.inventory.isCustomInventoryName() ? this.foodBowl.inventory.getInventoryName() : StatCollector.translateToLocal(this.foodBowl.inventory.getInventoryName());
+    	String s = this.foodBowl.inventory.hasCustomInventoryName() ? this.foodBowl.inventory.getInventoryName() : StatCollector.translateToLocal(this.foodBowl.inventory.getInventoryName());
         this.fontRendererObj.drawString(s, 10, 8, 4210752);
     }
 

@@ -69,13 +69,13 @@ public class BlockFoodBowl extends BlockContainer {
         	if(stack != null && stack.getItem() == ModItems.TREAT_BAG) {
         		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(x, y, z);
         		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
-        		treatBag.openChest();
+        		treatBag.openInventory();
         		
         		for(int i = 0; i < treatBag.getSizeInventory(); i++)
         			treatBag.setInventorySlotContents(i, DogUtil.addItem(tileentitydogfoodbowl.inventory, treatBag.getStackInSlot(i)));
         		
         		treatBag.markDirty();
-        		treatBag.closeChest();
+        		treatBag.closeInventory();
         		
         		return true;
         	}
@@ -130,7 +130,7 @@ public class BlockFoodBowl extends BlockContainer {
 	}
 	
 	@Override
-    public void registerIcons(IIconRegister par1IconRegister) {
+    public void registerBlockIcons(IIconRegister par1IconRegister) {
         this.top = par1IconRegister.registerIcon("doggytalents:food_top");
         this.bottom = par1IconRegister.registerIcon("doggytalents:food_bottom");
         this.side = par1IconRegister.registerIcon("doggytalents:food_side");
@@ -170,7 +170,7 @@ public class BlockFoodBowl extends BlockContainer {
 	                        }
 
 	                        itemstack.stackSize -= j1;
-	                        entityitem = new EntityItem(worldIn, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getMetadata()));
+	                        entityitem = new EntityItem(worldIn, (double)((float)x + f), (double)((float)y + f1), (double)((float)z + f2), new ItemStack(itemstack.getItem(), j1, itemstack.getItemDamage()));
 	                        float f3 = 0.05F;
 	                        entityitem.motionX = (double)((float)this.random.nextGaussian() * f3);
 	                        entityitem.motionY = (double)((float)this.random.nextGaussian() * f3 + 0.2F);
@@ -184,7 +184,7 @@ public class BlockFoodBowl extends BlockContainer {
 	                }
 	            }
 
-	            worldIn.updateNeighborsAboutBlockChange(x, y, z, block);
+	            worldIn.func_147453_f(x, y, z, block);
 	        }
 		}
 

@@ -18,8 +18,7 @@ public class ContainerTreatBag extends Container {
 		this.slot = slotIn;
 		this.itemstack = itemstackIn;
 		this.inventoryTreatBag = new InventoryTreatBag(playerIn, slotIn, this.itemstack);
-        this.inventoryTreatBag.openChest();
-		DoggyTalents.LOGGER.info("Open");
+        this.inventoryTreatBag.openInventory();
         
         for(int l = 0; l < 5; l++)
         	this.addSlotToContainer(new Slot(this.inventoryTreatBag, l, 44 + l * 18, 22) {
@@ -82,6 +81,6 @@ public class ContainerTreatBag extends Container {
     public void onContainerClosed(EntityPlayer playerIn) {
 		super.onContainerClosed(playerIn);
 		DoggyTalents.LOGGER.info("Close");
-		this.inventoryTreatBag.closeChest();
+		this.inventoryTreatBag.closeInventory();
     }
 }

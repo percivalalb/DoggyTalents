@@ -50,7 +50,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
             	}
             	else if(this.dog.mode.isMode(EnumMode.AGGRESIVE)) {
             		this.entityToAttack = entitylivingbase.getAITarget();
-                    int i = entitylivingbase.getRevengeTimer();
+                    int i = entitylivingbase.func_142015_aE();
                     return i != this.timestamp && this.isSuitableTarget(this.entityToAttack, false) && this.dog.func_142018_a(this.entityToAttack, entitylivingbase);
             	}
            	 	return false;
@@ -69,7 +69,7 @@ public class EntityAIModeAttackTarget extends EntityAITarget {
         EntityLivingBase entitylivingbase = this.dog.getOwner();
 
         if (entitylivingbase != null)
-            this.timestamp = entitylivingbase.getRevengeTimer();
+            this.timestamp = entitylivingbase.func_142015_aE();
 
         super.startExecuting();
     }

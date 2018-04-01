@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockDogBath extends BlockContainer {
 
-	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
 	
 	public BlockDogBath() {
 		super(Material.IRON);
@@ -49,7 +49,7 @@ public class BlockDogBath extends BlockContainer {
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(entity instanceof EntityDog) {
 			EntityDog dog = (EntityDog)entity;
-			dog.isShaking = true;
+			dog.isWet = true;
 		}
 	}
 	

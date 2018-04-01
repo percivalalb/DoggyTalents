@@ -1231,7 +1231,8 @@ public class EntityDog extends EntityAbstractDog {
 		}
 	}
 	
-	private void onFinishShaking() {
+	@Override
+	protected void onFinishShaking() {
 		if(!this.world.isRemote) {
 			int lvlFisherDog = this.talents.getLevel("fisherdog");
 			int lvlHellHound = this.talents.getLevel("hellhound");

@@ -21,7 +21,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
     private float headRotationCourse;
     private float headRotationCourseOld;
     /** true is the wolf is wet else false */
-    private boolean isWet;
+    public boolean isWet;
     /** True if the wolf is shaking else False */
     public boolean isShaking;
     /** This time increases while wolf is shaking and emitting water particles. */
@@ -209,9 +209,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
         return this.getControllingPassenger() instanceof EntityPlayer;
     }
 	
-	private void onFinishShaking() {
-		
-	}
+	protected abstract void onFinishShaking();
 	
 	@Override
 	public void onDeath(DamageSource cause) {

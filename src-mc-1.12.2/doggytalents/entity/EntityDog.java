@@ -29,6 +29,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -74,7 +75,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * @author ProPercivalalb
  */
-public class EntityDog extends EntityAbstractDog {
+public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/ { //TODO RangedAttacker
 	
     private float timeWolfIsHappy;
     private float prevTimeWolfIsHappy;
@@ -106,7 +107,6 @@ public class EntityDog extends EntityAbstractDog {
         if(world != null && !world.isRemote) {
         	this.aiSit = new EntityAISit(this);
             this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-            
             this.tasks.addTask(1, new EntityAISwimming(this));
             this.tasks.addTask(2, this.aiSit);
             this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
@@ -317,7 +317,7 @@ public class EntityDog extends EntityAbstractDog {
 	        }
     	}
         
-        if(this.getHealth() != 1) {
+        if(this.getHealth() != Constants.lowHealthLevel) {
 	        this.prevHealingTick = this.healingTick;
 	        this.healingTick += this.nourishment();
 	        
@@ -334,7 +334,7 @@ public class EntityDog extends EntityAbstractDog {
             this.setHealth(1);
         }
         
-        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > 1) {
+        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > Constants.lowHealthLevel) {
             this.attackEntityFrom(DamageSource.GENERIC, 1);
             //this.fleeingTick = 0;
         }
@@ -663,7 +663,7 @@ public class EntityDog extends EntityAbstractDog {
 
                     return true;
                 }
-                else if(stack.getItem() == Items.DYE && this.canInteract(player)) {
+                else if(stack.getItem() == Items.DYE && this.canInteract(player)) { //TODO Add Plants compatibility
                     if(!this.hasCollarColoured())
                     	return true;
                     
@@ -883,8 +883,11 @@ public class EntityDog extends EntityAbstractDog {
             if(itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
                 order = 2;
 
-            if(itemstack != null && itemstack.getItem() == Items.WHEAT)
+            if(itemstack != null && itemstack.getItem() == Items.WHEAT) //Round up Talent
                 order = 3;
+            
+            if(itemstack != null && itemstack.getItem() == Items.BONE) //Roar Talent
+            	order = 4;
         }
 
         return order;
@@ -1086,7 +1089,7 @@ public class EntityDog extends EntityAbstractDog {
     }
     
     public boolean isIncapacicated() {
-    	return this.isImmortal() && this.getHealth() <= 1;
+    	return this.isImmortal() && this.getHealth() <= Constants.lowHealthLevel;
     }
     
     @Override
@@ -1241,4 +1244,15 @@ public class EntityDog extends EntityAbstractDog {
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_FISH : Items.FISH, 1);
 		}
 	}
+
+	//TODO RangedAttacker
+	/*@Override
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+		
+	}
+
+	@Override
+	public void setSwingingArms(boolean swingingArms) {
+		
+	}*/
 }

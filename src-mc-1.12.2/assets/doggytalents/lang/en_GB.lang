@@ -55,6 +55,7 @@ doggui.talentname.pestfighter=Pest Fighter
 doggui.talentname.poisonfang=Poison Fang
 doggui.talentname.shepherddog=Shepherd Dog
 doggui.talentname.rescuedog=Rescue Dog
+doggui.talentname.roaringgale=Roaring Gale
 doggui.talentname.puppyeyes=Puppy Eyes
 doggui.talentname.swimmerdog=Swimmer Dog
 
@@ -75,6 +76,7 @@ doggui.talentinfo.pestfighter=Inflicts 1 point of damage on all nearby silverfis
 doggui.talentinfo.poisonfang=Your dog's attacks will poison their target, and the poison's duration increases with level. At level 3 your dog becomes immune to poison, and mastering this skill allows you to cleanse yourself of all potion effects, including poison, by right-clicking on your dog with a spider eye, at the cost of 30 NP.
 doggui.talentinfo.shepherddog=Put some wheat in your hand, and any trained Shepherd Dogs will immediately rustle up some nearby livestock and carry them for you making it easier to transport livestock long distances This is quite tiring though, and costs a lot of nourishment the cost is reduced with higher levels in the skill To have your dog drop the animal, simply don't hold wheat.
 doggui.talentinfo.rescuedog=If you're at critical health and a dog with this skill is following you, it will attempt to heal you half a heart per level in this skill, at the cost of 100 NP Mastering this skill reduces the cost to 80 NP
+doggui.talentinfo.roaringgale=Put a bone in hand and unleash your dog's inner roar! The duration of the stun effects and damage per roar will increase and the cooldown time before your dog's next roar will decrease per level. Mastering this skill will set the cooldown time to 40 ticks (2 seconds), and the effect duration will be set to 70 ticks (3.5 seconds).
 doggui.talentinfo.puppyeyes=This skill will cause your dog to warm the heart of any villager, prompting the villager to give you presents! Higher levels in the skill increase the quality of the random gifts. This can only be done once every two Minecraft days. Mastering the skill allows you to do this once every Minecraft day.
 doggui.talentinfo.swimmerdog=Allows you to ride your dog in water and it to breath longer underwater. Maxing it allows the rider to see easily underwater. 
 

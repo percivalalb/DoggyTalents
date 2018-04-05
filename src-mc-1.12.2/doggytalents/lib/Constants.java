@@ -16,5 +16,7 @@ public class Constants {
 	public static boolean TEN_DAY_PUPS = true;
 	public static boolean DOGGY_WINGS = true;
 	
+	public static int lowHealthLevel = 1;
+	
 	public static List<String> DISABLED_TALENTS = new ArrayList<String>();
 }

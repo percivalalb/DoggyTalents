@@ -103,7 +103,7 @@ public class DoggyTalents {
 		TalentRegistry.registerTalent(new PoisonFang());
 		TalentRegistry.registerTalent(new PuppyEyes());
 		TalentRegistry.registerTalent(new QuickHealer());
-		TalentRegistry.registerTalent(new RangedAttacker());
+		//TalentRegistry.registerTalent(new RangedAttacker()); TODO RangedAttacker
 		TalentRegistry.registerTalent(new RescueDog());
 		TalentRegistry.registerTalent(new RoaringGale());
 		TalentRegistry.registerTalent(new ShepherdDog());

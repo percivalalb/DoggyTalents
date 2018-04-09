@@ -38,6 +38,9 @@ public interface IDataTracker {
     
 	public void setDogSize(int value);
 	public int getDogSize();
+	
+	public void setGender(String value);
+	public String getGender();
     
     public void setLevel(int level);
 	public int getLevel();

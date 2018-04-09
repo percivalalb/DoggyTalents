@@ -42,7 +42,7 @@ public class RoaringGale extends ITalent {
 		int masterOrder = dog.masterOrder();
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 
-		if (dog.world.isRemote || masterOrder != 4 || dog.getHealth() <= Constants.lowHealthLevel || dog.isChild() || level < 1) {
+		if (dog.isClient() || masterOrder != 4 || dog.getHealth() <= Constants.lowHealthLevel || dog.isChild() || level < 1) {
 			return;
 		}
 

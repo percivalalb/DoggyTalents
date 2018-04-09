@@ -2,12 +2,15 @@ package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDataTracker;
+import doggytalents.lib.Constants;
+import doggytalents.lib.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
@@ -45,8 +48,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
     //Do not put an override annotation here
 	public abstract boolean isBeingRidden();
 	public abstract void removeEntityRidingUs();
-	
-	
+
 	@Override
 	protected void entityInit() {
 		super.entityInit();
@@ -62,7 +64,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	public void onLivingUpdate() {
 		super.onLivingUpdate();
 
-		if(!this.world.isRemote && this.isWet && !this.isShaking && !this.hasPath() && this.onGround) {
+		if(isServer() && this.isWet && !this.isShaking && !this.hasPath() && this.onGround) {
 			this.isShaking = true;
 			this.timeWolfIsShaking = 0.0F;
 			this.prevTimeWolfIsShaking = 0.0F;
@@ -184,6 +186,25 @@ public abstract class EntityAbstractDog extends EntityTameable {
     public boolean isBreedingItem(ItemStack stack) {
         return !stack.isEmpty() && DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
     }
+    
+	public String getGender() {
+		return this.dataTracker.getGender();
+	}
+	
+	public void setGender(String gender) {
+		this.dataTracker.setGender(gender);
+	}
+	
+	private boolean checkGender(EntityAbstractDog entitydog) {
+		if(Constants.DOG_GENDER == true && this.getGender() == entitydog.getGender())
+			return false;
+		else if(Constants.DOG_GENDER == true && this.getGender() != entitydog.getGender() && (entitydog.getGender().isEmpty() || this.getGender().isEmpty()))
+			return false;
+		else if(Constants.DOG_GENDER == true && this.getGender() != entitydog.getGender())
+			return true;
+		else
+			return true;
+	}
 	
 	@Override
 	public boolean canMateWith(EntityAnimal otherAnimal) {
@@ -195,7 +216,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
             return false;
         else {
         	EntityAbstractDog entitydog = (EntityAbstractDog)otherAnimal;
-            return !entitydog.isTamed() ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
+            return !entitydog.isTamed() ? false : !this.checkGender(entitydog) ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
         }
     }
     
@@ -214,5 +235,27 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	public void onDeath(DamageSource cause) {
 		//No death message
+	}
+	
+	/**
+	 * Checks if this entity is running on a client.
+	 *
+	 * Required since MCP's isClientWorld returns the exact opposite...
+	 *
+	 * @return true if the entity runs on a client or false if it runs on a
+	 *         server
+	 */
+	public boolean isClient() {
+		return this.world.isRemote;
+	}
+
+	/**
+	 * Checks if this entity is running on a server.
+	 *
+	 * @return true if the entity runs on a server or false if it runs on a
+	 *         client
+	 */
+	public boolean isServer() {
+		return !this.world.isRemote;
 	}
 }

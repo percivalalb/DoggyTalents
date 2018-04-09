@@ -47,6 +47,7 @@ public class ConfigurationHandler {
 		Constants.STARTING_ITEMS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isStartingItemsEnabled", true, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(true);
 		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will bleed while incapacitated.").getBoolean(true);
 		Constants.DOGGY_WINGS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyWings", true, "When enabled, Dogs will have wings when at level 5 pillow paw").getBoolean(true);
+		Constants.DOG_GENDER = CONFIG.get(CATEGORY_DOGGYSETTINGS, "dogGender", false, "When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender").setRequiresMcRestart(true).getBoolean(false);
 		
 		//Add Everything in the current list in whatever way you want
 		orderDSetting.add("isDogImmortal");
@@ -56,6 +57,7 @@ public class ConfigurationHandler {
 		orderDSetting.add("isStartingItemsEnabled");
 		orderDSetting.add("bloodWhenIncapacitated");
 		orderDSetting.add("doggyWings");
+		orderDSetting.add("dogGender");
 		
 		//Sets the category property order to that of which you have set the list above
 		CONFIG.setCategoryPropertyOrder(CATEGORY_DOGGYSETTINGS, orderDSetting);
@@ -64,7 +66,7 @@ public class ConfigurationHandler {
 		
 		String[] talentIds = new String[] {"bedfinder", "blackpelt", "creepersweeper", "doggydash", "fisherdog", "guarddog", "happyeater", "hellhound", 
 											"hunterdog", "packpuppy", "pestfighter", "pillowpaw", "poisonfang", "puppyeyes", "quickhealer", 
-											"rescuedog", "shepherddog", "swimmerdog", "wolfmount"};
+											"rescuedog", "roaringgale", "shepherddog", "swimmerdog", "wolfmount"};
 		for(String talentId : talentIds) {
 			boolean enabled = CONFIG.get(CATEGORY_TALENT, talentId, true).getBoolean(true);
 			if(!enabled)

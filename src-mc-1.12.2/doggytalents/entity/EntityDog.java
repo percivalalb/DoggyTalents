@@ -104,7 +104,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     public EntityDog(World world) {
         super(world);
 
-        if(world != null && !world.isRemote) {
+        if(world != null && isServer()) {
         	this.aiSit = new EntityAISit(this);
             this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
             this.tasks.addTask(1, new EntityAISwimming(this));
@@ -112,7 +112,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
             this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
             //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-            this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+            this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F)); //Uses EntityDogClass
             this.tasks.addTask(5, this.aiFetchBone);
             this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
             this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
@@ -216,12 +216,24 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     @Override
     protected void entityInit() {
         super.entityInit();
+        //Allow for the global searching of dogs with the whistle item
+        this.enablePersistence();
+        
         this.talents = new TalentUtil(this);
         this.levels = new LevelUtil(this);
         this.mode = new ModeUtil(this);
         this.coords = new CoordUtil(this);
         
         this.dataTracker.entityInit();
+        
+        if (this.getGender().isEmpty()) {
+        	if (rand.nextInt(2) == 0) {
+        		this.setGender("male");
+        	}
+        	else {
+        		this.setGender("female");
+        	}
+        }
     }
 
     @Override
@@ -238,6 +250,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         tagCompound.setBoolean("sunglasses", this.hasSunglasses());
         tagCompound.setInteger("capeData", this.getCapeData());
         tagCompound.setInteger("dogSize", this.getDogSize());
+        tagCompound.setString("dogGender", this.getGender());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -260,6 +273,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
         if(tagCompound.hasKey("capeData", 99)) this.setCapeData(tagCompound.getInteger("capeData"));
         if(tagCompound.hasKey("dogSize", 99)) this.setDogSize(tagCompound.getInteger("dogSize"));
+        this.setGender(tagCompound.getString("dogGender"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -399,7 +413,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     			float distanceToOwner = player.getDistance(this);
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
-                	if(!this.world.isRemote) {
+                	if(isServer()) {
                 		ItemStack fetchItem = ItemStack.EMPTY;
                 		
                 		switch(this.getBoneVariant()) {
@@ -479,7 +493,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         entityLiving.rotationYaw = this.rotationYaw;
         entityLiving.rotationPitch = this.rotationPitch;
 
-        if(!this.world.isRemote)
+        if(isServer())
             entityLiving.startRiding(this);
     }
     
@@ -586,7 +600,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
-                	if(!this.world.isRemote) {
+                	if(isServer()) {
                 		if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                 			this.reversionTime = 40;
                 			if(this.hasCollarColoured()) {
@@ -651,7 +665,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 	if(!player.capabilities.isCreativeMode)
                 		stack.shrink(1);
                 	
-                    if(!this.world.isRemote) {
+                    if(isServer()) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getMaxHealth());
                         this.setDogHunger(120);
@@ -724,7 +738,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 }
             }
 
-            if(!this.world.isRemote && !this.isBreedingItem(stack) && this.canInteract(player)) {
+            if(isServer() && !this.isBreedingItem(stack) && this.canInteract(player)) {
                 this.aiSit.setSitting(!this.isSitting());
                 this.isJumping = false;
                 this.navigator.clearPath();
@@ -732,7 +746,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 return true;
             }
         }
-        else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && !this.world.isRemote) {
+        else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && isServer()) {
             this.setDead();
             EntityWolf wolf = new EntityWolf(this.world);
             wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -743,7 +757,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         	if(!player.capabilities.isCreativeMode)
         		stack.shrink(1);
 
-            if(!this.world.isRemote) {
+            if(isServer()) {
                 if(this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.navigator.clearPath();
@@ -1214,6 +1228,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		this.dataTracker.setDogSize(value);
 	}
 	
+	public String getGender() {
+		return this.dataTracker.getGender();
+	}
+	
+	public void setGender(String value) {
+		this.dataTracker.setGender(value);
+	}
+	
 	public void updateBoundingBox() {
 		switch(this.getDogSize()) {
 		case 1:
@@ -1236,7 +1258,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
 	@Override
 	protected void onFinishShaking() {
-		if(!this.world.isRemote) {
+		if(isServer()) {
 			int lvlFisherDog = this.talents.getLevel("fisherdog");
 			int lvlHellHound = this.talents.getLevel("hellhound");
 			
@@ -1244,15 +1266,49 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_FISH : Items.FISH, 1);
 		}
 	}
-
+	
 	//TODO RangedAttacker
-	/*@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-		
+		/*@Override
+		public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+			
+		}
+
+		@Override
+		public void setSwingingArms(boolean swingingArms) {
+			
+		}*/
+	
+	/**
+	 * Returns the entity's health relative to the maximum health.
+	 *
+	 * @return health normalized between 0 and 1
+	 */
+	public double getHealthRelative() {
+		return getHealth() / (double) getMaxHealth();
+	}
+	
+	/**
+	 * Checks if this entity is running on a client.
+	 *
+	 * Required since MCP's isClientWorld returns the exact opposite...
+	 *
+	 * @return true if the entity runs on a client or false if it runs on a
+	 *         server
+	 */
+	@Override
+	public boolean isClient() {
+		return this.world.isRemote;
 	}
 
+	/**
+	 * Checks if this entity is running on a server.
+	 *
+	 * @return true if the entity runs on a server or false if it runs on a
+	 *         client
+	 */
 	@Override
-	public void setSwingingArms(boolean swingingArms) {
-		
-	}*/
+	public boolean isServer() {
+		return !this.world.isRemote;
+	}
+
 }

@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 
 import doggytalents.api.inferface.IDataTracker;
 import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.lib.Constants;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -28,6 +29,7 @@ public class DogDataTracker implements IDataTracker {
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Optional<BlockPos>> BED_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	public static final DataParameter<Integer> SIZE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<String> GENDER = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
 	
 	public EntityAbstractDog dog;
 	
@@ -68,6 +70,7 @@ public class DogDataTracker implements IDataTracker {
         this.getDataManager().register(CAPE, -2);
         this.getDataManager().register(SUNGLASSES, false);
         this.getDataManager().register(SIZE, Integer.valueOf(3));
+        this.getDataManager().register(GENDER, "");
 	}
 	
 	@Override
@@ -181,9 +184,18 @@ public class DogDataTracker implements IDataTracker {
     }
     
     @Override
+	public void setGender(String data) {
+		this.getDataManager().set(GENDER, data);
+	}
+
+	@Override
+	public String getGender() {
+		return this.getDataManager().get(GENDER);
+	}
+    
+    @Override
 	public void setLevel(int level) {
-    	this.getDataManager().set(LEVEL, level);
-		
+    	this.getDataManager().set(LEVEL, level);	
 	}
 
 	@Override

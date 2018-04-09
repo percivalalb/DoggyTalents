@@ -15,6 +15,7 @@ public class Constants {
 	public static boolean DIRE_PARTICLES = true;
 	public static boolean TEN_DAY_PUPS = true;
 	public static boolean DOGGY_WINGS = true;
+	public static boolean DOG_GENDER = false;
 	
 	public static int lowHealthLevel = 1;
 	

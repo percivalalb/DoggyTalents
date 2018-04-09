@@ -13,7 +13,7 @@ public class BedFinder extends ITalent {
 	public void onLivingUpdate(EntityDog dog) {
 		int level = dog.talents.getLevel(this);
 		
-		if(dog.getEntityWeAreRiding() instanceof EntityPlayer && !dog.world.isRemote) {
+		if(dog.getEntityWeAreRiding() instanceof EntityPlayer && dog.isServer()) {
 			
 			EntityPlayer player = (EntityPlayer)dog.getEntityWeAreRiding();
 			if(player != null && player.getBedLocation(player.dimension) != null) {

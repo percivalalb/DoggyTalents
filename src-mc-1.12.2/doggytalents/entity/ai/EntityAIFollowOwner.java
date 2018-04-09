@@ -60,11 +60,11 @@ public class EntityAIFollowOwner extends EntityAIBase
       	if(!this.dog.hasBone() && (order == 1 || order == 2)) { //Holding Sword or tool
       		if(distanceAway >= 16D && distanceAway <= 100D)
       			return false;
-      	}
-      	else
-	      	if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist))
+      	} else {
+	      	if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist)) {
 	            return false;
-      	
+	      	}
+      	}
         //Execute
         this.owner = entitylivingbase;
         return true;

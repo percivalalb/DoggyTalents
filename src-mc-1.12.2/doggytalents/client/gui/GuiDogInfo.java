@@ -1,6 +1,7 @@
 package doggytalents.client.gui;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.lib.Constants;
 import doggytalents.lib.TextFormatting;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;
@@ -25,6 +27,7 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.translation.I18n;
 
@@ -42,6 +45,8 @@ public class GuiDogInfo extends GuiScreen {
 	private int currentPage = 0;
 	private int maxPages = 1;
 	public int btnPerPages = 0;
+	private final DecimalFormat dfShort = new DecimalFormat("0.0");
+	private final DecimalFormat dfShortDouble = new DecimalFormat("0.00");
 	
 	public GuiDogInfo(EntityDog dog, EntityPlayer player) {
 		this.dog = dog;
@@ -120,6 +125,50 @@ public class GuiDogInfo extends GuiScreen {
 		//Background
 		int topX = this.width / 2;
 		int topY = this.height / 2;
+		
+		// Background
+		String health = dfShort.format(this.dog.getHealth());
+		String healthMax = dfShort.format(this.dog.getMaxHealth());
+		String healthRel = dfShort.format(this.dog.getHealthRelative() * 100);
+		String healthState = health + "/" + healthMax + " (" + healthRel + "%)";
+		String speedValue = dfShortDouble.format(this.dog.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue());
+		String ageValue = dfShortDouble.format(this.dog.getGrowingAge());
+		String ageRel = "";
+		if(this.dog.isChild()) {
+			ageRel = I18n.translateToLocal("doggui.age.baby");
+		}else {
+			ageRel = I18n.translateToLocal("doggui.age.adult");
+		}
+		String ageString = ageValue +" "+ ageRel;
+		
+		String tamedString = "";
+		if (this.dog.isTamed()) {
+			if (this.dog.getOwner().getDisplayName().getUnformattedText().equals(this.player.getDisplayName().getUnformattedText()) || this.dog.getOwnerId().toString().equals(this.player.getUniqueID().toString())) {
+				tamedString = I18n.translateToLocal("doggui.owner.you");
+			}
+			else {
+				tamedString = this.dog.getOwner().getDisplayName().getUnformattedText();
+			}
+		}
+		
+		String genderName = "";
+    	if(Constants.DOG_GENDER == true) {	
+			if(dog.getGender().equalsIgnoreCase("male")) {
+				genderName = I18n.translateToLocal("doggui.gender.male");
+			}else if(dog.getGender().equalsIgnoreCase("female")) {
+				genderName = I18n.translateToLocal("doggui.gender.female");
+			}
+		}else{
+			genderName = "";
+		}
+		
+		
+		this.fontRenderer.drawString(I18n.translateToLocal("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
+		this.fontRenderer.drawString(I18n.translateToLocal("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
+		this.fontRenderer.drawString(I18n.translateToLocal("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
+		this.fontRenderer.drawString(I18n.translateToLocal("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
+		if(Constants.DOG_GENDER) this.fontRenderer.drawString(I18n.translateToLocal("doggui.gender") + genderName, this.width - 160, topY - 70, 0xFFFFFF);
+		
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.newname"), topX - 100, topY + 38, 4210752);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.level") + " " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.leveldire") + " " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);

@@ -56,7 +56,7 @@ public class PackPuppy extends ITalent {
 	
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
-		if(!dog.world.isRemote && dog.talents.getLevel(this) >= 5 && dog.getHealth() > 1) {
+		if(dog.isServer() && dog.talents.getLevel(this) >= 5 && dog.getHealth() > 1) {
 			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 			
 			List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getEntityBoundingBox().grow(2.5D, 1D, 2.5D));

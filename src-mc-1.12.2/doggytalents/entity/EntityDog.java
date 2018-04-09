@@ -763,7 +763,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             return true;
         }
 
-        return false;
+        return super.processInteract(player, hand);
     }
     
     @Override

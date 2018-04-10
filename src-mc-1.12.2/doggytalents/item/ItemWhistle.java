@@ -55,6 +55,6 @@ public class ItemWhistle extends ItemDT {
 				}
 			}
 		}
-		return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
 	}
 }

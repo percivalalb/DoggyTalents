@@ -94,6 +94,8 @@ doggui.modetip.berserker=(B)
 doggui.modetip.docile=(D)
 doggui.modetip.patrol=(P)
 doggui.modetip.incapacitated=(I)
+doggui.gendertip.male=(M)
+doggui.gendertip.female=(F)
 
 doggui.modeinfo.wandering=In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog withing 1 block of one
 doggui.modeinfo.tactical=In this mode your dog will follow you but will not attack anything unless you use the command beam
@@ -114,6 +116,16 @@ doggui.pointsleft=Points Left:
 doggui.textureindex=Texture Index
 doggui.obeyothers=Obey Others?
 doggui.friendlyfire=Friendly Fire?
+doggui.health=Health: 
+doggui.speed=Speed: 
+doggui.owner=Owner: 
+doggui.gender=Gender: 
+doggui.age=Age: 
+doggui.owner.you=You
+doggui.age.baby=Puppy
+doggui.age.adult=Adult
+doggui.gender.female=Female
+doggui.gender.male=Male
 
 dogtalent.puppyeyes.1.part1=Villager: Cute dog! Take good care of him. Or her.
 dogtalent.puppyeyes.1.part2=Here, it can have some pork.

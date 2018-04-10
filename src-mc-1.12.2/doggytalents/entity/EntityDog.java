@@ -103,34 +103,36 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     
     public EntityDog(World world) {
         super(world);
+        this.setTamed(false);
 
-        if(world != null && isServer()) {
-        	this.aiSit = new EntityAISit(this);
-            this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-            this.tasks.addTask(1, new EntityAISwimming(this));
-            this.tasks.addTask(2, this.aiSit);
-            this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-            this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
-            //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-            this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F)); //Uses EntityDogClass
-            this.tasks.addTask(5, this.aiFetchBone);
-            this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-            this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
-            this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
-            this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-            this.tasks.addTask(10, new EntityAILookIdle(this));
-            this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-            this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-            this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
-            this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
-            this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
-            this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
-            this.setTamed(false);
-        }
         
         //TODO this.patrolOutline = new ArrayList<BlockPos>();
         this.objects = new HashMap<String, Object>();
         TalentHelper.onClassCreation(this);
+    }
+    
+    @Override
+    protected void initEntityAI() {
+       	this.aiSit = new EntityAISit(this);
+        this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
+        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(2, this.aiSit);
+        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+        //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
+        this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F)); //Uses EntityDogClass
+        this.tasks.addTask(5, this.aiFetchBone);
+        this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
+        this.tasks.addTask(8, new EntityAIDogWander(this, 1.0D));
+        this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
+        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(10, new EntityAILookIdle(this));
+        this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+        this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+        this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
+        this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
+        this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
     }
 	
     @Override

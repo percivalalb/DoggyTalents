@@ -133,31 +133,11 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         TalentHelper.onClassCreation(this);
     }
 	
-	@Override
-	public boolean isBeingRidden() {
-		return !this.getPassengers().isEmpty();
-	}
-	
     @Override
     public Entity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (Entity)this.getPassengers().get(0);
     }
-	
-	@Override
-	public Entity getEntityWeAreRiding() {
-        return this.getRidingEntity();
-    }
-	
-	@Override
-	public void dismountEntityWeAreRiding() {
-		this.dismountRidingEntity();
-	}
-	
-	@Override
-	public void removeEntityRidingUs() {
-		this.removePassengers();
-	}
-	
+    
 	@Override
     protected void playStepSound(BlockPos pos, Block blockIn) {
         this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
@@ -361,9 +341,11 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         	this.reversionTime -= 1;
         
         //Remove dog from players head if sneaking
-        if(this.getEntityWeAreRiding() instanceof EntityPlayer)
-        	if(this.getEntityWeAreRiding().isSneaking())
-        		this.dismountEntityWeAreRiding();
+        Entity entityRidden = this.getRidingEntity();
+        
+        if(entityRidden instanceof EntityPlayer)
+        	if(entityRidden.isSneaking())
+        		this.dismountRidingEntity();
         
         //Check if dog bowl still exists every 50t/2.5s, if not remove
         if(this.foodBowlCheck++ > 50 && this.coords.hasBowlPos()) {

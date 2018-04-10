@@ -38,17 +38,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
         this.setSize(0.6F, 0.85F);
 	}
 	
-	public abstract Entity getEntityWeAreRiding();
-	
-	public abstract void dismountEntityWeAreRiding();
-	
-    //Do not put an override annotation here
-	public abstract Entity getControllingPassenger();
-	
-    //Do not put an override annotation here
-	public abstract boolean isBeingRidden();
-	public abstract void removeEntityRidingUs();
-
 	@Override
 	protected void entityInit() {
 		super.entityInit();
@@ -171,7 +160,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
     
     @Override
     public double getYOffset() {
-        return this.getEntityWeAreRiding() instanceof EntityPlayer ? 0.5D : 0.0D;
+        return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
     }
 
 	public boolean isBegging() {

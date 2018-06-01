@@ -11,6 +11,14 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.317 | 31th May 2018
+* Fixed bug #65, made Fisher dog talent and water bath work again!
+* Fixed item interaction bug
++ Added genders! Which are configurable
++ Added dog basic info, will show the dog's health, gender (if true), speed, age, and owner!
++ Added Roaring Gale talent
+/ Updated to latest version of Forge: 14.23.4.2705
+
 1.15.0*** | March 2018
 Only supported version is now MC 1.12.2 and above
 
@@ -619,7 +627,7 @@ v1.5.0a - 14th October 2013
 * Fixed dogs being invisible on the server
 * Fixed the training treat not converting wolfs to dogs
 * Fixed it not using the item when right clicking with training treats
-* Fixed mods like 'Damage Indicators' showing the entityId name instead of the dog�s name
+* Fixed mods like 'Damage Indicators' showing the entityId name instead of the dogs name
 
 v1.4.0a - 10th July 2013
 Updated to MC 1.6.2

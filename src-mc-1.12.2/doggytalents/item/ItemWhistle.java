@@ -27,10 +27,11 @@ import doggytalents.helper.DogUtil;
  */
 public class ItemWhistle extends ItemDT {
 
-	@Override
+	//Still needs work here, have to figure out a way to save the dog data in case they do despawn/get too far away
+	/*@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (world.isRemote) {
-			world.playSound(player, player.getPosition(), player.isSneaking() ? SoundEvents.BLOCK_ANVIL_PLACE : SoundEvents.BLOCK_ANVIL_HIT /*SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT*/, SoundCategory.PLAYERS, 1, 1);
+			//world.playSound(player, player.getPosition(), player.isSneaking() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
 		} else {
 			List<EntityDog> dogsList = world.getLoadedEntityList().stream().filter(dog -> dog instanceof EntityDog).map(dog -> (EntityDog) dog).collect(Collectors.toList());
 			System.out.println(dogsList);
@@ -56,5 +57,5 @@ public class ItemWhistle extends ItemDT {
 			}
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-	}
+	}*/
 }

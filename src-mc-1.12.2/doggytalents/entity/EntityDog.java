@@ -199,7 +199,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     protected void entityInit() {
         super.entityInit();
         //Allow for the global searching of dogs with the whistle item
-        this.enablePersistence();
+        //this.enablePersistence();
         
         this.talents = new TalentUtil(this);
         this.levels = new LevelUtil(this);

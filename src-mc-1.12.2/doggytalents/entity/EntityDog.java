@@ -50,7 +50,9 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -764,9 +766,10 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         return super.processInteract(player, hand);
     }
     
-    @Override
-	public void travel(float strafe, float vertical, float forward) {
-		if(this.isControllingPassengerPlayer()) {
+    public void travel(float strafe, float vertical, float forward)
+    {
+        if (this.isControllingPassengerPlayer())
+        {
 			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
             this.rotationYaw = entitylivingbase.rotationYaw;
             this.prevRotationYaw = this.rotationYaw;
@@ -777,49 +780,57 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             strafe = entitylivingbase.moveStrafing * 0.75F;
             forward = entitylivingbase.moveForward;
 
-           if (forward <= 0.0F)
-               forward *= 0.5F;
+            if (forward <= 0.0F)
+            {
+                forward *= 0.5F;
+            }
 
-           if(this.onGround) {
-               if(forward > 0.0F) {
-                   float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
-                   float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
-                   this.motionX += (double)(-0.4F * f2 * 0.05F); // May change
-                   this.motionZ += (double)(0.4F * f3 * 0.05F);
-               }
-           }
-           
-           this.stepHeight = 1.0F;
-           this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
+            if (this.onGround){
+                if(forward > 0.0F) {
+                    float f2 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
+                    float f3 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
+                    this.motionX += (double)(-0.4F * f2 * 0.05F); // May change
+                    this.motionZ += (double)(0.4F * f3 * 0.05F);
+                }
+            }
+            
+            this.stepHeight = 1.0F;
+            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
 
-           if (this.canPassengerSteer()) {
-        	   float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.5F;
+            if (this.canPassengerSteer())
+            {
+            	float f = (float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.5F;
 
-        	   this.setAIMoveSpeed(f);
-        	   super.travel(strafe, vertical, forward);
-           }
-           else if (entitylivingbase instanceof EntityPlayer) {
-        	   this.motionX = 0.0D;
-        	   this.motionY = 0.0D;
-        	   this.motionZ = 0.0D;
-           }
+          	   this.setAIMoveSpeed(f);
+          	   super.travel(strafe, vertical, forward);
+            }
+            else if (entitylivingbase instanceof EntityPlayer)
+            {
+                this.motionX = 0.0D;
+                this.motionY = 0.0D;
+                this.motionZ = 0.0D;
+            }
 
-           this.prevLimbSwingAmount = this.limbSwingAmount;
-           double d0 = this.posX - this.prevPosX;
-           double d1 = this.posZ - this.prevPosZ;
-           float f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0F;
+            this.prevLimbSwingAmount = this.limbSwingAmount;
+            double d1 = this.posX - this.prevPosX;
+            double d0 = this.posZ - this.prevPosZ;
+            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+            
+            if (f2 > 1.0F)
+            {
+                f2 = 1.0F;
+            }
 
-           f4 = Math.max(f4, 1.0F);
-
-           this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-           this.limbSwing += this.limbSwingAmount;
-       }
-       else {
-           this.stepHeight = 0.5F;
-           this.jumpMovementFactor = 0.02F;
-           super.travel(strafe, vertical, forward);
-       }
-	}
+            this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
+            this.limbSwing += this.limbSwingAmount;
+        }
+        else
+        {
+        	this.stepHeight = 0.5F;
+            this.jumpMovementFactor = 0.02F;
+            super.travel(strafe, vertical, forward);
+        }
+    }
     
     @Override
     protected boolean isMovementBlocked() {

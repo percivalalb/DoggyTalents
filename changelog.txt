@@ -11,6 +11,10 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.318 | 1st July 2018 (1.12.2)
+* Fixed some bugs in #86, made the dog's legs move only when it is moving while being ridden.
+/ Beginning work on WorldSaveData in order to get the whistle to function
+
 1.14.2.317 | 31th May 2018
 * Fixed bug #65, made Fisher dog talent and water bath work again!
 * Fixed item interaction bug

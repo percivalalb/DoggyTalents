@@ -1,8 +1,7 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: [Bug]
-labels: bug
+
 ---
 
 *You must use English when filling this issue*
@@ -30,4 +29,4 @@ A clear and concise description of what the bug is. Failing to do so will result
 ## Additional Information:
 Must be relavent to the problem 
 - More Details: 
-- Screenshots: 
+- Screenshots:

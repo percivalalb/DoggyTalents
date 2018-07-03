@@ -1,11 +1,18 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
+
 ---
 
-*You must use English when filling this issue*
+<!--
 
-## Environment And Mod Information (please complete the following information):
+Have you read Doggy Talent's Issue Guidelines? By filing an Issue, you are expected to comply with it (refer to the "Reporting Bugs" Section of the Guidelines), including treating everyone with respect: https://github.com/ProPercivalalb/DoggyTalents/blob/master/.github/CONTRIBUTING.md
+
+This header will not be reflected upon submitting this issue.
+
+-->
+
+## Environment And Mod Information:
 * Minecraft Version: [e.g. 1.12.1]
 * Forge Version: [e.g 14.21.1.2443]
 * Doggy Talents Version: [e.g  1.14.1.240]
@@ -13,10 +20,10 @@ about: Create a report to help us improve
 * Operating System (OS): [e.g Windows 10 64-bit Build 17134]
 
 ## Logs
-- Post all logs (*fml-client-latest.log* or *fml-server-latest.log*) on [pastebin.com](pastebin.com) or [hastebin.com](hastebin.com): 
+
 
 ## Issue Description:
-A clear and concise description of what the bug is. Failing to do so will result in the issue being closed.
+
 
 
 ## Steps to reproduce:
@@ -26,6 +33,5 @@ A clear and concise description of what the bug is. Failing to do so will result
 4.
 
 ## Additional Information:
-Must be relavent to the problem 
 - More Details: 
 - Screenshots:

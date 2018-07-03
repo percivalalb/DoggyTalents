@@ -1,7 +1,8 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-
+title: [Bug]
+labels: bug
 ---
 
 *You must use English when filling this issue*

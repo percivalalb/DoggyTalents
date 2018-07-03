@@ -1,9 +1,6 @@
 ---
 name: Bug Report
 about: Create a report to help us improve
-title: Bug
-labels: bug
-projects: Known-Issues/1
 ---
 
 *You must use English when filling this issue*

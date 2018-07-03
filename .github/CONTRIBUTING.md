@@ -36,6 +36,7 @@ The following below are the guidelines for requesting features on the Doggy Tale
 - Do not report features that are already *already implemented* or *known*.
 - No one requests can include more than one subject (bug, request or both) or multiple requests.
 - Requests cannot pertain to versions **below Minecraft version 1.7.10**.
+- If any requests is related to a *bug*, please create a bug report and refer that issue within the request.
 
 
 ## Processing

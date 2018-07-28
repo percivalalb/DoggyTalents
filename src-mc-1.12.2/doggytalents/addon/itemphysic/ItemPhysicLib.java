@@ -9,7 +9,7 @@ public class ItemPhysicLib {
 	public static final String LIB_ID = "creativecore";
 
 	public static final String SERVER_PHYSIC_CLASS 			= "com.creativemd.itemphysic.physics.ServerPhysic";
-	public static final String SORTING_LIST_CLASS 			= "com.creativemd.creativecore.common.utils.sorting.SortingList";
+	public static final String SORTING_LIST_CLASS 			= "com.creativemd.creativecore.common.utils.type.SortingList";
 	
 	public static final String SWIMMING_ITEMS_FIELD 		= "swimmingItems";
 	public static final String BURNING_ITEMS_FIELD 			= "burningItems";
@@ -18,8 +18,4 @@ public class ItemPhysicLib {
 	
 	public static final String ADD_SORTING_BLOCK 			= "addSortingByBlock";
 	public static final String ADD_SORTING_ITEM 			= "addSortingByItem";
-	
-
-	public static final String SWIMMING_ITEMS_FIELD_OLD 	= "swimItem";
-	public static final String BURNING_ITEMS_FIELD_OLD 		= "burnItem";
 }

@@ -2,6 +2,7 @@ package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDataTracker;
+import doggytalents.helper.DogLocationManager;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
 import net.minecraft.entity.Entity;
@@ -32,10 +33,13 @@ public abstract class EntityAbstractDog extends EntityTameable {
     private float prevTimeWolfIsShaking;
     
     public IDataTracker dataTracker;
+    public DogLocationManager locationManager;
 	
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
+        
+        this.locationManager = DogLocationManager.getHandler(this.world);
 	}
 	
 	@Override

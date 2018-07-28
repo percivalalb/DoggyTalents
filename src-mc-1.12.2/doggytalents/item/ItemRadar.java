@@ -1,6 +1,8 @@
 package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.helper.DogLocationManager;
+import doggytalents.helper.DogLocationManager.DogLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +26,13 @@ public class ItemRadar extends ItemDT {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
 		if(!worldIn.isRemote) {
+			DogLocationManager locationManager = DogLocationManager.getHandler(worldIn);
+			
+			for(DogLocation location : locationManager.locations) {
+				playerIn.sendMessage(new TextComponentString(location.toString()));
+			}
+			playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
+			
 			for(Entity entity : worldIn.loadedEntityList) {
 				if(entity instanceof EntityDog) {
 					EntityDog dog = (EntityDog)entity;

@@ -107,7 +107,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         super(world);
         this.setTamed(false);
 
-        
         //TODO this.patrolOutline = new ArrayList<BlockPos>();
         this.objects = new HashMap<String, Object>();
         TalentHelper.onClassCreation(this);
@@ -241,6 +240,9 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.mode.writeToNBT(tagCompound);
         this.coords.writeToNBT(tagCompound);
         TalentHelper.writeToNBT(this, tagCompound);
+        
+        this.locationManager.addOrUpdateLocation(this);
+        
     }
 
     @Override
@@ -264,6 +266,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.mode.readFromNBT(tagCompound);
         this.coords.readFromNBT(tagCompound);
         TalentHelper.readFromNBT(this, tagCompound);
+        
+        this.locationManager.updateEntityId(this);
         
         //Backwards Compatibility
         if(tagCompound.hasKey("dogName"))
@@ -361,6 +365,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         }
         
         this.updateBoundingBox();
+
+        this.locationManager.addOrUpdateLocation(this);
         
         TalentHelper.onLivingUpdate(this);
     }

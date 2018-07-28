@@ -13,11 +13,11 @@ This header will not be reflected upon submitting this issue.
 -->
 
 ## Environment And Mod Information:
-* Minecraft Version: [e.g. 1.12.1]
-* Forge Version: [e.g 14.21.1.2443]
-* Doggy Talents Version: [e.g  1.14.1.240]
-* Java Version: [e.g 8 Update 144 64 bit]
-* Operating System (OS): [e.g Windows 10 64-bit Build 17134]
+* Minecraft Version: [i.e. 1.12.1]
+* Forge Version: [i.e. 14.21.1.2443]
+* Doggy Talents Version: [i.e. 1.14.1.240]
+* Java Version: [i.e. 8 Update 144 64 bit]
+* Operating System (OS): [i.e. Windows 10 64-bit Build 17134]
 
 ## Logs
 

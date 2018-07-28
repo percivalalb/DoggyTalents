@@ -36,9 +36,9 @@ public class DogLocationManager extends WorldSavedData {
 		DogLocation temp = new DogLocation(dog);
 		
 		for (int i = 0; i < this.locations.size(); i++) {
-			DogLocation location = this.locations.get(i);
+			DogLocation loc = this.locations.get(i);
 			
-			if (location.equals(temp)) {
+			if (loc.equals(temp)) {
 				this.locations.set(i, temp);
 				this.markDirty();
 				return;
@@ -56,11 +56,11 @@ public class DogLocationManager extends WorldSavedData {
 		
 		// Matches this dog with it's saved DogLocation
 		for (int i = 0; i < this.locations.size(); i++) {
-			DogLocation location = this.locations.get(i);
-            if (this.axisCoordEqual(dog.posX, location.x) && this.axisCoordEqual(dog.posY, location.y) && 
-            		this.axisCoordEqual(dog.posZ, location.z) && dog.world.provider.getDimension() == location.dim) {
+			DogLocation loc = this.locations.get(i);
+            if (loc.entityId < 0 && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) && 
+            		this.axisCoordEqual(dog.posZ, loc.z) && dog.world.provider.getDimension() == loc.dim) {
             	
-            	location.entityId = dog.getEntityId();
+            	loc.entityId = dog.getEntityId();
             	return;
             }
 		}

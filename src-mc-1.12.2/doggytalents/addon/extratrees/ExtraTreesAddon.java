@@ -18,7 +18,7 @@ public class ExtraTreesAddon {
 		
 		Block planks1 = Block.getBlockFromName(ExtraTreesLib.ITEM_NAME_1);
 		Block planks2 = Block.getBlockFromName(ExtraTreesLib.ITEM_NAME_2);
-		Block planks3 = Block.getBlockFromName(ExtraTreesLib.ITEM_NAME_2);
+		Block planks3 = Block.getBlockFromName(ExtraTreesLib.ITEM_NAME_3);
 		
 		for(int i = 0; i < ExtraTreesLib.PLANKS_1_TEXURE.length; i++)
 			DogBedRegistry.CASINGS.registerMaterial(planks1, i, ExtraTreesLib.TEXTURE_LOCATION + ExtraTreesLib.PLANKS_1_TEXURE[i]);

@@ -29,7 +29,7 @@ public class ItemPhysicAPI {
 		Object sortingList = ReflectionUtil.getField(this.serverPhysicClass, sortingListName).get(null);
 		for(Block block : blocks) {
 			this.addSortingBlock.invoke(sortingList, block);
-			DoggyTalents.LOGGER.info("Successefully registered %s in %s list", block, sortingListName);
+			DoggyTalents.LOGGER.info("Successefully registered {} in {} list", block.getRegistryName(), sortingListName);
 		}
 	}
 	
@@ -37,7 +37,7 @@ public class ItemPhysicAPI {
 		Object sortingList = ReflectionUtil.getField(this.serverPhysicClass, sortingListName).get(null);
 		for(Item item : items) {
 			this.addSortingItem.invoke(sortingList, item);
-			DoggyTalents.LOGGER.info("Successefully registered %s in %s list", item, sortingListName);
+			DoggyTalents.LOGGER.info("Successefully registered {} in {} list", item.getRegistryName(), sortingListName);
 		}
 	}
 }

@@ -20,10 +20,10 @@ public class ItemList {
 	public void registerItem(Item item, int meta) {
 		List array = Arrays.asList(new Object[] {item, meta});
 		if(this.itemlist.contains(array))
-			DoggyTalents.LOGGER.warn("The item {} meta {} is already registered in this item list", item, meta);
+			DoggyTalents.LOGGER.warn("The item {} meta {} is already registered in this item list", item.getRegistryName(), meta);
 		else {
 			this.itemlist.add(array);
-			DoggyTalents.LOGGER.info("The item {} meta {} was register to an item list", item, meta);
+			DoggyTalents.LOGGER.info("The item {} meta {} was register to an item list", item.getRegistryName(), meta);
 		}
 	}
 	

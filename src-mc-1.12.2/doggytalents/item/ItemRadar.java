@@ -51,8 +51,12 @@ public class ItemRadar extends ItemDT {
 						if(playerIn.posX < dog.posX)
 							builder.append(", east");
 						else
-								builder.append(", west");
-						
+							builder.append(", west");
+						if(playerIn.dimension != dog.dimension) {
+							builder.append(" and is in the dimension with the id: "+dog.dimension + "("+dog.world.provider.getDimension()+")");
+						}else {
+							builder.append(" and is in the same dimension");
+						}
 						playerIn.sendMessage(new TextComponentString(builder.toString()));
 					}
 				}

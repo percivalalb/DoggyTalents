@@ -39,7 +39,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
         
-        this.locationManager = DogLocationManager.getHandler(this.world);
+        this.locationManager = DogLocationManager.getHandler();
 	}
 	
 	@Override
@@ -228,6 +228,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	public void onDeath(DamageSource cause) {
 		//No death message
+		//TODO this.locationManager.
 	}
 	
 	/**

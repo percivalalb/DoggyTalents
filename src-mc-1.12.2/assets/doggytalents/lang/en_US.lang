@@ -147,6 +147,15 @@ dogtalent.puppyeyes.6.part3=aaaaaaaaaAAAAAAAAWWWWWWWWW!
 
 dogtalent.puppyeyes.wolfmount.outofhunger=%s: Woooff, woof, woof woofff (Food Please)
 
+dogradar.north=**** %s is %d blocks north ****
+dogradar.north.east=**** %s is %d blocks roughly north east ****
+dogradar.north.west=**** %s is %d blocks roughly north west ****
+dogradar.south=**** %s is %d blocks south ****
+dogradar.south.east=**** %s is %d blocks roughly south east ****
+dogradar.south.west=**** %s is %d blocks roughly south west ****
+dogradar.east=**** %s is %d blocks east ****
+dogradar.west=**** %s is %d blocks west ****
+
 dogbed.bedding.minecraft:wool.0=White Wool Bedding
 dogbed.bedding.minecraft:wool.1=Orange Wool Bedding
 dogbed.bedding.minecraft:wool.2=Magenta Wool Bedding

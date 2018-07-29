@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.entity.EntityAbstractDog;
+import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.DimensionManager;
 
 public class DogLocationManager extends WorldSavedData {
 	
@@ -19,20 +22,21 @@ public class DogLocationManager extends WorldSavedData {
 	}
 	
 	/**
-	 * Gets DogLocationHandler for the given world or creates on if it doesn't exist 
+	 * Gets DogLocationHandler uses Overworld WorldSaveData as that should always be loaded
 	 */
-	public static DogLocationManager getHandler(World world) {
-		DogLocationManager locationManager = (DogLocationManager)world.getPerWorldStorage().getOrLoadData(DogLocationManager.class, "dog_locations");
+	public static DogLocationManager getHandler() {
+		World overworld = DimensionManager.getWorld(0);
+		DogLocationManager locationManager = (DogLocationManager)overworld.getPerWorldStorage().getOrLoadData(DogLocationManager.class, "dog_locations");
 		
     	if (locationManager == null) {
             locationManager = new DogLocationManager("dog_locations");
-            world.getPerWorldStorage().setData("dog_locations", locationManager);
+            overworld.getPerWorldStorage().setData("dog_locations", locationManager);
         }
     	
     	return locationManager;
 	}
 	
-	public void addOrUpdateLocation(EntityAbstractDog dog) {
+	public void addOrUpdateLocation(EntityDog dog) {
 		DogLocation temp = new DogLocation(dog);
 		
 		for (int i = 0; i < this.locations.size(); i++) {
@@ -54,16 +58,22 @@ public class DogLocationManager extends WorldSavedData {
 	 */
 	public void updateEntityId(EntityAbstractDog dog) {
 		
+		int dogDim = dog.world.provider.getDimension();
+		
 		// Matches this dog with it's saved DogLocation
 		for (int i = 0; i < this.locations.size(); i++) {
 			DogLocation loc = this.locations.get(i);
-            if (loc.entityId < 0 && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) && 
-            		this.axisCoordEqual(dog.posZ, loc.z) && dog.world.provider.getDimension() == loc.dim) {
+            if (loc.entityId < 0 && dogDim == loc.dim && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) && 
+            		this.axisCoordEqual(dog.posZ, loc.z)) {
             	
             	loc.entityId = dog.getEntityId();
             	return;
             }
 		}
+	}
+	
+	public void removeDog(int entityId) {
+		
 	}
 	
 	public boolean axisCoordEqual(double a, double b) {
@@ -100,16 +110,23 @@ public class DogLocationManager extends WorldSavedData {
 		public int dim;
 		public int entityId = -1;
 		
+		// Dog Data
+		public String name;
+		public boolean hasRadarCollar;
+		
 		public DogLocation(NBTTagCompound nbt) {
 			this.readFromNBT(nbt);
 		}
 		
-		public DogLocation(EntityAbstractDog dog) {
+		public DogLocation(EntityDog dog) {
 			this.x = dog.posX;
 			this.y = dog.posY;
 			this.z = dog.posZ;
 			this.dim = dog.world.provider.getDimension();
 			this.entityId = dog.getEntityId();
+			
+			this.name = dog.getName();
+			this.hasRadarCollar = dog.hasRadarCollar();
 		}
 
 		public void readFromNBT(NBTTagCompound nbt) {
@@ -117,6 +134,9 @@ public class DogLocationManager extends WorldSavedData {
 			this.y = nbt.getDouble("y");
 			this.z = nbt.getDouble("z");
 			this.dim = nbt.getInteger("dim");
+			
+			this.name = nbt.getString("name");
+			this.hasRadarCollar = nbt.getBoolean("collar");
 		}
 
 		public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
@@ -125,7 +145,22 @@ public class DogLocationManager extends WorldSavedData {
 			nbt.setDouble("z", this.z);
 			nbt.setInteger("dim", this.dim);
 			
+			nbt.setString("name", this.name);
+			nbt.setBoolean("collar", this.hasRadarCollar);
 			return nbt;
+		}
+		
+		public EntityDog getDog() {
+			if(this.entityId < 0)
+				return null;
+			
+			World world = DimensionManager.getWorld(this.dim);
+			Entity entity = world.getEntityByID(this.entityId);
+			
+			if(entity instanceof EntityDog) 
+				return (EntityDog)entity;
+			
+			return null;
 		}
 		
 		@Override

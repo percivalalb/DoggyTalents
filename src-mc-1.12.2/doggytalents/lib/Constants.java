@@ -3,6 +3,8 @@ package doggytalents.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.text.TextComponentTranslation;
+
 /**
  * @author ProPercivalalb
  */
@@ -20,4 +22,5 @@ public class Constants {
 	public static int lowHealthLevel = 1;
 	
 	public static List<String> DISABLED_TALENTS = new ArrayList<String>();
+
 }

@@ -151,23 +151,11 @@ public class GuiDogInfo extends GuiScreen {
 			}
 		}
 		
-		String genderName = "";
-    	if(Constants.DOG_GENDER == true) {	
-			if(dog.getGender().equalsIgnoreCase("male")) {
-				genderName = I18n.translateToLocal("doggui.gender.male");
-			}else if(dog.getGender().equalsIgnoreCase("female")) {
-				genderName = I18n.translateToLocal("doggui.gender.female");
-			}
-		}else{
-			genderName = "";
-		}
-		
-		
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
-		if(Constants.DOG_GENDER) this.fontRenderer.drawString(I18n.translateToLocal("doggui.gender") + genderName, this.width - 160, topY - 70, 0xFFFFFF);
+		if(Constants.DOG_GENDER) this.fontRenderer.drawString(I18n.translateToLocal("doggui.gender") + I18n.translateToLocal(dog.genderUtil.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
 		
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.newname"), topX - 100, topY + 38, 4210752);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.level") + " " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);

@@ -1,8 +1,10 @@
 package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.helper.DogGenderUtil;
 import doggytalents.helper.DogLocationManager;
 import doggytalents.helper.DogLocationManager.DogLocation;
+import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -31,6 +33,7 @@ public class ItemRadar extends ItemDT {
 
 		if (!worldIn.isRemote) {
 			DogLocationManager locationManager = DogLocationManager.getHandler();
+			
 			
 			int playerDimId = playerIn.dimension;
 			
@@ -74,6 +77,7 @@ public class ItemRadar extends ItemDT {
 				}
 			}
 			
+			
 			playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
 			
 				
@@ -81,10 +85,11 @@ public class ItemRadar extends ItemDT {
 				if(loc.dim == playerDimId) continue;
 
 				EntityDog dog = loc.getDog();
-						
+				DogGenderUtil genderUtil = new DogGenderUtil(dog);
+				
 				if(dog == null ? !loc.hasRadarCollar : !dog.hasRadarCollar() || !dog.isOwner(playerIn)) continue;
-						
-				playerIn.sendMessage(new TextComponentString("Dog not in this dim: " + playerDimId + " he is in " + loc.dim));
+				playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", loc.name, playerDimId, genderUtil.getGenderSubjectFromString(loc.gender), loc.dim));	
+				//playerIn.sendMessage(new TextComponentString(loc.name +" not in this dim: " + playerDimId + " "+dog.genderSubject()+" is in " + loc.dim));
 			}
 			
 		

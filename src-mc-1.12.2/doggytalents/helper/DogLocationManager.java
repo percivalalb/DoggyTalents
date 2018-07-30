@@ -5,9 +5,11 @@ import java.util.List;
 
 import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
@@ -112,6 +114,7 @@ public class DogLocationManager extends WorldSavedData {
 		
 		// Dog Data
 		public String name;
+		public String gender;
 		public boolean hasRadarCollar;
 		
 		public DogLocation(NBTTagCompound nbt) {
@@ -126,6 +129,7 @@ public class DogLocationManager extends WorldSavedData {
 			this.entityId = dog.getEntityId();
 			
 			this.name = dog.getName();
+			this.gender = dog.getGender();
 			this.hasRadarCollar = dog.hasRadarCollar();
 		}
 
@@ -136,6 +140,7 @@ public class DogLocationManager extends WorldSavedData {
 			this.dim = nbt.getInteger("dim");
 			
 			this.name = nbt.getString("name");
+			this.gender = nbt.getString("gender");
 			this.hasRadarCollar = nbt.getBoolean("collar");
 		}
 
@@ -146,6 +151,7 @@ public class DogLocationManager extends WorldSavedData {
 			nbt.setInteger("dim", this.dim);
 			
 			nbt.setString("name", this.name);
+			nbt.setString("gender", this.gender);
 			nbt.setBoolean("collar", this.hasRadarCollar);
 			return nbt;
 		}

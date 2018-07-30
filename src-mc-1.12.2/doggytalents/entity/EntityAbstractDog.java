@@ -2,6 +2,7 @@ package doggytalents.entity;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDataTracker;
+import doggytalents.helper.DogGenderUtil;
 import doggytalents.helper.DogLocationManager;
 import doggytalents.lib.Constants;
 import doggytalents.lib.Reference;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,12 +36,14 @@ public abstract class EntityAbstractDog extends EntityTameable {
     
     public IDataTracker dataTracker;
     public DogLocationManager locationManager;
+    public DogGenderUtil genderUtil;
 	
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
         
         this.locationManager = DogLocationManager.getHandler();
+        this.genderUtil = new DogGenderUtil(this);
 	}
 	
 	@Override
@@ -188,17 +192,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
 		this.dataTracker.setGender(gender);
 	}
 	
-	private boolean checkGender(EntityAbstractDog entitydog) {
-		if(Constants.DOG_GENDER == true && this.getGender() == entitydog.getGender())
-			return false;
-		else if(Constants.DOG_GENDER == true && this.getGender() != entitydog.getGender() && (entitydog.getGender().isEmpty() || this.getGender().isEmpty()))
-			return false;
-		else if(Constants.DOG_GENDER == true && this.getGender() != entitydog.getGender())
-			return true;
-		else
-			return true;
-	}
-	
 	@Override
 	public boolean canMateWith(EntityAnimal otherAnimal) {
         if(otherAnimal == this)
@@ -209,7 +202,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
             return false;
         else {
         	EntityAbstractDog entitydog = (EntityAbstractDog)otherAnimal;
-            return !entitydog.isTamed() ? false : !this.checkGender(entitydog) ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
+            return !entitydog.isTamed() ? false : !genderUtil.checkGender(entitydog) ? false : (entitydog.isSitting() ? false : this.isInLove() && entitydog.isInLove());
         }
     }
     

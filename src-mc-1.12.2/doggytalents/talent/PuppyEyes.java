@@ -54,16 +54,16 @@ public class PuppyEyes extends ITalent {
 
 	            if(j1 == 0)
 	            {
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part1"));
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part2"));
+	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part1", dog.genderUtil.getGenderPronoun()));
+	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part2", dog.genderUtil.getGenderPronoun()));
 	                entityliving.dropItem(Items.PORKCHOP, 2);
 	            }
 
 	            if(j1 == 1)
 	            {
-	              	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part1"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part2"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part3"));
+	              	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part1", dog.genderUtil.getGenderTitle()));
+	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part2", dog.genderUtil.getGenderTitle()));
+	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part3", dog.genderUtil.getGenderTitle()));
 	                entityliving.dropItem(Items.PORKCHOP, 5);
 	            }
 

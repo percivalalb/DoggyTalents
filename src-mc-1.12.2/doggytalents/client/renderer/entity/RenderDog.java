@@ -82,18 +82,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         	if(dog.isIncapacicated())
         		tip = "doggui.modetip.incapacitated";
         	
-        	String genderName = "";
-        	if(Constants.DOG_GENDER == true) {	
-    			if(dog.getGender().equalsIgnoreCase("male")) {
-    				genderName = "doggui.gendertip.male";
-    			}else if(dog.getGender().equalsIgnoreCase("female")) {
-    				genderName = "doggui.gendertip.female";
-    			}
-    		}else{
-    			genderName = "";
-    		}
-        	
-        	String label = String.format("%s(%d)%s", I18n.translateToLocal(tip), dog.getDogHunger(), I18n.translateToLocal(genderName));
+        	String label = String.format("%s(%d)%s", I18n.translateToLocal(tip), dog.getDogHunger(), I18n.translateToLocal(dog.genderUtil.getGenderTip()));
         	if(d0 <= (double)(64 * 64)) {
         		boolean flag = dog.isSneaking();
         		float f = this.renderManager.playerViewY;

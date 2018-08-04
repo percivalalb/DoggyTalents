@@ -110,7 +110,7 @@ public class DogDataTracker implements IDataTracker {
     
     @Override
     public void setDogHunger(int par1) {
-    	this.getDataManager().set(HUNGER, Math.min(120, Math.max(0, par1)));
+    	this.getDataManager().set(HUNGER, Math.min(Constants.hungerPoints, Math.max(0, par1)));
     }
     
     @Override

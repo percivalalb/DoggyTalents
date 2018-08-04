@@ -44,7 +44,7 @@ public class DogUtil {
             dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
             
             if(itemstack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
-            	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(null, dog);
+            	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(dog);
             }
 
             if(inventory.getStackInSlot(slotIndex).getCount() <= 1) {

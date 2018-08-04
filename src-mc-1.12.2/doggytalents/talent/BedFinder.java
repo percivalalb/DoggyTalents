@@ -4,6 +4,8 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 /**
  * @author ProPercivalalb
@@ -25,6 +27,22 @@ public class BedFinder extends ITalent {
 		}
 	}
 	
+	
+	@Override
+	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+		int level = dog.talents.getLevel(this);
+		if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
+			dog.startRiding(player);
+    		if(dog.isSitting() == false) {
+    			dog.setSitting(true);
+    		}
+    		return true;
+        }
+		return false;
+	}
+
+
+
 	@Override
 	public String getKey() {
 		return "bedfinder";

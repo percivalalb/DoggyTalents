@@ -104,7 +104,7 @@ public class EntityAIFollowOwner extends EntityAIBase
             	int masterZ = MathHelper.floor(this.owner.posZ);
             	double distanceAway = this.dog.getDistanceSq(this.owner);
                 
-            	if(((order == 0 || order == 3) && distanceAway >= 4.0D) || this.dog.hasBone()) {
+            	if(((order == 0 || order == 3 || order == 4) && distanceAway >= 4.0D) || this.dog.hasBone()) {
                     this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 	                if(!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
 	                    if(!this.dog.hasBone() && !this.dog.getLeashed())

@@ -2,6 +2,7 @@ package doggytalents.handler;
 
 import doggytalents.client.renderer.RenderUtil;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -35,7 +36,7 @@ public class GameOverlay {
 	        int left = width / 2 + 91;
 	        int top = height - GuiIngameForge.right_height;
 	        GuiIngameForge.right_height += 10;
-	        int level = MathHelper.ceil(((double)dog.getDogHunger() / 120.0D) * 20.0D);
+	        int level = MathHelper.ceil(((double)dog.getDogHunger() / (double)Constants.hungerPoints) * 20.0D);
 
 	        for (int i = 0; i < 10; ++i) {
 	            int idx = i * 2 + 1;

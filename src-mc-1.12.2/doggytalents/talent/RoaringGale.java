@@ -6,9 +6,11 @@ import java.util.List;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntitySilverfish;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
@@ -69,13 +71,16 @@ public class RoaringGale extends ITalent {
 		byte effectDuration = (byte)(level > 4 ? level*14 : level*(level == 1 ? 20 : 12));
 		byte knockback = (byte)level;
 		
-		List<EntityMob> list = dog.world.<EntityMob>getEntitiesWithinAABB(EntityMob.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
-		for (EntityMob mob : list) {
-			dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, 1f, 1f);
-			mob.attackEntityFrom(DamageSource.GENERIC, damage);
-			mob.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 127, false, false));
-			mob.addPotionEffect(new PotionEffect(MobEffects.GLOWING, effectDuration, 1, false, false));
-			mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
+		
+		List<EntityLiving> list = dog.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
+		for (EntityLiving mob : list) {
+			if(mob instanceof IMob) {
+				dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, 1f, 1f);
+				mob.attackEntityFrom(DamageSource.GENERIC, damage);
+				mob.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 127, false, false));
+				mob.addPotionEffect(new PotionEffect(MobEffects.GLOWING, effectDuration, 1, false, false));
+				mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@ import net.minecraft.potion.PotionEffect;
 
 public class ItemChewStick extends ItemDT {
 	
-	public void addChewStickEffects(EntityPlayer player, EntityDog dog) {
+	public void addChewStickEffects(EntityDog dog) {
 		dog.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, true));
 		dog.addPotionEffect(new PotionEffect(MobEffects.SPEED, 200, 6, false, true));
 		dog.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 100, 2, false, true));

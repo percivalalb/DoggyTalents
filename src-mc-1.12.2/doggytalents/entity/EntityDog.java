@@ -11,6 +11,7 @@ import doggytalents.api.IDogTreat;
 import doggytalents.api.IDogTreat.EnumFeedBack;
 import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.entity.ai.EntityAIDogBeg;
+import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFollowOwner;
@@ -128,6 +129,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(10, new EntityAILookIdle(this));
+        this.tasks.addTask(11, new EntityAIDogFeed(this, 20.0F));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
@@ -494,31 +496,32 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     	
     	ItemStack stack = player.getHeldItem(hand);
     	
-        if(TalentHelper.interactWithPlayer(this, player, stack))
+        if(TalentHelper.interactWithPlayer(this, player, stack)) {
         	return true;
+        }
         
         if(this.isTamed()) {
             if(!stack.isEmpty()) {
             	int foodValue = this.foodValue(stack);
             	
-            	if(foodValue != 0 && this.getDogHunger() < 120 && this.canInteract(player) && !this.isIncapacicated()) {
+            	if(foodValue != 0 && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player) && !this.isIncapacicated()) {
             		if(!player.capabilities.isCreativeMode)
             			stack.shrink(1);
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if(stack.getItem() == ModItems.CHEW_STICK) {
-                    	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(player, this);
+                    	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
                     }
                     return true;
                 }
-            	else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
+            	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
             		this.startRiding(player);
             		
             		if(this.aiSit != null)
             			this.aiSit.setSitting(true);
             		
                     return true;
-                }
+                }*/
             	//TODO else if(stack.getItem() == Items.BIRCH_DOOR && this.canInteract(player)) {
             	//	this.patrolOutline.add(this.getPosition());
             	//}
@@ -660,7 +663,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     if(isServer()) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getMaxHealth());
-                        this.setDogHunger(120);
+                        this.setDogHunger(Constants.hungerPoints);
                         this.regenerationTick = 0;
                         this.setAttackTarget((EntityLivingBase)null);
                         this.playTameEffect(true);
@@ -716,7 +719,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     }
                     return true;
                 }
-                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < 120 && this.canInteract(player)) {
+                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player)) {
                 	
                 	InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
             		treatBag.openInventory(player);
@@ -890,18 +893,19 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     	
         if(player != null) {
             float distanceAway = player.getDistance(this);
-            ItemStack itemstack = player.inventory.getCurrentItem();
-
-            if(itemstack != null && (itemstack.getItem() instanceof ItemTool) && distanceAway <= 20F)
+            Item mainhand = player.getHeldItemOffhand().getItem();
+            Item offhand = player.getHeldItemMainhand().getItem();
+            
+            if((mainhand != null || offhand != null) && (mainhand instanceof ItemTool || offhand instanceof ItemTool) && distanceAway <= 20F)
                 order = 1;
 
-            if(itemstack != null && ((itemstack.getItem() instanceof ItemSword) || (itemstack.getItem() instanceof ItemBow)))
+            if((mainhand != null || offhand != null) && (mainhand instanceof ItemTool || offhand instanceof ItemSword) || (mainhand != null || offhand != null) && (mainhand instanceof ItemBow || offhand instanceof ItemBow))
                 order = 2;
 
-            if(itemstack != null && itemstack.getItem() == Items.WHEAT) //Round up Talent
+            if((mainhand != null || offhand != null) && (mainhand == Items.WHEAT || offhand == Items.WHEAT)) //Round up Talent
                 order = 3;
             
-            if(itemstack != null && itemstack.getItem() == Items.BONE) //Roar Talent
+            if((mainhand != null || offhand != null) && (mainhand == Items.BONE || offhand == Items.BONE)) //Roar Talent
             	order = 4;
         }
 

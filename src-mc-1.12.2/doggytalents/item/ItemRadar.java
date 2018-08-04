@@ -78,7 +78,7 @@ public class ItemRadar extends ItemDT {
 			}
 			
 			
-			playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
+			/*playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
 			
 				
 			for (DogLocation loc : locationManager.locations) {
@@ -90,7 +90,7 @@ public class ItemRadar extends ItemDT {
 				if(dog == null ? !loc.hasRadarCollar : !dog.hasRadarCollar() || !dog.isOwner(playerIn)) continue;
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", loc.name, playerDimId, genderUtil.getGenderSubjectFromString(loc.gender), loc.dim));	
 				//playerIn.sendMessage(new TextComponentString(loc.name +" not in this dim: " + playerDimId + " "+dog.genderSubject()+" is in " + loc.dim));
-			}
+			}*/
 			
 		
 		}

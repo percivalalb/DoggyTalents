@@ -11,6 +11,12 @@ Update List Key
 MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.2.320 | 4th August 2018 (1.12.2)
+* Fixed dogs not following when the player is holding a bone, #104
+* Fixed issue with Roaring Gale not affecting certain mobs, #102
+# Made dogs check for master order items in either the active hand or the off hand, #102
++ Dogs can now eat off the ground, #103
+
 1.14.2.319 | 1st August 2018 (1.12.2)
 * Fixed post initalization crash with newest version of CreativeCore #99
 * Fixed some bed casings from ExtraTrees not showing up

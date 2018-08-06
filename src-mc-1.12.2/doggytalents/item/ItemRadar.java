@@ -31,7 +31,7 @@ public class ItemRadar extends ItemDT {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
-		if (!worldIn.isRemote) {
+		/*if (!worldIn.isRemote) {
 			DogLocationManager locationManager = DogLocationManager.getHandler();
 			
 			
@@ -78,12 +78,11 @@ public class ItemRadar extends ItemDT {
 			}
 			
 			
-			/*playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
+			playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size()));
 			
 				
 			for (DogLocation loc : locationManager.locations) {
 				if(loc.dim == playerDimId) continue;
-
 				EntityDog dog = loc.getDog();
 				DogGenderUtil genderUtil = new DogGenderUtil(dog);
 				
@@ -91,10 +90,33 @@ public class ItemRadar extends ItemDT {
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", loc.name, playerDimId, genderUtil.getGenderSubjectFromString(loc.gender), loc.dim));	
 				//playerIn.sendMessage(new TextComponentString(loc.name +" not in this dim: " + playerDimId + " "+dog.genderSubject()+" is in " + loc.dim));
 			}*/
-			
 		
+		if(!worldIn.isRemote) {
+			for(Entity entity : worldIn.loadedEntityList) {
+				if(entity instanceof EntityDog) {
+					EntityDog dog = (EntityDog)entity;
+	
+					if(dog.hasRadarCollar() && dog.canInteract(playerIn)) {
+						StringBuilder builder = new StringBuilder();
+						builder.append(dog.getName());
+						builder.append(" is ");
+						builder.append((int)Math.ceil(dog.getDistance(playerIn)));
+						builder.append(" blocks away ");
+						if(playerIn.posZ > dog.posZ)
+							builder.append("north");
+						else
+							builder.append("south");
+						
+						if(playerIn.posX < dog.posX)
+							builder.append(", east");
+						else
+								builder.append(", west");
+						
+						playerIn.sendMessage(new TextComponentString(builder.toString()));
+					}
+				}
+			}
 		}
-		
     	return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
     }
 }

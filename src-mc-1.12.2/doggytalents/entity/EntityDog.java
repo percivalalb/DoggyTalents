@@ -243,7 +243,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.coords.writeToNBT(tagCompound);
         TalentHelper.writeToNBT(this, tagCompound);
         
-        this.locationManager.addOrUpdateLocation(this);
+        //this.locationManager.addOrUpdateLocation(this);
         
     }
 
@@ -269,7 +269,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.coords.readFromNBT(tagCompound);
         TalentHelper.readFromNBT(this, tagCompound);
         
-        this.locationManager.updateEntityId(this);
+        //this.locationManager.updateEntityId(this);
         
         //Backwards Compatibility
         if(tagCompound.hasKey("dogName"))
@@ -368,7 +368,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         
         this.updateBoundingBox();
 
-        this.locationManager.addOrUpdateLocation(this);
+        //this.locationManager.addOrUpdateLocation(this);
         
         TalentHelper.onLivingUpdate(this);
     }

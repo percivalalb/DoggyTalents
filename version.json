@@ -13,8 +13,8 @@
 			"1.12-recommended": "1.14.2.314",
 		"1.12.1-latest": "1.14.2.314",
 			"1.12.1-recommended": "1.14.2.317",
-		"1.12.2-latest": "1.14.2.320",
-			"1.12.2-recommended": "1.14.2.320"
+		"1.12.2-latest": "1.14.2.321",
+			"1.12.2-recommended": "1.14.2.321"
 
 	},
 	"1.8.9": {
@@ -36,6 +36,6 @@
 		"1.14.2.314": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.12.2": {
-		"1.14.2.320": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.321": "See https://raw.githubusercontent.com/ProPercivalalb/DoggyTalents/master/changelog.txt"
 	}
 }

@@ -150,8 +150,21 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.rand.nextInt(3) == 0 ? (this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT;
+    	if(this.getDogHunger() <= Constants.lowHunger) {
+    		return SoundEvents.ENTITY_WOLF_WHINE;
+    	}
+    	if (this.rand.nextInt(3) == 0)
+        {
+            return this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
+        }
+        else
+        {
+            return SoundEvents.ENTITY_WOLF_AMBIENT;
+        }
+    	
+        //return this.rand.nextInt(3) == 0 ? (this.getDogHunger() <= Constants.lowHunger ? SoundEvents.ENTITY_WOLF_WHINE : this.isTamed() && this.getHealth() < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT) : SoundEvents.ENTITY_WOLF_AMBIENT;
     }
+    
 	
     @Override
 	protected SoundEvent getHurtSound(DamageSource source) {

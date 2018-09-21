@@ -192,7 +192,7 @@ public class GuiDogInfo extends GuiScreen {
 	    for (int k = 0; k < this.buttonList.size(); ++k) {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
 	    	if(button.mousePressed(this.mc, xMouse, yMouse)) {
-	    		List list = new ArrayList();
+	    		List<String> list = new ArrayList<String>();
 	    		if(button.id >= 1 && button.id <= TalentRegistry.getTalents().size()) {
 	    			ITalent talent = TalentRegistry.getTalent(button.id - 1);
 	    			
@@ -310,8 +310,8 @@ public class GuiDogInfo extends GuiScreen {
 		return false;
 	}
 	
-	public List splitInto(String text, int maxLength, FontRenderer font) {
-		List list = new ArrayList(); 
+	public List<String> splitInto(String text, int maxLength, FontRenderer font) {
+		List<String> list = new ArrayList<String>(); 
 		
 		String temp = "";
 		String[] split = text.split(" ");

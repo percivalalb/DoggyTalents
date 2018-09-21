@@ -4,7 +4,6 @@ import java.util.List;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -107,27 +106,22 @@ public class PuppyEyes extends ITalent {
 		}
 	}
 	
-	public EntityLiving charmVillagers(EntityDog dog, double d) {
-		double d1 = -1D;
-	    EntityLiving entityliving = null;
-	    List list = dog.world.getEntitiesWithinAABBExcludingEntity(dog, dog.getEntityBoundingBox().grow(d, d, d));
+	public EntityLiving charmVillagers(EntityDog dogIn, double radiusIn) {
+		double distance = -1D;
+		EntityVillager charmVillager = null;
+	    List<EntityVillager> list = dogIn.world.getEntitiesWithinAABB(EntityVillager.class, dogIn.getEntityBoundingBox().grow(radiusIn, radiusIn, radiusIn));
 
-	    for (int i = 0; i < list.size(); i++) {
-	    	Entity entity1 = (Entity)list.get(i);
+	    for (EntityVillager entityVillager : list) {
+	    	double d2 = entityVillager.getDistanceSq(dogIn.posX, dogIn.posY, dogIn.posZ);
 
-	            if (!(entity1 instanceof EntityVillager))
-	                continue;
-
-	            double d2 = entity1.getDistanceSq(dog.posX, dog.posY, dog.posZ);
-
-	            if ((d < 0.0D || d2 < d * d) && (d1 == -1D || d2 < d1) && ((EntityLiving)entity1).canEntityBeSeen(dog)) {
-	                d1 = d2;
-	                entityliving = (EntityLiving)entity1;
-	            }
-	        }
-
-	        return entityliving;
+	    	if ((radiusIn < 0.0D || d2 < radiusIn * radiusIn) && (distance == -1D || d2 < distance) && entityVillager.canEntityBeSeen(dogIn)) {
+	    		distance = d2;
+	    		charmVillager = entityVillager;
+	    	}
 	    }
+
+	    return charmVillager;
+	}
 	
 	@Override
 	public String getKey() {

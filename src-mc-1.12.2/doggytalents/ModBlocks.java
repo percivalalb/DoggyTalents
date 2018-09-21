@@ -6,6 +6,7 @@ import doggytalents.block.BlockFoodBowl;
 import doggytalents.block.ItemDogBed;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.lib.Reference;
+import doggytalents.lib.ResourceLib;
 import doggytalents.tileentity.TileEntityDogBath;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
@@ -37,9 +38,9 @@ public class ModBlocks {
 		DOG_BATH = new BlockDogBath().setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
 		FOOD_BOWL = new BlockFoodBowl().setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
-		GameRegistry.registerTileEntity(TileEntityDogBed.class, "doggytalents:dog_bed");
-		GameRegistry.registerTileEntity(TileEntityDogBath.class, "doggytalents:dog_bath");
-		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, "doggytalents:dog_bowl");
+		GameRegistry.registerTileEntity(TileEntityDogBed.class, ResourceLib.get("dog_bed"));
+		GameRegistry.registerTileEntity(TileEntityDogBath.class, ResourceLib.get("dog_bath"));
+		GameRegistry.registerTileEntity(TileEntityFoodBowl.class, ResourceLib.get("dog_bowl"));
 		
 		DOG_BED.setHarvestLevel("axe", 0);
 		DOG_BATH.setHarvestLevel("pickaxe", 0);

@@ -93,6 +93,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     public CoordUtil coords;
     public Map<String, Object> objects;
     
+	public int prevSize;
+    
     //Timers
     private int hungerTick;
    	private int prevHungerTick;
@@ -129,7 +131,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(10, new EntityAILookIdle(this));
-        this.tasks.addTask(11, new EntityAIDogFeed(this, 20.0F));
+       this.tasks.addTask(11, new EntityAIDogFeed(this, 20.0F));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
@@ -378,6 +380,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         	
         	this.foodBowlCheck = 0;
         }
+        
+        this.updateBoundingBox();
 
         //this.locationManager.addOrUpdateLocation(this);
         
@@ -1241,7 +1245,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
    
 	public void setDogSize(int value) {
 		this.dataTracker.setDogSize(value);
-		switch(value) {
+	}
+
+	public void updateBoundingBox() {
+		if(this.prevSize == this.getDogSize()) return;
+		
+		
+		
+		switch(this.getDogSize()) {
 		case 1:
 			this.setScale(0.5F);
 			break;
@@ -1258,6 +1269,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 			this.setScale(1.6F);
 			break;
 		}
+		
+		this.prevSize = this.getDogSize();
 	}
 	
 	@Override

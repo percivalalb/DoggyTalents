@@ -36,7 +36,7 @@ public class GameOverlay {
 	        int left = width / 2 + 91;
 	        int top = height - GuiIngameForge.right_height;
 	        GuiIngameForge.right_height += 10;
-	        int level = MathHelper.ceil(((double)dog.getDogHunger() / (double)Constants.hungerPoints) * 20.0D);
+	        int level = MathHelper.ceil(((double)dog.getDogHunger() / (double)Constants.HUNGER_POINTS) * 20.0D);
 
 	        for (int i = 0; i < 10; ++i) {
 	            int idx = i * 2 + 1;

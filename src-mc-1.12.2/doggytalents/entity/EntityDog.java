@@ -131,7 +131,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
         this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(10, new EntityAILookIdle(this));
-       this.tasks.addTask(11, new EntityAIDogFeed(this, 20.0F));
+        this.tasks.addTask(11, new EntityAIDogFeed(this, 20.0F));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
@@ -152,7 +152,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
     @Override
     protected SoundEvent getAmbientSound() {
-    	if(this.getDogHunger() <= Constants.lowHunger) {
+    	if(this.getDogHunger() <= Constants.LOW_HUNGER) {
     		return SoundEvents.ENTITY_WOLF_WHINE;
     	}
     	if (this.rand.nextInt(3) == 0)
@@ -336,7 +336,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	        }
     	}
         
-        if(this.getHealth() != Constants.lowHealthLevel) {
+        if(this.getHealth() != Constants.LOW_HEATH_LEVEL) {
 	        this.prevHealingTick = this.healingTick;
 	        this.healingTick += this.nourishment();
 	        
@@ -353,7 +353,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             this.setHealth(1);
         }
         
-        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > Constants.lowHealthLevel) {
+        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > Constants.LOW_HEATH_LEVEL) {
             this.attackEntityFrom(DamageSource.GENERIC, 1);
             //this.fleeingTick = 0;
         }
@@ -519,7 +519,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             if(!stack.isEmpty()) {
             	int foodValue = this.foodValue(stack);
             	
-            	if(foodValue != 0 && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player) && !this.isIncapacicated()) {
+            	if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
             		if(!player.capabilities.isCreativeMode)
             			stack.shrink(1);
             		
@@ -678,7 +678,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     if(isServer()) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getMaxHealth());
-                        this.setDogHunger(Constants.hungerPoints);
+                        this.setDogHunger(Constants.HUNGER_POINTS);
                         this.regenerationTick = 0;
                         this.setAttackTarget((EntityLivingBase)null);
                         this.playTameEffect(true);
@@ -734,7 +734,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     }
                     return true;
                 }
-                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player)) {
+                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
                 	
                 	InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
             		treatBag.openInventory(player);
@@ -1122,7 +1122,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     }
     
     public boolean isIncapacicated() {
-    	return this.isImmortal() && this.getHealth() <= Constants.lowHealthLevel;
+    	return this.isImmortal() && this.getHealth() <= Constants.LOW_HEATH_LEVEL;
     }
     
     @Override

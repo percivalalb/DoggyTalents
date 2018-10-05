@@ -52,7 +52,7 @@ public class EntityAIDogFeed extends EntityAIBase {
 			return false;
 		else if(this.dog.isIncapacicated())
 			return false;
-		else if(this.dog.getDogHunger() >= Constants.hungerPoints)
+		else if(this.dog.getDogHunger() >= Constants.HUNGER_POINTS)
 			return false;
 		else if(order != 0) //Don't eat while being ordered
 		return false;
@@ -65,7 +65,7 @@ public class EntityAIDogFeed extends EntityAIBase {
 	@Override
 	public boolean shouldContinueExecuting() {
 		int order = this.dog.masterOrder();
-		return this.dog.getDogHunger() < Constants.hungerPoints && this.isEating() && this.dog.getDistanceSq(this.foodEntity) < (double)(this.maxDist * this.maxDist) && !this.dog.isSitting() && order == 0;
+		return this.dog.getDogHunger() < Constants.HUNGER_POINTS && this.isEating() && this.dog.getDistanceSq(this.foodEntity) < (double)(this.maxDist * this.maxDist) && !this.dog.isSitting() && order == 0;
 	}
 
 	@Override

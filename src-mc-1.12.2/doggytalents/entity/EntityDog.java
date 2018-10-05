@@ -378,8 +378,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         	
         	this.foodBowlCheck = 0;
         }
-        
-        this.updateBoundingBox();
 
         //this.locationManager.addOrUpdateLocation(this);
         
@@ -788,10 +786,9 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         return super.processInteract(player, hand);
     }
     
-    public void travel(float strafe, float vertical, float forward)
-    {
-        if (this.isControllingPassengerPlayer())
-        {
+    @Override
+    public void travel(float strafe, float vertical, float forward) {
+    	 if (this.isBeingRidden() && this.canBeSteered()) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
             this.rotationYaw = entitylivingbase.rotationYaw;
             this.prevRotationYaw = this.rotationYaw;
@@ -1244,18 +1241,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
    
 	public void setDogSize(int value) {
 		this.dataTracker.setDogSize(value);
-	}
-	
-	public String getGender() {
-		return this.dataTracker.getGender();
-	}
-	
-	public void setGender(String value) {
-		this.dataTracker.setGender(value);
-	}
-	
-	public void updateBoundingBox() {
-		switch(this.getDogSize()) {
+		switch(value) {
 		case 1:
 			this.setScale(0.5F);
 			break;

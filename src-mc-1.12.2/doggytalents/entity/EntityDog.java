@@ -196,15 +196,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
-        this.updateEntityAttributes();
-    }
-    
-    public void updateEntityAttributes() {
-    	if(this.isTamed())
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        else
-            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isTamed() ? 20.0D : 8.0D);
     }
     
     @Override
@@ -219,6 +212,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         //Allow for the global searching of dogs with the whistle item
         //this.enablePersistence();
         
+        // This method is called from the constructor early
         this.talents = new TalentUtil(this);
         this.levels = new LevelUtil(this);
         this.mode = new ModeUtil(this);
@@ -524,9 +518,9 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             			stack.shrink(1);
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
-                    if(stack.getItem() == ModItems.CHEW_STICK) {
+                    if(stack.getItem() == ModItems.CHEW_STICK)
                     	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
-                    }
+                    
                     return true;
                 }
             	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
@@ -610,7 +604,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
-                	if(isServer()) {
+                	if(this.isServer()) {
                 		if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                 			this.reversionTime = 40;
                 			if(this.hasCollarColoured()) {
@@ -667,7 +661,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	                        this.hasRadarCollar(false);
 	                        this.reversionTime = 40;
                 		}
-                     }
+                    }
 
                 	return true;
                 }
@@ -690,7 +684,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 else if(stack.getItem() == Items.DYE && this.canInteract(player)) { //TODO Add Plants compatibility
                     if(!this.hasCollarColoured())
                     	return true;
-                    
                     
                     if(!this.isCollarColoured()) {
                         int colour = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorValue();
@@ -748,22 +741,26 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 }
             }
 
-            if(isServer() && !this.isBreedingItem(stack) && this.canInteract(player)) {
-                this.aiSit.setSitting(!this.isSitting());
-                this.isJumping = false;
-                this.navigator.clearPath();
-                this.setAttackTarget((EntityLivingBase)null);
+            if(!this.isBreedingItem(stack) && this.canInteract(player)) {
+            	if(this.isServer()) {
+	                this.aiSit.setSitting(!this.isSitting());
+	                this.isJumping = false;
+	                this.navigator.clearPath();
+	                this.setAttackTarget((EntityLivingBase)null);
+            	}
                 return true;
             }
         }
-        else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && isServer()) {
-            this.setDead();
-            EntityWolf wolf = new EntityWolf(this.world);
-            wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            this.world.spawnEntity(wolf);
+        else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
+        	if(this.isServer()) {
+	            this.setDead();
+	            EntityWolf wolf = new EntityWolf(this.world);
+	            wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+	            this.world.spawnEntity(wolf);
+        	}
             return true;
         }
-        else if(stack != null && stack.getItem() == Items.BONE) {
+        else if(stack.getItem() == Items.BONE) {
         	if(!player.capabilities.isCreativeMode)
         		stack.shrink(1);
 

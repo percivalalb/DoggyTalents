@@ -49,6 +49,8 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
+		
+		// This method is called from the constructor early
 		this.dataTracker = new DogDataTracker(this);
 	}
 

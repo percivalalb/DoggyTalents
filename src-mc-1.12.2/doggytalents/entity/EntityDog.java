@@ -1239,6 +1239,16 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
 	}
 	
+	//Gender related functions
+	public String getGender() {
+		return this.dataTracker.getGender();
+	}
+	
+	public void setGender(String value) {
+		this.dataTracker.setGender(value);
+	}
+	
+	//Dog Size related functions
 	public int getDogSize() {
 		return this.dataTracker.getDogSize();
 	}

@@ -8,25 +8,29 @@ Update List Key
 (/) Other
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-MC 1.8.9, 1.9.4, 1.10.2, 1.11.2, 1.12, 1.12.1 and 1.12.2
+MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1.14.2.321 | 6th August 2018 (1.12.2)
+1.14.2.379 | 6th October 2018
+* Fixed puppies running backwards forever, #110
+* Small amount of code cleanup
+
+1.14.2.321 | 6th August 2018
 * Fixed dogs suddenly disappearing on the server side, #106
 
-1.14.2.320 | 4th August 2018 (1.12.2)
+1.14.2.320 | 4th August 2018
 * Fixed dogs not following when the player is holding a bone, #104
 * Fixed issue with Roaring Gale not affecting certain mobs, #102
 # Made dogs check for master order items in either the active hand or the off hand, #102
 + Dogs can now eat off the ground, #103
 
-1.14.2.319 | 1st August 2018 (1.12.2)
+1.14.2.319 | 1st August 2018
 * Fixed post initalization crash with newest version of CreativeCore #99
 * Fixed some bed casings from ExtraTrees not showing up
 # Changed casing name to match Foresty
 # Improve registery logging
 - Removed  Dendrology support
 
-1.14.2.318 | 1st July 2018 (1.12.2)
+1.14.2.318 | 1st July 2018
 * Fixed some bugs in #86, made the dog's legs move only when it is moving while being ridden.
 / Beginning work on WorldSaveData in order to get the whistle to function
 

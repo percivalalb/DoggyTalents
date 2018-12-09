@@ -10,6 +10,11 @@ Update List Key
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.14.2.380 | 8th December 2018
++ Added ability to toggle rather a dog whines when it is low on hunger
+- Removed empty General settings category until further notice
+* Fixed textues for Pack Puppy and Dog Bowl, #111
+
 1.14.2.379 | 6th October 2018
 * Fixed puppies running backwards forever, #110
 * Small amount of code cleanup

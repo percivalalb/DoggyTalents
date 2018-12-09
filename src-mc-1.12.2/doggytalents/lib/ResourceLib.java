@@ -49,7 +49,7 @@ public class ResourceLib {
      * @return The whole path string including the given parameter.
      */
     public static ResourceLocation getGuiTexturePath(String textureFileName) {
-	    return get("textures/gui/%s" + textureFileName);
+	    return get("textures/gui/" + textureFileName);
 	}
 	
     /**

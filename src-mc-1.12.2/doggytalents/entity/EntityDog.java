@@ -152,7 +152,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
     @Override
     protected SoundEvent getAmbientSound() {
-    	if(this.getDogHunger() <= Constants.LOW_HUNGER) {
+    	if(this.getDogHunger() <= Constants.LOW_HUNGER && Constants.DOG_WHINE_WHEN_HUNGER_LOW == true) {
     		return SoundEvents.ENTITY_WOLF_WHINE;
     	}
     	if (this.rand.nextInt(3) == 0)

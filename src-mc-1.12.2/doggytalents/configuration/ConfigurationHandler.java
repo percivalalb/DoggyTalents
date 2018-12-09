@@ -34,7 +34,7 @@ public class ConfigurationHandler {
 	public static void loadConfig() {
 		CONFIG.addCustomCategoryComment(CATEGORY_DOGGYSETTINGS, "Here you can change details about your dog.");
 		CONFIG.addCustomCategoryComment(CATEGORY_TALENT, "Enable and disable talents here as you wish");
-		CONFIG.addCustomCategoryComment(CATEGORY_GENERAL, "Other settings");
+		//CONFIG.addCustomCategoryComment(CATEGORY_GENERAL, "Other settings");
 		
 		//Creates list for doggy settings
 		List<String> orderDSetting = new ArrayList<String>();
@@ -48,11 +48,13 @@ public class ConfigurationHandler {
 		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will bleed while incapacitated.").getBoolean(true);
 		Constants.DOGGY_WINGS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyWings", true, "When enabled, Dogs will have wings when at level 5 pillow paw").getBoolean(true);
 		Constants.DOG_GENDER = CONFIG.get(CATEGORY_DOGGYSETTINGS, "dogGender", false, "When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender").setRequiresMcRestart(true).getBoolean(false);
+		Constants.DOG_WHINE_WHEN_HUNGER_LOW = CONFIG.get(CATEGORY_DOGGYSETTINGS, "shouldWhineWhenStarving", true, "Determines if dogs should whine when hunger reaches below 20 DP").getBoolean(true);
 		
 		//Add Everything in the current list in whatever way you want
 		orderDSetting.add("isDogImmortal");
 		orderDSetting.add("tenDayPuppies");
 		orderDSetting.add("isHungerOn");
+		orderDSetting.add("shouldWhineWhenStarving");
 		orderDSetting.add("direParticles");
 		orderDSetting.add("isStartingItemsEnabled");
 		orderDSetting.add("bloodWhenIncapacitated");
@@ -74,9 +76,9 @@ public class ConfigurationHandler {
 		}
 		
 		//Creates list for general settings
-		List<String> orderDTGeneral = new ArrayList<String>();
+		//List<String> orderDTGeneral = new ArrayList<String>();
 		
-		CONFIG.setCategoryPropertyOrder(CATEGORY_GENERAL, orderDTGeneral);
+		//CONFIG.setCategoryPropertyOrder(CATEGORY_GENERAL, orderDTGeneral);
 		
 		if(CONFIG.hasChanged())
 			CONFIG.save();

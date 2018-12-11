@@ -54,7 +54,7 @@ public class PuppyEyes extends ITalent {
 	            if(j1 == 0)
 	            {
 	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part1", dog.genderUtil.getGenderPronoun()));
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part2", dog.genderUtil.getGenderPronoun()));
+	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part2", dog.genderUtil.getGenderSubject()));
 	                entityliving.dropItem(Items.PORKCHOP, 2);
 	            }
 

@@ -114,11 +114,11 @@ public class EntityAIDogFeed extends EntityAIBase {
 			int bestHungerForFish = 110;
 
 			if(foodValue != 0) {
-				if(!isFish && (hunger >= bestHungerForFish || hunger < bestHungerForFish)) {
+				if(!isFish && (hunger >= bestHungerForFish || hunger < bestHungerForFish)) { //If the item is NOT fish AND the dog's hunger is either BELOW or ABOVE the bestHungerForFish value, allow the dog to eat the item
 					return foodEntity;
-				}else if(isFish && hunger >= bestHungerForFish){
+				}else if(isFish && hunger >= bestHungerForFish){ //If the item IS fish AND the dog's hunger is ABOVE the bestHungerForFish value, do not allow the dog to eat the item
 					return null;
-				}else if(isFish && hunger < bestHungerForFish) {
+				}else if(isFish && hunger < bestHungerForFish) { //If the item IS fish AND the dog's hunger is BELOW the bestHungerForFish value, allow the dog to eat the item
 					return foodEntity;
 				}
 			}

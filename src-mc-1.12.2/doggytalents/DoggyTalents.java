@@ -28,7 +28,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY, dependencies = Reference.DEPENDENCIES, acceptedMinecraftVersions = Reference.ACCEPTED_MC_VERSION)
 public class DoggyTalents {
 
 	@Instance(value = Reference.MOD_ID)

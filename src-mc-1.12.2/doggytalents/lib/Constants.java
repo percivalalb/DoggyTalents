@@ -23,4 +23,6 @@ public class Constants {
 	public static int LOW_HUNGER = 20;
 	
 	public static List<String> DISABLED_TALENTS = new ArrayList<>();
+
+	public static boolean DEBUG_MODE = false;
 }

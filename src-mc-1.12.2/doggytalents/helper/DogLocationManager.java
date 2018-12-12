@@ -2,13 +2,17 @@ package doggytalents.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.MapStorage;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
@@ -24,14 +28,16 @@ public class DogLocationManager extends WorldSavedData {
 	/**
 	 * Gets DogLocationHandler uses Overworld WorldSaveData as that should always be loaded
 	 */
-	public static DogLocationManager getHandler() {
-		World overworld = DimensionManager.getWorld(0);
-		DogLocationManager locationManager = (DogLocationManager)overworld.getPerWorldStorage().getOrLoadData(DogLocationManager.class, "dog_locations");
+	public static DogLocationManager getHandler(World world) {
+		MapStorage storage = world.getMapStorage();
+		//World overworld = DimensionManager.getWorld(0);
+		DogLocationManager locationManager = (DogLocationManager)storage.getOrLoadData(DogLocationManager.class, "dog_locations");
 		
     	if (locationManager == null) {
             locationManager = new DogLocationManager("dog_locations");
-            overworld.getPerWorldStorage().setData("dog_locations", locationManager);
-        }
+			storage.setData("dog_locations", locationManager);
+			if(Constants.DEBUG_MODE == true) System.out.println("DATA DECLARED: "+storage.getOrLoadData(locationManager.getClass(), "dog_locations"));
+		}
     	
     	return locationManager;
 	}
@@ -48,7 +54,7 @@ public class DogLocationManager extends WorldSavedData {
 				return;
 			}
 		}
-		
+		if(Constants.DEBUG_MODE == true) System.out.println("ADDED NEW DATA: " + temp);
 		this.locations.add(temp);
 		this.markDirty();
 	}
@@ -63,19 +69,24 @@ public class DogLocationManager extends WorldSavedData {
 		// Matches this dog with it's saved DogLocation
 		for (int i = 0; i < this.locations.size(); i++) {
 			DogLocation loc = this.locations.get(i);
-            if (loc.entityId < 0 && dogDim == loc.dim && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) && 
+            if (loc.entityId == null && dogDim == loc.dim && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) &&
             		this.axisCoordEqual(dog.posZ, loc.z)) {
             	
-            	loc.entityId = dog.getEntityId();
+            	loc.entityId = dog.getUniqueID();
+                if(Constants.DEBUG_MODE == true) System.out.println("RELOADED DATA: " + dog);
             	return;
             }
 		}
 	}
-	
-	public void removeDog(int entityId) {
-		
+
+	public void removeDog(EntityDog dog) {
+		if(Constants.DEBUG_MODE == true) System.out.println("REMOVED DATA: "+ dog);
+
+		DogLocation temp = new DogLocation(dog);
+		this.locations.remove(temp);
+		this.markDirty();
 	}
-	
+
 	public boolean axisCoordEqual(double a, double b) {
 		return Math.abs(a - b) < 1e-4;
 	}
@@ -108,8 +119,8 @@ public class DogLocationManager extends WorldSavedData {
 
 		public double x, y, z;
 		public int dim;
-		public int entityId = -1;
-		
+		public UUID entityId;
+
 		// Dog Data
 		public String name;
 		public String gender;
@@ -124,7 +135,7 @@ public class DogLocationManager extends WorldSavedData {
 			this.y = dog.posY;
 			this.z = dog.posZ;
 			this.dim = dog.world.provider.getDimension();
-			this.entityId = dog.getEntityId();
+			this.entityId = dog.getUniqueID();
 			
 			this.name = dog.getName();
 			this.gender = dog.getGender();
@@ -155,11 +166,11 @@ public class DogLocationManager extends WorldSavedData {
 		}
 		
 		public EntityDog getDog() {
-			if(this.entityId < 0)
+			if(this.entityId == null)
 				return null;
 			
 			World world = DimensionManager.getWorld(this.dim);
-			Entity entity = world.getEntityByID(this.entityId);
+			Entity entity = ((WorldServer)world).getEntityFromUuid(this.entityId);
 			
 			if(entity instanceof EntityDog) 
 				return (EntityDog)entity;
@@ -173,13 +184,13 @@ public class DogLocationManager extends WorldSavedData {
 			
 			DogLocation other = (DogLocation)obj;
 			
-			return this.entityId >= 0 && other.entityId >= 0 && this.entityId == other.entityId;  
+			return this.entityId != null && other.entityId != null && this.entityId == other.entityId;
 		}
 		
-		@Override
+		/*@Override
 		public int hashCode() {
 			return this.entityId;
-		}
+		}*/
 		
 		@Override
 		public String toString() {

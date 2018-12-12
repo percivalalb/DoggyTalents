@@ -1,4 +1,4 @@
-Doggy Talents - Changelog
+﻿Doggy Talents - Changelog
 
 Update List Key
 (+) A new feature
@@ -10,6 +10,11 @@ Update List Key
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.14.2.382 | 10th December 2018
+# Renamed Doggy Settings to Dog Behavior settings
+# Moved Talents config category under Dog Behavior Category
+# Changed lang text for general settings category and dog behavior (former doggy settings) category
+
 1.14.2.381 | 10th December 2018
 * Fixed #114
 * Corrected PuppyEyes phrase 1 string error

@@ -32,11 +32,21 @@ public class ConfigurationHandler {
 	  *     Forums. Thanks!
 	  */
 	public static void loadConfig() {
-		CONFIG.addCustomCategoryComment(CATEGORY_DOGGYSETTINGS, "Here you can change details about your dog.");
+		CONFIG.addCustomCategoryComment(CATEGORY_GENERAL, "General settings for the mod");
+		CONFIG.addCustomCategoryComment(CATEGORY_DOGGYSETTINGS, "Change certain behaviors of dogs");
 		CONFIG.addCustomCategoryComment(CATEGORY_TALENT, "Enable and disable talents here as you wish");
-		//CONFIG.addCustomCategoryComment(CATEGORY_GENERAL, "Other settings");
-		
-		//Creates list for doggy settings
+
+		//Creates list for general settings
+		List<String> orderDTGeneral = new ArrayList<String>();
+
+		Constants.DEBUG_MODE = CONFIG.get(CATEGORY_GENERAL, "debugMode", false, "Enables debugging mode, which would output values for the sake of finding issues in the mod.").setRequiresMcRestart(false).setRequiresWorldRestart(false).getBoolean(false);
+
+		orderDTGeneral.add("debugMode");
+
+		//Sets the category property order to that of which you have set the list above
+		CONFIG.setCategoryPropertyOrder(CATEGORY_GENERAL, orderDTGeneral);
+
+		//Creates list for dog behavior settings
 		List<String> orderDSetting = new ArrayList<String>();
 		 
 		Constants.DOGS_IMMORTAL = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isDogImmortal", true, "Determines if dogs die when their health reaches zero. If true, dogs will not die, and will instead become incapacitated.").setRequiresMcRestart(true).getBoolean(true);
@@ -74,11 +84,6 @@ public class ConfigurationHandler {
 			if(!enabled)
 				Constants.DISABLED_TALENTS.add(talentId);
 		}
-		
-		//Creates list for general settings
-		//List<String> orderDTGeneral = new ArrayList<String>();
-		
-		//CONFIG.setCategoryPropertyOrder(CATEGORY_GENERAL, orderDTGeneral);
 		
 		if(CONFIG.hasChanged())
 			CONFIG.save();

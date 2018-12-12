@@ -17,81 +17,74 @@ import net.minecraftforge.fml.client.config.IConfigElement;
  * Created by NovaViper on 4/4/2017.
  */
 public class ModGuiConfig extends GuiConfig {
-	
-	//@formatter:off
-	public ModGuiConfig(GuiScreen guiScreen) {
-		super(guiScreen, getConfigElements(), Reference.MOD_ID, false, false, I18n.format("title.doggytalents.config.name"));
-	}
 
-	private static List<IConfigElement> getConfigElements() {
-		List<IConfigElement> list = new ArrayList<>();
-		list.add(new DummyCategoryElement("doggysettings", "modgui.config.doggysettings", DoggySettingsEntry.class));
-		list.add(new DummyCategoryElement("talents", "modgui.config.talents", DTTalentEntry.class));
-		//list.add(new DummyCategoryElement("general", "modgui.config.general", DTGeneralEntry.class));
-		return list;
-	}
+    //@formatter:off
+    public ModGuiConfig(GuiScreen guiScreen) {
+        super(guiScreen, getConfigElements(), Reference.MOD_ID, false, false, I18n.format("title.doggytalents.config.name"));
+    }
 
-	/**
-	 * This custom list entry provides the General Settings entry on the
-	 * Minecraft Forge Configuration screen. It extends the base Category
-	 * entry class and defines the IConfigElement objects that will be used
-	 * to build the child screen.
-	 *
-	 */
-	public static class DoggySettingsEntry extends CategoryEntry // Function Entry
-	{
-		public DoggySettingsEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
+    private static List<IConfigElement> getConfigElements() { // Parent Categories
+        List<IConfigElement> list = new ArrayList<>();
+        list.add(new DummyCategoryElement("general", "modgui.config.general", DTGeneralEntry.class));
+        list.add(new DummyCategoryElement("doggysettings", "modgui.config.doggysettings", DoggySettingsEntry.class));
+        return list;
+    }
 
-		@Override
-		protected GuiScreen buildChildScreen() {
+    /**
+     * This custom list entry provides the General Settings entry on the
+     * Minecraft Forge Configuration screen. It extends the base Category
+     * entry class and defines the IConfigElement objects that will be used
+     * to build the child screen.
+     */
+    public static class DTGeneralEntry extends CategoryEntry {
+        public DTGeneralEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
 
-			List<IConfigElement> list = new ArrayList<IConfigElement>();
-			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_DOGGYSETTINGS))).getChildElements());
-			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DOGGYSETTINGS, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.doggysettings"), I18n.format("modgui.config.doggysettings.tooltip"));
-		}
-	}
+        @Override
+        protected GuiScreen buildChildScreen() {
 
-	/*public static class DTGeneralEntry extends CategoryEntry // Load Entry
-	{
-		public DTGeneralEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
-		
-		@Override
-		protected GuiScreen buildChildScreen() {
-			
-			List<IConfigElement> list = new ArrayList<IConfigElement>();
-			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); TODO You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_GENERAL))).getChildElements());
-			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_GENERAL, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, true, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));
-		}
-	}*/
-	
-	public static class DTTalentEntry extends CategoryEntry // Load Entry
-	{
-		public DTTalentEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
-		
-		@Override
-		protected GuiScreen buildChildScreen() {
-			
-			List<IConfigElement> list = new ArrayList<IConfigElement>();
-			// list.add(new DummyCategoryElement("terrain", "gui.config.terrain", TerrainEntry.class)); TODO You could also add in subcategories
-			list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_TALENT))).getChildElements());
-			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_TALENT, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.talents"), I18n.format("modgui.config.talents.tooltip"));
-		}
-	}
-	
-	//TODO All of this down here you can use as reference to create categories with nested categories
+            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_GENERAL))).getChildElements());
+            return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_GENERAL, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, true, I18n.format("modgui.config.general"), I18n.format("modgui.config.general.tooltip"));
+        }
+    }
+
+    public static class DoggySettingsEntry extends CategoryEntry {
+        public DoggySettingsEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
+
+        @Override
+        protected GuiScreen buildChildScreen() {
+
+            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            list.add(new DummyCategoryElement("talents", "modgui.config.talents", DTTalentEntry.class));
+            list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_DOGGYSETTINGS))).getChildElements());
+            return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_DOGGYSETTINGS, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
+                    this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.doggysettings"), I18n.format("modgui.config.doggysettings.tooltip"));
+        }
+    }
+
+    public static class DTTalentEntry extends CategoryEntry {
+        public DTTalentEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
+
+        @Override
+        protected GuiScreen buildChildScreen() {
+
+            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            list.addAll((new ConfigElement(ConfigurationHandler.CONFIG.getCategory(ConfigurationHandler.CATEGORY_TALENT))).getChildElements());
+            return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigurationHandler.CATEGORY_TALENT, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
+                    this.owningScreen.allRequireMcRestart, I18n.format("modgui.config.talents"), I18n.format("modgui.config.talents.tooltip"));
+        }
+    }
+
+    //TODO All of this down here you can use as reference to create categories with nested categories
 	/*public static class MiscEntry extends CategoryEntry // Miscellaneous Entry
 	{
 		public MiscEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {

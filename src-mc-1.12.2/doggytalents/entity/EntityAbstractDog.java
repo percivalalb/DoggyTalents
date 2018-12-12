@@ -35,14 +35,14 @@ public abstract class EntityAbstractDog extends EntityTameable {
     private float prevTimeWolfIsShaking;
     
     public IDataTracker dataTracker;
-    //public DogLocationManager locationManager;
+    public DogLocationManager locationManager;
     public DogGenderUtil genderUtil;
 	
 	public EntityAbstractDog(World worldIn) {
 		super(worldIn);
         this.setSize(0.6F, 0.85F);
         
-        //this.locationManager = DogLocationManager.getHandler();
+        this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
         this.genderUtil = new DogGenderUtil(this);
 	}
 	
@@ -219,12 +219,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
     }
 	
 	protected abstract void onFinishShaking();
-	
-	@Override
-	public void onDeath(DamageSource cause) {
-		//No death message
-		//TODO this.locationManager.
-	}
 	
 	/**
 	 * Checks if this entity is running on a client.

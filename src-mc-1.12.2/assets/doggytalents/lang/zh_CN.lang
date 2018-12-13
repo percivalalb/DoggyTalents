@@ -4,7 +4,7 @@ tile.doggytalents.dogbath.name=狗浴缸
 
 title.doggytalents.config.name=小狗天才的配置设定
 modgui.config.doggysettings=狗的设置
-modgui.config.doggysettings.tooltip=修改改变狗的某些行为
+modgui.config.doggysettings.tooltip=修改狗的某些行为
 modgui.config.general=通用设置
 modgui.config.general.tooltip=本模组的通用设置
 modgui.config.talents=能力

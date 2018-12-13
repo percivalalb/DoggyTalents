@@ -4,9 +4,9 @@ tile.doggytalents.dogbath.name=狗浴缸
 
 title.doggytalents.config.name=小狗天才的配置设定
 modgui.config.doggysettings=狗的设置
-modgui.config.doggysettings.tooltip=在这里你可以改变你的狗的细节
+modgui.config.doggysettings.tooltip=修改改变狗的某些行为
 modgui.config.general=通用设置
-modgui.config.general.tooltip=杂项
+modgui.config.general.tooltip=本模组的通用设置
 modgui.config.talents=能力
 modgui.config.talents.tooltip=启用/禁用能力
 
@@ -59,7 +59,7 @@ doggui.talentname.roaringgale=狂风怒吼
 doggui.talentname.puppyeyes=卖萌天赋
 doggui.talentname.swimmerdog=游泳健将
 
-doggui.talentinfo.bedfinder=当狗狗在你头上时（用骨头右击即可），你的床就会黑色高亮突出显示，每提升一级，有效范围半径增加200格，当升到5级时，有效范围无限大。
+doggui.talentinfo.bedfinder=当拥有该技能的狗在你头上时，你的床就会黑色高亮突出显示。要让你的狗爬到你的头上，你需要拿着骨头右击它们。每提升一级，有效范围半径增加200格，当升到5级时，有效范围无限大。
 doggui.talentinfo.blackpelt=增加致命一击的发生几率，每提升一级增加半颗心的伤害，精通后额外增加1颗心得伤害。
 doggui.talentinfo.guarddog=提升该技能，可以让你的狗增加完全格挡一次物理攻击的几率。
 doggui.talentinfo.hunterdog=每提升一级，可以增加10%的几率，让你的狗在杀死生物后获得两倍的掉落物，5级可以额外增加10%的几率，总共会达到60%。
@@ -100,8 +100,8 @@ doggui.gendertip.female=（母）
 doggui.modeinfo.wandering=在这个模式下，你的狗狗会呆在狗食盆附近等待你的命令。只需要把你的狗狗带到狗食盆1格内的距离即可。
 doggui.modeinfo.tactical=在这个模式下，你的狗狗会跟着你但是没有你的命令它不会攻击任何生物。
 doggui.modeinfo.aggressive=在这个模式下，你的狗狗会跟着你，并攻击任何伤害你的或者你在攻击的生物。
-doggui.modeinfo.berserker=在这个模式下，你的狗狗会跟着你，任何生物靠近你时，它会直接主动攻击。
-doggui.modeinfo.docile=在这个模式下，你的狗狗会跟着你，但是并不会攻击任何生物。它已经准备好去捡扔出去的骨头了。
+doggui.modeinfo.berserker=在这个模式下，你的狗狗会跟着你，任何生物靠近你时，它们会直接主动攻击。
+doggui.modeinfo.docile=在这个模式下，你的狗狗会跟着你，但是并不会攻击任何生物。它们已经准备好去捡扔出去的骨头了。
 doggui.modeinfo.patrol=在这个模式下，你的狗狗会在2-4个点（使用命令徽章指定）之间巡逻并攻击视野内出现的怪物。
 
 doggui.mode.docile.nobowl=当前尚未指定食盆。

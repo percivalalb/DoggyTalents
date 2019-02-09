@@ -14,7 +14,7 @@ public class CreativeTabDoggyTalents extends CreativeTabs {
 	}
 	
 	@Override
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return new ItemStack(ModItems.TRAINING_TREAT);
 	}
 }

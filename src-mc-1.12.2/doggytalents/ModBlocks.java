@@ -34,9 +34,9 @@ public class ModBlocks {
     @SubscribeEvent
 	public static void onRegisterBlock(RegistryEvent.Register<Block> registry) {
 		DoggyTalents.LOGGER.info("Registering Blocks");
-		DOG_BED = new BlockDogBed().setUnlocalizedName("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
-		DOG_BATH = new BlockDogBath().setUnlocalizedName("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
-		FOOD_BOWL = new BlockFoodBowl().setUnlocalizedName("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
+		DOG_BED = new BlockDogBed().setTranslationKey("doggytalents.dogbed").setRegistryName(Reference.MOD_ID + ":dog_bed");
+		DOG_BATH = new BlockDogBath().setTranslationKey("doggytalents.dogbath").setRegistryName(Reference.MOD_ID + ":dog_bath");
+		FOOD_BOWL = new BlockFoodBowl().setTranslationKey("doggytalents.foodbowl").setRegistryName(Reference.MOD_ID + ":food_bowl");
 
 		GameRegistry.registerTileEntity(TileEntityDogBed.class, ResourceLib.get("dog_bed"));
 		GameRegistry.registerTileEntity(TileEntityDogBath.class, ResourceLib.get("dog_bath"));

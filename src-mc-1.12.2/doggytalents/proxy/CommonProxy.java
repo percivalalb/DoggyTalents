@@ -97,7 +97,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return (IThreadListener)ctx.getServerHandler().player.mcServer;
+		return (IThreadListener)ctx.getServerHandler().player.server;
 	}
 	
 	public void spawnCrit(World world, Entity entity) {}

@@ -105,7 +105,7 @@ public class BlockDogBed extends BlockContainer {
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		EnumFacing enumfacing = EnumFacing.getFront(meta);
+		EnumFacing enumfacing = EnumFacing.byIndex(meta);
 
 	    if (enumfacing.getAxis() == EnumFacing.Axis.Y)
 	        enumfacing = EnumFacing.NORTH;
@@ -164,7 +164,7 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 	

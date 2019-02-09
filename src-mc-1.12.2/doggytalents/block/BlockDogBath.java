@@ -46,7 +46,7 @@ public class BlockDogBath extends BlockContainer {
 	}
 	
 	@Override
-	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(entity instanceof EntityDog) {
 			EntityDog dog = (EntityDog)entity;
 			dog.isWet = true;
@@ -70,7 +70,7 @@ public class BlockDogBath extends BlockContainer {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
+    public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 	

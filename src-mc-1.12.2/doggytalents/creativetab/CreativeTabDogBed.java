@@ -27,7 +27,7 @@ public class CreativeTabDogBed extends CreativeTabs {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getIconItemStack() {
+	public ItemStack getIcon() {
 		if(this.iconItemStack == null)
 			this.iconItemStack = DogBedRegistry.createItemStack(pickRandomString(DogBedRegistry.CASINGS.getKeys()), pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
 
@@ -40,7 +40,7 @@ public class CreativeTabDogBed extends CreativeTabs {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public ItemStack getTabIconItem() {
+	public ItemStack createIcon() {
 		return new ItemStack(ModItems.TRAINING_TREAT);
 	}
 	

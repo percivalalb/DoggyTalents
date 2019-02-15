@@ -10,6 +10,10 @@ Update List Key
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.14.2.396 | 15th February 2019
+* Fixed crash with older versions and newer versions of CreativeCore
+/ Updated source code to MCP mappings stable_39
+
 1.14.2.382 | 10th December 2018
 # Renamed Doggy Settings to Dog Behavior settings
 # Moved Talents config category under Dog Behavior Category

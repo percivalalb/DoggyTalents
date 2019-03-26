@@ -44,5 +44,19 @@ public class DoggyTalentsMod {
 		
 		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WHITE_WOOL, "minecraft:block/white_wool");
 		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.ORANGE_WOOL, "minecraft:block/orange_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.MAGENTA_WOOL, "minecraft:blocks/magenta_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_BLUE_WOOL, "minecraft:blocks/light_blue_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.YELLOW_WOOL, "minecraft:blocks/yellow_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIME_WOOL, "minecraft:blocks/lime_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PINK_WOOL, "minecraft:blocks/pink_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GRAY_WOOL, "minecraft:blocks/gray_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_GRAY_WOOL, "minecraft:blocks/light_gray_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.CYAN_WOOL, "minecraft:blocks/cyan_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PURPLE_WOOL, "minecraft:blocks/purple_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLUE_WOOL, "minecraft:blocks/blue_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BROWN_WOOL, "minecraft:blocks/brown_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GREEN_WOOL, "minecraft:blocks/green_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.RED_WOOL, "minecraft:blocks/red_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLACK_WOOL, "minecraft:blocks/black_wool");
 	}
 }

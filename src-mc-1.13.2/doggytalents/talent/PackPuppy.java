@@ -2,13 +2,11 @@ package doggytalents.talent;
 
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
-import doggytalents.inventory.InventoryTreatBag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,7 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.IInteractionObject;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
 

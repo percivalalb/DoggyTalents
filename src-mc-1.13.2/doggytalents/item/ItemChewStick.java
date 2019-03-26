@@ -1,7 +1,6 @@
 package doggytalents.item;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.potion.PotionEffect;

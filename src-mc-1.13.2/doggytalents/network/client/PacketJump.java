@@ -1,12 +1,12 @@
 package doggytalents.network.client;
 
+import java.util.function.Supplier;
+
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.MobEffects;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class PacketJump {
 	

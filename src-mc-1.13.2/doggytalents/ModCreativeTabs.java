@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.registry.DogBedRegistry;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;

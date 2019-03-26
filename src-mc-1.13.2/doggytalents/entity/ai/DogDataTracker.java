@@ -3,7 +3,6 @@ package doggytalents.entity.ai;
 import java.util.Optional;
 
 import doggytalents.api.inferface.IDataTracker;
-import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ai.ModeFeature.EnumMode;
 import doggytalents.lib.Constants;

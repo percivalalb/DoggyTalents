@@ -26,10 +26,9 @@ import doggytalents.talent.ShepherdDog;
 import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraftforge.common.ForgeConfig;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.*;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 public class SideProxy {

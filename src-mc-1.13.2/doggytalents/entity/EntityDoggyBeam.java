@@ -5,13 +5,10 @@ import java.util.List;
 import doggytalents.ModEntities;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Particles;
-import net.minecraft.particles.IParticleData;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 

@@ -1,17 +1,5 @@
 package doggytalents.entity.ai;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.World;
-
 import java.util.List;
 import java.util.Random;
 
@@ -19,6 +7,12 @@ import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
 import doggytalents.lib.Constants;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 /**
  * Original code credit goes to the author of Sophisticated Wolves, NightKosh!

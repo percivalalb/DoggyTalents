@@ -1,13 +1,11 @@
 package doggytalents.network.client;
 
-import doggytalents.DoggyTalentsMod;
+import java.util.function.Supplier;
+
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class PacketFriendlyFire {
 	

@@ -1,11 +1,5 @@
 package doggytalents;
 
-import com.mojang.datafixers.DataFixUtils;
-import com.mojang.datafixers.types.Type;
-
-import doggytalents.block.BlockDogBath;
-import doggytalents.block.BlockDogBed;
-import doggytalents.block.BlockFoodBowl;
 import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
@@ -20,29 +14,14 @@ import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
-import doggytalents.lib.BlockNames;
 import doggytalents.lib.ItemNames;
 import doggytalents.lib.Reference;
-import doggytalents.tileentity.TileEntityDogBed;
-import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SharedConstants;
-import net.minecraft.util.datafix.DataFixesManager;
-import net.minecraft.util.datafix.TypeReferences;
-import net.minecraft.util.registry.IRegistry;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
 public class ModItems {

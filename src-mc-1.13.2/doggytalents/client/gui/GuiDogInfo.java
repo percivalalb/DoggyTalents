@@ -1,17 +1,14 @@
 package doggytalents.client.gui;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ai.ModeFeature.EnumMode;
-import doggytalents.lib.Constants;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketDogMode;
 import doggytalents.network.client.PacketDogName;
@@ -22,13 +19,11 @@ import doggytalents.network.client.PacketFriendlyFire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiControls;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;

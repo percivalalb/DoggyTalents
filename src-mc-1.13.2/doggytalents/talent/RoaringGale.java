@@ -1,21 +1,15 @@
 package doggytalents.talent;
 
-import java.util.Iterator;
 import java.util.List;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;

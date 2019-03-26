@@ -2,7 +2,6 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Reference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

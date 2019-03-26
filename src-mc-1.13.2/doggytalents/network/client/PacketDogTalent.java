@@ -1,15 +1,13 @@
 package doggytalents.network.client;
 
-import doggytalents.DoggyTalentsMod;
+import java.util.function.Supplier;
+
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class PacketDogTalent {
 	

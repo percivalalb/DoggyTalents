@@ -1,9 +1,7 @@
 package doggytalents.entity.ai;
 
 import doggytalents.configuration.ConfigHandler;
-import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public class DogGenderFeature extends DogFeature {

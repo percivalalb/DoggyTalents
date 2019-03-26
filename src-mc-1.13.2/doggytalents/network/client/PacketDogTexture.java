@@ -1,13 +1,11 @@
 package doggytalents.network.client;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
-
-import net.minecraftforge.fml.network.NetworkEvent;
-
 import java.util.function.Supplier;
 
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketDogTexture {
 	

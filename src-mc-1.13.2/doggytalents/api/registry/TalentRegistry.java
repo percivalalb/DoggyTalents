@@ -1,7 +1,6 @@
 package doggytalents.api.registry;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,6 @@ import java.util.Map;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.configuration.ConfigHandler;
-import doggytalents.lib.Constants;
 import net.minecraftforge.common.MinecraftForge;
 
 /**

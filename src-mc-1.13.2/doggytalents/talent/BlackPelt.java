@@ -1,6 +1,5 @@
 package doggytalents.talent;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;

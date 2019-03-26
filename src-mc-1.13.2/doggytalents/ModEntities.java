@@ -2,18 +2,10 @@ package doggytalents;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.lib.BlockNames;
 import doggytalents.lib.EntityNames;
 import doggytalents.lib.Reference;
-import doggytalents.tileentity.TileEntityDogBed;
-import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.projectile.EntityLargeFireball;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;

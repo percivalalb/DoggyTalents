@@ -4,12 +4,11 @@ import doggytalents.client.model.entity.ModelWings;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author ProPercivalalb

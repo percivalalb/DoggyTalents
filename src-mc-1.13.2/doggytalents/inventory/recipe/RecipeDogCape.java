@@ -6,12 +6,9 @@ import com.google.common.collect.Lists;
 
 import doggytalents.ModRecipes;
 import doggytalents.item.ItemCapeColoured;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeHidden;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.NonNullList;

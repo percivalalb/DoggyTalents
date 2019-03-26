@@ -5,8 +5,8 @@ import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * @author ProPercivalalb

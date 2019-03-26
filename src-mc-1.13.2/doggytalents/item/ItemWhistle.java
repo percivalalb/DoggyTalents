@@ -1,25 +1,18 @@
 package doggytalents.item;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EntitySelectors;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraft.item.Item;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 /**
  * Credit to the author of Sophisticated Wolves, NightKosh for onItemRightClick code

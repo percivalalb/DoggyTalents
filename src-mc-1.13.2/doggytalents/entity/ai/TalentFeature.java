@@ -3,7 +3,6 @@ package doggytalents.entity.ai;
 import java.util.HashMap;
 import java.util.Map;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.entity.EntityDog;

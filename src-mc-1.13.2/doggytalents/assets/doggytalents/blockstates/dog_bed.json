@@ -1,0 +1,9 @@
+{
+    "variants": {
+		"facing=north": { "model": "doggytalents:block/dog_bed" },
+        "facing=south": { "model": "doggytalents:block/dog_bed", "y": 180 },
+        "facing=west":  { "model": "doggytalents:block/dog_bed", "y": 270 },
+        "facing=east":  { "model": "doggytalents:block/dog_bed", "y": 90 },
+         "inventory":  { "model": "doggytalents:block/dog_bed", "y": 90 }
+    }
+}

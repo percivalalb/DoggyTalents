@@ -339,7 +339,7 @@
     "doggytalents.key.stay": "Command Stay",
     "doggytalents.key.ok": "Command Ok",
     "doggytalents.key.heel": "Command Heal",
-    "doggytalents.key.category": "Doggy Talents",
+    "key.categories.doggytalents": "Doggy Talents",
 
     "entity.doggytalents:dog": "Dog",
     "entity.doggytalents.dog": "Dog",

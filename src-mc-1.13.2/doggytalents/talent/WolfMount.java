@@ -17,7 +17,7 @@ public class WolfMount extends ITalent {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null && !player.onGround && !dog.isIncapacicated()) {
         		if(dog.isServer()) {
         			dog.setSitting(false);
-        			//TODO dog.mountTo(player);
+        			dog.mountTo(player);
         		}
         		return true;
         	}

@@ -1,5 +1,7 @@
 package doggytalents.proxy;
 
+import java.util.Random;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
@@ -26,6 +28,7 @@ import doggytalents.talent.ShepherdDog;
 import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -83,4 +86,8 @@ public class SideProxy {
     public EntityPlayer getPlayerEntity() {
 		return null;
 	}
+    
+    public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+    	
+    }
 }

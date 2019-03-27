@@ -1,6 +1,8 @@
 package doggytalents.network;
 
 import doggytalents.lib.Reference;
+import doggytalents.network.client.PacketCommand;
+import doggytalents.network.client.PacketCustomParticle;
 import doggytalents.network.client.PacketDogMode;
 import doggytalents.network.client.PacketDogName;
 import doggytalents.network.client.PacketDogObey;
@@ -33,6 +35,8 @@ public final class PacketHandler
         HANDLER.registerMessage(disc++, PacketDogTexture.class, PacketDogTexture::encode, PacketDogTexture::decode, PacketDogTexture.Handler::handle);
         HANDLER.registerMessage(disc++, PacketFriendlyFire.class, PacketFriendlyFire::encode, PacketFriendlyFire::decode, PacketFriendlyFire.Handler::handle);
         HANDLER.registerMessage(disc++, PacketJump.class, PacketJump::encode, PacketJump::decode, PacketJump.Handler::handle);
+        HANDLER.registerMessage(disc++, PacketCommand.class, PacketCommand::encode, PacketCommand::decode, PacketCommand.Handler::handle);
+        HANDLER.registerMessage(disc++, PacketCustomParticle.class, PacketCustomParticle::encode, PacketCustomParticle::decode, PacketCustomParticle.Handler::handle);
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {

@@ -1,5 +1,6 @@
 package doggytalents.talent;
 
+import java.util.Collection;
 import java.util.List;
 
 import doggytalents.api.inferface.ITalent;
@@ -13,7 +14,7 @@ import net.minecraft.entity.item.EntityItem;
  */
 public class HunterDog extends ITalent {
 
-	public static void onLootDrop(EntityLivingBase living, Entity source, List<EntityItem> drops) {
+	public static void onLootDrop(EntityLivingBase living, Entity source, Collection<EntityItem> drops) {
 		if(source instanceof EntityDog) {
 			EntityDog dog = (EntityDog)source;
 			int level = dog.TALENTS.getLevel("hunterdog");

@@ -39,6 +39,7 @@ import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
@@ -703,8 +704,76 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
 	
 	@Override
+    public Entity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
+    }
+	
+	@Override
+	public boolean canBeSteered() {
+		return true;
+	}
+	
+	@Override
     public double getYOffset() {
         return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
+    }
+	
+	@Override
+    public void travel(float strafe, float vertical, float forward) {
+        if (this.isBeingRidden() && this.canBeSteered()) {
+            EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
+            this.rotationYaw = entitylivingbase.rotationYaw;
+            this.prevRotationYaw = this.rotationYaw;
+            this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.renderYawOffset = this.rotationYaw;
+            this.rotationYawHead = this.renderYawOffset;
+            strafe = entitylivingbase.moveStrafing * 0.75F;
+            forward = entitylivingbase.moveForward;
+
+            if (forward <= 0.0F) {
+                forward *= 0.5F;
+            }
+
+            if (this.onGround) {
+                if (forward > 0.0F) {
+                    float f2 = MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F);
+                    float f3 = MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F);
+                    this.motionX += (double) (-0.4F * f2 * 0.05F); // May change
+                    this.motionZ += (double) (0.4F * f3 * 0.05F);
+                }
+            }
+
+            this.stepHeight = 1.0F;
+            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
+
+            if (this.canPassengerSteer()) {
+                float f = (float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.5F;
+
+                this.setAIMoveSpeed(f);
+                super.travel(strafe, vertical, forward);
+            } else if (entitylivingbase instanceof EntityPlayer) {
+                this.motionX = 0.0D;
+                this.motionY = 0.0D;
+                this.motionZ = 0.0D;
+            }
+
+            this.prevLimbSwingAmount = this.limbSwingAmount;
+            double d1 = this.posX - this.prevPosX;
+            double d0 = this.posZ - this.prevPosZ;
+            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+
+            if (f2 > 1.0F) {
+                f2 = 1.0F;
+            }
+
+            this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
+            this.limbSwing += this.limbSwingAmount;
+        } else {
+            this.stepHeight = 0.5F;
+            this.jumpMovementFactor = 0.02F;
+            super.travel(strafe, vertical, forward);
+        }
     }
 	
 	@Override

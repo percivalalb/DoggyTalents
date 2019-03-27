@@ -339,7 +339,7 @@
     "doggytalents.key.stay": "å‘½ä»¤ï¼šå��ä¸‹",
     "doggytalents.key.ok": "å‘½ä»¤ï¼šå¥½çš„",
     "doggytalents.key.heel": "å‘½ä»¤ï¼šè·Ÿæˆ‘æ�¥",
-    "doggytalents.key.category": "å°�ç‹—å¤©æ‰�",
+    "key.categories.doggytalents": "å°�ç‹—å¤©æ‰�",
 
     "entity.doggytalents:dog": "ç‹—",
     "entity.doggytalents.dog": "ç‹—",

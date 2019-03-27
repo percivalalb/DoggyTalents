@@ -1,6 +1,5 @@
 package doggytalents.client.model.block;
 
-
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.client.renderer.model.IBakedModel;

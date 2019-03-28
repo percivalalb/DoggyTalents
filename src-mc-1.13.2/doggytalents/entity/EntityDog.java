@@ -23,6 +23,7 @@ import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFollowOwner;
+import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
@@ -161,24 +162,26 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		this.tasks.addTask(3, new EntityAbstractDog.AIAvoidEntity(this, EntityLlama.class, 24.0F, 1.5D, 1.5D));
 		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
 		 //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(9, new EntityAIDogWander(this, 1.0D));
-		this.tasks.addTask(10, new EntityAIDogBeg(this, 8.0F));
-		this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(12, new EntityAILookIdle(this));
-        this.tasks.addTask(13, new EntityAIDogFeed(this, 20.0F));
+		this.tasks.addTask(5, this.aiFetchBone);
+		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(7, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
+		this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(10, new EntityAIDogWander(this, 1.0D));
+		this.tasks.addTask(11, new EntityAIDogBeg(this, 8.0F));
+		this.tasks.addTask(12, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(13, new EntityAILookIdle(this));
+        this.tasks.addTask(14, new EntityAIDogFeed(this, 20.0F));
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityAnimal.class, false, (entity) -> {
+		this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
+		this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(5, new EntityAITargetNonTamed<>(this, EntityAnimal.class, false, (entity) -> {
 			return entity instanceof EntitySheep || entity instanceof EntityRabbit;
 		}));
-		this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityTurtle.class, false, EntityTurtle.TARGET_DRY_BABY));
-		this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<>(this, AbstractSkeleton.class, false));
-		this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
+		this.targetTasks.addTask(5, new EntityAITargetNonTamed<>(this, EntityTurtle.class, false, EntityTurtle.TARGET_DRY_BABY));
+		this.targetTasks.addTask(6, new EntityAINearestAttackableTarget<>(this, AbstractSkeleton.class, false));
+		this.targetTasks.addTask(7, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
 	}
 	
 	@Override
@@ -384,10 +387,10 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
                         switch (this.getBoneVariant()) {
                             case 0:
-                                fetchItem = new ItemStack(ModItems.THROW_BONE);
+                                fetchItem = new ItemStack(ModItems.THROW_BONE_WET);
                                 break;
                             case 1:
-                                fetchItem = new ItemStack(ModItems.THROW_STICK);
+                                fetchItem = new ItemStack(ModItems.THROW_STICK_WET);
                                 break;
                         }
 
@@ -937,6 +940,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             if (this.rand.nextInt(15) < lvlFisherDog * 2)
                 this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD, 1);
         }
+    }
+    
+    @Override
+    public void setSitting(boolean flag) {
+    	super.setSitting(flag);
+    	this.getAISit().setSitting(flag);
     }
 	
 	public float getWagAngle(float partialTickTime, float offset) {

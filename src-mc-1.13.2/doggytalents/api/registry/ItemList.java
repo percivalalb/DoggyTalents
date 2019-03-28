@@ -14,13 +14,13 @@ public class ItemList {
 
 	private List<Item> itemlist = new ArrayList<Item>();
 	
-	public void registerItem(Item item) { this.registerItem(item); }
-	public void registerItem(Item item, int meta) {
+	public void registerItem(Item... items) { for(Item item : items) this.registerItem(item); }
+	public void registerItem(Item item) {
 		if(this.itemlist.contains(item))
-			DoggyTalentsMod.LOGGER.warn("The item {} meta {} is already registered in this item list", item.getRegistryName(), meta);
+			DoggyTalentsMod.LOGGER.warn("The item {} is already registered in this item list", item.getRegistryName());
 		else {
 			this.itemlist.add(item);
-			DoggyTalentsMod.LOGGER.info("The item {} meta {} was register to an item list", item.getRegistryName(), meta);
+			DoggyTalentsMod.LOGGER.info("The item {} was register to an item list", item.getRegistryName());
 		}
 	}
 	

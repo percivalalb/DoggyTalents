@@ -2,6 +2,8 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
+import doggytalents.DoggyTalentsMod;
+import doggytalents.ModItems;
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ai.ModeFeature.EnumMode;
@@ -48,7 +50,7 @@ public class EntityAIFetch extends EntityAIBase {
     public boolean shouldExecute() {
         EntityLivingBase entitylivingbase = this.dog.getOwner();
         EntityItem fetchableItem = this.getNearestFetchableItem();
-
+        
         if(entitylivingbase == null)
             return false;
         else if(fetchableItem == null)
@@ -121,7 +123,14 @@ public class EntityAIFetch extends EntityAIBase {
              if(this.dog.getDistanceSq(this.fetchableItem) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
               	if(this.fetchableItem.isAlive()) {
               		this.fetchableItem.attackEntityFrom(DamageSource.GENERIC, 12F);
-              		//TODO this.dog.setBoneVariant(this.fetchableItem.getItem().getItemDamage() / 2);
+              		EntityItem entityItem = (EntityItem)this.fetchableItem;
+            		Item item = entityItem.getItem().getItem();
+              		
+            		if(item == ModItems.THROW_BONE)
+            			this.dog.setBoneVariant(0);
+            		else if(item == ModItems.THROW_STICK)
+            			this.dog.setBoneVariant(1);
+            		
               		this.fetchableItem = null;
               	    this.dog.getNavigator().clearPath();
               	}

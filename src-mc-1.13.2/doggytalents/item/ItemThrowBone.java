@@ -1,5 +1,6 @@
 package doggytalents.item;
 
+import doggytalents.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +53,11 @@ public class ItemThrowBone extends Item {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		
 		if(this.type == Type.WET) {
-			//TODO ItemThrowBone.removeWet(itemStackIn);
+			if(itemStackIn.getItem() == ModItems.THROW_BONE_WET)
+				itemStackIn = new ItemStack(ModItems.THROW_BONE);
+			else if(itemStackIn.getItem() == ModItems.THROW_STICK_WET)
+				itemStackIn = new ItemStack(ModItems.THROW_STICK);
+
     		playerIn.swingArm(handIn);
     		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     	}

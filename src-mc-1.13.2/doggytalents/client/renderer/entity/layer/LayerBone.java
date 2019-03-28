@@ -45,7 +45,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
             GlStateManager.rotatef(45.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager.translated(0.20, -0.10, -0.10);
-            Minecraft.getInstance().getItemRenderer().renderItem(this.itemToRender[0], ItemCameraTransforms.TransformType.NONE);
+            Minecraft.getInstance().getItemRenderer().renderItem(this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
 	        GlStateManager.popMatrix(); //TODO dog.getBoneVariant()
     	}
     }

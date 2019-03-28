@@ -17,15 +17,18 @@ import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Particles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-public class ClientProxy extends SideProxy {
+public class ClientProxy extends CommonProxy {
 	
     public ClientProxy() {
     	super();
@@ -98,8 +101,8 @@ public class ClientProxy extends SideProxy {
 		}
 	}
     
-    //TODO @Override
-	//public void spawnCrit(World world, Entity entity) {
-	//	Minecraft.getInstance().renderManager.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
-	//}
+    @Override
+	public void spawnCrit(World world, Entity entity) {
+		Minecraft.getInstance().particles.addParticleEmitter(entity, Particles.CRIT);
+	}
 }

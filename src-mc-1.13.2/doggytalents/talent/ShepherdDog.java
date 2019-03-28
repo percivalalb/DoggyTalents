@@ -20,7 +20,7 @@ public class ShepherdDog extends ITalent {
 			if(masterOrder == 3 && dog.getAttackTarget() != null) {
 	        	double d0 = dog.getDistance(dog.getAttackTarget());
 	            if(d0 <= 4.0D) {
-	            	//TODO dog.mountTo(dog.getAttackTarget());
+	            	dog.mountTo(dog.getAttackTarget());
 	            	dog.setAttackTarget(null);
 	            }
 	        }

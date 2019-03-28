@@ -79,8 +79,8 @@ public class RenderDog extends RenderLiving<EntityDog> {
         	
         	String tip = dog.MODE.getMode().getTip();
                 
-        	//TODO if(dog.isIncapacicated())
-        	//	tip = "doggui.modetip.incapacitated";
+        	if(dog.isIncapacicated())
+        		tip = "doggui.modetip.incapacitated";
         	
         	String label = String.format("%s(%d)%s", 
         			new TextComponentTranslation(tip).getFormattedText(), 
@@ -116,7 +116,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     @Override
     protected void preRenderCallback(EntityDog entitylivingbaseIn, float partialTickTime) {
     	EntityDog dog = (EntityDog)entitylivingbaseIn;
-    	float size = 1F; //TODO dog.getDogSize() * 0.3F + 0.1F;
+    	float size = dog.getDogSize() * 0.3F + 0.1F;
     	GlStateManager.scalef(size, size, size);
     	this.shadowSize = size * 0.5F;
 	}

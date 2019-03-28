@@ -525,7 +525,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                             		drop = ModItems.CREATIVE_COLLAR;
                             	else if(this.getCollarData() == -4)
                             		drop = ModItems.SPOTTED_COLLAR;
-                            	//TODO , this.getFancyCollarIndex()
+                            	
                                 this.entityDropItem(drop, 1);
                                 this.setNoCollar();
                             }

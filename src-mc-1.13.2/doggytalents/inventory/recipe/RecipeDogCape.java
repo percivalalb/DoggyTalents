@@ -82,7 +82,7 @@ public class RecipeDogCape extends IRecipeHidden {
                     itemstack = itemstack1.copy();
                     itemstack.setCount(1);
 
-                    if(itemstack1.hasTag() && itemstack1.getTag().hasKey("cape_colour")) {
+                    if(itemstack1.hasTag() && itemstack1.getTag().contains("cape_colour")) {
                         int l = itemstack1.getTag().getInt("cape_colour");
                         float f = (float)(l >> 16 & 255) / 255.0F;
                         float f1 = (float)(l >> 8 & 255) / 255.0F;

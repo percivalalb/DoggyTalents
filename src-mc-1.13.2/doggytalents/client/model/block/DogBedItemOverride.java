@@ -21,7 +21,7 @@ public class DogBedItemOverride extends ItemOverrideList {
     public IBakedModel getModelWithOverrides(IBakedModel modelOriginal, ItemStack stack, World world, EntityLivingBase entity) {
     	DoggyTalentsMod.LOGGER.info("dawd");
         if (modelOriginal instanceof DogBedModel) {
-        	if(stack.hasTag() && stack.getTag().hasKey("doggytalents")) {
+        	if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
     			NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
     		    
     			String casingId = DogBedRegistry.CASINGS.getTexture(tag.getString("casingId"));

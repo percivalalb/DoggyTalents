@@ -42,7 +42,7 @@ public class ModeFeature extends DogFeature {
 	
 	@Override
 	public void writeAdditional(NBTTagCompound tagCompound) {
-		tagCompound.setInt("mode", this.getModeID());
+		tagCompound.putInt("mode", this.getModeID());
 	}
 	
 	@Override

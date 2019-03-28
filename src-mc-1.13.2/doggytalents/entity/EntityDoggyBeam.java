@@ -3,10 +3,12 @@ package doggytalents.entity;
 import java.util.List;
 
 import doggytalents.ModEntities;
+import doggytalents.entity.ai.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Particles;
 import net.minecraft.util.math.RayTraceResult;
@@ -35,20 +37,20 @@ public class EntityDoggyBeam extends EntityThrowable {
  
     		List<Entity> nearEnts = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().grow(100D, 10D, 100D));
     		for(Object o : nearEnts) {
-    			//TODO
-    			//if(o instanceof EntityDog) {
-                // 	EntityDog dog = (EntityDog)o;
-                 //	if(!dog.isSitting() && entityHit != dog && dog.shouldAttackEntity((EntityLivingBase)entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
-                 //		if(dog.getDistance(entityHit) < this.getTargetDistance(dog) && (dog.MODE.isMode(EnumMode.AGGRESIVE) || dog.MODE.isMode(EnumMode.TACTICAL))) {
-                 //			dog.setAttackTarget((EntityLivingBase)entityHit);
-                 //		}
-                 //	}
-                 //}
+    			
+    			if(o instanceof EntityDog) {
+                 	EntityDog dog = (EntityDog)o;
+                 	if(!dog.isSitting() && entityHit != dog && dog.shouldAttackEntity((EntityLivingBase)entityHit, dog.getOwner()) && this.getThrower() instanceof EntityPlayer && dog.canInteract((EntityPlayer)this.getThrower())) {
+                 		if(dog.getDistance(entityHit) < this.getTargetDistance(dog) && (dog.MODE.isMode(EnumMode.AGGRESIVE) || dog.MODE.isMode(EnumMode.TACTICAL))) {
+                 			dog.setAttackTarget((EntityLivingBase)entityHit);
+                 		}
+                 	}
+                 }
              }
         }
     	
         for(int j = 0; j < 8; ++j)
-            this.world.spawnParticle(Particles.ITEM_SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+            this.world.addParticle(Particles.ITEM_SNOWBALL, this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 
         if(!this.world.isRemote)
         	this.remove();

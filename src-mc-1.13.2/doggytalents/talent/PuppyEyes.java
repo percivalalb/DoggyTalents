@@ -25,7 +25,7 @@ public class PuppyEyes extends ITalent {
 	@Override
 	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
 		int charmerCharge = (Integer)dog.objects.get("charmercharge");
-		tagCompound.setInt("charmercharge", charmerCharge);
+		tagCompound.putInt("charmercharge", charmerCharge);
 	}
 	
 	@Override

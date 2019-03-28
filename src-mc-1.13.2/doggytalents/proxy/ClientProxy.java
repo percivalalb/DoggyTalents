@@ -52,7 +52,7 @@ public class ClientProxy extends CommonProxy {
 
 			@Override
 			public int getColor(ItemStack stack, int tintIndex) {
-				if(stack.hasTag() && stack.getTag().hasKey("collar_colour"))
+				if(stack.hasTag() && stack.getTag().contains("collar_colour"))
 					return stack.getTag().getInt("collar_colour");
 				return -1;
 			}
@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy {
 
 		@Override
 			public int getColor(ItemStack stack, int tintIndex) {
-				if(stack.hasTag() && stack.getTag().hasKey("cape_colour"))
+				if(stack.hasTag() && stack.getTag().contains("cape_colour"))
 					return stack.getTag().getInt("cape_colour");
 				return -1;
 			}

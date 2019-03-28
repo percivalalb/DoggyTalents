@@ -28,7 +28,7 @@ public class ItemWoolCollar extends Item {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		if(stack.hasTag() && stack.getTag().hasKey("collar_colour")) {
+		if(stack.hasTag() && stack.getTag().contains("collar_colour")) {
 			int rgb = stack.getTag().getInt("collar_colour");
 			int r = (rgb >> 16) &0xFF;
 			int g = (rgb >> 8) &0xFF;
@@ -50,7 +50,7 @@ public class ItemWoolCollar extends Item {
 				colour = (int) ((colour << 8) + colourComponents[2] * 255F);
 				
 				
-				baseColours.getTag().setInt("collar_colour", colour);
+				baseColours.getTag().putInt("collar_colour", colour);
 	            items.add(baseColours);
 	        }
 		}
@@ -78,7 +78,7 @@ public class ItemWoolCollar extends Item {
     	NBTTagCompound nbttagcompound = stack.getTag();
 
     	if(nbttagcompound != null)
-    		nbttagcompound.removeTag("collar_colour");
+    		nbttagcompound.remove("collar_colour");
         
     }
 
@@ -91,6 +91,6 @@ public class ItemWoolCollar extends Item {
     		stack.setTag(nbttagcompound);
     	}
             
-    	nbttagcompound.setInt("collar_colour", color);
+    	nbttagcompound.putInt("collar_colour", color);
     }
 }

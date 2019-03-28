@@ -17,10 +17,10 @@ public class RangedAttacker extends ITalent {
 	@Override
 	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
 		int rangedCooldown = (Integer)dog.objects.get("rangedcooldown");
-		tagCompound.setInt("rangedcooldown", rangedCooldown);
+		tagCompound.putInt("rangedcooldown", rangedCooldown);
 		
 		String rangedAttackType = tagCompound.getString("rangedattacktype");
-		tagCompound.setString("rangedattacktype", rangedAttackType);
+		tagCompound.putString("rangedattacktype", rangedAttackType);
 	}
 	
 	@Override

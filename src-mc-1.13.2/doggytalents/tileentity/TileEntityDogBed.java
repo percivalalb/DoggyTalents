@@ -27,8 +27,8 @@ public class TileEntityDogBed extends TileEntity {
     @Override
     public NBTTagCompound write(NBTTagCompound tag) {
 		super.write(tag);
-		tag.setString("casingId", this.casingId);
-		tag.setString("beddingId", this.beddingId);
+		tag.putString("casingId", this.casingId);
+		tag.putString("beddingId", this.beddingId);
 		return tag;
 	}
 	

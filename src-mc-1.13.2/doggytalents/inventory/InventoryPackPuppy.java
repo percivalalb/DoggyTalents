@@ -42,13 +42,13 @@ public class InventoryPackPuppy extends InventoryBasic implements IInteractionOb
         for(int i = 0; i < this.getSizeInventory(); ++i) {
             if(!this.getStackInSlot(i).isEmpty()) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
+                nbttagcompound1.putByte("Slot", (byte)i);
                 this.getStackInSlot(i).write(nbttagcompound1);
                 nbttaglist.add(nbttagcompound1);
             }
         }
 
-        tagCompound.setTag("packpuppyitems", nbttaglist);
+        tagCompound.put("packpuppyitems", nbttaglist);
     }
     
     @Override

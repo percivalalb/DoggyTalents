@@ -34,7 +34,7 @@ public class ItemRadar extends Item {
 			DogLocationManager locationManager = DogLocationManager.getHandler(worldIn);
 
 			DimensionType playerDimID = playerIn.dimension; //Get current player dimension
-			String playerDimName = DimensionType.func_212678_a(playerDimID).toString();
+			String playerDimName = DimensionType.getKey(playerDimID).toString();
 
 			if (locationManager.locations.isEmpty()) {
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull"));

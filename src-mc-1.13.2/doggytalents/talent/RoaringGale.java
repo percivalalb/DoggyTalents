@@ -24,7 +24,7 @@ public class RoaringGale extends ITalent {
 	@Override
 	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
-		tagCompound.setInt("roarcooldown", roarCooldown);
+		tagCompound.putInt("roarcooldown", roarCooldown);
 	}
 	
 	@Override

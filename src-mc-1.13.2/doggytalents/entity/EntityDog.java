@@ -215,16 +215,16 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		super.writeAdditional(compound);
 		this.FEATURES.stream().forEach(f -> f.writeAdditional(compound));
 
-        compound.setInt("doggyTex", this.getTameSkin());
-        compound.setInt("collarColour", this.getCollarData());
-        compound.setInt("dogHunger", this.getDogHunger());
-        compound.setBoolean("willObey", this.willObeyOthers());
-        compound.setBoolean("friendlyFire", this.canFriendlyFire());
-        compound.setBoolean("radioCollar", this.hasRadarCollar());
-        compound.setBoolean("sunglasses", this.hasSunglasses());
-        compound.setInt("capeData", this.getCapeData());
-        compound.setInt("dogSize", this.getDogSize());
-        compound.setString("dogGender", this.getGender());
+        compound.putInt("doggyTex", this.getTameSkin());
+        compound.putInt("collarColour", this.getCollarData());
+        compound.putInt("dogHunger", this.getDogHunger());
+        compound.putBoolean("willObey", this.willObeyOthers());
+        compound.putBoolean("friendlyFire", this.canFriendlyFire());
+        compound.putBoolean("radioCollar", this.hasRadarCollar());
+        compound.putBoolean("sunglasses", this.hasSunglasses());
+        compound.putInt("capeData", this.getCapeData());
+        compound.putInt("dogSize", this.getDogSize());
+        compound.putString("dogGender", this.getGender());
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         this.locationManager.updateEntityId(this);
 
         //Backwards Compatibility
-        if (compound.hasKey("dogName"))
+        if (compound.contains("dogName"))
             this.setCustomName(new TextComponentString(compound.getString("dogName")));
 	}
 	
@@ -315,7 +315,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
         if (this.LEVELS.isDireDog() && ConfigHandler.CONFIG.direParticles())
             for (int i = 0; i < 2; i++)
-                this.world.spawnParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
+                this.world.addParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
 
         if (this.reversionTime > 0)
             this.reversionTime -= 1;
@@ -459,7 +459,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 } else if (stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
 
-                    if (stack.hasTag() && stack.getTag().hasKey("collar_colour"))
+                    if (stack.hasTag() && stack.getTag().contains("collar_colour"))
                         colour = stack.getTag().getInt("collar_colour");
 
                     this.setCollarData(colour);
@@ -486,7 +486,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 } else if (stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     int colour = -1;
 
-                    if (stack.hasTag() && stack.getTag().hasKey("cape_colour"))
+                    if (stack.hasTag() && stack.getTag().contains("cape_colour"))
                         colour = stack.getTag().getInt("cape_colour");
 
                     this.setCapeData(colour);
@@ -516,7 +516,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                                 ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1);
                                 if (this.isCollarColoured()) {
                                     collarDrop.setTag(new NBTTagCompound());
-                                    collarDrop.getTag().setInt("collar_colour", this.getCollarData());
+                                    collarDrop.getTag().putInt("collar_colour", this.getCollarData());
                                 }
                                 this.entityDropItem(collarDrop, 1);
                                 this.setNoCollar();
@@ -542,7 +542,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                                 ItemStack capeDrop = new ItemStack(ModItems.CAPE_COLOURED, 1);
                                 if (this.isCapeColoured()) {
                                     capeDrop.setTag(new NBTTagCompound());
-                                    capeDrop.getTag().setInt("cape_colour", this.getCapeData());
+                                    capeDrop.getTag().putInt("cape_colour", this.getCapeData());
                                 }
                                 this.entityDropItem(capeDrop, 1);
                                 this.setNoCape();
@@ -594,7 +594,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                         return true;
 
                     if (!this.isCollarColoured()) {
-                        int colour = EnumDyeColor.getColor(stack).func_196060_f();
+                        int colour = EnumDyeColor.getColor(stack).func_196057_c();
 
                         this.setCollarData(colour);
                     } else {

@@ -24,7 +24,7 @@ public class TalentFeature extends DogFeature {
 	
 	@Override
     public void writeAdditional(NBTTagCompound compound) {
-        compound.setString("talents", this.getSaveString());
+        compound.putString("talents", this.getSaveString());
     }
 
     @Override

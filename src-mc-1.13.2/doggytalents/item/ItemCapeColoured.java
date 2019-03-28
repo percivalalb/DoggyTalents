@@ -25,7 +25,7 @@ public class ItemCapeColoured extends Item {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		if(stack.hasTag() && stack.getTag().hasKey("cap_colour")) {
+		if(stack.hasTag() && stack.getTag().contains("cap_colour")) {
 			int rgb = stack.getTag().getInt("cap_colour");
 			int r = (rgb >> 16) &0xFF;
 			int g = (rgb >> 8) &0xFF;
@@ -57,7 +57,7 @@ public class ItemCapeColoured extends Item {
     	NBTTagCompound nbttagcompound = stack.getTag();
 
     	if(nbttagcompound != null)
-    		nbttagcompound.removeTag("cape_colour");
+    		nbttagcompound.remove("cape_colour");
         
     }
 
@@ -70,6 +70,6 @@ public class ItemCapeColoured extends Item {
     		stack.setTag(nbttagcompound);
     	}
             
-    	nbttagcompound.setInt("cape_colour", color);
+    	nbttagcompound.putInt("cape_colour", color);
     }
 }

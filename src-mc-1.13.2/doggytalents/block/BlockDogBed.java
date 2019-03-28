@@ -86,7 +86,7 @@ public class BlockDogBed extends BlockContainer {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		if(stack.hasTag() && stack.getTag().hasKey("doggytalents")) {
+		if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
 			NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
 		    
 		    String casingId = tag.getString("casingId");
@@ -129,7 +129,7 @@ public class BlockDogBed extends BlockContainer {
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	    
-        if(stack != null && stack.hasTag() && stack.getTag().hasKey("doggytalents")) {
+        if(stack != null && stack.hasTag() && stack.getTag().contains("doggytalents")) {
 	    	NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
 	    	
 	    	String casingId = tag.getString("casingId");

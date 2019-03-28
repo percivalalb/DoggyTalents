@@ -21,16 +21,16 @@ public class LevelFeature extends DogFeature {
 	
     @Override
 	public void writeAdditional(NBTTagCompound compound) {
-		compound.setInt("level_normal", this.getLevel());		
-		compound.setInt("level_dire", this.getDireLevel());	
+		compound.putInt("level_normal", this.getLevel());		
+		compound.putInt("level_dire", this.getDireLevel());	
 	}
 
     @Override
 	public void readAdditional(NBTTagCompound compound) {
-		if(compound.hasKey("level_normal"))
+		if(compound.contains("level_normal"))
 			this.setLevel(compound.getInt("level_normal"));
 		
-		if(compound.hasKey("level_dire"))
+		if(compound.contains("level_dire"))
 			this.setDireLevel(compound.getInt("level_dire"));
 		
 		//Backwards compatibility

@@ -19,13 +19,13 @@ public class PlayerConnection {
 		
 		NBTTagCompound tag = player.getEntityData();
 
-        if(!tag.hasKey(EntityPlayer.PERSISTED_NBT_TAG))
-        	tag.setTag(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound());
+        if(!tag.contains(EntityPlayer.PERSISTED_NBT_TAG))
+        	tag.put(EntityPlayer.PERSISTED_NBT_TAG, new NBTTagCompound());
         
         NBTTagCompound persistTag = tag.getCompound(EntityPlayer.PERSISTED_NBT_TAG);
         
 		if(ConfigHandler.CONFIG.startingItems() && !persistTag.getBoolean("gotDTStartingItems")) {
-			persistTag.setBoolean("gotDTStartingItems", true);
+			persistTag.putBoolean("gotDTStartingItems", true);
 
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.COMMAND_EMBLEM));

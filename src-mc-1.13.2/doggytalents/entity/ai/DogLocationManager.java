@@ -32,14 +32,14 @@ public class DogLocationManager extends WorldSavedData {
 	 * Gets DogLocationHandler uses Overworld WorldSaveData as that should always be loaded
 	 */
 	public static DogLocationManager getHandler(World world) {
-		WorldSavedDataStorage storage = world.getMapStorage();
+		WorldSavedDataStorage storage = world.getSavedDataStorage();
 		//World overworld = DimensionManager.getWorld(0);
-		DogLocationManager locationManager = (DogLocationManager)storage.func_212426_a(world.dimension.getType(), DogLocationManager::new, "dog_locations");
+		DogLocationManager locationManager = (DogLocationManager)storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations");
 		
     	if (locationManager == null) {
             locationManager = new DogLocationManager("dog_locations");
-			storage.func_212424_a(world.dimension.getType(), "dog_locations", locationManager);
-			if(ConfigHandler.CONFIG.debugMode()) System.out.println("DATA DECLARED: "+storage.func_212426_a(world.dimension.getType(), DogLocationManager::new, "dog_locations"));
+			storage.set(world.dimension.getType(), "dog_locations", locationManager);
+			if(ConfigHandler.CONFIG.debugMode()) System.out.println("DATA DECLARED: "+storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations"));
 		}
     	
     	return locationManager;
@@ -111,7 +111,7 @@ public class DogLocationManager extends WorldSavedData {
 			nbtlist.add(location.writeToNBT(new NBTTagCompound()));
 		}
 		
-		base.setTag("dog_locations", nbtlist);
+		base.put("dog_locations", nbtlist);
 		
 		return base;
 	}
@@ -156,15 +156,15 @@ public class DogLocationManager extends WorldSavedData {
 		}
 
 		public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-			compound.setDouble("x", this.x);
-			compound.setDouble("y", this.y);
-			compound.setDouble("z", this.z);
-			compound.setString("dim", DimensionType.func_212678_a(this.dim).toString());
-			compound.setUniqueId("entityId", this.entityId);
+			compound.putDouble("x", this.x);
+			compound.putDouble("y", this.y);
+			compound.putDouble("z", this.z);
+			compound.putString("dim", DimensionType.getKey(this.dim).toString());
+			compound.putUniqueId("entityId", this.entityId);
 			
-			compound.setString("name", this.name);
-			compound.setString("gender", this.gender);
-			compound.setBoolean("collar", this.hasRadarCollar);
+			compound.putString("name", this.name);
+			compound.putString("gender", this.gender);
+			compound.putBoolean("collar", this.hasRadarCollar);
 			return compound;
 		}
 		

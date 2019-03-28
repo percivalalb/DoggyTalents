@@ -56,7 +56,7 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 
             if(!itemstack.isEmpty()) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
-                nbttagcompound.setByte("Slot", (byte)i);
+                nbttagcompound.putByte("Slot", (byte)i);
                 itemstack.write(nbttagcompound);
                 nbttaglist.add(nbttagcompound);
             }
@@ -65,10 +65,10 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
         if(!this.itemstack.hasTag())
         	this.itemstack.setTag(new NBTTagCompound());
         
-        if(!this.itemstack.getTag().hasKey("inventory"))
-        	this.itemstack.getTag().setTag("inventory", new NBTTagCompound());
+        if(!this.itemstack.getTag().contains("inventory"))
+        	this.itemstack.getTag().put("inventory", new NBTTagCompound());
         
-        this.itemstack.getTag().getCompound("inventory").setTag("Items", nbttaglist);
+        this.itemstack.getTag().getCompound("inventory").put("Items", nbttaglist);
         
         this.player.inventory.setInventorySlotContents(this.slot, this.itemstack);
 	}

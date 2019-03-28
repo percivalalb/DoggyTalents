@@ -120,7 +120,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	@Override
 	public void writeAdditional(NBTTagCompound compound) {
 		super.writeAdditional(compound);
-		compound.setBoolean("Angry", this.isAngry());
+		compound.putBoolean("Angry", this.isAngry());
 	}
 
 	@Override
@@ -215,7 +215,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 				for(int j = 0; j < i; ++j) {
 					float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
 					float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width * 0.5F;
-					this.world.spawnParticle(Particles.SPLASH, this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, this.motionX, this.motionY, this.motionZ);
+					this.world.addParticle(Particles.SPLASH, this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, this.motionX, this.motionY, this.motionZ);
 				}
 			}
 		}

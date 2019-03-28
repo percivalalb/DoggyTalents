@@ -40,7 +40,7 @@ public class DogBedRegistry {
 		//if(!Block.REGISTRY.containsKey(new ResourceLocation(blockId)))
 		//	DoggyTalentsMod.LOGGER.warn("The block id {} does not exist for a material", blockId);
 		//else {
-			Block block = IRegistry.field_212618_g.get(new ResourceLocation(blockId));
+			Block block = IRegistry.BLOCK.get(new ResourceLocation(blockId));
 			String lookupname = String.format("dogbed.%s.%s", this.key, blockId);
 			ItemStack stack = new ItemStack(block, 1);
 			this.registerMaterial(blockId, lookupname, textureLocation, stack);
@@ -53,7 +53,7 @@ public class DogBedRegistry {
 			return;
 		}
 		
-		String blockId = IRegistry.field_212618_g.getKey(block).toString();
+		String blockId = IRegistry.BLOCK.getKey(block).toString();
 		String lookupname = String.format("dogbed.%s.%s", this.key, blockId);
 		ItemStack stack = new ItemStack(block, 1);
 		this.registerMaterial(blockId, lookupname, textureLocation, stack);
@@ -101,9 +101,9 @@ public class DogBedRegistry {
 		stack.setTag(new NBTTagCompound());
 		
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("casingId", casingId);
-		tag.setString("beddingId", beddingId);
-		stack.getTag().setTag("doggytalents", tag);
+		tag.putString("casingId", casingId);
+		tag.putString("beddingId", beddingId);
+		stack.getTag().put("doggytalents", tag);
 		return stack;
 	}
 }

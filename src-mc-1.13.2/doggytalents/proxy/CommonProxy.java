@@ -2,6 +2,8 @@ package doggytalents.proxy;
 
 import java.util.Random;
 
+import org.apache.logging.log4j.Marker;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.ModRecipes;
@@ -44,8 +46,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class CommonProxy {
 	
 	public CommonProxy() {
-        DoggyTalentsMod.LOGGER.debug("SideProxy init");
-
+        DoggyTalentsMod.LOGGER.debug("CommonProxy init");
         // Add listeners for common events
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
@@ -53,9 +54,33 @@ public class CommonProxy {
     }
 
 	protected void preInit(FMLCommonSetupEvent event) {
-        DoggyTalentsMod.LOGGER.debug("SideProxy preInit");
+        DoggyTalentsMod.LOGGER.debug("CommonProxy preInit");
         ModRecipes.registerRecipes();
         PacketHandler.register();
+        
+        DogBedRegistry.CASINGS.registerMaterial(Blocks.OAK_PLANKS, "minecraft:block/oak_planks");
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.SPRUCE_PLANKS,"minecraft:block/spruce_planks");
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.BIRCH_PLANKS, "minecraft:block/birch_planks");
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.JUNGLE_PLANKS, "minecraft:block/jungle_planks");
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.ACACIA_PLANKS, "minecraft:block/acacia_planks");
+		DogBedRegistry.CASINGS.registerMaterial(Blocks.DARK_OAK_PLANKS, "minecraft:block/dark_oak_planks");
+		
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WHITE_WOOL, "minecraft:block/white_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.ORANGE_WOOL, "minecraft:block/orange_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.MAGENTA_WOOL, "minecraft:block/magenta_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_BLUE_WOOL, "minecraft:block/light_blue_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.YELLOW_WOOL, "minecraft:block/yellow_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIME_WOOL, "minecraft:block/lime_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PINK_WOOL, "minecraft:block/pink_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GRAY_WOOL, "minecraft:block/gray_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_GRAY_WOOL, "minecraft:block/light_gray_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.CYAN_WOOL, "minecraft:block/cyan_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PURPLE_WOOL, "minecraft:block/purple_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLUE_WOOL, "minecraft:block/blue_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BROWN_WOOL, "minecraft:block/brown_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GREEN_WOOL, "minecraft:block/green_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.RED_WOOL, "minecraft:block/red_wool");
+		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLACK_WOOL, "minecraft:block/black_wool");
         
         TalentRegistry.registerTalent(new BedFinder());
 		TalentRegistry.registerTalent(new BlackPelt());
@@ -81,11 +106,11 @@ public class CommonProxy {
     }
     
     protected void init(InterModEnqueueEvent event) {
-    	DoggyTalentsMod.LOGGER.debug("SideProxy init");
+    	DoggyTalentsMod.LOGGER.debug("CommonProxy init");
     }
     
     protected void postInit(InterModProcessEvent event) {
-        DoggyTalentsMod.LOGGER.debug("SideProxy postInit");
+        DoggyTalentsMod.LOGGER.debug("CommonProxy postInit");
         
         DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE, ModItems.THROW_BONE_WET);
         DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_STICK, ModItems.THROW_STICK_WET);
@@ -96,30 +121,6 @@ public class CommonProxy {
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.SUPER_TREAT);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.DIRE_TREAT);
-        
-        DogBedRegistry.CASINGS.registerMaterial(Blocks.OAK_PLANKS, "minecraft:block/oak_planks");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.SPRUCE_PLANKS,"minecraft:block/spruce_planks");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.BIRCH_PLANKS, "minecraft:block/birch_planks");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.JUNGLE_PLANKS, "minecraft:block/jungle_planks");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.ACACIA_PLANKS, "minecraft:block/acacia_planks");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.DARK_OAK_PLANKS, "minecraft:block/dark_oak_planks");
-		
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WHITE_WOOL, "minecraft:block/white_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.ORANGE_WOOL, "minecraft:block/orange_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.MAGENTA_WOOL, "minecraft:block/magenta_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_BLUE_WOOL, "minecraft:block/light_blue_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.YELLOW_WOOL, "minecraft:block/yellow_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIME_WOOL, "minecraft:block/lime_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PINK_WOOL, "minecraft:block/pink_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GRAY_WOOL, "minecraft:block/gray_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.LIGHT_GRAY_WOOL, "minecraft:block/light_gray_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.CYAN_WOOL, "minecraft:block/cyan_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.PURPLE_WOOL, "minecraft:block/purple_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLUE_WOOL, "minecraft:block/blue_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BROWN_WOOL, "minecraft:block/brown_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.GREEN_WOOL, "minecraft:block/green_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.RED_WOOL, "minecraft:block/red_wool");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.BLACK_WOOL, "minecraft:block/black_wool");
         
 		AddonManager.runRegisteredAddons();
     }

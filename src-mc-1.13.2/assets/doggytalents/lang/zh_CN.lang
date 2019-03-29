@@ -345,8 +345,8 @@
     "entity.doggytalents.dog": "Ã§â€¹â€”",
     "entity.doggytalents:dog.lost": "Ã¥Â°Å¡Ã¦Å“ÂªÃ¦â€¹Â¥Ã¦Å“â€°Ã¤Â¸Â»Ã¤ÂºÂº",
 
-    "container.packpuppy": "Ã¥Â°ï¿½Ã§â€¹â€”Ã¨Æ’Å’Ã¥Å’â€¦",
-    "container.foodBowl": "Ã§â€¹â€”Ã©Â£Å¸Ã§â€ºâ€ ",
+    "container.doggytalents.packpuppy": "Ã¥Â°ï¿½Ã§â€¹â€”Ã¨Æ’Å’Ã¥Å’â€¦",
+    "container.doggytalents.foodbowl": "Ã§â€¹â€”Ã©Â£Å¸Ã§â€ºâ€ ",
     "container.doggytalents.treatbag": "Ã¥ï¿½Â£Ã§Â²Â®Ã¨Â¢â€¹Ã¥Â­ï¿½",
     "itemGroup.doggytalents": "Ã¥Â°ï¿½Ã§â€¹â€”Ã¥Â¤Â©Ã¦â€°ï¿½",
     "itemGroup.doggytalents.dogbed": "Ã§â€¹â€”Ã§Âªï¿½Ã¥ï¿½ËœÃ§Â§ï¿½"

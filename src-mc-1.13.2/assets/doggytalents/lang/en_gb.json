@@ -66,7 +66,7 @@
     "doggui.talentinfo.hunterdog": "Every level grants a 10% chance to make anything your dog kills drop its loot twice, Level 5 grants an extra 10%, bringing it up to a 60% chance",
     "doggui.talentinfo.hellhound": "Allows your dog set things on fire while attacking. The higher the level, the longer the fire lasts. Mastering the skill grants your dog immunity to fire",
     "doggui.talentinfo.wolfmount": "Allows you to ride your dog anywhere at speed. Every level allows your dog to jump higher. To get on your dog have an empty hand and jump and click on the dog to get on it.",
-    "doggui.talentinfo.packpuppy": "Each level gives your dog 3 inventory slots in its, PackPuppy GUI. To open the GUI right click on your, dog with a plank in hand! At level 5, your dog will, also automatically pick up any nearby items if, it has space in its inventory",
+    "doggui.talentinfo.packpuppy": "Each level gives your dog 3 inventory slots in its, PackPuppy GUI. To open the GUI right click on your while sneaking! At level 5, your dog will, also automatically pick up any nearby items if, it has space in its inventory",
     "doggui.talentinfo.pillowpaw": "Every level allows your dog fall 3 more blocks before it starts taking damage. Mastering the skill makes your dog completely immune to fall damage, and also capable of floating when falling!",
     "doggui.talentinfo.quickhealer": "Improves the rate at which your dog heals without needing to rest Mastering the skill will heal your dog 50% faster when sitting.",
     "doggui.talentinfo.creepersweeper": "A dog with this skill can smell creepers in the area and it will growl to warn you. The range at which your dog, can, detect creepers increases by 6 blocks per level, and mastering this skill will make your dog capable of attacking creepers Your dog will reset the creeper's detonation timer with each attack.",
@@ -345,8 +345,8 @@
     "entity.doggytalents.dog": "Dog",
     "entity.doggytalents:dog.lost": "Has no Owner",
 
-    "container.packpuppy": "Pack Puppy",
-    "container.foodBowl": "Food Bowl",
+    "container.doggytalents.packpuppy": "Pack Puppy",
+    "container.doggytalents.foodbowl": "Food Bowl",
     "container.doggytalents.treatbag": "Treat Bag",
     "itemGroup.doggytalents": "Doggy Talents",
     "itemGroup.doggytalents.dogbed": "Dog Bed Variants"

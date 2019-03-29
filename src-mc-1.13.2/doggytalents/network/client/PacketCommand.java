@@ -53,7 +53,7 @@ public class PacketCommand {
         			if(message.commandId == 1) {
         			    for(EntityDog dog : nearEnts) {
         			    	if(dog.canInteract(player)) {
-        			    		dog.setSitting(false);
+        			    		dog.getAISit().setSitting(false);
         			    		dog.getNavigator().clearPath();
         			    		dog.setAttackTarget((EntityLivingBase)null);
         			    		if(dog.MODE.isMode(EnumMode.WANDERING))
@@ -69,7 +69,7 @@ public class PacketCommand {
         				for(EntityDog dog : nearEnts) {
         		
         					if(dog.canInteract(player)) {
-        						dog.setSitting(true);
+        						dog.getAISit().setSitting(true);
         						dog.getNavigator().clearPath();
         						dog.setAttackTarget((EntityLivingBase)null);
         						if(dog.MODE.isMode(EnumMode.WANDERING))
@@ -85,12 +85,12 @@ public class PacketCommand {
         				for(EntityDog dog : nearEnts) {
         					if(dog.canInteract(player)) {
         						if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
-        							dog.setSitting(true);
+        							dog.getAISit().setSitting(true);
         							dog.getNavigator().clearPath();
         							dog.setAttackTarget((EntityLivingBase)null);
         						}
         						else {
-        							dog.setSitting(false);
+        							dog.getAISit().setSitting(false);
         							dog.getNavigator().clearPath();
         							dog.setAttackTarget((EntityLivingBase)null);
         						}

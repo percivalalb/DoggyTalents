@@ -32,7 +32,7 @@ public class ItemTreat extends Item implements IDogInteractItem {
 			if(!playerIn.world.isRemote) {
 	            dogIn.LEVELS.increaseLevel();
 	            dogIn.setHealth(dogIn.getMaxHealth());
-	            dogIn.setSitting(true);
+	            dogIn.getAISit().setSitting(true);
 	            dogIn.world.setEntityState(dogIn, (byte)7);
 	            dogIn.playTameEffect(true);
 	            playerIn.sendMessage(new TextComponentTranslation("dogtreat.levelup"));

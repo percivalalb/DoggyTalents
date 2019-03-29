@@ -16,7 +16,7 @@ public class WolfMount extends ITalent {
 		if(stack.isEmpty() && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null && !player.onGround && !dog.isIncapacicated()) {
         		if(dog.isServer()) {
-        			dog.setSitting(false);
+        			dog.getAISit().setSitting(false);
         			dog.mountTo(player);
         		}
         		return true;
@@ -49,5 +49,10 @@ public class WolfMount extends ITalent {
 	@Override
 	public String getKey() {
 		return "wolfmount";
+	}
+	
+	@Override
+	public int fallProtection(EntityDog dog) { 
+		return dog.TALENTS.getLevel(this) == 5 ? 1 : 0;
 	}
 }

@@ -33,9 +33,11 @@ public class BedFinder extends ITalent {
 		int level = dog.TALENTS.getLevel(this);
 		if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
 			dog.startRiding(player);
-    		if(dog.isSitting() == false) {
-    			dog.setSitting(true);
-    		}
+			if(!dog.world.isRemote) {
+				if(!dog.isSitting()) {
+					dog.getAISit().setSitting(true);
+				}
+			}
     		return true;
         }
 		return false;

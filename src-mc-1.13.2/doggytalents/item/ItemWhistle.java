@@ -42,7 +42,6 @@ public class ItemWhistle extends Item {
 					for (int x = -2; x <= 2; x++) {
 						for (int z = -2; z <= 2; z++) {
 							if(DogUtil.isTeleportFriendlyBlock(dog, world, xPos, zPos, yPos, x, z)) {
-								dog.setSitting(false);
 								dog.getAISit().setSitting(false);
 								dog.setLocationAndAngles(xPos + x + 0.5, yPos, zPos + z + 0.5, dog.rotationYaw, dog.rotationPitch);
 								dog.getNavigator().clearPath();

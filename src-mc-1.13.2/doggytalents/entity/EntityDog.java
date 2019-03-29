@@ -560,7 +560,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                         } else if (this.reversionTime < 1) {
                             this.setTamed(false);
                             this.navigator.clearPath();
-                            this.setSitting(false);
+                            this.aiSit.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
                             this.setOwnerId(UUID.randomUUID());
@@ -940,12 +940,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             if (this.rand.nextInt(15) < lvlFisherDog * 2)
                 this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD, 1);
         }
-    }
-    
-    @Override
-    public void setSitting(boolean flag) {
-    	super.setSitting(flag);
-    	this.getAISit().setSitting(flag);
     }
 	
 	public float getWagAngle(float partialTickTime, float offset) {

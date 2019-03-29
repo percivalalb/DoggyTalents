@@ -29,7 +29,7 @@ public class EntityInteract {
 				 	dog.setTamed(true);
 				 	dog.setOwnerId(player.getUniqueID());
 				 	dog.setHealth(dog.getMaxHealth());
-				 	dog.setSitting(false);
+				 	dog.getAISit().setSitting(false);
 				 	dog.setGrowingAge(wolf.getGrowingAge());
 				 	dog.setPositionAndRotation(wolf.posX, wolf.posY, wolf.posZ, wolf.rotationYaw, wolf.rotationPitch);
 				 

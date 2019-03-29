@@ -931,6 +931,20 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return super.canAttackClass(cls);
     }
     
+	public void tryToJump() {
+        if(this.onGround)
+        	this.jump();
+        else if(this.isInWater() && this.TALENTS.getLevel("swimmerdog") > 0)
+        	this.motionY = 0.2F;
+	}
+	
+    @Override
+    protected float getJumpUpwardsMotion() {
+    	float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel("wolfmount");
+		if(this.TALENTS.getLevel("wolfmount") == 5) verticalVelocity += 0.04F;
+        return verticalVelocity;
+    }
+    
     @Override
     protected void onFinishShaking() {
         if (isServer()) {
@@ -938,7 +952,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             int lvlHellHound = this.TALENTS.getLevel("hellhound");
 
             if (this.rand.nextInt(15) < lvlFisherDog * 2)
-                this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD, 1);
+                this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
         }
     }
 	

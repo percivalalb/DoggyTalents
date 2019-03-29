@@ -17,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -45,8 +46,6 @@ public class KeyState {
     	stay.setKeyConflictContext(inGame);
     	ok.setKeyConflictContext(inGame);
     	heel.setKeyConflictContext(inGame);
-    	
-    	Minecraft.getInstance().gameSettings.keyBindings = ArrayUtils.addAll(new KeyBinding[] {come, stay, ok, heel}, Minecraft.getInstance().gameSettings.keyBindings);
     }
     
     
@@ -66,8 +65,21 @@ public class KeyState {
 	            	if(kb == mc.gameSettings.keyBindJump) {
 	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.getRidingEntity();
-	            			
+	            			/**
+	            			if(dog.onGround) {
+
+	                			double verticalVelocity = 0.27D + 0.1D * dog.TALENTS.getLevel("wolfmount");
+	                			if(dog.TALENTS.getLevel("wolfmount") == 5) verticalVelocity += 0.1D;
+	                			
+	                			dog.addVelocity(0D, verticalVelocity, 0D);
+	                			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
+	                				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+	                		}
+	                		else if(dog.isInWater() && dog.TALENTS.getLevel("swimmerdog") > 0) {
+	                			dog.motionY = 0.2F;
+	                		}**/
 	            			PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
+	            			dog.tryToJump();
 	            		}
 	            	}
 	            	else if(mc.isGameFocused() && player != null) {

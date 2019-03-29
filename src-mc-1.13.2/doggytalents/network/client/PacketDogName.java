@@ -40,7 +40,10 @@ public class PacketDogName {
                 
         		EntityDog dog = (EntityDog)target;
                 
-        		dog.setCustomName(new TextComponentString(message.name));
+        		if(message.name.isEmpty())
+        			dog.setCustomName(null);
+        		else
+        			dog.setCustomName(new TextComponentString(message.name));
             });
 
             ctx.get().setPacketHandled(true);

@@ -56,6 +56,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.buttons.clear();
 		this.labels.clear();
 		this.textfieldList.clear();
+		
 		//TODO Keyboard.enableRepeatEvents(true);
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
@@ -67,15 +68,19 @@ public class GuiDogInfo extends GuiScreen {
 					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(dog.getEntityId(), this.getText()));
 				return typed;
 			}
+			
+			@Override
+			public void deleteFromCursor(int index) {
+				super.deleteFromCursor(index);
+				PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(dog.getEntityId(), this.getText()));
+			}
 		};
 		nameTextField.setFocused(false);
 		nameTextField.setMaxStringLength(32);
-		if(this.dog.hasCustomName())
-			nameTextField.setText(this.dog.getCustomName().getUnformattedComponentText());
+		if(this.dog.hasCustomName()) nameTextField.setText(this.dog.getCustomName().getUnformattedComponentText());
 		this.nameTextField = nameTextField;
 		
 		this.textfieldList.add(nameTextField);
-		
 		this.doggyTex = this.dog.getTameSkin();
 		
 		int size = TalentRegistry.getTalents().size();
@@ -288,26 +293,14 @@ public class GuiDogInfo extends GuiScreen {
 
 	@Override
 	public void tick() {
+		super.tick();
 		for(GuiTextField field : this.textfieldList)
 			field.tick();
 	}
 	
 	@Override
-	public boolean charTyped(char character, int keyId) {
-		for(GuiTextField field : this.textfieldList) {
-			if(field.charTyped(character, keyId)) {
-				return true;
-			}
-		}
-		
-		 if (keyId == 27)
-			 this.mc.player.closeScreen();
-		 
-		 return false;
-	}
-	
-	@Override
 	public void onGuiClosed() {
+		super.onGuiClosed();
 	    //Keyboard.enableRepeatEvents(false);
 	}
 	

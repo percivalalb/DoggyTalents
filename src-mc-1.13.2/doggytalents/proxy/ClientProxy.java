@@ -10,6 +10,7 @@ import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
+import doggytalents.handler.KeyState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -23,8 +24,10 @@ import net.minecraft.init.Particles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -45,6 +48,15 @@ public class ClientProxy extends CommonProxy {
         DoggyTalentsMod.LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
    
+    @Override
+    protected void preInit(FMLCommonSetupEvent event) {
+    	super.preInit(event);
+    	ClientRegistry.registerKeyBinding(KeyState.come);
+    	ClientRegistry.registerKeyBinding(KeyState.stay);
+    	ClientRegistry.registerKeyBinding(KeyState.ok);
+    	ClientRegistry.registerKeyBinding(KeyState.heel);
+    }
+    
     @Override
     protected void postInit(InterModProcessEvent event) {
     	super.postInit(event);

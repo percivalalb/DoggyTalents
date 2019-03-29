@@ -13,6 +13,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +22,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockDogBath extends Block {
 
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
+	protected static final VoxelShape SHAPE_COLLISION = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D);
 	
 	public BlockDogBath() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.METAL));
@@ -29,8 +31,12 @@ public class BlockDogBath extends Block {
 
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		Vec3d vec3d = state.getOffset(worldIn, pos);
-		return SHAPE.withOffset(vec3d.x, vec3d.y, vec3d.z);
+		return SHAPE;
+	}
+	
+	@Override
+	public VoxelShape getCollisionShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
+		return SHAPE_COLLISION;
 	}
 	
 	@Override

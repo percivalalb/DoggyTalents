@@ -3,6 +3,7 @@ package doggytalents.proxy;
 import java.util.Random;
 
 import doggytalents.DoggyTalentsMod;
+import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
@@ -11,6 +12,7 @@ import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.KeyState;
+import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -20,10 +22,12 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Particles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -81,6 +85,10 @@ public class ClientProxy extends CommonProxy {
 			}
 			
 		}, ModItems.CAPE_COLOURED);
+		
+		Minecraft.getInstance().getBlockColors().register((state, blockAccess, pos, tintIndex) -> {
+	         return blockAccess != null && pos != null ? BiomeColors.getWaterColor(blockAccess, pos) : -1;
+	      }, ModBlocks.DOG_BATH);
     }
     
     @Override

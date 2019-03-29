@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "S S",
-    "LLL",
-    "LLL"
+    "LWL",
+    "WLW"
   ],
   "key": {
     "S": {
@@ -11,11 +11,13 @@
     },
     "L": {
       "item": "minecraft:leather"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     }
   },
   "result": {
-    "item": "doggytalents:cape_coloured",
-    "data": 0,
+    "item": "doggytalents:cape",
     "count": 1
   }
 }

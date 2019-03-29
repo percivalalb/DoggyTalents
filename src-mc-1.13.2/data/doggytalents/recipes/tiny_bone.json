@@ -1,21 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " I ",
-    "IiI",
-    " I "
+    "BI",
+    "IB"
   ],
   "key": {
-    "I": {
+    "B": {
       "item": "minecraft:bone"
     },
-    "i": {
-      "item": "minecraft:shears"
+    "I": {
+      "item": "minecraft:iron_ingot"
     }
   },
   "result": {
-    "item": "doggytalents:collar_shears",
-    "data": 0,
+    "item": "doggytalents:tiny_bone",
     "count": 1
   }
 }

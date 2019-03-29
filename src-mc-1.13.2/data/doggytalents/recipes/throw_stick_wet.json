@@ -2,13 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "doggytalents:throw_bone",
-      "data": 1
+      "item": "doggytalents:throw_stick_wet"
     }
   ],
   "result": {
-    "item": "doggytalents:throw_bone",
-    "data": 0,
+    "item": "doggytalents:throw_stick",
     "count": 1
   }
 }

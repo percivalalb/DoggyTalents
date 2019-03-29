@@ -15,18 +15,15 @@
     },
     [
       {
-        "item": "minecraft:cooked_fish",
-        "data": 0
+        "item": "minecraft:cooked_cod"
       },
       {
-        "item": "minecraft:cooked_fish",
-        "data": 1
+        "item": "minecraft:cooked_salmon"
       }
     ]
   ],
   "result": {
     "item": "doggytalents:breeding_bone",
-    "data": 0,
     "count": 2
   }
 }

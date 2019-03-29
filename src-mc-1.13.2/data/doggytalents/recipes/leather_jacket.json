@@ -7,8 +7,7 @@
   ],
   "key": {
     "W": {
-      "item": "minecraft:wool",
-	  "data": 0
+      "item": "minecraft:black_wool"
     },
     "L": {
       "item": "minecraft:leather"
@@ -16,7 +15,6 @@
   },
   "result": {
     "item": "doggytalents:leather_jacket",
-    "data": 0,
     "count": 1
   }
 }

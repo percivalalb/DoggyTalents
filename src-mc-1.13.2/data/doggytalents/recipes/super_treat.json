@@ -17,13 +17,11 @@
       "item": "doggytalents:training_treat"
     },
     {
-      "item": "minecraft:golden_apple",
-      "data": 0
+      "item": "minecraft:golden_apple"
     }
   ],
   "result": {
     "item": "doggytalents:super_treat",
-    "data": 0,
     "count": 5
   }
 }

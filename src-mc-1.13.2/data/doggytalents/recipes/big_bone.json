@@ -1,21 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "IiI",
-    "III"
+    "BI",
+    "IB",
+	"BI"
   ],
   "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
     "I": {
       "item": "minecraft:iron_ingot"
-    },
-    "i": {
-      "item": "minecraft:bone"
     }
   },
   "result": {
-    "item": "doggytalents:food_bowl",
-    "data": 0,
+    "item": "doggytalents:big_bone",
     "count": 1
   }
 }

@@ -10,6 +10,10 @@ Update List Key
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+1.14.2.396 | 
+* Fixed dogs still being susceptible to posion even above level 3 posion fang
+TODO take finished radar from 1.13 and port back to 1.12
+
 1.14.2.396 | 15th February 2019
 * Fixed crash with older versions and newer versions of CreativeCore
 / Updated source code to MCP mappings stable_39

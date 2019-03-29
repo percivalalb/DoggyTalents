@@ -35,7 +35,8 @@ public class PoisonFang extends ITalent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
         if(dog.talents.getLevel(this) >= 3)
-        	return potionEffect.getPotion() == MobEffects.POISON;
+        	if(potionEffect.getPotion() == MobEffects.POISON)
+        		return false;
         
         return true;
 	}

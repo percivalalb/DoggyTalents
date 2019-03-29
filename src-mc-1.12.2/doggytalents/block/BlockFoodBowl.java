@@ -70,6 +70,7 @@ public class BlockFoodBowl extends BlockContainer {
 	    return EnumBlockRenderType.MODEL;
 	}
 
+	//TODO Fix
     public boolean onBlockActivatedGENERAL(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if(worldIn.isRemote) {
             return true;

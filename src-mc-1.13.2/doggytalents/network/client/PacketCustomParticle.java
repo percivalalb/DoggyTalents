@@ -50,7 +50,7 @@ public class PacketCustomParticle {
 	public static class Handler {
         public static void handle(final PacketCustomParticle message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-            	EntityPlayer player = ctx.get().getSender();
+            	EntityPlayer player = DoggyTalentsMod.PROXY.getPlayerEntity();
             	DoggyTalentsMod.PROXY.spawnCustomParticle(player, message.pos, player.getRNG(), message.posX, message.posY, message.posZ, message.numberOfParticles, message.particleSpeed);
             });
 

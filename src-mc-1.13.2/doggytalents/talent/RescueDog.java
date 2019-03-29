@@ -15,6 +15,7 @@ public class RescueDog extends ITalent {
 		
 		int level = dog.TALENTS.getLevel(this);
 		
+		//TODO add particles and check how far away dog is
 		if (player != null && player.getHealth() <= 6 && level != 0 && dog.getDogHunger() > this.healCost(dog)) {
             player.heal((int)(level * 1.5D));
             dog.setDogHunger(dog.getDogHunger() - this.healCost(dog));

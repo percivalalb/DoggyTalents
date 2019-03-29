@@ -207,20 +207,6 @@ public class BlockDogBed extends BlockContainer {
 		drops.add(DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING)));
 	}
 	
-	/**
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        TileEntity tile = world.getTileEntity(pos);
-		
-		if(!(tile instanceof TileEntityDogBed))
-			return ItemStack.EMPTY;
-		TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-		
-		return DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
-	}
-	
-	**/
-	
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player) {
 		return DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING));
@@ -328,8 +314,8 @@ public class BlockDogBed extends BlockContainer {
 
 	@Override
 	public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState stateAgain, EntityLivingBase entity, int numberOfParticles) {
-		PacketCustomParticle packet = new PacketCustomParticle(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15f);
-		PacketHandler.send(PacketDistributor.DIMENSION.with(() -> world.dimension.getType()), packet);
+		PacketCustomParticle packet = new PacketCustomParticle(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15F);
+		PacketHandler.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos)), packet);
 		return true;
 	}
 }

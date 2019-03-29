@@ -2,6 +2,9 @@ package doggytalents.block;
 
 import javax.annotation.Nullable;
 
+import doggytalents.ModItems;
+import doggytalents.helper.DogUtil;
+import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.lib.BlockNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
@@ -10,14 +13,21 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -88,6 +98,48 @@ public class BlockFoodBowl extends BlockContainer {
 	}
 
 	@Override
+    public void onEntityCollision(IBlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+    	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
+     
+        if(entityIn instanceof EntityItem) {
+            EntityItem entityItem = (EntityItem)entityIn;
+            ItemStack itemstack = entityItem.getItem().copy();
+            
+            ItemStack itemstack1 = DogUtil.addItem(foodBowl, entityItem.getItem());
+
+            if(!itemstack1.isEmpty())
+            	entityItem.setItem(itemstack1);
+            else {
+                entityItem.remove();
+                worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            }
+        }
+    }
+	
+	@Override
+	public void onReplaced(IBlockState state, World worldIn, BlockPos pos, IBlockState newState, boolean isMoving) {
+		if(state.getBlock() != newState.getBlock()) {
+			TileEntity tileentity = worldIn.getTileEntity(pos);
+			if(tileentity instanceof TileEntityFoodBowl) {
+				InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityFoodBowl)tileentity);
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
+
+			super.onReplaced(state, worldIn, pos, newState, isMoving);
+		}
+	}
+	
+	@Override
+	public boolean hasComparatorInputOverride(IBlockState state) {
+		return true;
+	}
+	
+	@Override
+	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+		return Container.calcRedstone(worldIn.getTileEntity(pos));
+	}
+
+	@Override
 	public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if(worldIn.isRemote) {
             return true;
@@ -96,7 +148,21 @@ public class BlockFoodBowl extends BlockContainer {
         	TileEntityFoodBowl foodBowl = this.getTileEntity(state, worldIn, pos);
 
             if(foodBowl != null) {
-                if(player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
+            	ItemStack stack = player.getHeldItem(hand);
+            	
+            	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
+            		InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
+            		treatBag.openInventory(player);
+            		
+            		for(int i = 0; i < treatBag.getSizeInventory(); i++)
+            			treatBag.setInventorySlotContents(i, DogUtil.addItem(foodBowl, treatBag.getStackInSlot(i)));
+            		
+            		treatBag.closeInventory(player);
+            		
+            		return true;
+            	}
+            	
+            	else if(player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
                     EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
 
                     NetworkHooks.openGui(entityPlayerMP, foodBowl, buf -> buf.writeBlockPos(pos));

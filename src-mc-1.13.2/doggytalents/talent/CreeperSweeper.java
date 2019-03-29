@@ -36,7 +36,7 @@ public class CreeperSweeper extends ITalent {
 		if((int)dog.objects.get("creeper_timer") >= (int)dog.objects.get("random_time")) {
 			dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
 			dog.objects.put("creeper_timer", 0);
-			dog.objects.put("random_time", 30 + this.rand.nextInt(20));
+			dog.objects.put("random_time", 30 + this.rand.nextInt(40));
 		}
 		
 		

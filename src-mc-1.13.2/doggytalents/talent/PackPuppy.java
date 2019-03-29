@@ -49,7 +49,7 @@ public class PackPuppy extends ITalent {
 	    	if(level > 0) {
 	    		if(!stack.isEmpty()) {
 	    			
-	    			if(stack.getItem().equals(Item.getItemFromBlock(Blocks.OAK_PLANKS)) && !player.world.isRemote && dog.canInteract(player)) {
+	    			if(player.isSneaking() && !player.world.isRemote && dog.canInteract(player)) {
 	    				IInteractionObject inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 	    
 	    				if(inventory != null) {

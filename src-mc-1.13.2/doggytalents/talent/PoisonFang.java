@@ -22,7 +22,10 @@ public class PoisonFang extends ITalent {
 	    if (dog.isTamed()) {
 	    	if (stack != null) {
 	    		if(stack.getItem() == Items.SPIDER_EYE && !player.world.isRemote && dog.getDogHunger() > 30) {
-	    			player.getActivePotionMap().clear();
+	    			if(!dog.world.isRemote) {
+	    				player.clearActivePotions();
+	    			}
+
 	    			dog.setDogHunger(dog.getDogHunger() - 30);
                 	return true;
 	    		}
@@ -35,7 +38,8 @@ public class PoisonFang extends ITalent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
         if(dog.TALENTS.getLevel(this) >= 3)
-        	return potionEffect.getPotion() == MobEffects.POISON;
+        	if(potionEffect.getPotion() == MobEffects.POISON)
+        		return false;
         
         return true;
 	}

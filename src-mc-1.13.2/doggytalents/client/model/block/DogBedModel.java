@@ -61,22 +61,13 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 		String casing = "minecraft:block/oak_planks";
 		String bedding = "minecraft:block/white_wool";
         EnumFacing facing = EnumFacing.NORTH;
-		
-        /**if(state instanceof IExtendedBlockState) {
-            IExtendedBlockState extendedState = (IExtendedBlockState)state;
- 
-            if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
-            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
-
-            if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
-            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
-            
-        }**/
+        
 		if(state != null) {
 	        facing = state.get(BlockDogBed.FACING);
 	        casing = DogBedRegistry.CASINGS.getTexture(state.get(BlockDogBed.CASING));
 	        bedding = DogBedRegistry.BEDDINGS.getTexture(state.get(BlockDogBed.BEDDING));
 		}
+		
 		return this.getCustomModel(casing, bedding, facing);
 	}
     
@@ -84,6 +75,8 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         IBakedModel customModel = this.bakedModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
+        if(facing == null) facing = EnumFacing.NORTH;
+        
 
         Map<String, EnumFacing> cacheKey = Maps.newHashMap();
         cacheKey.put(beddingResource + casingResource, facing);
@@ -99,56 +92,21 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
             
             
             List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
-            for (BlockPart part : model.getElements())
-            {
+            for (BlockPart part : this.model.getElements()) {
                 elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
             }
 
-            ModelBlock newModel = new ModelBlock(model.getParentLocation(), elements,
-                Maps.newHashMap(model.textures), model.isAmbientOcclusion(), model.isGui3d(), //New Textures man VERY IMPORTANT
-                model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
-            newModel.name = model.name;
-            newModel.parent = model.parent;
+            ModelBlock newModel = new ModelBlock(this.model.getParentLocation(), elements,
+                Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(), //New Textures man VERY IMPORTANT
+                this.model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
+            newModel.name = this.model.name;
+            newModel.parent = this.model.parent;
 
-            Set<String> removed = Sets.newHashSet();
-
-            for (Entry<String, String> e : textures.entrySet())
-            {
-                if ("".equals(e.getValue()))
-                {
-                    removed.add(e.getKey());
-                    newModel.textures.remove(e.getKey());
-                }
-                else
-                    newModel.textures.put(e.getKey(), e.getValue());
-            }
-
-            // Map the model's texture references as if it was the parent of a model with the retexture map as its textures.
-            Map<String, String> remapped = Maps.newHashMap();
-
-            for (Entry<String, String> e : newModel.textures.entrySet())
-            {
-                if (e.getValue().startsWith("#"))
-                {
-                    String key = e.getValue().substring(1);
-                    if (newModel.textures.containsKey(key))
-                        remapped.put(e.getKey(), newModel.textures.get(key));
-                }
-            }
-
-            newModel.textures.putAll(remapped);
-
-            //Remove any faces that use a null texture, this is for performance reasons, also allows some cool layering stuff.
-            for (BlockPart part : newModel.getElements())
-            {
-                part.mapFaces.entrySet().removeIf(entry -> removed.contains(entry.getValue().texture));
-            }
+            newModel.textures.put("bedding", beddingResource);
+            newModel.textures.put("casing", casingResource);
+            newModel.textures.put("particle", casingResource);
             
 
-            //Likely inventory render
-            if(facing == null) facing = EnumFacing.NORTH;
-
-            
            // customModel = retexturedModel.bake(new TRSRTransformation(TRSRTransformation.getMatrix(facing)), this.format, this.textureGetter::apply);
             customModel = newModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), true, this.format);
             this.cache.put(cacheKey, customModel);

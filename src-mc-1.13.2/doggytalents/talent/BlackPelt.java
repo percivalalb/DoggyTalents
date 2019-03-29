@@ -16,7 +16,7 @@ public class BlackPelt extends ITalent {
 		
 		int critChance = level == 5 ? 1 : 0;
         critChance += level;
-        
+        //TODO redo crit to be better in line with text info
         if (dog.getRNG().nextInt(6) < critChance) {
         	damage += (damage + 1) / 2;
         	DoggyTalentsMod.PROXY.spawnCrit(dog.world, entity);

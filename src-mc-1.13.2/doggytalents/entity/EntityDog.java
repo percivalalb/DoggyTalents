@@ -225,6 +225,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         compound.putInt("capeData", this.getCapeData());
         compound.putInt("dogSize", this.getDogSize());
         compound.putString("dogGender", this.getGender());
+        
+        TalentHelper.writeToNBT(this, compound);
 	}
 
 	@Override
@@ -884,9 +886,9 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
         if (!TalentHelper.shouldDismountInWater(this, rider))
-            return false;
+            return true;
 
-        return super.canBeRiddenInWater(rider);
+        return false;
     }
     
     @Override

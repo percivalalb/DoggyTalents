@@ -51,54 +51,18 @@ public abstract class EntityAbstractDog extends EntityTameable {
 		this.setTamed(false);
 	}
 
-	// Moved to EntityDog
-	/**
-	@Override
-	protected void initEntityAI() {
-		this.aiSit = new EntityAISit(this);
-		this.tasks.addTask(1, new EntityAISwimming(this));
-		this.tasks.addTask(2, this.aiSit);
-		this.tasks.addTask(3, new EntityAbstractDog.AIAvoidEntity(this, EntityLlama.class, 24.0F, 1.5D, 1.5D));
-		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
-		this.tasks.addTask(5, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(6, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(7, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(8, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(9, new EntityAIDogBeg(this, 8.0F));
-		this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(10, new EntityAILookIdle(this));
-		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityAnimal.class, false, (p_210130_0_) -> {
-			return p_210130_0_ instanceof EntitySheep || p_210130_0_ instanceof EntityRabbit;
-		}));
-		this.targetTasks.addTask(4, new EntityAITargetNonTamed<>(this, EntityTurtle.class, false, EntityTurtle.TARGET_DRY_BABY));
-		this.targetTasks.addTask(5, new EntityAINearestAttackableTarget<>(this, AbstractSkeleton.class, false));
-	}**/
-
 	@Override
 	protected void registerAttributes() {
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)0.3F);
-		if (this.isTamed()) {
+		if(this.isTamed()) {
 			this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-		} else {
+		} 
+		else {
 			this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
 		}
 
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
-	}
-
-	@Override
-	public void setAttackTarget(@Nullable EntityLivingBase entitylivingbaseIn) {
-		super.setAttackTarget(entitylivingbaseIn);
-		if(entitylivingbaseIn == null) {
-			this.setAngry(false);
-		} 
-		else if(!this.isTamed()) {
-			this.setAngry(true);
-		}
 	}
 
 	@Override
@@ -116,26 +80,13 @@ public abstract class EntityAbstractDog extends EntityTameable {
 	protected void playStepSound(BlockPos pos, IBlockState blockIn) {
 		this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
 	}
-
-	@Override
-	public void writeAdditional(NBTTagCompound compound) {
-		super.writeAdditional(compound);
-		compound.putBoolean("Angry", this.isAngry());
-	}
-
-	@Override
-	public void readAdditional(NBTTagCompound compound) {
-		super.readAdditional(compound);
-		this.setAngry(compound.getBoolean("Angry"));
-	}
-
+	
 	@Override
 	protected SoundEvent getAmbientSound() {
-		if (this.isAngry()) {
-			return SoundEvents.ENTITY_WOLF_GROWL;
-		} else if (this.rand.nextInt(3) == 0) {
+		if(this.rand.nextInt(3) == 0) {
 			return this.isTamed() && this.dataManager.get(DATA_HEALTH_ID) < 10.0F ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
-		} else {
+		} 
+		else {
       	  return SoundEvents.ENTITY_WOLF_AMBIENT;
 		}
 	}
@@ -169,10 +120,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
 			this.timeWolfIsShaking = 0.0F;
 			this.prevTimeWolfIsShaking = 0.0F;
 			this.world.setEntityState(this, (byte)8);
-		}
-		
-		if (!this.world.isRemote && this.getAttackTarget() == null && this.isAngry()) {
-			this.setAngry(false);
 		}
 	}
 
@@ -264,26 +211,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
    		return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
    	}
 
-   	/**
-   	@Override
-   	public boolean attackEntityFrom(DamageSource source, float amount) {
-   		if (this.isInvulnerableTo(source)) {
-   			return false;
-   		} 
-   		else {
-   			Entity entity = source.getTrueSource();
-   			if (this.aiSit != null) {
-   				this.aiSit.setSitting(false);
-   			}
-
-   			if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow)) {
-   				amount = (amount + 1.0F) / 2.0F;
-   			}
-
-   			return super.attackEntityFrom(source, amount);
-   		}
-   	}**/
-
    	@Override
    	public boolean attackEntityAsMob(Entity entityIn) {
    		boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
@@ -305,68 +232,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 
    		this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
    	}
-   	/**
-   	@Override
-   	public boolean processInteract(EntityPlayer player, EnumHand hand) {
-   		ItemStack itemstack = player.getHeldItem(hand);
-   		Item item = itemstack.getItem();
-   		if (this.isTamed()) {
-   			if (!itemstack.isEmpty()) {
-   				if (item instanceof ItemFood) {
-   					ItemFood itemfood = (ItemFood)item;
-   					if (itemfood.isMeat() && this.dataManager.get(DATA_HEALTH_ID) < 20.0F) {
-   						if (!player.abilities.isCreativeMode) {
-   							itemstack.shrink(1);
-   						}
-
-   						this.heal((float)itemfood.getHealAmount(itemstack));
-   						return true;
-   					}
-   				} else if (item instanceof ItemDye) {
-   					EnumDyeColor enumdyecolor = ((ItemDye)item).getDyeColor();
-   					if (enumdyecolor != this.getCollarColor()) {
-   						this.setCollarColor(enumdyecolor);
-   						if (!player.abilities.isCreativeMode) {
-   							itemstack.shrink(1);
-   						}
-
-   						return true;
-   					}
-   				}
-   			}
-
-   			if (this.isOwner(player) && !this.world.isRemote && !this.isBreedingItem(itemstack)) {
-   				this.aiSit.setSitting(!this.isSitting());
-   				this.isJumping = false;
-   				this.navigator.clearPath();
-   				this.setAttackTarget((EntityLivingBase)null);
-   			}
-   		} else if (item == Items.BONE && !this.isAngry()) {
-   			if (!player.abilities.isCreativeMode) {
-   				itemstack.shrink(1);
-   			}
-
-   			if (!this.world.isRemote) {
-   				if (this.rand.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-   					this.setTamedBy(player);
-   					this.navigator.clearPath();
-   					this.setAttackTarget((EntityLivingBase)null);
-   					this.aiSit.setSitting(true);
-   					this.setHealth(20.0F);
-   					this.playTameEffect(true);
-   					this.world.setEntityState(this, (byte)7);
-   				} else {
-   					this.playTameEffect(false);
-   					this.world.setEntityState(this, (byte)6);
-   				}
-   			}
-
-   			return true;
-   		}
-
-   		return super.processInteract(player, hand);
-   	}**/
-
+   	
    	@Override
    	@OnlyIn(Dist.CLIENT)
    	public void handleStatusUpdate(byte id) {
@@ -382,58 +248,9 @@ public abstract class EntityAbstractDog extends EntityTameable {
 
    	@OnlyIn(Dist.CLIENT)
    	public float getTailRotation() {
-   		if (this.isAngry()) {
-   			return 1.5393804F;
-   		} else {
-   			return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
-   		}
-   	}
-
-   	/**
-   	@Override
-   	public boolean isBreedingItem(ItemStack stack) {
-   		Item item = stack.getItem();
-   		return item instanceof ItemFood && ((ItemFood)item).isMeat();
-   	}**/
-
-   	@Override
-   	public int getMaxSpawnedInChunk() {
-   		return 8;
-   	}
-
-   /**
-    * Determines whether this wolf is angry or not.
-    */
-   	public boolean isAngry() {
-   		return (this.dataManager.get(TAMED) & 2) != 0;
-   	}
-
-   /**
-    * Sets whether this wolf is angry or not.
-    */
-   	public void setAngry(boolean angry) {
-   		byte b0 = this.dataManager.get(TAMED);
-   		if (angry) {
-   			this.dataManager.set(TAMED, (byte)(b0 | 2));
-   		} else {
-   			this.dataManager.set(TAMED, (byte)(b0 & -3));
-   		}
-
+   		return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
    	}
    	
-   	/**
-   	@Override
-   	public EntityAbstractDog createChild(EntityAgeable ageable) {
-   		EntityAbstractDog entitywolf = new EntityAbstractDog(this.world);
-   		UUID uuid = this.getOwnerId();
-   		if (uuid != null) {
-   			entitywolf.setOwnerId(uuid);
-   			entitywolf.setTamed(true);
-   		}
-
-   		return entitywolf;
-   	}**/
-
    	@Override
    	public boolean canMateWith(EntityAnimal otherAnimal) {
    		if (otherAnimal == this) {
@@ -472,11 +289,6 @@ public abstract class EntityAbstractDog extends EntityTameable {
    		} else {
    			return false;
    		}
-   	}
-
-   	@Override
-   	public boolean canBeLeashedTo(EntityPlayer player) {
-   		return !this.isAngry() && super.canBeLeashedTo(player);
    	}
    	
 	protected abstract void onFinishShaking();

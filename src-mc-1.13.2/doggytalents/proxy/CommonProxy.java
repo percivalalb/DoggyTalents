@@ -111,6 +111,6 @@ public class CommonProxy {
     }
     
     public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-    	
+    	DoggyTalentsMod.LOGGER.info("" + player.getClass());
     }
 }

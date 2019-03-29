@@ -1,8 +1,12 @@
 package doggytalents.tileentity;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import doggytalents.ModBlocks;
+import doggytalents.entity.EntityDog;
+import doggytalents.helper.DogUtil;
 import doggytalents.inventory.ContainerFoodBowl;
 import doggytalents.lib.BlockNames;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
@@ -54,16 +59,17 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
     	//Only run update code every 5 ticks (0.25s)
     	if(++this.timeoutCounter < 5) { return; }
     	
-    	/**
+    	
     	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
     	for(EntityDog dog : dogList) {
-    		dog.coords.setBowlPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+    		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl
+    		dog.COORDS.setBowlPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
             	
-    		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
+    		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this);
          	if(dog.getDogHunger() < 60 && slotIndex >= 0)
-         		DogUtil.feedDog(dog, this.inventory, slotIndex);
-        }**/
+         		DogUtil.feedDog(dog, this, slotIndex);
+        }
     	
     	this.timeoutCounter = 0;
     }

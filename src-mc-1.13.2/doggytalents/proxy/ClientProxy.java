@@ -17,6 +17,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -26,6 +27,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Particles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -77,7 +79,7 @@ public class ClientProxy extends CommonProxy {
 		
 		Minecraft.getInstance().getItemColors().register(new IItemColor() {
 
-		@Override
+			@Override
 			public int getColor(ItemStack stack, int tintIndex) {
 				if(stack.hasTag() && stack.getTag().contains("cape_colour"))
 					return stack.getTag().getInt("cape_colour");
@@ -85,6 +87,10 @@ public class ClientProxy extends CommonProxy {
 			}
 			
 		}, ModItems.CAPE_COLOURED);
+		
+		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+	         return 4159204;
+	      }, ModBlocks.DOG_BATH);
 		
 		Minecraft.getInstance().getBlockColors().register((state, blockAccess, pos, tintIndex) -> {
 	         return blockAccess != null && pos != null ? BiomeColors.getWaterColor(blockAccess, pos) : -1;
@@ -99,7 +105,6 @@ public class ClientProxy extends CommonProxy {
     @Override
 	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
 		TextureAtlasSprite sprite;
-
 		IBlockState state = player.world.getBlockState((BlockPos)pos);
 		IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
 		if(model instanceof IStateParticleModel) {

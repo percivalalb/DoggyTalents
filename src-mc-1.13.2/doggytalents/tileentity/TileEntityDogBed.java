@@ -1,8 +1,8 @@
 package doggytalents.tileentity;
 
-import org.apache.logging.log4j.util.Strings;
-
 import doggytalents.ModBlocks;
+import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -10,8 +10,8 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityDogBed extends TileEntity {
 	
-	private String casingId = Strings.EMPTY;
-	private String beddingId = Strings.EMPTY;
+	private BedMaterial casingId = BedMaterial.NULL;
+	private BedMaterial beddingId = BedMaterial.NULL;
 	
 	public TileEntityDogBed() {
 		super(ModBlocks.TILE_DOG_BED);
@@ -20,15 +20,15 @@ public class TileEntityDogBed extends TileEntity {
 	@Override
 	public void read(NBTTagCompound tag) {
 		super.read(tag);
-		this.casingId = tag.getString("casingId");
-		this.beddingId = tag.getString("beddingId");
+		this.casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
+		this.beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
     }
 
     @Override
     public NBTTagCompound write(NBTTagCompound tag) {
 		super.write(tag);
-		tag.putString("casingId", this.casingId);
-		tag.putString("beddingId", this.beddingId);
+		tag.putString("casingId", this.casingId != null ? this.casingId.key : "missing");
+		tag.putString("beddingId", this.beddingId != null ? this.beddingId.key : "missing");
 		return tag;
 	}
 	
@@ -53,19 +53,19 @@ public class TileEntityDogBed extends TileEntity {
 		this.read(pkt.getNbtCompound());
 	}
 	
-	public void setCasingId(String newId) {
+	public void setCasingId(BedMaterial newId) {
 		this.casingId = newId;
 	}
 	
-	public void setBeddingId(String newId) {
+	public void setBeddingId(BedMaterial newId) {
 		this.beddingId = newId;
 	}
 	
-	public String getCasingId() {
+	public BedMaterial getCasingId() {
 		return this.casingId;
 	}
 	
-	public String getBeddingId() {
+	public BedMaterial getBeddingId() {
 		return this.beddingId;
 	}
 }

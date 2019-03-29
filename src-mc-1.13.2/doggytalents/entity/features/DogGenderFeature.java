@@ -1,4 +1,4 @@
-package doggytalents.entity.ai;
+package doggytalents.entity.features;
 
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;

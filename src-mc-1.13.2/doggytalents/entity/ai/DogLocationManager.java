@@ -33,7 +33,6 @@ public class DogLocationManager extends WorldSavedData {
 	 */
 	public static DogLocationManager getHandler(World world) {
 		WorldSavedDataStorage storage = world.getSavedDataStorage();
-		//World overworld = DimensionManager.getWorld(0);
 		DogLocationManager locationManager = (DogLocationManager)storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations");
 		
     	if (locationManager == null) {

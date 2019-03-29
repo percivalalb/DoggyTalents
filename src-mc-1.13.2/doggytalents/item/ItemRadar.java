@@ -2,9 +2,9 @@ package doggytalents.item;
 
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.DogGenderFeature;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.DogLocationManager.DogLocation;
+import doggytalents.entity.features.DogGenderFeature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;

@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 
 import doggytalents.ModRecipes;
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.api.registry.BedMaterial;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -27,8 +28,8 @@ public class RecipeDogBed extends IRecipeHidden {
 		if (!(inv instanceof InventoryCrafting)) {
 	         return false;
 		}
-		String beddingId = "";
-		String casingId = "";
+		BedMaterial beddingId = null;
+		BedMaterial casingId = null;
 		
 		boolean beddingSel = false;
 		boolean casingSel = false;
@@ -36,8 +37,8 @@ public class RecipeDogBed extends IRecipeHidden {
         for(int col = 0; col < 3; ++col) {
             for(int row = 0; row < 3; ++row) {
             	if((col == 1 && row == 0) || (col == 1 && row == 1)) {
-            		String id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(Strings.isNullOrEmpty(id) || (!id.equals(beddingId) && beddingSel))
+            		BedMaterial id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(id == null || (!id.equals(beddingId) && beddingSel))
             			return false;
                 		
             		beddingSel = true;
@@ -45,8 +46,8 @@ public class RecipeDogBed extends IRecipeHidden {
 
             	}
             	else {
-            		String id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(Strings.isNullOrEmpty(id) || (!id.equals(casingId) && casingSel))
+            		BedMaterial id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(id == null || (!id.equals(casingId) && casingSel))
                 		return false;
                 		
             		casingSel = true;
@@ -62,8 +63,8 @@ public class RecipeDogBed extends IRecipeHidden {
 	public ItemStack getCraftingResult(IInventory inv) {
 		ItemStack itemstack = ItemStack.EMPTY;
 		
-		String beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
-		String casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
+		BedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
+		BedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
 		
 		return DogBedRegistry.createItemStack(casingId, beddingId);
     }

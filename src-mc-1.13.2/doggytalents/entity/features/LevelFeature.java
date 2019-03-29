@@ -1,4 +1,4 @@
-package doggytalents.entity.ai;
+package doggytalents.entity.features;
 
 import java.util.UUID;
 

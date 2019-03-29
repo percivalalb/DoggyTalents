@@ -3,21 +3,28 @@ package doggytalents;
 import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
 
+import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.api.registry.BedMaterial;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
+import doggytalents.event.BeddingRegistryEvent;
 import doggytalents.lib.BlockNames;
 import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -39,12 +46,14 @@ public class ModBlocks {
 	public static TileEntityType<TileEntityFoodBowl> TILE_FOOD_BOWL;
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registration
-    {
+    public static class Registration {
+
 	    @SubscribeEvent
-	    public static void registerBlocks(final RegistryEvent.Register<Block> event){
+	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
-	    	
+	        MinecraftForge.EVENT_BUS.post(new BeddingRegistryEvent());
+	        
+	        
 	        DoggyTalentsMod.LOGGER.info("Registering Blocks");
 	        blockRegistry.register(new BlockDogBed());
 	        blockRegistry.register(new BlockDogBath());
@@ -77,15 +86,19 @@ public class ModBlocks {
 		}
 		
 	    @SubscribeEvent
-	    public static void onItemRegister(final RegistryEvent.Register<Item> event){
+	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	DoggyTalentsMod.LOGGER.info("Registering ItemBlocks");
-	    	event.getRegistry().register(makeItemBlock(DOG_BED));
+	    	event.getRegistry().register(makeItemBlock(DOG_BED, ModCreativeTabs.DOG_BED));
 	    	event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    	event.getRegistry().register(makeItemBlock(FOOD_BOWL));
 	    }
 	    
 	    private static ItemBlock makeItemBlock(Block block) {
-	        return (ItemBlock)new ItemBlock(block, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(block.getRegistryName());
+	    	return makeItemBlock(block, ModCreativeTabs.GENERAL);
+	    }
+	    
+	    private static ItemBlock makeItemBlock(Block block, ItemGroup group) {
+	        return (ItemBlock)new ItemBlock(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
 	    }
     }
 }

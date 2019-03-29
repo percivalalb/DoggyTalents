@@ -5,8 +5,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
+import doggytalents.ModBeddings;
+import doggytalents.ModBlocks;
 import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.api.registry.DogBedRegistry2;
+import doggytalents.api.registry.BedMaterial;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.lib.BlockNames;
@@ -32,6 +34,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.state.DirectionProperty;
@@ -45,6 +48,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -55,6 +59,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.BlockStateContainer;
@@ -73,13 +78,15 @@ public class BlockDogBed extends BlockContainer {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
 	
 	public static final DirectionProperty FACING = BlockHorizontal.HORIZONTAL_FACING;
-	public static final EnumProperty<DogBedRegistry2.Casing> CASING = EnumProperty.create("casing", DogBedRegistry2.Casing.class);
-	public static final EnumProperty<DogBedRegistry2.Bedding> BEDDING = EnumProperty.create("bedding", DogBedRegistry2.Bedding.class);
+	public static final StringProperty CASING = StringProperty.create("casing", DogBedRegistry.CASINGS);
+	public static final StringProperty BEDDING = StringProperty.create("bedding", DogBedRegistry.BEDDINGS);
+	//public static final EnumProperty<DogBedRegistry2.Casing> CASING = EnumProperty.create("casing", DogBedRegistry2.Casing.class);
+	//public static final EnumProperty<DogBedRegistry2.Bedding> BEDDING = EnumProperty.create("bedding", DogBedRegistry2.Bedding.class);
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
 		this.setRegistryName(BlockNames.DOG_BED);
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(CASING, DogBedRegistry2.Casing.OAK_PLANK).with(BEDDING, DogBedRegistry2.Bedding.WHITE_WOOL));
+		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE));
 	}
 	
 	@Override
@@ -89,8 +96,8 @@ public class BlockDogBed extends BlockContainer {
 		if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
 			NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
 		    
-		    String casingId = tag.getString("casingId");
-		    String beddingId = tag.getString("beddingId");
+			BedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
+	    	BedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
 		    
 		    if(DogBedRegistry.CASINGS.isValidId(casingId))
 		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
@@ -105,14 +112,20 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
+	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+		for(BedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys())
+			for(BedMaterial casingId : DogBedRegistry.CASINGS.getKeys())
+				items.add(DogBedRegistry.createItemStack(casingId, beddingId));
+	}
+	
+	@Override
 	public TileEntity createNewTileEntity(IBlockReader world) {
 		return new TileEntityDogBed();
 	}
 	
 	@Override
 	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		Vec3d vec3d = state.getOffset(worldIn, pos);
-		return SHAPE.withOffset(vec3d.x, vec3d.y, vec3d.z);
+		return SHAPE;
 	}
 	
 	@Override
@@ -127,19 +140,24 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.with(FACING, placer.getHorizontalFacing().getOpposite()), 2);
-	    
+	    state = state.with(FACING, placer.getHorizontalFacing().getOpposite());
         if(stack != null && stack.hasTag() && stack.getTag().contains("doggytalents")) {
 	    	NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
 	    	
-	    	String casingId = tag.getString("casingId");
-	    	if(DogBedRegistry.CASINGS.isValidId(casingId)) 
-	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setCasingId(casingId);
 	    	
-	    	String beddingId = tag.getString("beddingId");
-	    	if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
+	    	BedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
+	    	if(DogBedRegistry.CASINGS.isValidId(casingId)) {
+	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setCasingId(casingId);
+	    		state = state.with(CASING, casingId);
+	    	}
+	    	
+	    	BedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
+	    	if(DogBedRegistry.BEDDINGS.isValidId(beddingId)) {
 	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setBeddingId(beddingId);
+	    		state = state.with(BEDDING, beddingId);
+	    	}
 	    }
+        worldIn.setBlockState(pos, state, 2);
 	}
 	
 	//@Override
@@ -155,22 +173,7 @@ public class BlockDogBed extends BlockContainer {
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder) {
 		builder.add(FACING, CASING, BEDDING);
-		//builder.add(new IUnlistedProperty<?>[] {CASING, BEDDINGS});
-		//builder.add(BEDDINGS);
 	}
-	
-	@Override
-    public IBlockState getExtendedState(IBlockState state, IBlockReader world, BlockPos pos) {
-        TileEntity te = world.getTileEntity(pos);
-        DoggyTalentsMod.LOGGER.info("EXETENDED STATE");
-        if(te instanceof TileEntityDogBed && state instanceof IExtendedState) {
-        	//DoggyTalentsMod.LOGGER.info("EXETENDED STATE pass");
-        	//IExtendedState<IBlockState> stateExtended = (IExtendedState<IBlockState>)state;
-        	//TileEntityDogBed dogBed = (TileEntityDogBed) te;
-            //return ((IExtendedState<IBlockState>)stateExtended.withProperty(CASING, dogBed.getCasingId())).withProperty(BEDDING, dogBed.getBeddingId());
-        }
-        return super.getExtendedState(state, world, pos);
-    }
 	
 	//@OnlyIn(Dist.CLIENT)
     //public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
@@ -200,29 +203,8 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
-
-		if(tileentity instanceof TileEntityDogBed) {
-			if(!player.isCreative()) {
-				worldIn.playEvent(player, 2001, pos, Block.getStateId(state));
-				
-				state.dropBlockAsItem(worldIn, pos, 0);
-				player.addStat(StatList.BLOCK_MINED.get(this));
-			}
-		}
-		
-		super.onBlockHarvested(worldIn, pos, state, player);
-	}
-	
-	@Override
 	public void getDrops(IBlockState state, NonNullList<ItemStack> drops, World world, BlockPos pos, int fortune) {
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if(tileentity instanceof TileEntityDogBed) {
-			TileEntityDogBed dogBed = (TileEntityDogBed)tileentity;
-			drops.add(DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
-		}
+		drops.add(DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING)));
 	}
 	
 	/**
@@ -237,34 +219,23 @@ public class BlockDogBed extends BlockContainer {
 		return DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
 	}
 	
-	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
-	}
-
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay((World)world, pos)) {
-		    TileEntity tile = world.getTileEntity(pos);
-			if(tile instanceof TileEntityDogBed) {
-					
-				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-				
-		        this.spawnAsEntity((World)world, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
-		        ((World) world).setBlockToAir(pos);
-			}
-		}
-	}
-
-	public boolean canBlockStay(World world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
-	
-	
 	**/
 	
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, EntityPlayer player) {
+		return DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING));
+	}
 	
+	@Override
+	public IBlockState updatePostPlacement(IBlockState stateIn, EnumFacing facing, IBlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		return facing == EnumFacing.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	}
+	
+	@Override
+	public boolean isValidPosition(IBlockState state, IWorldReaderBase worldIn, BlockPos pos) {
+		IBlockState down = worldIn.getBlockState(pos.down());
+		return down.isTopSolid() || down.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+	}
 	
 	@Override
 	public IBlockState rotate(IBlockState state, Rotation rot) {

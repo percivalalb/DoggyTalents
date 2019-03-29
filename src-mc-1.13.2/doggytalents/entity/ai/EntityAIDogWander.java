@@ -3,7 +3,7 @@ package doggytalents.entity.ai;
 import java.util.Random;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;

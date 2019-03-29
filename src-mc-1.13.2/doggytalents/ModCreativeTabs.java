@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.api.registry.BedMaterial;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -13,8 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModCreativeTabs {
 
     public static final ItemGroup GENERAL = new ItemGroup("doggytalents") {
-		private Random random = new Random();
-		
+    	
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon()
@@ -32,16 +32,8 @@ public class ModCreativeTabs {
         	return DogBedRegistry.createItemStack(pickRandomString(DogBedRegistry.CASINGS.getKeys()), pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
     	
-    	public String pickRandomString(List<String> strs) {
+    	public BedMaterial pickRandomString(List<BedMaterial> strs) {
     		return strs.get(random.nextInt(strs.size()));
     	}
-    	
-    	@Override
-        @OnlyIn(Dist.CLIENT)
-        public void fill(NonNullList<ItemStack> items) {
-    		for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
-    			for(String casingId : DogBedRegistry.CASINGS.getKeys())
-    				items.add(DogBedRegistry.createItemStack(casingId, beddingId));
-        }
     };
 }

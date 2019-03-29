@@ -4,7 +4,8 @@ import java.util.Optional;
 
 import doggytalents.api.inferface.IDataTracker;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.Constants;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;

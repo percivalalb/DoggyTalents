@@ -13,10 +13,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDataTracker;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.configuration.ConfigHandler;
-import doggytalents.entity.ai.CoordFeature;
 import doggytalents.entity.ai.DogDataTracker;
-import doggytalents.entity.ai.DogFeature;
-import doggytalents.entity.ai.DogGenderFeature;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIDogBeg;
 import doggytalents.entity.ai.EntityAIDogFeed;
@@ -27,10 +24,13 @@ import doggytalents.entity.ai.EntityAIModeAttackTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
 import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
 import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.entity.ai.LevelFeature;
-import doggytalents.entity.ai.ModeFeature;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
-import doggytalents.entity.ai.TalentFeature;
+import doggytalents.entity.features.CoordFeature;
+import doggytalents.entity.features.DogFeature;
+import doggytalents.entity.features.DogGenderFeature;
+import doggytalents.entity.features.LevelFeature;
+import doggytalents.entity.features.ModeFeature;
+import doggytalents.entity.features.TalentFeature;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.helper.DogUtil;
 import doggytalents.helper.TalentHelper;
 import doggytalents.inventory.InventoryTreatBag;
@@ -943,6 +943,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     	float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel("wolfmount");
 		if(this.TALENTS.getLevel("wolfmount") == 5) verticalVelocity += 0.04F;
         return verticalVelocity;
+    }
+    
+    @Override
+    public boolean canDespawn() {
+    	return false;
     }
     
     @Override

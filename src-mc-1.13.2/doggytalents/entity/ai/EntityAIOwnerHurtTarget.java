@@ -1,7 +1,7 @@
 package doggytalents.entity.ai;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITarget;
 

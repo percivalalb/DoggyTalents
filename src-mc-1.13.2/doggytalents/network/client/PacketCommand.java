@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.helper.DogUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;

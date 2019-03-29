@@ -61,7 +61,6 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 		String casing = "minecraft:block/oak_planks";
 		String bedding = "minecraft:block/white_wool";
         EnumFacing facing = EnumFacing.NORTH;
-        DoggyTalentsMod.LOGGER.info("State Given: " + state + " " + state.getClass());
 		
         /**if(state instanceof IExtendedBlockState) {
             IExtendedBlockState extendedState = (IExtendedBlockState)state;
@@ -73,10 +72,11 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
             	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
             
         }**/
-		
-        facing = state.get(BlockDogBed.FACING);
-        casing = state.get(BlockDogBed.CASING).getTexture();
-        bedding = state.get(BlockDogBed.BEDDING).getTexture();
+		if(state != null) {
+	        facing = state.get(BlockDogBed.FACING);
+	        casing = DogBedRegistry.CASINGS.getTexture(state.get(BlockDogBed.CASING));
+	        bedding = DogBedRegistry.BEDDINGS.getTexture(state.get(BlockDogBed.BEDDING));
+		}
 		return this.getCustomModel(casing, bedding, facing);
 	}
     
@@ -91,14 +91,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         if(this.cache.containsKey(cacheKey))
             customModel = this.cache.get(cacheKey);
         else if(this.model != null) {
-        	DoggyTalentsMod.LOGGER.info("TEST " + model);
-        	
-        	
-        	
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-         	DoggyTalentsMod.LOGGER.info("Bedding: " + beddingResource);
-        	DoggyTalentsMod.LOGGER.info("Casing: " + casingResource);
-        	DoggyTalentsMod.LOGGER.info("Particle: " + casingResource);
             builder.put("bedding", beddingResource);
             builder.put("casing", casingResource);
             builder.put("particle", casingResource);
@@ -157,7 +150,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
             
            // customModel = retexturedModel.bake(new TRSRTransformation(TRSRTransformation.getMatrix(facing)), this.format, this.textureGetter::apply);
-            customModel = newModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), new TRSRTransformation(TRSRTransformation.getMatrix(facing)), true, this.format);
+            customModel = newModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), true, this.format);
             this.cache.put(cacheKey, customModel);
         }
 

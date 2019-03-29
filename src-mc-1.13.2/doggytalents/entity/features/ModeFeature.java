@@ -1,4 +1,4 @@
-package doggytalents.entity.ai;
+package doggytalents.entity.features;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;

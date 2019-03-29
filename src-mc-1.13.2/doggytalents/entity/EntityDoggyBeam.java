@@ -3,7 +3,7 @@ package doggytalents.entity;
 import java.util.List;
 
 import doggytalents.ModEntities;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;

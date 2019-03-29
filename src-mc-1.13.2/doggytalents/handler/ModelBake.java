@@ -1,5 +1,6 @@
 package doggytalents.handler;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -45,17 +46,26 @@ public class ModelBake {
 	    	
 	    	ModelBlock model = (ModelBlock)event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
 	    	DoggyTalentsMod.LOGGER.info("" + model);
-	    	Iterator<EnumFacing> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-            while(iterator.hasNext()) {
-            	EnumFacing facing = iterator.next();
-		    	ModelResourceLocation modelVariantLocation = new ModelResourceLocation(BlockNames.DOG_BED, "facing=" + facing.getName());
-		
-		        IBakedModel bakedModel = event.getModelRegistry().get(modelVariantLocation);
 
-		        //Replace 
-		        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
-		        event.getModelRegistry().put(modelVariantLocation, customModel);
-		    }
+		    IBakedModel customModel = new DogBedModel(model, model.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(EnumFacing.NORTH), true, DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
+
+		    	List<ModelResourceLocation> modelsToReplace = new ArrayList<ModelResourceLocation>();
+		    	
+		    	for(Entry<ModelResourceLocation, IBakedModel> entry : event.getModelRegistry().entrySet()) {
+		    		if(entry.getKey().getNamespace().equalsIgnoreCase(Reference.MOD_ID) && entry.getKey().getPath().equalsIgnoreCase("dog_bed")) {
+		    			modelsToReplace.add(entry.getKey());
+
+		    		}
+		    	}
+
+		    	for(ModelResourceLocation location : modelsToReplace) {
+	    			//DoggyTalentsMod.LOGGER.info("" + location);
+	    			IBakedModel bakedModel = event.getModelRegistry().get(location);
+
+	 		        //Replace 
+	 		        event.getModelRegistry().put(location, customModel);
+		    	}
+		    
 	    	
 	    	/**
 	    	IUnbakedModel ubModel = event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));

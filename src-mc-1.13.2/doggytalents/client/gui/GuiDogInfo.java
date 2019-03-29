@@ -8,7 +8,7 @@ import doggytalents.api.inferface.ITalent;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketDogMode;
 import doggytalents.network.client.PacketDogName;

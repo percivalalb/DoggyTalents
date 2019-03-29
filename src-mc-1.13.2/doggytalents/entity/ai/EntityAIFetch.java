@@ -6,7 +6,7 @@ import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.item.ItemThrowBone;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

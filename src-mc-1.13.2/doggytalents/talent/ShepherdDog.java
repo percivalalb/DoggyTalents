@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.ITalent;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ai.ModeFeature.EnumMode;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityAnimal;
 

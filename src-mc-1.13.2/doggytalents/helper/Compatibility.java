@@ -2,25 +2,7 @@ package doggytalents.helper;
 
 import java.util.HashMap;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-
-import doggytalents.DoggyTalentsMod;
-import doggytalents.lib.Reference;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent.MissingMappings;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLModIdMappingEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLModIdMappingEvent.ModRemapping;
-import net.minecraftforge.registries.GameData;
-
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+//@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Compatibility {
 
 	private static HashMap<String, String> OLD_NEW = new HashMap<String, String>();
@@ -29,6 +11,7 @@ public class Compatibility {
 		return OLD_NEW.containsKey(name) ? OLD_NEW.get(name) : name;
 	}
 	
+	/**
     @SubscribeEvent
 	public static void remapBlocks(MissingMappings<Block> event) {
     	ImmutableList<Mapping<Block>> mappings = event.getAllMappings();
@@ -79,7 +62,7 @@ public class Compatibility {
     		
     		DoggyTalentsMod.LOGGER.info("Entity: " + mapping.key.toString());
     	}
-   	}
+   	}**/
 	 
 	static {
 		OLD_NEW.put("minecraft:wool.0", "minecraft_white_wool");

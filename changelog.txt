@@ -8,9 +8,21 @@ Update List Key
 (/) Other
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.13.2
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.14.3.418 | 30th March 2019
+Initial release, parent version 1.14.2.396
++ Radar is now fully functional, will now inform you of the location of your dogs. Just remember to put a radio collar on them! Aesthetics and refinements to come :)
+# To open the pack puppy gui you now shift instead of holding a plank.
+* Fixed dogs still being susceptible to posion even above level 3 posion fang
+- Removed mod support for itemphysic, foresty, biomesoplenty, extratrees, terraqueous, natura, botania since they have not been updated to 1.13 yet
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-1.14.2.396 | 
+
+1.14.2.* | WIP
 * Fixed dogs still being susceptible to posion even above level 3 posion fang
 TODO take finished radar from 1.13 and port back to 1.12
 

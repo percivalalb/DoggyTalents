@@ -27,11 +27,14 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 /**
  * @author ProPercivalalb
  */
+@OnlyIn(Dist.CLIENT)
 public class GuiDogInfo extends GuiScreen {
 
 	public EntityDog dog;

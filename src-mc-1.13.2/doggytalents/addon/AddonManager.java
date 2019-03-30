@@ -14,7 +14,7 @@ public class AddonManager {
 	
 	public static void registerAddons() {
 		//EVENT_BUS.register(new ForestryAddon());
-		EVENT_BUS.register(new ItemPhysicAddon());
+		//EVENT_BUS.register(new ItemPhysicAddon());
 		//EVENT_BUS.register(new BiomesOPlentyAddon());
 		//EVENT_BUS.register(new ExtraTreesAddon());
 		//EVENT_BUS.register(new TerraqueousAddon());

@@ -6,7 +6,10 @@ import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class GuiFoodBowl extends GuiContainer {
 	
     private TileEntityFoodBowl foodBowl;

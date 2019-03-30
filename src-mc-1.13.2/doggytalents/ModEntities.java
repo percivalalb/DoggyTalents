@@ -4,7 +4,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.lib.EntityNames;
 import doggytalents.lib.Reference;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,19 +19,14 @@ public class ModEntities {
 	public static EntityType<EntityDoggyBeam> DOGGY_BEAM;
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registration
-    {
+    public static class Registration {
+		
 		 @SubscribeEvent
 		 public static void registerBlocks(final RegistryEvent.Register<EntityType<?>> event) {
 			 IForgeRegistry<EntityType<?>> entityRegistry = event.getRegistry();
 			 
-			 entityRegistry.register(register(EntityNames.DOG, EntityType.Builder.create(EntityDog.class, EntityDog::new)).setRegistryName(EntityNames.DOG));
-			 entityRegistry.register(register(EntityNames.DOG, EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new)).setRegistryName(EntityNames.DOGGY_BEAM));
+			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
+			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
 		 }
-  
-		 public static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> builder) {
-			 EntityType<T> entitytype = builder.build(id);
-			 return entitytype;
-		}
     }
 }

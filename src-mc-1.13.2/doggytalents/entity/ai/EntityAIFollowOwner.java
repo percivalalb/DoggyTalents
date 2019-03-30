@@ -100,7 +100,7 @@ public class EntityAIFollowOwner extends EntityAIBase
 
             	int order = this.dog.masterOrder();
                	int masterX = MathHelper.floor(this.owner.posX);
-            	int masterY = MathHelper.floor(this.owner.posY);
+            	int masterY = MathHelper.floor(this.owner.getBoundingBox().minY);
             	int masterZ = MathHelper.floor(this.owner.posZ);
             	double distanceAway = this.dog.getDistanceSq(this.owner);
                 

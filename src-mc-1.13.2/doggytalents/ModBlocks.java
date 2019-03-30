@@ -3,8 +3,6 @@ package doggytalents;
 import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
 
-import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.api.registry.BedMaterial;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
@@ -14,13 +12,11 @@ import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
@@ -63,7 +59,7 @@ public class ModBlocks {
 	    @SubscribeEvent
 	    public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event){
 	    	IForgeRegistry<TileEntityType<?>> tileRegistry = event.getRegistry();
-			
+	    	
 	        tileRegistry.register(register(BlockNames.DOG_BED, TileEntityType.Builder.create(TileEntityDogBed::new)).setRegistryName(BlockNames.DOG_BED));
 	        tileRegistry.register(register(BlockNames.FOOD_BOWL, TileEntityType.Builder.create(TileEntityFoodBowl::new)).setRegistryName(BlockNames.FOOD_BOWL));
 	    }
@@ -73,8 +69,9 @@ public class ModBlocks {
 
 	        try {
 	           type = DataFixesManager.getDataFixer().getSchema(DataFixUtils.makeKey(1631)).getChoiceType(TypeReferences.BLOCK_ENTITY, id);
-	        } catch (IllegalArgumentException illegalstateexception) {
-	           if (SharedConstants.developmentMode) {
+	        } 
+	        catch(IllegalArgumentException illegalstateexception) {
+	           if(SharedConstants.developmentMode) {
 	              throw illegalstateexception;
 	           }
 

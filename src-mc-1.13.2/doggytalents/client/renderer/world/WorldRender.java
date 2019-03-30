@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
  * @author ProPercivalalb
  */
 @OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class WorldRender {
 
 	@SubscribeEvent

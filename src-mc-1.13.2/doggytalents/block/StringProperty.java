@@ -1,17 +1,13 @@
 package doggytalents.block;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 
 import com.google.common.collect.ImmutableSet;
 
-import doggytalents.DoggyTalentsMod;
-import doggytalents.ModBlocks;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.state.AbstractProperty;
-import net.minecraft.util.ResourceLocation;
 
 public class StringProperty extends AbstractProperty<BedMaterial> {
 

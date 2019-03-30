@@ -1,6 +1,5 @@
 package doggytalents.handler;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.lib.Reference;
 import doggytalents.talent.HunterDog;
 import net.minecraft.util.EnumHand;

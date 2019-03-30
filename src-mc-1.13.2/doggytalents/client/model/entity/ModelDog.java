@@ -145,7 +145,7 @@ public class ModelDog extends ModelBase {
         if(this.isChild) {
              GlStateManager.pushMatrix();
              GlStateManager.translatef(0.0F, 5.0F * scale, 2.0F * scale);
-            (dog.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
+             (dog.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
              GlStateManager.popMatrix();
              GlStateManager.pushMatrix();
              GlStateManager.scalef(0.5F, 0.5F, 0.5F);

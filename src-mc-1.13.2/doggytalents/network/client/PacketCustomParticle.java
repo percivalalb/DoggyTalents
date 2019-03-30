@@ -3,12 +3,9 @@ package doggytalents.network.client;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyTalentsMod;
-import doggytalents.entity.EntityDog;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketCustomParticle {

@@ -2,14 +2,11 @@ package doggytalents.proxy;
 
 import java.util.Random;
 
-import org.apache.logging.log4j.Marker;
-
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.TalentRegistry;
 import doggytalents.network.PacketHandler;
 import doggytalents.talent.BedFinder;
@@ -34,10 +31,8 @@ import doggytalents.talent.SwimmerDog;
 import doggytalents.talent.WolfMount;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;

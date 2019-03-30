@@ -1,7 +1,6 @@
 package doggytalents.talent;
 
 import java.util.Collection;
-import java.util.List;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.ITalent;

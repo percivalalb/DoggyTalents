@@ -3,7 +3,6 @@ package doggytalents.handler;
 import doggytalents.client.renderer.RenderUtil;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;

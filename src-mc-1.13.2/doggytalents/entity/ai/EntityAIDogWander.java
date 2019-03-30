@@ -2,58 +2,44 @@ package doggytalents.entity.ai;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIDogWander extends EntityAIBase {
+public class EntityAIDogWander extends EntityAIWander {
 	
-    protected final EntityDog dog;
-    protected double x;
-    protected double y;
-    protected double z;
-    protected final double speed;
-    protected boolean mustUpdate;
+	protected EntityDog dog;
+	protected final float probability;
 
-    public EntityAIDogWander(EntityDog dog, double speedIn) {
-        this.dog = dog;
-        this.speed = speedIn;
-        this.setMutexBits(1);
-    }
+	public EntityAIDogWander(EntityDog dogIn, double p_i47301_2_) {
+		this(dogIn, p_i47301_2_, 0.001F);
+	}
 
-    @Override
-    public boolean shouldExecute() {
-        if(!this.mustUpdate) {
-            if(this.dog.getIdleTime() >= 100)
-                return false;
+	public EntityAIDogWander(EntityDog dogIn, double p_i47302_2_, float p_i47302_4_) {
+		super(dogIn, p_i47302_2_);
+		this.dog = dogIn;
+		this.probability = p_i47302_4_;
+	}
 
-            if(this.dog.getRNG().nextInt(this.dog.MODE.isMode(EnumMode.WANDERING) ? 40 : 120) != 0)
-                return false;
-        }
-
-        
-        Vec3d vec3d = this.dog.MODE.isMode(EnumMode.WANDERING) ? generateRandomPos(this.dog) : this.getPosition(10);
-
-        if (vec3d == null)
-            return false;
-        else {
-            this.x = vec3d.x;
-            this.y = vec3d.y;
-            this.z = vec3d.z;
-            this.mustUpdate = false;
-            return true;
-        }
-    }
-
-    protected Vec3d getPosition(int xz) {
-        return RandomPositionGenerator.findRandomTarget(this.dog, xz, 7);
-    }
-    
-    private static Vec3d generateRandomPos(EntityDog dog) {
+	@Override
+	@Nullable
+	protected Vec3d getPosition() {
+		if(this.entity.isInWaterOrBubbleColumn()) {
+			Vec3d vec3d = RandomPositionGenerator.getLandPos(this.entity, 15, 7);
+			return vec3d == null ? super.getPosition() : vec3d;
+		} 
+		else {
+			return this.entity.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.entity, 10, 7) : super.getPosition();
+		}
+	}
+	
+	private static Vec3d generateRandomPos(EntityDog dog) {
+		
         PathNavigate pathnavigate = dog.getNavigator();
     	Random random = dog.getRNG();
     	int bowlPosX = dog.COORDS.getBowlX();
@@ -86,19 +72,5 @@ public class EntityAIDogWander extends EntityAIBase {
         }
     	
     	return new Vec3d(bowlPosX + x, bowlPosY + y, bowlPosZ + z);
-    }
-    
-    @Override
-    public boolean shouldContinueExecuting() {
-        return !this.dog.getNavigator().noPath();
-    }
-
-    @Override
-    public void startExecuting() {
-        this.dog.getNavigator().tryMoveToXYZ(this.x, this.y, this.z, this.speed);
-    }
-
-    public void makeUpdate() {
-        this.mustUpdate = true;
     }
 }

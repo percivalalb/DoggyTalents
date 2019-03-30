@@ -1,10 +1,8 @@
 package doggytalents.inventory.recipe;
 
-import com.google.common.base.Strings;
-
 import doggytalents.ModRecipes;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

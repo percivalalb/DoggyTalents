@@ -1,9 +1,6 @@
 package doggytalents.handler;
 
-import java.awt.event.KeyEvent;
 import java.util.HashMap;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
@@ -11,14 +8,13 @@ import doggytalents.entity.EntityDog;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketCommand;
-import doggytalents.network.client.PacketDogName;
 import doggytalents.network.client.PacketJump;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -28,7 +24,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 /**
  * @author ProPercivalalb
  **/
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class KeyState {
 	
     public static final KeyBinding come = new KeyBinding("doggytalents.key.come", InputMappings.getInputByName("key.keyboard.up").getKeyCode(), "key.categories.doggytalents");
@@ -65,19 +61,7 @@ public class KeyState {
 	            	if(kb == mc.gameSettings.keyBindJump) {
 	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
 	            			EntityDog dog = (EntityDog)player.getRidingEntity();
-	            			/**
-	            			if(dog.onGround) {
-
-	                			double verticalVelocity = 0.27D + 0.1D * dog.TALENTS.getLevel("wolfmount");
-	                			if(dog.TALENTS.getLevel("wolfmount") == 5) verticalVelocity += 0.1D;
-	                			
-	                			dog.addVelocity(0D, verticalVelocity, 0D);
-	                			if(dog.isPotionActive(MobEffects.JUMP_BOOST))
-	                				dog.motionY += (double)((float)(dog.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
-	                		}
-	                		else if(dog.isInWater() && dog.TALENTS.getLevel("swimmerdog") > 0) {
-	                			dog.motionY = 0.2F;
-	                		}**/
+	            			
 	            			PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
 	            			dog.tryToJump();
 	            		}

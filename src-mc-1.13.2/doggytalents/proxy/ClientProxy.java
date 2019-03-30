@@ -9,27 +9,29 @@ import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.particle.ParticleCustomLanding;
+import doggytalents.configuration.GuiConfig;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
+import doggytalents.handler.GuiHandler;
 import doggytalents.handler.KeyState;
-import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Particles;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,6 +39,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 	
     public ClientProxy() {
@@ -48,10 +51,10 @@ public class ClientProxy extends CommonProxy {
     private void clientSetup(FMLClientSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("ClientProxy clientSetup");
         
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::openGui);
+        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
-        
-        DoggyTalentsMod.LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
     }
    
     @Override

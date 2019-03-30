@@ -29,8 +29,8 @@ import doggytalents.entity.features.DogFeature;
 import doggytalents.entity.features.DogGenderFeature;
 import doggytalents.entity.features.LevelFeature;
 import doggytalents.entity.features.ModeFeature;
-import doggytalents.entity.features.TalentFeature;
 import doggytalents.entity.features.ModeFeature.EnumMode;
+import doggytalents.entity.features.TalentFeature;
 import doggytalents.helper.DogUtil;
 import doggytalents.helper.TalentHelper;
 import doggytalents.inventory.InventoryTreatBag;
@@ -257,7 +257,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	@Override
     public void livingTick() {
         super.livingTick();
-
+        
         if (ConfigHandler.CONFIG.hungerOn()) {
             this.prevHungerTick = this.hungerTick;
 

@@ -5,6 +5,7 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class EntityAIDogBeg extends EntityAIBase {
@@ -57,15 +58,16 @@ public class EntityAIDogBeg extends EntityAIBase {
     }
 
     private boolean hasTemptationItemInHand(EntityPlayer player) {
-        for(ItemStack heldStacks : player.getHeldEquipment()) {
-
-            if(this.dog.isTamed() && !heldStacks.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(heldStacks))
+    	for(EnumHand enumhand : EnumHand.values()) {
+    		ItemStack itemstack = player.getHeldItem(enumhand);
+    	         
+            if(this.dog.isTamed() && !itemstack.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
             	return true;
 
-            if(this.dog.isBreedingItem(heldStacks))
+            if(this.dog.isBreedingItem(itemstack))
                 return true;
             
-            if(this.dog.foodValue(heldStacks) > 0)
+            if(this.dog.foodValue(itemstack) > 0)
                 return true;
         }
 

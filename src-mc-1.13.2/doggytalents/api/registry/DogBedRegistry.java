@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
+import doggytalents.helper.Compatibility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -89,6 +90,9 @@ public class DogBedRegistry {
 	public BedMaterial getFromString(String key) {
 		if(key.equals("missing"))
 			return BedMaterial.NULL;
+		
+		// Keep things when updating from 1.12
+		key = Compatibility.getMapOldNamingScheme(key);
 		
 		for(BedMaterial thing : this.keys) {
 			if(thing.key.equals(key)) {

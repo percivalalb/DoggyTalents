@@ -2,6 +2,7 @@ package doggytalents.entity.features;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * @author ProPercivalalb
@@ -22,6 +23,7 @@ public class CoordFeature extends DogFeature {
 	
 	public void setBedPos(int x, int y, int z) {
 		this.dog.dataTracker.setBedPos(x, y, z);
+		this.dog.setHomePosAndDistance(new BlockPos(x, y, z), 3);
 	}
 	
 	public void setBowlPos(int x, int y, int z) {

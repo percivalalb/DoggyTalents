@@ -28,6 +28,7 @@ import doggytalents.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -73,6 +74,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -289,7 +291,8 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-
+        EntityEntry s = net.minecraftforge.fml.common.registry.EntityRegistry.getEntry(this.getClass());
+        DoggyTalents.LOGGER.info("NAME:: " + s.getRegistryName().toString());
         if (Constants.IS_HUNGER_ON) {
             this.prevHungerTick = this.hungerTick;
 

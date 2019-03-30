@@ -2,7 +2,6 @@ package doggytalents.entity.ai;
 
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;

@@ -3,11 +3,10 @@ package doggytalents;
 import java.util.List;
 import java.util.Random;
 
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

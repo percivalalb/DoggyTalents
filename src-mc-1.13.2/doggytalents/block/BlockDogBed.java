@@ -4,17 +4,14 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBeddings;
-import doggytalents.ModBlocks;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.lib.BlockNames;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketCustomParticle;
-import doggytalents.network.client.PacketDogName;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -22,7 +19,6 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -38,22 +34,17 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BedPart;
-import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -62,12 +53,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReaderBase;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.BlockStateContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 /**
@@ -80,8 +67,6 @@ public class BlockDogBed extends BlockContainer {
 	public static final DirectionProperty FACING = BlockHorizontal.HORIZONTAL_FACING;
 	public static final StringProperty CASING = StringProperty.create("casing", DogBedRegistry.CASINGS);
 	public static final StringProperty BEDDING = StringProperty.create("bedding", DogBedRegistry.BEDDINGS);
-	//public static final EnumProperty<DogBedRegistry2.Casing> CASING = EnumProperty.create("casing", DogBedRegistry2.Casing.class);
-	//public static final EnumProperty<DogBedRegistry2.Bedding> BEDDING = EnumProperty.create("bedding", DogBedRegistry2.Bedding.class);
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
@@ -159,17 +144,7 @@ public class BlockDogBed extends BlockContainer {
 	    }
         worldIn.setBlockState(pos, state, 2);
 	}
-	
-	//@Override
-	//@OnlyIn(Dist.CLIENT)
-	//public IBlockState getStateForEntityRender(IBlockState state) {
-	//    return this.getDefaultState().with(FACING, EnumFacing.SOUTH);
-	//}
-	
-	//@Override
-	//protected BlockStateContainer createBlockState() {
-	//	return new ExtendedBlockState(this, new IProperty[] {FACING}, new IUnlistedProperty[] {CASING, BEDDING});
-	//}
+
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, IBlockState> builder) {
 		builder.add(FACING, CASING, BEDDING);

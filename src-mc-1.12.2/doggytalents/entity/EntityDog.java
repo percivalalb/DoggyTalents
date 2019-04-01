@@ -277,8 +277,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.coords.readFromNBT(tagCompound);
         TalentHelper.readFromNBT(this, tagCompound);
 
-        this.locationManager.updateEntityId(this);
-
         //Backwards Compatibility
         if (tagCompound.hasKey("dogName"))
             this.setCustomNameTag(tagCompound.getString("dogName"));
@@ -291,8 +289,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        EntityEntry s = net.minecraftforge.fml.common.registry.EntityRegistry.getEntry(this.getClass());
-        DoggyTalents.LOGGER.info("NAME:: " + s.getRegistryName().toString());
+        
         if (Constants.IS_HUNGER_ON) {
             this.prevHungerTick = this.hungerTick;
 

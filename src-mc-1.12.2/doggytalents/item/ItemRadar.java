@@ -39,31 +39,19 @@ public class ItemRadar extends ItemDT {
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull"));
 			}
 
+			boolean noRadioCollar = false;
+			
 			for(DogLocation loc : locationManager.locations){ //For every entry, find the dog's location and tell the player where it is
 				EntityDog dog = loc.getDog();
 				DogGenderUtil genderUtil = new DogGenderUtil(dog);
 
-				if (dog == null) {
-					playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull"));
+
+				if(dog != null && (!loc.hasRadarCollar && !dog.hasRadarCollar())) {
+					noRadioCollar = true;
 					continue;
 				}
 
-				if(dog != null && (!loc.hasRadarCollar || !dog.hasRadarCollar())){
-					playerIn.sendMessage(new TextComponentTranslation("dogradar.errornoradio", loc.name, genderUtil.getGenderSubject()));
-					continue;
-				}
-
-				if(dog != null && !dog.isOwner(playerIn) && !dog.willObeyOthers()){
-					playerIn.sendMessage(new TextComponentTranslation("dogradar.errorown", loc.name, genderUtil.getGenderPronoun()));
-					continue;
-				}
-
-				if(loc.dim != playerDimID){
-					playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", loc.name, playerDimName.toUpperCase(), genderUtil.getGenderSubject(), DimensionType.getById(loc.dim).getName().toUpperCase()));
-					continue;
-				}
-
-				if(loc.dim == playerDimID && dog.canInteract(playerIn)){
+				if(dog == null || (loc.dim == playerDimID && dog.canInteract(playerIn))){
 					String translateStr;
 
 					// Angle between -pi and pi
@@ -95,6 +83,10 @@ public class ItemRadar extends ItemDT {
 
 					playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.name, (int) Math.ceil(MathHelper.sqrt(f * f + f1 * f1 + f2 * f2))));
 				}
+			}
+			
+			if(noRadioCollar) {
+				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornoradio"));
 			}
 
 			if(Constants.DEBUG_MODE == true) playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size())); //Display the total number of entries, debugging purposes only

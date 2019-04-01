@@ -30,7 +30,6 @@ public class DogLocationManager extends WorldSavedData {
 	 */
 	public static DogLocationManager getHandler(World world) {
 		MapStorage storage = world.getMapStorage();
-		//World overworld = DimensionManager.getWorld(0);
 		DogLocationManager locationManager = (DogLocationManager)storage.getOrLoadData(DogLocationManager.class, "dog_locations");
 		
     	if (locationManager == null) {
@@ -57,26 +56,6 @@ public class DogLocationManager extends WorldSavedData {
 		if(Constants.DEBUG_MODE == true) System.out.println("ADDED NEW DATA: " + temp);
 		this.locations.add(temp);
 		this.markDirty();
-	}
-	
-	/**
-	 * This should be run whenever a dog is loaded back into a world after being unloaded at some point
-	 */
-	public void updateEntityId(EntityAbstractDog dog) {
-		
-		int dogDim = dog.world.provider.getDimension();
-		
-		// Matches this dog with it's saved DogLocation
-		for (int i = 0; i < this.locations.size(); i++) {
-			DogLocation loc = this.locations.get(i);
-            if (loc.entityId == null && dogDim == loc.dim && this.axisCoordEqual(dog.posX, loc.x) && this.axisCoordEqual(dog.posY, loc.y) &&
-            		this.axisCoordEqual(dog.posZ, loc.z)) {
-            	
-            	loc.entityId = dog.getUniqueID();
-                if(Constants.DEBUG_MODE == true) System.out.println("RELOADED DATA: " + dog);
-            	return;
-            }
-		}
 	}
 
 	public void removeDog(EntityDog dog) {
@@ -147,6 +126,7 @@ public class DogLocationManager extends WorldSavedData {
 			this.y = nbt.getDouble("y");
 			this.z = nbt.getDouble("z");
 			this.dim = nbt.getInteger("dim");
+			this.entityId = nbt.getUniqueId("entityId");
 			
 			this.name = nbt.getString("name");
 			this.gender = nbt.getString("gender");
@@ -158,6 +138,7 @@ public class DogLocationManager extends WorldSavedData {
 			nbt.setDouble("y", this.y);
 			nbt.setDouble("z", this.z);
 			nbt.setInteger("dim", this.dim);
+			nbt.setUniqueId("entityId", this.entityId);
 			
 			nbt.setString("name", this.name);
 			nbt.setString("gender", this.gender);
@@ -184,7 +165,7 @@ public class DogLocationManager extends WorldSavedData {
 			
 			DogLocation other = (DogLocation)obj;
 			
-			return this.entityId != null && other.entityId != null && this.entityId == other.entityId;
+			return this.entityId != null && other.entityId != null && this.entityId.equals(other.entityId);
 		}
 		
 		/*@Override

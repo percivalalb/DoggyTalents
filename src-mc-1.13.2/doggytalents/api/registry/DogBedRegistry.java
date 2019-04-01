@@ -122,6 +122,13 @@ public class DogBedRegistry {
 		return null;
 	}
 	
+	public ItemStack getCraftingItemFromBedMaterial(BedMaterial material) {
+		if(craftingItems.containsKey(material)) {
+			return craftingItems.get(material).getIngredient();
+		}
+		return ItemStack.EMPTY;
+	}
+	
 	public static ItemStack createItemStack(BedMaterial casingId, BedMaterial beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1);
 		stack.setTag(new NBTTagCompound());

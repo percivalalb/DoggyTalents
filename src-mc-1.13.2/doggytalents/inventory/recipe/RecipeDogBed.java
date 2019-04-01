@@ -11,11 +11,12 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 
 /**
  * 1.12 Code
  */
-public class RecipeDogBed extends IRecipeHidden {
+public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
 
 	public RecipeDogBed(ResourceLocation resource) {
 		super(resource);
@@ -99,5 +100,15 @@ public class RecipeDogBed extends IRecipeHidden {
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
 		return ModRecipes.DOG_BED;
+	}
+
+	@Override
+	public int getRecipeWidth() {
+		return 3;
+	}
+
+	@Override
+	public int getRecipeHeight() {
+		return 3;
 	}
 }

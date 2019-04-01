@@ -5,16 +5,17 @@ import com.google.common.base.Predicate;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.passive.EntityAnimal;
 
 /**
  * @author ProPercivalalb
  */
-public class EntityAIShepherdDog extends EntityAINearestAttackableTarget {
+public class EntityAIShepherdDog extends EntityAINearestAttackableTarget<EntityAnimal> {
 
 	public EntityDog dog;
 	
-	public EntityAIShepherdDog(EntityDog dog, Class target, int targetChance, boolean shouldCheckSight) {
-		super(dog, target, targetChance, shouldCheckSight, true, (Predicate)null);
+	public EntityAIShepherdDog(EntityDog dog, int targetChance, boolean shouldCheckSight) {
+		super(dog, EntityAnimal.class, targetChance, shouldCheckSight, true, (Predicate<EntityAnimal>)null);
 		this.dog = dog;
 	}
 

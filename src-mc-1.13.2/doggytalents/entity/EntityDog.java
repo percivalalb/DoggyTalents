@@ -181,7 +181,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		}));
 		this.targetTasks.addTask(5, new EntityAITargetNonTamed<>(this, EntityTurtle.class, false, EntityTurtle.TARGET_DRY_BABY));
 		this.targetTasks.addTask(6, new EntityAINearestAttackableTarget<>(this, AbstractSkeleton.class, false));
-		this.targetTasks.addTask(7, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
+		this.targetTasks.addTask(7, new EntityAIShepherdDog(this, 0, false));
 	}
 	
 	@Override

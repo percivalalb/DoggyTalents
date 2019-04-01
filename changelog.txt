@@ -11,6 +11,12 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.3.424 | 1st April 2019
++ Added creative radar, will let you know where your dogs are no matter if they have a radio collar on
++ Moved client only config (mainy render options) to their own config file "doggytalents-client.toml" in config folder.
++ Added JEI Intergration, now all dog beds show up in the JEI item list and all recipes for dog beds show
+# To open the pack puppy gui you now shift while holding nothing.
+
 1.14.3.418 | 30th March 2019
 Initial release, parent version 1.14.2.396
 + Radar is now fully functional, will now inform you of the location of your dogs. Just remember to put a radio collar on them! Aesthetics and refinements to come :)
@@ -23,8 +29,8 @@ MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.2.* | WIP
++ Radar is now fully functional, will now inform you of the location of your dogs. Just remember to put a radio collar on them! Aesthetics and refinements to come :)
 * Fixed dogs still being susceptible to posion even above level 3 posion fang
-TODO take finished radar from 1.13 and port back to 1.12
 
 1.14.2.396 | 15th February 2019
 * Fixed crash with older versions and newer versions of CreativeCore

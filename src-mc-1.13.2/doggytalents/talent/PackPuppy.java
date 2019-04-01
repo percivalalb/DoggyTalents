@@ -45,7 +45,7 @@ public class PackPuppy extends ITalent {
 		
 	    if(dog.isTamed()) {
 	    	if(level > 0) {
-	    		if(!stack.isEmpty()) {
+	    		if(stack.isEmpty()) {
 	    			
 	    			if(player.isSneaking() && !player.world.isRemote && dog.canInteract(player)) {
 	    				IInteractionObject inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");

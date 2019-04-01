@@ -20,6 +20,7 @@ public class ItemNames {
     public static final String SPOTTED_COLLAR = Reference.MOD_ID + ":spotted_collar";
     public static final String MULTICOLOURED_COLLAR = Reference.MOD_ID + ":multicoloured_collar";
     public static final String RADAR = Reference.MOD_ID + ":radar";
+    public static final String CREATIVE_RADAR = Reference.MOD_ID + ":creative_radar";
     public static final String WHISTLE = Reference.MOD_ID + ":whistle";
     public static final String TREAT_BAG = Reference.MOD_ID + ":treat_bag";
     public static final String CHEW_STICK = Reference.MOD_ID + ":chew_stick";

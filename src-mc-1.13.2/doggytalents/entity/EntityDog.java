@@ -52,6 +52,7 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -80,6 +81,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
@@ -256,7 +258,14 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	
 	@Override
     public void livingTick() {
+		// 
+		//EntityMoveHelper old = this.getMoveHelper();
+		//Path oldPath = this.getNavigator().getPath();
+		//double oldSpeed = 1.5D;
         super.livingTick();
+        //this.getNavigator().setSpeed(1.5D);
+        //this.getNavigator().setPath(oldPath, oldSpeed);
+        //this.getMoveHelper().read(old);
         
         if (ConfigHandler.COMMON.hungerOn()) {
             this.prevHungerTick = this.hungerTick;
@@ -712,6 +721,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     public Entity getControllingPassenger() {
         return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
     }
+	
+	
+	@Override
+	public boolean canPassengerSteer() {
+		return super.canPassengerSteer();
+	}
 	
 	@Override
 	public boolean canBeSteered() {

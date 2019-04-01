@@ -8,6 +8,7 @@ import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemFancyCollar;
 import doggytalents.item.ItemRadar;
+import doggytalents.item.ItemRadarCreative;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTinyBone;
 import doggytalents.item.ItemTreat;
@@ -62,6 +63,8 @@ public class ModItems {
     public static Item MULTICOLOURED_COLLAR;
 	@ObjectHolder(ItemNames.RADAR)
     public static Item RADAR;
+	@ObjectHolder(ItemNames.CREATIVE_RADAR)
+    public static Item CREATIVE_RADAR;
 	@ObjectHolder(ItemNames.WHISTLE)
     public static Item WHISTLE;
 	@ObjectHolder(ItemNames.TREAT_BAG)
@@ -105,7 +108,8 @@ public class ModItems {
 	    	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
-	    	event.getRegistry().register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADAR));
+	    	event.getRegistry().register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_RADAR));
+	      	event.getRegistry().register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADAR));
 	    	event.getRegistry().register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WHISTLE));
 	    	event.getRegistry().register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TREAT_BAG));
 	     	event.getRegistry().register(new ItemChewStick(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CHEW_STICK));

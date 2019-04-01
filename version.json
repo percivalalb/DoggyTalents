@@ -15,8 +15,8 @@
 			"1.12.1-recommended": "1.14.2.396",
 		"1.12.2-latest": "1.14.2.321",
 			"1.12.2-recommended": "1.14.2.396",
-		"1.13.2-latest": "1.14.3.418",
-			"1.13.2-recommended": "1.14.3.418"
+		"1.13.2-latest": "1.14.3.424",
+			"1.13.2-recommended": "1.14.3.424"
 
 	},
 	"1.8.9": {
@@ -41,6 +41,6 @@
 		"1.14.2.396": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.13.2": {
-		"1.14.3.418": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.3.424": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	}
 }

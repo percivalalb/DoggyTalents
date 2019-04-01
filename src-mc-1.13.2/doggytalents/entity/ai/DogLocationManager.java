@@ -173,7 +173,7 @@ public class DogLocationManager extends WorldSavedData {
 				return null;
 			}
 			
-			World world = DimensionManager.getWorld(player.getServer(), this.dim, false, false);
+			World world = player.getEntityWorld();
 			Entity entity = ((WorldServer)world).getEntityFromUuid(this.entityId);
 			
 			if(entity instanceof EntityDog) 

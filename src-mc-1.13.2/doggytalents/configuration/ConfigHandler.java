@@ -8,13 +8,20 @@ import net.minecraftforge.fml.config.ModConfig;
 
 public class ConfigHandler {
 
-	public static DTConfig CONFIG;
-    public static ForgeConfigSpec CONFIG_SPEC;
-	
+	public static DTCommonConfig COMMON;
+	public static DTClientConfig CLIENT;
+    public static ForgeConfigSpec CONFIG_COMMON_SPEC;
+    public static ForgeConfigSpec CONFIG_CLIENT_SPEC;
+    
 	public static void init() {
-        Pair<DTConfig, ForgeConfigSpec> commonPair = new ForgeConfigSpec.Builder().configure(DTConfig::new);
-        CONFIG_SPEC = commonPair.getRight();
-        CONFIG = commonPair.getLeft();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_SPEC);
+        Pair<DTCommonConfig, ForgeConfigSpec> commonPair = new ForgeConfigSpec.Builder().configure(DTCommonConfig::new);
+        CONFIG_COMMON_SPEC = commonPair.getRight();
+        COMMON = commonPair.getLeft();
+        Pair<DTClientConfig, ForgeConfigSpec> clientPair = new ForgeConfigSpec.Builder().configure(DTClientConfig::new);
+        CONFIG_CLIENT_SPEC = clientPair.getRight();
+        CLIENT = clientPair.getLeft();
+        
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CONFIG_COMMON_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CONFIG_CLIENT_SPEC);
 	}
 }

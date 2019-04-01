@@ -5,23 +5,20 @@ import java.util.Map;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-public class DTConfig {
+public class DTCommonConfig {
 
 	public ForgeConfigSpec.BooleanValue DEBUG_MODE;
 	
 	public ForgeConfigSpec.BooleanValue DOGS_IMMORTAL;
 	public ForgeConfigSpec.BooleanValue TEN_DAY_PUPS;
 	public ForgeConfigSpec.BooleanValue IS_HUNGER_ON;
-	public ForgeConfigSpec.BooleanValue DIRE_PARTICLES;
 	public ForgeConfigSpec.BooleanValue STARTING_ITEMS;
-	public ForgeConfigSpec.BooleanValue RENDER_BLOOD;
-	public ForgeConfigSpec.BooleanValue DOGGY_WINGS;
 	public ForgeConfigSpec.BooleanValue DOG_GENDER;
 	public ForgeConfigSpec.BooleanValue DOG_WHINE_WHEN_HUNGER_LOW;
 	
 	public Map<String, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
 	
-	public DTConfig(ForgeConfigSpec.Builder builder) {
+	public DTCommonConfig(ForgeConfigSpec.Builder builder) {
 		builder.push("General");
 		  
 		DEBUG_MODE = builder
@@ -40,18 +37,9 @@ public class DTConfig {
 		IS_HUNGER_ON = builder
 				.comment("Enables hunger mode for the dog")
 				.define("isHungerOn", true);
-		DIRE_PARTICLES = builder
-				.comment("Enables the particle effect on Dire Level 30 dogs.")
-				.define("direParticles", true);
 		STARTING_ITEMS = builder
 				.comment("When enabled you will spawn with a guide, Doggy Charm and Command Emblem.")
 				.define("isStartingItemsEnabled", true);
-		RENDER_BLOOD = builder
-				.comment("When enabled, Dogs will bleed while incapacitated.")
-				.define("bloodWhenIncapacitated", true);
-		DOGGY_WINGS = builder
-				.comment("When enabled, Dogs will have wings when at level 5 pillow paw.")
-				.define("doggyWings", true);
 		DOG_GENDER = builder
 				.comment("When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender.")
 				.define("dogGender", true);
@@ -91,20 +79,8 @@ public class DTConfig {
 		return this.IS_HUNGER_ON.get().booleanValue();
 	}
 	
-	public boolean direParticles() {
-		return this.DIRE_PARTICLES.get().booleanValue();
-	}
-	
 	public boolean startingItems() {
 		return this.STARTING_ITEMS.get().booleanValue();
-	}
-	
-	public boolean renderBlood() {
-		return this.RENDER_BLOOD.get().booleanValue();
-	}
-	
-	public boolean doggyWings() {
-		return this.DOGGY_WINGS.get().booleanValue();
 	}
 	
 	public boolean dogGender() {

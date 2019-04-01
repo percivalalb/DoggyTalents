@@ -225,7 +225,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
-		if(ConfigHandler.CONFIG.dogGender()) this.fontRenderer.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
+		if(ConfigHandler.COMMON.dogGender()) this.fontRenderer.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
 		
 		this.fontRenderer.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
 		this.fontRenderer.drawString(I18n.format("doggui.level") + " " + this.dog.LEVELS.getLevel(), topX - 65, topY + 75, 0xFF10F9);

@@ -193,7 +193,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	
 	@Override
     protected SoundEvent getAmbientSound() {
-        if (this.getDogHunger() <= Constants.LOW_HUNGER && ConfigHandler.CONFIG.whineWhenHungerLow()) {
+        if (this.getDogHunger() <= Constants.LOW_HUNGER && ConfigHandler.COMMON.whineWhenHungerLow()) {
             return SoundEvents.ENTITY_WOLF_WHINE;
         }
         if (this.rand.nextInt(3) == 0) {
@@ -258,7 +258,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     public void livingTick() {
         super.livingTick();
         
-        if (ConfigHandler.CONFIG.hungerOn()) {
+        if (ConfigHandler.COMMON.hungerOn()) {
             this.prevHungerTick = this.hungerTick;
 
             if (!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
@@ -272,7 +272,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             }
         }
 
-        if (ConfigHandler.CONFIG.dogsImmortal()) {
+        if (ConfigHandler.COMMON.dogsImmortal()) {
             this.prevRegenerationTick = this.regenerationTick;
 
             if (this.isSitting()) {
@@ -315,7 +315,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             //this.fleeingTick = 0;
         }
 
-        if (this.LEVELS.isDireDog() && ConfigHandler.CONFIG.direParticles())
+        if (this.world.isRemote && this.LEVELS.isDireDog() && ConfigHandler.CLIENT.direParticles())
             for (int i = 0; i < 2; i++)
                 this.world.addParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
 
@@ -341,10 +341,10 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         this.updateBoundingBox();
 
         if(this.isAlive()) { //Prevent the data from being added when the entity dies
-            if(ConfigHandler.CONFIG.debugMode()) System.out.println("Update/Add Request From Living");
+            if(ConfigHandler.COMMON.debugMode()) System.out.println("Update/Add Request From Living");
             this.locationManager.addOrUpdateLocation(this);
         }else{
-            if(ConfigHandler.CONFIG.debugMode()) System.out.println("Remove Request From Living");
+            if(ConfigHandler.COMMON.debugMode()) System.out.println("Remove Request From Living");
             this.locationManager.removeDog(this);
         }
 
@@ -703,7 +703,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             entitydog.setTamed(true);
         }
 
-        entitydog.setGrowingAge(-24000 * (ConfigHandler.CONFIG.tenDayPups() ? 10 : 1));
+        entitydog.setGrowingAge(-24000 * (ConfigHandler.COMMON.tenDayPups() ? 10 : 1));
 
         return entitydog;
     }
@@ -971,7 +971,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
 	
 	public boolean isImmortal() {
-		return this.isTamed() && ConfigHandler.CONFIG.dogsImmortal() || this.LEVELS.isDireDog();
+		return this.isTamed() && ConfigHandler.COMMON.dogsImmortal() || this.LEVELS.isDireDog();
 	}
 	
 	public boolean isIncapacicated() {

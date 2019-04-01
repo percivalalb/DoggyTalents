@@ -11,9 +11,9 @@ public class DogGenderFeature extends DogFeature {
 	}
 	
 	public TextComponentTranslation getGenderSubjectFromString(String gender) {
-		if(ConfigHandler.CONFIG.dogGender() && gender == "male") {
+		if(ConfigHandler.COMMON.dogGender() && gender == "male") {
 			return new TextComponentTranslation("doggui.gender.male.subject");
-		}else if (ConfigHandler.CONFIG.dogGender() && gender == "female"){
+		}else if (ConfigHandler.COMMON.dogGender() && gender == "female"){
 			return new TextComponentTranslation("doggui.gender.female.subject");
 		}else{
 			return new TextComponentTranslation("doggui.gender.neuter.subject");
@@ -21,21 +21,21 @@ public class DogGenderFeature extends DogFeature {
 	}
 	
 	public boolean checkGender(EntityDog matedog) {
-		if(ConfigHandler.CONFIG.dogGender() && dog.getGender() == matedog.getGender())
+		if(ConfigHandler.COMMON.dogGender() && dog.getGender() == matedog.getGender())
 			return false;
-		else if(ConfigHandler.CONFIG.dogGender() && dog.getGender() != matedog.getGender() && (matedog.getGender().isEmpty() || dog.getGender().isEmpty()))
+		else if(ConfigHandler.COMMON.dogGender() && dog.getGender() != matedog.getGender() && (matedog.getGender().isEmpty() || dog.getGender().isEmpty()))
 			return false;
-		else if(ConfigHandler.CONFIG.dogGender() && dog.getGender() != matedog.getGender())
+		else if(ConfigHandler.COMMON.dogGender() && dog.getGender() != matedog.getGender())
 			return true;
 		else
 			return true;
 	}
 	
 	public TextComponentTranslation getGenderPronoun() {
-		if (ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
+		if (ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
 			return new TextComponentTranslation("doggui.gender.male.pronoun");
 		}
-		else if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("female")){
+		else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")){
 			return new TextComponentTranslation("doggui.gender.female.pronoun");
 		}else {
 			return new TextComponentTranslation("doggui.gender.neuter.pronoun");
@@ -43,10 +43,10 @@ public class DogGenderFeature extends DogFeature {
 	}
 
 	public TextComponentTranslation getGenderSubject() {
-		if (ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
+		if (ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
 			return new TextComponentTranslation("doggui.gender.male.subject");
 		}
-		else if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("female")){
+		else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")){
 			return new TextComponentTranslation("doggui.gender.female.subject");
 		}else{
 			return new TextComponentTranslation("doggui.gender.neuter.subject");
@@ -54,10 +54,10 @@ public class DogGenderFeature extends DogFeature {
 	}
 	
 	public TextComponentTranslation getGenderTitle() {
-		if (ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
+		if (ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
 			return new TextComponentTranslation("doggui.gender.male.title");
 		}
-		else if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("female")){
+		else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")){
 			return new TextComponentTranslation("doggui.gender.female.title");
 		}else {
 			return new TextComponentTranslation("doggui.gender.neuter.title");
@@ -65,9 +65,9 @@ public class DogGenderFeature extends DogFeature {
 	}
 	
 	public String getGenderTip() {
-		if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
+		if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
 			return "doggui.gendertip.male";
-		}else if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("female")) {
+		}else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")) {
 			return "doggui.gendertip.female";
 		}else{
 			return "";
@@ -75,9 +75,9 @@ public class DogGenderFeature extends DogFeature {
 	}
 	
 	public String getGenderName() {
-		if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
+		if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
 			return "doggui.gender.male";
-		}else if(ConfigHandler.CONFIG.dogGender() && dog.getGender().equalsIgnoreCase("female")) {
+		}else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")) {
 			return "doggui.gender.female";
 		}else{
 			return "";

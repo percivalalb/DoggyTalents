@@ -24,7 +24,7 @@ public class PlayerConnection {
         
         NBTTagCompound persistTag = tag.getCompound(EntityPlayer.PERSISTED_NBT_TAG);
         
-		if(ConfigHandler.CONFIG.startingItems() && !persistTag.getBoolean("gotDTStartingItems")) {
+		if(ConfigHandler.COMMON.startingItems() && !persistTag.getBoolean("gotDTStartingItems")) {
 			persistTag.putBoolean("gotDTStartingItems", true);
 
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));

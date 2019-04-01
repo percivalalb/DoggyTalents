@@ -19,7 +19,7 @@ public class TalentRegistry {
 	public static Map<String, ITalent> 	ID_TALENT_MAP 	= new LinkedHashMap<>();
 	
 	public static void registerTalent(ITalent talent) {
-		if(ConfigHandler.CONFIG.isTalentDisabled(talent.getKey()))
+		if(ConfigHandler.COMMON.isTalentDisabled(talent.getKey()))
 			DoggyTalentsMod.LOGGER.warn("The talent id {} has been disabled in the config file", talent.getKey());
 		else if(TALENTS.contains(talent))
 			DoggyTalentsMod.LOGGER.warn("The talent id {} has already been registered", talent.getKey());

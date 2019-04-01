@@ -30,7 +30,7 @@ public class ItemRadar extends Item {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 
-		if(!worldIn.isRemote){
+		if(!worldIn.isRemote) {
 			DogLocationManager locationManager = DogLocationManager.getHandler(worldIn);
 
 			DimensionType playerDimID = playerIn.dimension; //Get current player dimension
@@ -100,7 +100,7 @@ public class ItemRadar extends Item {
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornoradio"));
 			}
 			
-			if(ConfigHandler.CONFIG.debugMode()) playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size())); //Display the total number of entries, debugging purposes only
+			if(ConfigHandler.COMMON.debugMode()) playerIn.sendMessage(new TextComponentString("Size: " + locationManager.locations.size())); //Display the total number of entries, debugging purposes only
 
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));

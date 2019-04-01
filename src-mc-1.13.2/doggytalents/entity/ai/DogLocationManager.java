@@ -38,7 +38,7 @@ public class DogLocationManager extends WorldSavedData {
     	if (locationManager == null) {
             locationManager = new DogLocationManager("dog_locations");
 			storage.set(world.dimension.getType(), "dog_locations", locationManager);
-			if(ConfigHandler.CONFIG.debugMode()) System.out.println("DATA DECLARED: "+storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations"));
+			if(ConfigHandler.COMMON.debugMode()) System.out.println("DATA DECLARED: "+storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations"));
 		}
     	
     	return locationManager;
@@ -55,7 +55,7 @@ public class DogLocationManager extends WorldSavedData {
 				return;
 			}
 		}
-		if(ConfigHandler.CONFIG.debugMode()) System.out.println("ADDED NEW DATA: " + temp);
+		if(ConfigHandler.COMMON.debugMode()) System.out.println("ADDED NEW DATA: " + temp);
 		this.locations.add(temp);
 		this.markDirty();
 	}
@@ -80,7 +80,7 @@ public class DogLocationManager extends WorldSavedData {
 	}
 
 	public void removeDog(EntityDog dog) {
-		if(ConfigHandler.CONFIG.debugMode()) System.out.println("REMOVED DATA: "+ dog);
+		if(ConfigHandler.COMMON.debugMode()) System.out.println("REMOVED DATA: "+ dog);
 
 		DogLocation temp = new DogLocation(dog);
 		this.locations.remove(temp);

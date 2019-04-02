@@ -59,25 +59,6 @@ public class DogLocationManager extends WorldSavedData {
 		this.locations.add(temp);
 		this.markDirty();
 	}
-	
-	/**
-	 * This should be run whenever a dog is loaded back into a world after being unloaded at some point
-	 */
-	public void updateEntityId(EntityAbstractDog dog) {
-		/**
-		DimensionType dogDim = dog.world.dimension.getType();
-		
-		// Matches this dog with it's saved DogLocation
-		for (int i = 0; i < this.locations.size(); i++) {
-			DogLocation loc = this.locations.get(i);
-            if (loc) {
-            	
-            	loc.entityId = dog.getUniqueID();
-                if(ConfigHandler.CONFIG.debugMode()) System.out.println("RELOADED DATA: " + dog);
-            	return;
-            }
-		}**/
-	}
 
 	public void removeDog(EntityDog dog) {
 		if(ConfigHandler.COMMON.debugMode()) System.out.println("REMOVED DATA: "+ dog);

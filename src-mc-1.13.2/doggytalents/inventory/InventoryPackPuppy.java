@@ -19,7 +19,7 @@ public class InventoryPackPuppy extends InventoryBasic implements IInteractionOb
     private EntityDog dog;
 
     public InventoryPackPuppy(EntityDog dog) {
-    	super(new TextComponentTranslation("container.packpuppy"), 15);
+    	super(new TextComponentTranslation("container.doggytalents.packpuppy"), 15);
         this.dog = dog;
     }
 

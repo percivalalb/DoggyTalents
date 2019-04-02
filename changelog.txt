@@ -11,6 +11,10 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.3.425 | 2nd April 2019
+* Fixed translation key for packpuppy gui being wrong
+- Removed the accidentally included JEI api code
+
 1.14.3.424 | 1st April 2019
 + Added creative radar, will let you know where your dogs are no matter if they have a radio collar on
 + Moved client only config (mainy render options) to their own config file "doggytalents-client.toml" in config folder.

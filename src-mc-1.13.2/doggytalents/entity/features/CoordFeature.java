@@ -23,11 +23,11 @@ public class CoordFeature extends DogFeature {
 	
 	public void setBedPos(int x, int y, int z) {
 		this.dog.dataTracker.setBedPos(x, y, z);
-		this.dog.setHomePosAndDistance(new BlockPos(x, y, z), 3);
 	}
 	
 	public void setBowlPos(int x, int y, int z) {
 		this.dog.dataTracker.setBowlPos(x, y, z);
+		this.dog.setHomePosAndDistance(new BlockPos(x, y, z), 5);
 	}
 	
 	public int getBedX() {
@@ -60,6 +60,7 @@ public class CoordFeature extends DogFeature {
 	
 	public void resetBowlPosition() {
 		this.dog.dataTracker.resetBowlPosition();
+		this.dog.detachHome();
 	}
 	
 	@Override

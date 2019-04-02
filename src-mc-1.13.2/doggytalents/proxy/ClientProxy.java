@@ -69,28 +69,15 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void postInit(InterModProcessEvent event) {
     	super.postInit(event);
-        Minecraft.getInstance().getItemColors().register(new IItemColor() {
 
-			@Override
-			public int getColor(ItemStack stack, int tintIndex) {
-				if(stack.hasTag() && stack.getTag().contains("collar_colour"))
-					return stack.getTag().getInt("collar_colour");
-				return -1;
-			}
-			
-		}, ModItems.WOOL_COLLAR);
-		
-		Minecraft.getInstance().getItemColors().register(new IItemColor() {
-
-			@Override
-			public int getColor(ItemStack stack, int tintIndex) {
-				if(stack.hasTag() && stack.getTag().contains("cape_colour"))
-					return stack.getTag().getInt("cape_colour");
-				return -1;
-			}
-			
-		}, ModItems.CAPE_COLOURED);
-		
+        Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+        	return stack.hasTag() && stack.getTag().contains("collar_colour") ? stack.getTag().getInt("collar_colour") : -1;
+          }, ModItems.WOOL_COLLAR);
+        
+        Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
+        	return stack.hasTag() && stack.getTag().contains("cape_colour") ? stack.getTag().getInt("cape_colour") : -1;
+          }, ModItems.CAPE_COLOURED);
+        
 		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
 	         return 4159204;
 	      }, ModBlocks.DOG_BATH);

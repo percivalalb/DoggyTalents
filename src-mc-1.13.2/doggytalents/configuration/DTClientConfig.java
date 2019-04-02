@@ -1,8 +1,5 @@
 package doggytalents.configuration;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class DTClientConfig {

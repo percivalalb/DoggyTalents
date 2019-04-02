@@ -249,8 +249,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         
         TalentHelper.readFromNBT(this, compound);
         
-        this.locationManager.updateEntityId(this);
-
         //Backwards Compatibility
         if (compound.contains("dogName"))
             this.setCustomName(new TextComponentString(compound.getString("dogName")));
@@ -942,7 +940,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
     @Override
     public boolean canAttackClass(Class<? extends EntityLivingBase> cls) {
-        if (TalentHelper.canAttackClass(this, cls))
+        if(TalentHelper.canAttackClass(this, cls))
             return true;
 
         return super.canAttackClass(cls);
@@ -969,7 +967,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     
     @Override
     protected void onFinishShaking() {
-        if (isServer()) {
+        if(this.isServer()) {
             int lvlFisherDog = this.TALENTS.getLevel("fisherdog");
             int lvlHellHound = this.TALENTS.getLevel("hellhound");
 

@@ -60,7 +60,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.labels.clear();
 		this.textfieldList.clear();
 		
-		//TODO Keyboard.enableRepeatEvents(true);
+	    this.mc.keyboardListener.enableRepeatEvents(true);
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
 		GuiTextField nameTextField = new GuiTextField(0, this.fontRenderer, topX - 100, topY + 50, 200, 20) {
@@ -304,7 +304,7 @@ public class GuiDogInfo extends GuiScreen {
 	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
-	    //Keyboard.enableRepeatEvents(false);
+		this.mc.keyboardListener.enableRepeatEvents(false);
 	}
 	
 	@Override

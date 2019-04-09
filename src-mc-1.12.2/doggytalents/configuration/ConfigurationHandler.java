@@ -55,10 +55,13 @@ public class ConfigurationHandler {
 		//Constants.barkRate = config.get("doggySettings", "barkRate", 10, "Default is 10, higher the number the slower the dogs bark. Lower the number the faster the dogs bark.").getInt(10);
 		Constants.DIRE_PARTICLES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "direParticles", true, "Enables the particle effect on Dire Level 30 dogs.").getBoolean(true);
 		Constants.STARTING_ITEMS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isStartingItemsEnabled", true, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(true);
-		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will bleed while incapacitated.").getBoolean(true);
+		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will show blood texture while incapacitated.").getBoolean(true);
 		Constants.DOGGY_WINGS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyWings", true, "When enabled, Dogs will have wings when at level 5 pillow paw").getBoolean(true);
 		Constants.DOG_GENDER = CONFIG.get(CATEGORY_DOGGYSETTINGS, "dogGender", false, "When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender").setRequiresMcRestart(true).getBoolean(false);
 		Constants.DOG_WHINE_WHEN_HUNGER_LOW = CONFIG.get(CATEGORY_DOGGYSETTINGS, "shouldWhineWhenStarving", true, "Determines if dogs should whine when hunger reaches below 20 DP").getBoolean(true);
+		Constants.USE_DT_TEXTURES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "useDTTextures", true, "If disabled will use the default minecraft wolf skin for all dog textures.").getBoolean(true);
+		Constants.RENDER_PACK_PUPPY_CHEST = CONFIG.get(CATEGORY_DOGGYSETTINGS, "renderPackPuppyChest", true, "When enabled, dogs with points in pack puppy will have chests on their side.").getBoolean(true);
+		Constants.RENDER_SADDLE = CONFIG.get(CATEGORY_DOGGYSETTINGS, "renderWolfMountSaddle", true, "When enabled, dogs with points in wolf mount will have a saddle on.").getBoolean(true);
 		
 		//Add Everything in the current list in whatever way you want
 		orderDSetting.add("isDogImmortal");

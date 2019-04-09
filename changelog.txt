@@ -11,6 +11,15 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.3.*** | *nd April 2019
++ Added config option to disable dog skins and always use default (this is client only so will only affect you, other players can still use the textures)
++ Added config options to disable the rendering of the pack puppy chest and wolf mount saddle
+# The first dt skin is now the default minecraft skin, so if you use a texture pack your dog will fit in better :)
+# Moved saddle and pack puppy chest texture to their own .png file
++ Readded Chinese translation files in new .json format
++ Readded Russian translation files in new .json format and add new translation keys (thanks to Just-random-user off github)
+# Enabled repeat keyboard events in dog info screen, so you holding down a key continuously does an action
+
 1.14.3.425 | 2nd April 2019
 * Fixed translation key for packpuppy gui being wrong
 - Removed the accidentally included JEI api code
@@ -34,6 +43,13 @@ MC 1.12.2
 
 1.14.2.* | WIP
 + Radar is now fully functional, will now inform you of the location of your dogs. Just remember to put a radio collar on them! Aesthetics and refinements to come :)
++ Added creative radar, will let you know where your dogs are no matter if they have a radio collar on
++ Added config option to disable dog skins and always use default (this is client only so will only affect you, other players can still use the textures)
++ Added config options to disable the rendering of the pack puppy chest and wolf mount saddle
+# The first dt skin is now the default minecraft skin, so if you use a texture pack your dog will fit in better :)
+# Moved saddle and pack puppy chest texture to their own .png file
+# To open the pack puppy gui you now shift while holding nothing instead of holding a plank.
+# Updated Russian translation files with new translation (thanks to Just-random-user off github)
 * Fixed dogs still being susceptible to posion even above level 3 posion fang
 
 1.14.2.396 | 15th February 2019

@@ -45,8 +45,8 @@ public class PackPuppy extends ITalent {
 		
 	    if(dog.isTamed()) {
 	    	if(level > 0) {
-	    		if(!stack.isEmpty()) {
-	    			if(stack.getItem() == Item.getItemFromBlock(Blocks.PLANKS) && !player.world.isRemote && dog.canInteract(player)) {
+	    		if(stack.isEmpty()) {
+	    			if(player.isSneaking() && !player.world.isRemote && dog.canInteract(player)) {
 	    				player.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_PACKPUPPY, dog.world, dog.getEntityId(), 0, 0);
 	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
 	    				return true;

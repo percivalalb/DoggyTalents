@@ -139,22 +139,24 @@ public class GuiDogInfo extends GuiScreen {
     		});
     	}
     	
-    	this.addButton(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+") {
-			@Override
-			public void onClick(double mouseX, double mouseY) {
-				doggyTex += 1;
-				doggyTex %= 128;
-				PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
-			}
-		});
-        this.addButton(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-") {
-			@Override
-			public void onClick(double mouseX, double mouseY) {
-				doggyTex += 127;
-				doggyTex %= 128;
-				PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
-			}
-		});
+    	if(ConfigHandler.CLIENT.useDTTextures()) {
+	    	this.addButton(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+") {
+				@Override
+				public void onClick(double mouseX, double mouseY) {
+					doggyTex += 1;
+					doggyTex %= 128;
+					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
+				}
+			});
+	        this.addButton(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-") {
+				@Override
+				public void onClick(double mouseX, double mouseY) {
+					doggyTex += 127;
+					doggyTex %= 128;
+					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
+				}
+			});
+    	}
         if(this.dog.isOwner(this.player))
         	this.addButton(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())) {
     	    	@Override
@@ -232,7 +234,8 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString(I18n.format("doggui.leveldire") + " " + this.dog.LEVELS.getDireLevel(), topX, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		this.fontRenderer.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
+		if(ConfigHandler.CLIENT.useDTTextures()) 
+			this.fontRenderer.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
 		
 	    if(this.dog.isOwner(this.player))
 	    	this.fontRenderer.drawString(I18n.format("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);

@@ -1,14 +1,18 @@
 package doggytalents.client.renderer.entity;
 
+import doggytalents.client.model.entity.ModelChest;
 import doggytalents.client.model.entity.ModelDog;
+import doggytalents.client.model.entity.ModelSaddle;
+import doggytalents.client.model.entity.ModelWings;
 import doggytalents.client.renderer.RenderUtil;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
+import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.client.renderer.entity.layer.LayerSunglasses;
-import doggytalents.client.renderer.entity.layer.LayerWings;
+import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
@@ -34,9 +38,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
-          //this.addLayer(new LayerSaddle(this));
           //this.addLayer(new LayerArmor(this));
-        this.addLayer(new LayerWings(this));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel("pillowpaw") == 5));
+        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel("wolfmount") > 0));
+        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigHandler.CLIENT.doggyChest() && dog.TALENTS.getLevel("packpuppy") > 0));
     }
 
     @Override
@@ -62,10 +67,14 @@ public class RenderDog extends RenderLiving<EntityDog> {
         super.doRender(dog, x, y, z, entityYaw, partialTicks);
     }
 
+    @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(dog.isTamed())
-    	   return ResourceLib.getTameSkin(dog.getTameSkin());
-    	
+    	if(dog.isTamed()) {
+    		if(ConfigHandler.CLIENT.useDTTextures())
+         		return ResourceLib.getTameSkin(dog.getTameSkin());
+         	else
+         		return ResourceLib.MOB_DOG_TAME;
+         }
         return ResourceLib.MOB_DOG_WILD;
     }
     

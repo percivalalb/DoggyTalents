@@ -108,8 +108,11 @@ public class GuiDogInfo extends GuiScreen {
     		this.buttonList.add(new GuiButton(1 + this.currentPage * this.btnPerPages + i, 25, 10 + i * 21, 20, 20, "+"));
     	}
     	
-    	this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
-        this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
+    	if(Constants.USE_DT_TEXTURES) {
+	    	this.buttonList.add(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+"));
+	        this.buttonList.add(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-"));
+    	}
+    	
         if(this.dog.isOwner(this.player))
         	this.buttonList.add(new GuiButton(-5, this.width - 64, topY + 65, 42, 20, String.valueOf(this.dog.willObeyOthers())));
         
@@ -161,8 +164,8 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.level") + " " + this.dog.levels.getLevel(), topX - 65, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.leveldire") + " " + this.dog.levels.getDireLevel(), topX, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.translateToLocal("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
-				
-		this.fontRenderer.drawString(I18n.translateToLocal("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
+		
+		if(Constants.USE_DT_TEXTURES) this.fontRenderer.drawString(I18n.translateToLocal("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
 		
 	    if(this.dog.isOwner(this.player))
 	    	this.fontRenderer.drawString(I18n.translateToLocal("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);

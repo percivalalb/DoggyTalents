@@ -167,7 +167,7 @@
     "dogradar.east": "**** %s is %d blocks east ****",
     "dogradar.west": "**** %s is %d blocks west ****",
     "dogradar.notindim": "**** %s is not in this dimension, %s, %d is in %d ****",
-    "dogradar.errornoradio": "**** Could not find %s! Please make sure %d a has radio collar equipped! ****",
+    "dogradar.errornoradio": "**** Some dogs don't have a radar collar on ****",
     "dogradar.errornull": "**** No dog found! Please ensure you have a Doggy Talents dog! ****",
     "dogradar.errorown": "**** You do not own %s! Please ensure you have permission to interact with %d! ****",
 
@@ -278,7 +278,7 @@
     "dogbed.casing.extratrees:planks.2.0": "Eucalyptus Plank Casing",
     "dogbed.casing.extratrees:planks.2.1": "Box Plank Casing",
     "dogbed.casing.extratrees:planks.2.2": "Syzgium Plank Casing",
-    "dogbed.casing.extratrees:planks.2.3": "Pinkivory Plank Casing",
+    "dogbed.casing.extratrees:planks.2.3": "Pink Ivory Plank Casing",
 
     "dogbed.casing.terraqueous:planks.0": "Apple Plank Casing",
     "dogbed.casing.terraqueous:planks.1": "Cherry Plank Casing",

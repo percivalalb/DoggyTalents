@@ -5,6 +5,7 @@ import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemCommandEmblem;
+import doggytalents.item.ItemCreativeRadar;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
@@ -44,6 +45,7 @@ public class ModItems {
     public static Item WOOL_COLLAR;
     public static Item FANCY_COLLAR;
     public static Item RADAR;
+    public static Item CREATIVE_RADAR;
     public static Item WHISTLE;
     public static Item TREAT_BAG;
     public static Item CHEW_STICK;
@@ -70,6 +72,7 @@ public class ModItems {
 	    WOOL_COLLAR = new ItemWoolCollar().setTranslationKey("doggytalents.woolcollar").setRegistryName(Reference.MOD_ID + ":wool_collar");
 	    FANCY_COLLAR = new ItemFancyCollar().setTranslationKey("doggytalents.fancycollar").setRegistryName(Reference.MOD_ID + ":fancy_collar");
 	    RADAR = new ItemRadar().setTranslationKey("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
+	    CREATIVE_RADAR = new ItemCreativeRadar().setTranslationKey("doggytalents.creative_radar").setRegistryName(Reference.MOD_ID + ":creative");
 	    WHISTLE = new ItemWhistle().setTranslationKey("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
 	    TREAT_BAG = new ItemTreatBag().setTranslationKey("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
 	    CHEW_STICK = new ItemChewStick().setTranslationKey("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
@@ -93,6 +96,7 @@ public class ModItems {
 	    registry.getRegistry().register(WOOL_COLLAR);
 	    registry.getRegistry().register(FANCY_COLLAR);
 	    registry.getRegistry().register(RADAR);
+	    registry.getRegistry().register(CREATIVE_RADAR);
 	    registry.getRegistry().register(WHISTLE);
 	    registry.getRegistry().register(TREAT_BAG);
 	    registry.getRegistry().register(CHEW_STICK);
@@ -121,6 +125,7 @@ public class ModItems {
 		ModelHelper.setModel(COLLAR_SHEARS, 0, "doggytalents:collar_shears");
 		ModelHelper.setModel(DOGGY_CHARM, 0, "doggytalents:doggy_charm");
 		ModelHelper.setModel(RADAR, 0, "doggytalents:radar");
+		ModelHelper.setModel(CREATIVE_RADAR, 0, "doggytalents:creative_radar");
 		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
 		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
 		for(int i = 0; i < ItemFancyCollar.NO_COLLAR; i++)

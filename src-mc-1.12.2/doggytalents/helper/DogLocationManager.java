@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import net.minecraft.entity.Entity;

@@ -9,14 +9,14 @@
 			"1.10.2-recommended": "1.14.2.314",
 		"1.11.2-latest": "1.14.2.314",
 			"1.11.2-recommended": "1.14.2.314",
-		"1.12-latest": "1.14.2.314",
-			"1.12-recommended": "1.14.2.396",
-		"1.12.1-latest": "1.14.2.314",
-			"1.12.1-recommended": "1.14.2.396",
-		"1.12.2-latest": "1.14.2.321",
-			"1.12.2-recommended": "1.14.2.396",
-		"1.13.2-latest": "1.14.3.425",
-			"1.13.2-recommended": "1.14.3.425"
+		"1.12-latest": "1.14.2.438",
+			"1.12-recommended": "1.14.2.438",
+		"1.12.1-latest": "1.14.2.438",
+			"1.12.1-recommended": "1.14.2.438",
+		"1.12.2-latest": "1.14.2.438",
+			"1.12.2-recommended": "1.14.2.438",
+		"1.13.2-latest": "1.14.3.438",
+			"1.13.2-recommended": "1.14.3.438"
 
 	},
 	"1.8.9": {
@@ -32,15 +32,15 @@
 		"1.14.2.314": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.12": {
-		"1.14.2.396": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.438": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.12.1": {
-		"1.14.2.396": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.438": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.12.2": {
-		"1.14.2.396": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.2.438": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	},
 	"1.13.2": {
-		"1.14.3.425": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
+		"1.14.3.438": "See https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/changelog.txt"
 	}
 }

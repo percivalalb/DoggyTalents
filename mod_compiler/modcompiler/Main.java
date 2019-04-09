@@ -44,7 +44,7 @@ import javax.swing.UIManager;
 
 public class Main {
 	
-	public static final String USER_DOCS = "C:\\Users\\u1705332\\Documents";
+	public static final String USER_DOCS = "C:\\Users\\Alex\\Documents";
 	
 	public static final String FINAL_DES = USER_DOCS + "\\Minecraft\\CompiledMods";
 	public static Mod MOD = Mod.DOGGY_TALENTS;
@@ -90,7 +90,7 @@ public class Main {
 		_1_11_2("1.11.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.11.2"),
 		_1_12("1.12", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12"),
 		_1_12_1("1.12.1", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.1"),
-		_1_12_2("1.12.2", USER_DOCS + "\\Minecraft\\Forge MDK\\forge-1.12.2");
+		_1_12_2("1.12.2", USER_DOCS + "\\Minecraft\\ForgeMDK\\forge-1.12.2-14.23.5.2768");
 		
 		private String pathBase;
 		private String version;

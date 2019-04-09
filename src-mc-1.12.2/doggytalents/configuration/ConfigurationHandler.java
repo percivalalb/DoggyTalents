@@ -60,8 +60,8 @@ public class ConfigurationHandler {
 		Constants.DOG_GENDER = CONFIG.get(CATEGORY_DOGGYSETTINGS, "dogGender", false, "When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender").setRequiresMcRestart(true).getBoolean(false);
 		Constants.DOG_WHINE_WHEN_HUNGER_LOW = CONFIG.get(CATEGORY_DOGGYSETTINGS, "shouldWhineWhenStarving", true, "Determines if dogs should whine when hunger reaches below 20 DP").getBoolean(true);
 		Constants.USE_DT_TEXTURES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "useDTTextures", true, "If disabled will use the default minecraft wolf skin for all dog textures.").getBoolean(true);
-		Constants.RENDER_PACK_PUPPY_CHEST = CONFIG.get(CATEGORY_DOGGYSETTINGS, "renderPackPuppyChest", true, "When enabled, dogs with points in pack puppy will have chests on their side.").getBoolean(true);
-		Constants.RENDER_SADDLE = CONFIG.get(CATEGORY_DOGGYSETTINGS, "renderWolfMountSaddle", true, "When enabled, dogs with points in wolf mount will have a saddle on.").getBoolean(true);
+		Constants.RENDER_PACK_PUPPY_CHEST = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyChest", true, "When enabled, dogs with points in pack puppy will have chests on their side.").getBoolean(true);
+		Constants.RENDER_SADDLE = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggySaddle", true, "When enabled, dogs with points in wolf mount will have a saddle on.").getBoolean(true);
 		
 		//Add Everything in the current list in whatever way you want
 		orderDSetting.add("isDogImmortal");

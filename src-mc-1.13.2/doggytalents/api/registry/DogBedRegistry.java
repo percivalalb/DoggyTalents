@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author ProPercivalalb
@@ -38,13 +39,13 @@ public class DogBedRegistry {
 	}
 	
 	public BedMaterial registerMaterial(String blockId, String textureLocation) {
-		if(!IRegistry.BLOCK.containsKey(new ResourceLocation(blockId))) {
+		if(!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockId))) {
 			DoggyTalentsMod.LOGGER.warn("The block id {} does not exist for a material", blockId);
 			return null;
 		}
 		else {
 			ResourceLocation resource = new ResourceLocation(blockId);
-			Block block = IRegistry.BLOCK.get(resource);
+			Block block = ForgeRegistries.BLOCKS.getValue(resource);
 			String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
 			ItemStack stack = new ItemStack(block, 1);
 			BedMaterial thing = new BedMaterial(blockId);
@@ -59,7 +60,7 @@ public class DogBedRegistry {
 			return null;
 		}
 		
-		ResourceLocation resource = IRegistry.BLOCK.getKey(block);
+		ResourceLocation resource = ForgeRegistries.BLOCKS.getKey(block);
 		String blockId = resource.getNamespace() + "_" + resource.getPath();
 		String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
 		ItemStack stack = new ItemStack(block, 1);

@@ -3,6 +3,7 @@ package doggytalents.api.registry;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public class BedMaterial extends ForgeRegistryEntry<BedMaterial> implements Comparable<BedMaterial> {
@@ -15,7 +16,7 @@ public class BedMaterial extends ForgeRegistryEntry<BedMaterial> implements Comp
 	}
 	
 	public BedMaterial(Block block) {
-		ResourceLocation location = IRegistry.BLOCK.getKey(block);
+		ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
 		this.key = location.toString();
 		this.setRegistryName(location);
 	}

@@ -10,7 +10,7 @@ public class DTClientConfig {
 	public ForgeConfigSpec.BooleanValue DOGGY_CHEST;
 	public ForgeConfigSpec.BooleanValue DOGGY_SADDLE;
 	public ForgeConfigSpec.BooleanValue USE_DT_TEXTURES;
-	
+	public ForgeConfigSpec.BooleanValue	DOGGY_ARMOUR;
 	
 	public DTClientConfig(ForgeConfigSpec.Builder builder) {
 		builder.push("General");
@@ -36,6 +36,10 @@ public class DTClientConfig {
 		USE_DT_TEXTURES = builder
 				.comment("If disabled will use the default minecraft wolf skin for all dog textures.")
 				.define("useDTTextures", true);
+		DOGGY_ARMOUR = builder
+				.comment("When enabled, dogs with points in guard dog will have armour.")
+				.define("doggyArmour", false);
+		
 		builder.pop();
 	}
 	
@@ -61,5 +65,9 @@ public class DTClientConfig {
 	
 	public boolean useDTTextures() {
 		return this.USE_DT_TEXTURES.get().booleanValue();
+	}
+
+	public boolean doggyArmour() {
+		return this.DOGGY_ARMOUR.get().booleanValue();
 	}
 }

@@ -11,6 +11,11 @@ import net.minecraft.world.World;
 
 public class ItemTreatBag extends ItemDT {
 
+	public ItemTreatBag() {
+		super();
+		this.setMaxStackSize(1);
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);

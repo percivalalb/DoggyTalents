@@ -27,6 +27,11 @@ import doggytalents.helper.DogUtil;
  */
 public class ItemWhistle extends ItemDT {
 
+	public ItemWhistle() {
+		super();
+		this.setMaxStackSize(1);
+	}
+
 	//Still needs work here, have to figure out a way to save the dog data in case they do despawn/get too far away
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {

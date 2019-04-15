@@ -12,7 +12,7 @@ MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1.14.3. | 
-* Set max stacksize of treat bag to 1 (was lost in the 1.12 -> 1.13 update) to fix item duplication bug
+* Set max stacksize of treat bag to 1 to fix item duplication bug
 
 1.14.3.438 | 9th April 2019
 + Added config option to disable dog skins and always use default (this is client only so will only affect you, other players can still use the textures)
@@ -43,6 +43,9 @@ Initial release, parent version 1.14.2.396
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.14.2. | 
+* Set max stacksize of treat bag to 1 to fix item duplication bug
 
 1.14.2.438 | 9th April 2019
 + Radar is now fully functional, will now inform you of the location of your dogs. Just remember to put a radio collar on them! Aesthetics and refinements to come :)

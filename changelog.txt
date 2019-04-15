@@ -11,6 +11,9 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.14.3. | 
+* Set max stacksize of treat bag to 1 (was lost in the 1.12 -> 1.13 update) to fix item duplication bug
+
 1.14.3.438 | 9th April 2019
 + Added config option to disable dog skins and always use default (this is client only so will only affect you, other players can still use the textures)
 + Added config options to disable the rendering of the pack puppy chest and wolf mount saddle

@@ -109,9 +109,9 @@ public class ModItems {
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
 	    	event.getRegistry().register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_RADAR));
-	      	event.getRegistry().register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADAR));
-	    	event.getRegistry().register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WHISTLE));
-	    	event.getRegistry().register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TREAT_BAG));
+	      	event.getRegistry().register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.RADAR));
+	    	event.getRegistry().register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.WHISTLE));
+	    	event.getRegistry().register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.TREAT_BAG));
 	     	event.getRegistry().register(new ItemChewStick(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CHEW_STICK));
 	     	event.getRegistry().register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE));
 	     	event.getRegistry().register(new ItemCapeColoured(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE_COLOURED));

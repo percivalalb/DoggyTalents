@@ -1,6 +1,5 @@
 package doggytalents.addon;
 
-import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import net.minecraftforge.eventbus.EventBus;
 import net.minecraftforge.eventbus.api.BusBuilder;
 import net.minecraftforge.fml.ModList;

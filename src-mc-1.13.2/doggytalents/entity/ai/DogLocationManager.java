@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import doggytalents.configuration.ConfigHandler;
-import doggytalents.entity.EntityAbstractDog;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -17,7 +16,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraft.world.storage.WorldSavedDataStorage;
-import net.minecraftforge.common.DimensionManager;
 
 public class DogLocationManager extends WorldSavedData {
 	

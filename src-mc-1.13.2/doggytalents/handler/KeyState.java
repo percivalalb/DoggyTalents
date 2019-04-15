@@ -2,6 +2,8 @@ package doggytalents.handler;
 
 import java.util.HashMap;
 
+import org.lwjgl.glfw.GLFW;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
@@ -11,7 +13,6 @@ import doggytalents.network.client.PacketCommand;
 import doggytalents.network.client.PacketJump;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.client.util.InputMappings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,14 +28,14 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class KeyState {
 	
-    public static final KeyBinding come = new KeyBinding("doggytalents.key.come", InputMappings.getInputByName("key.keyboard.up").getKeyCode(), "key.categories.doggytalents");
-    public static final KeyBinding stay = new KeyBinding("doggytalents.key.stay", InputMappings.getInputByName("key.keyboard.down").getKeyCode(), "key.categories.doggytalents");
-    public static final KeyBinding ok = new KeyBinding("doggytalents.key.ok", InputMappings.getInputByName("key.keyboard.left").getKeyCode(), "key.categories.doggytalents");
-    public static final KeyBinding heel = new KeyBinding("doggytalents.key.heel", InputMappings.getInputByName("key.keyboard.right").getKeyCode(), "key.categories.doggytalents");
-    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel, Minecraft.getInstance().gameSettings.keyBindJump};
+    private static Minecraft mc = Minecraft.getInstance();
+    public static final KeyBinding come = new KeyBinding("doggytalents.key.come", GLFW.GLFW_KEY_UP, "key.categories.doggytalents");
+    public static final KeyBinding stay = new KeyBinding("doggytalents.key.stay", GLFW.GLFW_KEY_DOWN, "key.categories.doggytalents");
+    public static final KeyBinding ok = new KeyBinding("doggytalents.key.ok", GLFW.GLFW_KEY_LEFT, "key.categories.doggytalents");
+    public static final KeyBinding heel = new KeyBinding("doggytalents.key.heel", GLFW.GLFW_KEY_RIGHT, "key.categories.doggytalents");
+    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel, mc.gameSettings.keyBindJump};
     
    	private static HashMap<KeyBinding, Boolean> keyState = new HashMap<KeyBinding, Boolean>();
-    private static Minecraft mc = Minecraft.getInstance();
     
     static {
     	net.minecraftforge.client.settings.KeyConflictContext inGame = net.minecraftforge.client.settings.KeyConflictContext.IN_GAME;

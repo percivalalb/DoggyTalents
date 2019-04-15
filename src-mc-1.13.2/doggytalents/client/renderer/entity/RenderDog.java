@@ -7,11 +7,11 @@ import doggytalents.client.model.entity.ModelWings;
 import doggytalents.client.renderer.RenderUtil;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
+import doggytalents.client.renderer.entity.layer.LayerCover;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
-import doggytalents.client.renderer.entity.layer.LayerSunglasses;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ResourceLib;
@@ -37,7 +37,9 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerDogCollar(this));
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
-        this.addLayer(new LayerSunglasses(this));
+        
+        this.addLayer(new LayerCover(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_SUNGLASSES, EntityDog::hasSunglasses));
+        
         this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigHandler.CLIENT.doggyArmour() && dog.TALENTS.getLevel("guarddog") > 0));
         this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel("pillowpaw") == 5));
         this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel("wolfmount") > 0));

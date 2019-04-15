@@ -22,7 +22,7 @@ public class LayerCape implements LayerRenderer<EntityDog> {
 
     @Override
     public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(dog.hasCape()) {
+        if(dog.hasCape() && !dog.isInvisible()) {
         	if(dog.hasCapeColoured()) {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
         		if(dog.isCapeColoured()) {

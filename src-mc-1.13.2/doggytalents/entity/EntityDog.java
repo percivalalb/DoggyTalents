@@ -710,6 +710,13 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
         entitydog.setGrowingAge(-24000 * (ConfigHandler.COMMON.tenDayPups() ? 10 : 1));
 
+        if(ConfigHandler.COMMON.pupsGetParentLevels() && entityAgeable instanceof EntityDog) {
+            int combinedLevel = this.LEVELS.getLevel() + ((EntityDog)entityAgeable).LEVELS.getLevel();
+            combinedLevel /= 2;
+            combinedLevel = Math.min(combinedLevel, 20);
+            entitydog.LEVELS.setLevel(combinedLevel);
+        }
+        
         return entitydog;
     }
 	

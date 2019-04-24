@@ -1035,6 +1035,13 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 
         entitydog.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
 
+        if(Constants.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
+            int combinedLevel = this.levels.getLevel() + ((EntityDog)entityAgeable).levels.getLevel();
+            combinedLevel /= 2;
+            combinedLevel = Math.min(combinedLevel, 20);
+            entitydog.levels.setLevel(combinedLevel);
+        }
+        
         return entitydog;
     }
 

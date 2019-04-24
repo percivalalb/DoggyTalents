@@ -15,6 +15,7 @@ public class DTCommonConfig {
 	public ForgeConfigSpec.BooleanValue STARTING_ITEMS;
 	public ForgeConfigSpec.BooleanValue DOG_GENDER;
 	public ForgeConfigSpec.BooleanValue DOG_WHINE_WHEN_HUNGER_LOW;
+	public ForgeConfigSpec.BooleanValue PUPS_GET_PARENT_LEVELS;
 	
 	public Map<String, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
 	
@@ -46,6 +47,9 @@ public class DTCommonConfig {
 		DOG_WHINE_WHEN_HUNGER_LOW = builder
 				.comment("Determines if dogs should whine when hunger reaches below 20 DP.")
 				.define("shouldWhineWhenStarving", true);
+		PUPS_GET_PARENT_LEVELS = builder
+				.comment("When enabled, puppies get some levels from parents. When disabled, puppies start at 0 points.")
+				.define("pupsGetParentLevel", false);
 		
 		builder.pop();
 		  
@@ -89,6 +93,10 @@ public class DTCommonConfig {
 	
 	public boolean whineWhenHungerLow() {
 		return this.DOG_WHINE_WHEN_HUNGER_LOW.get().booleanValue();
+	}
+	
+	public boolean pupsGetParentLevels() {
+		return this.PUPS_GET_PARENT_LEVELS.get().booleanValue();
 	}
 	
 	public boolean isTalentDisabled(String talentId) {

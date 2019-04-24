@@ -37,7 +37,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
-        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> Constants.DOGGY_WINGS && dog.talents.getLevel("pillowpaw") == 5));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> Constants.RENDER_WINGS && dog.talents.getLevel("pillowpaw") == 5));
         this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> Constants.RENDER_SADDLE && dog.talents.getLevel("wolfmount") > 0));
         this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> Constants.RENDER_PACK_PUPPY_CHEST && dog.talents.getLevel("packpuppy") > 0));
     }

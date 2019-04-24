@@ -3,6 +3,7 @@ package doggytalents.addon.biomesoplenty;
 import doggytalents.addon.AddonEvent;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -13,7 +14,7 @@ public class BiomesOPlentyAddon {
 
 	@SubscribeEvent
 	public void onPost(AddonEvent.Post event) {
-		if(!AddonManager.areModsLoaded(BiomesOPlentyLib.MOD_ID, BiomesOPlentyLib.MOD_ID_194))
+		if(!AddonManager.areModsLoaded(BiomesOPlentyLib.MOD_ID) || !Constants.MOD_BED_STUFF)
 			return;
 		
 		Block planks1 = Block.getBlockFromName(BiomesOPlentyLib.ITEM_NAME_1);

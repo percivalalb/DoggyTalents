@@ -3,6 +3,7 @@ package doggytalents.addon.natura;
 import doggytalents.addon.AddonEvent;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.lib.Constants;
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -13,7 +14,7 @@ public class NaturaAddon {
 
 	@SubscribeEvent
 	public void onPost(AddonEvent.Post event) throws Exception {
-		if(!AddonManager.areModsLoaded(NaturaLib.MOD_NAME))
+		if(!AddonManager.areModsLoaded(NaturaLib.MOD_NAME) || !Constants.MOD_BED_STUFF)
 			return;
 		
 		Block planks1 = Block.getBlockFromName(NaturaLib.ITEM_NAME_1);

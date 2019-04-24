@@ -5,8 +5,6 @@ package doggytalents.addon.biomesoplenty;
  */
 public class BiomesOPlentyLib {
 
-	//ModId pre1.9
-	public static final String MOD_ID_194 = "BiomesOPlenty";
 	public static final String MOD_ID = "biomesoplenty";
 	
 	public static final String TEXTURE_LOCATION = "biomesoplenty:blocks/";

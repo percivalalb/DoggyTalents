@@ -62,6 +62,7 @@ public class ConfigurationHandler {
 		Constants.USE_DT_TEXTURES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "useDTTextures", true, "If disabled will use the default minecraft wolf skin for all dog textures.").getBoolean(true);
 		Constants.RENDER_PACK_PUPPY_CHEST = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyChest", true, "When enabled, dogs with points in pack puppy will have chests on their side.").getBoolean(true);
 		Constants.RENDER_SADDLE = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggySaddle", true, "When enabled, dogs with points in wolf mount will have a saddle on.").getBoolean(true);
+		Constants.MOD_BED_STUFF = CONFIG.get(CATEGORY_DOGGYSETTINGS, "modBedStuff", true, "When enabled, some mods that add new planks will be able to be used for dog beds.").getBoolean(true);
 		Constants.PUPS_GET_PARENT_LEVELS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "pupsGetParentLevel", false, "When enabled, puppies get some levels from parents. When disabled, puppies start at 0 points").getBoolean(false);
 		
 		//Add Everything in the current list in whatever way you want

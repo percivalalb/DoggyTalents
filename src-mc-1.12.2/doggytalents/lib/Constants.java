@@ -22,6 +22,7 @@ public class Constants {
 	public static boolean RENDER_PACK_PUPPY_CHEST = true;
 	public static boolean RENDER_SADDLE = true;
 	
+	public static boolean MOD_BED_STUFF = true;
 	public static boolean PUPS_GET_PARENT_LEVELS = false;
 	
 	public static int LOW_HEATH_LEVEL = 1;

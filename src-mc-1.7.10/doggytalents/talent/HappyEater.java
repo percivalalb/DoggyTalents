@@ -15,7 +15,7 @@ public class HappyEater extends ITalent {
 	public int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
 		int level = dog.talents.getLevel(this);
 		if(foodValue == 0) {
-	        if ((stack.getItem() == Items.fish || stack.getItem() == Items.cooked_fished) && level == 5)
+	        if ((stack.getItem() == Items.fish || stack.getItem() == Items.cooked_fish) && level == 5)
 	        	foodValue = 30 + 3 * level;
 	
 	        if (stack.getItem() == Items.rotten_flesh && level >= 3)

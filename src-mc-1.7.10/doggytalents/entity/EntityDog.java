@@ -539,7 +539,7 @@ public class EntityDog extends EntityAbstractDog {
                  	return true;
                 }
                 else if(stack.getItem() == ModItems.FANCY_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
-                	this.setCollarData(-3 - stack.getItemDamage());
+                	this.setCollarData(-3 - stack.getMetadata());
                  	
                    	if(!player.capabilities.isCreativeMode)
                    		--stack.stackSize;
@@ -665,7 +665,7 @@ public class EntityDog extends EntityAbstractDog {
                     
                     
                     if(this.isCollarColoured()) {
-                    	float[] rgb = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(stack.getItemDamage())];
+                    	float[] rgb = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(stack.getMetadata())];
                     	int i1 = (int)(rgb[0] * 255F);
                         int j1 = (int)(rgb[1] * 255F);
                         int k1 = (int)(rgb[2] * 255F);
@@ -685,7 +685,7 @@ public class EntityDog extends EntityAbstractDog {
                         aint[1] = (int)((float)aint[1] + f1 * 255.0F);
                         aint[2] = (int)((float)aint[2] + f2 * 255.0F);
 
-                        float[] afloat = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(stack.getItemDamage())];
+                        float[] afloat = EntitySheep.fleeceColorTable[BlockColored.func_150032_b(stack.getMetadata())];
                         int l1 = (int)(afloat[0] * 255.0F);
                         int i2 = (int)(afloat[1] * 255.0F);
                         int j2 = (int)(afloat[2] * 255.0F);
@@ -711,13 +711,13 @@ public class EntityDog extends EntityAbstractDog {
                 else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < 120 && this.canInteract(player)) {
                 	
                 	InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
-            		treatBag.openInventory();
+            		treatBag.openChest();
                 	
                 	int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);
                  	if(slotIndex >= 0)
                  		DogUtil.feedDog(this, treatBag, slotIndex);
                  	
-            		treatBag.closeInventory();
+            		treatBag.closeChest();
                  	return true;
                 }
             }
@@ -1156,7 +1156,7 @@ public class EntityDog extends EntityAbstractDog {
 			int lvlHellHound = this.talents.getLevel("hellhound");
 			
 			if(this.rand.nextInt(15) < lvlFisherDog * 2)
-				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.cooked_fished : Items.fish, 1);
+				this.dropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.cooked_fish : Items.fish, 1);
 		}
 	}
 }

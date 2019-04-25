@@ -89,7 +89,7 @@ public class EntityAIFetch extends EntityAIBase {
         	if(entity instanceof EntityItem) {
         		EntityItem entityItem = (EntityItem)entity;
         		
-        		if(entityItem.getEntityItem().getItem() == ModItems.THROW_BONE && entityItem.getEntityItem().getItemDamage() % 2 == 0)
+        		if(entityItem.getEntityItem().getItem() == ModItems.THROW_BONE && entityItem.getEntityItem().getMetadata() % 2 == 0)
         			return entityItem;
         			
         	}
@@ -112,7 +112,7 @@ public class EntityAIFetch extends EntityAIBase {
              if(this.dog.getDistanceSqToEntity(this.fetchableItem) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
               	if(this.fetchableItem.isEntityAlive()) {
               		this.fetchableItem.attackEntityFrom(DamageSource.generic, 12F);
-             		this.dog.setBoneVariant(this.fetchableItem.getEntityItem().getItemDamage() / 2);
+             		this.dog.setBoneVariant(this.fetchableItem.getEntityItem().getMetadata() / 2);
               		this.fetchableItem = null;
               	    this.dog.getNavigator().clearPathEntity();
               	}

@@ -18,7 +18,7 @@ public class ContainerPackPuppy extends Container {
     public ContainerPackPuppy(EntityPlayer player, EntityDog dog) {
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
-        inventory.openInventory();
+        inventory.openChest();
         int packpuppyLevel = MathHelper.clamp_int(this.dog.talents.getLevel("packpuppy"), 0, 5);
 
         for (int j = 0; j < 3; j++) {
@@ -75,6 +75,6 @@ public class ContainerPackPuppy extends Container {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
-        inventory.closeInventory();
+        inventory.closeChest();
     }
 }

@@ -119,6 +119,6 @@ public class DogUtil {
     }
     
     public static boolean areStacksEqual(ItemStack p_145894_0_, ItemStack p_145894_1_) {
-        return p_145894_0_.getItem() != p_145894_1_.getItem() ? false : (p_145894_0_.getItemDamage() != p_145894_1_.getItemDamage() ? false : (p_145894_0_.stackSize > p_145894_0_.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(p_145894_0_, p_145894_1_)));
+        return p_145894_0_.getItem() != p_145894_1_.getItem() ? false : (p_145894_0_.getMetadata() != p_145894_1_.getMetadata() ? false : (p_145894_0_.stackSize > p_145894_0_.getMaxStackSize() ? false : ItemStack.areItemStackTagsEqual(p_145894_0_, p_145894_1_)));
     }
 }

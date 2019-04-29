@@ -11,7 +11,7 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.14.3. | 
+1.14.3.451 | 29th April 2019
 + Added config option so that puppies will get some levels from parents up to a max of 20.
 * Set max stacksize of treat bag to 1 to fix item duplication bug
 
@@ -45,7 +45,7 @@ Initial release, parent version 1.14.2.396
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.14.2. | 
+1.14.2.451 | 29th April 2019
 + Added config option so that puppies will get some levels from parents up to a max of 20.
 + Added config option to disable dog bed being able to use mod planks to reduce the amount of beds
 * Set max stacksize of treat bag to 1 to fix item duplication bug

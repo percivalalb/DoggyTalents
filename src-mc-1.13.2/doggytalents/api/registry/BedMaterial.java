@@ -2,25 +2,25 @@ package doggytalents.api.registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class BedMaterial extends ForgeRegistryEntry<BedMaterial> implements Comparable<BedMaterial> {
+public class BedMaterial implements Comparable<BedMaterial> {
 
 	public static BedMaterial NULL = new BedMaterial("missing");
+	
 	public String key;
 	
 	public BedMaterial(String key) {
 		this.key = key;
 	}
 	
-	public BedMaterial(Block block) {
-		ResourceLocation location = ForgeRegistries.BLOCKS.getKey(block);
-		this.key = location.toString();
-		this.setRegistryName(location);
+	public BedMaterial(ResourceLocation location) {
+		this(location.toString());
 	}
-
+	
+	public BedMaterial(Block block) {
+		this(ForgeRegistries.BLOCKS.getKey(block));
+	}
 
 	@Override
 	public int compareTo(BedMaterial o) {

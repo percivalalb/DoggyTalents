@@ -9,12 +9,12 @@ import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.state.AbstractProperty;
 
-public class StringProperty extends AbstractProperty<BedMaterial> {
+public class PropertyMaterial extends AbstractProperty<BedMaterial> {
 
 	private ImmutableSet<BedMaterial> allowedValues;
 	private final DogBedRegistry reg;
 
-	protected StringProperty(String name, DogBedRegistry reg) {
+	protected PropertyMaterial(String name, DogBedRegistry reg) {
 		super(name, BedMaterial.class);
 		this.reg = reg;
 		this.allowedValues = ImmutableSet.copyOf(this.reg.getKeys());
@@ -47,7 +47,7 @@ public class StringProperty extends AbstractProperty<BedMaterial> {
 		return i;
 	}
 	
-	public static StringProperty create(String name, DogBedRegistry reg) {
-		return new StringProperty(name, reg);
+	public static PropertyMaterial create(String name, DogBedRegistry reg) {
+		return new PropertyMaterial(name, reg);
 	}
 }

@@ -47,6 +47,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReaderBase;
@@ -64,8 +65,8 @@ public class BlockDogBed extends BlockContainer {
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
 	
 	public static final DirectionProperty FACING = BlockHorizontal.HORIZONTAL_FACING;
-	public static final StringProperty CASING = StringProperty.create("casing", DogBedRegistry.CASINGS);
-	public static final StringProperty BEDDING = StringProperty.create("bedding", DogBedRegistry.BEDDINGS);
+	public static final PropertyMaterial CASING = PropertyMaterial.create("casing", DogBedRegistry.CASINGS);
+	public static final PropertyMaterial BEDDING = PropertyMaterial.create("bedding", DogBedRegistry.BEDDINGS);
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
@@ -83,14 +84,14 @@ public class BlockDogBed extends BlockContainer {
 	    	BedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
 		    
 		    if(DogBedRegistry.CASINGS.isValidId(casingId))
-		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.CASINGS.getLookUpValue(casingId)));
+		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.CASINGS.getTranslationKey(casingId)));
 		    else
-		    	tooltip.add(new TextComponentTranslation("dogBed.woodError")); // TODO RED
+		    	tooltip.add(new TextComponentTranslation("dogBed.woodError").applyTextStyle(TextFormatting.RED));
 		    	
 		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)));	
+		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.BEDDINGS.getTranslationKey(beddingId)));	
 		    else
-		    	tooltip.add(new TextComponentTranslation("dogBed.woolError"));  // TODO RED
+		    	tooltip.add(new TextComponentTranslation("dogBed.woolError").applyTextStyle(TextFormatting.RED));
 		}
 	}
 	

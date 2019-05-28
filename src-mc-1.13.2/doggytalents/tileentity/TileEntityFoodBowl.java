@@ -29,8 +29,8 @@ import net.minecraft.world.IInteractionObject;
 
 public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, IInteractionObject, ITickable {
    
-	private static final int[] SLOTS_ALL = new int[]{0,1,2,3,4};
-	private NonNullList<ItemStack> furnaceItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
+	private static final int[] SLOTS_ALL = new int[] {0,1,2,3,4};
+	private NonNullList<ItemStack> bowlItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
 
     public int timeoutCounter;
     
@@ -41,14 +41,14 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
     @Override
     public void read(NBTTagCompound compound) {
         super.read(compound);
-        this.furnaceItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(compound, this.furnaceItemStacks);
+        this.bowlItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(compound, this.bowlItemStacks);
     }
 
     @Override
     public NBTTagCompound write(NBTTagCompound compound) {
         super.write(compound);
-        ItemStackHelper.saveAllItems(compound, this.furnaceItemStacks);
+        ItemStackHelper.saveAllItems(compound, this.bowlItemStacks);
         return compound;
     }
 
@@ -75,12 +75,12 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
     
     @Override
     public int getSizeInventory() {
-    	return this.furnaceItemStacks.size();
+    	return this.bowlItemStacks.size();
     }
 
     @Override
     public boolean isEmpty() {
-        for(ItemStack itemstack : this.furnaceItemStacks) {
+        for(ItemStack itemstack : this.bowlItemStacks) {
         	if (!itemstack.isEmpty()) {
         		return false;
         	}
@@ -91,22 +91,22 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
     @Override
     public ItemStack getStackInSlot(int index) {
-        return this.furnaceItemStacks.get(index);
+        return this.bowlItemStacks.get(index);
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(this.furnaceItemStacks, index, count);
+        return ItemStackHelper.getAndSplit(this.bowlItemStacks, index, count);
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.furnaceItemStacks, index);
+        return ItemStackHelper.getAndRemove(this.bowlItemStacks, index);
     }
 
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
-        this.furnaceItemStacks.set(index, stack);
+        this.bowlItemStacks.set(index, stack);
         if (stack.getCount() > this.getInventoryStackLimit()) {
            stack.setCount(this.getInventoryStackLimit());
         }
@@ -115,7 +115,7 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public void clear() {
-		this.furnaceItemStacks.clear();
+		this.bowlItemStacks.clear();
 	}
 
 	@Override

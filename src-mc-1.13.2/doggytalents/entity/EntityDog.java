@@ -53,8 +53,6 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITargetNonTamed;
-import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -64,9 +62,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityLlama;
-import net.minecraft.entity.passive.EntityRabbit;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityTurtle;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -150,7 +145,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		this.tasks.addTask(2, this.aiSit);
 		this.tasks.addTask(3, new EntityAIFetchReturn(this, 1.0D));
 		this.tasks.addTask(4, new EntityAIDogWander(this, 1.0D));
-		this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
 		 //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
 		this.tasks.addTask(5, new EntityDog.AIAvoidEntity(this, EntityLlama.class, 24.0F, 1.5D, 1.5D));
 		this.tasks.addTask(6, new EntityAILeapAtTarget(this, 0.4F));
@@ -299,7 +293,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             }
         }
 
-        if (this.getHealth() <= 0 && this.isImmortal()) {
+        if(this.getHealth() <= 0 && this.isImmortal()) {
             this.deathTime = 0;
             this.setHealth(1);
         }
@@ -309,7 +303,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             //this.fleeingTick = 0;
         }
 
-        if (this.world.isRemote && this.LEVELS.isDireDog() && ConfigHandler.CLIENT.direParticles())
+        if(this.world.isRemote && this.LEVELS.isDireDog() && ConfigHandler.CLIENT.direParticles())
             for (int i = 0; i < 2; i++)
                 this.world.addParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
 
@@ -414,12 +408,13 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         case PASS:
 			break;
         }
-
+        
         if(this.isTamed()) {
             if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);
 
-                if (foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
+                
+                if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
                     if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
@@ -464,7 +459,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 //else if(stack.getItem() == Items.OAK_DOOR && this.canInteract(player)) {
                 //	this.patrolOutline.clear();
                 //}
-                else if (stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
+                else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
                 	
                 	if(player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
         	        	EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
@@ -473,13 +468,13 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         	        }
                 	
                     return true;
-                } else if (stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                     this.hasRadarCollar(true);
 
                     if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
 
                     if(stack.hasTag() && stack.getTag().contains("collar_colour"))
@@ -490,23 +485,23 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
+                } else if(stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     this.setCollarData(-3 - ((ItemFancyCollar)stack.getItem()).type.ordinal());
 
-                    if (!player.abilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setFancyCape();
-                    if (!player.abilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() == ModItems.LEATHER_JACKET && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.LEATHER_JACKET && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setLeatherJacket();
-                    if (!player.abilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     int colour = -1;
 
                     if (stack.hasTag() && stack.getTag().contains("cape_colour"))
@@ -517,12 +512,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) {
+                } else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) {
                     this.setHasSunglasses(true);
                     if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
-                } else if (stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
+                } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
                 	IDogInteractItem treat = (IDogInteractItem) stack.getItem();
                 	ActionResult<ItemStack> treatResult = treat.onItemRightClick(stack, this, this.world, player);
                   
@@ -535,11 +530,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             			break;
                     }
                 	
-                } else if (stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
-                    if (this.isServer()) {
-                        if (this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
+                } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
+                    if(this.isServer()) {
+                        if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                             this.reversionTime = 40;
-                            if (this.hasCollarColoured()) {
+                            if(this.hasCollarColoured()) {
                                 ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1);
                                 if (this.isCollarColoured()) {
                                     collarDrop.setTag(new NBTTagCompound());
@@ -549,7 +544,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                                 this.setNoCollar();
                             }
 
-                            if (this.hasFancyCollar()) {
+                            if(this.hasFancyCollar()) {
                             	Item drop = ModItems.MULTICOLOURED_COLLAR;
                             	if(this.getCollarData() == -3)
                             		drop = ModItems.CREATIVE_COLLAR;
@@ -560,12 +555,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                                 this.setNoCollar();
                             }
 
-                            if (this.hasFancyCape()) {
+                            if(this.hasFancyCape()) {
                                 this.entityDropItem(new ItemStack(ModItems.CAPE, 1), 1);
                                 this.setNoCape();
                             }
 
-                            if (this.hasCapeColoured()) {
+                            if(this.hasCapeColoured()) {
                                 ItemStack capeDrop = new ItemStack(ModItems.CAPE_COLOURED, 1);
                                 if (this.isCapeColoured()) {
                                     capeDrop.setTag(new NBTTagCompound());
@@ -575,16 +570,16 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                                 this.setNoCape();
                             }
 
-                            if (this.hasLeatherJacket()) {
+                            if(this.hasLeatherJacket()) {
                                 this.entityDropItem(new ItemStack(ModItems.LEATHER_JACKET, 1), 1);
                                 this.setNoCape();
                             }
 
-                            if (this.hasSunglasses()) {
+                            if(this.hasSunglasses()) {
                                 this.entityDropItem(new ItemStack(ModItems.SUNGLASSES, 1), 1);
                                 this.setHasSunglasses(false);
                             }
-                        } else if (this.reversionTime < 1) {
+                        } else if(this.reversionTime < 1) {
                             this.setTamed(false);
                             this.navigator.clearPath();
                             this.aiSit.setSitting(false);
@@ -601,7 +596,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     }
 
                     return true;
-                } else if (stack.getItem().equals(Item.getItemFromBlock(Blocks.CAKE)) && this.canInteract(player) && this.isIncapacicated()) {
+                } else if(stack.getItem() == Blocks.CAKE.asItem() && this.canInteract(player) && this.isIncapacicated()) {
                     if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
@@ -616,11 +611,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     }
 
                     return true;
-                } else if (stack.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES) && this.canInteract(player)) { //TODO Add Plants compatibility
-                    if (!this.hasCollarColoured())
+                } else if(stack.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES) && this.canInteract(player)) { //TODO Add Plants compatibility
+                    if(!this.hasCollarColoured())
                         return true;
 
-                    if (!this.isCollarColoured()) {
+                    if(!this.isCollarColoured()) {
                         int colour = EnumDyeColor.getColor(stack).func_196057_c();
 
                         this.setCollarData(colour);
@@ -660,7 +655,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                         this.setCollarData(k2);
                     }
                     return true;
-                } else if (stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
+                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
 
                     InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
                     treatBag.openInventory(player);
@@ -674,8 +669,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 }
             }
 
-            if (!this.isBreedingItem(stack) && this.canInteract(player)) {
-                if (this.isServer()) {
+            if(!this.isBreedingItem(stack) && this.canInteract(player)) {
+                if(this.isServer()) {
                     this.aiSit.setSitting(!this.isSitting());
                     this.isJumping = false;
                     this.navigator.clearPath();
@@ -683,8 +678,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 }
                 return true;
             }
-        } else if (stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
-            if (this.isServer()) {
+        } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
+            if(this.isServer()) {
                 this.locationManager.removeDog(this);
                 this.remove();
                 EntityWolf wolf = new EntityWolf(this.world);
@@ -692,12 +687,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 this.world.spawnEntity(wolf);
             }
             return true;
-        } else if (stack.getItem() == Items.BONE) {
-            if (!player.abilities.isCreativeMode)
-                stack.shrink(1);
+        } else if(stack.getItem() == Items.BONE) {
+        	if(!player.abilities.isCreativeMode)
+        		stack.shrink(1);
 
-            if (isServer()) {
-                if (this.rand.nextInt(3) == 0) {
+        	if(!this.world.isRemote) {
+                if(this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.navigator.clearPath();
                     this.setAttackTarget((EntityLivingBase) null);

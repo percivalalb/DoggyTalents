@@ -21,11 +21,13 @@ public class ModEntities {
     public static class Registration {
 		
 		 @SubscribeEvent
-		 public static void registerBlocks(final RegistryEvent.Register<EntityType<?>> event) {
+		 public static void registerEntities(final RegistryEvent.Register<EntityType<?>> event) {
 			 IForgeRegistry<EntityType<?>> entityRegistry = event.getRegistry();
 			 
+			 DoggyTalentsMod.LOGGER.info("Registering Entities");
 			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
 			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
+			 DoggyTalentsMod.LOGGER.info("Finished Registering Entities");
 		 }
     }
 }

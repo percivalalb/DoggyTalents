@@ -26,11 +26,11 @@ public class ModCreativeTabs {
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-        	return DogBedRegistry.createItemStack(pickRandomString(DogBedRegistry.CASINGS.getKeys()), pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
+        	return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
     	
     	public BedMaterial pickRandomString(List<BedMaterial> strs) {
-    		return strs.get(random.nextInt(strs.size()));
+    		return strs.get(this.random.nextInt(strs.size()));
     	}
     };
 }

@@ -28,95 +28,20 @@ public class ModelBake {
 	    try {
 	    	
 	    	ModelBlock model = (ModelBlock)event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
-	    	DoggyTalentsMod.LOGGER.info("" + model);
-
 		    IBakedModel customModel = new DogBedModel(model, model.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(EnumFacing.NORTH), true, DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
 
-		    	List<ModelResourceLocation> modelsToReplace = new ArrayList<ModelResourceLocation>();
+		    List<ModelResourceLocation> modelsToReplace = new ArrayList<ModelResourceLocation>();
 		    	
-		    	for(Entry<ModelResourceLocation, IBakedModel> entry : event.getModelRegistry().entrySet()) {
-		    		if(entry.getKey().getNamespace().equalsIgnoreCase(Reference.MOD_ID) && entry.getKey().getPath().equalsIgnoreCase("dog_bed")) {
-		    			modelsToReplace.add(entry.getKey());
-
-		    		}
+		    for(Entry<ModelResourceLocation, IBakedModel> entry : event.getModelRegistry().entrySet()) {
+		    	if(entry.getKey().getNamespace().equals(Reference.MOD_ID) && entry.getKey().getPath().equals("dog_bed")) {
+		    		modelsToReplace.add(entry.getKey());
 		    	}
+		    }
 
-		    	for(ModelResourceLocation location : modelsToReplace) {
-	    			//DoggyTalentsMod.LOGGER.info("" + location);
-	    			IBakedModel bakedModel = event.getModelRegistry().get(location);
-
-	 		        //Replace 
-	 		        event.getModelRegistry().put(location, customModel);
-		    	}
-		    
-	    	
-	    	/**
-	    	IUnbakedModel ubModel = event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
-	    	ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            builder.put("bedding", "block/red_wool");
-            builder.put("casing", "block/red_wool");
-            builder.put("particle", "block/red_wool");
-            DoggyTalentsMod.LOGGER.info("Model: " + ubModel);
-            ImmutableMap<String, String> textures = builder.build();
-           // IModel<IUnbakedModel> retexturedModel = ubModel.retexture(builder.build());
-            ModelBlock model = (ModelBlock) ubModel;
-	    	
-            Iterator<EnumFacing> iterator = EnumFacing.Plane.HORIZONTAL.iterator();
-            while(iterator.hasNext()) {
-            	EnumFacing facing = iterator.next();
-            	DoggyTalentsMod.LOGGER.info("Replace facing=" + facing.getName());
-   
-
-                List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
-                for (BlockPart part : model.getElements())
-                {
-                    elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
-                }
-
-                ModelBlock newModel = new ModelBlock(model.getParentLocation(), elements,
-                    Maps.newHashMap(model.textures), model.isAmbientOcclusion(), model.isGui3d(), //New Textures man VERY IMPORTANT
-                    model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
-                newModel.name = model.name;
-                newModel.parent = model.parent;
-
-                Set<String> removed = Sets.newHashSet();
-
-                for (Entry<String, String> e : textures.entrySet())
-                {
-                    if ("".equals(e.getValue()))
-                    {
-                        removed.add(e.getKey());
-                        newModel.textures.remove(e.getKey());
-                    }
-                    else
-                        newModel.textures.put(e.getKey(), e.getValue());
-                }
-
-                // Map the model's texture references as if it was the parent of a model with the retexture map as its textures.
-                Map<String, String> remapped = Maps.newHashMap();
-
-                for (Entry<String, String> e : newModel.textures.entrySet())
-                {
-                    if (e.getValue().startsWith("#"))
-                    {
-                        String key = e.getValue().substring(1);
-                        if (newModel.textures.containsKey(key))
-                            remapped.put(e.getKey(), newModel.textures.get(key));
-                    }
-                }
-
-                newModel.textures.putAll(remapped);
-
-                //Remove any faces that use a null texture, this is for performance reasons, also allows some cool layering stuff.
-                for (BlockPart part : newModel.getElements())
-                {
-                    part.mapFaces.entrySet().removeIf(entry -> removed.contains(entry.getValue().texture));
-                }
-
-
-                event.getModelRegistry().put(new ModelResourceLocation(BlockNames.DOG_BED, "facing=" + facing.getName()), newModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), true, DefaultVertexFormats.BLOCK));
-                		//retexturedModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), false, DefaultVertexFormats.BLOCK));
-            }**/
+		    for(ModelResourceLocation location : modelsToReplace) {
+	    		//Replace 
+	    		event.getModelRegistry().put(location, customModel);
+		    }
 	    }
 	    catch(Exception e) {
 	    	DoggyTalentsMod.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");

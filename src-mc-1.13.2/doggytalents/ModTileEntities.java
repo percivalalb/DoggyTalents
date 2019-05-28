@@ -25,8 +25,10 @@ public class ModTileEntities {
 	    public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event){
 	    	IForgeRegistry<TileEntityType<?>> tileRegistry = event.getRegistry();
 	    	
+	    	DoggyTalentsMod.LOGGER.info("Registering TileEnities");
 	        tileRegistry.register(TileEntityType.Builder.create(TileEntityDogBed::new).build(null).setRegistryName(BlockNames.DOG_BED));
 	        tileRegistry.register(TileEntityType.Builder.create(TileEntityFoodBowl::new).build(null).setRegistryName(BlockNames.FOOD_BOWL));
+	        DoggyTalentsMod.LOGGER.info("Finished Registering TileEnities");
 	    }
     }
 }

@@ -59,7 +59,7 @@ public class ModItems {
     public static class Registration {
 		
 	    @SubscribeEvent
-	    public static void onItemRegister(final RegistryEvent.Register<Item> event){
+	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	DoggyTalentsMod.LOGGER.info("Registering Items");
 	    	event.getRegistry().register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE));
 	    	event.getRegistry().register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));

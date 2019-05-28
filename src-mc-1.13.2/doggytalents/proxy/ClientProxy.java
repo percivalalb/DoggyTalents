@@ -12,6 +12,7 @@ import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
+import doggytalents.handler.DogTextureLoader;
 import doggytalents.handler.KeyState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public class ClientProxy extends CommonProxy {
         DoggyTalentsMod.LOGGER.debug("Client Proxy");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
     }
-
+    
     private void clientSetup(FMLClientSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("ClientProxy clientSetup");
         
@@ -52,15 +53,16 @@ public class ClientProxy extends CommonProxy {
         //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+		
+    	ClientRegistry.registerKeyBinding(KeyState.come);
+    	ClientRegistry.registerKeyBinding(KeyState.stay);
+    	ClientRegistry.registerKeyBinding(KeyState.ok);
+    	ClientRegistry.registerKeyBinding(KeyState.heel);
     }
    
     @Override
     protected void preInit(FMLCommonSetupEvent event) {
     	super.preInit(event);
-    	ClientRegistry.registerKeyBinding(KeyState.come);
-    	ClientRegistry.registerKeyBinding(KeyState.stay);
-    	ClientRegistry.registerKeyBinding(KeyState.ok);
-    	ClientRegistry.registerKeyBinding(KeyState.heel);
     }
     
     @Override

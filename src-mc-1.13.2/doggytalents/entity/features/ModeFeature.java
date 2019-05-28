@@ -96,7 +96,7 @@ public class ModeFeature extends DogFeature {
 			return this.unlocalisedInfo;
 		}
 		
-		public boolean doesFollowOwner() {
+		public boolean followOwner() {
 			return this.followsOwner;
 		}
 	}

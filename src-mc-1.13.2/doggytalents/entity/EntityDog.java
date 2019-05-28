@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import doggytalents.ModBlocks;
@@ -16,15 +17,17 @@ import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.ai.DogDataTracker;
 import doggytalents.entity.ai.DogLocationManager;
-import doggytalents.entity.ai.EntityAIDogBeg;
+import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
-import doggytalents.entity.ai.EntityAIFollowOwner;
-import doggytalents.entity.ai.EntityAIModeAttackTarget;
-import doggytalents.entity.ai.EntityAIOwnerHurtByTarget;
-import doggytalents.entity.ai.EntityAIOwnerHurtTarget;
+import doggytalents.entity.ai.EntityAIFetchReturn;
+import doggytalents.entity.ai.EntityAIFollowOwnerDog;
+import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
+import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
+import doggytalents.entity.ai.EntityAIOwnerTool;
 import doggytalents.entity.ai.EntityAIShepherdDog;
+import doggytalents.entity.ai.EntityBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
 import doggytalents.entity.features.DogGenderFeature;
@@ -48,15 +51,15 @@ import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAITargetNonTamed;
+import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.monster.AbstractSkeleton;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -76,20 +79,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IInteractionObject;
@@ -103,7 +101,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
 	public IDataTracker dataTracker;
 	public DogLocationManager locationManager;
-	public EntityAIFetch aiFetchBone;
 	
 	public TalentFeature TALENTS;
 	public LevelFeature LEVELS;
@@ -144,46 +141,37 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
 		
 		TalentHelper.onClassCreation(this);
-		
-		if(this.getGender().isEmpty()) {
-            if (rand.nextInt(2) == 0) {
-                this.setGender("male");
-            } else {
-                this.setGender("female");
-            }
-        }
 	}
 	
 	@Override
 	protected void initEntityAI() {
 		this.aiSit = new EntityAISit(this);
-        this.aiFetchBone = new EntityAIFetch(this, 1.0D, 20.0F);
-
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, this.aiSit);
-		this.tasks.addTask(3, new EntityAbstractDog.AIAvoidEntity(this, EntityLlama.class, 24.0F, 1.5D, 1.5D));
-		this.tasks.addTask(4, new EntityAILeapAtTarget(this, 0.4F));
+		this.tasks.addTask(3, new EntityAIFetchReturn(this, 1.0D));
+		this.tasks.addTask(4, new EntityAIDogWander(this, 1.0D));
+		this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
 		 //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-		this.tasks.addTask(5, this.aiFetchBone);
-		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
-		this.tasks.addTask(7, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
-		this.tasks.addTask(8, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(9, new EntityAIWanderAvoidWater(this, 1.0D));
-		this.tasks.addTask(10, new EntityAIDogWander(this, 1.0D));
-		this.tasks.addTask(11, new EntityAIDogBeg(this, 8.0F));
-		this.tasks.addTask(12, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(13, new EntityAILookIdle(this));
-        this.tasks.addTask(14, new EntityAIDogFeed(this, 20.0F));
-		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
-		this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-		this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
-		this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(5, new EntityAITargetNonTamed<>(this, EntityAnimal.class, false, (entity) -> {
-			return entity instanceof EntitySheep || entity instanceof EntityRabbit;
-		}));
-		this.targetTasks.addTask(5, new EntityAITargetNonTamed<>(this, EntityTurtle.class, false, EntityTurtle.TARGET_DRY_BABY));
-		this.targetTasks.addTask(6, new EntityAINearestAttackableTarget<>(this, AbstractSkeleton.class, false));
-		this.targetTasks.addTask(7, new EntityAIShepherdDog(this, 0, false));
+		this.tasks.addTask(5, new EntityDog.AIAvoidEntity(this, EntityLlama.class, 24.0F, 1.5D, 1.5D));
+		this.tasks.addTask(6, new EntityAILeapAtTarget(this, 0.4F));
+		this.tasks.addTask(7, new EntityAIAttackMelee(this, 1.0D, true));
+		this.tasks.addTask(8, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
+		this.tasks.addTask(9, new EntityAIFetch(this, 1.0D, 32));
+		this.tasks.addTask(10, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
+		this.tasks.addTask(11, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
+		this.tasks.addTask(12, new EntityAIMate(this, 1.0D));
+		this.tasks.addTask(13, new EntityAIWanderAvoidWater(this, 1.0D));
+		this.tasks.addTask(14, new EntityAIBegDog(this, 8.0F));
+		this.tasks.addTask(15, new EntityAIDogFeed(this, 1.0D, 20.0F));
+		
+		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(15, new EntityAILookIdle(this));
+		
+		
+		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetDog(this));
+		this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetDog(this));
+		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
+		this.targetTasks.addTask(4, new EntityBerserkerMode<>(this, EntityMob.class, false));
 	}
 	
 	@Override
@@ -227,6 +215,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         compound.putInt("capeData", this.getCapeData());
         compound.putInt("dogSize", this.getDogSize());
         compound.putString("dogGender", this.getGender());
+        compound.putBoolean("hasBone", this.hasBone());
+        if(this.hasBone()) compound.putInt("boneVariant", this.getBoneVariant());
         
         TalentHelper.writeAdditional(this, compound);
 	}
@@ -246,6 +236,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         if(compound.contains("capeData", 99)) this.setCapeData(compound.getInt("capeData"));
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
         this.setGender(compound.getString("dogGender"));
+        if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInt("boneVariant"));
         
         TalentHelper.readAdditional(this, compound);
         
@@ -256,14 +247,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	
 	@Override
     public void livingTick() {
-		// 
-		//EntityMoveHelper old = this.getMoveHelper();
-		//Path oldPath = this.getNavigator().getPath();
-		//double oldSpeed = 1.5D;
         super.livingTick();
-        //this.getNavigator().setSpeed(1.5D);
-        //this.getNavigator().setPath(oldPath, oldSpeed);
-        //this.getMoveHelper().read(old);
         
         if (ConfigHandler.COMMON.hungerOn()) {
             this.prevHungerTick = this.hungerTick;
@@ -354,7 +338,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             if(ConfigHandler.COMMON.debugMode()) System.out.println("Remove Request From Living");
             this.locationManager.removeDog(this);
         }
-
+        
         TalentHelper.livingTick(this);
     }
 
@@ -383,7 +367,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 this.timeWolfIsHappy = 0.0F;
             }
         }
-
+        
         if (this.isTamed()) {
             EntityPlayer player = (EntityPlayer) this.getOwner();
 
@@ -474,6 +458,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 } else if (stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
 
+                    if(stack.hasTag() && stack.getTag().contains("collar_colour"))
                         colour = stack.getTag().getInt("collar_colour");
 
                     this.setCollarData(colour);
@@ -880,7 +865,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	public void onDeath(DamageSource cause) {
         if (this.isServer() && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
             System.out.println("From onDeath");
-            this.locationManager.removeDog(this); //TODO can't figure out why on death the dog won't be removed
+            this.locationManager.removeDog(this);
             this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
         }
     }
@@ -965,7 +950,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	public void tryToJump() {
         if(this.onGround)
         	this.jump();
-        else if(this.isInWater() && this.TALENTS.getLevel("swimmerdog") > 0)
+        else if(this.isInWater() && this.TALENTS.getLevel(ModTalents.SWIMMER_DOG) > 0)
         	this.motionY = 0.2F;
 	}
 	
@@ -979,6 +964,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     @Override
     public boolean canDespawn() {
     	return false;
+    }
+    
+    @Override
+    protected float getWaterSlowDown() {
+        return 0.8F;
     }
     
     @Override
@@ -1058,32 +1048,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         }
 
         return amount;
-    }
-	
-	public int masterOrder() {
-        int order = 0;
-
-        EntityPlayer player = (EntityPlayer) this.getOwner();
-
-        if (player != null) {
-            float distanceAway = player.getDistance(this);
-            Item mainhand = player.getHeldItemOffhand().getItem();
-            Item offhand = player.getHeldItemMainhand().getItem();
-
-            if ((mainhand != null || offhand != null) && (mainhand instanceof ItemTool || offhand instanceof ItemTool) && distanceAway <= 20F)
-                order = 1;
-
-            if ((mainhand != null || offhand != null) && (mainhand instanceof ItemTool || offhand instanceof ItemSword) || (mainhand != null || offhand != null) && (mainhand instanceof ItemBow || offhand instanceof ItemBow))
-                order = 2;
-
-            if ((mainhand != null || offhand != null) && (mainhand == Items.WHEAT || offhand == Items.WHEAT)) //Round up Talent
-                order = 3;
-
-            if ((mainhand != null || offhand != null) && (mainhand == Items.BONE || offhand == Items.BONE)) //Roar Talent
-                order = 4;
-        }
-
-        return order;
     }
 	
 	public void updateBoundingBox() {
@@ -1339,6 +1303,10 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     
     public boolean isClient() {
         return this.world.isRemote;
+    }
+    
+    public Random getRandom() {
+    	return this.rand;
     }
 
 	@Override

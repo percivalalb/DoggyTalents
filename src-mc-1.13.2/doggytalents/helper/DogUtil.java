@@ -1,5 +1,8 @@
 package doggytalents.helper;
 
+import java.util.Iterator;
+import java.util.function.Predicate;
+
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
@@ -7,6 +10,7 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumFacing;
@@ -16,14 +20,22 @@ import net.minecraft.world.World;
 
 public class DogUtil {
 
+	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder, int radius) {
+        teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, radius);
+    }
+	
 	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder) {
-    	int i = MathHelper.floor(owner.posX) - 2;
-        int j = MathHelper.floor(owner.posZ) - 2;
-        int k = MathHelper.floor(owner.getBoundingBox().minY);
+        teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, 4);
+    }
+	
+	public static void teleportDogToPos(double x, double y, double z, Entity entity, World world, PathNavigate pathfinder, int radius) {
+    	int i = MathHelper.floor(x) - radius;
+        int j = MathHelper.floor(z) - radius;
+        int k = MathHelper.floor(y);
 
-        for(int l = 0; l <= 4; ++l) {
-            for(int i1 = 0; i1 <= 4; ++i1) {
-                if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && isTeleportFriendlyBlock(entity, world, i, j, k, l, i1)) {
+        for(int l = 0; l <= radius * 2; ++l) {
+            for(int i1 = 0; i1 <= radius * 2; ++i1) {
+                if((l < 1 || i1 < 1 || l > radius * 2 - 1 || i1 > radius * 2 - 1) && isTeleportFriendlyBlock(entity, world, i, j, k, l, i1)) {
                 	entity.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), entity.rotationYaw, entity.rotationPitch);
                     pathfinder.clearPath();
                     return;
@@ -119,4 +131,22 @@ public class DogUtil {
 
         return itemstack;
     }
+    
+    public static boolean isHolding(Entity entity, Item item) {
+		return isHolding(entity, stack -> stack.getItem() == item);
+	}
+    
+	public static boolean isHolding(Entity entity, Predicate<ItemStack> matcher) {
+		if(entity == null) {
+			return false;
+		}
+		
+		Iterator<ItemStack> heldItems = entity.getHeldEquipment().iterator();
+		while(heldItems.hasNext()) {
+			ItemStack stack = heldItems.next();
+			if(matcher.test(stack))
+				return true;
+		}
+		return false;
+	}
 }

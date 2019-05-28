@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -16,26 +15,20 @@ public class EntityAIDogWander extends EntityAIWander {
 	protected EntityDog dog;
 	protected final float probability;
 
-	public EntityAIDogWander(EntityDog dogIn, double p_i47301_2_) {
-		this(dogIn, p_i47301_2_, 0.001F);
+	public EntityAIDogWander(EntityDog dogIn, double speedIn) {
+		this(dogIn, speedIn, 0.001F);
 	}
 
-	public EntityAIDogWander(EntityDog dogIn, double p_i47302_2_, float p_i47302_4_) {
-		super(dogIn, p_i47302_2_);
+	public EntityAIDogWander(EntityDog dogIn, double speedIn, float probability) {
+		super(dogIn, speedIn);
 		this.dog = dogIn;
-		this.probability = p_i47302_4_;
+		this.probability = probability;
 	}
 
 	@Override
 	@Nullable
 	protected Vec3d getPosition() {
-		if(this.entity.isInWaterOrBubbleColumn()) {
-			Vec3d vec3d = RandomPositionGenerator.getLandPos(this.entity, 15, 7);
-			return vec3d == null ? super.getPosition() : vec3d;
-		} 
-		else {
-			return this.entity.getRNG().nextFloat() >= this.probability ? RandomPositionGenerator.getLandPos(this.entity, 10, 7) : super.getPosition();
-		}
+		return generateRandomPos(this.dog);
 	}
 	
 	private static Vec3d generateRandomPos(EntityDog dog) {

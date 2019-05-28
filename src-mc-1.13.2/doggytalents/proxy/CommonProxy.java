@@ -89,6 +89,7 @@ public class CommonProxy {
 		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_BONE);
+		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_STICK);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.TRAINING_TREAT);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.SUPER_TREAT);

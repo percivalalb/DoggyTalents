@@ -35,8 +35,8 @@ public class ResourceLib {
 	public static final ResourceLocation MOB_LAYER_ARMOR = getMobTexturePath("doggy_armor.png");
 	
 	public static ResourceLocation getTameSkin(int index) {
-		if(index == 0)
-			return MOB_DOG_TAME;
+		//if(index == 0)
+		//	return MOB_DOG_TAME;
 		
 		if(!doggyTameSkins.containsKey(index))
 			doggyTameSkins.put(index, getMobTexturePath("dog/doggytex" + index + ".png"));

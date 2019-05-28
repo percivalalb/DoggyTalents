@@ -8,11 +8,10 @@ public class ServerProxy extends CommonProxy {
 	
 	public ServerProxy() {
 		super();
-        DoggyTalentsMod.LOGGER.debug("SideProxy.Server init");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverSetup);
     }
 
     private void serverSetup(FMLDedicatedServerSetupEvent event) {
-        DoggyTalentsMod.LOGGER.debug("SideProxy.Server serverSetup");
+        DoggyTalentsMod.LOGGER.debug("ServerProxy serverSetup");
     }
 }

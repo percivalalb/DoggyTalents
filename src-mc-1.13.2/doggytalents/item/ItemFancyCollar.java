@@ -23,9 +23,4 @@ public class ItemFancyCollar extends Item {
 	public EnumRarity getRarity(ItemStack stack) {
         return type == Type.CREATIVE ? EnumRarity.EPIC : super.getRarity(stack);
     }
-	
-	@Override
-	public String getTranslationKey(ItemStack par1ItemStack) {
-		return this.getTranslationKey();
-	}
 }

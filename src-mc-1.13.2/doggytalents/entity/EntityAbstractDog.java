@@ -133,7 +133,7 @@ public abstract class EntityAbstractDog extends EntityTameable {
 			this.headRotationCourse += (0.0F - this.headRotationCourse) * 0.4F;
 		}
 
-		if (this.isInWaterRainOrBubbleColumn()) {
+		if(this.isInWaterRainOrBubbleColumn()) {
 			this.isWet = true;
 			this.isShaking = false;
 			this.timeWolfIsShaking = 0.0F;

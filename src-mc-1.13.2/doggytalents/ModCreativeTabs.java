@@ -13,11 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ModCreativeTabs {
 
     public static final ItemGroup GENERAL = new ItemGroup("doggytalents") {
-    	
         @Override
         @OnlyIn(Dist.CLIENT)
-        public ItemStack createIcon()
-        {
+        public ItemStack createIcon() {
         	return new ItemStack(ModItems.TRAINING_TREAT);
         }
     };

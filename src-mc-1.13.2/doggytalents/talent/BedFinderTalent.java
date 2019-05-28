@@ -1,19 +1,21 @@
 package doggytalents.talent;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 
 /**
  * @author ProPercivalalb
  */
-public class BedFinder extends ITalent {
+public class BedFinderTalent extends Talent {
 	
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		int level = dog.TALENTS.getLevel(this);
 		
 		Entity entityRidden = dog.getRidingEntity();
@@ -22,14 +24,14 @@ public class BedFinder extends ITalent {
 			
 			EntityPlayer player = (EntityPlayer)entityRidden;
 			if(player != null && player.getBedLocation(player.dimension) != null) {
-	            dog.COORDS.setBedPos(player.getBedLocation(player.dimension).getX(), player.getBedLocation(player.dimension).getY(), player.getBedLocation(player.dimension).getZ());
+	            dog.COORDS.setBedPos(player.getBedLocation(player.dimension));
 	        }
 		}
 	}
 	
 	
 	@Override
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		int level = dog.TALENTS.getLevel(this);
 		if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
 			dog.startRiding(player);
@@ -38,16 +40,8 @@ public class BedFinder extends ITalent {
 					dog.getAISit().setSitting(true);
 				}
 			}
-    		return true;
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
         }
-		return false;
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
-
-
-
-	@Override
-	public String getKey() {
-		return "bedfinder";
-	}
-
 }

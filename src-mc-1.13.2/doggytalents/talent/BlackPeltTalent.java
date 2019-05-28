@@ -1,14 +1,14 @@
 package doggytalents.talent;
 
 import doggytalents.DoggyTalentsMod;
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 
 /**
  * @author ProPercivalalb
  */
-public class BlackPelt extends ITalent {
+public class BlackPeltTalent extends Talent {
 
 	@Override
 	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
@@ -23,10 +23,4 @@ public class BlackPelt extends ITalent {
         }
         return damage;
 	}
-	
-	@Override
-	public String getKey() {
-		return "blackpelt";
-	}
-
 }

@@ -42,9 +42,9 @@ public class EntityAIDogWander extends EntityAIWander {
 		
         PathNavigate pathnavigate = dog.getNavigator();
     	Random random = dog.getRNG();
-    	int bowlPosX = dog.COORDS.getBowlX();
-    	int bowlPosY = dog.COORDS.getBowlY();
-    	int bowlPosZ = dog.COORDS.getBowlZ();
+    	int bowlPosX = dog.COORDS.getBowlPos().getX();
+    	int bowlPosY = dog.COORDS.getBowlPos().getY();
+    	int bowlPosZ = dog.COORDS.getBowlPos().getZ();
  
     	int xzRange = 5;
     	int yRange = 6;

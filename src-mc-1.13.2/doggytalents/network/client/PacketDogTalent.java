@@ -2,49 +2,50 @@ package doggytalents.network.client;
 
 import java.util.function.Supplier;
 
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketDogTalent {
 	
 	public int entityId;
-	public String talentId;
+	public ResourceLocation talentId;
 	
-    public PacketDogTalent(int entityId, String talentId) {
+    public PacketDogTalent(int entityId, ResourceLocation talentId) {
         this.entityId = entityId;
         this.talentId = talentId;
     }
     
 	public static void encode(PacketDogTalent msg, PacketBuffer buf) {
 		buf.writeInt(msg.entityId);
-		buf.writeString(msg.talentId, 64);
+		buf.writeResourceLocation(msg.talentId);
 	}
 	
 	public static PacketDogTalent decode(PacketBuffer buf) {
 		int entityId = buf.readInt();
-		String talentId = buf.readString(64);
+		ResourceLocation talentId = buf.readResourceLocation();
 		return new PacketDogTalent(entityId, talentId);
 	}
 	
 	
 	public static class Handler {
-        public static void handle(final PacketDogTalent message, Supplier<NetworkEvent.Context> ctx) {
+        public static void handle(final PacketDogTalent msg, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-            	Entity target = ctx.get().getSender().world.getEntityByID(message.entityId);
+            	Entity target = ctx.get().getSender().world.getEntityByID(msg.entityId);
 
                 if(!(target instanceof EntityDog))
                 	return;
 
         		EntityDog dog = (EntityDog)target;
-        		int level = dog.TALENTS.getLevel(message.talentId);
-        		ITalent talent = TalentRegistry.getTalent(message.talentId);
+        		Talent talent = DoggyTalentsAPI.TALENTS.getValue(msg.talentId);
+        		int level = dog.TALENTS.getLevel(talent);
         		
         		if(level < talent.getHighestLevel(dog) && dog.spendablePoints() >= talent.getCost(dog, level + 1))
-        			dog.TALENTS.setLevel(message.talentId, dog.TALENTS.getLevel(message.talentId) + 1);
+        			dog.TALENTS.setLevel(talent, level + 1);
             });
 
             ctx.get().setPacketHandled(true);

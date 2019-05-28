@@ -1,6 +1,6 @@
 package doggytalents.talent;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 /**
  * @author ProPercivalalb
  */
-public class HellHound extends ITalent {
+public class HellHoundTalent extends Talent {
 
 	@Override
 	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
@@ -31,10 +31,4 @@ public class HellHound extends ITalent {
 	public boolean setFire(EntityDog dog, int amount) { 
 		return dog.TALENTS.getLevel(this) != 5; 
 	}
-	
-	@Override
-	public String getKey() {
-		return "hellhound";
-	}
-
 }

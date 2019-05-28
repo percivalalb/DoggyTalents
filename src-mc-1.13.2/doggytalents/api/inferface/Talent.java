@@ -1,25 +1,42 @@
 package doggytalents.api.inferface;
 
+import javax.annotation.Nullable;
+
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.Util;
+import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * @author ProPercivalalb
  */
-public abstract class ITalent {
+public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	
-	public void onClassCreation(EntityDog dog) {}
-	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {}
-	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {}
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) { return false; }
-	public void onUpdate(EntityDog dog) {}
-	public void onLivingUpdate(EntityDog dog) {}
+	@Nullable
+	private String translationKey, translationInfoKey;
+	
+	public void onClassCreation(EntityDog dogIn) {}
+	public void writeAdditional(EntityDog dogIn, NBTTagCompound compound) {}
+	public void readAdditional(EntityDog dogIn, NBTTagCompound compound) {}
+	
+	/**
+	 * PASS will indicate no action is required
+	 * SUCCESS and FAIL results are passed to the final interact
+	 */
+	public ActionResult<ItemStack> onInteract(EntityDog dogIn, EntityPlayer playerIn, ItemStack stackIn) { 
+		return ActionResult.newResult(EnumActionResult.PASS, stackIn); 
+	}
+	
+	public void tick(EntityDog dog) {}
+	public void livingTick(EntityDog dog) {}
 	public int onHungerTick(EntityDog dog, int totalInTick) { return totalInTick; }
 	public int onRegenerationTick(EntityDog dog, int totalInTick) { return totalInTick; }
 	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) { return damage; }
@@ -29,7 +46,14 @@ public abstract class ITalent {
 	public boolean canBreatheUnderwater(EntityDog dog) { return false; }
 	public boolean canTriggerWalking(EntityDog dog) { return true; }
 	public boolean isImmuneToFalls(EntityDog dog) { return false; }
-	public int fallProtection(EntityDog dog) { return 0; }
+	
+	/**
+	 * Will apply the reduction in number of blocks fell when result is SUCCESS
+	 * PASS and FAIL will have no effect
+	 */
+	public ActionResult<Integer> fallProtection(EntityDog dog) { 
+		return ActionResult.newResult(EnumActionResult.PASS, 0); 
+	}
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }
 	public boolean canAttackClass(EntityDog dog, Class entityClass) { return false; }
@@ -57,31 +81,17 @@ public abstract class ITalent {
 		return level;
 	}
 	
-	public String getLocalisedName() {
-		return I18n.format("doggui.talentname." + this.getKey());
+	public String getTranslationKey() {
+		if(this.translationKey == null) {
+			this.translationKey = Util.makeTranslationKey("talent", DoggyTalentsAPI.TALENTS.getKey(this));
+		}
+		return this.translationKey;
 	}
 	
-	public String getLocalisedInfo() {
-		return I18n.format("doggui.talentinfo." + this.getKey());
-	}
-	
-	/**
-	 * If you can try and keep the key as short as possible because
-	 * it has to be sent to the client and server constantly so to 
-	 * avoid packet size kept as small as possible
-	 * @return The key that can be used to look up this talent
-	 */
-	public abstract String getKey();
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof ITalent)
-			return ((ITalent)obj).getKey().equals(this.getKey());
-		return false;
-	}
-	
-	@Override
-	public int hashCode() {
-		return this.getKey().hashCode();
+	public String getInfoTranslationKey() {
+		if(this.translationInfoKey == null) {
+			this.translationInfoKey = this.getTranslationKey() + ".description";
+		}
+		return this.translationInfoKey;
 	}
 }

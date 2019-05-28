@@ -251,36 +251,6 @@ public class DogDataTracker implements IDataTracker {
 	public BlockPos getBowlPos() {
 		return this.getDataManager().get(BOWL_POS).orElse(this.dog.getPosition());
 	}
-	
-	@Override
-	public int getBedX() {
-		return this.getBedPos().getX();
-	}
-
-	@Override
-	public int getBedY() {
-		return this.getBedPos().getY();
-	}
-
-	@Override
-	public int getBedZ() {
-		return this.getBedPos().getZ();
-	}
-
-	@Override
-	public int getBowlX() {
-		return this.getBowlPos().getX();
-	}
-
-	@Override
-	public int getBowlY() {
-		return this.getBowlPos().getY();
-	}
-
-	@Override
-	public int getBowlZ() {
-		return this.getBowlPos().getZ();
-	}
 
 	@Override
 	public void resetBedPosition() {
@@ -293,13 +263,13 @@ public class DogDataTracker implements IDataTracker {
 	}
 
 	@Override
-	public void setBedPos(int x, int y, int z) {
-		this.getDataManager().set(BED_POS, Optional.of(new BlockPos(x, y, z)));
+	public void setBedPos(BlockPos pos) {
+		this.getDataManager().set(BED_POS, Optional.of(pos));
 	}
 
 
 	@Override
-	public void setBowlPos(int x, int y, int z) {
-		this.getDataManager().set(BOWL_POS, Optional.of(new BlockPos(x, y, z)));
+	public void setBowlPos(BlockPos pos) {
+		this.getDataManager().set(BOWL_POS, Optional.of(pos));
 	}
 }

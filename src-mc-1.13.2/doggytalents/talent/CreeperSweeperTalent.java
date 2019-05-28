@@ -3,7 +3,7 @@ package doggytalents.talent;
 import java.util.List;
 import java.util.Random;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -12,7 +12,7 @@ import net.minecraft.init.SoundEvents;
 /**
  * @author ProPercivalalb
  */
-public class CreeperSweeper extends ITalent {
+public class CreeperSweeperTalent extends Talent {
 
 	private Random rand = new Random();
 	
@@ -23,7 +23,7 @@ public class CreeperSweeper extends ITalent {
 	}
 
 	@Override
-	public void onUpdate(EntityDog dog) {
+	public void tick(EntityDog dog) {
 		int level = dog.TALENTS.getLevel(this);
 		
 		if(dog.getAttackTarget() == null && dog.isTamed() && level > 0) {
@@ -56,10 +56,4 @@ public class CreeperSweeper extends ITalent {
 	public boolean canAttackEntity(EntityDog dog, Entity entity) {
 		return entity instanceof EntityCreeper && dog.TALENTS.getLevel(this) == 5;
 	}
-	
-	@Override
-	public String getKey() {
-		return "creepersweeper";
-	}
-
 }

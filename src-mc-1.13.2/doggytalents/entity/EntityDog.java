@@ -9,6 +9,7 @@ import java.util.UUID;
 import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
 import doggytalents.ModItems;
+import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDataTracker;
 import doggytalents.api.inferface.IDogInteractItem;
@@ -227,7 +228,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         compound.putInt("dogSize", this.getDogSize());
         compound.putString("dogGender", this.getGender());
         
-        TalentHelper.writeToNBT(this, compound);
+        TalentHelper.writeAdditional(this, compound);
 	}
 
 	@Override
@@ -246,7 +247,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
         this.setGender(compound.getString("dogGender"));
         
-        TalentHelper.readFromNBT(this, compound);
+        TalentHelper.readAdditional(this, compound);
         
         //Backwards Compatibility
         if (compound.contains("dogName"))
@@ -270,7 +271,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             if (!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
                 this.hungerTick += 1;
 
-            this.hungerTick += TalentHelper.onHungerTick(this, this.hungerTick - this.prevHungerTick);
+            this.hungerTick += TalentHelper.hungerTick(this, this.hungerTick - this.prevHungerTick);
 
             if (this.hungerTick > 400) {
                 this.setDogHunger(this.getDogHunger() - 1);
@@ -283,7 +284,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
             if (this.isSitting()) {
                 this.regenerationTick += 1;
-                this.regenerationTick += TalentHelper.onRegenerationTick(this, this.regenerationTick - this.prevRegenerationTick);
+                this.regenerationTick += TalentHelper.regenerationTick(this, this.regenerationTick - this.prevRegenerationTick);
             } else if (!this.isSitting())
                 this.regenerationTick = 0;
 
@@ -337,8 +338,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
         //Check if dog bowl still exists every 50t/2.5s, if not remove
         if (this.foodBowlCheck++ > 50 && this.COORDS.hasBowlPos()) {
-            if (this.world.isBlockLoaded(new BlockPos(this.COORDS.getBowlX(), this.COORDS.getBowlY(), this.COORDS.getBowlZ())))
-                if (this.world.getBlockState(new BlockPos(this.COORDS.getBowlX(), this.COORDS.getBowlY(), this.COORDS.getBowlZ())).getBlock() != ModBlocks.FOOD_BOWL)
+            if (this.world.isBlockLoaded(this.COORDS.getBowlPos()))
+                if (this.world.getBlockState(this.COORDS.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
                     this.COORDS.resetBowlPosition();
 
             this.foodBowlCheck = 0;
@@ -354,7 +355,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             this.locationManager.removeDog(this);
         }
 
-        TalentHelper.onLivingUpdate(this);
+        TalentHelper.livingTick(this);
     }
 
     @Override
@@ -409,20 +410,26 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 }
             }
         }
-
-        TalentHelper.onUpdate(this);
+        
+        TalentHelper.tick(this);
     }
 	
 	@Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-
-        if(TalentHelper.interactWithPlayer(this, player, stack)) {
-            return true;
+        
+        ActionResult<ItemStack> result = TalentHelper.interactWithPlayer(this, player, stack);
+        switch(result.getType()) {
+        case SUCCESS:
+        	return true;
+        case FAIL:
+        	return false;
+        case PASS:
+			break;
         }
 
-        if (this.isTamed()) {
-            if (!stack.isEmpty()) {
+        if(this.isTamed()) {
+            if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);
 
                 if (foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
@@ -461,18 +468,17 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 } else if (stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                     this.hasRadarCollar(true);
 
-                    if (!player.abilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if (stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
 
-                    if (stack.hasTag() && stack.getTag().contains("collar_colour"))
                         colour = stack.getTag().getInt("collar_colour");
 
                     this.setCollarData(colour);
 
-                    if (!player.abilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if (stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
@@ -509,12 +515,16 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     return true;
                 } else if (stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
                 	IDogInteractItem treat = (IDogInteractItem) stack.getItem();
-                	ActionResult<ItemStack> result = treat.onItemRightClick(stack, this, this.world, player);
+                	ActionResult<ItemStack> treatResult = treat.onItemRightClick(stack, this, this.world, player);
                   
-                	if(result.getType().equals(EnumActionResult.SUCCESS))
-                		return true;
-                	else if(result.getType().equals(EnumActionResult.FAIL))
-                		return false;
+                	switch(treatResult.getType()) {
+                    case SUCCESS:
+                    	return true;
+                    case FAIL:
+                    	return false;
+                    case PASS:
+            			break;
+                    }
                 	
                 } else if (stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
                     if (this.isServer()) {
@@ -961,8 +971,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	
     @Override
     protected float getJumpUpwardsMotion() {
-    	float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel("wolfmount");
-		if(this.TALENTS.getLevel("wolfmount") == 5) verticalVelocity += 0.04F;
+    	float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
+		if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
         return verticalVelocity;
     }
     
@@ -974,8 +984,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     @Override
     protected void onFinishShaking() {
         if(this.isServer()) {
-            int lvlFisherDog = this.TALENTS.getLevel("fisherdog");
-            int lvlHellHound = this.TALENTS.getLevel("hellhound");
+            int lvlFisherDog = this.TALENTS.getLevel(ModTalents.FISHER_DOG);
+            int lvlHellHound = this.TALENTS.getLevel(ModTalents.HELL_HOUND);
 
             if (this.rand.nextInt(15) < lvlFisherDog * 2)
                 this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
@@ -1037,12 +1047,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         if (this.getDogHunger() > 0) {
             amount = 40 + 4 * (MathHelper.floor(this.effectiveLevel()) + 1);
 
-            if (isSitting() && this.TALENTS.getLevel("quickhealer") == 5) {
+            if (isSitting() && this.TALENTS.getLevel(ModTalents.QUICK_HEALER) == 5) {
                 amount += 20 + 2 * (MathHelper.floor(this.effectiveLevel()) + 1);
             }
 
             if (!this.isSitting()) {
-                amount *= 5 + this.TALENTS.getLevel("quickhealer");
+                amount *= 5 + this.TALENTS.getLevel(ModTalents.QUICK_HEALER);
                 amount /= 10;
             }
         }

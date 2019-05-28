@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
 import doggytalents.lib.Reference;
-import doggytalents.talent.HunterDog;
+import doggytalents.talent.HunterDogTalent;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -18,15 +18,9 @@ public class DTEventHandler {
 			EntityInteract.rightClickEntity(event.getWorld(), event.getEntityPlayer(), event.getEntityPlayer().getHeldItem(event.getHand()), event.getTarget());
 	}
 	
-	//TODO @SubscribeEvent
-	//public static void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-	//	if(event.getModID().equals(Reference.MOD_ID))
-	//		ConfigurationHandler.loadConfig();
-	//}
-	
 	@SubscribeEvent
 	public static void onLootDrop(final LivingDropsEvent event) {
-		HunterDog.onLootDrop(event.getEntityLiving(), event.getSource().getTrueSource(), event.getDrops());
+		HunterDogTalent.onLootDrop(event.getEntityLiving(), event.getSource().getTrueSource(), event.getDrops());
 	}
 	
 	@SubscribeEvent

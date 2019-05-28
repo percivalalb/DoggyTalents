@@ -1,5 +1,6 @@
 package doggytalents.inventory;
 
+import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -19,7 +20,7 @@ public class ContainerPackPuppy extends Container {
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
         inventory.openInventory(player);
-        int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
 
         for (int j = 0; j < 3; j++) {
             for (int i1 = 0; i1 < packpuppyLevel; i1++)
@@ -41,7 +42,7 @@ public class ContainerPackPuppy extends Container {
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(i);
-        int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel("packpuppy"), 0, 5);
+        int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
 
         if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();

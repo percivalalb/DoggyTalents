@@ -1,14 +1,16 @@
 package doggytalents.helper;
 
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
 
 /**
  * @author ProPercivalalb
@@ -16,74 +18,82 @@ import net.minecraft.util.DamageSource;
 public class TalentHelper {
 
 	public static void onClassCreation(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			talent.onClassCreation(dog);
 	}
 	
-	public static void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
-		for(ITalent talent : TalentRegistry.getTalents())
-			talent.writeToNBT(dog, tagCompound);
+	public static void writeAdditional(EntityDog dog, NBTTagCompound compound) {
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
+			talent.writeAdditional(dog, compound);
 	}
 	
-	public static void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {
-		for(ITalent talent : TalentRegistry.getTalents())
-			talent.readFromNBT(dog, tagCompound);
+	public static void readAdditional(EntityDog dog, NBTTagCompound compound) {
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
+			talent.readAdditional(dog, compound);
 	}
 	
-	public static boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
-		for(ITalent talent : TalentRegistry.getTalents())
-			if(talent.interactWithPlayer(dog, player, stack))
-				return true;
-		return false;
+	public static ActionResult<ItemStack> interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			ActionResult<ItemStack> result = talent.onInteract(dog, player, stack);
+			
+			switch(result.getType()) {
+			case PASS:
+				continue;
+			default:
+				return result;
+			}
+		}
+
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 
-	public static void onUpdate(EntityDog  dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
-			talent.onUpdate(dog);
+	public static void tick(EntityDog  dog) {
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
+			talent.tick(dog);
 	}
 	
-	public static void onLivingUpdate(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
-			talent.onLivingUpdate(dog);
+	public static void livingTick(EntityDog dog) {
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
+			talent.livingTick(dog);
 	}
 	
-	public static int onHungerTick(EntityDog dog, int totalInTick) {
+	public static int hungerTick(EntityDog dog, int totalInTick) {
 		int total = totalInTick;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total = talent.onHungerTick(dog, total);
 		return total;
 	}
 	
-	public static int onRegenerationTick(EntityDog dog, int totalInTick) {
+	public static int regenerationTick(EntityDog dog, int totalInTick) {
 		int total = totalInTick;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total = talent.onRegenerationTick(dog, total);
 		return total;
 	}
 
 	public static int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
 		int total = damage;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total = talent.attackEntityAsMob(dog, entity, total);
 		return total;
 	}
 	
 	public static int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
 		int total = foodValue;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total = talent.changeFoodValue(dog, stack, total);
 		return total;
 	}
 	
 	public static int getUsedPoints(EntityDog dog) {
 		int total = 0;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total += talent.getCumulativeCost(dog, dog.TALENTS.getLevel(talent));
 		return total;
 	}
 
 	public static boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.isPostionApplicable(dog, potionEffect))
 				return false;
 		return true;
@@ -91,76 +101,85 @@ public class TalentHelper {
 
 	public static double addToMoveSpeed(EntityDog dog) {
 		double total = 0;
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			total += talent.addToMoveSpeed(dog);
 		return total;
 	}
 
 	public static boolean canBreatheUnderwater(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(talent.canBreatheUnderwater(dog))
 				return true;
 		return false;
 	}
 	
 	public static boolean canTriggerWalking(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.canTriggerWalking(dog))
 				return false;
 		return true;
 	}
 
 	public static boolean isImmuneToFalls(EntityDog dog) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(talent.isImmuneToFalls(dog))
 				return true;
 		return false;
 	}
 	
-	public static int fallProtection(EntityDog dog) {
+	public static int fallProtection(EntityDog dogIn) {
 		int total = 0;
-		for(ITalent talent : TalentRegistry.getTalents())
-			total += talent.fallProtection(dog);
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			ActionResult<Integer> result = talent.fallProtection(dogIn);
+			
+			switch(result.getType()) {
+			case SUCCESS:
+				total += result.getResult();
+				break;
+			default:
+				continue;
+			}
+		}
 		return total;
 	}
 
 	public static boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.attackEntityFrom(dog, damageSource, damage))
 				return false;
 		return true;
 	}
 
 	public static boolean shouldDamageMob(EntityDog dog, Entity entity) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.shouldDamageMob(dog, entity))
 				return false;
 		return true;
 	}
 
 	public static boolean canAttackClass(EntityDog dog, Class entityClass) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(talent.canAttackClass(dog, entityClass))
 				return true;
 		return false;
 	}
 	
 	public static boolean canAttackEntity(EntityDog dog, Entity entity) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(talent.canAttackEntity(dog, entity))
 				return true;
 		return false;
 	}
 
 	public static boolean setFire(EntityDog dog, int amount) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.setFire(dog, amount))
 				return false;
 		return true;
 	}
 	
 	public static boolean shouldDismountInWater(EntityDog dog, Entity rider) {
-		for(ITalent talent : TalentRegistry.getTalents())
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.shouldDismountInWater(dog, rider))
 				return false;
 		return true;

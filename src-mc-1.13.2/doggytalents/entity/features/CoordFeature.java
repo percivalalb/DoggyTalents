@@ -21,41 +21,21 @@ public class CoordFeature extends DogFeature {
 		return this.dog.dataTracker.hasBowlPos();
 	}
 	
-	public void setBedPos(int x, int y, int z) {
-		this.dog.dataTracker.setBedPos(x, y, z);
+	public void setBedPos(BlockPos pos) {
+		this.dog.dataTracker.setBedPos(pos);
 	}
 	
-	public void setBowlPos(int x, int y, int z) {
-		this.dog.dataTracker.setBowlPos(x, y, z);
-		this.dog.setHomePosAndDistance(new BlockPos(x, y, z), 5);
+	public void setBowlPos(BlockPos pos) {
+		this.dog.dataTracker.setBowlPos(pos);
+		this.dog.setHomePosAndDistance(pos, 5);
 	}
 	
-	public int getBedX() {
-		return this.dog.dataTracker.getBedX();
+	public BlockPos getBedPos() {
+		return this.dog.dataTracker.getBedPos();
 	}
 	
-	public int getBedY() {
-		return this.dog.dataTracker.getBedY();
-	}
-	
-	public int getBedZ() {
-		return this.dog.dataTracker.getBedZ();
-	}
-	
-	public int getBowlX() {
-		return this.dog.dataTracker.getBowlX();
-	}
-	
-	public int getBowlY() {
-		return this.dog.dataTracker.getBowlY();
-	}
-	
-	public int getBowlZ() {
-		return this.dog.dataTracker.getBowlZ();
-	}
-	
-	public void resetBedPosition() {
-		this.dog.dataTracker.resetBedPosition();
+	public BlockPos getBowlPos() {
+		return this.dog.dataTracker.getBowlPos();
 	}
 	
 	public void resetBowlPosition() {
@@ -66,32 +46,32 @@ public class CoordFeature extends DogFeature {
 	@Override
 	public void writeAdditional(NBTTagCompound tagCompound) {
 		if(this.hasBedPos()) {
-			tagCompound.putInt("bedPosX", this.getBedX());
-			tagCompound.putInt("bedPosY", this.getBedY());
-			tagCompound.putInt("bedPosZ", this.getBedZ());
+			tagCompound.putInt("bedPosX", this.getBedPos().getX());
+			tagCompound.putInt("bedPosY", this.getBedPos().getY());
+			tagCompound.putInt("bedPosZ", this.getBedPos().getZ());
 		}
 		
 		if(this.hasBowlPos()) {
-			tagCompound.putInt("bowlPosX", this.getBowlX());
-			tagCompound.putInt("bowlPosY", this.getBowlY());
-			tagCompound.putInt("bowlPosZ", this.getBowlZ());
+			tagCompound.putInt("bowlPosX", this.getBedPos().getX());
+			tagCompound.putInt("bowlPosY", this.getBedPos().getY());
+			tagCompound.putInt("bowlPosZ", this.getBedPos().getZ());
 		}
 	}
 	
 	@Override
 	public void readAdditional(NBTTagCompound tagCompound) {
 		if(tagCompound.contains("bedPosX")) {
-			this.setBedPos(tagCompound.getInt("bedPosX"), tagCompound.getInt("bedPosY"), tagCompound.getInt("bedPosZ"));
+			this.setBedPos(new BlockPos(tagCompound.getInt("bedPosX"), tagCompound.getInt("bedPosY"), tagCompound.getInt("bedPosZ")));
 		}
 		if(tagCompound.contains("bowlPosX")) {
-			this.setBowlPos(tagCompound.getInt("bowlPosX"), tagCompound.getInt("bowlPosY"), tagCompound.getInt("bowlPosZ"));
+			this.setBowlPos(new BlockPos(tagCompound.getInt("bowlPosX"), tagCompound.getInt("bowlPosY"), tagCompound.getInt("bowlPosZ")));
 		}
 		
 		//Backwards compatibility
 		if(tagCompound.contains("coords")) {
 			String[] split = tagCompound.getString("coords").split(":");
-			this.setBedPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2]));
-			this.setBowlPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5]));
+			this.setBedPos(new BlockPos(new Integer(split[0]), new Integer(split[1]), new Integer(split[2])));
+			this.setBowlPos(new BlockPos(new Integer(split[3]), new Integer(split[4]), new Integer(split[5])));
 		}
 	}
 }

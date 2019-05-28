@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import java.util.List;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityVillager;
@@ -15,7 +15,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 /**
  * @author ProPercivalalb
  */
-public class PuppyEyes extends ITalent {
+public class PuppyEyesTalent extends Talent {
 	
 	@Override
 	public void onClassCreation(EntityDog dog) {
@@ -23,18 +23,18 @@ public class PuppyEyes extends ITalent {
 	}
 	
 	@Override
-	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		int charmerCharge = (Integer)dog.objects.get("charmercharge");
 		tagCompound.putInt("charmercharge", charmerCharge);
 	}
 	
 	@Override
-	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		dog.objects.put("charmercharge", tagCompound.getInt("charmercharge"));
 	}
 	
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		if(!dog.isTamed()) return;
 		
 		int charmerCharge = (Integer)dog.objects.get("charmercharge");
@@ -123,10 +123,4 @@ public class PuppyEyes extends ITalent {
 
 	    return charmVillager;
 	}
-	
-	@Override
-	public String getKey() {
-		return "puppyeyes";
-	}
-
 }

@@ -3,7 +3,7 @@ package doggytalents.talent;
 import java.util.List;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
@@ -13,6 +13,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -20,7 +22,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 /**
  * @author ProPercivalalb
  */
-public class PackPuppy extends ITalent {
+public class PackPuppyTalent extends Talent {
 
 	@Override
 	public void onClassCreation(EntityDog dog) {
@@ -28,19 +30,19 @@ public class PackPuppy extends ITalent {
 	}
 	
 	@Override
-	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 		inventory.writeToNBT(tagCompound);
 	}
 	
 	@Override
-	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 		inventory.readFromNBT(tagCompound);
 	}
 	
 	@Override
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		int level = dog.TALENTS.getLevel(this);
 		
 	    if(dog.isTamed()) {
@@ -59,17 +61,17 @@ public class PackPuppy extends ITalent {
 	    	                }
 	    	            }
 	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
-	    				return true;
+	    				return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	    			}
 	    		}
 	    	}
 	    }
 		
-		return false;
+		return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 	
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		if(dog.isServer() && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
 			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 			
@@ -88,10 +90,4 @@ public class PackPuppy extends ITalent {
 	        }
 		}
 	}
-	
-	@Override
-	public String getKey() {
-		return "packpuppy";
-	}
-
 }

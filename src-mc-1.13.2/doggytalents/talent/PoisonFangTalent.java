@@ -1,6 +1,6 @@
 package doggytalents.talent;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,14 +9,16 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 
 /**
  * @author ProPercivalalb
  */
-public class PoisonFang extends ITalent {
+public class PoisonFangTalent extends Talent {
 
 	@Override
-	public boolean interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		int level = dog.TALENTS.getLevel(this);
 		
 	    if (dog.isTamed()) {
@@ -27,12 +29,12 @@ public class PoisonFang extends ITalent {
 	    			}
 
 	    			dog.setDogHunger(dog.getDogHunger() - 30);
-                	return true;
+	    			return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	    		}
 	    	}
 	    }
 		
-		return false;
+	    return ActionResult.newResult(EnumActionResult.PASS, stack);
 	}
 	
 	@Override
@@ -52,10 +54,5 @@ public class PoisonFang extends ITalent {
 			((EntityLivingBase)entity).addPotionEffect(new PotionEffect(MobEffects.POISON, level * 20, 0));
 	    
 		return damage;
-	}
-	
-	@Override
-	public String getKey() {
-		return "poisonfang";
 	}
 }

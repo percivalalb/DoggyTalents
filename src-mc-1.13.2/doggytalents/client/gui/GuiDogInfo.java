@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import doggytalents.api.inferface.ITalent;
-import doggytalents.api.registry.TalentRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.Talent;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,10 +56,11 @@ public class GuiDogInfo extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		super.initGui();
 		this.buttons.clear();
+		this.children.clear();
 		this.labels.clear();
 		this.textfieldList.clear();
+		super.initGui();
 		
 	    this.mc.keyboardListener.enableRepeatEvents(true);
 		int topX = this.width / 2;
@@ -68,14 +70,14 @@ public class GuiDogInfo extends GuiScreen {
 			public boolean charTyped(char character, int keyId) {
 				boolean typed = super.charTyped(character, keyId);
 				if(typed)
-					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(dog.getEntityId(), this.getText()));
+					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), this.getText()));
 				return typed;
 			}
 			
 			@Override
 			public void deleteFromCursor(int index) {
 				super.deleteFromCursor(index);
-				PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(dog.getEntityId(), this.getText()));
+				PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), this.getText()));
 			}
 		};
 		nameTextField.setFocused(false);
@@ -86,55 +88,47 @@ public class GuiDogInfo extends GuiScreen {
 		this.textfieldList.add(nameTextField);
 		this.doggyTex = this.dog.getTameSkin();
 		
-		int size = TalentRegistry.getTalents().size();
+		int size = DoggyTalentsAPI.TALENTS.getKeys().size();
+		
+  		this.btnPerPages = Math.max(MathHelper.floor((double)(Minecraft.getInstance().mainWindow.getScaledHeight() - 10) / 21) - 2, 1);
     	
-    	int temp = 0;
-    	while((temp + 2) * 21 + 10 < Minecraft.getInstance().mainWindow.getScaledHeight())
-    		temp += 1;
-    	
-  		this.btnPerPages = temp;
-    	
-    	if(temp < size) {
-    		this.addButton(new GuiButton(-1, 25, temp * 21 + 10, 20, 20, "<") {
+    	if(this.btnPerPages < size) {
+    		this.addButton(new GuiButton(-1, 25, this.btnPerPages * 21 + 10, 20, 20, "<") {
     			@Override
     			public void onClick(double mouseX, double mouseY) {
-    				if(currentPage > 0) {
-    	    			currentPage -= 1;
-    	    			initGui();
+    				if(GuiDogInfo.this.currentPage > 0) {
+    					GuiDogInfo.this.currentPage -= 1;
+    	    			GuiDogInfo.this.initGui();
     	    		}
     			}
     		});
-    	    this.addButton(new GuiButton(-2, 48, temp * 21 + 10, 20, 20, ">") {
+    	    this.addButton(new GuiButton(-2, 48, this.btnPerPages * 21 + 10, 20, 20, ">") {
     	    	@Override
     	    	public void onClick(double mouseX, double mouseY) {
-    	    		if(currentPage + 1 < maxPages) {
-    					currentPage += 1;
-    	    			initGui();
+    	    		if(GuiDogInfo.this.currentPage + 1 < maxPages) {
+    	    			GuiDogInfo.this.currentPage += 1;
+    					GuiDogInfo.this.initGui();
     	    		}
     	    	}
     	    });
     	}
-		
-    	if(this.btnPerPages < 1)
-    		this.btnPerPages = 1;
     	
-		this.maxPages = (int)Math.ceil((double)TalentRegistry.getTalents().size() / (double)this.btnPerPages);
+		this.maxPages = MathHelper.ceil((double)size / this.btnPerPages);
 		
 		if(this.currentPage >= this.maxPages)
     		this.currentPage = 0;
 		
-    	for(int i = 0; i < this.btnPerPages; ++i) {
-    		final int t = i;
-    		if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
-    			continue;
-    		this.addButton(new GuiButton(1 + this.currentPage * this.btnPerPages + i, 25, 10 + i * 21, 20, 20, "+") {
+		int i = -1;
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			i++;
+			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
+				continue;
+    		this.addButton(new GuiTalentButton(1 + i, 25, 10 + (i - this.currentPage * this.btnPerPages) * 21, 20, 20, "+", talent) {
     			@Override
     			public void onClick(double mouseX, double mouseY) {
-    				ITalent talent = TalentRegistry.getTalent(currentPage * btnPerPages + t);
-    				int level = dog.TALENTS.getLevel(talent);
-    				
-    				if(level < talent.getHighestLevel(dog) && dog.spendablePoints() >= talent.getCost(dog, level + 1))
-    					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTalent(dog.getEntityId(), TalentRegistry.getTalent(currentPage * btnPerPages + t).getKey()));
+    				int level = GuiDogInfo.this.dog.TALENTS.getLevel(this.talent);
+    				if(level < this.talent.getHighestLevel(GuiDogInfo.this.dog) && GuiDogInfo.this.dog.spendablePoints() >= this.talent.getCost(GuiDogInfo.this.dog, level + 1))
+    					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTalent(GuiDogInfo.this.dog.getEntityId(), this.talent.getRegistryName()));
     			}
     		});
     	}
@@ -143,17 +137,17 @@ public class GuiDogInfo extends GuiScreen {
 	    	this.addButton(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+") {
 				@Override
 				public void onClick(double mouseX, double mouseY) {
-					doggyTex += 1;
-					doggyTex %= 128;
-					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
+					GuiDogInfo.this.doggyTex += 1;
+					GuiDogInfo.this.doggyTex %= 128;
+					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(GuiDogInfo.this.dog.getEntityId(), GuiDogInfo.this.doggyTex));
 				}
 			});
 	        this.addButton(new GuiButton(-4, this.width - 64, topY + 30, 20, 20, "-") {
 				@Override
 				public void onClick(double mouseX, double mouseY) {
-					doggyTex += 127;
-					doggyTex %= 128;
-					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(dog.getEntityId(), doggyTex));
+					GuiDogInfo.this.doggyTex += 127;
+					GuiDogInfo.this.doggyTex %= 128;
+					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTexture(GuiDogInfo.this.dog.getEntityId(), GuiDogInfo.this.doggyTex));
 				}
 			});
     	}
@@ -162,7 +156,7 @@ public class GuiDogInfo extends GuiScreen {
     	    	@Override
     	    	public void onClick(double mouseX, double mouseY) {
     	    		this.displayString = String.valueOf(!dog.willObeyOthers());
-    	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogObey(dog.getEntityId(), !dog.willObeyOthers()));
+    	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogObey(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.willObeyOthers()));
     	    	}
     	    });
         
@@ -170,21 +164,21 @@ public class GuiDogInfo extends GuiScreen {
         this.addButton(new GuiButton(-7, this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canFriendlyFire())) {
 	    	@Override
 	    	public void onClick(double mouseX, double mouseY) {
-	    		this.displayString = String.valueOf(!dog.canFriendlyFire());
-	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketFriendlyFire(dog.getEntityId(), !dog.canFriendlyFire()));
+	    		this.displayString = String.valueOf(!GuiDogInfo.this.dog.canFriendlyFire());
+	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketFriendlyFire(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.canFriendlyFire()));
 	    	}
 	    });
         
         this.addButton(new GuiButton(-6, topX + 40, topY + 25, 60, 20, I18n.format(this.dog.MODE.getMode().getUnlocalisedName())) {
 	    	@Override
 	    	public void onClick(double mouseX, double mouseY) {
-	    		int newMode = (dog.MODE.getMode().ordinal() + 1) % EnumMode.values().length;
+	    		int newMode = (GuiDogInfo.this.dog.MODE.getMode().ordinal() + 1) % EnumMode.values().length;
 	        	EnumMode mode = EnumMode.values()[newMode];
 	        	if(mode == EnumMode.WANDERING && !dog.COORDS.hasBowlPos())
 	        		this.displayString = TextFormatting.RED + I18n.format(mode.getUnlocalisedName());
 	        	else
 	        		this.displayString = I18n.format(mode.getUnlocalisedName());
-	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogMode(dog.getEntityId(), newMode));
+	        	PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogMode(GuiDogInfo.this.dog.getEntityId(), newMode));
 	    	}
 	    });
         
@@ -208,18 +202,25 @@ public class GuiDogInfo extends GuiScreen {
 		String ageRel = "";
 		if(this.dog.isChild()) {
 			ageRel = I18n.format("doggui.age.baby");
-		}else {
+		} 
+		else {
 			ageRel = I18n.format("doggui.age.adult");
 		}
 		String ageString = ageValue +" "+ ageRel;
 		
 		String tamedString = "";
-		if (this.dog.isTamed()) {
-			if (this.dog.getOwner().getDisplayName().getUnformattedComponentText().equals(this.player.getDisplayName().getUnformattedComponentText()) || this.dog.getOwnerId().toString().equals(this.player.getUniqueID().toString())) {
+		if(this.dog.isTamed()) {
+			if(this.dog.isOwner(this.player)) {
 				tamedString = I18n.format("doggui.owner.you");
 			}
+			else if(this.dog.getOwner() != null) {
+				tamedString = this.dog.getOwner().getDisplayName().getFormattedText();
+			}
+			else if(this.dog.getOwnerId() != null) {
+				tamedString = this.dog.getOwnerId().toString();
+			}
 			else {
-				tamedString = this.dog.getOwner().getDisplayName().getUnformattedComponentText();
+				tamedString = "Unknown";
 			}
 		}
 		
@@ -241,12 +242,14 @@ public class GuiDogInfo extends GuiScreen {
 	    	this.fontRenderer.drawString(I18n.format("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
 	    
 	    this.fontRenderer.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
-				
-		for(int i = 0; i < this.btnPerPages; ++i) {
-			if((this.currentPage * this.btnPerPages + i) >= TalentRegistry.getTalents().size())
-		    	continue;
-		    this.fontRenderer.drawString(TalentRegistry.getTalent(this.currentPage * this.btnPerPages + i).getLocalisedName(), 50, 17 + i * 21, 0xFFFFFF);
-		}
+		
+		int i = -1;
+		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			i++;
+			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
+				continue;
+			this.fontRenderer.drawString(I18n.format(talent.getTranslationKey()), 50, 17 + (i - this.currentPage * this.btnPerPages) * 21, 0xFFFFFF);
+    	}
 				
 		for(GuiTextField field : this.textfieldList)
 			field.drawTextField(mouseX, mouseY, partialTicks);
@@ -266,15 +269,15 @@ public class GuiDogInfo extends GuiScreen {
 	    	GuiButton button = (GuiButton)this.buttons.get(k);
 	    	if(button.isMouseOver()) {
 	    		List<String> list = new ArrayList<String>();
-	    		if(button.id >= 1 && button.id <= TalentRegistry.getTalents().size()) {
-	    			ITalent talent = TalentRegistry.getTalent(button.id - 1);
+	    		if(button.id >= 1 && button.id <= DoggyTalentsAPI.TALENTS.getKeys().size()) {
+	    			Talent talent = button instanceof GuiTalentButton ? ((GuiTalentButton)button).talent : null;
 	    			
-			    	list.add(TextFormatting.GREEN + talent.getLocalisedName());
+			    	list.add(TextFormatting.GREEN + I18n.format(talent.getTranslationKey()));
 			    	list.add("Level: " + this.dog.TALENTS.getLevel(talent));
 			    	list.add(TextFormatting.GRAY + "--------------------------------");
-		    		list.addAll(this.splitInto(talent.getLocalisedInfo(), 200, this.mc.fontRenderer));
+		    		list.addAll(this.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, this.mc.fontRenderer));
 	    		}
-	    		else if(button.id == -1) {
+	    		if(button.id == -1) {
 	    			list.add(TextFormatting.ITALIC + I18n.format("doggui.prevpage"));
 	    		}
 	    		else if(button.id == -2) {
@@ -287,7 +290,7 @@ public class GuiDogInfo extends GuiScreen {
     					if(!this.dog.COORDS.hasBowlPos())
     						list.add(TextFormatting.RED + I18n.format("doggui.mode.docile.nobowl"));
     					else 
-    						list.add(TextFormatting.GREEN + I18n.format("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlX(), this.dog.COORDS.getBowlY(), this.dog.COORDS.getBowlZ()))));
+    						list.add(TextFormatting.GREEN + I18n.format("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
     				}
     			}
 	    		
@@ -337,5 +340,15 @@ public class GuiDogInfo extends GuiScreen {
 		}
 
 	    return list;
+	}
+	
+	private static class GuiTalentButton extends GuiButton {
+
+		protected Talent talent;
+		private GuiTalentButton(int buttonId, int x, int y, int widthIn, int heightIn, String buttonText, Talent talent) {
+			super(buttonId, x, y, widthIn, heightIn, buttonText);
+			this.talent = talent;
+		}
+		
 	}
 }

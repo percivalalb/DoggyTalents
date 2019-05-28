@@ -1,6 +1,7 @@
 package doggytalents.client.renderer.world;
 
 import doggytalents.DoggyTalentsMod;
+import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.GlStateManager;
@@ -28,13 +29,13 @@ public class WorldRender {
 			if(passenger instanceof EntityDog) {
 				EntityDog dog = (EntityDog)passenger;
 				if(dog.COORDS.hasBedPos()) {
-					int level = dog.TALENTS.getLevel("bedfinder");
-					double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.COORDS.getBedX(), dog.COORDS.getBedY(), dog.COORDS.getBedZ()));
+					int level = dog.TALENTS.getLevel(ModTalents.BED_FINDER);
+					double distance = (level * 200D) - Math.sqrt(dog.getDistanceSq(dog.COORDS.getBedPos()));
 				    if(level == 5 || distance >= 0.0D) {
 						
 				    	GlStateManager.pushMatrix();
 						
-						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedX(), dog.COORDS.getBedY(), dog.COORDS.getBedZ(), dog.COORDS.getBedX() + 1, dog.COORDS.getBedY() + 1, dog.COORDS.getBedZ() + 1).grow(0.5D);
+						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
 						drawSelectionBox(player, event.getPartialTicks(), boundingBox);
 						GlStateManager.popMatrix();
 				    }

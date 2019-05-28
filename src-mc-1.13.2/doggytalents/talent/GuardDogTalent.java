@@ -1,6 +1,6 @@
 package doggytalents.talent;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
@@ -9,7 +9,7 @@ import net.minecraft.util.DamageSource;
 /**
  * @author ProPercivalalb
  */
-public class GuardDog extends ITalent {
+public class GuardDogTalent extends Talent {
 
 	@Override
 	public void onClassCreation(EntityDog dog) {
@@ -17,7 +17,7 @@ public class GuardDog extends ITalent {
 	}
 	
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		int guardTime = (Integer)dog.objects.get("guardtime");
 		if(guardTime > 0) {
 			dog.objects.put("guardtime", guardTime - 1);
@@ -51,10 +51,5 @@ public class GuardDog extends ITalent {
 			if(dog.getRNG().nextInt(2) == 0)
 				totalInTick += 1;
 		return totalInTick; 
-	}
-	
-	@Override
-	public String getKey() {
-		return "guarddog";
 	}
 }

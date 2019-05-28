@@ -1,5 +1,7 @@
 package doggytalents.api.inferface;
 
+import net.minecraft.util.math.BlockPos;
+
 public interface IDataTracker {
 	
 	public void entityInit();
@@ -57,18 +59,14 @@ public interface IDataTracker {
 	public boolean hasBedPos();
 	public boolean hasBowlPos();
 
-	public int getBedX();
-	public int getBedY();
-	public int getBedZ();
+	public BlockPos getBedPos();
 	
-	public int getBowlX();
-	public int getBowlY();
-	public int getBowlZ();
+	public BlockPos getBowlPos();
 
 	public void resetBedPosition();
 	public void resetBowlPosition();
 
-	public void setBedPos(int x, int y, int z);
-	public void setBowlPos(int x, int y, int z) ;
+	public void setBedPos(BlockPos pos);
+	public void setBowlPos(BlockPos pos) ;
 
 }

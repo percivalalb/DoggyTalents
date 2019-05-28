@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import java.util.UUID;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -11,7 +11,7 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 /**
  * @author ProPercivalalb
  */
-public class DoggyDash extends ITalent {
+public class DoggyDashTalent extends Talent {
 
 	private static UUID DASH_BOOST_ID = UUID.fromString("50671e49-1ded-4097-902b-78bb6b178772");
 	
@@ -30,10 +30,4 @@ public class DoggyDash extends ITalent {
 	public AttributeModifier createSpeedModifier(double speed) {
 		return new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, 0);
 	}
-	
-	@Override
-	public String getKey() {
-		return "doggydash";
-	}
-	
 }

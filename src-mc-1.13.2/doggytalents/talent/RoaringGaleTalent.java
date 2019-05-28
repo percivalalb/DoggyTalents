@@ -2,11 +2,13 @@ package doggytalents.talent;
 
 import java.util.List;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
+import doggytalents.helper.DogUtil;
 import doggytalents.lib.Constants;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +16,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 
-public class RoaringGale extends ITalent {
+public class RoaringGaleTalent extends Talent {
 	
 	@Override
 	public void onClassCreation(EntityDog dog) {
@@ -22,23 +24,22 @@ public class RoaringGale extends ITalent {
 	}
 	
 	@Override
-	public void writeToNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 		tagCompound.putInt("roarcooldown", roarCooldown);
 	}
 	
 	@Override
-	public void readFromNBT(EntityDog dog, NBTTagCompound tagCompound) {
+	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		dog.objects.put("roarcooldown", tagCompound.getInt("roarcooldown"));
 	}
 	
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		int level = dog.TALENTS.getLevel(this);
-		int masterOrder = dog.masterOrder();
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 
-		if (dog.isClient() || masterOrder != 4 || dog.getHealth() <= Constants.LOW_HEATH_LEVEL || dog.isChild() || level < 1) {
+		if(dog.isClient() || !DogUtil.isHolding(dog.getOwner(), Items.BONE) || dog.getHealth() <= Constants.LOW_HEATH_LEVEL || dog.isChild() || level < 1) {
 			return;
 		}
 
@@ -77,10 +78,4 @@ public class RoaringGale extends ITalent {
 			}
 		}
 	}
-
-	@Override
-	public String getKey() {
-		return "roaringgale";
-	}
-
 }

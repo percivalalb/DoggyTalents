@@ -1,16 +1,16 @@
 package doggytalents.talent;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * @author ProPercivalalb
  */
-public class RescueDog extends ITalent {
+public class RescueDogTalent extends Talent {
 
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		EntityPlayer player = (EntityPlayer)dog.getOwner();
 		
 		int level = dog.TALENTS.getLevel(this);
@@ -30,11 +30,4 @@ public class RescueDog extends ITalent {
 
         return byte0;
     }
-		
-	
-	@Override
-	public String getKey() {
-		return "rescuedog";
-	}
-
 }

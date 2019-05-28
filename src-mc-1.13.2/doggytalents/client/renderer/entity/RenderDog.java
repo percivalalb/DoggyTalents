@@ -1,5 +1,6 @@
 package doggytalents.client.renderer.entity;
 
+import doggytalents.ModTalents;
 import doggytalents.client.model.entity.ModelChest;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.model.entity.ModelSaddle;
@@ -40,10 +41,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
         
         this.addLayer(new LayerCover(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_SUNGLASSES, EntityDog::hasSunglasses));
         
-        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigHandler.CLIENT.doggyArmour() && dog.TALENTS.getLevel("guarddog") > 0));
-        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel("pillowpaw") == 5));
-        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel("wolfmount") > 0));
-        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigHandler.CLIENT.doggyChest() && dog.TALENTS.getLevel("packpuppy") > 0));
+        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigHandler.CLIENT.doggyArmour() && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
+        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
+        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigHandler.CLIENT.doggyChest() && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
     }
 
     @Override

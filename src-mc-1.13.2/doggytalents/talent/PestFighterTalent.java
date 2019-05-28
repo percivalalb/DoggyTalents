@@ -3,7 +3,7 @@ package doggytalents.talent;
 import java.util.Iterator;
 import java.util.List;
 
-import doggytalents.api.inferface.ITalent;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.monster.EntitySilverfish;
 import net.minecraft.util.DamageSource;
@@ -11,10 +11,10 @@ import net.minecraft.util.DamageSource;
 /**
  * @author ProPercivalalb
  */
-public class PestFighter extends ITalent {
+public class PestFighterTalent extends Talent {
 
 	@Override
-	public void onLivingUpdate(EntityDog dog) {
+	public void livingTick(EntityDog dog) {
 		int level = dog.TALENTS.getLevel(this);
 		
 		if(level >= 0) {
@@ -33,10 +33,4 @@ public class PestFighter extends ITalent {
             }
         }
 	}
-	
-	@Override
-	public String getKey() {
-		return "pestfighter";
-	}
-
 }

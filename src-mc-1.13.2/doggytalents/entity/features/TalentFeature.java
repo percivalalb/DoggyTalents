@@ -1,108 +1,101 @@
 package doggytalents.entity.features;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.Compatibility;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 
 /**
  * @author ProPercivalalb
  */
 public class TalentFeature extends DogFeature {
 	
-	private Map<String, Integer> dataMap;
-	private String lastSaveString;
-	
 	public TalentFeature(EntityDog dogIn) {
 		super(dogIn);
-		this.dataMap = new HashMap<String, Integer>();
-		this.lastSaveString = "";
 	}
 	
 	@Override
     public void writeAdditional(NBTTagCompound compound) {
-        compound.putString("talents", this.getSaveString());
-        compound.putBoolean("talent_reg_update", true);
+		
+		NBTTagList list = new NBTTagList();
+		Map<Talent, Integer> map = this.dog.dataTracker.getTalentMap();
+		for(Entry<Talent, Integer> entry : map.entrySet()) {
+			NBTTagCompound subCompound = new NBTTagCompound();
+			subCompound.putString("talent", entry.getKey().getRegistryName().toString());
+			subCompound.putInt("level", entry.getValue());
+			list.add(subCompound);
+		}
+		
+		if(list.size() > 0)
+			compound.put("talent_level_list", list);
     }
 
     @Override
     public void readAdditional(NBTTagCompound compound) {
-    	String talentString = compound.getString("talents");
     	
-    	// Correct order version of save data from 1.14.3.451 & before
-    	if(!compound.getBoolean("talent_reg_update")) {
-	    	String newTalentString = "";
-	    	String[] split = talentString.split(":");
+		Map<Talent, Integer> talentMap = new HashMap<>();
+    	
+    	if(compound.contains("talent_level_list", 9)) {
+    		
+    		NBTTagList list = compound.getList("talent_level_list", 10);
+    		for(int i = 0; i < list.size(); i++) {
+    			NBTTagCompound subCompound = list.getCompound(i);
+    			ResourceLocation talentId = new ResourceLocation(subCompound.getString("talent"));
+    			int level = subCompound.getInt("level");
+    			
+    			if(DoggyTalentsAPI.TALENTS.containsKey(talentId)) // Only load talent if enabled in config
+    				talentMap.put(DoggyTalentsAPI.TALENTS.getValue(talentId), level);
+    		}
+    		
+    	} else if(compound.contains("talents", 8)) {
+    		
+    		String[] split = compound.getString("talents").split(":");
 			if(split.length > 0 && split.length % 2 == 0) {
 				for(int i = 0; i < split.length; i += 2) {
-					String id = Compatibility.getTalentOldNamingScheme(split[i]);
-					this.dataMap.put(id, Integer.valueOf(split[i + 1]));
-					newTalentString += id + ":" + split[i + 1];
+					Talent talent = Compatibility.getTalentOldNamingScheme(split[i]);
+					int level = 0;
+					try {
+						level = Integer.valueOf(split[i + 1]);
+					} catch(Exception e) {
+						continue;
+					}
+					
+					if(talent != null) // Only load talent if enabled in config
+						talentMap.put(talent, level);
 				}
 			}
-			talentString = newTalentString;
-			this.lastSaveString = talentString;
     	}
     	
-    	this.dog.dataTracker.setTalentString(talentString);
+    	if(talentMap.size() > 0) {
+			this.dog.dataTracker.setTalentMap(talentMap);
+    	} else {
+			this.dog.dataTracker.setTalentMap(Collections.emptyMap());
+    	}
     }
 	
-	public String getSaveString() {
-		String saveString = this.dog.dataTracker.getTalentString();
-		return saveString == null ? "" : saveString;
+	public int getLevel(@Nullable Talent talent) {
+		Map<Talent, Integer> map = this.dog.dataTracker.getTalentMap();
+		return map.containsKey(talent) ? map.get(talent) : 0;
 	}
 	
-	public int getLevel(Talent talent) {
-		return this.getLevel(talent.getRegistryName().getPath());
-	}
-	
-	public int getLevel(String location) {
-		String saveString = this.getSaveString();
-		if(!this.lastSaveString.equals(saveString)) {
-			this.dataMap.clear();
-			String[] split = saveString.split(":");
-			if(split.length % 2 == 0 && split.length > 0) {
-				for(int i = 0; i < split.length; i += 2)
-					this.dataMap.put(split[i], Integer.valueOf(split[i + 1]));
-			}
-			this.lastSaveString = saveString;
-		}
-		
-		if(!this.dataMap.containsKey(location))
-			return 0;
-		else {
-			int level = this.dataMap.get(location);
-			return level;
-		}
-	}
-	
-	public void setLevel(Talent talent, int level) {
-		String location = talent.getRegistryName().getPath();
-		if(level == this.getLevel(location) && level > 5)
-			return;
-
-		this.dataMap.put(location, level);
-		talent.onLevelUpdate(this.dog, level);
-		
-		String saveString = "";
-		boolean first = true;
-		
-		for(String key : this.dataMap.keySet()) {
-			if(!first)
-				saveString += ":";
-			
-			saveString += key.toString() + ":" + this.dataMap.get(key);
-			first = false;
-		}
-		
-		this.dog.dataTracker.setTalentString(saveString);
+	public void setLevel(@Nonnull Talent talent, int level) {
+		Map<Talent, Integer> map = new HashMap<>(this.dog.dataTracker.getTalentMap());
+		map.put(talent, level);
+		this.dog.dataTracker.setTalentMap(map);
 	}
 	
 	public void resetTalents() {
-		this.dataMap.clear();
-		this.dog.dataTracker.setTalentString("");
+		this.dog.dataTracker.setTalentMap(Collections.emptyMap());
 	}
 }

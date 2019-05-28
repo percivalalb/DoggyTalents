@@ -1,8 +1,12 @@
 package doggytalents.entity.ai;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 
+import doggytalents.ModSerializers;
 import doggytalents.api.inferface.IDataTracker;
+import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.Constants;
@@ -19,7 +23,7 @@ public class DogDataTracker implements IDataTracker {
 	public static final DataParameter<Integer> LEVEL = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> LEVEL_DIRE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> MODE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
-	public static final DataParameter<String> TALENTS = EntityDataManager.<String>createKey(EntityDog.class, DataSerializers.STRING);
+	public static final DataParameter<Map<Talent, Integer>> TALENTS = (DataParameter<Map<Talent, Integer>>)EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_LIST.getSerializer());
 	public static final DataParameter<Integer> HUNGER = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Integer> BONE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
@@ -57,7 +61,7 @@ public class DogDataTracker implements IDataTracker {
         this.getDataManager().register(BEGGING, Boolean.valueOf(false));
 		this.getDataManager().register(DOG_TEXTURE, (byte)0);
         this.getDataManager().register(COLLAR_COLOUR, -2);
-        this.getDataManager().register(TALENTS, "");
+        this.getDataManager().register(TALENTS, Collections.emptyMap());
         this.getDataManager().register(HUNGER, Integer.valueOf(60));
         this.getDataManager().register(OBEY_OTHERS, Boolean.valueOf(false));
         this.getDataManager().register(FRIENDLY_FIRE, Boolean.valueOf(false));
@@ -225,15 +229,15 @@ public class DogDataTracker implements IDataTracker {
 	}
 
 	@Override
-	public void setTalentString(String data) {
+	public void setTalentMap(Map<Talent, Integer> data) {
 		this.getDataManager().set(TALENTS, data);
 	}
-
+	
 	@Override
-	public String getTalentString() {
+	public Map<Talent, Integer> getTalentMap() {
 		return this.getDataManager().get(TALENTS);
 	}
-
+	
 	@Override
 	public boolean hasBedPos() {
 		return this.getDataManager().get(BED_POS).isPresent();

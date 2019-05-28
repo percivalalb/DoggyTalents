@@ -1,19 +1,23 @@
 package doggytalents.helper;
 
 import java.util.HashMap;
+import java.util.function.Supplier;
+
+import doggytalents.ModTalents;
+import doggytalents.api.inferface.Talent;
 
 //@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Compatibility {
 
 	private static HashMap<String, String> OLD_NEW_BED = new HashMap<String, String>();
-	private static HashMap<String, String> OLD_NEW_TALENT = new HashMap<String, String>();
+	private static HashMap<String, Supplier<Talent>> OLD_NEW_TALENT = new HashMap<String, Supplier<Talent>>();
 	
 	public static String getBedOldNamingScheme(String name) {
 		return OLD_NEW_BED.containsKey(name) ? OLD_NEW_BED.get(name) : name;
 	}
 	
-	public static String getTalentOldNamingScheme(String name) {
-		return OLD_NEW_TALENT.containsKey(name) ? OLD_NEW_TALENT.get(name) : name;
+	public static Talent getTalentOldNamingScheme(String name) {
+		return OLD_NEW_TALENT.containsKey(name) ? OLD_NEW_TALENT.get(name).get() : null;
 	}
 	
 	/**
@@ -94,27 +98,27 @@ public class Compatibility {
 		OLD_NEW_BED.put("minecraft:planks.4", "minecraft_acacia_planks");
 		OLD_NEW_BED.put("minecraft:planks.5", "minecraft_dark_oak_planks");
 		
-		OLD_NEW_TALENT.put("bedfinder", "bed_finder");
-		OLD_NEW_TALENT.put("blackpelt", "black_pelt");
-		OLD_NEW_TALENT.put("creepersweeper", "creeper_sweeper");
-		OLD_NEW_TALENT.put("doggydash", "doggy_dash");
-		OLD_NEW_TALENT.put("fisherdog", "fisher_dog");
-		OLD_NEW_TALENT.put("guarddog", "guard_dog");
-		OLD_NEW_TALENT.put("happyeater", "happy_eater");
-		OLD_NEW_TALENT.put("hellhound", "hell_hound");
-		OLD_NEW_TALENT.put("hunterdog", "hunter_dog");
-		OLD_NEW_TALENT.put("packpuppy", "pack_puppy");
-		OLD_NEW_TALENT.put("pestfighter", "pest_fighter");
-		OLD_NEW_TALENT.put("pillowpaw", "pillow_paw");
-		OLD_NEW_TALENT.put("poisonfang", "poison_fang");
-		OLD_NEW_TALENT.put("puppyeyes", "puppy_eyes");
-		OLD_NEW_TALENT.put("quickhealer", "quick_healer");
-		OLD_NEW_TALENT.put("rangedattacker", "ranged_attacker");
-		OLD_NEW_TALENT.put("rescuedog", "rescue_dog");
-		OLD_NEW_TALENT.put("roaringgale", "roaring_gale");
-		OLD_NEW_TALENT.put("shepherddog", "shepherd_dog");
-		OLD_NEW_TALENT.put("swimmerdog", "swimmer_dog");
-		OLD_NEW_TALENT.put("wolfmount", "wolf_mount");
+		OLD_NEW_TALENT.put("bedfinder", ()->ModTalents.BED_FINDER);
+		OLD_NEW_TALENT.put("blackpelt", ()->ModTalents.BLACK_PELT);
+		OLD_NEW_TALENT.put("creepersweeper", ()->ModTalents.CREEPER_SWEEPER);
+		OLD_NEW_TALENT.put("doggydash", ()->ModTalents.DOGGY_DASH);
+		OLD_NEW_TALENT.put("fisherdog", ()->ModTalents.FISHER_DOG);
+		OLD_NEW_TALENT.put("guarddog", ()->ModTalents.GUARD_DOG);
+		OLD_NEW_TALENT.put("happyeater", ()->ModTalents.HAPPY_EATER);
+		OLD_NEW_TALENT.put("hellhound", ()->ModTalents.HELL_HOUND);
+		OLD_NEW_TALENT.put("hunterdog", ()->ModTalents.HUNTER_DOG);
+		OLD_NEW_TALENT.put("packpuppy", ()->ModTalents.PACK_PUPPY);
+		OLD_NEW_TALENT.put("pestfighter", ()->ModTalents.PEST_FIGHTER);
+		OLD_NEW_TALENT.put("pillowpaw", ()->ModTalents.PILLOW_PAW);
+		OLD_NEW_TALENT.put("poisonfang", ()->ModTalents.POISON_FANG);
+		OLD_NEW_TALENT.put("puppyeyes", ()->ModTalents.PUPPY_EYES);
+		OLD_NEW_TALENT.put("quickhealer", ()->ModTalents.QUICK_HEALER);
+		OLD_NEW_TALENT.put("rangedattacker", ()->ModTalents.RANGED_ATTACKER);
+		OLD_NEW_TALENT.put("rescuedog", ()->ModTalents.RESCUE_DOG);
+		OLD_NEW_TALENT.put("roaringgale", ()->ModTalents.ROARING_GALE);
+		OLD_NEW_TALENT.put("shepherddog", ()->ModTalents.SHEPHERD_DOG);
+		OLD_NEW_TALENT.put("swimmerdog", ()->ModTalents.SWIMMER_DOG);
+		OLD_NEW_TALENT.put("wolfmount", ()->ModTalents.WOLF_MOUNT);
 
 	}
 }

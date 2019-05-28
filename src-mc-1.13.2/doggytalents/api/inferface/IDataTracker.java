@@ -1,5 +1,7 @@
 package doggytalents.api.inferface;
 
+import java.util.Map;
+
 import net.minecraft.util.math.BlockPos;
 
 public interface IDataTracker {
@@ -53,8 +55,8 @@ public interface IDataTracker {
 	public void setModeId(int mode);
 	public int getModeId();
 	
-	public void setTalentString(String data);
-	public String getTalentString();
+	public void setTalentMap(Map<Talent, Integer> data);
+	public Map<Talent, Integer> getTalentMap();
 
 	public boolean hasBedPos();
 	public boolean hasBowlPos();

@@ -1,6 +1,7 @@
 package doggytalents.inventory;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.GuiNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -58,6 +59,6 @@ public class InventoryPackPuppy extends InventoryBasic implements IInteractionOb
 
 	@Override
 	public String getGuiID() {
-		return "doggytalents:packpuppy";
+		return GuiNames.PACK_PUPPY;
 	}
 }

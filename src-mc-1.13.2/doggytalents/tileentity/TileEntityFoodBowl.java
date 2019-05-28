@@ -8,7 +8,7 @@ import doggytalents.ModBlocks;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.ContainerFoodBowl;
-import doggytalents.lib.BlockNames;
+import doggytalents.lib.GuiNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -208,6 +208,6 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public String getGuiID() {
-		return BlockNames.FOOD_BOWL;
+		return GuiNames.FOOD_BOWL;
 	}
 }

@@ -1,11 +1,8 @@
-package doggytalents.handler;
+package doggytalents.client.gui;
 
 import doggytalents.DoggyTalentsMod;
-import doggytalents.client.gui.GuiDogInfo;
-import doggytalents.client.gui.GuiFoodBowl;
-import doggytalents.client.gui.GuiPackPuppy;
-import doggytalents.client.gui.GuiTreatBag;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
@@ -21,42 +18,43 @@ public class GuiHandler {
 	
     public static GuiScreen openGui(FMLPlayMessages.OpenContainer openContainer) {
     	String guiId = openContainer.getId().toString();
+    	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
     	
-    	if(guiId.equals("doggytalents:doginfo")) {
+    	if(guiId.equals(GuiNames.DOG_INFO)) {
     		int entityId = openContainer.getAdditionalData().readInt();
-        	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
     		
     		Entity target = clientPlayer.world.getEntityByID(entityId);
             if(!(target instanceof EntityDog))
             	return null;
 			EntityDog dog = (EntityDog)target;
+			
 			return new GuiDogInfo(dog, clientPlayer);
     	}
-    	else if(guiId.equals("doggytalents:packpuppy")) {
+    	else if(guiId.equals(GuiNames.PACK_PUPPY)) {
     		int entityId = openContainer.getAdditionalData().readInt();
-        	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
     		
     		Entity target = clientPlayer.world.getEntityByID(entityId);
             if(!(target instanceof EntityDog))
             	return null;
 			EntityDog dog = (EntityDog)target;
+			
 			return new GuiPackPuppy(clientPlayer, dog);
     	}
-    	else if(guiId.equals("doggytalents:treatbag")) {
+    	else if(guiId.equals(GuiNames.TREAT_BAG)) {
     		int slotId = openContainer.getAdditionalData().readInt();
-        	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
     		
     		return new GuiTreatBag(clientPlayer, slotId, clientPlayer.inventory.getStackInSlot(slotId));
     	}
-    	
-    	BlockPos pos = openContainer.getAdditionalData().readBlockPos();
-    	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
-    	
-    	TileEntity tileentity = clientPlayer.world.getTileEntity(pos);
-
-        if (tileentity instanceof TileEntityFoodBowl) {
-             return new GuiFoodBowl(clientPlayer.inventory, (TileEntityFoodBowl)tileentity);
-        }
+    	else if(guiId.equals(GuiNames.FOOD_BOWL)) {
+	    	BlockPos pos = openContainer.getAdditionalData().readBlockPos();
+	    	
+	    	TileEntity tileentity = clientPlayer.world.getTileEntity(pos);
+	
+	        if(!(tileentity instanceof TileEntityFoodBowl))
+	        	return null;
+	    
+	        return new GuiFoodBowl(clientPlayer.inventory, (TileEntityFoodBowl)tileentity);
+    	}
         
     	return null;
     }

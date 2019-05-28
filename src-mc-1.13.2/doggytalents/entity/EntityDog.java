@@ -37,6 +37,7 @@ import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
 import doggytalents.lib.Constants;
+import doggytalents.lib.GuiNames;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -1342,6 +1343,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
 	@Override
 	public String getGuiID() {
-		return "doggytalents:doginfo";
+		return GuiNames.DOG_INFO;
 	}
 }

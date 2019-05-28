@@ -2,6 +2,7 @@ package doggytalents.inventory;
 
 import doggytalents.ModItems;
 import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.lib.GuiNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -80,6 +81,6 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 
 	@Override
 	public String getGuiID() {
-		return "doggytalents:treatbag";
+		return GuiNames.TREAT_BAG;
 	}
 }

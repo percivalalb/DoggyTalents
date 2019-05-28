@@ -15,6 +15,6 @@ public class EntityAIOwnerHurtTargetDog extends EntityAIOwnerHurtTarget {
 
 	@Override
 	public boolean shouldExecute() {
-		 return (this.dog.MODE.isMode(EnumMode.AGGRESIVE) || this.dog.MODE.isMode(EnumMode.BERSERKER)) && super.shouldExecute();
+		 return (this.dog.MODE.isMode(EnumMode.AGGRESIVE) || this.dog.MODE.isMode(EnumMode.BERSERKER) || this.dog.MODE.isMode(EnumMode.TACTICAL)) && super.shouldExecute();
 	}
 }

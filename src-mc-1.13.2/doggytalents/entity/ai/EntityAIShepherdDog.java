@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
 import doggytalents.ModTalents;
 import doggytalents.api.inferface.IWaterMovement;
@@ -131,7 +130,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 
 				// Pick up more animals
 				if(this.targets.size() < MAX_FOLLOW) {
-					List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getBoundingBox().grow(12, 4.0D, 12), this.predicate);
+					List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getBoundingBox().grow(16, 4.0D, 16), this.predicate);
 					list.removeAll(this.targets);
 					Collections.sort(list, this.sorter);
 
@@ -149,7 +148,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 							DogUtil.teleportDogToOwner(this.owner, target, this.world, target.getNavigator(), 4);
 					}
 					else if(distanceAway >= 5) {
-						if(!target.getNavigator().tryMoveToEntityLiving(this.owner, 1.4D))
+						if(!target.getNavigator().tryMoveToEntityLiving(this.owner, 1.2D))
 							if(!target.getLeashed() && !target.isPassenger() && distanceAway >= 20)
 								DogUtil.teleportDogToOwner(this.owner, target, this.world, target.getNavigator(), 4);
 					}
@@ -165,7 +164,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 				}
 				
 				vec = vec.scale(1D / this.targets.size());
-				DoggyTalentsMod.LOGGER.debug("" + vec + " " + this.targets.size() + " " + this.targets);
+				
 				double dPosX = vec.x - this.owner.posX;
 				double dPosZ = vec.z - this.owner.posZ;
 				double size = Math.sqrt(dPosX * dPosX + dPosZ * dPosZ);

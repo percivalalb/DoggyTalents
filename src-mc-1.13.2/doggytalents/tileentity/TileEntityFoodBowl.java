@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import doggytalents.ModBlocks;
+import doggytalents.ModTileEntities;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.ContainerFoodBowl;
@@ -34,9 +34,8 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
     public int timeoutCounter;
     
-    
     public TileEntityFoodBowl() {
-    	super(ModBlocks.TILE_FOOD_BOWL);
+    	super(ModTileEntities.FOOD_BOWL);
     }
     
     @Override

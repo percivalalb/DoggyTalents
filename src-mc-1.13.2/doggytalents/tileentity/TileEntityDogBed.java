@@ -1,6 +1,6 @@
 package doggytalents.tileentity;
 
-import doggytalents.ModBlocks;
+import doggytalents.ModTileEntities;
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +14,7 @@ public class TileEntityDogBed extends TileEntity {
 	private BedMaterial beddingId = BedMaterial.NULL;
 	
 	public TileEntityDogBed() {
-		super(ModBlocks.TILE_DOG_BED);
+		super(ModTileEntities.DOG_BED);
 	}
 	
 	@Override

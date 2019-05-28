@@ -24,8 +24,16 @@ public class ItemDireTreat extends Item implements IDogInteractItem {
 		int level = dogIn.LEVELS.getLevel();
 		int direLevel = dogIn.LEVELS.getDireLevel();
 		
-		if(level >= 60 && direLevel < 30 && dogIn.getGrowingAge() >= 0) {
-			if(!playerIn.isCreative())
+		if (dogIn.getGrowingAge() < 0) {
+			if(!worldIn.isRemote){
+				 dogIn.playTameEffect(false);
+				 playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.too_young"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
+		}
+		else if(level >= 60 && direLevel < 30) {
+			if(!playerIn.abilities.isCreativeMode)
 				stackIn.shrink(1);
 
 			if(!worldIn.isRemote) {
@@ -33,37 +41,29 @@ public class ItemDireTreat extends Item implements IDogInteractItem {
 				dogIn.setHealth(dogIn.getMaxHealth());
 				dogIn.getAISit().setSitting(true);
 				dogIn.getNavigator().clearPath();
-	            dogIn.world.setEntityState(dogIn, (byte)7);
+				worldIn.setEntityState(dogIn, (byte)7);
 	            dogIn.playTameEffect(true);
-	            playerIn.sendMessage(new TextComponentTranslation("dogtreat.levelup"));
+	            playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.level_up"));
 			}
 			
-			return ActionResult.newResult(EnumActionResult.SUCCESS, null);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
         }
-		else if (dogIn.getGrowingAge() < 0) {
-			if(!worldIn.isRemote){
-				 dogIn.playTameEffect(false);
-				 playerIn.sendMessage(new TextComponentTranslation("dogtreat.tooyoung"));
-			}
-			
-			return ActionResult.newResult(EnumActionResult.FAIL, null);
-		}
 		else if(level < 60) {
-			playerIn.world.setEntityState(dogIn, (byte)6);
-	        if(!playerIn.world.isRemote) {
+			worldIn.setEntityState(dogIn, (byte)6);
+	        if(!worldIn.isRemote) {
 	        	dogIn.playTameEffect(false);
-	            playerIn.sendMessage(new TextComponentTranslation("dogtreat.leveltoohigh"));
+	            playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.low_level"));
 	        }
 	        
-	        return ActionResult.newResult(EnumActionResult.FAIL, null);
+	        return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}
 		else {
 			worldIn.setEntityState(dogIn, (byte)6);
 			if (!worldIn.isRemote) {
-				playerIn.sendMessage(new TextComponentTranslation("dogtreat.ultimatelevel"));
+				playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.max_level"));
 			}
 			
-			return ActionResult.newResult(EnumActionResult.SUCCESS, null);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
 		}
 	}
 }

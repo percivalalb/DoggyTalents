@@ -25,37 +25,37 @@ public class ItemTreat extends Item implements IDogInteractItem {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, EntityPlayer playerIn) {
 		int level = dogIn.LEVELS.getLevel();
 		
-		if(level < this.maxLevel && dogIn.getGrowingAge() >= 0) {
-			if(!playerIn.isCreative())
+		if (dogIn.getGrowingAge() < 0) {
+			if(!worldIn.isRemote) {
+				 dogIn.playTameEffect(false);
+				 playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.too_young"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
+		}
+		if(level < this.maxLevel) {
+			if(!playerIn.abilities.isCreativeMode)
 				stackIn.shrink(1);
 
 			if(!playerIn.world.isRemote) {
 	            dogIn.LEVELS.increaseLevel();
 	            dogIn.setHealth(dogIn.getMaxHealth());
 	            dogIn.getAISit().setSitting(true);
-	            dogIn.world.setEntityState(dogIn, (byte)7);
+	            worldIn.setEntityState(dogIn, (byte)7);
 	            dogIn.playTameEffect(true);
-	            playerIn.sendMessage(new TextComponentTranslation("dogtreat.levelup"));
+	            playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.level_up"));
 			}
 			
-			return ActionResult.newResult(EnumActionResult.SUCCESS, null);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
         }
-		else if (dogIn.getGrowingAge() < 0) {
-			if(!worldIn.isRemote) {
-				 dogIn.playTameEffect(false);
-				 playerIn.sendMessage(new TextComponentTranslation("dogtreat.tooyoung"));
-			}
-			
-			return ActionResult.newResult(EnumActionResult.FAIL, null);
-		}
 		else {
-			playerIn.world.setEntityState(dogIn, (byte)6);
-			if(!playerIn.world.isRemote) {
+			worldIn.setEntityState(dogIn, (byte)6);
+			if(!worldIn.isRemote) {
 				dogIn.playTameEffect(false);
-				playerIn.sendMessage(new TextComponentTranslation("dogtreat.leveltoohigh"));
+				playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.max_level"));
 			}
 			
-			return ActionResult.newResult(EnumActionResult.FAIL, null);
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}
 	}
 }

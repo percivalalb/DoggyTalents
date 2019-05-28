@@ -429,6 +429,27 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
                     return true;
                 }
+                else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
+                	if(!this.world.isRemote) {
+                		EntityDog babySpawn = this.createChild(this);
+                        if(babySpawn != null) {
+                           babySpawn.setGrowingAge(-24000 * (ConfigHandler.COMMON.tenDayPups() ? 10 : 1));
+                           babySpawn.setTamed(true);
+                           if(ConfigHandler.COMMON.pupsGetParentLevels()) {
+                               babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
+                           }
+                           
+                           babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                           this.world.spawnEntity(babySpawn);
+
+                           if(!player.abilities.isCreativeMode) {
+                        	   stack.shrink(1);
+                           }
+                        }
+                     }
+
+                	return true;
+                }
             	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
             		this.startRiding(player);
             		

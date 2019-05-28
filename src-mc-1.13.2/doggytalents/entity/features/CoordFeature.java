@@ -27,7 +27,6 @@ public class CoordFeature extends DogFeature {
 	
 	public void setBowlPos(BlockPos pos) {
 		this.dog.dataTracker.setBowlPos(pos);
-		this.dog.setHomePosAndDistance(pos, 5);
 	}
 	
 	public BlockPos getBedPos() {
@@ -40,7 +39,6 @@ public class CoordFeature extends DogFeature {
 	
 	public void resetBowlPosition() {
 		this.dog.dataTracker.resetBowlPosition();
-		this.dog.detachHome();
 	}
 	
 	@Override
@@ -52,9 +50,9 @@ public class CoordFeature extends DogFeature {
 		}
 		
 		if(this.hasBowlPos()) {
-			tagCompound.putInt("bowlPosX", this.getBedPos().getX());
-			tagCompound.putInt("bowlPosY", this.getBedPos().getY());
-			tagCompound.putInt("bowlPosZ", this.getBedPos().getZ());
+			tagCompound.putInt("bowlPosX", this.getBowlPos().getX());
+			tagCompound.putInt("bowlPosY", this.getBowlPos().getY());
+			tagCompound.putInt("bowlPosZ", this.getBowlPos().getZ());
 		}
 	}
 	

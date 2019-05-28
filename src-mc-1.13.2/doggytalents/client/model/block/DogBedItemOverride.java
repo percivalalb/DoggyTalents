@@ -14,17 +14,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class DogBedItemOverride extends ItemOverrideList {
 
-    public DogBedItemOverride() {
-    }
-
     @Override
     public IBakedModel getModelWithOverrides(IBakedModel modelOriginal, ItemStack stack, World world, EntityLivingBase entity) {
-        if (modelOriginal instanceof DogBedModel) {
+        if(modelOriginal instanceof DogBedModel) {
         	if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
     			NBTTagCompound tag = stack.getTag().getCompound("doggytalents");
     		    
-    			String casingId = DogBedRegistry.CASINGS.getTexture(DogBedRegistry.CASINGS.getFromString(tag.getString("casingId")));
-    			String beddingId =DogBedRegistry.BEDDINGS.getTexture(DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId")));
+    			String casingId = DogBedRegistry.CASINGS.getTexture(tag, "casingId");
+    			String beddingId = DogBedRegistry.BEDDINGS.getTexture(tag, "beddingId");
     			return ((DogBedModel)modelOriginal).getCustomModel(casingId, beddingId, EnumFacing.NORTH);
         	}
         }

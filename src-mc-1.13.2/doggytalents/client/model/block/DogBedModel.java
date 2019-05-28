@@ -53,8 +53,8 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         
 		if(state != null) {
 	        facing = state.get(BlockDogBed.FACING);
-	        casing = DogBedRegistry.CASINGS.getTexture(state.get(BlockDogBed.CASING));
-	        bedding = DogBedRegistry.BEDDINGS.getTexture(state.get(BlockDogBed.BEDDING));
+	        casing = DogBedRegistry.CASINGS.getTexture(state, BlockDogBed.CASING);
+	        bedding = DogBedRegistry.BEDDINGS.getTexture(state, BlockDogBed.BEDDING);
 		}
 		
 		return this.getCustomModel(casing, bedding, facing);

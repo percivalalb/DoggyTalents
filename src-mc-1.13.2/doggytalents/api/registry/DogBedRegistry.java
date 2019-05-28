@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.annotation.Nonnull;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
+import doggytalents.block.PropertyMaterial;
 import doggytalents.helper.Compatibility;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
@@ -34,32 +37,16 @@ public class DogBedRegistry {
 		this.key = key;
 	}
 	
-	public boolean isValidId(BedMaterial id) {
-		return this.keys.contains(id);
+	public BedMaterial registerMaterial(@Nonnull String blockId, String textureLocation) {
+		ResourceLocation resource = new ResourceLocation(blockId);
+		Block block = ForgeRegistries.BLOCKS.getValue(resource);
+		String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
+		ItemStack stack = new ItemStack(block, 1);
+		BedMaterial thing = new BedMaterial(blockId);
+		return this.registerMaterial(thing, lookupname, textureLocation, stack);
 	}
 	
-	public BedMaterial registerMaterial(String blockId, String textureLocation) {
-		if(!ForgeRegistries.BLOCKS.containsKey(new ResourceLocation(blockId))) {
-			DoggyTalentsMod.LOGGER.warn("The block id {} does not exist for a material", blockId);
-			return null;
-		}
-		else {
-			ResourceLocation resource = new ResourceLocation(blockId);
-			Block block = ForgeRegistries.BLOCKS.getValue(resource);
-			String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
-			ItemStack stack = new ItemStack(block, 1);
-			BedMaterial thing = new BedMaterial(blockId);
-			this.registerMaterial(thing, lookupname, textureLocation, stack);
-			return thing;
-		}
-	}
-	
-	public BedMaterial registerMaterial(Block block, String textureLocation) {
-		if(block == null) {
-			DoggyTalentsMod.LOGGER.warn("Null block cannot be registered for a material");
-			return null;
-		}
-		
+	public BedMaterial registerMaterial(@Nonnull Block block, String textureLocation) {
 		ResourceLocation resource = ForgeRegistries.BLOCKS.getKey(block);
 		String blockId = resource.getNamespace() + "_" + resource.getPath();
 		String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
@@ -84,6 +71,10 @@ public class DogBedRegistry {
 		}
 	}
 	
+	public boolean isValidId(BedMaterial id) {
+		return this.keys.contains(id);
+	}
+	
 	public List<BedMaterial> getKeys() {
 		return this.keys;
 	}
@@ -93,26 +84,34 @@ public class DogBedRegistry {
 			return BedMaterial.NULL;
 		
 		// Keep things when updating from 1.12
-		key = Compatibility.getMapOldNamingScheme(key);
+		key = Compatibility.getBedOldNamingScheme(key);
 		
 		for(BedMaterial thing : this.keys) {
 			if(thing.key.equals(key)) {
 				return thing;
 			}
 		}
-		return null;
+		return BedMaterial.NULL;
 	}
 	
-	public String getLookUpValue(BedMaterial id) {
+	public String getTranslationKey(BedMaterial id) {
 		if(!this.isValidId(id))
-			return null;
+			return "missing";
 		return this.lookupnames.get(id);
 	}
 	
-	public String getTexture(BedMaterial id) {
+	private String getTexture(BedMaterial id) {
 		if(!this.isValidId(id))
-			return null;
+			return "missing";
 		return this.textures.get(id);
+	}
+	
+	public String getTexture(IBlockState state, PropertyMaterial property) {
+		return this.getTexture(state.get(property));
+	}
+	
+	public String getTexture(NBTTagCompound nbt, String key) {
+		return this.getTexture(this.getFromString(nbt.getString(key)));
 	}
 	
 	public BedMaterial getIdFromCraftingItem(ItemStack stack) {
@@ -120,12 +119,12 @@ public class DogBedRegistry {
 			if(entry.getValue().apply(stack))
 				return entry.getKey();
 		}
-		return null;
+		return BedMaterial.NULL;
 	}
 	
 	public ItemStack getCraftingItemFromBedMaterial(BedMaterial material) {
-		if(craftingItems.containsKey(material)) {
-			return craftingItems.get(material).getIngredient();
+		if(this.craftingItems.containsKey(material)) {
+			return this.craftingItems.get(material).getIngredient();
 		}
 		return ItemStack.EMPTY;
 	}

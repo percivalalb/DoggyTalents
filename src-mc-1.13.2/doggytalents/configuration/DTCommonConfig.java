@@ -40,10 +40,10 @@ public class DTCommonConfig {
 				.define("isHungerOn", true);
 		STARTING_ITEMS = builder
 				.comment("When enabled you will spawn with a guide, Doggy Charm and Command Emblem.")
-				.define("isStartingItemsEnabled", true);
+				.define("isStartingItemsEnabled", false);
 		DOG_GENDER = builder
 				.comment("When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender.")
-				.define("dogGender", true);
+				.define("dogGender", false);
 		DOG_WHINE_WHEN_HUNGER_LOW = builder
 				.comment("Determines if dogs should whine when hunger reaches below 20 DP.")
 				.define("shouldWhineWhenStarving", true);

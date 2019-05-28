@@ -11,12 +11,11 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(Reference.MOD_ID)
 public class ModEntities {
 
-	@ObjectHolder(EntityNames.DOG)
-	public static EntityType<EntityDog> DOG;
-	@ObjectHolder(EntityNames.DOGGY_BEAM)
-	public static EntityType<EntityDoggyBeam> DOGGY_BEAM;
+	public static final EntityType<EntityDog> DOG = null;
+	public static final EntityType<EntityDoggyBeam> DOG_BEAM = null;
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {

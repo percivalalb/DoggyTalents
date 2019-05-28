@@ -20,11 +20,11 @@ import net.minecraft.world.World;
 public class EntityDoggyBeam extends EntityThrowable {
 	
 	public EntityDoggyBeam(World worldIn) {
-		super(ModEntities.DOGGY_BEAM, worldIn);
+		super(ModEntities.DOG_BEAM, worldIn);
 	}
 	
     public EntityDoggyBeam(World worldIn, EntityLivingBase throwerIn) {
-        super(ModEntities.DOGGY_BEAM, throwerIn, worldIn);
+        super(ModEntities.DOG_BEAM, throwerIn, worldIn);
     }
     
     @Override

@@ -17,76 +17,46 @@ import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.ItemNames;
 import doggytalents.lib.Reference;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(Reference.MOD_ID)
 public class ModItems {
 
-	@ObjectHolder(ItemNames.THROW_BONE)
-	public static Item THROW_BONE;
-	@ObjectHolder(ItemNames.THROW_BONE_WET)
-	public static Item THROW_BONE_WET;
-	@ObjectHolder(ItemNames.THROW_STICK)
-	public static Item THROW_STICK;
-	@ObjectHolder(ItemNames.THROW_STICK_WET)
-	public static Item THROW_STICK_WET;
-	@ObjectHolder(ItemNames.COMMAND_EMBLEM)
-	public static Item COMMAND_EMBLEM;
-	@ObjectHolder(ItemNames.TRAINING_TREAT)
-    public static Item TRAINING_TREAT;
-	@ObjectHolder(ItemNames.SUPER_TREAT)
-    public static Item SUPER_TREAT;
-	@ObjectHolder(ItemNames.MASTER_TREAT)
-    public static Item MASTER_TREAT;
-	@ObjectHolder(ItemNames.DIRE_TREAT)
-    public static Item DIRE_TREAT;
-	@ObjectHolder(ItemNames.BREEDING_BONE)
-    public static Item BREEDING_BONE;
-	@ObjectHolder(ItemNames.COLLAR_SHEARS)
-    public static Item COLLAR_SHEARS;
-	@ObjectHolder(ItemNames.DOGGY_CHARM)
-    public static Item DOGGY_CHARM;
-	@ObjectHolder(ItemNames.RADIO_COLLAR)
-    public static Item RADIO_COLLAR;
-	@ObjectHolder(ItemNames.WOOL_COLLAR)
-    public static Item WOOL_COLLAR;
-	@ObjectHolder(ItemNames.CREATIVE_COLLAR)
-    public static Item CREATIVE_COLLAR;
-	@ObjectHolder(ItemNames.SPOTTED_COLLAR)
-    public static Item SPOTTED_COLLAR;
-	@ObjectHolder(ItemNames.MULTICOLOURED_COLLAR)
-    public static Item MULTICOLOURED_COLLAR;
-	@ObjectHolder(ItemNames.RADAR)
-    public static Item RADAR;
-	@ObjectHolder(ItemNames.CREATIVE_RADAR)
-    public static Item CREATIVE_RADAR;
-	@ObjectHolder(ItemNames.WHISTLE)
-    public static Item WHISTLE;
-	@ObjectHolder(ItemNames.TREAT_BAG)
-    public static Item TREAT_BAG;
-	@ObjectHolder(ItemNames.CHEW_STICK)
-    public static Item CHEW_STICK;
-	@ObjectHolder(ItemNames.CAPE)
-    public static Item CAPE;
-	@ObjectHolder(ItemNames.CAPE_COLOURED)
-    public static Item CAPE_COLOURED;
-	@ObjectHolder(ItemNames.SUNGLASSES)
-    public static Item SUNGLASSES;
-	@ObjectHolder(ItemNames.LEATHER_JACKET)
-    public static Item LEATHER_JACKET;
-	@ObjectHolder(ItemNames.TINY_BONE)
-    public static Item TINY_BONE;
-	@ObjectHolder(ItemNames.BIG_BONE)
-    public static Item BIG_BONE;
+	public static final Item THROW_BONE = null;
+	public static final Item THROW_BONE_WET = null;
+	public static final Item THROW_STICK = null;
+	public static final Item THROW_STICK_WET = null;
+	public static final Item COMMAND_EMBLEM = null;
+    public static final Item TRAINING_TREAT = null;
+    public static final Item SUPER_TREAT = null;
+    public static final Item MASTER_TREAT = null;
+    public static final Item DIRE_TREAT = null;
+    public static final Item BREEDING_BONE = null;
+    public static final Item COLLAR_SHEARS = null;
+    public static final Item DOGGY_CHARM = null;
+    public static final Item RADIO_COLLAR = null;
+    public static final Item WOOL_COLLAR = null;
+    public static final Item CREATIVE_COLLAR = null;
+    public static final Item SPOTTED_COLLAR = null;
+    public static final Item MULTICOLOURED_COLLAR = null;
+    public static final Item RADAR = null;
+    public static final Item CREATIVE_RADAR = null;
+    public static final Item WHISTLE = null;
+    public static final Item TREAT_BAG = null;
+    public static final Item CHEW_STICK = null;
+    public static final Item CAPE = null;
+    public static final Item CAPE_COLOURED = null;
+    public static final Item SUNGLASSES = null;
+    public static final Item LEATHER_JACKET = null;
+    public static final Item TINY_BONE = null;
+    public static final Item BIG_BONE = null;
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registration
-    {
+    public static class Registration {
 		
 	    @SubscribeEvent
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event){
@@ -119,11 +89,7 @@ public class ModItems {
 	     	event.getRegistry().register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.LEATHER_JACKET));
 	     	event.getRegistry().register(new ItemTinyBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TINY_BONE));
 	     	event.getRegistry().register(new ItemBigBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BIG_BONE));
-	    }
-	
-	    
-	    private static ItemBlock makeItemBlock(Block block) {
-	        return (ItemBlock)new ItemBlock(block, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(block.getRegistryName());
+	     	DoggyTalentsMod.LOGGER.info("Finished Registering Items");
 	    }
     }
 }

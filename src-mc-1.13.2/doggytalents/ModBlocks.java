@@ -17,15 +17,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
+@ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
 
-	@ObjectHolder(BlockNames.DOG_BED)
-	public static Block DOG_BED;
-	@ObjectHolder(BlockNames.DOG_BATH)
-	public static Block DOG_BATH;
-	@ObjectHolder(BlockNames.FOOD_BOWL)
-    public static Block FOOD_BOWL;
-	
+	public static final Block DOG_BED = null;
+	public static final Block DOG_BATH = null;
+    public static final Block FOOD_BOWL = null;
+    
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
 
@@ -39,6 +37,7 @@ public class ModBlocks {
 	        blockRegistry.register(new BlockDogBed());
 	        blockRegistry.register(new BlockDogBath());
 	        blockRegistry.register(new BlockFoodBowl());
+	        DoggyTalentsMod.LOGGER.info("Finished Registering Blocks");
 	    }
 
 	    @SubscribeEvent
@@ -47,6 +46,7 @@ public class ModBlocks {
 	    	event.getRegistry().register(makeItemBlock(DOG_BED, ModCreativeTabs.DOG_BED));
 	    	event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    	event.getRegistry().register(makeItemBlock(FOOD_BOWL));
+	    	DoggyTalentsMod.LOGGER.info("Finished Registering ItemBlocks");
 	    }
 	    
 	    private static ItemBlock makeItemBlock(Block block) {

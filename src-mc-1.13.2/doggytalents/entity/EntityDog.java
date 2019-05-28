@@ -298,11 +298,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             this.setHealth(1);
         }
 
-        if (this.getDogHunger() <= 0 && this.world.getWorldInfo().getDayTime() % 100L == 0L && this.getHealth() > Constants.LOW_HEATH_LEVEL) {
-            this.attackEntityFrom(DamageSource.GENERIC, 1);
-            //this.fleeingTick = 0;
-        }
-
         if(this.world.isRemote && this.LEVELS.isDireDog() && ConfigHandler.CLIENT.direParticles())
             for (int i = 0; i < 2; i++)
                 this.world.addParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);

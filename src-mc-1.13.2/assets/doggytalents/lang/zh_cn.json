@@ -108,6 +108,7 @@
 
     "doggui.mode.docile.nobowl": "当前尚未指定食盆。",
     "doggui.mode.docile.bowl": "食盆距离：%d",
+    "doggui.mode.docile.distance": "Bowl to far away: %d",
 
     "doggui.prevpage": "上一页",
     "doggui.nextpage": "下一页",

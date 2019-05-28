@@ -1030,6 +1030,10 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return getHealth() / (double) getMaxHealth();
     }
 	
+	public boolean canWander() {
+		return this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
+	}
+	
 	public boolean canInteract(EntityPlayer player) {
         return this.isOwner(player) || this.willObeyOthers();
     }

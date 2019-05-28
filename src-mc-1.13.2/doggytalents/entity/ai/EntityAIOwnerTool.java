@@ -2,6 +2,7 @@ package doggytalents.entity.ai;
 
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +53,8 @@ public class EntityAIOwnerTool extends EntityAIBase {
         } else if(this.dog.getDistanceSq(entitylivingbase) > (double)(this.finishedDistance * this.finishedDistance)) {
     		return false;
     	} else if(!this.isCommanding(entitylivingbase)) {
+    		return false;
+    	} else if(this.dog.MODE.isMode(EnumMode.WANDERING)) {
     		return false;
     	} else {
         	this.owner = entitylivingbase;

@@ -53,7 +53,7 @@ public class ModeFeature extends DogFeature {
 	public enum EnumMode {
 
 		DOCILE("docile"),
-		WANDERING("wandering", false),
+		WANDERING("wandering"),
 		AGGRESIVE("aggressive"),
 		BERSERKER("berserker"),
 		TACTICAL("tactical");
@@ -62,26 +62,15 @@ public class ModeFeature extends DogFeature {
 		private String unlocalisedTip;
 		private String unlocalisedName;
 		private String unlocalisedInfo;
-		/** By default it is true */
-		public boolean followsOwner;
-		
+
 		private EnumMode(String name) {
-			this(name, true);
+			this("doggui.modename." + name, "doggui.modetip." + name, "doggui.modeinfo." + name);
 		}
 		
-		private EnumMode(String name, boolean followsOwner) {
-			this("doggui.modename." + name, "doggui.modetip." + name, "doggui.modeinfo." + name, followsOwner);
-		}
-		
-		private EnumMode(String name, String tip, String info) {
-			this(name, tip, info, true);
-		}
-		
-		private EnumMode(String unlocalisedName, String tip, String info, boolean followsOwner) {
+		private EnumMode(String unlocalisedName, String tip, String info) {
 			this.unlocalisedName = unlocalisedName;
 			this.unlocalisedTip = tip;
 			this.unlocalisedInfo = info;
-			this.followsOwner = followsOwner;
 		}
 		
 		public String getTip() {
@@ -94,10 +83,6 @@ public class ModeFeature extends DogFeature {
 		
 		public String getUnlocalisedInfo() {
 			return this.unlocalisedInfo;
-		}
-		
-		public boolean followOwner() {
-			return this.followsOwner;
 		}
 	}
 }

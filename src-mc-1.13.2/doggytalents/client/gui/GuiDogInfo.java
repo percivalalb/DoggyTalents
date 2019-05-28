@@ -287,10 +287,13 @@ public class GuiDogInfo extends GuiScreen {
     				String str = I18n.format(dog.MODE.getMode().getUnlocalisedInfo());
     				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
     				if(this.dog.MODE.isMode(EnumMode.WANDERING)) {
-    					if(!this.dog.COORDS.hasBowlPos())
+    					if(!this.dog.COORDS.hasBowlPos()) {
     						list.add(TextFormatting.RED + I18n.format("doggui.mode.docile.nobowl"));
-    					else 
+    					} else if(this.dog.getDistanceSq(this.dog.COORDS.getBowlPos()) > 256.0D) {
+    						list.add(TextFormatting.RED + I18n.format("doggui.mode.docile.distance", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
+    					} else {
     						list.add(TextFormatting.GREEN + I18n.format("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
+    					}
     				}
     			}
 	    		

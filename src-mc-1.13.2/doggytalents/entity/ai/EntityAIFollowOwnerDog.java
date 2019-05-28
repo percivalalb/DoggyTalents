@@ -17,7 +17,7 @@ public class EntityAIFollowOwnerDog extends EntityAIFollowOwner {
 
     @Override
     public boolean shouldExecute() {
-    	return this.dog.MODE.getMode().followOwner() && super.shouldExecute();
+    	return !this.dog.canWander() && super.shouldExecute();
     }
  
 }

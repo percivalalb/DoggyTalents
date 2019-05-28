@@ -108,6 +108,7 @@
 
     "doggui.mode.docile.nobowl": "No food bowl currently set.",
     "doggui.mode.docile.bowl": "Bowl distance: %d",
+	"doggui.mode.docile.distance": "Bowl to far away: %d",
 
     "doggui.prevpage": "Previous Page",
     "doggui.nextpage": "Next Page",

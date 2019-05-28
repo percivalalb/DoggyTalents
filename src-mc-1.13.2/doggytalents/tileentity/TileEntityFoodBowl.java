@@ -63,7 +63,8 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
     	for(EntityDog dog : dogList) {
     		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl
-    		dog.COORDS.setBowlPos(this.pos);
+    		if(!dog.COORDS.hasBowlPos())
+    			dog.COORDS.setBowlPos(this.pos);
             	
     		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this);
          	if(dog.getDogHunger() < 60 && slotIndex >= 0)

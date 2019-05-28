@@ -109,6 +109,7 @@
 
 	"doggui.mode.docile.nobowl": "Нет привязанной миски.",
 	"doggui.mode.docile.bowl": "Расстояние до миски: %d",
+    "doggui.mode.docile.distance": "Bowl to far away: %d",
 
 	"doggui.prevpage": "Предыдущая страница",
 	"doggui.nextpage": "Следующая страница",

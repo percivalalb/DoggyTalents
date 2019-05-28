@@ -13,25 +13,30 @@ import net.minecraft.util.math.Vec3d;
 public class EntityAIDogWander extends EntityAIWander {
 	
 	protected EntityDog dog;
-	protected final float probability;
+	protected boolean wandering;
 
 	public EntityAIDogWander(EntityDog dogIn, double speedIn) {
-		this(dogIn, speedIn, 0.001F);
-	}
-
-	public EntityAIDogWander(EntityDog dogIn, double speedIn, float probability) {
 		super(dogIn, speedIn);
 		this.dog = dogIn;
-		this.probability = probability;
+		this.wandering = false;
 	}
 
 	@Override
-	@Nullable
-	protected Vec3d getPosition() {
-		return generateRandomPos(this.dog);
+	public boolean shouldExecute() {
+		this.wandering = this.dog.canWander();
+		
+		this.setExecutionChance(this.wandering ? 10 : 120);
+		return super.shouldExecute();
 	}
 	
-	private static Vec3d generateRandomPos(EntityDog dog) {
+	@Override
+	@Nullable
+	protected Vec3d getPosition() {
+
+		return this.wandering ?  this.generateRandomPos(this.dog) : super.getPosition();
+	}
+	
+	private Vec3d generateRandomPos(EntityDog dog) {
 		
         PathNavigate pathnavigate = dog.getNavigator();
     	Random random = dog.getRNG();
@@ -40,12 +45,12 @@ public class EntityAIDogWander extends EntityAIWander {
     	int bowlPosZ = dog.COORDS.getBowlPos().getZ();
  
     	int xzRange = 5;
-    	int yRange = 6;
+    	int yRange = 3;
     	
     	float bestWeight = -99999.0F;
     	int x = 0, y = 0, z = 0;
     	
-    	for (int attempt = 0; attempt < 10; ++attempt) {
+    	for(int attempt = 0; attempt < 10; ++attempt) {
             int l = random.nextInt(2 * xzRange + 1) - xzRange;
             int i1 = random.nextInt(2 * yRange + 1) - yRange;
             int j1 = random.nextInt(2 * xzRange + 1) - xzRange;

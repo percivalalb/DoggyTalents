@@ -71,7 +71,7 @@ public class DogDataTracker implements IDataTracker {
         this.getDataManager().register(CAPE, -2);
         this.getDataManager().register(SUNGLASSES, false);
         this.getDataManager().register(SIZE, Integer.valueOf(3));
-        this.getDataManager().register(GENDER, "");
+        this.getDataManager().register(GENDER, this.dog.getRandom().nextInt(2) == 0 ? "male" : "female");
 	}
 	
 	@Override

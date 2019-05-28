@@ -214,7 +214,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         compound.putBoolean("sunglasses", this.hasSunglasses());
         compound.putInt("capeData", this.getCapeData());
         compound.putInt("dogSize", this.getDogSize());
-        compound.putString("dogGender", this.getGender());
+        if(this.getGender().equals("male") || this.getGender().equals("female")) compound.putString("dogGender", this.getGender());
         compound.putBoolean("hasBone", this.hasBone());
         if(this.hasBone()) compound.putInt("boneVariant", this.getBoneVariant());
         
@@ -235,7 +235,10 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         this.setHasSunglasses(compound.getBoolean("sunglasses"));
         if(compound.contains("capeData", 99)) this.setCapeData(compound.getInt("capeData"));
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
-        this.setGender(compound.getString("dogGender"));
+        
+        if(compound.contains("dogGender", 8)) this.setGender(compound.getString("dogGender"));
+        else if(ConfigHandler.COMMON.dogGender()) this.setGender(this.rand.nextInt(2) == 0 ? "male" : "female");
+        
         if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInt("boneVariant"));
         
         TalentHelper.readAdditional(this, compound);
@@ -981,6 +984,28 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
         }
     }
+    
+ 	@Override
+   	public boolean canMateWith(EntityAnimal otherAnimal) {
+   		if(otherAnimal == this) {
+   			return false;
+   		} else if(!this.isTamed()) {
+   			return false;
+   		} else if(!(otherAnimal instanceof EntityDog)) {
+   			return false;
+   		} else {
+   			EntityDog entitydog = (EntityDog)otherAnimal;
+   			if(!entitydog.isTamed()) {
+   				return false;
+   			} else if(entitydog.isSitting()) {
+   				return false;
+   			} else if(this.getGender().equals(entitydog.getGender())) {
+   				return false;
+   			} else {
+   				return this.isInLove() && entitydog.isInLove();
+   			}
+   		}
+   	}
 	
 	public float getWagAngle(float partialTickTime, float offset) {
         float f = (this.prevTimeWolfIsHappy + (this.timeWolfIsHappy - this.prevTimeWolfIsHappy) * partialTickTime + offset) / 2.0F;

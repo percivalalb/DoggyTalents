@@ -5,10 +5,14 @@ import java.util.function.Supplier;
 
 import doggytalents.ModTalents;
 import doggytalents.api.inferface.Talent;
+import doggytalents.lib.Reference;
+import net.minecraft.util.ResourceLocation;
 
 //@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Compatibility {
 
+	public static final ResourceLocation DOGGY_BEAM = new ResourceLocation(Reference.MOD_ID, "attackbeam");
+	
 	private static HashMap<String, String> OLD_NEW_BED = new HashMap<String, String>();
 	private static HashMap<String, Supplier<Talent>> OLD_NEW_TALENT = new HashMap<String, Supplier<Talent>>();
 	

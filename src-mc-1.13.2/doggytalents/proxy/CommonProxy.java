@@ -34,6 +34,8 @@ public class CommonProxy {
     
     protected void init(InterModEnqueueEvent event) {
     	DoggyTalentsMod.LOGGER.debug("CommonProxy init");
+    	
+    	MinecraftForge.EVENT_BUS.register(new MissingMappings());
     }
     
     protected void postInit(InterModProcessEvent event) {

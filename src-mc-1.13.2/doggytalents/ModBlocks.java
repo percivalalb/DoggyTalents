@@ -34,9 +34,9 @@ public class ModBlocks {
 	        
 	        
 	        DoggyTalentsMod.LOGGER.info("Registering Blocks");
-	        blockRegistry.register(new BlockDogBed());
-	        blockRegistry.register(new BlockDogBath());
-	        blockRegistry.register(new BlockFoodBowl());
+	        blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));
+	        blockRegistry.register(new BlockDogBath().setRegistryName(BlockNames.DOG_BATH));
+	        blockRegistry.register(new BlockFoodBowl().setRegistryName(BlockNames.FOOD_BOWL));
 	        DoggyTalentsMod.LOGGER.info("Finished Registering Blocks");
 	    }
 

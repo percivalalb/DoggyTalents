@@ -1,7 +1,6 @@
 package doggytalents.block;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.BlockNames;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -27,7 +26,6 @@ public class BlockDogBath extends Block {
 	
 	public BlockDogBath() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.METAL));
-		this.setRegistryName(BlockNames.DOG_BATH);
 	}
 
 	@Override

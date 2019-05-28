@@ -9,7 +9,6 @@ import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
-import doggytalents.lib.BlockNames;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketCustomParticle;
 import doggytalents.tileentity.TileEntityDogBed;
@@ -70,7 +69,6 @@ public class BlockDogBed extends BlockContainer {
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
-		this.setRegistryName(BlockNames.DOG_BED);
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE));
 	}
 	

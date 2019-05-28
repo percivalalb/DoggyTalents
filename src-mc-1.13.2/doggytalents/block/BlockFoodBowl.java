@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import doggytalents.ModItems;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryTreatBag;
-import doggytalents.lib.BlockNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
@@ -45,7 +44,6 @@ public class BlockFoodBowl extends BlockContainer {
 	
 	public BlockFoodBowl() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(5.0F, 5.0F).sound(SoundType.METAL));
-		this.setRegistryName(BlockNames.FOOD_BOWL);
 	}
 	
 	@Override

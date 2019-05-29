@@ -7,15 +7,15 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.ModEntities;
 import doggytalents.ModItems;
+import doggytalents.ModSerializers;
 import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.IDataTracker;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.configuration.ConfigHandler;
-import doggytalents.entity.ai.DogDataTracker;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIDogFeed;
@@ -44,6 +44,7 @@ import doggytalents.lib.Constants;
 import doggytalents.lib.GuiNames;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -69,6 +70,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.Particles;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
@@ -77,24 +79,50 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityDog extends EntityAbstractDog implements IInteractionObject {
-
-	public IDataTracker dataTracker;
+	
+	public static final DataParameter<Boolean> 				BEGGING 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Byte> 				DOG_TEXTURE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	public static final DataParameter<Integer>				COLLAR_COLOUR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Map<Talent, Integer>> TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER.get());
+	public static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> 				OBEY_OTHERS 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Integer> 				CAPE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Boolean> 				SUNGLASSES 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> 				RADAR_COLLAR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Optional<BlockPos>> 	BOWL_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	public static final DataParameter<Optional<BlockPos>> 	BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	public static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<String> 				GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
+	
 	public DogLocationManager locationManager;
 	
 	public TalentFeature TALENTS;
@@ -121,7 +149,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     private int foodBowlCheck;
     private int reversionTime;
     
-    public int prevSize;
 	
 	public EntityDog(World worldIn) {
 		super(ModEntities.DOG, worldIn);
@@ -171,8 +198,53 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	@Override
 	protected void registerData() {
 		super.registerData();
-		this.dataTracker = new DogDataTracker(this);
-		this.dataTracker.entityInit();
+		this.dataManager.register(BEGGING, Boolean.valueOf(false));
+		this.dataManager.register(DOG_TEXTURE, (byte)0);
+        this.dataManager.register(COLLAR_COLOUR, -2);
+        this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
+        this.dataManager.register(HUNGER, Integer.valueOf(60));
+        this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
+        this.dataManager.register(FRIENDLY_FIRE, Boolean.valueOf(false));
+        this.dataManager.register(BONE, -1);
+        this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
+        this.dataManager.register(MODE_PARAM, Integer.valueOf(0));
+        this.dataManager.register(LEVEL, Integer.valueOf(0));
+        this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
+        this.dataManager.register(BOWL_POS, Optional.empty());
+        this.dataManager.register(BED_POS, Optional.empty());
+        this.dataManager.register(CAPE, -2);
+        this.dataManager.register(SUNGLASSES, false);
+        this.dataManager.register(SIZE, Integer.valueOf(3));
+        this.dataManager.register(GENDER_PARAM, this.getRandom().nextInt(2) == 0 ? "male" : "female");
+	}
+	
+	@Override
+	public void notifyDataManagerChange(DataParameter<?> key) {
+		super.notifyDataManagerChange(key);
+		if(SIZE.equals(key)) {
+			 switch(this.getDogSize()) {
+		        case 1:
+		            this.setScale(0.5F);
+		            break;
+		        case 2:
+		            this.setScale(0.7F);
+		            break;
+		        case 3:
+		            this.setScale(1.0F);
+		            break;
+		        case 4:
+		            this.setScale(1.3F);
+		            break;
+		        case 5:
+		            this.setScale(1.6F);
+		            break;
+		    }
+		}
+	}
+	
+	@Override
+	protected void registerAttributes() {
+		super.registerAttributes();
 	}
 	
 	@Override
@@ -320,8 +392,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
             this.foodBowlCheck = 0;
         }
-
-        this.updateBoundingBox();
 
         if(this.isAlive()) { //Prevent the data from being added when the entity dies
             if(ConfigHandler.COMMON.debugMode()) System.out.println("Update/Add Request From Living");
@@ -1095,30 +1165,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return amount;
     }
 	
-	public void updateBoundingBox() {
-        if (this.prevSize == this.getDogSize()) return;
-
-        switch (this.getDogSize()) {
-            case 1:
-                this.setScale(0.5F);
-                break;
-            case 2:
-                this.setScale(0.7F);
-                break;
-            case 3:
-                this.setScale(1.0F);
-                break;
-            case 4:
-                this.setScale(1.3F);
-                break;
-            case 5:
-                this.setScale(1.6F);
-                break;
-        }
-
-        this.prevSize = this.getDogSize();
-    }
-	
 	public void mountTo(EntityLivingBase entityLiving) {
         entityLiving.rotationYaw = this.rotationYaw;
         entityLiving.rotationPitch = this.rotationPitch;
@@ -1127,37 +1173,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             entityLiving.startRiding(this);
     }
 	
-	public boolean isBegging() {
-	    return this.dataTracker.isBegging();
-	}
-	    
-	public void setBegging(boolean flag) {
-	    this.dataTracker.setBegging(flag);
-	}
-
-	public int getTameSkin() {
-        return this.dataTracker.getTameSkin();
-    }
-
-    public void setTameSkin(int index) {
-        this.dataTracker.setTameSkin(index);
-    }
-
-    public void setWillObeyOthers(boolean flag) {
-        this.dataTracker.setWillObeyOthers(flag);
-    }
-
-    public boolean willObeyOthers() {
-        return this.dataTracker.willObeyOthers();
-    }
-
-    public void setFriendlyFire(boolean flag) {
-        this.dataTracker.setFriendlyFire(flag);
-    }
-
-    public boolean canFriendlyFire() {
-        return this.dataTracker.canFriendlyFire();
-    }
 
     public int points() {
         return this.isCreativeCollar() ? 1000 : this.LEVELS.getLevel() + this.LEVELS.getDireLevel() + (this.LEVELS.isDireDog() ? 15 : 0) + (this.getGrowingAge() < 0 ? 0 : 15);
@@ -1178,54 +1193,174 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     	return 0;
     }
 	
-	public int getDogHunger() {
-		return this.dataTracker.getDogHunger();
+	public void setBegging(boolean flag) {
+		this.dataManager.set(BEGGING, flag);
 	}
 	
-	public void setDogHunger(int value) {
-		this.dataTracker.setDogHunger(value);
+	public boolean isBegging() {
+		return this.dataManager.get(BEGGING);
 	}
-	
-	public void hasRadarCollar(boolean flag) {
-        this.dataTracker.hasRadarCollar(flag);
+    
+	public int getTameSkin() {
+   	 	return this.dataManager.get(DOG_TEXTURE);
     }
-
+	
+    public void setTameSkin(int index) {
+   		this.dataManager.set(DOG_TEXTURE, (byte)index);
+    }
+    
+    public void setWillObeyOthers(boolean flag) {
+    	this.dataManager.set(OBEY_OTHERS, flag);
+    }
+    
+    public boolean willObeyOthers() {
+    	return this.dataManager.get(OBEY_OTHERS);
+    }
+    
+    public void setFriendlyFire(boolean flag) {
+    	this.dataManager.set(FRIENDLY_FIRE, flag);
+    }
+    
+    public boolean canFriendlyFire() {
+    	return this.dataManager.get(FRIENDLY_FIRE);
+    }
+    
+    public int getDogHunger() {
+		return ((Integer)this.dataManager.get(HUNGER)).intValue();
+	}
+    
+    public void setDogHunger(int par1) {
+    	this.dataManager.set(HUNGER, Math.min(Constants.HUNGER_POINTS, Math.max(0, par1)));
+    }
+    
+    public void hasRadarCollar(boolean flag) {
+    	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
+    }
+    
     public boolean hasRadarCollar() {
-        return this.dataTracker.hasRadarCollar();
+    	return ((Boolean)this.dataManager.get(RADAR_COLLAR)).booleanValue();
     }
-
+    
     public void setNoFetchItem() {
-        this.dataTracker.setNoFetchItem();
+    	this.dataManager.set(BONE, -1);
     }
-
+      
+	public void setBoneVariant(int value) {
+    	this.dataManager.set(BONE, value);
+	}
+    
     public int getBoneVariant() {
-        return this.dataTracker.getBoneVariant();
+    	return this.dataManager.get(BONE);
     }
-
-    public void setBoneVariant(int value) {
-        this.dataTracker.setBoneVariant(value);
-    }
-
+    
     public boolean hasBone() {
-        return this.dataTracker.hasBone();
+    	return this.getBoneVariant() >= 0;
     }
-
-    public void setHasSunglasses(boolean flag) {
-        this.dataTracker.setHasSunglasses(flag);
+    
+    public void setHasSunglasses(boolean hasSunglasses) {
+    	this.dataManager.set(SUNGLASSES, hasSunglasses);
     }
-
+    
     public boolean hasSunglasses() {
-        return this.dataTracker.hasSunglasses();
+    	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
     }
-	
-	//Collar related functions
+    
     public int getCollarData() {
-        return this.dataTracker.getCollarColour();
+    	return this.dataManager.get(COLLAR_COLOUR);
     }
-
+    
     public void setCollarData(int value) {
-        this.dataTracker.setCollarColour(value);
+    	this.dataManager.set(COLLAR_COLOUR, value);
     }
+    
+    public int getCapeData() {
+    	return this.dataManager.get(CAPE);
+    }
+    
+    public void setCapeData(int value) {
+    	this.dataManager.set(CAPE, value);
+    }
+    
+	public void setDogSize(int value) {
+    	this.dataManager.set(SIZE, Math.min(5, Math.max(1, value)));
+    }
+    
+	public int getDogSize() {
+    	return this.dataManager.get(SIZE);
+    }
+    
+	public void setGender(String data) {
+		this.dataManager.set(GENDER_PARAM, data);
+	}
+
+	public String getGender() {
+		return this.dataManager.get(GENDER_PARAM);
+	}
+    
+	public void setLevel(int level) {
+    	this.dataManager.set(LEVEL, level);	
+	}
+
+	public int getLevel() {
+		return this.dataManager.get(LEVEL);
+	}
+
+	public void setDireLevel(int level) {
+		this.dataManager.set(LEVEL_DIRE, level);
+	}
+
+	public int getDireLevel() {
+		return this.dataManager.get(LEVEL_DIRE);
+	}
+
+	public void setModeId(int mode) {
+		this.dataManager.set(MODE_PARAM, Math.min(mode, EnumMode.values().length - 1));
+	}
+
+	public int getModeId() {
+		return this.dataManager.get(MODE_PARAM);
+	}
+
+	public void setTalentMap(Map<Talent, Integer> data) {
+		this.dataManager.set(TALENTS_PARAM, data);
+	}
+	
+	public Map<Talent, Integer> getTalentMap() {
+		return this.dataManager.get(TALENTS_PARAM);
+	}
+	
+	public boolean hasBedPos() {
+		return this.dataManager.get(BED_POS).isPresent();
+	}
+
+	public boolean hasBowlPos() {
+		return this.dataManager.get(BOWL_POS).isPresent();
+	}
+
+	public BlockPos getBedPos() {
+		return this.dataManager.get(BED_POS).orElse(this.world.getSpawnPoint());
+	}
+	
+	public BlockPos getBowlPos() {
+		return this.dataManager.get(BOWL_POS).orElse(this.getPosition());
+	}
+
+	public void resetBedPosition() {
+		this.dataManager.set(BED_POS, Optional.empty());
+	}
+
+	public void resetBowlPosition() {
+		this.dataManager.set(BOWL_POS, Optional.empty());
+	}
+
+	public void setBedPos(BlockPos pos) {
+		this.dataManager.set(BED_POS, Optional.of(pos));
+	}
+
+	public void setBowlPos(BlockPos pos) {
+		this.dataManager.set(BOWL_POS, Optional.of(pos));
+	}
+    
 
     public void setNoCollar() {
         this.setCollarData(-2);
@@ -1260,22 +1395,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
 
     public float[] getCollar() {
-        int argb = this.getCollarData();
-
-        int r = (argb >> 16) & 0xFF;
-        int g = (argb >> 8) & 0xFF;
-        int b = (argb >> 0) & 0xFF;
-
-        return new float[]{(float) r / 255F, (float) g / 255F, (float) b / 255F};
-    }
-
-    //Cape related functions
-    public int getCapeData() {
-        return this.dataTracker.getCapeData();
-    }
-
-    public void setCapeData(int value) {
-        this.dataTracker.setCapeData(value);
+        return DogUtil.rgbIntToFloatArray(this.getCollarData());
     }
 
     public boolean hasCape() {
@@ -1315,31 +1435,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
 
     public float[] getCapeColour() {
-        int argb = this.getCapeData();
-
-        int r = (argb >> 16) & 0xFF;
-        int g = (argb >> 8) & 0xFF;
-        int b = (argb >> 0) & 0xFF;
-
-        return new float[]{(float) r / 255F, (float) g / 255F, (float) b / 255F};
-    }
-
-    //Gender related functions
-    public String getGender() {
-        return this.dataTracker.getGender();
-    }
-
-    public void setGender(String value) {
-        this.dataTracker.setGender(value);
-    }
-
-    //Dog Size related functions
-    public int getDogSize() {
-        return this.dataTracker.getDogSize();
-    }
-
-    public void setDogSize(int value) {
-        this.dataTracker.setDogSize(value);
+        return DogUtil.rgbIntToFloatArray(this.getCapeData());
     }
     
     public boolean isServer() {

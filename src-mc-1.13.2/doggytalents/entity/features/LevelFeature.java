@@ -42,11 +42,11 @@ public class LevelFeature extends DogFeature {
 	}
 	
 	public int getLevel() {
-		return this.dog.dataTracker.getLevel();
+		return this.dog.getLevel();
 	}
 	
 	public int getDireLevel() {
-		return this.dog.dataTracker.getDireLevel();
+		return this.dog.getDireLevel();
 	}
 	
 	public void increaseLevel() {
@@ -58,12 +58,12 @@ public class LevelFeature extends DogFeature {
 	}
 	
 	public void setLevel(int level) {
-		this.dog.dataTracker.setLevel(level);
+		this.dog.setLevel(level);
 		this.updateHealthModifier();
 	}
 	
 	public void setDireLevel(int level) {
-		this.dog.dataTracker.setDireLevel(level);
+		this.dog.setDireLevel(level);
 		this.updateHealthModifier();
 	}
 	

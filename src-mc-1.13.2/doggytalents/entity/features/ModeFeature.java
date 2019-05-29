@@ -33,11 +33,11 @@ public class ModeFeature extends DogFeature {
 	}
 	
 	public void setMode(int mode) {	
-		this.dog.dataTracker.setModeId(mode);
+		this.dog.setModeId(mode);
 	}
 	
 	protected int getModeID() {
-		return this.dog.dataTracker.getModeId();
+		return this.dog.getModeId();
 	}
 	
 	@Override

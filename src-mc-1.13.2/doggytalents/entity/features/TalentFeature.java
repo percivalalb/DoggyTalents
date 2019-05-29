@@ -29,7 +29,7 @@ public class TalentFeature extends DogFeature {
     public void writeAdditional(NBTTagCompound compound) {
 		
 		NBTTagList list = new NBTTagList();
-		Map<Talent, Integer> map = this.dog.dataTracker.getTalentMap();
+		Map<Talent, Integer> map = this.dog.getTalentMap();
 		for(Entry<Talent, Integer> entry : map.entrySet()) {
 			NBTTagCompound subCompound = new NBTTagCompound();
 			subCompound.putString("talent", entry.getKey().getRegistryName().toString());
@@ -78,24 +78,24 @@ public class TalentFeature extends DogFeature {
     	}
     	
     	if(talentMap.size() > 0) {
-			this.dog.dataTracker.setTalentMap(talentMap);
+			this.dog.setTalentMap(talentMap);
     	} else {
-			this.dog.dataTracker.setTalentMap(Collections.emptyMap());
+			this.dog.setTalentMap(Collections.emptyMap());
     	}
     }
 	
 	public int getLevel(@Nullable Talent talent) {
-		Map<Talent, Integer> map = this.dog.dataTracker.getTalentMap();
+		Map<Talent, Integer> map = this.dog.getTalentMap();
 		return map.containsKey(talent) ? map.get(talent) : 0;
 	}
 	
 	public void setLevel(@Nonnull Talent talent, int level) {
-		Map<Talent, Integer> map = new HashMap<>(this.dog.dataTracker.getTalentMap());
+		Map<Talent, Integer> map = new HashMap<>(this.dog.getTalentMap());
 		map.put(talent, level);
-		this.dog.dataTracker.setTalentMap(map);
+		this.dog.setTalentMap(map);
 	}
 	
 	public void resetTalents() {
-		this.dog.dataTracker.setTalentMap(Collections.emptyMap());
+		this.dog.setTalentMap(Collections.emptyMap());
 	}
 }

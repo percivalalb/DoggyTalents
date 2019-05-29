@@ -1,7 +1,12 @@
 package doggytalents;
 
+import java.util.Map;
+import java.util.function.Supplier;
+
+import doggytalents.api.inferface.Talent;
 import doggytalents.lib.Reference;
 import doggytalents.serializer.TalentListSerializer;
+import net.minecraft.network.datasync.DataSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,6 +18,9 @@ import net.minecraftforge.registries.ObjectHolder;
 public class ModSerializers {
 	
 	public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
+	
+	@SuppressWarnings("unchecked")
+	public static Supplier<DataSerializer<Map<Talent, Integer>>> TALENT_LEVEL_SERIALIZER = () -> (DataSerializer<Map<Talent, Integer>>)TALENT_LEVEL_LIST.getSerializer();
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {

@@ -1,9 +1,11 @@
 package doggytalents.entity;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
@@ -149,6 +151,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     private int foodBowlCheck;
     private int reversionTime;
     
+    private int generalTick;
 	
 	public EntityDog(World worldIn) {
 		super(ModEntities.DOG, worldIn);
@@ -392,14 +395,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 
             this.foodBowlCheck = 0;
         }
-
-        if(this.isAlive()) { //Prevent the data from being added when the entity dies
-            if(ConfigHandler.COMMON.debugMode()) System.out.println("Update/Add Request From Living");
-            this.locationManager.addOrUpdateLocation(this);
-        }else{
-            if(ConfigHandler.COMMON.debugMode()) System.out.println("Remove Request From Living");
-            this.locationManager.removeDog(this);
-        }
         
         TalentHelper.livingTick(this);
     }
@@ -455,6 +450,21 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     this.setNoFetchItem();
                 }
             }
+        }
+        
+        this.generalTick--;
+        if(this.generalTick < 0) {
+        	if(!this.world.isRemote) {
+		        if(this.isAlive()) { //Prevent the data from being added when the entity dies
+		            if(ConfigHandler.COMMON.debugMode()) DoggyTalentsMod.LOGGER.debug("Update/Add Request From Living");
+		            this.locationManager.update(this);
+		        } else {
+		            if(ConfigHandler.COMMON.debugMode()) DoggyTalentsMod.LOGGER.debug("Remove Request From Living");
+		            this.locationManager.remove(this);
+		        }
+        	}
+        	
+	        this.generalTick = 40;
         }
         
         TalentHelper.tick(this);
@@ -750,7 +760,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             }
         } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
             if(this.isServer()) {
-                this.locationManager.removeDog(this);
+                this.locationManager.remove(this);
                 this.remove();
                 EntityWolf wolf = new EntityWolf(this.world);
                 wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -801,7 +811,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             combinedLevel = Math.min(combinedLevel, 20);
             entitydog.LEVELS.setLevel(combinedLevel);
         }
-        
+
         return entitydog;
     }
 	
@@ -875,9 +885,9 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	
 	@Override
 	public void onDeath(DamageSource cause) {
-        if (this.isServer() && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
-            System.out.println("From onDeath");
-            this.locationManager.removeDog(this);
+        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
+            DoggyTalentsMod.LOGGER.debug("From onDeath");
+            this.locationManager.remove(this);
             this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
         }
     }
@@ -944,6 +954,37 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             return true;
 
         return super.canAttackClass(cls);
+    }
+    
+    @Override
+    public Entity changeDimension(DimensionType dimType, ITeleporter teleporter) {
+    	Entity entity = super.changeDimension(dimType, teleporter);
+    	if(entity instanceof EntityDog) {
+    		EntityDog dog = (EntityDog)entity;
+    		
+    		if(!this.world.isRemote) {
+	    		dog.locationManager.update(dog);
+	    		this.locationManager.remove(this);
+    		}
+    	} else if(entity != null) {
+    		DoggyTalentsMod.LOGGER.warn("Dog tried to change dimension but now isn't a dog?");
+    	}
+    	
+    	return entity;
+    }
+    
+    @Override
+    public void onAddedToWorld() { 
+    	super.onAddedToWorld();
+    	if(!this.world.isRemote)
+    		this.locationManager.update(this);
+    }
+
+    @Override
+    public void onRemovedFromWorld() {
+    	super.onRemovedFromWorld();
+    	if(!this.world.isRemote && !this.isAlive())
+    		this.locationManager.remove(this);
     }
     
     @Override

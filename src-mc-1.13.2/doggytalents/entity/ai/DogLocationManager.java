@@ -3,14 +3,21 @@ package doggytalents.entity.ai;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import doggytalents.configuration.ConfigHandler;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.dimension.DimensionType;
@@ -19,146 +26,186 @@ import net.minecraft.world.storage.WorldSavedDataStorage;
 
 public class DogLocationManager extends WorldSavedData {
 	
-	public List<DogLocation> locations;
+	private List<DogLocation> locations;
 	
 	public DogLocationManager(String name) {
 		super(name);
 		this.locations = new ArrayList<DogLocation>();
 	}
 	
-	/**
-	 * Gets DogLocationHandler uses Overworld WorldSaveData as that should always be loaded
-	 */
+	public List<DogLocation> getList(Predicate<DogLocation> selector) {
+		return this.getStream(selector).collect(Collectors.toList());
+	}
+	
+	public Stream<DogLocation> getStream(Predicate<DogLocation> selector) {
+		return this.locations.stream().filter(selector);
+	}
+	
 	public static DogLocationManager getHandler(World world) {
-		WorldSavedDataStorage storage = world.getSavedDataStorage();
-		DogLocationManager locationManager = (DogLocationManager)storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations");
+		return getHandler(world.getSavedDataStorage(), world.getDimension().getType());
+	}
+	
+	public static DogLocationManager getHandler(World world, DimensionType dimType) {
+		return getHandler(world.getSavedDataStorage(), dimType);
+	}
+	
+	public static DogLocationManager getHandler(WorldSavedDataStorage storage, DimensionType dimType) {
+		DogLocationManager locationManager = (DogLocationManager)storage.get(dimType, DogLocationManager::new, "dog_locations");
 		
-    	if (locationManager == null) {
+    	if(locationManager == null) {
             locationManager = new DogLocationManager("dog_locations");
-			storage.set(world.dimension.getType(), "dog_locations", locationManager);
-			if(ConfigHandler.COMMON.debugMode()) System.out.println("DATA DECLARED: "+storage.get(world.dimension.getType(), DogLocationManager::new, "dog_locations"));
+			storage.set(dimType, "dog_locations", locationManager);
 		}
     	
     	return locationManager;
 	}
 	
-	public void addOrUpdateLocation(EntityDog dog) {
+	public void update(EntityDog dog) {
 		DogLocation temp = new DogLocation(dog);
-		for(int i = 0; i < this.locations.size(); i++) {
-			DogLocation loc = this.locations.get(i);
-			
-			if (loc.equals(temp)) {
-				this.locations.set(i, temp);
-				this.markDirty();
-				return;
-			}
+		
+		int index = this.locations.indexOf(temp);
+		if(index >= 0) {
+			this.locations.set(index, temp);
+		} else {
+			DoggyTalentsMod.LOGGER.debug("ADDED NEW DATA: " + temp);
+			this.locations.add(temp);
 		}
-		if(ConfigHandler.COMMON.debugMode()) System.out.println("ADDED NEW DATA: " + temp);
-		this.locations.add(temp);
+
 		this.markDirty();
 	}
 
-	public void removeDog(EntityDog dog) {
-		if(ConfigHandler.COMMON.debugMode()) System.out.println("REMOVED DATA: "+ dog);
-
+	public void remove(EntityDog dog) {
 		DogLocation temp = new DogLocation(dog);
-		this.locations.remove(temp);
-		this.markDirty();
-	}
-
-	public boolean axisCoordEqual(double a, double b) {
-		return Math.abs(a - b) < 1e-4;
+		
+		if(this.locations.remove(temp)) {
+			this.markDirty();
+			DoggyTalentsMod.LOGGER.debug("REMOVED DATA: "+ temp);
+		}
 	}
 
 	@Override
 	public void read(NBTTagCompound nbt) {
-		NBTTagList nbtlist = nbt.getList("dog_locations", 10);
+		if(nbt.contains("dog_locations", 9)) {
+			NBTTagList nbtlist = nbt.getList("dog_locations", 10);
 		
-		for (int i = 0; i < nbtlist.size(); i++) {
-			this.locations.add(new DogLocation((NBTTagCompound)nbtlist.get(i)));
+			for(int i = 0; i < nbtlist.size(); i++) {
+				DogLocation location = new DogLocation(nbtlist.getCompound(i));
+				DoggyTalentsMod.LOGGER.debug("Loaded: " + location);
+				if(location.entityId != null)
+					this.locations.add(location);
+			}
 		}
 	}
 
 	@Override
 	public NBTTagCompound write(NBTTagCompound compound) {
-		NBTTagCompound base = new NBTTagCompound();
-		
 		NBTTagList nbtlist = new NBTTagList();
 		
-		for (DogLocation location : this.locations) {
-			nbtlist.add(location.writeToNBT(new NBTTagCompound()));
+		for(DogLocation location : this.locations) {
+			nbtlist.add(location.write(new NBTTagCompound()));
 		}
 		
-		base.put("dog_locations", nbtlist);
+		compound.put("dog_locations", nbtlist);
 		
-		return base;
+		return compound;
 	}
 	
 	public class DogLocation {
 
+		public @Nonnull UUID entityId;
 		public double x, y, z;
-		public DimensionType dim;
-		public UUID entityId;
-
+		
 		// Dog Data
-		public String name;
+		public @Nullable UUID owner;
+		public ITextComponent name;
 		public String gender;
 		public boolean hasRadarCollar;
 		
 		public DogLocation(NBTTagCompound nbt) {
-			this.readFromNBT(nbt);
+			this.read(nbt);
 		}
 		
 		public DogLocation(EntityDog dog) {
 			this.x = dog.posX;
 			this.y = dog.posY;
 			this.z = dog.posZ;
-			this.dim = dog.world.dimension.getType();
 			this.entityId = dog.getUniqueID();
+			this.owner = dog.getOwnerId();
 			
-			this.name = dog.getName().getUnformattedComponentText();
+			this.name = dog.getName();
 			this.gender = dog.getGender();
 			this.hasRadarCollar = dog.hasRadarCollar();
 		}
 
-		public void readFromNBT(NBTTagCompound compound) {
+		private void read(NBTTagCompound compound) {
 			this.x = compound.getDouble("x");
 			this.y = compound.getDouble("y");
 			this.z = compound.getDouble("z");
-			this.dim = DimensionType.byName(new ResourceLocation(compound.getString("dim")));
 			this.entityId = compound.getUniqueId("entityId");
+			if(compound.hasUniqueId("ownerId")) this.owner = compound.getUniqueId("ownerId");
 			
-			this.name = compound.getString("name");
+			if(compound.contains("name_text_component", 8)) {
+				this.name = ITextComponent.Serializer.fromJson(compound.getString("name_text_component"));
+			} else if(compound.contains("name", 8)) { //
+				this.name = new TextComponentString(compound.getString("name"));
+			}
+			
 			this.gender = compound.getString("gender");
 			this.hasRadarCollar = compound.getBoolean("collar");
 		}
 
-		public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		public NBTTagCompound write(NBTTagCompound compound) {
 			compound.putDouble("x", this.x);
 			compound.putDouble("y", this.y);
 			compound.putDouble("z", this.z);
-			compound.putString("dim", DimensionType.getKey(this.dim).toString());
 			compound.putUniqueId("entityId", this.entityId);
 			
-			compound.putString("name", this.name);
+			if(this.owner != null) compound.putUniqueId("ownerId", this.owner);
+			
+			compound.putString("name_text_component", ITextComponent.Serializer.toJson(this.name));
 			compound.putString("gender", this.gender);
 			compound.putBoolean("collar", this.hasRadarCollar);
 			return compound;
 		}
 		
 		
-		public EntityDog getDog(EntityPlayerMP player) {
-			if(this.entityId == null) {
+		public EntityDog getDog(World world) {			
+			if(!(world instanceof WorldServer)) {
+				DoggyTalentsMod.LOGGER.warn("Something when wrong. Tried to call DogLocation#getDog(EntityPlayer) on what looks like the client side");
 				return null;
 			}
 			
-			World world = player.getEntityWorld();
 			Entity entity = ((WorldServer)world).getEntityFromUuid(this.entityId);
 			
-			if(entity instanceof EntityDog) 
-				return (EntityDog)entity;
+			if(entity == null) {
+				return null;
+			}
+			else if(!(entity instanceof EntityDog)) {
+				DoggyTalentsMod.LOGGER.warn("Something when wrong. The saved dog UUID is not an EntityDog");
+				return null;
+			}
 			
-			return null;
+			return (EntityDog)entity;
+		}
+		
+		public EntityLivingBase getOwner(World world) {
+			EntityDog dog = this.getDog(world);
+			if(dog != null) {
+				return dog.getOwner();
+			} else if(this.owner != null) {
+				return world.getPlayerEntityByUUID(this.owner);
+			} else {
+				return null;
+			}
+		}
+		
+		public boolean hasRadioCollar(World world) {
+			EntityDog dog = this.getDog(world);
+			if(dog != null) {
+				return dog.hasRadarCollar();
+			} else {
+				return this.hasRadarCollar;
+			}
 		}
 		
 		@Override
@@ -177,7 +224,7 @@ public class DogLocationManager extends WorldSavedData {
 		
 		@Override
 		public String toString() {
-			return String.format("DogLocation [id=%s, x=%f,y=%f, z=%f, dim=%s]", this.entityId.toString(), this.x, this.y, this.z, this.dim.toString());
+			return String.format("DogLocation [id=%s, x=%f,y=%f, z=%f]", this.entityId.toString(), this.x, this.y, this.z);
 		}
 	}
 }

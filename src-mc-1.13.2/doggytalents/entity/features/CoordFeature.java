@@ -14,31 +14,31 @@ public class CoordFeature extends DogFeature {
 	}
 	
 	public boolean hasBedPos() {
-		return this.dog.dataTracker.hasBedPos();
+		return this.dog.hasBedPos();
 	}
 	
 	public boolean hasBowlPos() {
-		return this.dog.dataTracker.hasBowlPos();
+		return this.dog.hasBowlPos();
 	}
 	
 	public void setBedPos(BlockPos pos) {
-		this.dog.dataTracker.setBedPos(pos);
+		this.dog.setBedPos(pos);
 	}
 	
 	public void setBowlPos(BlockPos pos) {
-		this.dog.dataTracker.setBowlPos(pos);
+		this.dog.setBowlPos(pos);
 	}
 	
 	public BlockPos getBedPos() {
-		return this.dog.dataTracker.getBedPos();
+		return this.dog.getBedPos();
 	}
 	
 	public BlockPos getBowlPos() {
-		return this.dog.dataTracker.getBowlPos();
+		return this.dog.getBowlPos();
 	}
 	
 	public void resetBowlPosition() {
-		this.dog.dataTracker.resetBowlPosition();
+		this.dog.resetBowlPosition();
 	}
 	
 	@Override

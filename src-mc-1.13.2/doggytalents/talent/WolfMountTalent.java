@@ -19,7 +19,7 @@ public class WolfMountTalent extends Talent {
 	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) { 
 		if(stack.isEmpty() && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null && !player.onGround && !dog.isIncapacicated()) {
-        		if(dog.isServer()) {
+        		if(!dog.world.isRemote) {
         			dog.getAISit().setSitting(false);
         			dog.mountTo(player);
         		}
@@ -36,7 +36,7 @@ public class WolfMountTalent extends Talent {
 			dog.getControllingPassenger().sendMessage(new TextComponentTranslation("talent.wolf_mount.exhausted", dog.getName()));
 			
 			dog.removePassengers();
-		}	
+		}
 	}
 	
 	@Override

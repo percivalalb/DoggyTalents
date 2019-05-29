@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.DogLocationManager.DogLocation;
-import doggytalents.item.ItemFancyCollar.Type;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;

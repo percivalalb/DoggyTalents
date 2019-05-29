@@ -1,6 +1,7 @@
 package doggytalents.talent;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
@@ -24,6 +25,10 @@ import net.minecraftforge.fml.network.NetworkHooks;
  */
 public class PackPuppyTalent extends Talent {
 
+	public static Predicate<EntityItem> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
+		return entity.isAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
+	};
+	
 	@Override
 	public void onClassCreation(EntityDog dog) {
 		dog.objects.put("packpuppyinventory", new InventoryPackPuppy(dog));
@@ -72,13 +77,11 @@ public class PackPuppyTalent extends Talent {
 	
 	@Override
 	public void livingTick(EntityDog dog) {
-		if(dog.isServer() && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
+		if(!dog.world.isRemote && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
 			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 			
-			List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getBoundingBox().grow(2.5D, 1D, 2.5D));
+			List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
 	        for(EntityItem entityItem : list) {
-	            if(!entityItem.isAlive() || DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entityItem.getItem())) continue;
-	            
 	            ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getItem());
 
 	            if(!itemstack1.isEmpty())

@@ -20,7 +20,7 @@ public class BedFinderTalent extends Talent {
 		
 		Entity entityRidden = dog.getRidingEntity();
 		
-		if(entityRidden instanceof EntityPlayer && dog.isServer()) {
+		if(entityRidden instanceof EntityPlayer && !dog.world.isRemote) {
 			
 			EntityPlayer player = (EntityPlayer)entityRidden;
 			if(player != null && player.getBedLocation(player.dimension) != null) {

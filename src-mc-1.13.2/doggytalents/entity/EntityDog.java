@@ -189,9 +189,8 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		this.tasks.addTask(14, new EntityAIBegDog(this, 8.0F));
 		this.tasks.addTask(15, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		
-		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-		this.tasks.addTask(15, new EntityAILookIdle(this));
-		
+		this.tasks.addTask(16, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+		this.tasks.addTask(16, new EntityAILookIdle(this));
 		
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetDog(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetDog(this));
@@ -611,7 +610,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     }
                 	
                 } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
-                    if(this.isServer()) {
+                    if(!this.world.isRemote) {
                         if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
                             this.reversionTime = 40;
                             if(this.hasCollarColoured()) {
@@ -680,7 +679,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
-                    if(this.isServer()) {
+                    if(!this.world.isRemote) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getMaxHealth());
                         this.setDogHunger(Constants.HUNGER_POINTS);
@@ -754,7 +753,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             }
 
             if(!this.isBreedingItem(stack) && this.canInteract(player)) {
-                if(this.isServer()) {
+                if(!this.world.isRemote) {
                     this.aiSit.setSitting(!this.isSitting());
                     this.isJumping = false;
                     this.navigator.clearPath();
@@ -763,7 +762,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 return true;
             }
         } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
-            if(this.isServer()) {
+            if(!this.world.isRemote) {
                 this.locationManager.remove(this);
                 this.remove();
                 EntityWolf wolf = new EntityWolf(this.world);
@@ -1010,7 +1009,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     
     @Override
     protected void onFinishShaking() {
-        if(this.isServer()) {
+        if(!this.world.isRemote) {
             int lvlFisherDog = this.TALENTS.getLevel(ModTalents.FISHER_DOG);
             int lvlHellHound = this.TALENTS.getLevel(ModTalents.HELL_HOUND);
 
@@ -1117,11 +1116,12 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         entityLiving.rotationYaw = this.rotationYaw;
         entityLiving.rotationPitch = this.rotationPitch;
 
-        if (isServer())
+        if(!this.world.isRemote)
             entityLiving.startRiding(this);
     }
 	
 
+	
     public int points() {
         return this.isCreativeCollar() ? 1000 : this.LEVELS.getLevel() + this.LEVELS.getDireLevel() + (this.LEVELS.isDireDog() ? 15 : 0) + (this.getGrowingAge() < 0 ? 0 : 15);
     }
@@ -1386,14 +1386,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return DogUtil.rgbIntToFloatArray(this.getCapeData());
     }
     
-    public boolean isServer() {
-        return !this.world.isRemote;
-    }
-    
-    public boolean isClient() {
-        return this.world.isRemote;
-    }
-    
     public Random getRandom() {
     	return this.rand;
     }
@@ -1413,10 +1405,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 		return GuiNames.DOG_INFO;
 	}
 	
-	@Override
-	public boolean canBePushed() {
-		return !this.isBeingRidden();
-	}
 	
 	protected boolean dogJumping;
 	protected float jumpPower;
@@ -1443,6 +1431,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	@Override
 	public boolean canBeSteered() {
 		return this.getControllingPassenger() instanceof EntityLivingBase;
+	}
+	
+	@Override
+	public boolean canBePushed() {
+		return !this.isBeingRidden();
 	}
 	
 	@Override
@@ -1475,15 +1468,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	// 0 - 100 input
 	public void setJumpPower(int jumpPowerIn) {
 		if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
-			if(jumpPowerIn < 0) {
-				jumpPowerIn = 0;
-			}
-
-			if (jumpPowerIn >= 90) {
-				this.jumpPower = 1.0F;
-			} else {
-				this.jumpPower = 0.4F + 0.4F * (float)jumpPowerIn / 90.0F;
-			}
 			this.jumpPower = 1.0F;
 		}
 	}

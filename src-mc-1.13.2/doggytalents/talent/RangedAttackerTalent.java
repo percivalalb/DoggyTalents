@@ -34,7 +34,7 @@ public class RangedAttackerTalent extends Talent {
 	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		if(stack.isEmpty() && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.isIncapacicated()) {
-        		if(dog.isServer()) {
+        		if(!dog.world.isRemote) {
         			//TODO RangedAttacker
         		}
         		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

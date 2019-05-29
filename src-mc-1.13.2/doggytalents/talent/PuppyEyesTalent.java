@@ -46,7 +46,7 @@ public class PuppyEyesTalent extends Talent {
 		int level = dog.TALENTS.getLevel(this);
 		EntityPlayer player = (EntityPlayer)dog.getOwner();
 		
-		if(dog.isServer() && dog.TALENTS.getLevel(this) != 0 && charmerCharge == 0) {
+		if(!dog.world.isRemote && dog.TALENTS.getLevel(this) != 0 && charmerCharge == 0) {
 			EntityLiving entityliving = this.charmVillagers(dog, 5D);
 
 			if(entityliving != null && player != null) {

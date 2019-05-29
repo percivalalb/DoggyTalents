@@ -13,7 +13,6 @@ import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.DogTextureLoader;
-import doggytalents.handler.KeyState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -30,7 +29,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -53,11 +51,6 @@ public class ClientProxy extends CommonProxy {
         //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
-		
-    	ClientRegistry.registerKeyBinding(KeyState.come);
-    	ClientRegistry.registerKeyBinding(KeyState.stay);
-    	ClientRegistry.registerKeyBinding(KeyState.ok);
-    	ClientRegistry.registerKeyBinding(KeyState.heel);
     }
    
     @Override

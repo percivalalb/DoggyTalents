@@ -39,7 +39,7 @@ public class RoaringGaleTalent extends Talent {
 		int level = dog.TALENTS.getLevel(this);
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 
-		if(dog.isClient() || !DogUtil.isHolding(dog.getOwner(), Items.BONE) || dog.getHealth() <= Constants.LOW_HEATH_LEVEL || dog.isChild() || level < 1) {
+		if(dog.world.isRemote || !DogUtil.isHolding(dog.getOwner(), Items.BONE) || dog.getHealth() <= Constants.LOW_HEATH_LEVEL || dog.isChild() || level < 1) {
 			return;
 		}
 

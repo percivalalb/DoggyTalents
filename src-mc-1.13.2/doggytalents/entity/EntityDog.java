@@ -691,49 +691,53 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                     }
 
                     return true;
-                } else if(stack.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES) && this.canInteract(player)) { //TODO Add Plants compatibility
-                    if(!this.hasCollarColoured())
-                        return true;
+                } else if(stack.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES) && this.canInteract(player) && this.hasCollarColoured()) { //TODO Add Plants compatibility
 
-                    if(!this.isCollarColoured()) {
-                        int colour = EnumDyeColor.getColor(stack).func_196057_c();
-
-                        this.setCollarData(colour);
-                    } else {
-                        int[] aint = new int[3];
-                        int i = 0;
-                        int count = 2; //The number of different sources of colour
-
-                        int l = this.getCollarData();
-                        float f = (float) (l >> 16 & 255) / 255.0F;
-                        float f1 = (float) (l >> 8 & 255) / 255.0F;
-                        float f2 = (float) (l & 255) / 255.0F;
-                        i = (int) ((float) i + Math.max(f, Math.max(f1, f2)) * 255.0F);
-                        aint[0] = (int) ((float) aint[0] + f * 255.0F);
-                        aint[1] = (int) ((float) aint[1] + f1 * 255.0F);
-                        aint[2] = (int) ((float) aint[2] + f2 * 255.0F);
-
-                        float[] afloat = EnumDyeColor.getColor(stack).getColorComponentValues();
-                        int l1 = (int) (afloat[0] * 255.0F);
-                        int i2 = (int) (afloat[1] * 255.0F);
-                        int j2 = (int) (afloat[2] * 255.0F);
-                        i += Math.max(l1, Math.max(i2, j2));
-                        aint[0] += l1;
-                        aint[1] += i2;
-                        aint[2] += j2;
-
-                        int i1 = aint[0] / count;
-                        int j1 = aint[1] / count;
-                        int k1 = aint[2] / count;
-                        float f3 = (float) i / (float) count;
-                        float f4 = (float) Math.max(i1, Math.max(j1, k1));
-                        i1 = (int) ((float) i1 * f3 / f4);
-                        j1 = (int) ((float) j1 * f3 / f4);
-                        k1 = (int) ((float) k1 * f3 / f4);
-                        int k2 = (i1 << 8) + j1;
-                        k2 = (k2 << 8) + k1;
-                        this.setCollarData(k2);
-                    }
+                	if(!this.world.isRemote) {
+	                    int[] aint = new int[3];
+	                    int maxCompSum = 0;
+	                    int count = 1; //The number of different sources of colour
+	    
+	                    EnumDyeColor colour = EnumDyeColor.getColor(stack);
+	                    if(colour == null) {
+	                    	return false;
+	                    }
+	                    
+	                    float[] afloat = colour.getColorComponentValues();
+	                    int l1 = (int)(afloat[0] * 255.0F);
+	                    int i2 = (int)(afloat[1] * 255.0F);
+	                    int j2 = (int)(afloat[2] * 255.0F);
+	                    maxCompSum += Math.max(l1, Math.max(i2, j2));
+	                    aint[0] += l1;
+	                    aint[1] += i2;
+	                    aint[2] += j2;
+	                    
+	                    if(this.isCollarColoured()) {
+	                    	int l = this.getCollarData();
+	                    	float f = (float)(l >> 16 & 255) / 255.0F;
+	                    	float f1 = (float)(l >> 8 & 255) / 255.0F;
+	                    	float f2 = (float)(l & 255) / 255.0F;
+	                    	maxCompSum = (int)((float)maxCompSum + Math.max(f, Math.max(f1, f2)) * 255.0F);
+	                    	aint[0] = (int) ((float) aint[0] + f * 255.0F);
+	                    	aint[1] = (int) ((float) aint[1] + f1 * 255.0F);
+	                    	aint[2] = (int) ((float) aint[2] + f2 * 255.0F);
+	                    	count++;
+	                    }
+	                    
+	                    
+	                    int i1 = aint[0] / count;
+	                    int j1 = aint[1] / count;
+	                    int k1 = aint[2] / count;
+	                    float f3 = (float) maxCompSum / (float) count;
+	                    float f4 = (float) Math.max(i1, Math.max(j1, k1));
+	                    i1 = (int)((float) i1 * f3 / f4);
+	                    j1 = (int)((float) j1 * f3 / f4);
+	                    k1 = (int)((float) k1 * f3 / f4);
+	                    int k2 = (i1 << 8) + j1;
+	                    k2 = (k2 << 8) + k1;
+	                    this.setCollarData(k2);
+                	}
+                	
                     return true;
                 } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
 

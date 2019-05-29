@@ -40,6 +40,8 @@
     "item.doggytalents.tiny_bone": "小骨头",
     "item.doggytalents.big_bone": "大骨头",
 	
+	"item.doggytalents.cape_coloured.tooltip": "Colour: %s",
+	"item.doggytalents.wool_collar.tooltip": "Colour: %s",
 	"item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
 	"item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
 

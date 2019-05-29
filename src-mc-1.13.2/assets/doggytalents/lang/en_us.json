@@ -40,8 +40,11 @@
     "item.doggytalents.tiny_bone": "Tiny Bone",
     "item.doggytalents.big_bone": "Big Bone",
 
+	"item.doggytalents.cape_coloured.tooltip": "Color: %s",
+	"item.doggytalents.wool_collar.tooltip": "Color: %s",
 	"item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
 	"item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
+
     "talent.doggytalents.black_pelt": "Black Pelt",
     "talent.doggytalents.guard_dog": "Guard Dog",
     "talent.doggytalents.hunter_dog": "Hunter Dog",

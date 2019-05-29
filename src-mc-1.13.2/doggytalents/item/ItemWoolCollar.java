@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import doggytalents.helper.DogUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -13,6 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,14 +30,12 @@ public class ItemWoolCollar extends Item {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
+		int[] rgb = ItemCapeColoured.WHITE;
 		if(stack.hasTag() && stack.getTag().contains("collar_colour")) {
-			int rgb = stack.getTag().getInt("collar_colour");
-			int r = (rgb >> 16) &0xFF;
-			int g = (rgb >> 8) &0xFF;
-			int b = (rgb >> 0) &0xFF;
-		  
-			tooltip.add(new TextComponentString("Colour: " + TextFormatting.RED + "" + r + TextFormatting.GREEN + " " + g + TextFormatting.BLUE + " " + b));
+			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("collar_colour"));
 		}
+
+		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
 	}
 	
 	@Override

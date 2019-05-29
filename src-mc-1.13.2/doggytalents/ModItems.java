@@ -4,6 +4,7 @@ import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemCommandEmblem;
+import doggytalents.item.ItemCreativeCollar;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemFancyCollar;
@@ -75,7 +76,7 @@ public class ModItems {
 	    	event.getRegistry().register(new ItemDoggyCharm(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.DOGGY_CHARM));
 	    	event.getRegistry().register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADIO_COLLAR));
 	    	event.getRegistry().register(new ItemWoolCollar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WOOL_COLLAR));
-	    	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
+	    	event.getRegistry().register(new ItemCreativeCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
 	      	event.getRegistry().register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
 	    	event.getRegistry().register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_RADAR));

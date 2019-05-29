@@ -2,6 +2,7 @@
     "block.doggytalents.dog_bed": "Dog Bed",
     "block.doggytalents.food_bowl": "Food Bowl",
     "block.doggytalents.dog_bath": "Dog Bath",
+    "block.doggytalents.dog_grave": "Dog Grave",
 
     "title.doggytalents.config": "Doggy Talents Configurations",
     "modgui.config.doggysettings": "Dog Behavior Settings",
@@ -106,7 +107,7 @@
     "doggui.gendertip.male": "(M)",
     "doggui.gendertip.female": "(F)",
 
-    "doggui.modeinfo.wandering": "In this mode your dog so stay near it's bowl and wait for your next command To set you dog's bowl simply bring your dog within 1 block of one",
+    "doggui.modeinfo.wandering": "In this mode your dog so stay near it's bowl and wait for your next command. To set you dog's bowl bring your dog within a few blocks of it.",
     "doggui.modeinfo.tactical": "In this mode your dog will follow you but will not attack anything unless you use the command beam",
     "doggui.modeinfo.aggressive": "In this mode your dog will follow you and attack anything that attacks you or that you attack",
     "doggui.modeinfo.berserker": "In this mode your dog will follow you and if any mob draws near, they will attack it without warning",

@@ -89,6 +89,8 @@
     "doggui.modename.docile": "Docile",
     "doggui.modename.patrol": "Patrol",
 
+	"dog.mode.incapacitated.help": "%s is incapacitated and requires a cake to revive them.",
+
     "doggui.modetip.wandering": "(W)",
     "doggui.modetip.tactical": "(T)",
     "doggui.modetip.aggressive": "(A)",

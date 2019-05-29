@@ -90,6 +90,8 @@
 	"doggui.modename.patrol": "Дозорный",
 	"doggui.modename.incapacitated": "Раненый",
 
+	"dog.mode.incapacitated.help": "%s is incapacitated and requires a cake to revive them.",
+
 	"doggui.modetip.wandering": "(О)",
 	"doggui.modetip.tactical": "(Т)",
 	"doggui.modetip.aggressive": "(A)",

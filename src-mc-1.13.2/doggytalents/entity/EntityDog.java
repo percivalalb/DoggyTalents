@@ -454,13 +454,18 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                 //else if(stack.getItem() == Items.OAK_DOOR && this.canInteract(player)) {
                 //	this.patrolOutline.clear();
                 //}
-                else if(stack.getItem() == Items.STICK && this.canInteract(player) && !this.isIncapacicated()) {
+                else if(stack.getItem() == Items.STICK && this.canInteract(player)) {
                 	
-                	if(player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
-        	        	EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
-        	
-        	        	NetworkHooks.openGui(entityPlayerMP, this, buf -> buf.writeInt(this.getEntityId()));
-        	        }
+                	if(this.isIncapacicated()) {
+                		if(!this.world.isRemote)
+                			player.sendMessage(new TextComponentTranslation("dog.mode.incapacitated.help", this.getName()));
+                	} else {
+	                	if(player instanceof EntityPlayerMP && !(player instanceof FakePlayer)) {
+	        	        	EntityPlayerMP entityPlayerMP = (EntityPlayerMP) player;
+	        	
+	        	        	NetworkHooks.openGui(entityPlayerMP, this, buf -> buf.writeInt(this.getEntityId()));
+	        	        }
+                	}
                 	
                     return true;
                 } else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {

@@ -98,6 +98,8 @@
     "doggui.modetip.incapacitated": "（伤）",
     "doggui.gendertip.male": "（公）",
     "doggui.gendertip.female": "（母）",
+	
+	"dog.mode.incapacitated.help": "%s is incapacitated and requires a cake to revive them.",
 
     "doggui.modeinfo.wandering": "在这个模式下，你的狗狗会呆在狗食盆附近等待你的命令。只需要把你的狗狗带到狗食盆1格内的距离即可。",
     "doggui.modeinfo.tactical": "在这个模式下，你的狗狗会跟着你但是没有你的命令它不会攻击任何生物。",

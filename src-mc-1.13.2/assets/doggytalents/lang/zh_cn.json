@@ -39,6 +39,9 @@
     "item.doggytalents.leather_jacket": "皮夹克",
     "item.doggytalents.tiny_bone": "小骨头",
     "item.doggytalents.big_bone": "大骨头",
+	
+	"item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
+	"item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
 
     "talent.doggytalents.black_pelt": "黑色打击",
     "talent.doggytalents.guard_dog": "护卫犬",

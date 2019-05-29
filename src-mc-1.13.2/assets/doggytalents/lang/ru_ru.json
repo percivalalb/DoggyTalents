@@ -39,6 +39,9 @@
 	"item.doggytalents.leather_jacket": "Кожаная куртка",
 	"item.doggytalents.tiny_bone": "Маленькая кость",
 	"item.doggytalents.big_bone": "Большая Кость",
+	
+	"item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
+	"item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
 
 	"talent.doggytalents.black_pelt": "Прочная шкура",
 	"talent.doggytalents.guard_dog": "Телохранитель",

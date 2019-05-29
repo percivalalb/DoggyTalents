@@ -40,6 +40,9 @@
     "item.doggytalents.tiny_bone": "Tiny Bone",
     "item.doggytalents.big_bone": "Big Bone",
 
+	"item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
+	"item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
+
     "talent.doggytalents.black_pelt": "Black Pelt",
     "talent.doggytalents.guard_dog": "Guard Dog",
     "talent.doggytalents.hunter_dog": "Hunter Dog",
@@ -169,9 +172,9 @@
     "dogradar.south.west": "**** %s is %d blocks roughly south west ****",
     "dogradar.east": "**** %s is %d blocks east ****",
     "dogradar.west": "**** %s is %d blocks west ****",
-    "dogradar.notindim": "**** %s is not in this dimension, %s, %d is in %d ****",
-    "dogradar.errornoradio": "**** Some dogs don't have a radar collar on ****",
-    "dogradar.errornull": "**** No dog found! Please ensure you have a Doggy Talents dog! ****",
+	"dogradar.notindim": "**** Signals coming from %s too ****",
+    "dogradar.errornoradio": "**** Remember to put radio collar on your dog ****",
+    "dogradar.errornull": "**** No dogs found in %s! ****",
     "dogradar.errorown": "**** You do not own %s! Please ensure you have permission to interact with %d! ****",
 
     "dogbed.bedding.minecraft.white_wool": "White Wool Bedding",

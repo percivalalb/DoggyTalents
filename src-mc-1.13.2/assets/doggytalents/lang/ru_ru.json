@@ -30,7 +30,11 @@
 	"item.doggytalents.multicoloured_collar": "Разноцветный ошейник",
 	"item.doggytalents.radar": "Радар",
 	"item.doggytalents.creative_radar": "Творческий радар",
-	"item.doggytalents.whistle": "Свисток",
+    "item.doggytalents.whistle.0": "Whistle: Command Stand",
+	"item.doggytalents.whistle.1": "Whistle: Command Heel",
+	"item.doggytalents.whistle.2": "Whistle: Command Stay",
+	"item.doggytalents.whistle.3": "Whistle: Command Ok?",
+	"item.doggytalents.whistle.4": "Shepherds Whistle",
 	"item.doggytalents.treat_bag": "Мешочек с пряностями",
 	"item.doggytalents.chew_stick": "Жевательная кость",
 	"item.doggytalents.cape": "Шотландский плед",
@@ -361,5 +365,8 @@
 	"container.doggytalents.foodbowl": "Миска для корма",
 	"container.doggytalents.treatbag": "Мешочек с лакомствами",
 	"itemGroup.doggytalents": "Таланты пёсика",
-	"itemGroup.doggytalents.dogbed": "Варианты собачьих кроватей"
+	"itemGroup.doggytalents.dogbed": "Варианты собачьих кроватей",
+	
+	"doggytalents.whistle.short": "Whistle Short",
+	"doggytalents.whistle.long": "Whistle Long"
 }

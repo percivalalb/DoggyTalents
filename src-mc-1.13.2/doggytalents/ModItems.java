@@ -3,7 +3,6 @@ package doggytalents;
 import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
-import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemCreativeCollar;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
@@ -31,7 +30,6 @@ public class ModItems {
 	public static final Item THROW_BONE_WET = null;
 	public static final Item THROW_STICK = null;
 	public static final Item THROW_STICK_WET = null;
-	public static final Item COMMAND_EMBLEM = null;
     public static final Item TRAINING_TREAT = null;
     public static final Item SUPER_TREAT = null;
     public static final Item MASTER_TREAT = null;
@@ -66,7 +64,6 @@ public class ModItems {
 	    	event.getRegistry().register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
 	    	event.getRegistry().register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(16)).setRegistryName(ItemNames.THROW_STICK));
 	    	event.getRegistry().register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
-	    	event.getRegistry().register(new ItemCommandEmblem(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.COMMAND_EMBLEM));
 	    	event.getRegistry().register(new ItemTreat(20, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TRAINING_TREAT));
 	    	event.getRegistry().register(new ItemTreat(40, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUPER_TREAT));
 	    	event.getRegistry().register(new ItemTreat(60, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MASTER_TREAT));

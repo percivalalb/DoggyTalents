@@ -79,7 +79,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 		       return false;
 		    } else if(entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator()) {
 		    	return false;
-		    } else if(!DogUtil.isHolding(entitylivingbase, ModItems.WHISTLE)) {
+		    } else if(!DogUtil.isHolding(entitylivingbase, ModItems.WHISTLE, nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
 				return false;
 		    } else {
 				List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getBoundingBox().grow(12D, 4.0D, 12D), this.predicate);
@@ -103,7 +103,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 			return false;
 		} else if(this.dog.TALENTS.getLevel(ModTalents.SHEPHERD_DOG) <= 0) {
 			return false;
-		} else if(!DogUtil.isHolding(this.owner, ModItems.WHISTLE)) {
+		} else if(!DogUtil.isHolding(this.owner, ModItems.WHISTLE, nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
 			return false;
 		} else if(this.targets.isEmpty()) {
 			return false;

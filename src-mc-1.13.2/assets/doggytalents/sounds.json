@@ -1,0 +1,10 @@
+{
+  "whistle_short": {
+    "subtitle": "doggytalents.whistle.short",
+    "sounds": [ "doggytalents:whistle/short" ]
+  },
+  "whistle_long": {
+    "subtitle": "doggytalents.whistle.long",
+    "sounds": [ "doggytalents:whistle/long" ]
+  }
+}

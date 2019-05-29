@@ -12,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class Compatibility {
 
 	public static final ResourceLocation DOGGY_BEAM = new ResourceLocation(Reference.MOD_ID, "attackbeam");
+	public static final ResourceLocation COMMAND_EMBLEM = new ResourceLocation(Reference.MOD_ID, "command_emblem");
 	
 	private static HashMap<String, String> OLD_NEW_BED = new HashMap<String, String>();
 	private static HashMap<String, Supplier<Talent>> OLD_NEW_TALENT = new HashMap<String, Supplier<Talent>>();

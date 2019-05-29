@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +26,7 @@ public class DogUtil {
     }
 	
 	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder) {
-        teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, 4);
+        teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, 2);
     }
 	
 	public static void teleportDogToPos(double x, double y, double z, Entity entity, World world, PathNavigate pathfinder, int radius) {
@@ -131,6 +132,10 @@ public class DogUtil {
 
         return itemstack;
     }
+    
+    public static boolean isHolding(Entity entity, Item item, Predicate<NBTTagCompound> nbtPredicate) {
+		return isHolding(entity, stack -> stack.getItem() == item && stack.hasTag() && nbtPredicate.test(stack.getTag()));
+	}
     
     public static boolean isHolding(Entity entity, Item item) {
 		return isHolding(entity, stack -> stack.getItem() == item);

@@ -30,7 +30,11 @@
     "item.doggytalents.multicoloured_collar": "炫彩项圈",
     "item.doggytalents.radar": "雷达",
 	"item.doggytalents.creative_radar": "创造雷达",
-    "item.doggytalents.whistle": "口哨",
+    "item.doggytalents.whistle.0": "Whistle: Command Stand",
+	"item.doggytalents.whistle.1": "Whistle: Command Heel",
+	"item.doggytalents.whistle.2": "Whistle: Command Stay",
+	"item.doggytalents.whistle.3": "Whistle: Command Ok?",
+	"item.doggytalents.whistle.4": "Shepherds Whistle",
     "item.doggytalents.treat_bag": "口粮袋子",
     "item.doggytalents.chew_stick": "磨牙棒",
     "item.doggytalents.cape": "格纹外套",
@@ -360,5 +364,8 @@
     "container.doggytalents.foodBowl": "狗食盆",
     "container.doggytalents.treatbag": "口粮袋子",
     "itemGroup.doggytalents": "小狗天才",
-    "itemGroup.doggytalents.dogbed": "狗窝变种"
+    "itemGroup.doggytalents.dogbed": "狗窝变种",
+	
+	"doggytalents.whistle.short": "Whistle Short",
+	"doggytalents.whistle.long": "Whistle Long"
 }

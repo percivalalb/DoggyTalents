@@ -25,7 +25,7 @@ public class PlayerConnection {
 			persistTag.putBoolean("gotDTStartingItems", true);
 
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.COMMAND_EMBLEM));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.WHISTLE));
         }
 	}
 }

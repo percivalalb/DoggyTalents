@@ -6,7 +6,6 @@ public class ItemNames {
 	public static final String THROW_BONE_WET = Reference.MOD_ID + ":throw_bone_wet";
 	public static final String THROW_STICK = Reference.MOD_ID + ":throw_stick";
 	public static final String THROW_STICK_WET = Reference.MOD_ID + ":throw_stick_wet";
-	public static final String COMMAND_EMBLEM = Reference.MOD_ID + ":command_emblem";
 	public static final String TRAINING_TREAT = Reference.MOD_ID + ":training_treat";
     public static final String SUPER_TREAT = Reference.MOD_ID + ":super_treat";
     public static final String MASTER_TREAT = Reference.MOD_ID + ":master_treat";

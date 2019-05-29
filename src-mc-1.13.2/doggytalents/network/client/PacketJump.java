@@ -35,7 +35,7 @@ public class PacketJump {
                 	return;
                 
                 EntityDog dog = (EntityDog)target;
-                dog.tryToJump();
+                //dog.onJump();
         		
             });
 

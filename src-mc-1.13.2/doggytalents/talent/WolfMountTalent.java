@@ -2,9 +2,11 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -30,9 +32,8 @@ public class WolfMountTalent extends Talent {
 	
 	@Override
 	public void livingTick(EntityDog dog) {
-		if((dog.getDogHunger() <= 0 || dog.isIncapacicated()) && dog.isBeingRidden()) {
-			if(dog.getOwner() instanceof EntityPlayer)
-				((EntityPlayer)dog.getOwner()).sendMessage(new TextComponentTranslation("talent.wolf_mount.exhausted", dog.getName()));
+		if(dog.isBeingRidden() && (dog.getDogHunger() <= 0 || dog.isIncapacicated())) {
+			dog.getControllingPassenger().sendMessage(new TextComponentTranslation("talent.wolf_mount.exhausted", dog.getName()));
 			
 			dog.removePassengers();
 		}	
@@ -40,19 +41,24 @@ public class WolfMountTalent extends Talent {
 	
 	@Override
 	public int onHungerTick(EntityDog dog, int totalInTick) { 
-		if(dog.getControllingPassenger() instanceof EntityPlayer)
-			if(dog.TALENTS.getLevel(this) >= 5)
-				totalInTick += 1;
-			else
-				totalInTick += 3;
+		if(dog.getControllingPassenger() instanceof EntityPlayer) {
+			totalInTick += dog.TALENTS.getLevel(this) < 5 ? 3 : 1;
+		}
+		
 		return totalInTick;
 	}
 	
 	@Override
 	public ActionResult<Integer> fallProtection(EntityDog dog) { 
 		if(dog.TALENTS.getLevel(this) == 5)
-			return ActionResult.newResult(EnumActionResult.PASS, 0);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, 1);
 		
-		return ActionResult.newResult(EnumActionResult.SUCCESS, 1);
+		return ActionResult.newResult(EnumActionResult.PASS, 0);
+	}
+	
+	@Override
+	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) {
+		Entity entity = damageSource.getTrueSource();
+		return dog.isBeingRidden() && entity != null && dog.isRidingOrBeingRiddenBy(entity) ? false : true; 
 	}
 }

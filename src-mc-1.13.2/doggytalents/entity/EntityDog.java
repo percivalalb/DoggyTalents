@@ -805,84 +805,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return entitydog;
     }
 	
-	@Override
-    public Entity getControllingPassenger() {
-        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
-    }
 	
-	
-	@Override
-	public boolean canPassengerSteer() {
-		return super.canPassengerSteer();
-	}
-	
-	@Override
-	public boolean canBeSteered() {
-		return true;
-	}
-	
-	@Override
-    public double getYOffset() {
-        return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
-    }
-	
-	@Override
-    public void travel(float strafe, float vertical, float forward) {
-        if (this.isBeingRidden() && this.canBeSteered()) {
-            EntityLivingBase entitylivingbase = (EntityLivingBase) this.getControllingPassenger();
-            this.rotationYaw = entitylivingbase.rotationYaw;
-            this.prevRotationYaw = this.rotationYaw;
-            this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
-            this.setRotation(this.rotationYaw, this.rotationPitch);
-            this.renderYawOffset = this.rotationYaw;
-            this.rotationYawHead = this.renderYawOffset;
-            strafe = entitylivingbase.moveStrafing * 0.75F;
-            forward = entitylivingbase.moveForward;
-
-            if (forward <= 0.0F) {
-                forward *= 0.5F;
-            }
-
-            if (this.onGround) {
-                if (forward > 0.0F) {
-                    float f2 = MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F);
-                    float f3 = MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F);
-                    this.motionX += (double) (-0.4F * f2 * 0.05F); // May change
-                    this.motionZ += (double) (0.4F * f3 * 0.05F);
-                }
-            }
-
-            this.stepHeight = 1.0F;
-            this.jumpMovementFactor = this.getAIMoveSpeed() * 0.5F;
-
-            if (this.canPassengerSteer()) {
-                float f = (float) this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.5F;
-
-                this.setAIMoveSpeed(f);
-                super.travel(strafe, vertical, forward);
-            } else if (entitylivingbase instanceof EntityPlayer) {
-                this.motionX = 0.0D;
-                this.motionY = 0.0D;
-                this.motionZ = 0.0D;
-            }
-
-            this.prevLimbSwingAmount = this.limbSwingAmount;
-            double d1 = this.posX - this.prevPosX;
-            double d0 = this.posZ - this.prevPosZ;
-            float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
-
-            if (f2 > 1.0F) {
-                f2 = 1.0F;
-            }
-
-            this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
-            this.limbSwing += this.limbSwingAmount;
-        } else {
-            this.stepHeight = 0.5F;
-            this.jumpMovementFactor = 0.02F;
-            super.travel(strafe, vertical, forward);
-        }
-    }
 	
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
@@ -987,19 +910,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
     
     @Override
-    public boolean canBeRiddenInWater(Entity rider) {
-        if (!TalentHelper.shouldDismountInWater(this, rider))
-            return true;
-
-        return false;
-    }
-    
-    @Override
-    public boolean canRiderInteract() {
-        return true;
-    }
-    
-    @Override
     public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
         if(TalentHelper.canAttackEntity(this, target))
             return true;
@@ -1036,18 +946,11 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         return super.canAttackClass(cls);
     }
     
-	public void tryToJump() {
-        if(this.onGround)
-        	this.jump();
-        else if(this.isInWater() && this.TALENTS.getLevel(ModTalents.SWIMMER_DOG) > 0)
-        	this.motionY = 0.2F;
-	}
-	
     @Override
     protected float getJumpUpwardsMotion() {
-    	float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
-		if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
-        return verticalVelocity;
+    	//float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
+		//if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
+        return 0.42F;
     }
     
     @Override
@@ -1463,5 +1366,157 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
 	@Override
 	public String getGuiID() {
 		return GuiNames.DOG_INFO;
+	}
+	
+	@Override
+	public boolean canBePushed() {
+		return !this.isBeingRidden();
+	}
+	
+	protected boolean dogJumping;
+	protected float jumpPower;
+	
+	public boolean isDogJumping() {
+		return this.dogJumping;
+	}
+
+	public void setDogJumping(boolean jumping) {
+		this.dogJumping = jumping;
+	}
+	
+	public double getDogJumpStrength() {
+		float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
+		if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
+        return verticalVelocity;
+	}
+	
+	@Override
+    public Entity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
+    }
+	
+	@Override
+	public boolean canBeSteered() {
+		return this.getControllingPassenger() instanceof EntityLivingBase;
+	}
+	
+	@Override
+	public void updatePassenger(Entity passenger) {
+		super.updatePassenger(passenger);
+		if(passenger instanceof EntityLiving) {
+			EntityLiving entityliving = (EntityLiving)passenger;
+			this.renderYawOffset = entityliving.renderYawOffset;
+		}
+	}
+	
+	@Override
+    public double getYOffset() {
+        return this.getRidingEntity() instanceof EntityPlayer ? 0.5D : 0.0D;
+    }
+    
+    @Override
+    public boolean canBeRiddenInWater(Entity rider) {
+        if (!TalentHelper.shouldDismountInWater(this, rider))
+            return true;
+
+        return false;
+    }
+    
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+	
+	// 0 - 100 input
+	public void setJumpPower(int jumpPowerIn) {
+		if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
+			if(jumpPowerIn < 0) {
+				jumpPowerIn = 0;
+			}
+
+			if (jumpPowerIn >= 90) {
+				this.jumpPower = 1.0F;
+			} else {
+				this.jumpPower = 0.4F + 0.4F * (float)jumpPowerIn / 90.0F;
+			}
+			this.jumpPower = 1.0F;
+		}
+	}
+
+	public boolean canJump() {
+		return this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0;
+	}
+	
+	@Override
+	public void travel(float strafe, float vertical, float forward) {
+		if(this.isBeingRidden() && this.canBeSteered() && this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
+			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
+			this.rotationYaw = entitylivingbase.rotationYaw;
+			this.prevRotationYaw = this.rotationYaw;
+	        this.rotationPitch = entitylivingbase.rotationPitch * 0.5F;
+	        this.setRotation(this.rotationYaw, this.rotationPitch);
+	        this.renderYawOffset = this.rotationYaw;
+	        this.rotationYawHead = this.renderYawOffset;
+	        strafe = entitylivingbase.moveStrafing * 0.7F;
+	        forward = entitylivingbase.moveForward;
+	        if (forward <= 0.0F) {
+	        	forward *= 0.5F;
+	        }
+	        
+	        this.stepHeight = 1.0F;
+
+	        if(this.jumpPower > 0.0F && !this.isDogJumping() && this.onGround) {
+	        	this.motionY = this.getDogJumpStrength() * (double)this.jumpPower;
+	            if(this.isPotionActive(MobEffects.JUMP_BOOST)) {
+	            	this.motionY += (double)((float)(this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
+	            }
+
+	            this.setDogJumping(true);
+	            this.isAirBorne = true;
+	            if(forward > 0.0F) {
+	            	float f = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
+	            	float f1 = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
+	            	this.motionX += (double)(-0.4F * f * this.jumpPower);
+	            	this.motionZ += (double)(0.4F * f1 * this.jumpPower);
+	            }
+
+	            this.jumpPower = 0.0F;
+	        }
+	        else if(this.jumpPower > 0.0F && this.isInWater() && !this.isDogJumping()) {
+	        	this.motionY = this.getDogJumpStrength() * 0.4F;
+	        	this.setDogJumping(true);
+	        	  this.jumpPower = 0.0F;
+	        }
+
+	        this.jumpMovementFactor = this.getAIMoveSpeed() * 0.3F;
+	        if(this.canPassengerSteer()) {
+	        	this.setAIMoveSpeed((float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue());
+	        	super.travel(strafe, vertical, forward);
+	        } else if(entitylivingbase instanceof EntityPlayer) {
+	        	this.motionX = 0.0D;
+	        	this.motionY = 0.0D;
+	        	this.motionZ = 0.0D;
+	        }
+
+	        if(this.onGround || this.isInWater()) {
+	        	this.jumpPower = 0.0F;
+	        	this.setDogJumping(false);
+	        }
+
+	        this.prevLimbSwingAmount = this.limbSwingAmount;
+	        double d1 = this.posX - this.prevPosX;
+	        double d0 = this.posZ - this.prevPosZ;
+	        float f2 = MathHelper.sqrt(d1 * d1 + d0 * d0) * 4.0F;
+	        if(f2 > 1.0F) {
+	        	f2 = 1.0F;
+	        }
+
+	        this.limbSwingAmount += (f2 - this.limbSwingAmount) * 0.4F;
+	        this.limbSwing += this.limbSwingAmount;
+		} else {
+			this.stepHeight = 0.6F;
+			this.jumpMovementFactor = 0.02F;
+			super.travel(strafe, vertical, forward);
+		}
 	}
 }

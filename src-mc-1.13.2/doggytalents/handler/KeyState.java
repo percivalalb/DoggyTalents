@@ -6,11 +6,9 @@ import org.lwjgl.glfw.GLFW;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
-import doggytalents.entity.EntityDog;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketCommand;
-import doggytalents.network.client.PacketJump;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +31,7 @@ public class KeyState {
     public static final KeyBinding stay = new KeyBinding("doggytalents.key.stay", GLFW.GLFW_KEY_DOWN, "key.categories.doggytalents");
     public static final KeyBinding ok = new KeyBinding("doggytalents.key.ok", GLFW.GLFW_KEY_LEFT, "key.categories.doggytalents");
     public static final KeyBinding heel = new KeyBinding("doggytalents.key.heel", GLFW.GLFW_KEY_RIGHT, "key.categories.doggytalents");
-    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel, mc.gameSettings.keyBindJump};
+    public static final KeyBinding[] keyBindings = new KeyBinding[] {come, stay, ok, heel};
     
    	private static HashMap<KeyBinding, Boolean> keyState = new HashMap<KeyBinding, Boolean>();
     
@@ -59,15 +57,7 @@ public class KeyState {
 	            	//Key Pressed
 	            	EntityPlayer player = DoggyTalentsMod.PROXY.getPlayerEntity();
 	            	
-	            	if(kb == mc.gameSettings.keyBindJump) {
-	            		if(player.getRidingEntity() instanceof EntityDog && mc.currentScreen == null) {
-	            			EntityDog dog = (EntityDog)player.getRidingEntity();
-	            			
-	            			PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
-	            			dog.tryToJump();
-	            		}
-	            	}
-	            	else if(mc.isGameFocused() && player != null) {
+	            	if(mc.isGameFocused() && player != null) {
 	            		
 	            		for(ItemStack heldStack : player.getHeldEquipment()) {
 	            			if(heldStack.isEmpty() || heldStack.getItem() != ModItems.COMMAND_EMBLEM) continue;

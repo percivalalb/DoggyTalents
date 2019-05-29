@@ -60,7 +60,7 @@ public class GameOverlay {
 	        int l6 = dog.getAir();
 	        int j7 = dog.getMaxAir();
 	        
-	        if (dog.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
+	        if(dog.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
 	            int air = dog.getAir();
 	            int full = MathHelper.ceil((double)(air - 2) * 10.0D / 300.0D);
 	            int partial = MathHelper.ceil((double)air * 10.0D / 300.0D) - full;

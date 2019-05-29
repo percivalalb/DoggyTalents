@@ -1,6 +1,7 @@
 package doggytalents.entity.ai;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -8,6 +9,7 @@ import javax.annotation.Nullable;
 
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -20,14 +22,15 @@ public class EntityAIClosestItem extends EntityAIBase {
 	
 	protected final EntityDog dog;
 	private final Predicate<EntityItem> predicate;
-	private final EntityAINearestAttackableTarget.Sorter sorter;
-	protected EntityItem target;
+	private final Comparator<Entity> sorter;
     private final double followSpeed;
     private final PathNavigate dogPathfinder;
+    private final IWaterMovement waterMovement;
+    
+	protected EntityItem target;
     private int timeToRecalcPath;
     private float maxDist;
     private double oldRangeSense;
-    private IWaterMovement waterMovement;
 
 	public EntityAIClosestItem(EntityDog dogIn, double speedIn, float range, @Nullable Predicate<ItemStack> targetSelector) {
 		this.dog = dogIn;

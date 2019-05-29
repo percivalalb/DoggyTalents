@@ -17,6 +17,7 @@ import doggytalents.ModSerializers;
 import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.Talent;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
@@ -403,18 +404,18 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     public void tick() {
         super.tick();
 
-        if (this.rand.nextInt(200) == 0)
+        if(this.rand.nextInt(200) == 0)
             this.hiyaMaster = true;
 
-        if (((this.isBegging()) || (this.hiyaMaster)) && (!this.isWolfHappy)) {
+        if(((this.isBegging()) || (this.hiyaMaster)) && (!this.isWolfHappy)) {
             this.isWolfHappy = true;
             this.timeWolfIsHappy = 0.0F;
             this.prevTimeWolfIsHappy = 0.0F;
         } else
             this.hiyaMaster = false;
 
-        if (this.isWolfHappy) {
-            if (this.timeWolfIsHappy % 1.0F == 0.0F)
+        if(this.isWolfHappy) {
+            if(this.timeWolfIsHappy % 1.0F == 0.0F)
                 this.playSound(SoundEvents.ENTITY_WOLF_PANT, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             this.prevTimeWolfIsHappy = this.timeWolfIsHappy;
             this.timeWolfIsHappy += 0.05F;
@@ -425,14 +426,14 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
             }
         }
         
-        if (this.isTamed()) {
+        if(this.isTamed()) {
             EntityPlayer player = (EntityPlayer) this.getOwner();
 
-            if (player != null) {
+            if(player != null) {
                 float distanceToOwner = player.getDistance(this);
 
-                if (distanceToOwner <= 2F && this.hasBone()) {
-                    if (isServer()) {
+                if(distanceToOwner <= 2F && this.hasBone()) {
+                    if(!this.world.isRemote) {
                         ItemStack fetchItem = ItemStack.EMPTY;
 
                         switch (this.getBoneVariant()) {
@@ -487,7 +488,6 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
         if(this.isTamed()) {
             if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);
-
                 
                 if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
                     if (!player.abilities.isCreativeMode)
@@ -616,7 +616,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                             this.reversionTime = 40;
                             if(this.hasCollarColoured()) {
                                 ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1);
-                                if (this.isCollarColoured()) {
+                                if(this.isCollarColoured()) {
                                     collarDrop.setTag(new NBTTagCompound());
                                     collarDrop.getTag().putInt("collar_colour", this.getCollarData());
                                 }
@@ -668,7 +668,7 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
                             this.setOwnerId(UUID.randomUUID());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
-                            if (this.hasRadarCollar())
+                            if(this.hasRadarCollar())
                                 this.entityDropItem(ModItems.RADIO_COLLAR);
                             this.hasRadarCollar(false);
                             this.reversionTime = 40;
@@ -897,19 +897,19 @@ public class EntityDog extends EntityAbstractDog implements IInteractionObject {
     }
 	
 	@Override
-    public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if (this.isIncapacicated())
+    public boolean isPotionApplicable(PotionEffect potioneffectIn) {
+        if(this.isIncapacicated())
             return false;
 
-        if (!TalentHelper.isPostionApplicable(this, potionEffect))
+        if(!TalentHelper.isPostionApplicable(this, potioneffectIn))
             return false;
 
-        return true;
+        return super.isPotionApplicable(potioneffectIn);
     }
 	
 	@Override
     public void setFire(int amount) {
-        if (TalentHelper.setFire(this, amount))
+        if(TalentHelper.setFire(this, amount))
             super.setFire(amount);
     }
 	

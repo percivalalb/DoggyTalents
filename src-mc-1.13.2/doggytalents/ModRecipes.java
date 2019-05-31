@@ -11,10 +11,12 @@ public class ModRecipes {
 	public static RecipeSerializers.SimpleSerializer<RecipeDogCollar> DOG_COLLAR;
 	public static RecipeSerializers.SimpleSerializer<RecipeDogCape> DOG_CAPE;
 
-	public static void registerRecipes() {
-		DOG_BED = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogbed", RecipeDogBed::new));
-		DOG_COLLAR = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcollar", RecipeDogCollar::new));
-		DOG_CAPE = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcape", RecipeDogCape::new));
-	}
+    public static class Registration {
+		public static void registerRecipes() {
+			DOG_BED = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogbed", RecipeDogBed::new));
+			DOG_COLLAR = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcollar", RecipeDogCollar::new));
+			DOG_CAPE = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcape", RecipeDogCape::new));
+		}
+    }
 
 }

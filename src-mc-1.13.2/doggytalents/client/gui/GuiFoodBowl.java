@@ -28,13 +28,13 @@ public class GuiFoodBowl extends GuiContainer {
     }
     
     @Override
-    protected void drawGuiContainerForegroundLayer(int var1, int var2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     	String s = this.foodBowl.getDisplayName().getString();
         this.fontRenderer.drawString(s, 10, 8, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
     	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ResourceLib.GUI_FOOD_BOWL);
         int var2 = (this.width - this.xSize) / 2;

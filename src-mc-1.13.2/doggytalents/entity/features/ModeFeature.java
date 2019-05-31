@@ -57,14 +57,14 @@ public class ModeFeature extends DogFeature {
 		AGGRESIVE("aggressive"),
 		BERSERKER("berserker"),
 		TACTICAL("tactical");
-		//PATROL("patrol", false);
+		//PATROL("patrol");
 		
 		private String unlocalisedTip;
 		private String unlocalisedName;
 		private String unlocalisedInfo;
 
 		private EnumMode(String name) {
-			this("doggui.modename." + name, "doggui.modetip." + name, "doggui.modeinfo." + name);
+			this("dog.mode." + name, "dog.mode." + name + ".indicator", "dog.mode." + name + ".description");
 		}
 		
 		private EnumMode(String unlocalisedName, String tip, String info) {

@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
@@ -21,9 +21,9 @@ public class GameOverlay {
 
 	private static Minecraft mc = Minecraft.getInstance();
 	
-	public static void onPreRenderGameOverlay(ElementType type) {
-		
-		if(type == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
+	@SubscribeEvent
+	public void onPreRenderGameOverlay(RenderGameOverlayEvent.Post event) {
+		if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
 			EntityDog dog = (EntityDog)mc.player.getRidingEntity();
 			int width = Minecraft.getInstance().mainWindow.getScaledWidth();
 			int height = Minecraft.getInstance().mainWindow.getScaledHeight();

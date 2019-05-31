@@ -1,4 +1,4 @@
-package doggytalents.event;
+package doggytalents.api;
 
 import net.minecraftforge.eventbus.api.Event;
 

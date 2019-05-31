@@ -3,7 +3,6 @@ package doggytalents;
 import doggytalents.lib.BlockNames;
 import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBed;
-import doggytalents.tileentity.TileEntityDogGrave;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.event.RegistryEvent;
@@ -22,7 +21,7 @@ public class ModTileEntities {
     public static class Registration {
 	    
 	    @SubscribeEvent
-	    public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event){
+	    public static void registerTileEntities(final RegistryEvent.Register<TileEntityType<?>> event) {
 	    	IForgeRegistry<TileEntityType<?>> tileRegistry = event.getRegistry();
 	    	
 	    	DoggyTalentsMod.LOGGER.info("Registering TileEnities");

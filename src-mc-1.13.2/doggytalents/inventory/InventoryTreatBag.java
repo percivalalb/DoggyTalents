@@ -22,7 +22,7 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 	public ItemStack itemstack;
 	
 	public InventoryTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super(new TextComponentTranslation("doggytalents:coin_bag"), 5);
+		super(new TextComponentTranslation("doggytalents.treat_bag"), 5);
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn.copy();

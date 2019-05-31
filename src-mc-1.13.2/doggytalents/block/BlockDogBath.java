@@ -27,16 +27,6 @@ public class BlockDogBath extends Block {
 	public BlockDogBath() {
 		super(Block.Properties.create(Material.IRON).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.METAL));
 	}
-
-	@Override
-	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		return SHAPE;
-	}
-	
-	@Override
-	public VoxelShape getCollisionShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
-		return SHAPE_COLLISION;
-	}
 	
 	@Override
 	public void onEntityCollision(IBlockState state, World worldIn, BlockPos pos, Entity entityIn) {
@@ -55,6 +45,16 @@ public class BlockDogBath extends Block {
 	public boolean isValidPosition(IBlockState state, IWorldReaderBase worldIn, BlockPos pos) {
 		IBlockState down = worldIn.getBlockState(pos.down());
 		return down.isTopSolid() || down.getBlockFaceShape(worldIn, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+	}
+
+	@Override
+	public VoxelShape getShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
+		return SHAPE;
+	}
+	
+	@Override
+	public VoxelShape getCollisionShape(IBlockState state, IBlockReader worldIn, BlockPos pos) {
+		return SHAPE_COLLISION;
 	}
 	
 	@Override
@@ -75,7 +75,9 @@ public class BlockDogBath extends Block {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing facing) {
+		if(facing == EnumFacing.DOWN) 
+			return BlockFaceShape.SOLID;
 		return BlockFaceShape.UNDEFINED;
 	}
 

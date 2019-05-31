@@ -33,7 +33,7 @@ public class WolfMountTalent extends Talent {
 	@Override
 	public void livingTick(EntityDog dog) {
 		if(dog.isBeingRidden() && (dog.getDogHunger() <= 0 || dog.isIncapacicated())) {
-			dog.getControllingPassenger().sendMessage(new TextComponentTranslation("talent.wolf_mount.exhausted", dog.getName()));
+			dog.getControllingPassenger().sendMessage(new TextComponentTranslation("talent.doggytalents.wolf_mount.exhausted", dog.getName()));
 			
 			dog.removePassengers();
 		}

@@ -16,7 +16,7 @@ public class DoggyDashTalent extends Talent {
 	private static UUID DASH_BOOST_ID = UUID.fromString("50671e49-1ded-4097-902b-78bb6b178772");
 	
 	@Override
-	public void onLevelUpdate(EntityDog dog, int level) {
+	public void onLevelSet(EntityDog dog, int level) {
 		IAttributeInstance iattributeinstance = dog.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
 		AttributeModifier speedModifier = this.createSpeedModifier(0.03D * level + (level == 5 ? 0.04D : 0D));

@@ -29,4 +29,5 @@ public class ItemNames {
 	public static final String LEATHER_JACKET = Reference.MOD_ID + ":leather_jacket";
 	public static final String TINY_BONE = Reference.MOD_ID + ":tiny_bone";
 	public static final String BIG_BONE = Reference.MOD_ID + ":big_bone";
+	public static final String OWNER_CHANGE = Reference.MOD_ID + ":owner_change";
 }

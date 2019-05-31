@@ -26,7 +26,7 @@ public class ModSerializers {
     public static class Registration {
 	    
 	    @SubscribeEvent
-	    public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event){
+	    public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event) {
 	    	IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
 	    	DoggyTalentsMod.LOGGER.info("Registering Serializers");
 	        serializerRegistry.register(new DataSerializerEntry(new TalentListSerializer()).setRegistryName(Reference.MOD_ID, "talent_level_list"));

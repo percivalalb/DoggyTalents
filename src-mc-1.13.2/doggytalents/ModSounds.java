@@ -3,7 +3,6 @@ package doggytalents;
 import doggytalents.lib.Reference;
 import doggytalents.lib.SoundNames;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,11 +15,11 @@ public class ModSounds {
 	public static final SoundEvent WHISTLE_SHORT = null;
 	public static final SoundEvent WHISTLE_LONG = null;
 	
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
 	    
 	    @SubscribeEvent
-	    public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event){
+	    public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {
 	    	IForgeRegistry<SoundEvent> soundRegistry = event.getRegistry();
 	    	
 	    	DoggyTalentsMod.LOGGER.info("Registering Sounds");

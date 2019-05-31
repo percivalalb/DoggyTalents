@@ -60,7 +60,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) { return true; }
-	public void onLevelUpdate(EntityDog dog, int level) {}
+	public void onLevelSet(EntityDog dog, int level) {}
 	
 	
 	public int getHighestLevel(EntityDog dog) { return 5; }

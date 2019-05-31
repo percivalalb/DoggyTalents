@@ -34,7 +34,7 @@ public class MissingMappings {
 			 for(Mapping<Item> mapping : mappings) {
 				 if(mapping.key != null && mapping.key.equals(Compatibility.COMMAND_EMBLEM)) {
 					 mapping.remap(ModItems.WHISTLE);
-				     DoggyTalentsMod.LOGGER.info("Remapped Doggy Beam to Whistle");
+				     DoggyTalentsMod.LOGGER.info("Remapped Command Emblem to Whistle");
 				 }
 			 }
 		 }

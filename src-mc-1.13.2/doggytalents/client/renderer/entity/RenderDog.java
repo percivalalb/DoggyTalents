@@ -19,7 +19,6 @@ import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,13 +71,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(dog.isTamed()) {
-    		if(ConfigHandler.CLIENT.useDTTextures())
-         		return ResourceLib.getTameSkin(dog.getTameSkin());
-         	else
-         		return ResourceLib.MOB_DOG_TAME;
-         }
-        return ResourceLib.MOB_DOG_WILD;
+    	if(ConfigHandler.CLIENT.useDTTextures())
+     		return ResourceLib.getTameSkin(dog.getTameSkin());
+     	else
+     		return ResourceLib.MOB_DOG_TAME;
     }
     
     @Override
@@ -92,7 +88,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
         	String tip = dog.MODE.getMode().getTip();
                 
         	if(dog.isIncapacicated())
-        		tip = "doggui.modetip.incapacitated";
+        		tip = "dog.mode.incapacitated.indicator";
         	
         	String label = String.format("%s(%d)%s", 
         			new TextComponentTranslation(tip).getFormattedText(), 
@@ -110,13 +106,8 @@ public class RenderDog extends RenderLiving<EntityDog> {
         		
         		if(d0 <= (double)(5 * 5)) {
     	    		if(this.renderManager.renderViewEntity.isSneaking()) {
-    	    			String ownerName = "A Wild Dog";
-    	    			if(dog.getOwner() != null)
-    	    				ownerName = dog.getOwner().getDisplayName().getUnformattedComponentText();
-    	    			else if(dog.getOwnerId() != null)
-    	          		   	ownerName = dog.getOwnerId().toString();
-    	    			else
-    	    				ownerName = I18n.format("entity.doggytalents:dog.lost.name");
+    	    			String ownerName = dog.getOwnersName().getFormattedText();
+    	    			
     	    			
     	    			RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
     	    		}

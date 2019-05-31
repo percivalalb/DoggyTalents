@@ -1,9 +1,9 @@
 package doggytalents;
 
+import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
-import doggytalents.event.BeddingRegistryEvent;
 import doggytalents.lib.BlockNames;
 import doggytalents.lib.Reference;
 import net.minecraft.block.Block;
@@ -31,7 +31,6 @@ public class ModBlocks {
 	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
 	        MinecraftForge.EVENT_BUS.post(new BeddingRegistryEvent());
-	        
 	        
 	        DoggyTalentsMod.LOGGER.info("Registering Blocks");
 	        blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));

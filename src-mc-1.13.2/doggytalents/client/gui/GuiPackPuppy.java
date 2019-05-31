@@ -45,7 +45,7 @@ public class GuiPackPuppy extends GuiContainer {
     }
     
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTickTime, int xMouse, int yMouse) {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int xMouse, int yMouse) {
     	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ResourceLib.GUI_PACK_PUPPY);
         int l = (this.width - this.xSize) / 2;

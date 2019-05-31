@@ -66,9 +66,9 @@ public class DogGenderFeature extends DogFeature {
 	
 	public String getGenderTip() {
 		if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("male")) {
-			return "doggui.gendertip.male";
+			return "dog.gender.male.indicator";
 		}else if(ConfigHandler.COMMON.dogGender() && dog.getGender().equalsIgnoreCase("female")) {
-			return "doggui.gendertip.female";
+			return "dog.gender.female.indicator";
 		}else{
 			return "";
 		}

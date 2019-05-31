@@ -212,16 +212,10 @@ public class GuiDogInfo extends GuiScreen {
 		if(this.dog.isTamed()) {
 			if(this.dog.isOwner(this.player)) {
 				tamedString = I18n.format("doggui.owner.you");
+			} else {
+				tamedString = this.dog.getOwnersName().getFormattedText();
 			}
-			else if(this.dog.getOwner() != null) {
-				tamedString = this.dog.getOwner().getDisplayName().getFormattedText();
-			}
-			else if(this.dog.getOwnerId() != null) {
-				tamedString = this.dog.getOwnerId().toString();
-			}
-			else {
-				tamedString = "Unknown";
-			}
+			
 		}
 		
 		this.fontRenderer.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
@@ -288,11 +282,11 @@ public class GuiDogInfo extends GuiScreen {
     				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
     				if(this.dog.MODE.isMode(EnumMode.WANDERING)) {
     					if(!this.dog.COORDS.hasBowlPos()) {
-    						list.add(TextFormatting.RED + I18n.format("doggui.mode.docile.nobowl"));
+    						list.add(TextFormatting.RED + I18n.format("dog.mode.docile.nobowl"));
     					} else if(this.dog.getDistanceSq(this.dog.COORDS.getBowlPos()) > 256.0D) {
-    						list.add(TextFormatting.RED + I18n.format("doggui.mode.docile.distance", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
+    						list.add(TextFormatting.RED + I18n.format("dog.mode.docile.distance", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
     					} else {
-    						list.add(TextFormatting.GREEN + I18n.format("doggui.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
+    						list.add(TextFormatting.GREEN + I18n.format("dog.mode.docile.bowl", (int)Math.sqrt(this.dog.getPosition().distanceSq(this.dog.COORDS.getBowlPos()))));
     					}
     				}
     			}

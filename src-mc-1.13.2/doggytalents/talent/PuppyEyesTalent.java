@@ -1,10 +1,14 @@
 package doggytalents.talent;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -20,6 +24,7 @@ public class PuppyEyesTalent extends Talent {
 	@Override
 	public void onClassCreation(EntityDog dog) {
 		dog.objects.put("charmercharge", 0);
+		dog.objects.put("villagersorter", new EntityAINearestAttackableTarget.Sorter(dog));
 	}
 	
 	@Override
@@ -51,51 +56,35 @@ public class PuppyEyesTalent extends Talent {
 
 			if(entityliving != null && player != null) {
 				int j1 = dog.getRNG().nextInt(level) + (level != 5 ? 0 : 1);
-
-	            if(j1 == 0)
-	            {
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part1", dog.GENDER.getGenderPronoun()));
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.1.part2", dog.GENDER.getGenderSubject()));
+				
+	            if(j1 == 0) {
+	            	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.1.line.1", dog.GENDER.getGenderPronoun()));
+	            	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.1.line.2", dog.GENDER.getGenderSubject()));
 	                entityliving.entityDropItem(Items.PORKCHOP, 2);
-	            }
-
-	            if(j1 == 1)
-	            {
-	              	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part1", dog.GENDER.getGenderTitle()));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part2", dog.GENDER.getGenderTitle()));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.2.part3", dog.GENDER.getGenderTitle()));
+	            } else if(j1 == 1) {
+	              	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.2.line.1", dog.GENDER.getGenderTitle()));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.2.line.2", dog.GENDER.getGenderTitle()));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.2.line.3", dog.GENDER.getGenderTitle()));
 	                entityliving.entityDropItem(Items.PORKCHOP, 5);
-	            }
-
-	            if(j1 == 2)
-	            {
-	            	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.3.part1"));
-	                player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.3.part2"));
-	                player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.3.part3"));
+	            } else if(j1 == 2) {
+	            	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.3.line.1"));
+	                player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.3.line.2"));
+	                player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.3.line.3"));
 	                entityliving.entityDropItem(Items.IRON_INGOT, 3);
-	            }
-
-	            if(j1 == 3)
-	            {
-	             	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.4.part1"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.4.part2"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.4.part3"));
+	            } else if(j1 == 3) {
+	             	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.4.line.1"));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.4.line.2"));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.4.line.3"));
 	                entityliving.entityDropItem(Items.GOLD_INGOT, 2);
-	            }
-
-	            if(j1 == 4)
-	            {
-	             	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.5.part1"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.5.part2"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.5.part3"));
+	            } else if(j1 == 4) {
+	             	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.5.line.1"));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.5.line.2"));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.5.line.3"));
 	                entityliving.entityDropItem(Items.DIAMOND, 1);
-	            }
-
-	            if(j1 == 5)
-	            {
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.6.part1"));
-	               	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.6.part2"));
-	              	player.sendMessage(new TextComponentTranslation("dogtalent.puppyeyes.6.part3"));
+	            } else if(j1 == 5) {
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.6.line.1"));
+	               	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.6.line.2"));
+	              	player.sendMessage(new TextComponentTranslation("talent.doggytalents.puppy_eyes.msg.6.line.3"));
 	                entityliving.entityDropItem(Items.APPLE, 1);
 	                entityliving.entityDropItem(Blocks.CAKE, 1);
 	                entityliving.entityDropItem(Items.SLIME_BALL, 3);
@@ -107,20 +96,15 @@ public class PuppyEyesTalent extends Talent {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public EntityLiving charmVillagers(EntityDog dogIn, double radiusIn) {
-		double distance = -1D;
-		EntityVillager charmVillager = null;
-	    List<EntityVillager> list = dogIn.world.getEntitiesWithinAABB(EntityVillager.class, dogIn.getBoundingBox().grow(radiusIn, radiusIn, radiusIn));
-
-	    for (EntityVillager entityVillager : list) {
-	    	double d2 = entityVillager.getDistanceSq(dogIn.posX, dogIn.posY, dogIn.posZ);
-
-	    	if ((radiusIn < 0.0D || d2 < radiusIn * radiusIn) && (distance == -1D || d2 < distance) && entityVillager.canEntityBeSeen(dogIn)) {
-	    		distance = d2;
-	    		charmVillager = entityVillager;
-	    	}
-	    }
-
-	    return charmVillager;
+	    List<EntityVillager> list = dogIn.world.getEntitiesWithinAABB(EntityVillager.class, dogIn.getBoundingBox().grow(radiusIn, radiusIn, radiusIn), village -> village.canEntityBeSeen(dogIn));
+	    Collections.sort(list, (Comparator<Entity>)dogIn.objects.get("villagersorter"));
+	    
+	    if(list.isEmpty()) {
+			return null;
+		} else {
+			return list.get(0);
+		}
 	}
 }

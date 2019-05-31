@@ -74,7 +74,8 @@ public class ItemThrowBone extends Item {
                 worldIn.spawnEntity(entityitem);
 	        }
 	        
-	        itemStackIn.shrink(1);
+	        if(!playerIn.abilities.isCreativeMode)
+	        	itemStackIn.shrink(1);
 
 	        playerIn.addStat(StatList.ITEM_USED.get(this));
 	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);

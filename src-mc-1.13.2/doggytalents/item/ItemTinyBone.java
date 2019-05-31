@@ -25,13 +25,13 @@ public class ItemTinyBone extends Item implements IDogInteractItem {
 			if(!playerIn.world.isRemote) {
 				dogIn.setDogSize(dogIn.getDogSize() - 1);
 			}
-			return ActionResult.newResult(EnumActionResult.SUCCESS, null);
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
 		}
 		else {
 			if(!playerIn.world.isRemote){
-				playerIn.sendMessage(new TextComponentTranslation("dogtreat.tooyoung"));
+				playerIn.sendMessage(new TextComponentTranslation("treat.tiny_bone.too_young"));
 			}
-			return ActionResult.newResult(EnumActionResult.FAIL, null);
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}	
 	}
 }

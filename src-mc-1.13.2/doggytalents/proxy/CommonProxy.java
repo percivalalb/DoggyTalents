@@ -7,7 +7,8 @@ import doggytalents.ModItems;
 import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.handler.InputUpdate;
+import doggytalents.handler.EntityInteract;
+import doggytalents.handler.LivingDrops;
 import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.network.PacketHandler;
@@ -31,7 +32,7 @@ public class CommonProxy {
 	
 	protected void preInit(FMLCommonSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("CommonProxy preInit");
-        ModRecipes.registerRecipes();
+        ModRecipes.Registration.registerRecipes();
         PacketHandler.register();
     }
     
@@ -40,7 +41,8 @@ public class CommonProxy {
     	
     	MinecraftForge.EVENT_BUS.register(new PlayerConnection());
     	MinecraftForge.EVENT_BUS.register(new MissingMappings());
-    	MinecraftForge.EVENT_BUS.register(new InputUpdate());
+    	MinecraftForge.EVENT_BUS.register(new EntityInteract());
+    	MinecraftForge.EVENT_BUS.register(new LivingDrops());
     }
     
     protected void postInit(InterModProcessEvent event) {

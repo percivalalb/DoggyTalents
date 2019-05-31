@@ -26,7 +26,7 @@ public class EntityAIDogWander extends EntityAIWander {
 	public boolean shouldExecute() {
 		this.wandering = this.dog.canWander();
 		
-		this.setExecutionChance(this.wandering ? 10 : 120);
+		this.setExecutionChance(this.wandering ? 40 : 120);
 		return super.shouldExecute();
 	}
 	

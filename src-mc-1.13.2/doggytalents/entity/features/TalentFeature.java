@@ -79,6 +79,9 @@ public class TalentFeature extends DogFeature {
     	
     	if(talentMap.size() > 0) {
 			this.dog.setTalentMap(talentMap);
+			for(Entry<Talent, Integer> entry : talentMap.entrySet()) {
+				entry.getKey().onLevelSet(this.dog, entry.getValue());
+			}
     	} else {
 			this.dog.setTalentMap(Collections.emptyMap());
     	}
@@ -92,6 +95,7 @@ public class TalentFeature extends DogFeature {
 	public void setLevel(@Nonnull Talent talent, int level) {
 		Map<Talent, Integer> map = new HashMap<>(this.dog.getTalentMap());
 		map.put(talent, level);
+		talent.onLevelSet(this.dog, level);
 		this.dog.setTalentMap(map);
 	}
 	

@@ -1,8 +1,8 @@
 package doggytalents;
 
+import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.event.BeddingRegistryEvent;
 import doggytalents.lib.Reference;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,7 +17,7 @@ public class ModBeddings {
     public static class Registration {
 		
 		@SubscribeEvent
-	    public static void registerBeddingMaterial(final BeddingRegistryEvent event) {
+	    public static void registerBeddingMaterial(BeddingRegistryEvent event) {
 			OAK = DogBedRegistry.CASINGS.registerMaterial(Blocks.OAK_PLANKS, "minecraft:block/oak_planks");
 	        DogBedRegistry.CASINGS.registerMaterial(Blocks.SPRUCE_PLANKS, "minecraft:block/spruce_planks");
 			DogBedRegistry.CASINGS.registerMaterial(Blocks.BIRCH_PLANKS, "minecraft:block/birch_planks");

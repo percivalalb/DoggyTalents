@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class GuiTreatBag extends GuiContainer {
 
-	public GuiTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super(new ContainerTreatBag(playerIn, slotIn, itemstackIn));
+	public GuiTreatBag(EntityPlayer playerIn, int slotIn, ItemStack theBag) {
+		super(new ContainerTreatBag(playerIn, slotIn, theBag));
 		this.ySize = 127;
 	}
 	
@@ -27,7 +27,7 @@ public class GuiTreatBag extends GuiContainer {
 	
 	@Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-        this.fontRenderer.drawString(I18n.format("container.doggytalents.treatbag"), 10, 8, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.doggytalents.treat_bag"), 10, 8, 4210752);
     }
 
 	@Override

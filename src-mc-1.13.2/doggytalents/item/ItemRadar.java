@@ -49,7 +49,7 @@ public class ItemRadar extends Item {
 						
 						String translateStr = ItemRadar.getDirectionTranslationKey(loc, playerIn);
 						
-						playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.name, (int)Math.ceil(playerIn.getDistance(loc.x, loc.y, loc.z))));
+						playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.getName(worldIn), (int)Math.ceil(playerIn.getDistance(loc.x, loc.y, loc.z))));
 					}
 				}
 				

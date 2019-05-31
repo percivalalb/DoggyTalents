@@ -12,7 +12,8 @@ import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.DogTextureLoader;
+import doggytalents.handler.GameOverlay;
+import doggytalents.handler.InputUpdate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
@@ -27,6 +28,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -56,6 +58,9 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void preInit(FMLCommonSetupEvent event) {
     	super.preInit(event);
+    	MinecraftForge.EVENT_BUS.register(new GameOverlay());
+    	MinecraftForge.EVENT_BUS.register(new InputUpdate());
+    	//DogTextureLoader.loadYourTexures();
     }
     
     @Override

@@ -58,7 +58,6 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
     	//Only run update code every 5 ticks (0.25s)
     	if(++this.timeoutCounter < 5) { return; }
     	
-    	
     	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
     	for(EntityDog dog : dogList) {
@@ -163,7 +162,7 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
 	@Override
 	public ITextComponent getName() {
-		return new TextComponentTranslation("container.doggytalents.foodbowl");
+		return new TextComponentTranslation("container.doggytalents.food_bowl");
 	}
 
 	@Override

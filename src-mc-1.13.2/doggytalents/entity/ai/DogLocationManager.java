@@ -112,14 +112,14 @@ public class DogLocationManager extends WorldSavedData {
 	
 	public class DogLocation {
 
-		public @Nonnull UUID entityId;
+		private @Nonnull UUID entityId;
 		public double x, y, z;
 		
 		// Dog Data
-		public @Nullable UUID owner;
-		public ITextComponent name;
-		public String gender;
-		public boolean hasRadarCollar;
+		private @Nullable UUID owner;
+		private ITextComponent name;
+		private String gender;
+		private boolean hasRadarCollar;
 		
 		public DogLocation(NBTTagCompound nbt) {
 			this.read(nbt);
@@ -194,6 +194,17 @@ public class DogLocationManager extends WorldSavedData {
 				return dog.getOwner();
 			} else if(this.owner != null) {
 				return world.getPlayerEntityByUUID(this.owner);
+			} else {
+				return null;
+			}
+		}
+		
+		public ITextComponent getName(World world) {
+			EntityDog dog = this.getDog(world);
+			if(dog != null) {
+				return dog.getDisplayName();
+			} else if(this.owner != null) {
+				return this.name;
 			} else {
 				return null;
 			}

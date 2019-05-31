@@ -46,18 +46,10 @@ public class ItemRadarCreative extends Item {
 			if(ownDogs.isEmpty()) {
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull", String.valueOf(DimensionType.getKey(dimCurr))));
 			} else {
-				boolean noRadioCollars = false;
-				
 				for(DogLocation loc : ownDogs) {
-						noRadioCollars = false;
+					String translateStr = ItemRadar.getDirectionTranslationKey(loc, playerIn);
 						
-						String translateStr = ItemRadar.getDirectionTranslationKey(loc, playerIn);
-						
-						playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.name, (int)Math.ceil(playerIn.getDistance(loc.x, loc.y, loc.z))));
-				}
-				
-				if(noRadioCollars) {
-					playerIn.sendMessage(new TextComponentTranslation("dogradar.errornoradio"));
+					playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.getName(worldIn), (int)Math.ceil(playerIn.getDistance(loc.x, loc.y, loc.z))));
 				}
 			}
 

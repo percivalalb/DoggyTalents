@@ -73,6 +73,8 @@ public class BlockDogBed extends BlockContainer {
 		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, EnumFacing.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE));
 	}
 	
+	
+	
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -172,7 +174,9 @@ public class BlockDogBed extends BlockContainer {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, IBlockState state, BlockPos pos, EnumFacing facing) {
+		if(facing == EnumFacing.DOWN) 
+			return BlockFaceShape.SOLID;
 		return BlockFaceShape.UNDEFINED;
 	}
 	

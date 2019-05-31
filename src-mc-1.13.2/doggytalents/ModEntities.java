@@ -26,7 +26,7 @@ public class ModEntities {
 			 
 			 DoggyTalentsMod.LOGGER.info("Registering Entities");
 			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
-			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
+			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).tracker(64, 1, true).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
 			 DoggyTalentsMod.LOGGER.info("Finished Registering Entities");
 		 }
     }

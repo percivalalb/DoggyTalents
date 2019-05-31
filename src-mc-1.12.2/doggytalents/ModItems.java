@@ -4,140 +4,135 @@ import doggytalents.client.model.ModelHelper;
 import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
-import doggytalents.item.ItemCommandEmblem;
-import doggytalents.item.ItemCreativeRadar;
+import doggytalents.item.ItemCreativeCollar;
+import doggytalents.item.ItemCreativeOwnerChange;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
 import doggytalents.item.ItemFancyCollar;
 import doggytalents.item.ItemRadar;
+import doggytalents.item.ItemRadarCreative;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTinyBone;
 import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
+import doggytalents.lib.ItemNames;
 import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
-/**
- * @author ProPercivalalb
- */
-@EventBusSubscriber(modid = Reference.MOD_ID)
+
+@ObjectHolder(Reference.MOD_ID)
 public class ModItems {
 
-	public static Item THROW_BONE;
-	public static Item COMMAND_EMBLEM;
-	public static Item TRAINING_TREAT;
-    public static Item SUPER_TREAT;
-    public static Item MASTER_TREAT;
-    public static Item DIRE_TREAT;
-    public static Item BREEDING_BONE;
-    public static Item COLLAR_SHEARS;
-    public static Item DOGGY_CHARM;
-    public static Item RADIO_COLLAR;
-    public static Item WOOL_COLLAR;
-    public static Item FANCY_COLLAR;
-    public static Item RADAR;
-    public static Item CREATIVE_RADAR;
-    public static Item WHISTLE;
-    public static Item TREAT_BAG;
-    public static Item CHEW_STICK;
-    public static Item CAPE;
-    public static Item CAPE_COLOURED;
-	public static Item SUNGLASSES;
-	public static Item LEATHER_JACKET;
-	public static Item TINY_BONE;
-	public static Item BIG_BONE;
+	public static final Item THROW_BONE = null;
+	public static final Item THROW_BONE_WET = null;
+	public static final Item THROW_STICK = null;
+	public static final Item THROW_STICK_WET = null;
+    public static final Item TRAINING_TREAT = null;
+    public static final Item SUPER_TREAT = null;
+    public static final Item MASTER_TREAT = null;
+    public static final Item DIRE_TREAT = null;
+    public static final Item BREEDING_BONE = null;
+    public static final Item COLLAR_SHEARS = null;
+    public static final Item DOGGY_CHARM = null;
+    public static final Item RADIO_COLLAR = null;
+    public static final Item WOOL_COLLAR = null;
+    public static final Item CREATIVE_COLLAR = null;
+    public static final Item SPOTTED_COLLAR = null;
+    public static final Item MULTICOLOURED_COLLAR = null;
+    public static final Item RADAR = null;
+    public static final Item CREATIVE_RADAR = null;
+    public static final Item WHISTLE = null;
+    public static final Item TREAT_BAG = null;
+    public static final Item CHEW_STICK = null;
+    public static final Item CAPE = null;
+    public static final Item CAPE_COLOURED = null;
+    public static final Item SUNGLASSES = null;
+    public static final Item LEATHER_JACKET = null;
+    public static final Item TINY_BONE = null;
+    public static final Item BIG_BONE = null;
+    public static final Item OWNER_CHANGE = null;
 	
-	@SubscribeEvent
-	public static void onRegister(RegistryEvent.Register<Item> registry) {
-		DoggyTalents.LOGGER.info("Registering Items");
-		THROW_BONE = new ItemThrowBone().setTranslationKey("doggytalents.throwbone").setRegistryName(Reference.MOD_ID + ":throw_bone").setHasSubtypes(true);
-		COMMAND_EMBLEM = new ItemCommandEmblem().setTranslationKey("doggytalents.commandemblem").setRegistryName(Reference.MOD_ID + ":command_emblem");
-		TRAINING_TREAT = new ItemTreat(20).setTranslationKey("doggytalents.trainingtreat").setRegistryName(Reference.MOD_ID + ":training_treat");
-	    SUPER_TREAT = new ItemTreat(40).setTranslationKey("doggytalents.supertreat").setRegistryName(Reference.MOD_ID + ":super_treat");
-	    MASTER_TREAT = new ItemTreat(60).setTranslationKey("doggytalents.mastertreat").setRegistryName(Reference.MOD_ID + ":master_treat");
-	    DIRE_TREAT = new ItemDireTreat().setTranslationKey("doggytalents.diretreat").setRegistryName(Reference.MOD_ID + ":dire_treat");
-	    BREEDING_BONE = new ItemDT().setTranslationKey("doggytalents.breedingbone").setRegistryName(Reference.MOD_ID + ":breeding_bone");
-	    COLLAR_SHEARS = new ItemDT().setTranslationKey("doggytalents.collarshears").setMaxDamage(16).setRegistryName(Reference.MOD_ID + ":collar_shears");
-	    DOGGY_CHARM = new ItemDoggyCharm().setTranslationKey("doggytalents.doggycharm").setRegistryName(Reference.MOD_ID + ":doggy_charm");
-	    RADIO_COLLAR = new ItemDT().setTranslationKey("doggytalents.radiocollar").setRegistryName(Reference.MOD_ID + ":radio_collar");
-	    WOOL_COLLAR = new ItemWoolCollar().setTranslationKey("doggytalents.woolcollar").setRegistryName(Reference.MOD_ID + ":wool_collar");
-	    FANCY_COLLAR = new ItemFancyCollar().setTranslationKey("doggytalents.fancycollar").setRegistryName(Reference.MOD_ID + ":fancy_collar");
-	    RADAR = new ItemRadar().setTranslationKey("doggytalents.radar").setRegistryName(Reference.MOD_ID + ":radar");
-	    CREATIVE_RADAR = new ItemCreativeRadar().setTranslationKey("doggytalents.creative_radar").setRegistryName(Reference.MOD_ID + ":creative");
-	    WHISTLE = new ItemWhistle().setTranslationKey("doggytalents.whistle").setRegistryName(Reference.MOD_ID + ":whistle");
-	    TREAT_BAG = new ItemTreatBag().setTranslationKey("doggytalents.treatbag").setRegistryName(Reference.MOD_ID + ":treat_bag");
-	    CHEW_STICK = new ItemChewStick().setTranslationKey("doggytalents.chewstick").setRegistryName(Reference.MOD_ID + ":chew_stick");
-	    CAPE = new ItemDT().setTranslationKey("doggytalents.cape").setRegistryName(Reference.MOD_ID + ":cape");
-	    CAPE_COLOURED = new ItemCapeColoured().setTranslationKey("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
-	    SUNGLASSES = new ItemDT().setTranslationKey("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
-	 	LEATHER_JACKET = new ItemDT().setTranslationKey("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
-	 	TINY_BONE = new ItemTinyBone().setTranslationKey("doggytalents.tinybone").setRegistryName(Reference.MOD_ID + ":tiny_bone");
-		BIG_BONE = new ItemBigBone().setTranslationKey("doggytalents.bigbone").setRegistryName(Reference.MOD_ID + ":big_bone");
-	 	
-		registry.getRegistry().register(THROW_BONE);
-	    registry.getRegistry().register(TRAINING_TREAT);
-	    registry.getRegistry().register(SUPER_TREAT);
-	    registry.getRegistry().register(MASTER_TREAT);
-	    registry.getRegistry().register(DIRE_TREAT);
-	    registry.getRegistry().register(BREEDING_BONE);
-	    registry.getRegistry().register(COLLAR_SHEARS);
-	    registry.getRegistry().register(COMMAND_EMBLEM);
-	    registry.getRegistry().register(DOGGY_CHARM);
-	    registry.getRegistry().register(RADIO_COLLAR);
-	    registry.getRegistry().register(WOOL_COLLAR);
-	    registry.getRegistry().register(FANCY_COLLAR);
-	    registry.getRegistry().register(RADAR);
-	    registry.getRegistry().register(CREATIVE_RADAR);
-	    registry.getRegistry().register(WHISTLE);
-	    registry.getRegistry().register(TREAT_BAG);
-	    registry.getRegistry().register(CHEW_STICK);
-	    registry.getRegistry().register(CAPE);
-	    registry.getRegistry().register(SUNGLASSES);
-	    registry.getRegistry().register(CAPE_COLOURED);
-	    registry.getRegistry().register(LEATHER_JACKET);
-	    registry.getRegistry().register(TINY_BONE);
-	    registry.getRegistry().register(BIG_BONE);
-	}
-	
-	
-	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
-	public static void setItemModels(ModelRegistryEvent event) {
-		ModelHelper.setModel(THROW_BONE, 0, "doggytalents:throw_bone");
-		ModelHelper.setModel(THROW_BONE, 1, "doggytalents:throw_bone_wet");
-		ModelHelper.setModel(THROW_BONE, 2, "doggytalents:throw_stick");
-		ModelHelper.setModel(THROW_BONE, 3, "doggytalents:throw_stick_wet");
-		ModelHelper.setModel(COMMAND_EMBLEM, 0, "doggytalents:command_emblem");
-		ModelHelper.setModel(TRAINING_TREAT, 0, "doggytalents:training_treat");
-		ModelHelper.setModel(SUPER_TREAT, 0, "doggytalents:super_treat");
-		ModelHelper.setModel(MASTER_TREAT, 0, "doggytalents:master_treat");
-		ModelHelper.setModel(DIRE_TREAT, 0, "doggytalents:dire_treat");
-		ModelHelper.setModel(BREEDING_BONE, 0, "doggytalents:breeding_bone");
-		ModelHelper.setModel(COLLAR_SHEARS, 0, "doggytalents:collar_shears");
-		ModelHelper.setModel(DOGGY_CHARM, 0, "doggytalents:doggy_charm");
-		ModelHelper.setModel(RADAR, 0, "doggytalents:radar");
-		ModelHelper.setModel(CREATIVE_RADAR, 0, "doggytalents:creative_radar");
-		ModelHelper.setModel(RADIO_COLLAR, 0, "doggytalents:radio_collar");
-		ModelHelper.setModel(WOOL_COLLAR, 0, "doggytalents:wool_collar");
-		for(int i = 0; i < ItemFancyCollar.NO_COLLAR; i++)
-			ModelHelper.setModel(FANCY_COLLAR, i, "doggytalents:fancy_collar_" + i);
-		ModelHelper.setModel(WHISTLE, 0, "doggytalents:whistle");
-		ModelHelper.setModel(TREAT_BAG, 0, "doggytalents:treat_bag");
-		ModelHelper.setModel(CHEW_STICK, 0, "doggytalents:chew_stick");
-		ModelHelper.setModel(CAPE, 0, "doggytalents:cape");
-		ModelHelper.setModel(CAPE_COLOURED, 0, "doggytalents:cape_coloured");
-		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
-		ModelHelper.setModel(LEATHER_JACKET, 0, "doggytalents:leather_jacket");
-		ModelHelper.setModel(TINY_BONE, 0, "doggytalents:tiny_bone");
-		ModelHelper.setModel(BIG_BONE, 0, "doggytalents:big_bone");
+	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+    public static class Registration {
+		
+	    @SubscribeEvent
+	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
+	    	IForgeRegistry<Item> itemRegistry = event.getRegistry();
+	    	
+			DoggyTalents.LOGGER.info("Registering Items");
+			itemRegistry.register(new ItemThrowBone().setTranslationKey(ItemNames.THROW_BONE.replace(":", ".")).setRegistryName(ItemNames.THROW_BONE).setMaxStackSize(2));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET).setTranslationKey(ItemNames.THROW_BONE_WET.replace(":", ".")).setRegistryName(ItemNames.THROW_BONE_WET).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemThrowBone().setTranslationKey(ItemNames.THROW_STICK.replace(":", ".")).setRegistryName(ItemNames.THROW_STICK).setMaxStackSize(8));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET).setTranslationKey(ItemNames.THROW_STICK_WET.replace(":", ".")).setRegistryName(ItemNames.THROW_STICK_WET).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemTreat(20).setTranslationKey(ItemNames.TRAINING_TREAT.replace(":", ".")).setRegistryName(ItemNames.TRAINING_TREAT));
+	    	itemRegistry.register(new ItemTreat(40).setTranslationKey(ItemNames.SUPER_TREAT.replace(":", ".")).setRegistryName(ItemNames.SUPER_TREAT));
+	    	itemRegistry.register(new ItemTreat(60).setTranslationKey(ItemNames.MASTER_TREAT.replace(":", ".")).setRegistryName(ItemNames.MASTER_TREAT));
+	    	itemRegistry.register(new ItemDireTreat().setTranslationKey(ItemNames.DIRE_TREAT.replace(":", ".")).setRegistryName(ItemNames.DIRE_TREAT));
+	    	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.BREEDING_BONE.replace(":", ".")).setRegistryName(ItemNames.BREEDING_BONE));
+	    	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.COLLAR_SHEARS.replace(":", ".")).setRegistryName(ItemNames.COLLAR_SHEARS).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemDoggyCharm().setTranslationKey(ItemNames.DOGGY_CHARM.replace(":", ".")).setRegistryName(ItemNames.DOGGY_CHARM).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.RADIO_COLLAR.replace(":", ".")).setRegistryName(ItemNames.RADIO_COLLAR));
+	    	itemRegistry.register(new ItemWoolCollar().setTranslationKey(ItemNames.WOOL_COLLAR.replace(":", ".")).setRegistryName(ItemNames.WOOL_COLLAR));
+	    	itemRegistry.register(new ItemCreativeCollar(ItemFancyCollar.Type.CREATIVE).setTranslationKey(ItemNames.CREATIVE_COLLAR.replace(":", ".")).setRegistryName(ItemNames.CREATIVE_COLLAR));
+	      	itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED).setTranslationKey(ItemNames.SPOTTED_COLLAR.replace(":", ".")).setRegistryName(ItemNames.SPOTTED_COLLAR));
+	      	itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED).setTranslationKey(ItemNames.MULTICOLOURED_COLLAR.replace(":", ".")).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
+	    	itemRegistry.register(new ItemRadarCreative().setTranslationKey(ItemNames.CREATIVE_RADAR.replace(":", ".")).setRegistryName(ItemNames.CREATIVE_RADAR).setMaxStackSize(1));
+	      	itemRegistry.register(new ItemRadar().setTranslationKey(ItemNames.RADAR.replace(":", ".")).setRegistryName(ItemNames.RADAR).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemWhistle().setTranslationKey(ItemNames.WHISTLE.replace(":", ".")).setRegistryName(ItemNames.WHISTLE).setMaxStackSize(1));
+	    	itemRegistry.register(new ItemTreatBag().setTranslationKey(ItemNames.TREAT_BAG.replace(":", ".")).setRegistryName(ItemNames.TREAT_BAG).setMaxStackSize(1));
+	     	itemRegistry.register(new ItemChewStick().setTranslationKey(ItemNames.CHEW_STICK.replace(":", ".")).setRegistryName(ItemNames.CHEW_STICK));
+	     	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.CAPE.replace(":", ".")).setRegistryName(ItemNames.CAPE));
+	     	itemRegistry.register(new ItemCapeColoured().setTranslationKey(ItemNames.CAPE_COLOURED.replace(":", ".")).setRegistryName(ItemNames.CAPE_COLOURED));
+	     	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.SUNGLASSES.replace(":", ".")).setRegistryName(ItemNames.SUNGLASSES));
+	     	itemRegistry.register(new ItemDT().setTranslationKey(ItemNames.LEATHER_JACKET.replace(":", ".")).setRegistryName(ItemNames.LEATHER_JACKET));
+	     	itemRegistry.register(new ItemTinyBone().setTranslationKey(ItemNames.TINY_BONE.replace(":", ".")).setRegistryName(ItemNames.TINY_BONE));
+	     	itemRegistry.register(new ItemBigBone().setTranslationKey(ItemNames.BIG_BONE.replace(":", ".")).setRegistryName(ItemNames.BIG_BONE));
+	     	itemRegistry.register(new ItemCreativeOwnerChange().setTranslationKey(ItemNames.OWNER_CHANGE.replace(":", ".")).setRegistryName(ItemNames.OWNER_CHANGE).setMaxStackSize(1));
+	     	DoggyTalents.LOGGER.info("Finished Registering Items");
+	    }
+	    
+	    @SubscribeEvent
+		@SideOnly(Side.CLIENT)
+		public static void setItemModels(ModelRegistryEvent event) {
+			ModelHelper.setDefaultModel(THROW_BONE);
+			ModelHelper.setDefaultModel(THROW_BONE_WET);
+			ModelHelper.setDefaultModel(THROW_STICK);
+			ModelHelper.setDefaultModel(THROW_STICK_WET);
+			ModelHelper.setDefaultModel(TRAINING_TREAT);
+			ModelHelper.setDefaultModel(SUPER_TREAT);
+			ModelHelper.setDefaultModel(MASTER_TREAT);
+			ModelHelper.setDefaultModel(DIRE_TREAT);
+			ModelHelper.setDefaultModel(BREEDING_BONE);
+			ModelHelper.setDefaultModel(COLLAR_SHEARS);
+			ModelHelper.setDefaultModel(DOGGY_CHARM);
+			ModelHelper.setDefaultModel(RADAR);
+			ModelHelper.setDefaultModel(CREATIVE_RADAR);
+			ModelHelper.setDefaultModel(RADIO_COLLAR);
+			ModelHelper.setDefaultModel(WOOL_COLLAR);
+			ModelHelper.setDefaultModel(CREATIVE_COLLAR);
+			ModelHelper.setDefaultModel(MULTICOLOURED_COLLAR);
+			ModelHelper.setDefaultModel(SPOTTED_COLLAR);
+			ModelHelper.setDefaultModel(WHISTLE);
+			ModelHelper.setDefaultModel(TREAT_BAG);
+			ModelHelper.setDefaultModel(CHEW_STICK);
+			ModelHelper.setDefaultModel(CAPE);
+			ModelHelper.setDefaultModel(CAPE_COLOURED);
+			ModelHelper.setDefaultModel(SUNGLASSES);
+			ModelHelper.setDefaultModel(LEATHER_JACKET);
+			ModelHelper.setDefaultModel(TINY_BONE);
+			ModelHelper.setDefaultModel(BIG_BONE);
+			ModelHelper.setDefaultModel(OWNER_CHANGE);
+		}
 	}
 }

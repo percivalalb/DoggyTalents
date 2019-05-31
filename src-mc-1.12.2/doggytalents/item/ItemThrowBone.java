@@ -1,6 +1,6 @@
 package doggytalents.item;
 
-import net.minecraft.creativetab.CreativeTabs;
+import doggytalents.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,21 +10,29 @@ import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * @author ProPercivalalb
  **/
 public class ItemThrowBone extends ItemDT {
-
+	
+	public enum Type {
+		DRY,
+		WET
+	}
+	
+	public Type type;
+	
 	public ItemThrowBone() {
+		this(Type.DRY);
+	}
+	
+	public ItemThrowBone(Type type) {
 		super();
-		this.setMaxStackSize(1);
+		this.type = type;
 	}
 	
 	public void setHeadingFromThrower(EntityItem entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
@@ -43,8 +51,12 @@ public class ItemThrowBone extends ItemDT {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		
-		if(itemStackIn.getItemDamage() % 2 == 1) {
-    		itemStackIn.setItemDamage(itemStackIn.getItemDamage() - 1);
+		if(this.type == Type.WET) {
+			if(itemStackIn.getItem() == ModItems.THROW_BONE_WET)
+				itemStackIn = new ItemStack(ModItems.THROW_BONE);
+			else if(itemStackIn.getItem() == ModItems.THROW_STICK_WET)
+				itemStackIn = new ItemStack(ModItems.THROW_STICK);
+
     		playerIn.swingArm(handIn);
     		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     	}
@@ -53,7 +65,9 @@ public class ItemThrowBone extends ItemDT {
 	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 	
 	        if(!worldIn.isRemote) {
-	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, itemStackIn.copy());
+	        	ItemStack stack = itemStackIn.copy();
+	        	stack.setCount(1);
+	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
 	            entityitem.setPickupDelay(40);
 	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
                 worldIn.spawnEntity(entityitem);
@@ -66,15 +80,6 @@ public class ItemThrowBone extends ItemDT {
 	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
 		}
 	}
-	
-	@Override
-    @SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
-	    if(this.isInCreativeTab(tab)) {
-	    	for(int i = 0; i < 4; i++)
-				subItems.add(new ItemStack(this, 1, i));
-	    }
-    }
 
     public void setThrowableHeading(EntityItem entityItem, double x, double y, double z, float velocity, float inaccuracy) {
         float f = MathHelper.sqrt(x * x + y * y + z * z);
@@ -95,10 +100,5 @@ public class ItemThrowBone extends ItemDT {
         entityItem.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
         entityItem.prevRotationYaw = entityItem.rotationYaw;
         entityItem.prevRotationPitch = entityItem.rotationPitch;
-    }
-    
-	@Override
-    public String getTranslationKey(ItemStack par1ItemStack) {
-        return this.getTranslationKey() + par1ItemStack.getItemDamage();
     }
 }

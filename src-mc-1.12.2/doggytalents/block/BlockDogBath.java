@@ -1,15 +1,13 @@
 package doggytalents.block;
 
-import doggytalents.DoggyTalents;
+import doggytalents.ModCreativeTabs;
 import doggytalents.entity.EntityDog;
-import doggytalents.tileentity.TileEntityDogBath;
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -23,26 +21,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**;
  * @author ProPercivalalb
  */
-public class BlockDogBath extends BlockContainer {
+public class BlockDogBath extends Block {
 
-	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
+	protected static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.5D, 1.0D);
+	protected static final AxisAlignedBB SHAPE_COLLISION = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.25D, 1.0D);
 	
 	public BlockDogBath() {
 		super(Material.IRON);
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
-		this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
+		this.setCreativeTab(ModCreativeTabs.GENERAL);
 		this.setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int meta) {
-		return new TileEntityDogBath();
-	}
-	
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return AABB;
+		this.setHarvestLevel("pickaxe", 0);
 	}
 	
 	@Override
@@ -51,6 +41,34 @@ public class BlockDogBath extends BlockContainer {
 			EntityDog dog = (EntityDog)entity;
 			dog.isWet = true;
 		}
+	}
+	
+	@Override
+	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
+	}
+
+	@Override
+	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+		if(!this.canBlockStay((World)world, pos)) {
+			this.dropBlockAsItem((World)world, pos, world.getBlockState(pos), 0);
+			((World)world).setBlockToAir(pos);
+		}
+	}
+	
+	public boolean canBlockStay(World world, BlockPos pos) {
+		IBlockState blockstate = world.getBlockState(pos.down());
+		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+	}
+	
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		return SHAPE;
+	}
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+		return SHAPE_COLLISION;
 	}
 	
 	@Override
@@ -75,25 +93,9 @@ public class BlockDogBath extends BlockContainer {
     }
 	
 	@Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
-	}
-
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay((World)world, pos)) {
-			this.dropBlockAsItem((World)world, pos, world.getBlockState(pos), 0);
-			((World)world).setBlockToAir(pos);
-		}
-	}
-	
-	public boolean canBlockStay(World world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
-	
-	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+		if(facing == EnumFacing.DOWN) 
+			return BlockFaceShape.SOLID;
 		return BlockFaceShape.UNDEFINED;
 	}
 }

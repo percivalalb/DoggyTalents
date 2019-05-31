@@ -37,6 +37,6 @@ public class DogModeMessage extends AbstractServerMessage {
         
         EntityDog dog = (EntityDog)target;
         
-		dog.mode.setMode(this.doggyMode);
+		dog.MODE.setMode(this.doggyMode);
 	}
 }

@@ -14,19 +14,19 @@ import doggytalents.client.renderer.particle.ParticleCustomLanding;
 import doggytalents.client.renderer.world.WorldRender;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.handler.KeyState;
+import doggytalents.handler.GameOverlay;
+import doggytalents.handler.InputUpdate;
 import doggytalents.handler.ModelBake;
+import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IThreadListener;
@@ -34,7 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -53,11 +52,6 @@ public class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 		
-		ClientRegistry.registerKeyBinding(KeyState.come);
-		ClientRegistry.registerKeyBinding(KeyState.stay);
-		ClientRegistry.registerKeyBinding(KeyState.ok);
-		ClientRegistry.registerKeyBinding(KeyState.heel);
-		
 		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
 	}
@@ -65,70 +59,56 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
+	 	MinecraftForge.EVENT_BUS.register(new GameOverlay());
+    	MinecraftForge.EVENT_BUS.register(new InputUpdate());
+	   	//DogTextureLoader.loadYourTexures();
 	}
 	
 	@Override
 	public void postInit(FMLPostInitializationEvent event) {
 		super.postInit(event);
 		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-			@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("collar_colour"))
-						return stack.getTagCompound().getInteger("collar_colour");
-				return -1;
-			}
-			
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+			return stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour") ? stack.getTagCompound().getInteger("collar_colour") : -1;
 		}, ModItems.WOOL_COLLAR);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler(new IItemColor() {
-
-		@Override
-			public int colorMultiplier(ItemStack stack, int tintIndex) {
-				if(stack.hasTagCompound())
-					if(stack.getTagCompound().hasKey("cape_colour"))
-						return stack.getTagCompound().getInteger("cape_colour");
-				return -1;
-			}
-			
-		}, ModItems.CAPE_COLOURED);
+	        
+		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+			return stack.hasTagCompound() && stack.getTagCompound().hasKey("cape_colour") ? stack.getTagCompound().getInteger("cape_colour") : -1;
+		}, ModItems.CAPE_COLOURED);		
 	}
 	
 	@Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
         MinecraftForge.EVENT_BUS.register(new WorldRender());
-		MinecraftForge.EVENT_BUS.register(new KeyState());
 		MinecraftForge.EVENT_BUS.register(new ModelBake());
     }
 	
 
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
-		if(ID == GUI_ID_DOGGY) {
+		if(ID == GuiNames.GUI_ID_DOGGY) {
 			Entity target = player.world.getEntityByID(x);
             if(!(target instanceof EntityDog))
             	return null;
 			EntityDog dog = (EntityDog)target;
 			return new GuiDogInfo(dog, player);
 		}
-		else if(ID == GUI_ID_PACKPUPPY) {
+		else if(ID == GuiNames.GUI_ID_PACKPUPPY) {
 			Entity target = player.world.getEntityByID(x);
             if(!(target instanceof EntityDog)) 
             	return null;
 			EntityDog dog = (EntityDog)target;
 			return new GuiPackPuppy(player, dog);
 		}
-		else if(ID == GUI_ID_FOOD_BOWL) {
+		else if(ID == GuiNames.GUI_ID_FOOD_BOWL) {
 			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
 			if(!(target instanceof TileEntityFoodBowl))
 				return null;
 			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
 			return new GuiFoodBowl(player.inventory, foodBowl);
 		}
-		else if(ID == GUI_ID_FOOD_BAG) {
+		else if(ID == GuiNames.GUI_ID_FOOD_BAG) {
 			return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
 		}
 		return null;

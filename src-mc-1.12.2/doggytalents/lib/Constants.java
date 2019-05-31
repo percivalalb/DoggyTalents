@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Constants {
 
-	public static boolean STARTING_ITEMS = true;
+	public static boolean STARTING_ITEMS = false;
 	public static boolean IS_HUNGER_ON = true;
 	public static boolean DOGS_IMMORTAL = true;
 	public static boolean TEN_DAY_PUPS = true;
@@ -21,6 +21,7 @@ public class Constants {
 	public static boolean RENDER_BLOOD = true;
 	public static boolean RENDER_PACK_PUPPY_CHEST = true;
 	public static boolean RENDER_SADDLE = true;
+	public static boolean RENDER_ARMOUR = false; //TODO Add config 
 	
 	public static boolean MOD_BED_STUFF = true;
 	public static boolean PUPS_GET_PARENT_LEVELS = false;

@@ -21,7 +21,7 @@ public class LayerBone implements LayerRenderer<EntityDog> {
     
     public LayerBone(RenderDog dogRendererIn) {
         this.dogRenderer = dogRendererIn;
-        this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_BONE, 1, 2)};
+        this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_STICK)};
     }
 
     @Override

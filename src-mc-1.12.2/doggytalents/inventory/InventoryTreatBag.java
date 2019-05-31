@@ -1,7 +1,7 @@
 package doggytalents.inventory;
 
 import doggytalents.ModItems;
-import doggytalents.api.IDogTreat;
+import doggytalents.api.inferface.IDogInteractItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryBasic;
@@ -17,7 +17,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	public ItemStack itemstack;
 	
 	public InventoryTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super("doggytalents:coin_bag", false, 5);
+		super("doggytalents.treatbag", false, 5);
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn.copy();
@@ -25,7 +25,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return stack.getItem() instanceof IDogTreat || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem() instanceof ItemFood && ((ItemFood)stack.getItem()).isWolfsFavoriteMeat()); 
+        return stack.getItem() instanceof IDogInteractItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem() instanceof ItemFood && ((ItemFood)stack.getItem()).isWolfsFavoriteMeat()); 
     }
 
 	@Override

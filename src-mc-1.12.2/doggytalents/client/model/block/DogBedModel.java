@@ -29,9 +29,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * 1.12 Code
- */
 @SideOnly(Side.CLIENT)
 public class DogBedModel implements IBakedModel, IStateParticleModel {
 	

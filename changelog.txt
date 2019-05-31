@@ -11,6 +11,30 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.0 | 31st May 2019
++ The whistle now has different modes (shift click to change mode), replaces command emblem and is also used for shepherd dog and roaring gale talent.
++ Added whistle sounds
++ Shepherd Dog Talent now works, use the shepherd whistle and dogs will round up animals so they follow you and stay at the back keeping them in check. Level 1 allows 1 animal to follow while level 5 allows 16 animals to follow.
++ Wandering mode now works properly, if close enought to it's bowl will stay within 5 blocks, otherwise will continue to follow you until you get back to the bowl
++ Using the doggy charm on a dog will spawn a tamed baby (creative only)
++ Using a stick will on an incapacitated dog will tell you how to revive your dog
++ Improved radar messages and it will now give info about dogs in other dimensions
++ Added tooltips to creative collar and creative radar
++ Added help message when using stick on incapacicated dogs
+- Removed command emblem - whistle has the command emblem features
+- Dogs no longer take damage when on 0 hunger
+# Changed versioning protocol
+# Reduce the general wander range from 10 to 7 blocks
+# Default config option for spawning with doggy charm is now false
+# Roaring gale talent now uses the Roaring whistle
+# Lots of under the hood changes
+# Changed most lang translation keys
+* Fixed format error in talents with description including a % symbol
+* Fixed warning message due to way DataParameter objects were registered
+* Can no longer attack a dog you are riding
+* Fixed crash on server startup
+- Removed the abiltiy to disable talents for now
+
 1.14.3.451 | 29th April 2019
 + Added config option so that puppies will get some levels from parents up to a max of 20.
 * Set max stacksize of treat bag to 1 to fix item duplication bug
@@ -44,6 +68,30 @@ Initial release, parent version 1.14.2.396
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.0 | 31st May 2019
+Requires forge 14.23.5.2826 or higher
++ The whistle now has different modes (shift click to change mode), replaces command emblem and is also used for shepherd dog and roaring gale talent.
++ Added whistle sounds
++ Shepherd Dog Talent now works, use the shepherd whistle and dogs will round up animals so they follow you and stay at the back keeping them in check. Level 1 allows 1 animal to follow while level 5 allows 16 animals to follow.
++ Wandering mode now works properly, if close enought to it's bowl will stay within 5 blocks, otherwise will continue to follow you until you get back to the bowl
++ Using the doggy charm on a dog will spawn a tamed baby (creative only)
++ Using a stick will on an incapacitated dog will tell you how to revive your dog
++ Improved radar messages and it will now give info about dogs in other dimensions
++ Added tooltips to creative collar and creative radar
++ Added help message when using stick on incapacicated dogs
+- Removed command emblem - whistle has the command emblem features
+- Dogs no longer take damage when on 0 hunger
+# Changed versioning protocol
+# Reduce the general wander range from 10 to 7 blocks
+# Default config option for spawning with doggy charm is now false
+# Roaring gale talent now uses the Roaring whistle
+# Lots of under the hood changes
+# Changed most lang translation keys
+* Fixed format error in talents with description including a % symbol
+* Fixed warning message due to way DataParameter objects were registered
+* Can no longer attack a dog you are riding
+* Fixed crash on server startup
 
 1.14.2.451 | 29th April 2019
 + Added config option so that puppies will get some levels from parents up to a max of 20.
@@ -488,6 +536,9 @@ Initial release, parent version v1.9.0b
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.7.10
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.14.3. | 
+* Set max stacksize of treat bag to 1 to fix item duplication bug
 
 1.14.3.317 | 20th March 2018
 * Fixed radar not showing up in creative tab

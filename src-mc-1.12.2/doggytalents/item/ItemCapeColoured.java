@@ -2,9 +2,11 @@ package doggytalents.item;
 
 import java.util.List;
 
+import doggytalents.helper.DogUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,18 +14,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCapeColoured extends ItemDT {
 	
+	protected static int[] WHITE = new int[] {0,0,0};
+	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag advanced) {
-		super.addInformation(stack, worldIn, tooltip, advanced);
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		
+		int[] rgb = WHITE;
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("cap_colour")) {
-			int rgb = stack.getTagCompound().getInteger("cap_colour");
-			int r = (rgb >> 16) &0xFF;
-			int g = (rgb >> 8) &0xFF;
-			int b = (rgb >> 0) &0xFF;
-		  
-			tooltip.add("Colour: " + TextFormatting.RED + "" + r + TextFormatting.GREEN + " " + g + TextFormatting.BLUE + " " + b);
+			rgb = DogUtil.rgbIntToIntArray(stack.getTagCompound().getInteger("cap_colour"));
 		}
+
+		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]).getFormattedText());
 	}
 	
 	public boolean hasColor(ItemStack stack) {

@@ -2,7 +2,7 @@
 
 import doggytalents.DoggyTalents;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.ModeUtil.EnumMode;
+import doggytalents.entity.ai.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.util.math.BlockPos;
@@ -19,12 +19,12 @@ public class EntityAIPatrolArea extends EntityAIBase {
 	
 	@Override
 	public boolean shouldExecute() {
-		return this.dog.mode.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1;
+		return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1;
 	}
 
     @Override
     public boolean shouldContinueExecuting() {
-    	return this.dog.mode.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1 && !this.dog.isSitting();
+    	return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1 && !this.dog.isSitting();
     }
     
     @Override

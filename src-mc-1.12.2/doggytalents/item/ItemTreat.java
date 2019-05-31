@@ -1,66 +1,60 @@
 package doggytalents.item;
 
-import doggytalents.api.IDogTreat;
+import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb
  **/
-public class ItemTreat extends ItemDT implements IDogTreat {
+public class ItemTreat extends ItemDT implements IDogInteractItem {
 
 	private int maxLevel;
-	
 	public ItemTreat(int maxLevel) {
 		super();
 		this.maxLevel = maxLevel;
 	}
 
 	@Override
-	public EnumFeedBack canGiveToDog(EntityPlayer player, EntityDog dog, int level, int direLevel) {
-		if (level < this.maxLevel && dog.getGrowingAge() >= 0) {
-			return EnumFeedBack.JUSTRIGHT;
-        }
-		else if (dog.getGrowingAge() < 0) {
-			return EnumFeedBack.TOOYOUNG;
-		}
-		else {
-			return EnumFeedBack.LEVELTOOHIGH;
-		}
-	}
-
-	@Override
-	public void giveTreat(EnumFeedBack type, EntityPlayer player, ItemStack stack, EntityDog dog) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, EntityPlayer playerIn) {
+		int level = dogIn.LEVELS.getLevel();
 		
-		if(type == EnumFeedBack.JUSTRIGHT) {
-			if(!player.capabilities.isCreativeMode)
-				stack.shrink(1);
+		if (dogIn.getGrowingAge() < 0) {
+			if(!worldIn.isRemote) {
+				 dogIn.playTameEffect(false);
+				 playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.too_young"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
+		}
+		if(level < this.maxLevel) {
+			if(!playerIn.capabilities.isCreativeMode)
+				stackIn.shrink(1);
 
-			if(!player.world.isRemote) {
-	            dog.levels.increaseLevel();
-	            dog.setHealth(dog.getMaxHealth());
-	            dog.getSitAI().setSitting(true);
-	            dog.world.setEntityState(dog, (byte)7);
-	            dog.playTameEffect(true);
-	            if(!player.world.isRemote)
-	            	player.sendMessage(new TextComponentTranslation("dogtreat.levelup"));
+			if(!playerIn.world.isRemote) {
+	            dogIn.LEVELS.increaseLevel();
+	            dogIn.setHealth(dogIn.getMaxHealth());
+	            dogIn.getAISit().setSitting(true);
+	            worldIn.setEntityState(dogIn, (byte)7);
+	            dogIn.playTameEffect(true);
+	            playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.level_up"));
 			}
-		}
-		else if(type == EnumFeedBack.TOOYOUNG) {
-			if(!player.world.isRemote){
-				 dog.playTameEffect(false);
-				 player.sendMessage(new TextComponentTranslation("dogtreat.tooyoung"));
+			
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
+        }
+		else {
+			worldIn.setEntityState(dogIn, (byte)6);
+			if(!worldIn.isRemote) {
+				dogIn.playTameEffect(false);
+				playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.max_level"));
 			}
-		}
-		else if(type == EnumFeedBack.LEVELTOOHIGH) {
-            player.world.setEntityState(dog, (byte)6);
-            if(!player.world.isRemote) {
-            	dog.playTameEffect(false);
-            	player.sendMessage(new TextComponentTranslation("dogtreat.leveltoohigh"));
-            }
+			
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}
 	}
-
 }

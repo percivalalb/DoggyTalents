@@ -1,5 +1,10 @@
 package doggytalents.block;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import doggytalents.ModCreativeTabs;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
@@ -19,6 +24,8 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,6 +40,9 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -58,7 +68,9 @@ public class BlockDogBed extends BlockContainer {
 		this.setHardness(3.0F);
 		this.setResistance(5.0F);
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		this.setCreativeTab(ModCreativeTabs.DOG_BED);
 		this.setSoundType(SoundType.WOOD);
+		this.setHarvestLevel("axe", 0);
 	}
 	
 	@Override
@@ -79,6 +91,35 @@ public class BlockDogBed extends BlockContainer {
 	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
+		    
+		    String casingId = tag.getString("casingId");
+		    String beddingId = tag.getString("beddingId");
+		    
+		    if(DogBedRegistry.CASINGS.isValidId(casingId))
+		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.CASINGS.getLookUpValue(casingId)).getFormattedText());
+		    else
+		    	tooltip.add(new TextComponentTranslation("dogBed.woodError").setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText());
+		    	
+		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
+		    	tooltip.add(new TextComponentTranslation(DogBedRegistry.BEDDINGS.getLookUpValue(beddingId)).getFormattedText());	
+		    else
+		    	tooltip.add(new TextComponentTranslation("dogBed.woolError").setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText());
+		}
+	}
+	
+	@Override
+	public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+		for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
+			for(String casingId : DogBedRegistry.CASINGS.getKeys())
+				items.add(DogBedRegistry.createItemStack(casingId, beddingId));
 	}
 	
 	@Override
@@ -162,6 +203,8 @@ public class BlockDogBed extends BlockContainer {
 		}
 	}
 	
+	
+	
 	@Override
 	@SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
@@ -205,6 +248,8 @@ public class BlockDogBed extends BlockContainer {
 	
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+		if(facing == EnumFacing.DOWN) 
+			return BlockFaceShape.SOLID;
 		return BlockFaceShape.UNDEFINED;
 	}
 	

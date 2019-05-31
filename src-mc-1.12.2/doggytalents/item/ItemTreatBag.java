@@ -1,7 +1,7 @@
 package doggytalents.item;
 
 import doggytalents.DoggyTalents;
-import doggytalents.proxy.CommonProxy;
+import doggytalents.lib.GuiNames;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -24,7 +24,7 @@ public class ItemTreatBag extends ItemDT {
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
 		}
 		else {
-			playerIn.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_FOOD_BAG, worldIn, playerIn.inventory.currentItem, 0, 0);
+			playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BAG, worldIn, playerIn.inventory.currentItem, 0, 0);
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
 	    }
 	}

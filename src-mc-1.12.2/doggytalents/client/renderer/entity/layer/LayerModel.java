@@ -2,11 +2,8 @@ package doggytalents.client.renderer.entity.layer;
 
 import java.util.function.Predicate;
 
-import doggytalents.client.model.entity.ModelSaddle;
-import doggytalents.client.model.entity.ModelWings;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.ResourceLib;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;

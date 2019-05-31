@@ -23,7 +23,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
     
     
     public TileEntityFoodBowl() {
-    	this.inventory = new InventoryBasic("container.foodBowl", false, 5);
+    	this.inventory = new InventoryBasic("container.doggytalents.food_bowl", false, 5);
     }
     
     @Override
@@ -68,7 +68,9 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
     	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
     	for(EntityDog dog : dogList) {
-    		dog.coords.setBowlPos(this.pos.getX(), this.pos.getY(), this.pos.getZ());
+    		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl
+    		if(!dog.COORDS.hasBowlPos())
+    			dog.COORDS.setBowlPos(this.pos);
             	
     		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
          	if(dog.getDogHunger() < 60 && slotIndex >= 0)

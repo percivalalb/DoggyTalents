@@ -6,17 +6,17 @@ import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * @author ProPercivalalb
- **/
+@SideOnly(Side.CLIENT)
 public class GuiFoodBowl extends GuiContainer {
 	
     private TileEntityFoodBowl foodBowl;
 
-    public GuiFoodBowl(InventoryPlayer playerInventory, TileEntityFoodBowl par2TileEntityFoodBowl) {
-        super(new ContainerFoodBowl(playerInventory, par2TileEntityFoodBowl));
-        this.foodBowl = par2TileEntityFoodBowl;
+    public GuiFoodBowl(InventoryPlayer playerInventory, TileEntityFoodBowl foodBowl) {
+        super(new ContainerFoodBowl(playerInventory, foodBowl));
+        this.foodBowl = foodBowl;
         this.ySize = 127;
     }
 
@@ -28,13 +28,13 @@ public class GuiFoodBowl extends GuiContainer {
     }
     
     @Override
-    protected void drawGuiContainerForegroundLayer(int var1, int var2) {
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     	String s = this.foodBowl.inventory.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, 10, 8, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
     	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ResourceLib.GUI_FOOD_BOWL);
         int var2 = (this.width - this.xSize) / 2;

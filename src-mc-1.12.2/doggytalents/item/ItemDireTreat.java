@@ -1,73 +1,68 @@
 package doggytalents.item;
 
-import doggytalents.api.IDogTreat;
+import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 
 /**
  * @author ProPercivalalb
  **/
-public class ItemDireTreat extends ItemDT implements IDogTreat {
+public class ItemDireTreat extends ItemDT implements IDogInteractItem {
 	
 	public ItemDireTreat() {
 		super();
 	}
 
 	@Override
-	public EnumFeedBack canGiveToDog(EntityPlayer player, EntityDog dog, int level, int direLevel) {
-		if (level >= 60 && direLevel < 30 && dog.getGrowingAge() >= 0) {
-			return EnumFeedBack.JUSTRIGHT;
-        }
-		else if (dog.getGrowingAge() < 0) {
-			return EnumFeedBack.TOOYOUNG;
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, EntityPlayer playerIn) {
+		int level = dogIn.LEVELS.getLevel();
+		int direLevel = dogIn.LEVELS.getDireLevel();
+		
+		if (dogIn.getGrowingAge() < 0) {
+			if(!worldIn.isRemote){
+				 dogIn.playTameEffect(false);
+				 playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.too_young"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}
+		else if(level >= 60 && direLevel < 30) {
+			if(!playerIn.capabilities.isCreativeMode)
+				stackIn.shrink(1);
+
+			if(!worldIn.isRemote) {
+				dogIn.LEVELS.increaseDireLevel();
+				dogIn.setHealth(dogIn.getMaxHealth());
+				dogIn.getAISit().setSitting(true);
+				dogIn.getNavigator().clearPath();
+				worldIn.setEntityState(dogIn, (byte)7);
+	            dogIn.playTameEffect(true);
+	            playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.level_up"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
+        }
 		else if(level < 60) {
-			return EnumFeedBack.LEVELTOOHIGH;
+			worldIn.setEntityState(dogIn, (byte)6);
+	        if(!worldIn.isRemote) {
+	        	dogIn.playTameEffect(false);
+	            playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.low_level"));
+	        }
+	        
+	        return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
 		}
 		else {
-			return EnumFeedBack.COMPLETE;
+			worldIn.setEntityState(dogIn, (byte)6);
+			if (!worldIn.isRemote) {
+				playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.max_level"));
+			}
+			
+			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
 		}
 	}
-
-	@Override
-	public void giveTreat(EnumFeedBack type, EntityPlayer player, ItemStack stack, EntityDog dog) {
-
-		if(type == EnumFeedBack.JUSTRIGHT) {
-			if(!player.capabilities.isCreativeMode)
-				stack.shrink(1);
-
-			if(!player.world.isRemote) {
-	            dog.levels.increaseDireLevel();
-	            dog.setHealth(dog.getMaxHealth());
-	            dog.getSitAI().setSitting(true);
-	            dog.getNavigator().clearPath();
-	            dog.world.setEntityState(dog, (byte)7);
-	            dog.playTameEffect(true);
-	            if (!player.world.isRemote)
-	            	player.sendMessage(new TextComponentTranslation("dogtreat.levelup"));
-			}
-		}
-		else if(type == EnumFeedBack.TOOYOUNG) {
-			if (!player.world.isRemote){
-				 dog.playTameEffect(false);
-				 player.sendMessage(new TextComponentTranslation("dogtreat.tooyoung"));
-			}
-		}
-		else if(type == EnumFeedBack.LEVELTOOHIGH) {
-            player.world.setEntityState(dog, (byte)6);
-            if (!player.world.isRemote) {
-            	 dog.playTameEffect(false);
-            	 player.sendMessage(new TextComponentTranslation("dogtreat.toomuch"));
-            }
-		}
-		else if(type == EnumFeedBack.COMPLETE) {
-            player.world.setEntityState(dog, (byte)6);
-            if (!player.world.isRemote) {
-            	 player.sendMessage(new TextComponentTranslation("dogtreat.ultimatelevel"));
-            }
-		}
-	}
-
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.lib.Constants;
+import doggytalents.lib.TalentNames;
 import net.minecraftforge.common.config.Configuration;
 
 /**
@@ -54,7 +55,7 @@ public class ConfigurationHandler {
 		Constants.IS_HUNGER_ON = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isHungerOn", true, "Enables hunger mode for the dog").getBoolean(true);
 		//Constants.barkRate = config.get("doggySettings", "barkRate", 10, "Default is 10, higher the number the slower the dogs bark. Lower the number the faster the dogs bark.").getInt(10);
 		Constants.DIRE_PARTICLES = CONFIG.get(CATEGORY_DOGGYSETTINGS, "direParticles", true, "Enables the particle effect on Dire Level 30 dogs.").getBoolean(true);
-		Constants.STARTING_ITEMS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isStartingItemsEnabled", true, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(true);
+		Constants.STARTING_ITEMS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "isStartingItemsEnabled", false, "When enabled you will spawn with a guide, Doggy Charm and Command Emblem.").getBoolean(false);
 		Constants.RENDER_BLOOD = CONFIG.get(CATEGORY_DOGGYSETTINGS, "bloodWhenIncapacitated", true, "When enabled, Dogs will show blood texture while incapacitated.").getBoolean(true);
 		Constants.RENDER_WINGS = CONFIG.get(CATEGORY_DOGGYSETTINGS, "doggyWings", true, "When enabled, Dogs will have wings when at level 5 pillow paw").getBoolean(true);
 		Constants.DOG_GENDER = CONFIG.get(CATEGORY_DOGGYSETTINGS, "dogGender", false, "When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender").setRequiresMcRestart(true).getBoolean(false);
@@ -81,9 +82,10 @@ public class ConfigurationHandler {
 		
 		Constants.DISABLED_TALENTS.clear();
 		
-		String[] talentIds = new String[] {"bedfinder", "blackpelt", "creepersweeper", "doggydash", "fisherdog", "guarddog", "happyeater", "hellhound", 
-											"hunterdog", "packpuppy", "pestfighter", "pillowpaw", "poisonfang", "puppyeyes", "quickhealer", 
-											"rescuedog", "roaringgale", "shepherddog", "swimmerdog", "wolfmount"};
+		String[] talentIds = new String[] {TalentNames.BED_FINDER, TalentNames.BLACK_PELT, TalentNames.CREEPER_SWEEPER, TalentNames.DOGGY_DASH, TalentNames.FISHER_DOG, 
+				TalentNames.GUARD_DOG, TalentNames.HAPPY_EATER, TalentNames.HELL_HOUND, TalentNames.HUNTER_DOG, TalentNames.PACK_PUPPY, TalentNames.PEST_FIGHTER, 
+				TalentNames.PILLOW_PAW, TalentNames.POISON_FANG, TalentNames.PUPPY_EYES, TalentNames.QUICK_HEALER, TalentNames.RESCUE_DOG, TalentNames.ROARING_GALE,
+				TalentNames.SHEPHERD_DOG, TalentNames.SWIMMER_DOG, TalentNames.WOLF_MOUNT};
 		for(String talentId : talentIds) {
 			boolean enabled = CONFIG.get(CATEGORY_TALENT, talentId, true).getBoolean(true);
 			if(!enabled)

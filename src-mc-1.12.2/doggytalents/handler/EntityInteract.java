@@ -7,13 +7,20 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
  **/
 public class EntityInteract {
 	
-	public static void rightClickEntity(World world, EntityPlayer player, ItemStack stack, Entity target) {
+	@SubscribeEvent
+	public void rightClickEntity(PlayerInteractEvent.EntityInteract event) {
+		EntityPlayer player = event.getEntityPlayer();
+		World world = event.getWorld();
+		ItemStack stack = event.getItemStack();
+		Entity target = event.getTarget();
 		
 	 	if(!world.isRemote) {
 			

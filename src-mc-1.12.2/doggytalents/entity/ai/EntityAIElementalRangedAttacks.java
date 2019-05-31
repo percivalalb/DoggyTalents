@@ -52,9 +52,7 @@ public class EntityAIElementalRangedAttacks extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether the EntityAIBase should begin execution.
-     */
+    @Override
     public boolean shouldExecute()
     {
         EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
@@ -70,17 +68,13 @@ public class EntityAIElementalRangedAttacks extends EntityAIBase
         }
     }
 
-    /**
-     * Returns whether an in-progress EntityAIBase should continue executing
-     */
+    @Override
     public boolean shouldContinueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
 
-    /**
-     * Reset the task's internal state. Called when this task is interrupted by another one
-     */
+    @Override
     public void resetTask()
     {
         this.attackTarget = null;
@@ -88,9 +82,7 @@ public class EntityAIElementalRangedAttacks extends EntityAIBase
         this.rangedAttackTime = -1;
     }
 
-    /**
-     * Keep ticking a continuous task that has already been started
-     */
+    @Override
     public void updateTask()
     {
         double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);

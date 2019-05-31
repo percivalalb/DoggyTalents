@@ -104,7 +104,6 @@ public class ReflectionUtil {
             field.set(instance, value);
         }
         catch(Exception e) {
-            e.printStackTrace();
         }
     }
 	
@@ -114,7 +113,6 @@ public class ReflectionUtil {
             field.set(instance, value);
         }
         catch(Exception e) {
-            e.printStackTrace();
         }
     }
 	
@@ -125,7 +123,6 @@ public class ReflectionUtil {
 			return constructor;
 		} 
 		catch(Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
@@ -135,7 +132,6 @@ public class ReflectionUtil {
 			return constructor.newInstance(args);
 		} 
 		catch(Exception e) {
-			e.printStackTrace();
 			return null;
 		} 
 	}
@@ -145,7 +141,6 @@ public class ReflectionUtil {
 			return (T)getMethod(class1, methodName, argsClass).invoke(instance, args);
 		} 
 		catch(Exception e) {
-			e.printStackTrace();
 			return null;
 		} 
 	}
@@ -156,7 +151,6 @@ public class ReflectionUtil {
 			getMethod(class1, methodName, argsClass).invoke(instance, args);
 		} 
 		catch(Exception e) {
-			e.printStackTrace();
 		} 
 	}
 	
@@ -168,7 +162,6 @@ public class ReflectionUtil {
 	        return method;
 	    }
 	    catch(Exception e) {
-	        e.printStackTrace();
 	        return null;
 	    }
 	}
@@ -180,7 +173,6 @@ public class ReflectionUtil {
 	        return clasz;
 	    }
 	    catch(Exception e) {
-	        e.printStackTrace();
 	        return null;
 	    }
 	}

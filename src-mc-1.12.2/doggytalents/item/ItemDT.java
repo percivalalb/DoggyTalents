@@ -1,6 +1,6 @@
 package doggytalents.item;
 
-import doggytalents.DoggyTalents;
+import doggytalents.ModCreativeTabs;
 import net.minecraft.item.Item;
 
 /**
@@ -9,6 +9,6 @@ import net.minecraft.item.Item;
 public class ItemDT extends Item {
 	
 	public ItemDT() {
-		this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
+		this.setCreativeTab(ModCreativeTabs.GENERAL);
 	}
 }

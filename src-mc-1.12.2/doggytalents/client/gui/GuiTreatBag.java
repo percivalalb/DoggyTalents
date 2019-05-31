@@ -4,14 +4,17 @@ import doggytalents.inventory.ContainerTreatBag;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiTreatBag extends GuiContainer {
 
-	public GuiTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super(new ContainerTreatBag(playerIn, slotIn, itemstackIn));
+	public GuiTreatBag(EntityPlayer playerIn, int slotIn, ItemStack theBag) {
+		super(new ContainerTreatBag(playerIn, slotIn, theBag));
 		this.ySize = 127;
 	}
 	
@@ -23,8 +26,8 @@ public class GuiTreatBag extends GuiContainer {
     }
 	
 	@Override
-    protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-        this.fontRenderer.drawString(I18n.translateToLocal("container.doggytalents.treatbag"), 10, 8, 4210752);
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        this.fontRenderer.drawString(I18n.format("container.doggytalents.treatbag"), 10, 8, 4210752);
     }
 
 	@Override

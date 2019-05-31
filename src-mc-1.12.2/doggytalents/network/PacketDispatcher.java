@@ -1,7 +1,6 @@
 package doggytalents.network;
 
 import doggytalents.lib.Reference;
-import doggytalents.network.packet.client.CommandMessage;
 import doggytalents.network.packet.client.CustomParticleMessage;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;
 import doggytalents.network.packet.client.DogJumpMessage;
@@ -33,7 +32,6 @@ public class PacketDispatcher {
 	private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.CHANNEL_NAME);
 
 	public static final void registerPackets() {
-		registerMessage(CommandMessage.class);
 		registerMessage(DogJumpMessage.class);
 		registerMessage(DogModeMessage.class);
 		registerMessage(DogNameMessage.class);

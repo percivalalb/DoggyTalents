@@ -4,19 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import doggytalents.addon.AddonManager;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.DogBedRegistry;
-import doggytalents.api.registry.TalentRegistry;
 import doggytalents.configuration.ConfigurationHandler;
-import doggytalents.creativetab.CreativeTabDogBed;
-import doggytalents.creativetab.CreativeTabDoggyTalents;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
-import doggytalents.talent.*;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -39,12 +29,8 @@ public class DoggyTalents {
 	
 	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
 	
-	public static CreativeTabs CREATIVE_TAB = new CreativeTabDoggyTalents();
-	public static CreativeTabs CREATIVE_TAB_BED = new CreativeTabDogBed();
-	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
 		PROXY.preInit(event);
 	}
 	
@@ -55,61 +41,6 @@ public class DoggyTalents {
 	
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE);
-		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.TRAINING_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.SUPER_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.DIRE_TREAT);
-		
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 0, "minecraft:blocks/planks_oak");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 1, "minecraft:blocks/planks_spruce");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 2, "minecraft:blocks/planks_birch");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 3, "minecraft:blocks/planks_jungle");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 4, "minecraft:blocks/planks_acacia");
-		DogBedRegistry.CASINGS.registerMaterial(Blocks.PLANKS, 5, "minecraft:blocks/planks_big_oak");
-		
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 0, "minecraft:blocks/wool_colored_white");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 1, "minecraft:blocks/wool_colored_orange");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 2, "minecraft:blocks/wool_colored_magenta");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 3, "minecraft:blocks/wool_colored_light_blue");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 4, "minecraft:blocks/wool_colored_yellow");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 5, "minecraft:blocks/wool_colored_lime");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 6, "minecraft:blocks/wool_colored_pink");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 7, "minecraft:blocks/wool_colored_gray");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 8, "minecraft:blocks/wool_colored_silver");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 9, "minecraft:blocks/wool_colored_cyan");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 10, "minecraft:blocks/wool_colored_purple");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 11, "minecraft:blocks/wool_colored_blue");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 12, "minecraft:blocks/wool_colored_brown");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 13, "minecraft:blocks/wool_colored_green");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 14, "minecraft:blocks/wool_colored_red");
-		DogBedRegistry.BEDDINGS.registerMaterial(Blocks.WOOL, 15, "minecraft:blocks/wool_colored_black");
-		
-		TalentRegistry.registerTalent(new BedFinder());
-		TalentRegistry.registerTalent(new BlackPelt());
-		TalentRegistry.registerTalent(new CreeperSweeper());
-		TalentRegistry.registerTalent(new DoggyDash());
-		TalentRegistry.registerTalent(new FisherDog());
-		TalentRegistry.registerTalent(new GuardDog());
-		TalentRegistry.registerTalent(new HappyEater());
-		TalentRegistry.registerTalent(new HellHound());
-		TalentRegistry.registerTalent(new HunterDog());
-		TalentRegistry.registerTalent(new PackPuppy());
-		TalentRegistry.registerTalent(new PestFighter());
-		TalentRegistry.registerTalent(new PillowPaw());
-		TalentRegistry.registerTalent(new PoisonFang());
-		TalentRegistry.registerTalent(new PuppyEyes());
-		TalentRegistry.registerTalent(new QuickHealer());
-		//TalentRegistry.registerTalent(new RangedAttacker()); TODO RangedAttacker
-		TalentRegistry.registerTalent(new RescueDog());
-		TalentRegistry.registerTalent(new RoaringGale());
-		TalentRegistry.registerTalent(new ShepherdDog());
-		TalentRegistry.registerTalent(new SwimmerDog());
-		TalentRegistry.registerTalent(new WolfMount());
-		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);
 		PROXY.postInit(event);

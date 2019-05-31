@@ -16,6 +16,8 @@ public class ItemList {
 
 	private List<List<Object>> itemlist = new ArrayList<List<Object>>();
 	
+	
+	public void registerItem(Item... items) { for(Item item : items) registerItem(item); }
 	public void registerItem(Item item) { this.registerItem(item, OreDictionary.WILDCARD_VALUE); }
 	public void registerItem(Item item, int meta) {
 		List<Object> array = Arrays.asList(new Object[] {item, meta});

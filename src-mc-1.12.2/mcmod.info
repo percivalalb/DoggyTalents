@@ -5,11 +5,11 @@
   "description": "Turning your wolves into fun, playful dogs.",
   "version": "${MOD_VERSION}",
   "mcversion": "1.12.2",
-  "url": "",
-  "updateUrl": "http://www.minecraftforum.net/topic/1650096/",
+  "url": "https://minecraft.curseforge.com/projects/doggy-talents",
+  "updateUrl": "https://minecraft.curseforge.com/projects/doggy-talents/files?filter-status=1&filter-game-version=2020709689%3A6756",
   "authorList": ["ProPercivalalb", "NovaViper"],
   "credits": "RaustBlackDragon for creating the original version, NovaViper for helping test and manage the mod",
-  "logoFile": "/assets/doggytalents/textures/logo.png",
+  "logoFile": "/dt_logo.png",
   "screenshots": [],
   "dependencies": []
 }

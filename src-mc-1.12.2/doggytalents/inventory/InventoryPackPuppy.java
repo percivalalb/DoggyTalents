@@ -14,7 +14,7 @@ public class InventoryPackPuppy extends InventoryBasic {
     private EntityDog dog;
 
     public InventoryPackPuppy(EntityDog dog) {
-    	super("container.packpuppy", false, 15);
+    	super("container.doggytalents.packpuppy", false, 15);
         this.dog = dog;
     }
 

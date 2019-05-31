@@ -1,9 +1,10 @@
 package doggytalents.block;
 
 import doggytalents.DoggyTalents;
+import doggytalents.ModCreativeTabs;
 import doggytalents.ModItems;
 import doggytalents.inventory.InventoryTreatBag;
-import doggytalents.proxy.CommonProxy;
+import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -40,8 +41,9 @@ public class BlockFoodBowl extends BlockContainer {
         super(Material.IRON);
         this.setHardness(5.0F);
         this.setTickRandomly(true);
-        this.setCreativeTab(DoggyTalents.CREATIVE_TAB);
+        this.setCreativeTab(ModCreativeTabs.GENERAL);
 		this.setResistance(5.0F);
+		this.setHarvestLevel("pickaxe", 0);
     }
     
     @Override
@@ -69,35 +71,7 @@ public class BlockFoodBowl extends BlockContainer {
 	public EnumBlockRenderType getRenderType(IBlockState state) {
 	    return EnumBlockRenderType.MODEL;
 	}
-
-	//TODO Fix
-    public boolean onBlockActivatedGENERAL(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if(worldIn.isRemote) {
-            return true;
-        }
-        else {
-        	ItemStack stack = playerIn.getHeldItem(hand);
-        	
-        	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-        		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-        		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
-        		treatBag.openInventory(playerIn);
-        		
-        		for(int i = 0; i < treatBag.getSizeInventory(); i++)
-        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
-        		
-        		treatBag.closeInventory(playerIn);
-        		
-        		return true;
-        	}
-        	else {
-	            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-	            playerIn.openGui(DoggyTalents.INSTANCE, CommonProxy.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
-	            return true;
-        	}
-        }
-    }
-    
+	
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
     	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
@@ -136,12 +110,37 @@ public class BlockFoodBowl extends BlockContainer {
 	
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+		if(facing == EnumFacing.DOWN) 
+			return BlockFaceShape.SOLID;
 		return BlockFaceShape.UNDEFINED;
 	}
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		return this.onBlockActivatedGENERAL(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+		if(worldIn.isRemote) {
+            return true;
+        }
+        else {
+        	ItemStack stack = playerIn.getHeldItem(hand);
+        	
+        	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
+        		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+        		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
+        		treatBag.openInventory(playerIn);
+        		
+        		for(int i = 0; i < treatBag.getSizeInventory(); i++)
+        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
+        		
+        		treatBag.closeInventory(playerIn);
+        		
+        		return true;
+        	}
+        	else {
+	            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+	            playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+	            return true;
+        	}
+        }
 	}
 	
 	@Override

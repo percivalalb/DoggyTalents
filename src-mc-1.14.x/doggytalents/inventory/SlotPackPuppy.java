@@ -3,7 +3,7 @@ package doggytalents.inventory;
 import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 /**

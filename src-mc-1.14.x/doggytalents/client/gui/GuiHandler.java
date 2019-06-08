@@ -4,9 +4,10 @@ import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,9 +17,10 @@ import net.minecraftforge.fml.network.FMLPlayMessages;
 @OnlyIn(Dist.CLIENT)
 public class GuiHandler {
 	
-    public static GuiScreen openGui(FMLPlayMessages.OpenContainer openContainer) {
-    	String guiId = openContainer.getId().toString();
-    	EntityPlayer clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
+    public static Screen openGui(FMLPlayMessages.OpenContainer openContainer) {
+    	ContainerType<?> guiId = openContainer.getType();
+    	PlayerEntity clientPlayer = DoggyTalentsMod.PROXY.getPlayerEntity();
+    	int windowId = openContainer.getWindowId();
     	
     	if(guiId.equals(GuiNames.DOG_INFO)) {
     		int entityId = openContainer.getAdditionalData().readInt();
@@ -38,12 +40,12 @@ public class GuiHandler {
             	return null;
 			EntityDog dog = (EntityDog)target;
 			
-			return new GuiPackPuppy(clientPlayer, dog);
+			return new GuiPackPuppy(windowId, clientPlayer, dog);
     	}
     	else if(guiId.equals(GuiNames.TREAT_BAG)) {
     		int slotId = openContainer.getAdditionalData().readInt();
     		
-    		return new GuiTreatBag(clientPlayer, slotId, clientPlayer.inventory.getStackInSlot(slotId));
+    		return new GuiTreatBag(windowId, clientPlayer, slotId, clientPlayer.inventory.getStackInSlot(slotId));
     	}
     	else if(guiId.equals(GuiNames.FOOD_BOWL)) {
 	    	BlockPos pos = openContainer.getAdditionalData().readBlockPos();
@@ -53,7 +55,7 @@ public class GuiHandler {
 	        if(!(tileentity instanceof TileEntityFoodBowl))
 	        	return null;
 	    
-	        return new GuiFoodBowl(clientPlayer.inventory, (TileEntityFoodBowl)tileentity);
+	        return new GuiFoodBowl(windowId, clientPlayer.inventory, (TileEntityFoodBowl)tileentity);
     	}
         
     	return null;

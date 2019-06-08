@@ -1,14 +1,14 @@
 package doggytalents.entity;
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class DogStats {
 
-	public NBTTagCompound write(NBTTagCompound compound) {
+	public CompoundNBT write(CompoundNBT compound) {
 		return compound;
 	}
 	
-	public void read(NBTTagCompound compound) {
+	public void read(CompoundNBT compound) {
 		
 	}
 }

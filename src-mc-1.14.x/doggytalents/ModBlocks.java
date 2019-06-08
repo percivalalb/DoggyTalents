@@ -7,8 +7,8 @@ import doggytalents.block.BlockFoodBowl;
 import doggytalents.lib.BlockNames;
 import doggytalents.lib.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -48,12 +48,12 @@ public class ModBlocks {
 	    	DoggyTalentsMod.LOGGER.info("Finished Registering ItemBlocks");
 	    }
 	    
-	    private static ItemBlock makeItemBlock(Block block) {
+	    private static BlockItem makeItemBlock(Block block) {
 	    	return makeItemBlock(block, ModCreativeTabs.GENERAL);
 	    }
 	    
-	    private static ItemBlock makeItemBlock(Block block, ItemGroup group) {
-	        return (ItemBlock)new ItemBlock(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
+	    private static BlockItem makeItemBlock(Block block, ItemGroup group) {
+	        return (BlockItem)new BlockItem(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
 	    }
     }
 }

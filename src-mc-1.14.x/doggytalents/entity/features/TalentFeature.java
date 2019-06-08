@@ -12,8 +12,8 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.Compatibility;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 
 /**
@@ -26,12 +26,12 @@ public class TalentFeature extends DogFeature {
 	}
 	
 	@Override
-    public void writeAdditional(NBTTagCompound compound) {
+    public void writeAdditional(CompoundNBT compound) {
 		
-		NBTTagList list = new NBTTagList();
+		ListNBT list = new ListNBT();
 		Map<Talent, Integer> map = this.dog.getTalentMap();
 		for(Entry<Talent, Integer> entry : map.entrySet()) {
-			NBTTagCompound subCompound = new NBTTagCompound();
+			CompoundNBT subCompound = new CompoundNBT();
 			subCompound.putString("talent", entry.getKey().getRegistryName().toString());
 			subCompound.putInt("level", entry.getValue());
 			list.add(subCompound);
@@ -42,15 +42,15 @@ public class TalentFeature extends DogFeature {
     }
 
     @Override
-    public void readAdditional(NBTTagCompound compound) {
+    public void readAdditional(CompoundNBT compound) {
     	
 		Map<Talent, Integer> talentMap = new HashMap<>();
     	
     	if(compound.contains("talent_level_list", 9)) {
     		
-    		NBTTagList list = compound.getList("talent_level_list", 10);
+    		ListNBT list = compound.getList("talent_level_list", 10);
     		for(int i = 0; i < list.size(); i++) {
-    			NBTTagCompound subCompound = list.getCompound(i);
+    			CompoundNBT subCompound = list.getCompound(i);
     			ResourceLocation talentId = new ResourceLocation(subCompound.getString("talent"));
     			int level = subCompound.getInt("level");
     			

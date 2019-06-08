@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketDogName {
@@ -43,7 +43,7 @@ public class PacketDogName {
         		if(message.name.isEmpty())
         			dog.setCustomName(null);
         		else
-        			dog.setCustomName(new TextComponentString(message.name));
+        			dog.setCustomName(new StringTextComponent(message.name));
             });
 
             ctx.get().setPacketHandled(true);

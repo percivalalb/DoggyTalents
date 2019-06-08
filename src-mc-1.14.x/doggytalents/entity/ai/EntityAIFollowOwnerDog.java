@@ -1,9 +1,9 @@
 package doggytalents.entity.ai;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
 
-public class EntityAIFollowOwnerDog extends EntityAIFollowOwner {
+public class EntityAIFollowOwnerDog extends FollowOwnerGoal {
     private final EntityDog dog;
 
 	// If further away that minDistIn task will execute 

@@ -7,9 +7,9 @@ import com.google.common.collect.ImmutableSet;
 
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
-import net.minecraft.state.AbstractProperty;
+import net.minecraft.state.Property;
 
-public class PropertyMaterial extends AbstractProperty<BedMaterial> {
+public class PropertyMaterial extends Property<BedMaterial> {
 
 	private ImmutableSet<BedMaterial> allowedValues;
 	private final DogBedRegistry reg;

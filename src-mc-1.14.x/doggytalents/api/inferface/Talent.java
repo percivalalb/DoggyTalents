@@ -5,13 +5,13 @@ import javax.annotation.Nullable;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -24,15 +24,15 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	private String translationKey, translationInfoKey;
 	
 	public void onClassCreation(EntityDog dogIn) {}
-	public void writeAdditional(EntityDog dogIn, NBTTagCompound compound) {}
-	public void readAdditional(EntityDog dogIn, NBTTagCompound compound) {}
+	public void writeAdditional(EntityDog dogIn, CompoundNBT compound) {}
+	public void readAdditional(EntityDog dogIn, CompoundNBT compound) {}
 	
 	/**
 	 * PASS will indicate no action is required
 	 * SUCCESS and FAIL results are passed to the final interact
 	 */
-	public ActionResult<ItemStack> onInteract(EntityDog dogIn, EntityPlayer playerIn, ItemStack stackIn) { 
-		return ActionResult.newResult(EnumActionResult.PASS, stackIn); 
+	public ActionResult<ItemStack> onInteract(EntityDog dogIn, PlayerEntity playerIn, ItemStack stackIn) { 
+		return ActionResult.newResult(ActionResultType.PASS, stackIn); 
 	}
 	
 	public void tick(EntityDog dog) {}
@@ -41,7 +41,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	public int onRegenerationTick(EntityDog dog, int totalInTick) { return totalInTick; }
 	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) { return damage; }
 	public int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) { return foodValue; }
-	public boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) { return true; }
+	public boolean isPostionApplicable(EntityDog dog, EffectInstance potionEffect) { return true; }
 	public double addToMoveSpeed(EntityDog dog) { return 0.0D; }
 	public boolean canBreatheUnderwater(EntityDog dog) { return false; }
 	public boolean canTriggerWalking(EntityDog dog) { return true; }
@@ -52,7 +52,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	 * PASS and FAIL will have no effect
 	 */
 	public ActionResult<Integer> fallProtection(EntityDog dog) { 
-		return ActionResult.newResult(EnumActionResult.PASS, 0); 
+		return ActionResult.newResult(ActionResultType.PASS, 0); 
 	}
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }

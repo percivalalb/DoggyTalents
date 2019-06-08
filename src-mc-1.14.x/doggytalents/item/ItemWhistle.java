@@ -3,30 +3,30 @@ package doggytalents.item;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import doggytalents.ModEntities;
 import doggytalents.ModSounds;
 import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.helper.DogUtil;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.item.Rarity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class ItemWhistle extends Item {
@@ -36,7 +36,7 @@ public class ItemWhistle extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
 		if(world.isRemote) {
 			//world.playSound(player, player.getPosition(), player.isSneaking() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
 		} else {
@@ -44,14 +44,14 @@ public class ItemWhistle extends Item {
 			
 			if(player.isSneaking()) {
 				if(!stack.hasTag()) {
-					stack.setTag(new NBTTagCompound());
+					stack.setTag(new CompoundNBT());
 					stack.getTag().putByte("mode", (byte)0);
 				}
 				
 				int mode = stack.getTag().getInt("mode");
 				stack.getTag().putInt("mode", (mode + 1) % 7);
 				
-				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+				return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
 			}
 			else {
 				byte mode = 0;
@@ -67,7 +67,7 @@ public class ItemWhistle extends Item {
     			    for(EntityDog dog : dogsList) {
     			    	dog.getAISit().setSitting(false);
     			    	dog.getNavigator().clearPath();
-    			    	dog.setAttackTarget((EntityLivingBase)null);
+    			    	dog.setAttackTarget((LivingEntity)null);
     			    	if(dog.MODE.isMode(EnumMode.WANDERING))
     			    		dog.MODE.setMode(EnumMode.DOCILE);
     			    	successful = true;
@@ -76,7 +76,7 @@ public class ItemWhistle extends Item {
     			    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
     			    
     			    if(successful)
-    			    	player.sendMessage(new TextComponentTranslation("dogcommand.come"));
+    			    	player.sendMessage(new TranslationTextComponent("dogcommand.come"));
     			}
 				else if(mode == 1) { // Heel
     				for(EntityDog dog : dogsList) {
@@ -89,13 +89,13 @@ public class ItemWhistle extends Item {
     				world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
     				
     				if(successful)
-    					player.sendMessage(new TextComponentTranslation("dogcommand.heel"));
+    					player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
     			}
     			else if(mode == 2) { // Stay
     				for(EntityDog dog : dogsList) {
     					dog.getAISit().setSitting(true);
     					dog.getNavigator().clearPath();
-    					dog.setAttackTarget((EntityLivingBase)null);
+    					dog.setAttackTarget((LivingEntity)null);
     					if(dog.MODE.isMode(EnumMode.WANDERING))
     						dog.MODE.setMode(EnumMode.DOCILE);
     					successful = true;
@@ -104,19 +104,19 @@ public class ItemWhistle extends Item {
     				world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
     				
     		        if(successful)
-    		        	player.sendMessage(new TextComponentTranslation("dogcommand.stay"));
+    		        	player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
     			}
     			else if(mode == 3) { // Ok
     				for(EntityDog dog : dogsList) {
     					if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
     						dog.getAISit().setSitting(true);
     						dog.getNavigator().clearPath();
-    						dog.setAttackTarget((EntityLivingBase)null);
+    						dog.setAttackTarget((LivingEntity)null);
     					}
     					else {
     						dog.getAISit().setSitting(false);
     						dog.getNavigator().clearPath();
-    						dog.setAttackTarget((EntityLivingBase)null);
+    						dog.setAttackTarget((LivingEntity)null);
     					}
     					successful = true;      
     				}
@@ -124,34 +124,34 @@ public class ItemWhistle extends Item {
     				world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
     				
     				if(successful)
-    					player.sendMessage(new TextComponentTranslation("dogcommand.ok"));
+    					player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
     			}
     			else if(mode == 4) {
     				for(EntityDog dog : dogsList) {
     					dog.getAISit().setSitting(true);
     					dog.getNavigator().clearPath();
-    					dog.setAttackTarget((EntityLivingBase)null);
+    					dog.setAttackTarget((LivingEntity)null);
     					dog.MODE.setMode(EnumMode.DOCILE);
     					successful = true;
     				}
     				
     				world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
-    				//player.sendMessage(new TextComponentTranslation("dogcommand.shepherd"));
+    				//player.sendMessage(new TranslationTextComponent("dogcommand.shepherd"));
     			} else if(mode == 5) {
-    				world.playSound((EntityPlayer)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+    				world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
     				if(!world.isRemote) {
-    					EntityDoggyBeam doggyBeam = new EntityDoggyBeam(world, player);
+    					EntityDoggyBeam doggyBeam = new EntityDoggyBeam(ModEntities.DOG_BEAM, world, player);
     		            doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
-    		            world.spawnEntity(doggyBeam);
+    		            world.func_217376_c(doggyBeam);
     				}
     			} else if(mode == 6) {
     				List<EntityDog> roarDogs = dogsList.stream().filter(dog -> dog.TALENTS.getLevel(ModTalents.ROARING_GALE) > 0).collect(Collectors.toList());
     				if(roarDogs.isEmpty()) {
-    					player.sendMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.level"));
+    					player.sendMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"));
     				} else {
     					List<EntityDog> cdDogs = roarDogs.stream().filter(dog -> (int)dog.objects.get("roarcooldown") == 0).collect(Collectors.toList());
     					if(cdDogs.isEmpty()) {
-    						player.sendMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.cooldown"));
+    						player.sendMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"));
     					} else {
     						for(EntityDog dog : dogsList) {
     	    					int level = dog.TALENTS.getLevel(ModTalents.ROARING_GALE);
@@ -170,13 +170,13 @@ public class ItemWhistle extends Item {
     	    					byte knockback = (byte)level;
     	    						
     	    					boolean hit = false;
-    	    					List<EntityLivingBase> list = dog.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLiving.class, dog.getBoundingBox().grow(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
-    	    					for(EntityLivingBase mob : list) {
+    	    					List<LivingEntity> list = dog.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, dog.getBoundingBox().grow(level * 4, 4D, level * 4));
+    	    					for(LivingEntity mob : list) {
     	    						if(mob instanceof IMob) {
     	    							hit = true;
     	    							mob.attackEntityFrom(DamageSource.GENERIC, damage);
-    	    							mob.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 127, false, false));
-    	    							mob.addPotionEffect(new PotionEffect(MobEffects.GLOWING, effectDuration, 1, false, false));
+    	    							mob.addPotionEffect(new EffectInstance(Effects.field_76421_d, effectDuration, 127, false, false));
+    	    							mob.addPotionEffect(new EffectInstance(Effects.field_188423_x, effectDuration, 1, false, false));
     	    							mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
     	    						}
     	    					}
@@ -201,7 +201,7 @@ public class ItemWhistle extends Item {
 			}
 		}
 		
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, player.getHeldItem(hand));
 	}
 	
 	@Override
@@ -216,7 +216,7 @@ public class ItemWhistle extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-        return EnumRarity.UNCOMMON;
+	public Rarity getRarity(ItemStack stack) {
+        return Rarity.UNCOMMON;
     }
 }

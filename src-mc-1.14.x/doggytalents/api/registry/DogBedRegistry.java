@@ -13,9 +13,9 @@ import doggytalents.ModBlocks;
 import doggytalents.block.PropertyMaterial;
 import doggytalents.helper.Compatibility;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -106,11 +106,11 @@ public class DogBedRegistry {
 		return this.textures.get(id);
 	}
 	
-	public String getTexture(IBlockState state, PropertyMaterial property) {
+	public String getTexture(BlockState state, PropertyMaterial property) {
 		return this.getTexture(state.get(property));
 	}
 	
-	public String getTexture(NBTTagCompound nbt, String key) {
+	public String getTexture(CompoundNBT nbt, String key) {
 		return this.getTexture(this.getFromString(nbt.getString(key)));
 	}
 	
@@ -131,9 +131,9 @@ public class DogBedRegistry {
 	
 	public static ItemStack createItemStack(BedMaterial casingId, BedMaterial beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1);
-		stack.setTag(new NBTTagCompound());
+		stack.setTag(new CompoundNBT());
 		
-		NBTTagCompound tag = new NBTTagCompound();
+		CompoundNBT tag = new CompoundNBT();
 		tag.putString("casingId", casingId.key);
 		tag.putString("beddingId", beddingId.key);
 		stack.getTag().put("doggytalents", tag);

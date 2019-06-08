@@ -1,7 +1,7 @@
 package doggytalents.entity.features;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * @author ProPercivalalb
@@ -41,12 +41,12 @@ public class ModeFeature extends DogFeature {
 	}
 	
 	@Override
-	public void writeAdditional(NBTTagCompound tagCompound) {
+	public void writeAdditional(CompoundNBT tagCompound) {
 		tagCompound.putInt("mode", this.getModeID());
 	}
 	
 	@Override
-	public void readAdditional(NBTTagCompound tagCompound) {
+	public void readAdditional(CompoundNBT tagCompound) {
 		this.setMode(tagCompound.getInt("mode"));
 	}
 	

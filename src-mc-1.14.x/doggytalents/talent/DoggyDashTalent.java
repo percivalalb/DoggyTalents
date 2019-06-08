@@ -28,6 +28,6 @@ public class DoggyDashTalent extends Talent {
 	}
 	
 	public AttributeModifier createSpeedModifier(double speed) {
-		return new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, 0);
+		return new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
 	}
 }

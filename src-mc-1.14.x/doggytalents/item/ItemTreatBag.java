@@ -1,14 +1,14 @@
 package doggytalents.item;
 
 import doggytalents.inventory.InventoryTreatBag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.IInteractionObject;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -20,25 +20,25 @@ public class ItemTreatBag extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 		if(worldIn.isRemote) {
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+			return new ActionResult<ItemStack>(ActionResultType.PASS, itemstack);
 		}
 		else {
 			int slotId = playerIn.inventory.currentItem;
-			IInteractionObject bagInventory = new InventoryTreatBag(playerIn, slotId, playerIn.inventory.getStackInSlot(slotId));
+			INamedContainerProvider bagInventory = new InventoryTreatBag(playerIn, slotId, playerIn.inventory.getStackInSlot(slotId));
 			
 			if(bagInventory != null) {
-                if(playerIn instanceof EntityPlayerMP && !(playerIn instanceof FakePlayer)) {
-                    EntityPlayerMP entityPlayerMP = (EntityPlayerMP)playerIn;
+                if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+                    ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
 
                     NetworkHooks.openGui(entityPlayerMP, bagInventory, buf -> buf.writeInt(playerIn.inventory.currentItem));
                 }
             }
 			
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+			return new ActionResult<ItemStack>(ActionResultType.PASS, itemstack);
 	    }
 	}
 	

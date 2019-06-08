@@ -9,16 +9,18 @@ import javax.annotation.Nullable;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.DogLocationManager.DogLocation;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,31 +36,31 @@ public class ItemRadarCreative extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if(!worldIn.isRemote) {
 			DimensionType dimCurr = playerIn.dimension;
 			
-			playerIn.sendMessage(new TextComponentString(""));
+			playerIn.sendMessage(new StringTextComponent(""));
 
-			DogLocationManager locationManager = DogLocationManager.getHandler(worldIn, dimCurr);
-			List<DogLocation> ownDogs = locationManager.getList(loc -> loc.getOwner(worldIn) == playerIn);
+			DogLocationManager locationManager = DogLocationManager.getHandler((ServerWorld)worldIn);
+			List<DogLocation> ownDogs = locationManager.getList(dimCurr, loc -> loc.getOwner(worldIn) == playerIn);
 			
 			if(ownDogs.isEmpty()) {
-				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull", String.valueOf(DimensionType.getKey(dimCurr))));
+				playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", String.valueOf(DimensionType.getKey(dimCurr))));
 			} else {
 				for(DogLocation loc : ownDogs) {
 					String translateStr = ItemRadar.getDirectionTranslationKey(loc, playerIn);
 						
-					playerIn.sendMessage(new TextComponentTranslation(translateStr, loc.getName(worldIn), (int)Math.ceil(playerIn.getDistance(loc.x, loc.y, loc.z))));
+					playerIn.sendMessage(new TranslationTextComponent(translateStr, loc.getName(worldIn), MathHelper.ceil(Math.sqrt(playerIn.getDistanceSq(loc)))));
 				}
 			}
-
+			
 			List<DimensionType> otherDogs = new ArrayList<>();
 			List<DimensionType> noDogs = new ArrayList<>();
 			for(DimensionType dimType : DimensionType.getAll()) {
 				if(dimCurr == dimType) continue;
-				locationManager = DogLocationManager.getHandler(worldIn, dimType);
-				ownDogs = locationManager.getList(loc -> loc.getOwner(worldIn) == playerIn && loc.hasRadioCollar(worldIn));
+				locationManager = DogLocationManager.getHandler((ServerWorld)worldIn);
+				ownDogs = locationManager.getList(dimType, loc -> loc.getOwner(worldIn) == playerIn);
 				
 				if(ownDogs.size() > 0) {
 					otherDogs.add(dimType);
@@ -68,13 +70,12 @@ public class ItemRadarCreative extends Item {
 			}
 			
 			if(otherDogs.size() > 0)
-				playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", otherDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
+				playerIn.sendMessage(new TranslationTextComponent("dogradar.notindim", otherDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
 			
 			if(noDogs.size() > 0)
-				playerIn.sendMessage(new TextComponentTranslation("dogradar.errornull", noDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
-			
+				playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", noDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+		return new ActionResult<ItemStack>(ActionResultType.FAIL, playerIn.getHeldItem(handIn));
 	}
 	
 	@Override
@@ -82,11 +83,11 @@ public class ItemRadarCreative extends Item {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip"));
+		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip"));
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-        return EnumRarity.EPIC;
+	public Rarity getRarity(ItemStack stack) {
+        return Rarity.EPIC;
     }
 }

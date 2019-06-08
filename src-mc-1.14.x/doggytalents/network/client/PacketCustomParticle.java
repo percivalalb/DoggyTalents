@@ -3,7 +3,7 @@ package doggytalents.network.client;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyTalentsMod;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -47,7 +47,7 @@ public class PacketCustomParticle {
 	public static class Handler {
         public static void handle(final PacketCustomParticle message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
-            	EntityPlayer player = DoggyTalentsMod.PROXY.getPlayerEntity();
+            	PlayerEntity player = DoggyTalentsMod.PROXY.getPlayerEntity();
             	DoggyTalentsMod.PROXY.spawnCustomParticle(player, message.pos, player.getRNG(), message.posX, message.posY, message.posZ, message.numberOfParticles, message.particleSpeed);
             });
 

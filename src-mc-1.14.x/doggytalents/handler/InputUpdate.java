@@ -1,6 +1,5 @@
 package doggytalents.handler;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketJump;

@@ -1,35 +1,36 @@
 package doggytalents.helper;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Predicate;
 
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class DogUtil {
 
-	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder, int radius) {
+	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigator pathfinder, int radius) {
         teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, radius);
     }
 	
-	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigate pathfinder) {
+	public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigator pathfinder) {
         teleportDogToPos(owner.posX, owner.getBoundingBox().minY, owner.posZ, entity, world, pathfinder, 2);
     }
 	
-	public static void teleportDogToPos(double x, double y, double z, Entity entity, World world, PathNavigate pathfinder, int radius) {
+	public static void teleportDogToPos(double x, double y, double z, Entity entity, World world, PathNavigator pathfinder, int radius) {
     	int i = MathHelper.floor(x) - radius;
         int j = MathHelper.floor(z) - radius;
         int k = MathHelper.floor(y);
@@ -47,8 +48,8 @@ public class DogUtil {
 	
 	public static boolean isTeleportFriendlyBlock(Entity entity, World world, int xBase, int zBase, int y, int xAdd, int zAdd) {
 		BlockPos blockpos = new BlockPos(xBase + xAdd, y - 1, zBase + zAdd);
-		IBlockState iblockstate = world.getBlockState(blockpos);
-		return iblockstate.getBlockFaceShape(world, blockpos, EnumFacing.DOWN) == BlockFaceShape.SOLID && iblockstate.canEntitySpawn(entity) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
+		BlockState iblockstate = world.getBlockState(blockpos);
+		return Block.func_220056_d(iblockstate, world, blockpos, Direction.DOWN) && iblockstate.canEntitySpawn(world, blockpos, entity.getType()) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
 	}
     
     public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {
@@ -133,7 +134,7 @@ public class DogUtil {
         return itemstack;
     }
     
-    public static boolean isHolding(Entity entity, Item item, Predicate<NBTTagCompound> nbtPredicate) {
+    public static boolean isHolding(Entity entity, Item item, Predicate<CompoundNBT> nbtPredicate) {
 		return isHolding(entity, stack -> stack.getItem() == item && stack.hasTag() && nbtPredicate.test(stack.getTag()));
 	}
     
@@ -170,5 +171,24 @@ public class DogUtil {
         int b = (rgbInt >> 0) & 255;
 
         return new int[] {r, g, b};
+	}
+	
+	public static class Sorter implements Comparator<Entity> {
+		private final Entity entity;
+
+		public Sorter(Entity entityIn) {
+			this.entity = entityIn;
+		}
+
+		@Override
+		public int compare(Entity entity1, Entity entity2) {
+			double d0 = this.entity.getDistanceSq(entity1);
+			double d1 = this.entity.getDistanceSq(entity2);
+			if(d0 < d1) {
+				return -1;
+			} else {
+				return d0 > d1 ? 1 : 0;
+			}
+		}
 	}
 }

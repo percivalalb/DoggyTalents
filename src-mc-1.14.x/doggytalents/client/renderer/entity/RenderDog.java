@@ -1,5 +1,7 @@
 package doggytalents.client.renderer.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import doggytalents.ModTalents;
 import doggytalents.client.model.entity.ModelChest;
 import doggytalents.client.model.entity.ModelDog;
@@ -15,12 +17,12 @@ import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -28,9 +30,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @author ProPercivalalb
  */
 @OnlyIn(Dist.CLIENT)
-public class RenderDog extends RenderLiving<EntityDog> {
+public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
 	
-    public RenderDog(RenderManager renderManagerIn) {
+    public RenderDog(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelDog(0.0F), 0.5F);
         this.addLayer(new LayerCape(this));
         this.addLayer(new LayerRadioCollar(this));
@@ -40,10 +42,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
         
         this.addLayer(new LayerCover(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_SUNGLASSES, EntityDog::hasSunglasses));
         
-        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigHandler.CLIENT.doggyArmour() && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
-        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
-        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
-        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigHandler.CLIENT.doggyChest() && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
+        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> Constants.DOGGY_ARMOUR && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> Constants.DOGGY_WINGS && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
+        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> Constants.DOGGY_SADDLE && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
+        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> Constants.DOGGY_CHEST && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(ConfigHandler.CLIENT.useDTTextures())
+    	if(Constants.USE_DT_TEXTURES)
      		return ResourceLib.getTameSkin(dog.getTameSkin());
      	else
      		return ResourceLib.MOB_DOG_TAME;
@@ -81,7 +83,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
     public void renderName(EntityDog dog, double x, double y, double z) {
         if(this.canRenderName(dog)) {
         	GlStateManager.alphaFunc(516, 0.1F);
-            double d0 = dog.getDistanceSq(this.renderManager.renderViewEntity);
+            double d0 = dog.getDistanceSq(this.field_76990_c.field_217783_c.func_216785_c());
             
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	
@@ -91,26 +93,26 @@ public class RenderDog extends RenderLiving<EntityDog> {
         		tip = "dog.mode.incapacitated.indicator";
         	
         	String label = String.format("%s(%d)%s", 
-        			new TextComponentTranslation(tip).getFormattedText(), 
+        			new TranslationTextComponent(tip).getFormattedText(), 
         			dog.getDogHunger(), 
-        			new TextComponentTranslation(dog.GENDER.getGenderTip()).getFormattedText());
+        			new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText());
         	if(d0 <= (double)(64 * 64)) {
         		boolean flag = dog.isSneaking();
-        		float f = this.renderManager.playerViewY;
-        		float f1 = this.renderManager.playerViewX;
-        		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-        		float f2 = dog.height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
+        		float f = this.field_76990_c.playerViewY;
+        		float f1 = this.field_76990_c.playerViewX;
+        		boolean flag1 = this.field_76990_c.options.thirdPersonView == 2;
+        		float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
         
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
         		
         		if(d0 <= (double)(5 * 5)) {
-    	    		if(this.renderManager.renderViewEntity.isSneaking()) {
-    	    			String ownerName = dog.getOwnersName().getFormattedText();
+        			//TODO Sneaking if(this.field_76990_c.field_217783_c.isSneaking()) {
+    	    			//String ownerName = dog.getOwnersName().getFormattedText();
     	    			
     	    			
-    	    			RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-    	    		}
+    	    			//RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	    	//	}
         		}
         	}
         }

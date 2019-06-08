@@ -1,26 +1,28 @@
 package doggytalents.entity.ai;
 
+import java.util.EnumSet;
+
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.item.SwordItem;
+import net.minecraft.item.ToolItem;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityAIOwnerTool extends EntityAIBase {
+public class EntityAIOwnerTool extends Goal {
 	
     private final EntityDog dog;
-    private EntityLivingBase owner;
+    private LivingEntity owner;
     private World world;
     private final double followSpeed;
-    private final PathNavigate petPathfinder;
+    private final PathNavigator petPathfinder;
     private int timeToRecalcPath;
     private float executeDistance;
     private float finishedDistance;
@@ -34,19 +36,19 @@ public class EntityAIOwnerTool extends EntityAIBase {
         this.executeDistance = executeDistance;
         this.finishedDistance = finishedDistance;
         this.waterMovement = new WaterMovementHandler(this.dog);
-        this.setMutexBits(3);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 
-        if(!(thePetIn.getNavigator() instanceof PathNavigateGround))
+        if(!(thePetIn.getNavigator() instanceof GroundPathNavigator))
             throw new IllegalArgumentException("Unsupported mob type for FollowOwnerGoal");
     }
 
     @Override
     public boolean shouldExecute() {
-        EntityLivingBase entitylivingbase = this.dog.getOwner();
+        LivingEntity entitylivingbase = this.dog.getOwner();
         
         if(entitylivingbase == null) {
             return false;
-        } else if(entitylivingbase instanceof EntityPlayer && ((EntityPlayer)entitylivingbase).isSpectator()) {
+        } else if(entitylivingbase instanceof PlayerEntity && ((PlayerEntity)entitylivingbase).isSpectator()) {
             return false;
         } else if(this.dog.isSitting()) {
             return false;
@@ -105,9 +107,9 @@ public class EntityAIOwnerTool extends EntityAIBase {
         }
     }
     
-    public boolean isCommanding(EntityLivingBase entitylivingbase) {
+    public boolean isCommanding(LivingEntity entitylivingbase) {
     	ItemStack mainStack = entitylivingbase.getHeldItemMainhand();
     	
-    	return mainStack.getItem() instanceof ItemSword || mainStack.getItem() instanceof ItemTool;
+    	return mainStack.getItem() instanceof SwordItem || mainStack.getItem() instanceof ToolItem;
     }
 }

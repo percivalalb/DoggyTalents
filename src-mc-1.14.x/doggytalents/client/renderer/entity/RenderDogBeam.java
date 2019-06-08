@@ -2,14 +2,13 @@ package doggytalents.client.renderer.entity;
 
 import doggytalents.entity.EntityDoggyBeam;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderSprite;
-import net.minecraft.init.Items;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.SpriteRenderer;
 
-public class RenderDogBeam extends RenderSprite<EntityDoggyBeam> {
+public class RenderDogBeam extends SpriteRenderer<EntityDoggyBeam> {
 
-	public RenderDogBeam(RenderManager renderManagerIn) {
-		super(renderManagerIn, Items.SNOWBALL, Minecraft.getInstance().getItemRenderer());
+	public RenderDogBeam(EntityRendererManager renderManagerIn) {
+		super(renderManagerIn, Minecraft.getInstance().getItemRenderer());
 	}
 
 }

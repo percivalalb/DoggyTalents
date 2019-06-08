@@ -3,12 +3,12 @@ package doggytalents.block;
 import java.util.Collection;
 import java.util.Optional;
 
-import net.minecraft.state.AbstractProperty;
+import net.minecraft.state.Property;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public class RegisteredProperty<T extends ForgeRegistryEntry<T> & Comparable<T>> extends AbstractProperty<T> {
+public class RegisteredProperty<T extends ForgeRegistryEntry<T> & Comparable<T>> extends Property<T> {
 
 	private final IForgeRegistry<T> registry;
 

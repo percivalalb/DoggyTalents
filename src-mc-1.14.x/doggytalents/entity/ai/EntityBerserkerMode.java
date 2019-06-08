@@ -4,10 +4,10 @@ import java.util.function.Predicate;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
 
-public class EntityBerserkerMode<T extends EntityLivingBase> extends EntityAINearestAttackableTarget<T> {
+public class EntityBerserkerMode<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 
 	private EntityDog dog;
 	
@@ -16,7 +16,7 @@ public class EntityBerserkerMode<T extends EntityLivingBase> extends EntityAINea
 		this.dog = dogIn;
 	}
 	
-	public EntityBerserkerMode(EntityDog dogIn, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, Predicate<T> targetSelector) {
+	public EntityBerserkerMode(EntityDog dogIn, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, Predicate<LivingEntity> targetSelector) {
 		super(dogIn, classTarget, chance, checkSight, onlyNearby, targetSelector);
 		this.dog = dogIn;
 	}

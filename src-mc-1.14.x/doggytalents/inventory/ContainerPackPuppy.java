@@ -2,10 +2,10 @@ package doggytalents.inventory;
 
 import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -16,7 +16,8 @@ public class ContainerPackPuppy extends Container {
 	
     private EntityDog dog;
 
-    public ContainerPackPuppy(EntityPlayer player, EntityDog dog) {
+    public ContainerPackPuppy(int windowId, PlayerEntity player, EntityDog dog) {
+    	super(null, windowId); //TODO
         this.dog = dog;
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
         inventory.openInventory(player);
@@ -39,7 +40,7 @@ public class ContainerPackPuppy extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+    public ItemStack transferStackInSlot(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(i);
         int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
@@ -68,12 +69,12 @@ public class ContainerPackPuppy extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(PlayerEntity player) {
         return ((IInventory)this.dog.objects.get("packpuppyinventory")).isUsableByPlayer(player);
     }
     
     @Override
-    public void onContainerClosed(EntityPlayer player) {
+    public void onContainerClosed(PlayerEntity player) {
         super.onContainerClosed(player);
         IInventory inventory = (IInventory)dog.objects.get("packpuppyinventory");
         inventory.closeInventory(player);

@@ -1,11 +1,10 @@
 package doggytalents.client.model.entity;
 
+import com.mojang.blaze3d.platform.GlStateManager;
+
 import doggytalents.entity.EntityDog;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.model.ModelBase;
-import net.minecraft.client.renderer.entity.model.ModelRenderer;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -14,63 +13,63 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @author ProPercivalalb
  */
 @OnlyIn(Dist.CLIENT)
-public class ModelDog extends ModelBase {
+public class ModelDog extends EntityModel<EntityDog> {
 	
-	public ModelRenderer wolfHeadMain;
-    public ModelRenderer wolfHeadMainBone;
-    public ModelRenderer wolfBody;
-    public ModelRenderer wolfBodyChest;
-    public ModelRenderer wolfLeg1;
-    public ModelRenderer wolfLeg2;
-    public ModelRenderer wolfLeg3;
-    public ModelRenderer wolfLeg4;
-    public ModelRenderer wolfTail;
-    public ModelRenderer wolfMane;
+	public RendererModel wolfHeadMain;
+    public RendererModel wolfHeadMainBone;
+    public RendererModel wolfBody;
+    public RendererModel wolfBodyChest;
+    public RendererModel wolfLeg1;
+    public RendererModel wolfLeg2;
+    public RendererModel wolfLeg3;
+    public RendererModel wolfLeg4;
+    public RendererModel wolfTail;
+    public RendererModel wolfMane;
 	
 	public ModelDog(float scaleFactor) {
         float f1 = 13.5F;
 		
 		//Head
-        this.wolfHeadMain = new ModelRenderer(this, 0, 0);
+        this.wolfHeadMain = new RendererModel(this, 0, 0);
         this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.wolfHeadMain.setRotationPoint(-1.0F, f1, -7.0F);
 		
 		//Bone
-        this.wolfHeadMainBone = new ModelRenderer(this, 0, 0);
+        this.wolfHeadMainBone = new RendererModel(this, 0, 0);
         this.wolfHeadMainBone.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.wolfHeadMainBone.setRotationPoint(-1.0F, f1, -7.0F);
 	
 		//Body
-        this.wolfBody = new ModelRenderer(this, 18, 14);
+        this.wolfBody = new RendererModel(this, 18, 14);
         this.wolfBody.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBody.setRotationPoint(0.0F, 14.0F, 2.0F);
       
 		//BodyChest
-        this.wolfBodyChest = new ModelRenderer(this, 18, 14);
+        this.wolfBodyChest = new RendererModel(this, 18, 14);
         this.wolfBodyChest.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.wolfBodyChest.setRotationPoint(0.0F, 14.0F, 2.0F);
 
 		//Mane
-        this.wolfMane = new ModelRenderer(this, 21, 0);
+        this.wolfMane = new RendererModel(this, 21, 0);
         this.wolfMane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
         this.wolfMane.setRotationPoint(-1.0F, 14.0F, 2.0F);
         
 		//Limbs
-        this.wolfLeg1 = new ModelRenderer(this, 0, 18);
+        this.wolfLeg1 = new RendererModel(this, 0, 18);
         this.wolfLeg1.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 7.0F);
-        this.wolfLeg2 = new ModelRenderer(this, 0, 18);
+        this.wolfLeg2 = new RendererModel(this, 0, 18);
         this.wolfLeg2.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 7.0F);
-        this.wolfLeg3 = new ModelRenderer(this, 0, 18);
+        this.wolfLeg3 = new RendererModel(this, 0, 18);
         this.wolfLeg3.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -4.0F);
-        this.wolfLeg4 = new ModelRenderer(this, 0, 18);
+        this.wolfLeg4 = new RendererModel(this, 0, 18);
         this.wolfLeg4.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -4.0F);
         
 		//Tail1
-        this.wolfTail = new ModelRenderer(this, 9, 18);
+        this.wolfTail = new RendererModel(this, 9, 18);
         this.wolfTail.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.wolfTail.setRotationPoint(-1.0F, 12.0F, 8.0F);              
 
@@ -113,15 +112,14 @@ public class ModelDog extends ModelBase {
     }
 
     @Override
-    public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        super.render(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
-        EntityDog dog = (EntityDog)entityIn;
+    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        super.render(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        this.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         
-        if(this.isChild) {
+        if(this.field_217114_e) {
              GlStateManager.pushMatrix();
              GlStateManager.translatef(0.0F, 5.0F * scale, 2.0F * scale);
-             (dog.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
+             (dogIn.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
              GlStateManager.popMatrix();
              GlStateManager.pushMatrix();
              GlStateManager.scalef(0.5F, 0.5F, 0.5F);
@@ -137,7 +135,7 @@ public class ModelDog extends ModelBase {
              GlStateManager.popMatrix();
         }
         else {
-        	(dog.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
+        	(dogIn.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
         	this.wolfBody.render(scale);
             this.wolfLeg1.render(scale);
             this.wolfLeg2.render(scale);
@@ -149,7 +147,7 @@ public class ModelDog extends ModelBase {
     }
 
     @Override
-    public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    public void func_212843_a_(EntityDog entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
     	EntityDog dog = (EntityDog)entitylivingbaseIn;
 
     	this.wolfTail.rotateAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -197,7 +195,7 @@ public class ModelDog extends ModelBase {
         this.wolfBodyChest.rotateAngleZ = this.wolfBody.rotateAngleZ;
         this.wolfTail.rotateAngleZ = dog.getShakeAngle(partialTickTime, -0.2F);
         
-        if((dog.isSitting() || (dog.motionX == 0.0F && dog.motionZ == 0.0F)) && dog.getHealth() > 1) {
+        if((dog.isSitting() || (dog.getMotion().getX() == 0.0F && dog.getMotion().getZ() == 0.0F)) && dog.getHealth() > 1) {
         	float wagAngleY = dog.getWagAngle(partialTickTime, 0.0F);
         	if(wagAngleY == 0.0F)
         		wagAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -206,8 +204,8 @@ public class ModelDog extends ModelBase {
     }
 
     @Override
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+    public void func_212844_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        super.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
         this.wolfHeadMain.rotateAngleX = headPitch * 0.017453292F;
         this.wolfHeadMain.rotateAngleY = netHeadYaw * 0.017453292F;
         this.wolfHeadMainBone.rotateAngleX = this.wolfHeadMain.rotateAngleX;

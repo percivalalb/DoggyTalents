@@ -7,14 +7,16 @@ import doggytalents.ModItems;
 import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.configuration.ConfigHandler;
+import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.LivingDrops;
 import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.network.PacketHandler;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,6 +27,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class CommonProxy {
 	
 	public CommonProxy() {
+        ConfigHandler.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
@@ -62,7 +65,7 @@ public class CommonProxy {
 		AddonManager.runRegisteredAddons();
     }
     
-    public EntityPlayer getPlayerEntity() {
+    public PlayerEntity getPlayerEntity() {
 		return null;
 	}
     
@@ -70,7 +73,11 @@ public class CommonProxy {
     	
     }
     
-    public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+    public void spawnCustomParticle(PlayerEntity player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
     	
     }
+
+	public void openDoggyInfo(EntityDog dog) {
+		
+	}
 }

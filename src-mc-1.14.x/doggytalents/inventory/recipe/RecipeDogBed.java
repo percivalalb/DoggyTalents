@@ -3,30 +3,23 @@ package doggytalents.inventory.recipe;
 import doggytalents.ModRecipes;
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeHidden;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
-/**
- * 1.12 Code
- */
-public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
+public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<CraftingInventory> {
 
 	public RecipeDogBed(ResourceLocation resource) {
 		super(resource);
 	}
 
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
-		if(!(inv instanceof InventoryCrafting)) {
-	         return false;
-		}
+	public boolean matches(CraftingInventory inv, World worldIn) {
 		BedMaterial beddingId = null;
 		BedMaterial casingId = null;
 		
@@ -59,7 +52,7 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
     }
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack getCraftingResult(CraftingInventory inv) {
 		BedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
 		BedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
 		
@@ -72,7 +65,7 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
     }
 
 	@Override
-    public NonNullList<ItemStack> getRemainingItems(IInventory inv) {
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         for(int i = 0; i < nonnulllist.size(); ++i) {

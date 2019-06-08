@@ -4,6 +4,7 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.lib.EntityNames;
 import doggytalents.lib.Reference;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -25,8 +26,8 @@ public class ModEntities {
 			 IForgeRegistry<EntityType<?>> entityRegistry = event.getRegistry();
 			 
 			 DoggyTalentsMod.LOGGER.info("Registering Entities");
-			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
-			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).tracker(64, 1, true).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
+			 entityRegistry.register(EntityType.Builder.create(EntityDog::new, EntityClassification.CREATURE).size(0.6F, 0.85F).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
+			 entityRegistry.register(EntityType.Builder.<EntityDoggyBeam>create(EntityDoggyBeam::new, EntityClassification.MISC).setTrackingRange(128).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
 			 DoggyTalentsMod.LOGGER.info("Finished Registering Entities");
 		 }
     }

@@ -14,16 +14,16 @@ import com.google.common.collect.Maps;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.BlockPart;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.ModelBlock;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
@@ -33,23 +33,25 @@ import net.minecraftforge.common.model.TRSRTransformation;
 public class DogBedModel implements IBakedModel, IStateParticleModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
-	
-    private ModelBlock model;
+
+    private ModelLoader modelLoader;
+    private BlockModel model;
     private IBakedModel bakedModel;
     
     private final VertexFormat format;
-    private final Map<Map<String, EnumFacing>, IBakedModel> cache = Maps.newHashMap();
+    private final Map<Map<String, Direction>, IBakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(ModelBlock model, IBakedModel bakedModel, VertexFormat format) {
-        this.model = model;
+    public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel, VertexFormat format) {
+        this.modelLoader = modelLoader;
+    	this.model = model;
         this.bakedModel = bakedModel;
         this.format = format;
     }
 
-    public IBakedModel getCustomModelFromState(IBlockState state) {
+    public IBakedModel getCustomModelFromState(BlockState state) {
 		String casing = "minecraft:block/oak_planks";
 		String bedding = "minecraft:block/white_wool";
-        EnumFacing facing = EnumFacing.NORTH;
+        Direction facing = Direction.NORTH;
         
 		if(state != null) {
 	        facing = state.get(BlockDogBed.FACING);
@@ -60,14 +62,14 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 		return this.getCustomModel(casing, bedding, facing);
 	}
     
-    public IBakedModel getCustomModel(String casingResource, String beddingResource, EnumFacing facing) {
+    public IBakedModel getCustomModel(String casingResource, String beddingResource, Direction facing) {
         IBakedModel customModel = this.bakedModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
-        if(facing == null) facing = EnumFacing.NORTH;
+        if(facing == null) facing = Direction.NORTH;
         
 
-        Map<String, EnumFacing> cacheKey = Maps.newHashMap();
+        Map<String, Direction> cacheKey = Maps.newHashMap();
         cacheKey.put(beddingResource + casingResource, facing);
 
         if(this.cache.containsKey(cacheKey))
@@ -85,11 +87,11 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
                 elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
             }
 
-            ModelBlock newModel = new ModelBlock(this.model.getParentLocation(), elements,
+            BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
                 Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(), //New Textures man VERY IMPORTANT
                 this.model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
             newModel.name = this.model.name;
-            newModel.parent = this.model.parent;
+            newModel.field_178315_d = this.model.field_178315_d;
 
             newModel.textures.put("bedding", beddingResource);
             newModel.textures.put("casing", casingResource);
@@ -97,7 +99,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
             
 
            // customModel = retexturedModel.bake(new TRSRTransformation(TRSRTransformation.getMatrix(facing)), this.format, this.textureGetter::apply);
-            customModel = newModel.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), true, this.format);
+            customModel = newModel.bake(this.modelLoader, ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), this.format);
             this.cache.put(cacheKey, customModel);
         }
 
@@ -105,7 +107,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, Random rand) {
+    public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
     	return this.getCustomModelFromState(state).getQuads(state, side, rand);
     }
 
@@ -135,7 +137,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-	public TextureAtlasSprite getParticleTexture(IBlockState state) {
+	public TextureAtlasSprite getParticleTexture(BlockState state) {
 		return this.getCustomModelFromState(state).getParticleTexture();
 	}
 

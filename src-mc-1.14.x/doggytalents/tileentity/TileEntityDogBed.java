@@ -3,9 +3,9 @@ package doggytalents.tileentity;
 import doggytalents.ModTileEntities;
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityDogBed extends TileEntity {
@@ -18,14 +18,14 @@ public class TileEntityDogBed extends TileEntity {
 	}
 	
 	@Override
-	public void read(NBTTagCompound tag) {
+	public void read(CompoundNBT tag) {
 		super.read(tag);
 		this.casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
 		this.beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
     }
 
     @Override
-    public NBTTagCompound write(NBTTagCompound tag) {
+    public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
 		tag.putString("casingId", this.casingId != null ? this.casingId.key : "missing");
 		tag.putString("beddingId", this.beddingId != null ? this.beddingId.key : "missing");
@@ -33,23 +33,22 @@ public class TileEntityDogBed extends TileEntity {
 	}
 	
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 0, this.getUpdateTag());
+	public SUpdateTileEntityPacket getUpdatePacket() {
+		return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
 	}
 	
 	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
+	public void handleUpdateTag(CompoundNBT tag) {
 		super.handleUpdateTag(tag);
 	}
 
-
 	@Override
-	public NBTTagCompound getUpdateTag() {
-		return write(new NBTTagCompound());
+	public CompoundNBT getUpdateTag() {
+		return write(new CompoundNBT());
 	}
 	
 	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
 		this.read(pkt.getNbtCompound());
 	}
 	

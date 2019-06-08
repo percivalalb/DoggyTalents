@@ -2,9 +2,9 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
+import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 /**
  * @author ProPercivalalb
@@ -22,10 +22,9 @@ public class HappyEaterTalent extends Talent {
 	        	foodValue = 30 + 3 * level;
 		}
 		else {
-			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem() instanceof ItemFood) {
-	            ItemFood itemfood = (ItemFood)stack.getItem();
-	
-	            if(itemfood.isMeat())
+			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem().func_219971_r()) {
+	            Food food = stack.getItem().func_219967_s();
+	            if(food.func_221467_c())
 	            	foodValue += 4 * level;
 	        }
 		}

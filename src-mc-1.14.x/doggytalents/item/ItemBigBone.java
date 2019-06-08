@@ -2,12 +2,12 @@ package doggytalents.item;
 
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class ItemBigBone extends Item implements IDogInteractItem {
@@ -17,7 +17,7 @@ public class ItemBigBone extends Item implements IDogInteractItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, EntityPlayer playerIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, PlayerEntity playerIn) {
 		if(dogIn.getGrowingAge() >= 0) {
 			if(!playerIn.isCreative())
 				stackIn.shrink(1);
@@ -25,13 +25,13 @@ public class ItemBigBone extends Item implements IDogInteractItem {
 			if(!playerIn.world.isRemote) {
 				dogIn.setDogSize(dogIn.getDogSize() + 1);
 			}
-			return ActionResult.newResult(EnumActionResult.SUCCESS, stackIn);
+			return ActionResult.newResult(ActionResultType.SUCCESS, stackIn);
 		}
 		else {
 			if(!playerIn.world.isRemote){
-				playerIn.sendMessage(new TextComponentTranslation("treat.big_bone.too_young"));
+				playerIn.sendMessage(new TranslationTextComponent("treat.big_bone.too_young"));
 			}
-			return ActionResult.newResult(EnumActionResult.FAIL, stackIn);
+			return ActionResult.newResult(ActionResultType.FAIL, stackIn);
 		}	
 	}
 }

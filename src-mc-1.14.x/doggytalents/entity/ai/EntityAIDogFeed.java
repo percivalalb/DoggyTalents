@@ -6,8 +6,8 @@ import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
 import doggytalents.lib.Constants;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvents;
 
 public class EntityAIDogFeed extends EntityAIClosestItem {
 

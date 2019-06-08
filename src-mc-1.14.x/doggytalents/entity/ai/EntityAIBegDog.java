@@ -1,32 +1,34 @@
 package doggytalents.entity.ai;
 
+import java.util.EnumSet;
+
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-import net.minecraft.world.IWorldReaderBase;
+import net.minecraft.util.Hand;
+import net.minecraft.world.World;
 
-public class EntityAIBegDog extends EntityAIBase {
+public class EntityAIBegDog extends Goal {
 	
 	private final EntityDog dog;
-	private final IWorldReaderBase world;
+	private final World world;
 	private final float minPlayerDistance;
 	
-	private EntityPlayer player;
+	private PlayerEntity player;
 	private int timeoutCounter;
 
 	public EntityAIBegDog(EntityDog dog, float minDistance) {
 		this.dog = dog;
 		this.world = dog.world;
 		this.minPlayerDistance = minDistance;
-		this.setMutexBits(2);
+		 this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		this.player = this.world.getClosestPlayerToEntity(this.dog, (double) this.minPlayerDistance);
+		this.player = this.world.func_217362_a(this.dog, (double) this.minPlayerDistance); // TODO
 		return this.player == null ? false : this.hasTemptationItemInHand(this.player);
 	}
 
@@ -62,8 +64,8 @@ public class EntityAIBegDog extends EntityAIBase {
 	/**
 	 * Gets if the Player has the Bone in the hand.
 	 */
-	private boolean hasTemptationItemInHand(EntityPlayer player) {
-		for (EnumHand enumhand : EnumHand.values()) {
+	private boolean hasTemptationItemInHand(PlayerEntity player) {
+		for(Hand enumhand : Hand.values()) {
 			ItemStack itemstack = player.getHeldItem(enumhand);
 			if(this.dog.isTamed() && !itemstack.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
             	return true;

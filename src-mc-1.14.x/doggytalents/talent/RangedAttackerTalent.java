@@ -2,11 +2,11 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.ActionResultType;
 
 public class RangedAttackerTalent extends Talent {
 	
@@ -17,7 +17,7 @@ public class RangedAttackerTalent extends Talent {
 	}
 	
 	@Override
-	public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
+	public void writeAdditional(EntityDog dog, CompoundNBT tagCompound) {
 		int rangedCooldown = (Integer)dog.objects.get("rangedcooldown");
 		tagCompound.putInt("rangedcooldown", rangedCooldown);
 		
@@ -26,21 +26,21 @@ public class RangedAttackerTalent extends Talent {
 	}
 	
 	@Override
-	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
+	public void readAdditional(EntityDog dog, CompoundNBT tagCompound) {
 		dog.objects.put("rangedcooldown", tagCompound.getInt("rangedcooldown"));
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
+	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
 		if(stack.isEmpty() && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.world.isRemote) {
         			//TODO RangedAttacker
         		}
-        		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
+        		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
         	}
         }
 		
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(ActionResultType.PASS, stack);
 	}
 }

@@ -6,7 +6,7 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 /**
  * @author ProPercivalalb
@@ -20,13 +20,13 @@ public class LevelFeature extends DogFeature {
 	}
 	
     @Override
-	public void writeAdditional(NBTTagCompound compound) {
+	public void writeAdditional(CompoundNBT compound) {
 		compound.putInt("level_normal", this.getLevel());		
 		compound.putInt("level_dire", this.getDireLevel());	
 	}
 
     @Override
-	public void readAdditional(NBTTagCompound compound) {
+	public void readAdditional(CompoundNBT compound) {
 		if(compound.contains("level_normal"))
 			this.setLevel(compound.getInt("level_normal"));
 		
@@ -79,7 +79,7 @@ public class LevelFeature extends DogFeature {
 	}
 	
 	public AttributeModifier createHealthModifier(double health) {
-		return new AttributeModifier(HEALTH_BOOST_ID, "Dog Health", health, 0);
+		return new AttributeModifier(HEALTH_BOOST_ID, "Dog Health", health, AttributeModifier.Operation.ADDITION);
 	}
 
 	public boolean isDireDog() {

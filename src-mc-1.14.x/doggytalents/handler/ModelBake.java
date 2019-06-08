@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.client.model.block.DogBedModel;
 import doggytalents.lib.Reference;
+import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelBlock;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -26,9 +26,9 @@ public class ModelBake {
 	@SubscribeEvent
 	public static void onModelBakeEvent(final ModelBakeEvent event) {
 	    try {
-	    	
-	    	ModelBlock model = (ModelBlock)event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
-		    IBakedModel customModel = new DogBedModel(model, model.bake(ModelLoader.defaultModelGetter(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(EnumFacing.NORTH), true, DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
+	    	DoggyTalentsMod.LOGGER.debug("Replacing dog bed model.");
+	    	BlockModel model = (BlockModel)event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
+		    IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(Direction.NORTH), DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
 
 		    List<ModelResourceLocation> modelsToReplace = new ArrayList<ModelResourceLocation>();
 		    	

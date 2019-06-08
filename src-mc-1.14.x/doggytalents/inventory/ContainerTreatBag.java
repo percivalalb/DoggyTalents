@@ -1,18 +1,19 @@
 package doggytalents.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerTreatBag extends Container {
 
-	public EntityPlayer player;
+	public PlayerEntity player;
 	public int slot;
 	public ItemStack itemstack;
 	public InventoryTreatBag inventoryTreatBag;
 		
-	public ContainerTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
+	public ContainerTreatBag(int windowId, PlayerEntity playerIn, int slotIn, ItemStack itemstackIn) {
+		super(null, windowId); //TODO
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn;
@@ -33,7 +34,7 @@ public class ContainerTreatBag extends Container {
         for(int k = 0; k < 9; k++)
         	this.addSlot(new Slot(playerIn.inventory, k, 8 + k * 18, 103) {
         		@Override
-        		public boolean canTakeStack(EntityPlayer playerIn) {
+        		public boolean canTakeStack(PlayerEntity playerIn) {
         			return this.getSlotIndex() != ContainerTreatBag.this.slot;
         		}
         	});
@@ -42,7 +43,7 @@ public class ContainerTreatBag extends Container {
 	}
 
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(index);
 
@@ -72,12 +73,12 @@ public class ContainerTreatBag extends Container {
     }
 	
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(PlayerEntity playerIn) {
 		return playerIn.inventory.getStackInSlot(this.slot).isItemEqual(this.itemstack);
 	}
 
 	@Override
-    public void onContainerClosed(EntityPlayer playerIn) {
+    public void onContainerClosed(PlayerEntity playerIn) {
 		super.onContainerClosed(playerIn);
 		this.inventoryTreatBag.closeInventory(playerIn);
     }

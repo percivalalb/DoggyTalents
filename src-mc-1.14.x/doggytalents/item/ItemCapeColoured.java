@@ -8,10 +8,10 @@ import doggytalents.helper.DogUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,18 +34,18 @@ public class ItemCapeColoured extends Item {
 			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("cap_colour"));
 		}
 
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
+		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
 	}
 	
 	public boolean hasColor(ItemStack stack) {
-		NBTTagCompound nbttagcompound = stack.getTag();
+		CompoundNBT nbttagcompound = stack.getTag();
 		return nbttagcompound != null && nbttagcompound.contains("cape_colour", 3);
         
     }
 
     public int getColor(ItemStack stack) {
        
-    	NBTTagCompound nbttagcompound = stack.getTag();
+    	CompoundNBT nbttagcompound = stack.getTag();
 
     	if(nbttagcompound != null)    
     		return nbttagcompound.getInt("cape_colour");
@@ -56,7 +56,7 @@ public class ItemCapeColoured extends Item {
 
     public void removeColor(ItemStack stack) {
 
-    	NBTTagCompound nbttagcompound = stack.getTag();
+    	CompoundNBT nbttagcompound = stack.getTag();
 
     	if(nbttagcompound != null)
     		nbttagcompound.remove("cape_colour");
@@ -65,10 +65,10 @@ public class ItemCapeColoured extends Item {
 
     public void setColor(ItemStack stack, int color) {
 
-    	NBTTagCompound nbttagcompound = stack.getTag();
+    	CompoundNBT nbttagcompound = stack.getTag();
 
     	if(nbttagcompound == null) {	
-    		nbttagcompound = new NBTTagCompound();
+    		nbttagcompound = new CompoundNBT();
     		stack.setTag(nbttagcompound);
     	}
             

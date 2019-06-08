@@ -7,8 +7,6 @@ import doggytalents.lib.TalentNames;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class DTCommonConfig {
-
-	public ForgeConfigSpec.BooleanValue DEBUG_MODE;
 	
 	public ForgeConfigSpec.BooleanValue DOGS_IMMORTAL;
 	public ForgeConfigSpec.BooleanValue TEN_DAY_PUPS;
@@ -23,9 +21,9 @@ public class DTCommonConfig {
 	public DTCommonConfig(ForgeConfigSpec.Builder builder) {
 		builder.push("General");
 		  
-		DEBUG_MODE = builder
-				.comment("Enables debugging mode, which would output values for the sake of finding issues in the mod.")
-				.define("debugMode", false);	
+		//DEBUG_MODE = builder
+		//		.comment("Enables debugging mode, which would output values for the sake of finding issues in the mod.")
+		//		.define("debugMode", false);	
 		
 		builder.pop();
 		builder.push("Dog Settings");
@@ -67,38 +65,6 @@ public class DTCommonConfig {
 		}
 		
 		builder.pop();
-	}
-	
-	public boolean debugMode() {
-		return this.DEBUG_MODE.get().booleanValue();
-	}
-	
-	public boolean dogsImmortal() {
-		return this.DOGS_IMMORTAL.get().booleanValue();
-	}
-	
-	public boolean tenDayPups() {
-		return this.TEN_DAY_PUPS.get().booleanValue();
-	}
-	
-	public boolean hungerOn() {
-		return this.IS_HUNGER_ON.get().booleanValue();
-	}
-	
-	public boolean startingItems() {
-		return this.STARTING_ITEMS.get().booleanValue();
-	}
-	
-	public boolean dogGender() {
-		return this.DOG_GENDER.get().booleanValue();
-	}
-	
-	public boolean whineWhenHungerLow() {
-		return this.DOG_WHINE_WHEN_HUNGER_LOW.get().booleanValue();
-	}
-	
-	public boolean pupsGetParentLevels() {
-		return this.PUPS_GET_PARENT_LEVELS.get().booleanValue();
 	}
 	
 	public boolean isTalentDisabled(String talentId) {

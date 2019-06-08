@@ -8,9 +8,9 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
+import net.minecraft.network.datasync.IDataSerializer;
 
-public class TalentListSerializer implements DataSerializer<Map<Talent, Integer>> {
+public class TalentListSerializer implements IDataSerializer<Map<Talent, Integer>> {
 
 	@Override
 	public void write(PacketBuffer buf, Map<Talent, Integer> value) {

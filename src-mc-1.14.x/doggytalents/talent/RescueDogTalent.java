@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * @author ProPercivalalb
@@ -11,7 +11,7 @@ public class RescueDogTalent extends Talent {
 
 	@Override
 	public void livingTick(EntityDog dog) {
-		EntityPlayer player = (EntityPlayer)dog.getOwner();
+		PlayerEntity player = (PlayerEntity)dog.getOwner();
 		
 		int level = dog.TALENTS.getLevel(this);
 		

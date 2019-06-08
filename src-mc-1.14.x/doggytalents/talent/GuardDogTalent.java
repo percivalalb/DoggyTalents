@@ -3,8 +3,8 @@ package doggytalents.talent;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
 
 /**
  * @author ProPercivalalb

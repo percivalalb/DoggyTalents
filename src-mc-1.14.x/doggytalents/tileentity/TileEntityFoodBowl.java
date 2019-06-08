@@ -8,26 +8,25 @@ import doggytalents.ModTileEntities;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.ContainerFoodBowl;
-import doggytalents.lib.GuiNames;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IInteractionObject;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, IInteractionObject, ITickable {
+public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, INamedContainerProvider, ITickableTileEntity {
    
 	private static final int[] SLOTS_ALL = new int[] {0,1,2,3,4};
 	private NonNullList<ItemStack> bowlItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
@@ -39,14 +38,14 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
     }
     
     @Override
-    public void read(NBTTagCompound compound) {
+    public void read(CompoundNBT compound) {
         super.read(compound);
         this.bowlItemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(compound, this.bowlItemStacks);
     }
 
     @Override
-    public NBTTagCompound write(NBTTagCompound compound) {
+    public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
         ItemStackHelper.saveAllItems(compound, this.bowlItemStacks);
         return compound;
@@ -119,24 +118,9 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 	}
 
 	@Override
-	public void openInventory(EntityPlayer player) {}
+	public void openInventory(PlayerEntity player) {}
 	@Override
-	public void closeInventory(EntityPlayer player) {}
-
-	@Override
-	public int getField(int id) {
-		return 0;
-	}
-	
-	@Override
-	public void setField(int id, int value) {
-		
-	}
-
-	@Override
-	public int getFieldCount() {
-		return 0;
-	}
+	public void closeInventory(PlayerEntity player) {}
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -145,7 +129,7 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
 
 	@Override
-	public boolean isUsableByPlayer(EntityPlayer player) {
+	public boolean isUsableByPlayer(PlayerEntity player) {
 		if (this.world.getTileEntity(this.pos) != this) {
 			return false;
 		} 
@@ -154,20 +138,9 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 		}
 	}
 
-
 	@Override
-	public ITextComponent getCustomName() {
-		return null;
-	}
-
-	@Override
-	public ITextComponent getName() {
-		return new TextComponentTranslation("container.doggytalents.food_bowl");
-	}
-
-	@Override
-	public boolean hasCustomName() {
-		return false;
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent("container.doggytalents.food_bowl");
 	}
 
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -175,8 +148,8 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 	}
 
 	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-		if (side == EnumFacing.DOWN) {
+	public int[] getSlotsForFace(Direction side) {
+		if(side == Direction.DOWN) {
 			return SLOTS_ALL;
 		} else {
 			return new int[0];
@@ -184,13 +157,13 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 	}
 
 	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable EnumFacing direction) {
+	public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
 		return this.isItemValidForSlot(index, itemStackIn);
 	}
 
 	@Override
-	public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-		if (direction == EnumFacing.DOWN && index == 1) {
+	public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+		if (direction == Direction.DOWN && index == 1) {
 			Item item = stack.getItem();
 			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
 				return false;
@@ -201,12 +174,7 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 	}
 
 	@Override
-	public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-		return new ContainerFoodBowl(playerInventory, this);
-	}
-
-	@Override
-	public String getGuiID() {
-		return GuiNames.FOOD_BOWL;
+	public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity playerIn) {
+		return new ContainerFoodBowl(windowId, playerInventory, this);
 	}
 }

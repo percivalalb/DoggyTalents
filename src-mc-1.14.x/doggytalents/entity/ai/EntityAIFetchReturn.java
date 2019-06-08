@@ -2,9 +2,10 @@ package doggytalents.entity.ai;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.util.math.BlockPos;
 
-public class EntityAIFetchReturn extends EntityAIFollowOwner {
+public class EntityAIFetchReturn extends FollowOwnerGoal {
 
 	private EntityDog dog;
 	private double oldRangeSense;
@@ -39,7 +40,7 @@ public class EntityAIFetchReturn extends EntityAIFollowOwner {
 	
 	// Forces the dog to walk back to the owner every time
 	@Override
-	protected boolean isTeleportFriendlyBlock(int x, int z, int y, int xOffset, int zOffset) {
+	protected boolean func_220707_a(BlockPos pos) {
 		return false;
 	}
 }

@@ -5,7 +5,7 @@ import java.util.Random;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
-import doggytalents.client.gui.GuiHandler;
+import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
@@ -14,23 +14,21 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.GameOverlay;
 import doggytalents.handler.InputUpdate;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Particles;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -49,7 +47,7 @@ public class ClientProxy extends CommonProxy {
     private void clientSetup(FMLClientSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("ClientProxy clientSetup");
         
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::openGui);
+        //TODO ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::openGui);
         //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
@@ -85,14 +83,14 @@ public class ClientProxy extends CommonProxy {
     }
     
     @Override
-	public EntityPlayer getPlayerEntity() {
+	public PlayerEntity getPlayerEntity() {
 		return Minecraft.getInstance().player;
 	}
     
     @Override
-	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+	public void spawnCustomParticle(PlayerEntity player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
 		TextureAtlasSprite sprite;
-		IBlockState state = player.world.getBlockState((BlockPos)pos);
+		BlockState state = player.world.getBlockState((BlockPos)pos);
 		IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
 		if(model instanceof IStateParticleModel) {
 			state = state.getExtendedState(player.world, (BlockPos)pos);
@@ -115,6 +113,11 @@ public class ClientProxy extends CommonProxy {
     
     @Override
 	public void spawnCrit(World world, Entity entity) {
-		Minecraft.getInstance().particles.addParticleEmitter(entity, Particles.CRIT);
+		Minecraft.getInstance().particles.addParticleEmitter(entity, ParticleTypes.CRIT);
+	}
+    
+    @Override
+    public void openDoggyInfo(EntityDog dog) {
+    	Minecraft.getInstance().displayGuiScreen(new GuiDogInfo(dog, this.getPlayerEntity()));
 	}
 }

@@ -1,10 +1,10 @@
 package doggytalents.inventory;
 
 import doggytalents.tileentity.TileEntityFoodBowl;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -14,7 +14,8 @@ public class ContainerFoodBowl extends Container {
    
 	private TileEntityFoodBowl tileEntityFoodBowl;
 
-    public ContainerFoodBowl(IInventory playerInventory, TileEntityFoodBowl tileEntityFoodBowl) {
+    public ContainerFoodBowl(int windowId, IInventory playerInventory, TileEntityFoodBowl tileEntityFoodBowl) {
+    	super(null, windowId); //TODO
         this.tileEntityFoodBowl = tileEntityFoodBowl;
         
         for(int i = 0; i < 1; i++)
@@ -30,12 +31,12 @@ public class ContainerFoodBowl extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(PlayerEntity player) {
         return this.tileEntityFoodBowl.isUsableByPlayer(player);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+    public ItemStack transferStackInSlot(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(i);
 

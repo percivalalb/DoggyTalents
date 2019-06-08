@@ -1,8 +1,8 @@
 package doggytalents.item;
 
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 
 public class ItemFancyCollar extends Item {
 	
@@ -20,7 +20,7 @@ public class ItemFancyCollar extends Item {
 	}
 	
 	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-        return type == Type.CREATIVE ? EnumRarity.EPIC : super.getRarity(stack);
+	public Rarity getRarity(ItemStack stack) {
+        return type == Type.CREATIVE ? Rarity.EPIC : super.getRarity(stack);
     }
 }

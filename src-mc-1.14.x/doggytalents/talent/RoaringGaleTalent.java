@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class RoaringGaleTalent extends Talent {
 	
@@ -12,13 +12,13 @@ public class RoaringGaleTalent extends Talent {
 	}
 	
 	@Override
-	public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
+	public void writeAdditional(EntityDog dog, CompoundNBT tagCompound) {
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 		tagCompound.putInt("roarcooldown", roarCooldown);
 	}
 	
 	@Override
-	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
+	public void readAdditional(EntityDog dog, CompoundNBT tagCompound) {
 		dog.objects.put("roarcooldown", tagCompound.getInt("roarcooldown"));
 	}
 	

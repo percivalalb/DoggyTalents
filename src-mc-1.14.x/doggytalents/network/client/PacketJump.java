@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -30,7 +30,7 @@ public class PacketJump {
         public static void handle(final PacketJump message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {
             	Entity target = ctx.get().getSender().world.getEntityByID(message.entityId);
-            	EntityPlayer player = ctx.get().getSender();
+            	PlayerEntity player = ctx.get().getSender();
                 if(!(target instanceof EntityDog))
                 	return;
                 

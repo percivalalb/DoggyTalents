@@ -6,11 +6,11 @@ import com.google.common.collect.Lists;
 
 import doggytalents.ModRecipes;
 import doggytalents.item.ItemCapeColoured;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeHidden;
 import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.SpecialRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -18,20 +18,16 @@ import net.minecraft.world.World;
 /**
  * 1.12 Code
  */
-public class RecipeDogCape extends IRecipeHidden {
+public class RecipeDogCape extends SpecialRecipe {
 
 	public RecipeDogCape(ResourceLocation resource) {
 		super(resource);
 	}
 	
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
-		if (!(inv instanceof InventoryCrafting)) {
-	         return false;
-		}
-		
+	public boolean matches(CraftingInventory inv, World worldIn) {
 		ItemStack itemstack = ItemStack.EMPTY;
-        List<ItemStack> list = Lists.<ItemStack>newArrayList();
+        List<ItemStack> list = Lists.newArrayList();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
         {
@@ -65,7 +61,7 @@ public class RecipeDogCape extends IRecipeHidden {
     }
 
 	@Override
-    public ItemStack getCraftingResult(IInventory inv) {
+    public ItemStack getCraftingResult(CraftingInventory inv) {
 		ItemStack itemstack = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;
@@ -95,7 +91,7 @@ public class RecipeDogCape extends IRecipeHidden {
                     }
                 }
                 else {
-                	net.minecraft.item.EnumDyeColor color = net.minecraft.item.EnumDyeColor.getColor(itemstack1);
+                	DyeColor color = DyeColor.getColor(itemstack1);
                     if (color == null) {
                        return ItemStack.EMPTY;
                     }
@@ -136,7 +132,7 @@ public class RecipeDogCape extends IRecipeHidden {
     }
 
 	@Override
-    public NonNullList<ItemStack> getRemainingItems(IInventory inv) {
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
         for(int i = 0; i < nonnulllist.size(); ++i) {

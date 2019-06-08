@@ -4,13 +4,13 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
 
 /**
  * @author ProPercivalalb
@@ -22,17 +22,17 @@ public class TalentHelper {
 			talent.onClassCreation(dog);
 	}
 	
-	public static void writeAdditional(EntityDog dog, NBTTagCompound compound) {
+	public static void writeAdditional(EntityDog dog, CompoundNBT compound) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			talent.writeAdditional(dog, compound);
 	}
 	
-	public static void readAdditional(EntityDog dog, NBTTagCompound compound) {
+	public static void readAdditional(EntityDog dog, CompoundNBT compound) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			talent.readAdditional(dog, compound);
 	}
 	
-	public static ActionResult<ItemStack> interactWithPlayer(EntityDog dog, EntityPlayer player, ItemStack stack) {
+	public static ActionResult<ItemStack> interactWithPlayer(EntityDog dog, PlayerEntity player, ItemStack stack) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
 			ActionResult<ItemStack> result = talent.onInteract(dog, player, stack);
 			
@@ -44,7 +44,7 @@ public class TalentHelper {
 			}
 		}
 
-		return ActionResult.newResult(EnumActionResult.PASS, stack);
+		return ActionResult.newResult(ActionResultType.PASS, stack);
 	}
 
 	public static void tick(EntityDog  dog) {
@@ -92,7 +92,7 @@ public class TalentHelper {
 		return total;
 	}
 
-	public static boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
+	public static boolean isPostionApplicable(EntityDog dog, EffectInstance potionEffect) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
 			if(!talent.isPostionApplicable(dog, potionEffect))
 				return false;

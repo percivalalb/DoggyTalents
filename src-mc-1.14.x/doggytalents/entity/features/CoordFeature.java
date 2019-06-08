@@ -1,7 +1,7 @@
 package doggytalents.entity.features;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 
 /**
@@ -42,7 +42,7 @@ public class CoordFeature extends DogFeature {
 	}
 	
 	@Override
-	public void writeAdditional(NBTTagCompound tagCompound) {
+	public void writeAdditional(CompoundNBT tagCompound) {
 		if(this.hasBedPos()) {
 			tagCompound.putInt("bedPosX", this.getBedPos().getX());
 			tagCompound.putInt("bedPosY", this.getBedPos().getY());
@@ -57,7 +57,7 @@ public class CoordFeature extends DogFeature {
 	}
 	
 	@Override
-	public void readAdditional(NBTTagCompound tagCompound) {
+	public void readAdditional(CompoundNBT tagCompound) {
 		if(tagCompound.contains("bedPosX")) {
 			this.setBedPos(new BlockPos(tagCompound.getInt("bedPosX"), tagCompound.getInt("bedPosY"), tagCompound.getInt("bedPosZ")));
 		}

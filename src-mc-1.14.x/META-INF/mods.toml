@@ -1,16 +1,15 @@
 modLoader="javafml"
-loaderVersion="[25,)"
+loaderVersion="[26,)"
 issueTrackerURL="https://github.com/percivalalb/DoggyTalents/issues"
 displayURL="https://minecraft.curseforge.com/projects/doggy-talents/"
 logoFile="dt_logo.png"
-
 [[mods]] #mandatory
 	modId="doggytalents"
 	version="${file.jarVersion}"
 	updateJSONURL="https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/version.json"
 	displayName="Doggy Talents"
-	credits="RaustBlackDragon for creating the original version, NovaViper for helping test and manage the mod"
-	authors="ProPercivalalb"
+	credits="percivalalb,RaustBlackDragon,NovaViper"
+	authors="percivalalb"
 	description='''
     Turning your wolves into fun, playful dogs.
     '''

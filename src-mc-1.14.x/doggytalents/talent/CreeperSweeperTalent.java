@@ -6,8 +6,8 @@ import java.util.Random;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.util.SoundEvents;
 
 /**
  * @author ProPercivalalb
@@ -27,7 +27,7 @@ public class CreeperSweeperTalent extends Talent {
 		int level = dog.TALENTS.getLevel(this);
 		
 		if(dog.getAttackTarget() == null && dog.isTamed() && level > 0) {
-            List<EntityCreeper> list = dog.world.getEntitiesWithinAABB(EntityCreeper.class, dog.getBoundingBox().grow(level * 5, level * 2, level * 5));
+            List<CreeperEntity> list = dog.world.getEntitiesWithinAABB(CreeperEntity.class, dog.getBoundingBox().grow(level * 5, level * 2, level * 5));
 
             if(!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1)
             	dog.objects.put("creeper_timer", (int)dog.objects.get("creeper_timer") + 1);
@@ -41,19 +41,19 @@ public class CreeperSweeperTalent extends Talent {
 		
 		
 		
-		if(dog.getAttackTarget() instanceof EntityCreeper) {
-        	EntityCreeper creeper = (EntityCreeper)dog.getAttackTarget();
+		if(dog.getAttackTarget() instanceof CreeperEntity) {
+        	CreeperEntity creeper = (CreeperEntity)dog.getAttackTarget();
         	creeper.setCreeperState(-1);
         }
 	}
 	
 	@Override
 	public boolean canAttackClass(EntityDog dog, Class entityClass) {
-		return EntityCreeper.class == entityClass && dog.TALENTS.getLevel(this) == 5; 
+		return CreeperEntity.class == entityClass && dog.TALENTS.getLevel(this) == 5; 
 	}
 	
 	@Override
 	public boolean canAttackEntity(EntityDog dog, Entity entity) {
-		return entity instanceof EntityCreeper && dog.TALENTS.getLevel(this) == 5;
+		return entity instanceof CreeperEntity && dog.TALENTS.getLevel(this) == 5;
 	}
 }

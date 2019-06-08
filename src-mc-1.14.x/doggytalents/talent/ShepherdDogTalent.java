@@ -2,7 +2,7 @@ package doggytalents.talent;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * @author ProPercivalalb
@@ -11,7 +11,7 @@ public class ShepherdDogTalent extends Talent {
 	
 	@Override
 	public int onHungerTick(EntityDog dog, int totalInTick) { 
-		if(dog.getControllingPassenger() != null && !(dog.getControllingPassenger() instanceof EntityPlayer))
+		if(dog.getControllingPassenger() != null && !(dog.getControllingPassenger() instanceof PlayerEntity))
 			totalInTick += 5 - dog.TALENTS.getLevel(this);
 		return totalInTick;
 	}

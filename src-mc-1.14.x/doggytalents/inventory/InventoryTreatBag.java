@@ -2,27 +2,26 @@ package doggytalents.inventory;
 
 import doggytalents.ModItems;
 import doggytalents.api.inferface.IDogInteractItem;
-import doggytalents.lib.GuiNames;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.InventoryBasic;
-import net.minecraft.item.ItemFood;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.world.IInteractionObject;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
-public class InventoryTreatBag extends InventoryBasic implements IInteractionObject {
+public class InventoryTreatBag extends Inventory implements INamedContainerProvider {
 
-	public EntityPlayer player;
+	public PlayerEntity player;
 	public int slot;
 	public ItemStack itemstack;
 	
-	public InventoryTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super(new TextComponentTranslation("doggytalents.treat_bag"), 5);
+	public InventoryTreatBag(PlayerEntity playerIn, int slotIn, ItemStack itemstackIn) {
+		super(5);
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn.copy();
@@ -30,16 +29,16 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 	
 	@Override
 	public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return stack.getItem() instanceof IDogInteractItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem() instanceof ItemFood && ((ItemFood)stack.getItem()).isMeat()); 
+        return stack.getItem() instanceof IDogInteractItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().func_219971_r() && stack.getItem().func_219971_r()); 
     }
 
 	@Override
-	public void openInventory(EntityPlayer player) {
+	public void openInventory(PlayerEntity player) {
 		if(this.itemstack.hasTag() && this.itemstack.getTag().contains("inventory", 10)) {
-			NBTTagList nbttaglist = this.itemstack.getTag().getCompound("inventory").getList("Items", 10);
+			ListNBT nbttaglist = this.itemstack.getTag().getCompound("inventory").getList("Items", 10);
 	
 	        for(int i = 0; i < nbttaglist.size(); ++i) {
-	            NBTTagCompound nbttagcompound = nbttaglist.getCompound(i);
+	            CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
 	            int j = nbttagcompound.getByte("Slot") & 255;
 	
 	            if(j >= 0 && j < this.getSizeInventory())
@@ -49,14 +48,14 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 	}
 
 	@Override
-	public void closeInventory(EntityPlayer player) {
-		NBTTagList nbttaglist = new NBTTagList();
+	public void closeInventory(PlayerEntity player) {
+		ListNBT nbttaglist = new ListNBT();
 
         for(int i = 0; i < this.getSizeInventory(); ++i) {
             ItemStack itemstack = this.getStackInSlot(i);
 
             if(!itemstack.isEmpty()) {
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                CompoundNBT nbttagcompound = new CompoundNBT();
                 nbttagcompound.putByte("Slot", (byte)i);
                 itemstack.write(nbttagcompound);
                 nbttaglist.add(nbttagcompound);
@@ -64,10 +63,10 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
         }
 
         if(!this.itemstack.hasTag())
-        	this.itemstack.setTag(new NBTTagCompound());
+        	this.itemstack.setTag(new CompoundNBT());
         
         if(!this.itemstack.getTag().contains("inventory"))
-        	this.itemstack.getTag().put("inventory", new NBTTagCompound());
+        	this.itemstack.getTag().put("inventory", new CompoundNBT());
         
         this.itemstack.getTag().getCompound("inventory").put("Items", nbttaglist);
         
@@ -75,12 +74,12 @@ public class InventoryTreatBag extends InventoryBasic implements IInteractionObj
 	}
 
 	@Override
-	public Container createContainer(InventoryPlayer inventory, EntityPlayer player) {
-		return new ContainerTreatBag(player, slot, itemstack);
+	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
+		return new ContainerTreatBag(windowId, player, slot, itemstack);
 	}
 
 	@Override
-	public String getGuiID() {
-		return GuiNames.TREAT_BAG;
+	public ITextComponent getDisplayName() {
+		return new TranslationTextComponent("doggytalents.treat_bag");
 	}
 }

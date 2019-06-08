@@ -11,8 +11,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Predicates;
-
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
@@ -21,7 +19,6 @@ import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIDogFeed;
@@ -63,7 +60,6 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -106,8 +102,6 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.loot.LootTables;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class EntityDog extends TameableEntity implements INamedContainerProvider {
 	

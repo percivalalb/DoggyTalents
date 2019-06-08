@@ -2,10 +2,7 @@ package doggytalents.block;
 
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import doggytalents.DoggyTalentsMod;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

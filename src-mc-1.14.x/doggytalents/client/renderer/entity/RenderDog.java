@@ -15,7 +15,6 @@ import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;

@@ -9,7 +9,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.Constants;

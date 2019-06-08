@@ -1,6 +1,5 @@
 package doggytalents.entity.features;
 
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import net.minecraft.util.text.TranslationTextComponent;

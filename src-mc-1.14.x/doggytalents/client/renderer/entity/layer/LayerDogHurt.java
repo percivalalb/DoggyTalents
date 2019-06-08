@@ -4,7 +4,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;

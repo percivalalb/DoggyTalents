@@ -26,8 +26,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogLocationManager extends WorldSavedData {
 	

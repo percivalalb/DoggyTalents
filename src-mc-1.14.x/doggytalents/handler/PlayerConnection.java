@@ -1,7 +1,6 @@
 package doggytalents.handler;
 
 import doggytalents.ModItems;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.lib.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

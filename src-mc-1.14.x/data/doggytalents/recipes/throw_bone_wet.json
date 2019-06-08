@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "doggytalents:throw_bone_wet"
+    }
+  ],
+  "result": {
+    "item": "doggytalents:throw_bone",
+    "count": 1
+  }
+}

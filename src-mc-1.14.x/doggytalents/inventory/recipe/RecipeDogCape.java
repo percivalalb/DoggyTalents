@@ -29,26 +29,20 @@ public class RecipeDogCape extends SpecialRecipe {
 		ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
 
-        for (int i = 0; i < inv.getSizeInventory(); ++i)
-        {
+        for(int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (!itemstack1.isEmpty())
-            {
-                if (itemstack1.getItem() instanceof ItemCapeColoured)
-                {
+            if(!itemstack1.isEmpty()) {
+                if(itemstack1.getItem() instanceof ItemCapeColoured) {
                 	ItemCapeColoured itemarmor = (ItemCapeColoured)itemstack1.getItem();
 
-                    if(!itemstack.isEmpty())
-                    {
+                    if(!itemstack.isEmpty()) {
                         return false;
                     }
 
                     itemstack = itemstack1;
-                }
-                else
-                {
-                	if(!itemstack1.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES)) {
+                } else {
+                	if(DyeColor.getColor(itemstack1) == null) {
                         return false;
                     }
 

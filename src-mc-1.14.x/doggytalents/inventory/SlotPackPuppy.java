@@ -1,7 +1,5 @@
 package doggytalents.inventory;
 
-import doggytalents.ModTalents;
-import doggytalents.entity.EntityDog;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -11,15 +9,15 @@ import net.minecraft.item.ItemStack;
  **/
 public class SlotPackPuppy extends Slot {
    
-	private EntityDog dog;
+	private int level;
 
-    public SlotPackPuppy(IInventory iinventory, int i, int j, int k, EntityDog dog) {
+    public SlotPackPuppy(IInventory iinventory, int i, int j, int k, int level) {
         super(iinventory, i, j, k);
-        this.dog = dog;
+        this.level = level;
     }
 
     @Override
     public boolean isItemValid(ItemStack itemstack) {
-        return this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) != 0;
+        return level != 0;
     }
 }

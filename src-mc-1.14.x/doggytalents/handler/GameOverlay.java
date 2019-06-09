@@ -44,13 +44,13 @@ public class GameOverlay {
 	            int icon = 16;
 	            byte backgound = 12;
 
-	            mc.field_71456_v.blit(x, y, 16 + backgound * 9, 27, 9, 9);
+	            mc.ingameGUI.blit(x, y, 16 + backgound * 9, 27, 9, 9);
 
 
 	            if (idx < level)
-	            	mc.field_71456_v.blit(x, y, icon + 36, 27, 9, 9);
+	            	mc.ingameGUI.blit(x, y, icon + 36, 27, 9, 9);
 	            else if (idx == level)
-	            	mc.field_71456_v.blit(x, y, icon + 45, 27, 9, 9);
+	            	mc.ingameGUI.blit(x, y, icon + 45, 27, 9, 9);
 	        }
 	        GlStateManager.disableBlend();
 
@@ -67,7 +67,7 @@ public class GameOverlay {
 	            int partial = MathHelper.ceil((double)air * 10.0D / 300.0D) - full;
 
 	            for (int i = 0; i < full + partial; ++i) {
-	            	mc.field_71456_v.blit(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+	            	mc.ingameGUI.blit(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
 	            }
 	            ForgeIngameGui.right_height += 10;
 	        }

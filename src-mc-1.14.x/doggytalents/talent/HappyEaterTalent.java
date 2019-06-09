@@ -22,9 +22,9 @@ public class HappyEaterTalent extends Talent {
 	        	foodValue = 30 + 3 * level;
 		}
 		else {
-			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem().func_219971_r()) {
-	            Food food = stack.getItem().func_219967_s();
-	            if(food.func_221467_c())
+			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem().isFood()) {
+	            Food food = stack.getItem().getFood();
+	            if(food.isMeat())
 	            	foodValue += 4 * level;
 	        }
 		}

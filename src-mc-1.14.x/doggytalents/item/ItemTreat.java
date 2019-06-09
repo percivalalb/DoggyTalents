@@ -34,7 +34,7 @@ public class ItemTreat extends Item implements IDogInteractItem {
 			return ActionResult.newResult(ActionResultType.FAIL, stackIn);
 		}
 		if(level < this.maxLevel) {
-			if(!playerIn.playerAbilities.isCreativeMode)
+			if(!playerIn.abilities.isCreativeMode)
 				stackIn.shrink(1);
 
 			if(!playerIn.world.isRemote) {

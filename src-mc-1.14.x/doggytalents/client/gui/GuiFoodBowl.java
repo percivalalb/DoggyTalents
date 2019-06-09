@@ -2,22 +2,19 @@ package doggytalents.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import doggytalents.inventory.ContainerFoodBowl;
+import doggytalents.inventory.container.ContainerFoodBowl;
 import doggytalents.lib.ResourceLib;
-import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiFoodBowl extends ContainerScreen<ContainerFoodBowl> {
-	
-    private TileEntityFoodBowl foodBowl;
 
-    public GuiFoodBowl(int windowId, PlayerInventory playerInventory, TileEntityFoodBowl foodBowl) {
-        super(new ContainerFoodBowl(windowId, playerInventory, foodBowl), playerInventory, foodBowl.getDisplayName());
-        this.foodBowl = foodBowl;
+    public GuiFoodBowl(ContainerFoodBowl foodBowl, PlayerInventory playerInventory, ITextComponent displayName) {
+        super(foodBowl, playerInventory, displayName);
         this.ySize = 127;
     }
 
@@ -30,8 +27,7 @@ public class GuiFoodBowl extends ContainerScreen<ContainerFoodBowl> {
     
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-    	String s = this.foodBowl.getDisplayName().getString();
-        this.font.drawString(s, 10, 8, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10.0F, 8.0F, 4210752);
     }
 
     @Override

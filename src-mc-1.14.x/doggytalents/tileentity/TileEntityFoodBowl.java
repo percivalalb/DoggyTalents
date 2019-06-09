@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import doggytalents.ModTileEntities;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
-import doggytalents.inventory.ContainerFoodBowl;
+import doggytalents.inventory.container.ContainerFoodBowl;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.ISidedInventory;

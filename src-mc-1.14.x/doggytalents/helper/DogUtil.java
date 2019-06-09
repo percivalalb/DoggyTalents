@@ -49,7 +49,7 @@ public class DogUtil {
 	public static boolean isTeleportFriendlyBlock(Entity entity, World world, int xBase, int zBase, int y, int xAdd, int zAdd) {
 		BlockPos blockpos = new BlockPos(xBase + xAdd, y - 1, zBase + zAdd);
 		BlockState iblockstate = world.getBlockState(blockpos);
-		return Block.func_220056_d(iblockstate, world, blockpos, Direction.DOWN) && iblockstate.canEntitySpawn(world, blockpos, entity.getType()) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
+		return Block.hasSolidSide(iblockstate, world, blockpos, Direction.DOWN) && iblockstate.canEntitySpawn(world, blockpos, entity.getType()) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
 	}
     
     public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {
@@ -99,8 +99,6 @@ public class DogUtil {
     }
     
     public static ItemStack addItem(IInventory inventory, ItemStack stack) {
-    	if(stack.isEmpty()) return ItemStack.EMPTY;
-    	
         ItemStack itemstack = stack.copy();
 
         for(int i = 0; i < inventory.getSizeInventory(); i++) {

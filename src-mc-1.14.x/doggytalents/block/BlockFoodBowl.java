@@ -37,7 +37,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class BlockFoodBowl extends ContainerBlock {
 
@@ -77,7 +76,7 @@ public class BlockFoodBowl extends ContainerBlock {
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		BlockPos blockpos = pos.down();
 		BlockState blockstate = worldIn.getBlockState(blockpos);
-		return Block.func_220056_d(blockstate, worldIn, blockpos, Direction.UP);
+		return Block.hasSolidSide(blockstate, worldIn, blockpos, Direction.UP);
 	}
 	
 	@Override
@@ -139,7 +138,7 @@ public class BlockFoodBowl extends ContainerBlock {
             	ItemStack stack = playerIn.getHeldItem(handIn);
             	
             	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-            		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
+            		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn.inventory, playerIn.inventory.currentItem, stack);
             		treatBag.openInventory(playerIn);
             		
             		for(int i = 0; i < treatBag.getSizeInventory(); i++)
@@ -152,8 +151,7 @@ public class BlockFoodBowl extends ContainerBlock {
             	
             	else if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
-
-                    NetworkHooks.openGui(entityPlayerMP, foodBowl, posIn);
+                    entityPlayerMP.openContainer(foodBowl);
                 }
             }
 

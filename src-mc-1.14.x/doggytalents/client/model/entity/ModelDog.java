@@ -114,9 +114,9 @@ public class ModelDog extends EntityModel<EntityDog> {
     @Override
     public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         super.render(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        this.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         
-        if(this.field_217114_e) {
+        if(this.isChild) {
              GlStateManager.pushMatrix();
              GlStateManager.translatef(0.0F, 5.0F * scale, 2.0F * scale);
              (dogIn.hasBone() ? this.wolfHeadMainBone : this.wolfHeadMain).renderWithRotation(scale);
@@ -147,7 +147,7 @@ public class ModelDog extends EntityModel<EntityDog> {
     }
 
     @Override
-    public void func_212843_a_(EntityDog entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    public void setLivingAnimations(EntityDog entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
     	EntityDog dog = (EntityDog)entitylivingbaseIn;
 
     	this.wolfTail.rotateAngleY = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
@@ -204,8 +204,8 @@ public class ModelDog extends EntityModel<EntityDog> {
     }
 
     @Override
-    public void func_212844_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        super.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+    public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+        super.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
         this.wolfHeadMain.rotateAngleX = headPitch * 0.017453292F;
         this.wolfHeadMain.rotateAngleY = netHeadYaw * 0.017453292F;
         this.wolfHeadMainBone.rotateAngleX = this.wolfHeadMain.rotateAngleX;

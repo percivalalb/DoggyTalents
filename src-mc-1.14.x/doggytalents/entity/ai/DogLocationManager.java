@@ -46,7 +46,7 @@ public class DogLocationManager extends WorldSavedData {
 	
 	
 	public static DogLocationManager getHandler(@Nonnull ServerWorld world) {
-		return getHandler(world.getServer().getWorld(DimensionType.OVERWORLD).func_217481_x());
+		return getHandler(world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData());
 	}
 	
 	public static DogLocationManager getHandler(DimensionSavedDataManager storage) {
@@ -117,7 +117,7 @@ public class DogLocationManager extends WorldSavedData {
 		public DogLocation(CompoundNBT compound) {
 			super(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
 			if(compound.contains("dimension", 8))
-				this.type = Registry.field_212622_k.getOrDefault(new ResourceLocation(compound.getString("dimension")));
+				this.type = Registry.DIMENSION_TYPE.getOrDefault(new ResourceLocation(compound.getString("dimension")));
 			this.entityId = compound.getUniqueId("entityId");
 			if(compound.hasUniqueId("ownerId")) this.owner = compound.getUniqueId("ownerId");
 			
@@ -146,7 +146,7 @@ public class DogLocationManager extends WorldSavedData {
 			compound.putDouble("x", this.x);
 			compound.putDouble("y", this.y);
 			compound.putDouble("z", this.z);
-			if(this.type != null) compound.putString("dimension", Registry.field_212622_k.getKey(this.type).toString());
+			if(this.type != null) compound.putString("dimension", Registry.DIMENSION_TYPE.getKey(this.type).toString());
 			compound.putUniqueId("entityId", this.entityId);
 			
 			if(this.owner != null) compound.putUniqueId("ownerId", this.owner);
@@ -164,7 +164,7 @@ public class DogLocationManager extends WorldSavedData {
 				return null;
 			}
 			
-			Entity entity = ((ServerWorld)world).func_217461_a(this.entityId);
+			Entity entity = ((ServerWorld)world).getEntityByUuid(this.entityId);
 			
 			if(entity == null) {
 				return null;

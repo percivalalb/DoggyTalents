@@ -11,7 +11,6 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ItemTreatBag extends Item {
 
@@ -28,13 +27,12 @@ public class ItemTreatBag extends Item {
 		}
 		else {
 			int slotId = playerIn.inventory.currentItem;
-			INamedContainerProvider bagInventory = new InventoryTreatBag(playerIn, slotId, playerIn.inventory.getStackInSlot(slotId));
+			INamedContainerProvider bagInventory = new InventoryTreatBag(playerIn.inventory, slotId, itemstack);
 			
 			if(bagInventory != null) {
                 if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
-
-                    NetworkHooks.openGui(entityPlayerMP, bagInventory, buf -> buf.writeInt(playerIn.inventory.currentItem));
+                    entityPlayerMP.openContainer(bagInventory);
                 }
             }
 			

@@ -13,3 +13,9 @@ logoFile="dt_logo.png"
 	description='''
     Turning your wolves into fun, playful dogs.
     '''
+[[dependencies.doggytalents]] #optional
+    modId="forge"
+    mandatory=true
+    versionRange="[26.0.12,)" #mandatory
+    ordering="NONE"
+    side="BOTH"

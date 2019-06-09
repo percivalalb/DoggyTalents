@@ -4,7 +4,6 @@ import java.util.Random;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModItems;
-import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.configuration.ConfigHandler;
@@ -35,7 +34,6 @@ public class CommonProxy {
 	
 	protected void preInit(FMLCommonSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("CommonProxy preInit");
-        ModRecipes.Registration.registerRecipes();
         PacketHandler.register();
     }
     

@@ -47,7 +47,7 @@ public class LayerCover extends LayerRenderer<EntityDog, ModelDog> {
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             
         	this.model.func_217111_a(this.func_215332_c());
-            this.model.func_212843_a_(dog, limbSwing, limbSwingAmount, partialTicks);
+            this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             this.model.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }

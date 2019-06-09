@@ -69,10 +69,10 @@ public class ItemThrowBone extends Item {
 	        	ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
 	            entityitem.setPickupDelay(40);
 	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
-                worldIn.func_217376_c(entityitem);
+                worldIn.addEntity(entityitem);
 	        }
 	        
-	        if(!playerIn.playerAbilities.isCreativeMode)
+	        if(!playerIn.abilities.isCreativeMode)
 	        	itemStackIn.shrink(1);
 
 	        playerIn.addStat(Stats.ITEM_USED.get(this));

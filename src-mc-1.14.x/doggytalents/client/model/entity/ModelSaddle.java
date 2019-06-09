@@ -28,7 +28,7 @@ public class ModelSaddle extends EntityModel<EntityDog> {
 	@Override
 	public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		this.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		this.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 		
 		this.chest1.render(scale);         
 		this.chest2.render(scale);
@@ -36,7 +36,7 @@ public class ModelSaddle extends EntityModel<EntityDog> {
 	}
   
 	@Override
-	public void func_212843_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+	public void setLivingAnimations(EntityDog dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
 		
 		if(dogIn.isSitting()) {
             this.chest1.setRotationPoint(0.0F, 18.0F, 0.0F);
@@ -61,7 +61,7 @@ public class ModelSaddle extends EntityModel<EntityDog> {
 	}
   
 	@Override
-	public void func_212844_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
 	}  
 }

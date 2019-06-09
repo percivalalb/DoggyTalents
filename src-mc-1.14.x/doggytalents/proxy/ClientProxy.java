@@ -4,8 +4,12 @@ import java.util.Random;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
+import doggytalents.ModContainerTypes;
 import doggytalents.ModItems;
 import doggytalents.client.gui.GuiDogInfo;
+import doggytalents.client.gui.GuiFoodBowl;
+import doggytalents.client.gui.GuiPackPuppy;
+import doggytalents.client.gui.GuiTreatBag;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
@@ -16,6 +20,7 @@ import doggytalents.handler.GameOverlay;
 import doggytalents.handler.InputUpdate;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -47,7 +52,9 @@ public class ClientProxy extends CommonProxy {
     private void clientSetup(FMLClientSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("ClientProxy clientSetup");
         
-        //TODO ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.GUIFACTORY, () -> GuiHandler::openGui);
+        ScreenManager.registerFactory(ModContainerTypes.FOOD_BOWL, GuiFoodBowl::new);
+        ScreenManager.registerFactory(ModContainerTypes.PACK_PUPPY, GuiPackPuppy::new);
+        ScreenManager.registerFactory(ModContainerTypes.TREAT_BAG, GuiTreatBag::new);
         //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);

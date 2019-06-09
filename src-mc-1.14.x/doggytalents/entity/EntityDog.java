@@ -105,26 +105,26 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityDog extends TameableEntity implements INamedContainerProvider {
 	
-	private static final DataParameter<Float> 					DATA_HEALTH_ID 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187193_c);
-	private static final DataParameter<Boolean> 				BEGGING 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187198_h);
-	private static final DataParameter<Byte> 					DOG_TEXTURE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187191_a);
-	private static final DataParameter<Integer>					COLLAR_COLOUR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
+	private static final DataParameter<Float> 					DATA_HEALTH_ID 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
+	private static final DataParameter<Boolean> 				BEGGING 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Byte> 					DOG_TEXTURE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer>					COLLAR_COLOUR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER.get());
-	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187198_h);
-	private static final DataParameter<Boolean> 				OBEY_OTHERS 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187198_h);
-	private static final DataParameter<Integer> 				CAPE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<Boolean> 				SUNGLASSES 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187198_h);
-	private static final DataParameter<Boolean> 				RADAR_COLLAR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187198_h);
-	private static final DataParameter<Optional<BlockPos>> 		BOWL_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187201_k);
-	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187201_k);
-	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187192_b);
-	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.field_187194_d);
-	private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, DataSerializers.field_200544_f);
+	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> 				OBEY_OTHERS 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Integer> 				CAPE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Boolean> 				SUNGLASSES 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> 				RADAR_COLLAR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Optional<BlockPos>> 		BOWL_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
+	private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_TEXT_COMPONENT);
 	
 	@Nullable
 	public DogLocationManager locationManager;
@@ -160,7 +160,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     private int reversionTime;
     
     private int generalTick;
-	
+    
 	public EntityDog(EntityType<EntityDog> type, World worldIn) {
 		super(type, worldIn);
 		this.TALENTS = new TalentFeature(this);
@@ -178,30 +178,30 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
 	
 	@Override
-	protected void initEntityAI() {
+	protected void registerGoals() {
 		this.field_70911_d = new SitGoal(this);
-		this.field_70714_bg.addTask(1, new SwimGoal(this));
-		this.field_70714_bg.addTask(2, this.field_70911_d);
-		this.field_70714_bg.addTask(3, new EntityAIFetchReturn(this, 1.0D));
-		this.field_70714_bg.addTask(4, new EntityAIDogWander(this, 1.0D));
-		 //TODO this.tasks.addTask(4, new EntityAIPatrolArea(this));
-		this.field_70714_bg.addTask(5, new LeapAtTargetGoal(this, 0.4F));
-		this.field_70714_bg.addTask(6, new MeleeAttackGoal(this, 1.0D, true));
-		this.field_70714_bg.addTask(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
-		this.field_70714_bg.addTask(8, new EntityAIFetch(this, 1.0D, 32));
-		this.field_70714_bg.addTask(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
-		this.field_70714_bg.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
-		this.field_70714_bg.addTask(11, new BreedGoal(this, 1.0D));
-		//this.field_70714_bg.addTask(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.field_70714_bg.addTask(13, new EntityAIBegDog(this, 8.0F));
-		this.field_70714_bg.addTask(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
-		this.field_70714_bg.addTask(15, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.field_70714_bg.addTask(15, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(2, this.field_70911_d);
+		this.goalSelector.addGoal(3, new EntityAIFetchReturn(this, 1.0D));
+		this.goalSelector.addGoal(4, new EntityAIDogWander(this, 1.0D));
+		 //TODO this.tasks.addGoal(4, new EntityAIPatrolArea(this));
+		this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4F));
+		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
+		this.goalSelector.addGoal(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
+		this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
+		this.goalSelector.addGoal(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
+		this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
+		this.goalSelector.addGoal(11, new BreedGoal(this, 1.0D));
+		//this.goalSelector.addGoal(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(13, new EntityAIBegDog(this, 8.0F));
+		this.goalSelector.addGoal(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
+		this.goalSelector.addGoal(15, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(15, new LookRandomlyGoal(this));
 		
-		this.field_70715_bh.addTask(1, new EntityAIOwnerHurtByTargetDog(this));
-		this.field_70715_bh.addTask(2, new EntityAIOwnerHurtTargetDog(this));
-		this.field_70715_bh.addTask(3, new HurtByTargetGoal(this).func_220794_a());
-		this.field_70715_bh.addTask(4, new EntityBerserkerMode<>(this, MobEntity.class, false));
+		this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
+		this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
+		this.targetSelector.addGoal(3, new HurtByTargetGoal(this).func_220794_a());
+		this.targetSelector.addGoal(4, new EntityBerserkerMode<>(this, MobEntity.class, false));
 	}
 	
 	@Override
@@ -268,7 +268,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		super.registerAttributes();
 		this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue((double)0.3F);
 		this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isTamed() ? 20.0D : 8.0D);
-		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+		this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
 	}
 	
 	@Override
@@ -490,7 +490,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 				for(int j = 0; j < i; ++j) {
 					float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
 					float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-					this.world.addParticle(ParticleTypes.field_218422_X, this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, vec3d.x, vec3d.y, vec3d.z);
+					this.world.addParticle(ParticleTypes.SPLASH, this.posX + (double)f1, (double)(f + 0.8F), this.posZ + (double)f2, vec3d.x, vec3d.y, vec3d.z);
 				}
 			}
 		}
@@ -577,10 +577,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 			break;
         }
         
-        if(stack.getItem() == ModItems.OWNER_CHANGE && player.playerAbilities.isCreativeMode && !this.isOwner(player)) {
+        if(stack.getItem() == ModItems.OWNER_CHANGE && player.abilities.isCreativeMode && !this.isOwner(player)) {
         	if(!this.world.isRemote) {
 	        	this.setTamed(true);
-	            this.field_70699_by.clearPath();
+	            this.navigator.clearPath();
 	            this.setAttackTarget((LivingEntity) null);
 	            this.field_70911_d.setSitting(true);
 	            this.setOwnerId(player.getUniqueID());
@@ -595,7 +595,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 int foodValue = this.foodValue(stack);
                 
                 if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-                    if (!player.playerAbilities.isCreativeMode)
+                    if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
                     this.setDogHunger(this.getDogHunger() + foodValue);
@@ -604,7 +604,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     return true;
                 }
-                else if(stack.getItem() == ModItems.DOGGY_CHARM && player.playerAbilities.isCreativeMode) {
+                else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
@@ -615,9 +615,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                            }
                            
                            babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                           this.world.func_217376_c(babySpawn);
+                           this.world.addEntity(babySpawn);
 
-                           if(!player.playerAbilities.isCreativeMode) {
+                           if(!player.abilities.isCreativeMode) {
                         	   stack.shrink(1);
                            }
                         }
@@ -661,7 +661,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 } else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                     this.hasRadarCollar(true);
 
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
@@ -672,23 +672,23 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     this.setCollarData(colour);
 
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     this.setCollarData(-3 - ((ItemFancyCollar)stack.getItem()).type.ordinal());
 
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setFancyCape();
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() == ModItems.LEATHER_JACKET && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setLeatherJacket();
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
@@ -699,12 +699,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     this.setCapeData(colour);
 
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) {
                     this.setHasSunglasses(true);
-                    if(!player.playerAbilities.isCreativeMode)
+                    if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
                     return true;
                 } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
@@ -771,7 +771,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                             }
                         } else if(this.reversionTime < 1) {
                             this.setTamed(false);
-                            this.field_70699_by.clearPath();
+                            this.navigator.clearPath();
                             this.field_70911_d.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
@@ -787,7 +787,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     return true;
                 } else if(stack.getItem() == Blocks.CAKE.asItem() && this.canInteract(player) && this.isIncapacicated()) {
-                    if (!player.playerAbilities.isCreativeMode)
+                    if (!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
                     if(!this.world.isRemote) {
@@ -851,7 +851,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     return true;
                 } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
 
-                    InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
+                    InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory, player.inventory.currentItem, stack);
                     treatBag.openInventory(player);
 
                     int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);
@@ -867,7 +867,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 if(!this.world.isRemote) {
                     this.field_70911_d.setSitting(!this.isSitting());
                     this.isJumping = false;
-                    this.field_70699_by.clearPath();
+                    this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
                 }
                 return true;
@@ -878,17 +878,17 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 this.remove();
                 WolfEntity wolf = EntityType.WOLF.create(this.world);
                 wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-                this.world.func_217376_c(wolf);
+                this.world.addEntity(wolf);
             }
             return true;
         } else if(stack.getItem() == Items.BONE) {
-        	if(!player.playerAbilities.isCreativeMode)
+        	if(!player.abilities.isCreativeMode)
         		stack.shrink(1);
 
         	if(!this.world.isRemote) {
                 if(this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
-                    this.field_70699_by.clearPath();
+                    this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
                     this.field_70911_d.setSitting(true);
                     this.setHealth(20.0F);
@@ -1253,8 +1253,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
         Item item = stack.getItem();
 
-        if (stack.getItem() != Items.ROTTEN_FLESH && item.func_219971_r()) {
-            if (item.func_219967_s().func_221467_c())
+        if (stack.getItem() != Items.ROTTEN_FLESH && item.isFood()) {
+            if (item.getFood().isMeat())
                 foodValue = 40;
         } else if (stack.getItem() == ModItems.CHEW_STICK) {
             return 10;
@@ -1673,8 +1673,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	            if (this.jumpPower > 0.0F && !this.isDogJumping() && this.onGround) {
 	            	double d0 = this.getDogJumpStrength() * (double)this.jumpPower;
 	            	double d1;
-	            	if (this.isPotionActive(Effects.field_76430_j)) {
-	            		d1 = d0 + (double)((float)(this.getActivePotionEffect(Effects.field_76430_j).getAmplifier() + 1) * 0.1F);
+	            	if (this.isPotionActive(Effects.JUMP_BOOST)) {
+	            		d1 = d0 + (double)((float)(this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F);
 	            	} else {
 	            		d1 = d0;
 	            	}

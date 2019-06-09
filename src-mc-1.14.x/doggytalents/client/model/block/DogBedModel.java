@@ -91,7 +91,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
                 Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(), //New Textures man VERY IMPORTANT
                 this.model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
             newModel.name = this.model.name;
-            newModel.field_178315_d = this.model.field_178315_d;
+            newModel.parent = this.model.parent;
 
             newModel.textures.put("bedding", beddingResource);
             newModel.textures.put("casing", casingResource);

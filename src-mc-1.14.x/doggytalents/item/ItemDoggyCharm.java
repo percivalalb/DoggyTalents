@@ -53,7 +53,7 @@ public class ItemDoggyCharm extends Item {
 	   		}
 
 	   		
-	   		Entity entity = ModEntities.DOG.func_220331_a(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
+	   		Entity entity = ModEntities.DOG.spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
 	   		if(entity instanceof EntityDog) {
 	   			EntityDog dog = (EntityDog)entity;
 	   			if(player != null) {
@@ -73,13 +73,13 @@ public class ItemDoggyCharm extends Item {
 		if(worldIn.isRemote) {
 			return new ActionResult<>(ActionResultType.PASS, itemstack);
 		} else {
-			RayTraceResult raytraceresult = Item.func_219968_a(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
+			RayTraceResult raytraceresult = Item.rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
 			if(raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
 				BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getPos();
 				if(!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
 					return new ActionResult<>(ActionResultType.PASS, itemstack);
 				} else if(worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, ((BlockRayTraceResult)raytraceresult).getFace(), itemstack)) {
-					Entity entity = ModEntities.DOG.func_220331_a(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+					Entity entity = ModEntities.DOG.spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
 					if(entity instanceof EntityDog) {
 			   			EntityDog dog = (EntityDog)entity;
 			   			dog.setTamed(true);
@@ -109,7 +109,7 @@ public class ItemDoggyCharm extends Item {
         dog.renderYawOffset = dog.rotationYaw;
         dog.setTamed(true);
         dog.setOwnerId(playerIn.getUniqueID());
-        worldIn.func_217376_c(dog);
+        worldIn.addEntity(dog);
         dog.playAmbientSound();
 
         return dog;

@@ -1,8 +1,11 @@
-package doggytalents.inventory;
+package doggytalents.inventory.container;
 
-import doggytalents.tileentity.TileEntityFoodBowl;
+import doggytalents.DoggyTalentsMod;
+import doggytalents.ModContainerTypes;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
@@ -12,15 +15,21 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerFoodBowl extends Container {
    
-	private TileEntityFoodBowl tileEntityFoodBowl;
+	private IInventory tileEntityFoodBowl;
 
-    public ContainerFoodBowl(int windowId, IInventory playerInventory, TileEntityFoodBowl tileEntityFoodBowl) {
-    	super(null, windowId); //TODO
-        this.tileEntityFoodBowl = tileEntityFoodBowl;
+	public ContainerFoodBowl(int windowId, PlayerInventory playerInventory) {
+    	this(windowId, playerInventory, new Inventory(5));
+    }
+	
+    public ContainerFoodBowl(int windowId, PlayerInventory playerInventory, IInventory bowlInventory) {
+    	super(ModContainerTypes.FOOD_BOWL, windowId);
+        this.tileEntityFoodBowl = bowlInventory;
+        func_216962_a(bowlInventory, 5);
+        bowlInventory.openInventory(playerInventory.player);
         
         for(int i = 0; i < 1; i++)
             for (int l = 0; l < 5; l++)
-                this.addSlot(new Slot(tileEntityFoodBowl, l + i * 9, 44 + l * 18, 22 + i * 18));
+                this.addSlot(new Slot(bowlInventory, l + i * 9, 44 + l * 18, 22 + i * 18));
 
         for(int j = 0; j < 3; j++)
             for (int i1 = 0; i1 < 9; i1++)

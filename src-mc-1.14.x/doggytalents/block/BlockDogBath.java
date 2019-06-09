@@ -50,7 +50,7 @@ public class BlockDogBath extends Block {
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
 		BlockPos blockpos = pos.down();
 		BlockState blockstate = worldIn.getBlockState(blockpos);
-		return Block.func_220056_d(blockstate, worldIn, blockpos, Direction.UP);
+		return Block.hasSolidSide(blockstate, worldIn, blockpos, Direction.UP);
 	}
 
 	@Override

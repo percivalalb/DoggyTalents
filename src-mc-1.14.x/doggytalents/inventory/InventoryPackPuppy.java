@@ -1,8 +1,11 @@
 package doggytalents.inventory;
 
+import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
+import doggytalents.inventory.container.ContainerPackPuppy;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -54,7 +57,7 @@ public class InventoryPackPuppy extends Inventory implements INamedContainerProv
     
     @Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-		return new ContainerPackPuppy(windowId, player, this.dog);
+		return new ContainerPackPuppy(windowId, inventory, (IInventory)this.dog.objects.get("packpuppyinventory"), this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY));
 	}
 
 	@Override

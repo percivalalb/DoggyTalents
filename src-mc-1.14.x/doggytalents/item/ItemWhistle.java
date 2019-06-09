@@ -142,7 +142,7 @@ public class ItemWhistle extends Item {
     				if(!world.isRemote) {
     					EntityDoggyBeam doggyBeam = new EntityDoggyBeam(ModEntities.DOG_BEAM, world, player);
     		            doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
-    		            world.func_217376_c(doggyBeam);
+    		            world.addEntity(doggyBeam);
     				}
     			} else if(mode == 6) {
     				List<EntityDog> roarDogs = dogsList.stream().filter(dog -> dog.TALENTS.getLevel(ModTalents.ROARING_GALE) > 0).collect(Collectors.toList());
@@ -175,8 +175,8 @@ public class ItemWhistle extends Item {
     	    						if(mob instanceof IMob) {
     	    							hit = true;
     	    							mob.attackEntityFrom(DamageSource.GENERIC, damage);
-    	    							mob.addPotionEffect(new EffectInstance(Effects.field_76421_d, effectDuration, 127, false, false));
-    	    							mob.addPotionEffect(new EffectInstance(Effects.field_188423_x, effectDuration, 1, false, false));
+    	    							mob.addPotionEffect(new EffectInstance(Effects.SLOWNESS, effectDuration, 127, false, false));
+    	    							mob.addPotionEffect(new EffectInstance(Effects.GLOWING, effectDuration, 1, false, false));
     	    							mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
     	    						}
     	    					}

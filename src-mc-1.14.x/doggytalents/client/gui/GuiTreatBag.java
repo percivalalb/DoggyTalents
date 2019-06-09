@@ -2,21 +2,19 @@ package doggytalents.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import doggytalents.inventory.ContainerTreatBag;
+import doggytalents.inventory.container.ContainerTreatBag;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class GuiTreatBag extends ContainerScreen<ContainerTreatBag> {
 
-	public GuiTreatBag(int windowId, PlayerEntity playerIn, int slotIn, ItemStack theBag) {
-		super(new ContainerTreatBag(windowId, playerIn, slotIn, theBag), playerIn.inventory, new TranslationTextComponent("container.doggytalents.treat_bag"));
+    public GuiTreatBag(ContainerTreatBag treatBag, PlayerInventory playerInventory, ITextComponent displayName) {
+        super(treatBag, playerInventory, displayName);
 		this.ySize = 127;
 	}
 	
@@ -29,7 +27,7 @@ public class GuiTreatBag extends ContainerScreen<ContainerTreatBag> {
 	
 	@Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
-        this.font.drawString(I18n.format("container.doggytalents.treat_bag"), 10, 8, 4210752);
+        this.font.drawString(this.title.getFormattedText(), 10.0F, 8.0F, 4210752);
     }
 
 	@Override

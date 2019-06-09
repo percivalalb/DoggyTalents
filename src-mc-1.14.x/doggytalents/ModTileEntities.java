@@ -25,8 +25,8 @@ public class ModTileEntities {
 	    	IForgeRegistry<TileEntityType<?>> tileRegistry = event.getRegistry();
 	    	
 	    	DoggyTalentsMod.LOGGER.info("Registering TileEnities");
-	        tileRegistry.register(TileEntityType.Builder.func_223042_a(TileEntityDogBed::new, ModBlocks.DOG_BED).build(null).setRegistryName(BlockNames.DOG_BED));
-	        tileRegistry.register(TileEntityType.Builder.func_223042_a(TileEntityFoodBowl::new, ModBlocks.FOOD_BOWL).build(null).setRegistryName(BlockNames.FOOD_BOWL));
+	        tileRegistry.register(TileEntityType.Builder.create(TileEntityDogBed::new, ModBlocks.DOG_BED).build(null).setRegistryName(BlockNames.DOG_BED));
+	        tileRegistry.register(TileEntityType.Builder.create(TileEntityFoodBowl::new, ModBlocks.FOOD_BOWL).build(null).setRegistryName(BlockNames.FOOD_BOWL));
 	        DoggyTalentsMod.LOGGER.info("Finished Registering TileEnities");
 	    }
     }

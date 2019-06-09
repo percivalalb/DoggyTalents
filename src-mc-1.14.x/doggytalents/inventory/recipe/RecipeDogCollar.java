@@ -41,7 +41,7 @@ public class RecipeDogCollar extends SpecialRecipe {
                     itemstack = itemstack1;
                 }
                 else {
-                	if(!itemstack1.getItem().isIn(net.minecraftforge.common.Tags.Items.DYES)) {
+                	if(DyeColor.getColor(itemstack1) == null) {
                         return false;
                     }
 

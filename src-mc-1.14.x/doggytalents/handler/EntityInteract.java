@@ -30,7 +30,7 @@ public class EntityInteract {
 				 
 				if(wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
 	
-					if(!player.playerAbilities.isCreativeMode)
+					if(!player.abilities.isCreativeMode)
 						stack.shrink(1);
 					 
 				 	EntityDog dog = ModEntities.DOG.create(world);
@@ -41,7 +41,7 @@ public class EntityInteract {
 				 	dog.setGrowingAge(wolf.getGrowingAge());
 				 	dog.setPositionAndRotation(wolf.posX, wolf.posY, wolf.posZ, wolf.rotationYaw, wolf.rotationPitch);
 				 
-				 	world.func_217376_c(dog);
+				 	world.addEntity(dog);
 				 	
 					wolf.remove();
 					

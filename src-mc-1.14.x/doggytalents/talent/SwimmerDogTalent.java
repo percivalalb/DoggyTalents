@@ -17,7 +17,7 @@ public class SwimmerDogTalent extends Talent {
 		if(dog.TALENTS.getLevel(this) == 5 && dog.getControllingPassenger() instanceof PlayerEntity) {
 			PlayerEntity rider = (PlayerEntity)dog.getControllingPassenger();
 			if(rider.isInWater())
-				rider.addPotionEffect(new EffectInstance(Effects.field_76439_r, 80, 1, true, false));
+				rider.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 80, 1, true, false));
 		}
 	}
 

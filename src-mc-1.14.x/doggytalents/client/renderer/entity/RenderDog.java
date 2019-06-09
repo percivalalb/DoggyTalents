@@ -54,7 +54,7 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
     
     @Override
     protected void renderLivingAt(EntityDog dog, double x, double y, double z) {
-        if(dog.isAlive() && dog.isPlayerSleeping())
+        if(dog.isAlive() && dog.isSleeping())
             super.renderLivingAt(dog, x, y + 0.5F, z);
         else
             super.renderLivingAt(dog, x, y, z);
@@ -100,7 +100,7 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
         		float f = this.field_76990_c.playerViewY;
         		float f1 = this.field_76990_c.playerViewX;
         		boolean flag1 = this.field_76990_c.options.thirdPersonView == 2;
-        		float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isPlayerSleeping() ? 0.5F : 0);
+        		float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isSleeping() ? 0.5F : 0);
         
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);

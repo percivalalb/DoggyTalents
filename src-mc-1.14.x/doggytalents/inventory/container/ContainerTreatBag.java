@@ -1,23 +1,31 @@
-package doggytalents.inventory;
+package doggytalents.inventory.container;
 
+import doggytalents.ModContainerTypes;
+import doggytalents.ModItems;
+import doggytalents.inventory.InventoryTreatBag;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerTreatBag extends Container {
 
-	public PlayerEntity player;
 	public int slot;
 	public ItemStack itemstack;
 	public InventoryTreatBag inventoryTreatBag;
 		
-	public ContainerTreatBag(int windowId, PlayerEntity playerIn, int slotIn, ItemStack itemstackIn) {
-		super(null, windowId); //TODO
-		this.player = playerIn;
+    public ContainerTreatBag(int windowId, PlayerInventory playerInventory) {
+    	this(windowId, playerInventory, 0, ItemStack.EMPTY);
+    }
+	
+	public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
+		super(ModContainerTypes.TREAT_BAG, windowId);
 		this.slot = slotIn;
 		this.itemstack = itemstackIn;
-		this.inventoryTreatBag = new InventoryTreatBag(playerIn, slotIn, this.itemstack);
+		this.inventoryTreatBag = new InventoryTreatBag(playerInventory, slotIn, itemstackIn);
+        func_216962_a(playerInventory, 3 * 5);
+        this.inventoryTreatBag.openInventory(playerInventory.player);
 		
         for(int l = 0; l < 5; l++)
         	this.addSlot(new Slot(this.inventoryTreatBag, l, 44 + l * 18, 22) {
@@ -29,17 +37,16 @@ public class ContainerTreatBag extends Container {
 
         for(int j = 0; j < 3; j++)
             for(int i1 = 0; i1 < 9; i1++)
-            	this.addSlot(new Slot(playerIn.inventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
+            	this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
 
         for(int k = 0; k < 9; k++)
-        	this.addSlot(new Slot(playerIn.inventory, k, 8 + k * 18, 103) {
+        	this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
         		@Override
         		public boolean canTakeStack(PlayerEntity playerIn) {
-        			return this.getSlotIndex() != ContainerTreatBag.this.slot;
+        			return this.getStack().getItem() != ModItems.TREAT_BAG;
         		}
         	});
         
-        this.inventoryTreatBag.openInventory(playerIn);
 	}
 
 	@Override
@@ -52,7 +59,7 @@ public class ContainerTreatBag extends Container {
             itemstack = itemstack1.copy();
 
             if(index < 5) {
-                if(!mergeItemStack(itemstack1, 5, inventorySlots.size(), true)) {
+                if(!mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -74,7 +81,8 @@ public class ContainerTreatBag extends Container {
 	
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return playerIn.inventory.getStackInSlot(this.slot).isItemEqual(this.itemstack);
+		//TODO return playerIn.inventory.getStackInSlot(this.slot).isItemEqual(this.itemstack);
+		return true;
 	}
 
 	@Override

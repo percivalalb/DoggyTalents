@@ -2,6 +2,7 @@ package doggytalents.entity;
 
 import java.util.List;
 
+import doggytalents.ModEntities;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -23,6 +24,10 @@ import net.minecraft.world.World;
 public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem {
 	
 	private ItemStack renderItem;
+	
+	public EntityDoggyBeam(World worldIn) {
+		this(ModEntities.DOG_BEAM, worldIn);
+	}
 	
 	public EntityDoggyBeam(EntityType<EntityDoggyBeam> type, World worldIn) {
 		super(type, worldIn);
@@ -72,7 +77,7 @@ public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem {
 	}
 
 	@Override
-	public ItemStack getPotion() {
+	public ItemStack getItem() {
 		if(this.renderItem == null) {
 			this.renderItem = new ItemStack(Items.SNOWBALL);
 		}

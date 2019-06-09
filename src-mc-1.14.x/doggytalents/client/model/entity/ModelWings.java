@@ -29,15 +29,15 @@ public class ModelWings extends EntityModel<EntityDog> {
 	@Override
 	public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		super.render(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-		this.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+		this.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
 		this.wingA.render(scale);         
 		this.wingB.render(scale);
 	}
   
 	@Override
-	public void func_212843_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float partialTick) {
-		super.func_212843_a_(dogIn, limbSwing, limbSwingAmount, partialTick);
+	public void setLivingAnimations(EntityDog dogIn, float limbSwing, float limbSwingAmount, float partialTick) {
+		super.setLivingAnimations(dogIn, limbSwing, limbSwingAmount, partialTick);
 		if(dogIn.isSitting()) {
 			this.wingA.setRotationPoint(2F, 12.0F, -2.0F);
 			this.setRotation(this.wingA, ((float)Math.PI * 2F / 5F), 0F, 0F);          
@@ -66,8 +66,8 @@ public class ModelWings extends EntityModel<EntityDog> {
 	}
   
 	@Override
-	public void func_212844_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-		super.func_212844_a_(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+	public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
+		super.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
     
 		/*Wing1.rotateAngleY = -1.48353F;
 		Wing2.rotateAngleY = 1.48353F; */   

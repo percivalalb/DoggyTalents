@@ -40,7 +40,7 @@ public class PoisonFangTalent extends Talent {
 	@Override
 	public boolean isPostionApplicable(EntityDog dog, EffectInstance potionEffect) {
         if(dog.TALENTS.getLevel(this) >= 3)
-        	if(potionEffect.getPotion() == Effects.field_76436_u)
+        	if(potionEffect.getPotion() == Effects.POISON)
         		return false;
         
         return true;
@@ -51,7 +51,7 @@ public class PoisonFangTalent extends Talent {
 		int level = dog.TALENTS.getLevel(this);
 		
 		if(entity instanceof LivingEntity && level > 0)
-			((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.field_76436_u, level * 20, 0));
+			((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.POISON, level * 20, 0));
 	    
 		return damage;
 	}

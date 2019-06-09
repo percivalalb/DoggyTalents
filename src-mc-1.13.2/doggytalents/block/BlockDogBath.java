@@ -7,9 +7,20 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -81,4 +92,34 @@ public class BlockDogBath extends Block {
 		return BlockFaceShape.UNDEFINED;
 	}
 
+	@Override
+	public boolean onBlockActivated(IBlockState state, World worldIn, BlockPos pos, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+		ItemStack itemstack = player.getHeldItem(hand);
+		if(itemstack.isEmpty()) {
+			return true;
+		} else {
+			Item item = itemstack.getItem();
+			if(item == Items.GLASS_BOTTLE) {
+				if(!worldIn.isRemote) {
+					if(!player.abilities.isCreativeMode) {
+						ItemStack itemstack4 = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), PotionTypes.WATER);
+						itemstack.shrink(1);
+						if(itemstack.isEmpty()) {
+							player.setHeldItem(hand, itemstack4);
+						} else if(!player.inventory.addItemStackToInventory(itemstack4)) {
+							player.dropItem(itemstack4, false);
+						} else if(player instanceof EntityPlayerMP) {
+							((EntityPlayerMP)player).sendContainerToPlayer(player.inventoryContainer);
+						}
+					}
+
+					worldIn.playSound((EntityPlayer)null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+
+				return true;
+			} else {
+				return false;
+			}
+		} 
+	}
 }

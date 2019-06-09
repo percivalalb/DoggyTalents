@@ -7,13 +7,29 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BannerItem;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
+import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.BannerTileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -65,8 +81,6 @@ public class BlockDogBath extends Block {
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder p_220076_2_) {
 		List<ItemStack> drops = super.getDrops(state, p_220076_2_);
-		DoggyTalentsMod.LOGGER.debug(drops);
-		DoggyTalentsMod.LOGGER.debug(this.getLootTable());
 		return drops; // TODO
 	}
 	
@@ -80,5 +94,36 @@ public class BlockDogBath extends Block {
 	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.SOLID;
+	}
+	
+	@Override
+	public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		ItemStack itemstack = player.getHeldItem(handIn);
+		if(itemstack.isEmpty()) {
+			return true;
+		} else {
+			Item item = itemstack.getItem();
+			if(item == Items.GLASS_BOTTLE) {
+				if(!worldIn.isRemote) {
+					if(!player.abilities.isCreativeMode) {
+						ItemStack itemstack4 = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
+						itemstack.shrink(1);
+						if(itemstack.isEmpty()) {
+							player.setHeldItem(handIn, itemstack4);
+						} else if(!player.inventory.addItemStackToInventory(itemstack4)) {
+							player.dropItem(itemstack4, false);
+						} else if(player instanceof ServerPlayerEntity) {
+							((ServerPlayerEntity)player).sendContainerToPlayer(player.container);
+						}
+					}
+
+					worldIn.playSound((PlayerEntity)null, pos, SoundEvents.ITEM_BOTTLE_FILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				}
+
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }

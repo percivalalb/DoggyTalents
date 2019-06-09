@@ -42,32 +42,4 @@ public class DTClientConfig {
 		
 		builder.pop();
 	}
-	
-	public boolean direParticles() {
-		return this.DIRE_PARTICLES.get().booleanValue();
-	}
-
-	public boolean renderBlood() {
-		return this.RENDER_BLOOD.get().booleanValue();
-	}
-	
-	public boolean doggyWings() {
-		return this.DOGGY_WINGS.get().booleanValue();
-	}
-	
-	public boolean doggyChest() {
-		return this.DOGGY_CHEST.get().booleanValue();
-	}
-	
-	public boolean doggySaddle() {
-		return this.DOGGY_SADDLE.get().booleanValue();
-	}
-	
-	public boolean useDTTextures() {
-		return this.USE_DT_TEXTURES.get().booleanValue();
-	}
-
-	public boolean doggyArmour() {
-		return this.DOGGY_ARMOUR.get().booleanValue();
-	}
 }

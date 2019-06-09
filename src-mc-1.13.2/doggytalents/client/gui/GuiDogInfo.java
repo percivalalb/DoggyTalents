@@ -6,9 +6,9 @@ import java.util.List;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
+import doggytalents.lib.Constants;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketDogMode;
 import doggytalents.network.client.PacketDogName;
@@ -16,7 +16,6 @@ import doggytalents.network.client.PacketDogObey;
 import doggytalents.network.client.PacketDogTalent;
 import doggytalents.network.client.PacketDogTexture;
 import doggytalents.network.client.PacketFriendlyFire;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -90,7 +89,7 @@ public class GuiDogInfo extends GuiScreen {
 		
 		int size = DoggyTalentsAPI.TALENTS.getKeys().size();
 		
-  		this.btnPerPages = Math.max(MathHelper.floor((double)(Minecraft.getInstance().mainWindow.getScaledHeight() - 10) / 21) - 2, 1);
+  		this.btnPerPages = Math.max(MathHelper.floor((double)(this.mc.mainWindow.getScaledHeight() - 10) / 21) - 2, 1);
     	
     	if(this.btnPerPages < size) {
     		this.addButton(new GuiButton(-1, 25, this.btnPerPages * 21 + 10, 20, 20, "<") {
@@ -133,7 +132,7 @@ public class GuiDogInfo extends GuiScreen {
     		});
     	}
     	
-    	if(ConfigHandler.CLIENT.useDTTextures()) {
+    	if(Constants.USE_DT_TEXTURES) {
 	    	this.addButton(new GuiButton(-3, this.width - 42, topY + 30, 20, 20, "+") {
 				@Override
 				public void onClick(double mouseX, double mouseY) {
@@ -222,14 +221,14 @@ public class GuiDogInfo extends GuiScreen {
 		this.fontRenderer.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
 		this.fontRenderer.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
-		if(ConfigHandler.COMMON.dogGender()) this.fontRenderer.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
+		if(Constants.DOG_GENDER) this.fontRenderer.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
 		
 		this.fontRenderer.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
 		this.fontRenderer.drawString(I18n.format("doggui.level") + " " + this.dog.LEVELS.getLevel(), topX - 65, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.format("doggui.leveldire") + " " + this.dog.LEVELS.getDireLevel(), topX, topY + 75, 0xFF10F9);
 		this.fontRenderer.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
-		if(ConfigHandler.CLIENT.useDTTextures()) 
+		if(Constants.USE_DT_TEXTURES) 
 			this.fontRenderer.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
 		
 	    if(this.dog.isOwner(this.player))

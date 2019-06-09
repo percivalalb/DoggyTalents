@@ -18,7 +18,6 @@ import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIDogFeed;
@@ -271,7 +270,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	
 	@Override
     protected SoundEvent getAmbientSound() {
-        if(this.getDogHunger() <= Constants.LOW_HUNGER && ConfigHandler.COMMON.whineWhenHungerLow()) {
+        if(this.getDogHunger() <= Constants.LOW_HUNGER && Constants.DOG_WHINE_WHEN_HUNGER_LOW) {
             return SoundEvents.ENTITY_WOLF_WHINE;
         } else if(this.rand.nextInt(3) == 0) {
             return this.isTamed() && this.dataManager.get(DATA_HEALTH_ID) < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
@@ -343,7 +342,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
         
         if(compound.contains("dogGender", 8)) this.setGender(compound.getString("dogGender"));
-        else if(ConfigHandler.COMMON.dogGender()) this.setGender(this.rand.nextInt(2) == 0 ? "male" : "female");
+        else if(Constants.DOG_GENDER) this.setGender(this.rand.nextInt(2) == 0 ? "male" : "female");
         if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInt("boneVariant"));
         if(compound.contains("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, Optional.of(ITextComponent.Serializer.fromJson(compound.getString("lastKnownOwnerName"))));
         
@@ -365,7 +364,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 			this.world.setEntityState(this, (byte)8);
 		}
         
-        if (ConfigHandler.COMMON.hungerOn()) {
+        if (Constants.IS_HUNGER_ON) {
             this.prevHungerTick = this.hungerTick;
 
             if (!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
@@ -379,7 +378,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
             }
         }
 
-        if (ConfigHandler.COMMON.dogsImmortal()) {
+        if (Constants.DOGS_IMMORTAL) {
             this.prevRegenerationTick = this.regenerationTick;
 
             if (this.isSitting()) {
@@ -417,7 +416,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
             this.setHealth(1);
         }
 
-        if(this.world.isRemote && this.LEVELS.isDireDog() && ConfigHandler.CLIENT.direParticles())
+        if(this.world.isRemote && this.LEVELS.isDireDog() && Constants.DIRE_PARTICLES)
             for (int i = 0; i < 2; i++)
                 this.world.addParticle(Particles.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * (double) this.width, (this.posY + rand.nextDouble() * (double) height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * (double) this.width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
 
@@ -541,10 +540,8 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
         if(this.generalTick < 0) {
         	if(!this.world.isRemote) {
 		        if(this.isAlive()) { //Prevent the data from being added when the entity dies
-		            if(ConfigHandler.COMMON.debugMode()) DoggyTalentsMod.LOGGER.debug("Update/Add Request From Living");
 		            this.locationManager.update(this);
 		        } else {
-		            if(ConfigHandler.COMMON.debugMode()) DoggyTalentsMod.LOGGER.debug("Remove Request From Living");
 		            this.locationManager.remove(this);
 		        }
 		        
@@ -604,9 +601,9 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
-                           babySpawn.setGrowingAge(-24000 * (ConfigHandler.COMMON.tenDayPups() ? 10 : 1));
+                           babySpawn.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
                            babySpawn.setTamed(true);
-                           if(ConfigHandler.COMMON.pupsGetParentLevels()) {
+                           if(Constants.PUPS_GET_PARENT_LEVELS) {
                                babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
                            }
                            
@@ -908,9 +905,9 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
             entitydog.setTamed(true);
         }
 
-        entitydog.setGrowingAge(-24000 * (ConfigHandler.COMMON.tenDayPups() ? 10 : 1));
+        entitydog.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
 
-        if(ConfigHandler.COMMON.pupsGetParentLevels() && entityAgeable instanceof EntityDog) {
+        if(Constants.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
             int combinedLevel = this.LEVELS.getLevel() + ((EntityDog)entityAgeable).LEVELS.getLevel();
             combinedLevel /= 2;
             combinedLevel = Math.min(combinedLevel, 20);
@@ -1207,7 +1204,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
    	}
 	
 	public boolean isImmortal() {
-		return this.isTamed() && ConfigHandler.COMMON.dogsImmortal() || this.LEVELS.isDireDog();
+		return this.isTamed() && Constants.DOGS_IMMORTAL || this.LEVELS.isDireDog();
 	}
 	
 	public boolean isIncapacicated() {

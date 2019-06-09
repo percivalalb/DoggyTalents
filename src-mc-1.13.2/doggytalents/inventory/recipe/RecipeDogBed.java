@@ -24,7 +24,7 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
 
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
-		if (!(inv instanceof InventoryCrafting)) {
+		if(!(inv instanceof InventoryCrafting)) {
 	         return false;
 		}
 		BedMaterial beddingId = null;
@@ -37,7 +37,7 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
             for(int row = 0; row < 3; ++row) {
             	if((col == 1 && row == 0) || (col == 1 && row == 1)) {
             		BedMaterial id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(id == null || (!id.equals(beddingId) && beddingSel))
+            		if(id == BedMaterial.NULL || (!id.equals(beddingId) && beddingSel))
             			return false;
                 		
             		beddingSel = true;
@@ -46,7 +46,7 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
             	}
             	else {
             		BedMaterial id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(id == null || (!id.equals(casingId) && casingSel))
+            		if(id == BedMaterial.NULL || (!id.equals(casingId) && casingSel))
                 		return false;
                 		
             		casingSel = true;
@@ -60,8 +60,6 @@ public class RecipeDogBed extends IRecipeHidden implements IShapedRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(IInventory inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
-		
 		BedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
 		BedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
 		

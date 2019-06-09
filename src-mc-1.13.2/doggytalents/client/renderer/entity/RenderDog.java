@@ -13,8 +13,8 @@ import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
-import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
+import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -40,10 +40,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
         
         this.addLayer(new LayerCover(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_SUNGLASSES, EntityDog::hasSunglasses));
         
-        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigHandler.CLIENT.doggyArmour() && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
-        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigHandler.CLIENT.doggyWings() && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
-        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigHandler.CLIENT.doggySaddle() && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
-        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigHandler.CLIENT.doggyChest() && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
+        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> Constants.DOGGY_ARMOUR && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> Constants.DOGGY_WINGS && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
+        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> Constants.DOGGY_SADDLE && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
+        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> Constants.DOGGY_CHEST && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(ConfigHandler.CLIENT.useDTTextures())
+    	if(Constants.USE_DT_TEXTURES)
      		return ResourceLib.getTameSkin(dog.getTameSkin());
      	else
      		return ResourceLib.MOB_DOG_TAME;

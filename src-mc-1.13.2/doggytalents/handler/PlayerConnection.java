@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
 import doggytalents.ModItems;
-import doggytalents.configuration.ConfigHandler;
+import doggytalents.lib.Constants;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +21,7 @@ public class PlayerConnection {
         
         NBTTagCompound persistTag = tag.getCompound(EntityPlayer.PERSISTED_NBT_TAG);
         
-		if(ConfigHandler.COMMON.startingItems() && !persistTag.getBoolean("gotDTStartingItems")) {
+		if(Constants.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
 			persistTag.putBoolean("gotDTStartingItems", true);
 
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));

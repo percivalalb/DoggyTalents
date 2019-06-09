@@ -1,6 +1,5 @@
 package doggytalents.handler;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketJump;
@@ -22,7 +21,6 @@ public class InputUpdate {
 				EntityDog dog = (EntityDog)entity;
 				
 				if(dog.canJump()) {
-					DoggyTalentsMod.LOGGER.debug("SEND PACKET");
 					dog.setJumpPower(100);
 					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
 				}

@@ -1239,7 +1239,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 	
 	public boolean canWander() {
-		return this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 256.0D;
 	}
 	
 	public boolean canInteract(PlayerEntity player) {

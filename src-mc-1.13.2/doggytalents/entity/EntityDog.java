@@ -1220,7 +1220,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
     }
 	
 	public boolean canWander() {
-		return this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
 	}
 	
 	public boolean canInteract(EntityPlayer player) {

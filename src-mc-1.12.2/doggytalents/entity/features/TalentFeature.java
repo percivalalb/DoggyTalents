@@ -100,6 +100,7 @@ public class TalentFeature extends DogFeature {
 	}
 	
 	public void resetTalents() {
+		this.dog.getTalentMap().forEach((talent, fromLevel) -> talent.onLevelReset(this.dog, fromLevel));
 		this.dog.setTalentMap(Collections.emptyMap());
 	}
 }

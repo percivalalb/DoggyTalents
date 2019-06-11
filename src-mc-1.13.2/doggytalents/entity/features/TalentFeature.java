@@ -32,7 +32,7 @@ public class TalentFeature extends DogFeature {
 		Map<Talent, Integer> map = this.dog.getTalentMap();
 		for(Entry<Talent, Integer> entry : map.entrySet()) {
 			NBTTagCompound subCompound = new NBTTagCompound();
-			subCompound.putString("talent", entry.getKey().getRegistryName().toString());
+			subCompound.putString("talent", DoggyTalentsAPI.TALENTS.getKey(entry.getKey()).toString());
 			subCompound.putInt("level", entry.getValue());
 			list.add(subCompound);
 		}
@@ -100,6 +100,7 @@ public class TalentFeature extends DogFeature {
 	}
 	
 	public void resetTalents() {
+		this.dog.getTalentMap().forEach((talent, fromLevel) -> talent.onLevelReset(this.dog, fromLevel));
 		this.dog.setTalentMap(Collections.emptyMap());
 	}
 }

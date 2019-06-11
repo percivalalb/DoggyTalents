@@ -882,12 +882,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 this.world.addEntity(wolf);
             }
             return true;
-        } else if(stack.getItem() == Items.BONE) {
+        } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
         	if(!player.abilities.isCreativeMode)
         		stack.shrink(1);
 
         	if(!this.world.isRemote) {
-                if(this.rand.nextInt(3) == 0) {
+                if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);

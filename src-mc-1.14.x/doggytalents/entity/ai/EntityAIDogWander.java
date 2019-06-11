@@ -33,7 +33,7 @@ public class EntityAIDogWander extends WaterAvoidingRandomWalkingGoal {
 	@Override
 	@Nullable
 	protected Vec3d getPosition() {
-		return this.wandering ? this.generateRandomPos(this.dog) : RandomPositionGenerator.findRandomTarget(this.dog, 7, 4);
+		return this.wandering ? this.generateRandomPos(this.dog) : super.getPosition();
 	}
 	
 	private Vec3d generateRandomPos(EntityDog dog) {

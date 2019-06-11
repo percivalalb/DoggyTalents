@@ -1,6 +1,5 @@
 package doggytalents.inventory.container;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModContainerTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -17,10 +16,12 @@ public class ContainerFoodBowl extends Container {
    
 	private IInventory tileEntityFoodBowl;
 
+	//CLient method
 	public ContainerFoodBowl(int windowId, PlayerInventory playerInventory) {
     	this(windowId, playerInventory, new Inventory(5));
     }
 	
+	//Server method
     public ContainerFoodBowl(int windowId, PlayerInventory playerInventory, IInventory bowlInventory) {
     	super(ModContainerTypes.FOOD_BOWL, windowId);
         this.tileEntityFoodBowl = bowlInventory;

@@ -1,14 +1,20 @@
 package doggytalents;
 
+import doggytalents.entity.EntityDog;
 import doggytalents.inventory.container.ContainerFoodBowl;
 import doggytalents.inventory.container.ContainerPackPuppy;
 import doggytalents.inventory.container.ContainerTreatBag;
 import doggytalents.lib.GuiNames;
 import doggytalents.lib.Reference;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.network.IContainerFactory;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -28,7 +34,19 @@ public class ModContainerTypes {
 	    	
 	    	DoggyTalentsMod.LOGGER.info("Registering Containers");
 	        containerRegistry.register(new ContainerType<ContainerFoodBowl>(ContainerFoodBowl::new).setRegistryName(GuiNames.FOOD_BOWL));
-	        containerRegistry.register(new ContainerType<ContainerPackPuppy>(ContainerPackPuppy::new).setRegistryName(GuiNames.PACK_PUPPY));
+	        containerRegistry.register(new ContainerType<ContainerPackPuppy>(new IContainerFactory<ContainerPackPuppy>() {
+
+				@Override
+				public ContainerPackPuppy create(int windowId, PlayerInventory inv, PacketBuffer data) {
+					Entity entity = inv.player.world.getEntityByID(data.readInt());
+					if(entity instanceof EntityDog) {
+						return new ContainerPackPuppy(windowId, inv, (EntityDog)entity);
+					} else {
+						return null;
+					}
+				}
+	        	
+	        }).setRegistryName(GuiNames.PACK_PUPPY));
 	        containerRegistry.register(new ContainerType<ContainerTreatBag>(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
 	        DoggyTalentsMod.LOGGER.info("Finished Registering Containers");
 	    }

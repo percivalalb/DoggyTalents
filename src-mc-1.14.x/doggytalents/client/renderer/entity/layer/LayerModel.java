@@ -41,7 +41,7 @@ public class LayerModel extends LayerRenderer<EntityDog, ModelDog> {
             this.func_215333_a(this.resource);
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             
-        	this.model.func_217111_a(this.func_215332_c());
+            this.func_215332_c().func_217111_a(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             this.model.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }

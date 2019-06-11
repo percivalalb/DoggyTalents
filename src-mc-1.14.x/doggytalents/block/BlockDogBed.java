@@ -157,11 +157,6 @@ public class BlockDogBed extends ContainerBlock {
 		builder.add(FACING, CASING, BEDDING);
 	}
 	
-	//@OnlyIn(Dist.CLIENT)
-    //public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
-    //    return worldIn.getCombinedLight(pos, 0);
-    //}
-	
 	@Override
 	public boolean isSolid(BlockState state) {
 		return false;
@@ -197,9 +192,7 @@ public class BlockDogBed extends ContainerBlock {
 	
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		return Block.hasSolidSide(blockstate, worldIn, blockpos, Direction.UP);
+		return func_220055_a(worldIn, pos.down(), Direction.UP);
 	}
 	
 	@Override

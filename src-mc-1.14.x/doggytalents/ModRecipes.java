@@ -22,7 +22,7 @@ public class ModRecipes {
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
-	    
+
 	    @SubscribeEvent
 	    public static void registerSoundEvents(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
 	    	IForgeRegistry<IRecipeSerializer<?>> recipeRegistry = event.getRegistry();

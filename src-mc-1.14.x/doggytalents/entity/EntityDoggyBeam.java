@@ -14,16 +14,27 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnMobPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 
-/**
- * @author ProPercivalalb
- */
+@OnlyIn(
+	value = Dist.CLIENT,
+	_interface = IRendersAsItem.class
+)
 public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem {
 	
 	private ItemStack renderItem;
+	
+	public EntityDoggyBeam(SpawnEntity packet, World worldIn) {
+		this(ModEntities.DOG_BEAM, worldIn);
+	}
 	
 	public EntityDoggyBeam(World worldIn) {
 		this(ModEntities.DOG_BEAM, worldIn);
@@ -82,5 +93,10 @@ public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem {
 			this.renderItem = new ItemStack(Items.SNOWBALL);
 		}
 		return this.renderItem;
+	}
+	
+	@Override
+	public IPacket<?> createSpawnPacket() {
+		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 public class ItemTreatBag extends Item {
 
@@ -32,7 +33,7 @@ public class ItemTreatBag extends Item {
 			if(bagInventory != null) {
                 if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
-                    entityPlayerMP.openContainer(bagInventory);
+                    NetworkHooks.openGui(entityPlayerMP, bagInventory, buf -> buf.writeByte(slotId));
                 }
             }
 			

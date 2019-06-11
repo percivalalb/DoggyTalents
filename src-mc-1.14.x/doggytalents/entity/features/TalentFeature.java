@@ -12,6 +12,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.Compatibility;
+import doggytalents.lib.Constants;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
@@ -32,7 +33,7 @@ public class TalentFeature extends DogFeature {
 		Map<Talent, Integer> map = this.dog.getTalentMap();
 		for(Entry<Talent, Integer> entry : map.entrySet()) {
 			CompoundNBT subCompound = new CompoundNBT();
-			subCompound.putString("talent", entry.getKey().getRegistryName().toString());
+			subCompound.putString("talent", DoggyTalentsAPI.TALENTS.getKey(entry.getKey()).toString());
 			subCompound.putInt("level", entry.getValue());
 			list.add(subCompound);
 		}
@@ -54,7 +55,7 @@ public class TalentFeature extends DogFeature {
     			ResourceLocation talentId = new ResourceLocation(subCompound.getString("talent"));
     			int level = subCompound.getInt("level");
     			
-    			if(DoggyTalentsAPI.TALENTS.containsKey(talentId)) // Only load talent if enabled in config
+    			if(DoggyTalentsAPI.TALENTS.containsKey(talentId)) // Only load if talent exists
     				talentMap.put(DoggyTalentsAPI.TALENTS.getValue(talentId), level);
     		}
     		
@@ -71,7 +72,7 @@ public class TalentFeature extends DogFeature {
 						continue;
 					}
 					
-					if(talent != null) // Only load talent if enabled in config
+					if(talent != null) // Only load if talent exists
 						talentMap.put(talent, level);
 				}
 			}
@@ -89,7 +90,7 @@ public class TalentFeature extends DogFeature {
 	
 	public int getLevel(@Nullable Talent talent) {
 		Map<Talent, Integer> map = this.dog.getTalentMap();
-		return map.containsKey(talent) ? map.get(talent) : 0;
+		return map.containsKey(talent) && Constants.ENABLED_TALENTS.getOrDefault(DoggyTalentsAPI.TALENTS.getKey(talent), false) ? map.get(talent) : 0;
 	}
 	
 	public void setLevel(@Nonnull Talent talent, int level) {

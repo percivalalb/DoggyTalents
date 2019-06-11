@@ -18,6 +18,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 /**
  * @author ProPercivalalb
@@ -59,7 +60,7 @@ public class PackPuppyTalent extends Talent {
 	    				if(inventory != null) {
 	    	                if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer)) {
 	    	                    ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)player;
-	    	                    entityPlayerMP.openContainer(inventory);
+	    	                    NetworkHooks.openGui(entityPlayerMP, inventory, buf -> buf.writeInt(dog.getEntityId()));
 	    	                }
 	    	            }
 	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);

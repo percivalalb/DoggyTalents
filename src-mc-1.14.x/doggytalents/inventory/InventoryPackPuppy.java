@@ -57,7 +57,7 @@ public class InventoryPackPuppy extends Inventory implements INamedContainerProv
     
     @Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-		return new ContainerPackPuppy(windowId, inventory, (IInventory)this.dog.objects.get("packpuppyinventory"), this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY));
+		return new ContainerPackPuppy(windowId, inventory, (IInventory)this.dog.objects.get("packpuppyinventory"), this.dog);
 	}
 
 	@Override

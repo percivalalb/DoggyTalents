@@ -193,7 +193,6 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		this.tasks.addTask(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
 		this.tasks.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(11, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(12, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(13, new EntityAIBegDog(this, 8.0F));
 		this.tasks.addTask(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));

@@ -82,10 +82,6 @@ public class DogLocationManager extends WorldSavedData {
 		}
 	}
 
-	public boolean axisCoordEqual(double a, double b) {
-		return Math.abs(a - b) < 1e-4;
-	}
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		if(nbt.hasKey("dog_locations", 9)) {

@@ -189,7 +189,6 @@ public class EntityDog extends EntityTameable {
 		this.tasks.addTask(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
 		this.tasks.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(11, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(12, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(13, new EntityAIBegDog(this, 8.0F));
 		this.tasks.addTask(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -993,16 +992,6 @@ public class EntityDog extends EntityTameable {
     public boolean getAlwaysRenderNameTagForRender() {
         return this.hasCustomName();
     }
-
-    @Override
-    public void onDeath(DamageSource cause) {
-        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
-            System.out.println("From onDeath");
-            this.locationManager.remove(this); //TODO can't figure out why on death the dog won't be removed
-            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
-        }
-        
-    }
     
     @Override
     protected boolean isMovementBlocked() {
@@ -1112,6 +1101,18 @@ public class EntityDog extends EntityTameable {
     	super.onRemovedFromWorld();
     	if(!this.world.isRemote && !this.isEntityAlive())
     		this.locationManager.remove(this);
+    }
+    
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
+            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
+        }
+        
+        if(!this.world.isRemote && !this.isImmortal()) {
+        	 this.locationManager.remove(this);
+        }
     }
     
     @Override
@@ -1243,7 +1244,7 @@ public class EntityDog extends EntityTameable {
         Item item = stack.getItem();
 
         if (stack.getItem() != Items.ROTTEN_FLESH && item instanceof ItemFood) {
-            ItemFood itemfood = (ItemFood) item;
+            ItemFood itemfood = (ItemFood)item;
 
             if (itemfood.isWolfsFavoriteMeat())
                 foodValue = 40;

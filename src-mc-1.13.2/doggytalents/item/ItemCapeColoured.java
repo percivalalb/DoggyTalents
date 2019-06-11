@@ -30,8 +30,8 @@ public class ItemCapeColoured extends Item {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		
 		int[] rgb = WHITE;
-		if(stack.hasTag() && stack.getTag().contains("cap_colour")) {
-			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("cap_colour"));
+		if(stack.hasTag() && stack.getTag().contains("cape_colour")) {
+			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("cape_colour"));
 		}
 
 		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));

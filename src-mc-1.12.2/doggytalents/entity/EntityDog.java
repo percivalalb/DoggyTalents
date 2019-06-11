@@ -1613,9 +1613,9 @@ public class EntityDog extends EntityTameable {
     @Override
     public boolean shouldDismountInWater(Entity rider) {
         if(!TalentHelper.shouldDismountInWater(this, rider))
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
     
     @Override

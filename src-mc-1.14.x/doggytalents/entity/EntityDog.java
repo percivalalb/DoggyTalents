@@ -1633,9 +1633,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
         if (!TalentHelper.shouldDismountInWater(this, rider))
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
     
     @Override

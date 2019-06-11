@@ -153,7 +153,7 @@
    "dog.gender.neuter.subject": "它",
    "dog.gender.neuter.title": "狗",
    "entity.doggytalents.dog": "狗",
-   "dog.owner.unknown": "未知主人",
+   "entity.doggytalents.dog.untamed": "未知主人",
    "doggytalents.whistle.short": "短哨子",
    "doggytalents.whistle.long": "长哨子",
    "dogcommand.come": "起立！",

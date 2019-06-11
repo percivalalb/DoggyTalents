@@ -122,7 +122,7 @@ public class EntityDog extends EntityTameable {
 	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
-	private static final DataParameter<ITextComponent> 			LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, DataSerializers.TEXT_COMPONENT);
+	private static final DataParameter<Optional<ITextComponent>>LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, ModSerializers.OPTIONAL_TEXT_COMPONENT_SERIALIZER.get());
 	
 	public DogLocationManager locationManager;
 	
@@ -223,7 +223,7 @@ public class EntityDog extends EntityTameable {
         this.dataManager.register(SUNGLASSES, false);
         this.dataManager.register(SIZE, Integer.valueOf(3));
         this.dataManager.register(GENDER_PARAM, this.getRandom().nextInt(2) == 0 ? "male" : "female");
-        this.dataManager.register(LAST_KNOWN_NAME, new TextComponentString("")); // TODO
+        this.dataManager.register(LAST_KNOWN_NAME, Optional.absent());
 	}
     
     @Override
@@ -317,7 +317,7 @@ public class EntityDog extends EntityTameable {
         if(this.getGender().equals("male") || this.getGender().equals("female")) compound.setString("dogGender", this.getGender());
         compound.setBoolean("hasBone", this.hasBone());
         if(this.hasBone()) compound.setInteger("boneVariant", this.getBoneVariant());
-        compound.setString("lastKnownOwnerName", ITextComponent.Serializer.componentToJson(this.dataManager.get(LAST_KNOWN_NAME)));
+        if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) compound.setString("lastKnownOwnerName", ITextComponent.Serializer.componentToJson(this.dataManager.get(LAST_KNOWN_NAME).get()));
         
         TalentHelper.writeAdditional(this, compound);
     }
@@ -340,7 +340,7 @@ public class EntityDog extends EntityTameable {
         if(compound.hasKey("dogGender", 8)) this.setGender(compound.getString("dogGender"));
         else if(Constants.DOG_GENDER) this.setGender(this.rand.nextInt(2) == 0 ? "male" : "female");
         if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInteger("boneVariant"));
-        if(compound.hasKey("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, ITextComponent.Serializer.jsonToComponent(compound.getString("lastKnownOwnerName")));
+        if(compound.hasKey("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, Optional.of(ITextComponent.Serializer.jsonToComponent(compound.getString("lastKnownOwnerName"))));
 
         TalentHelper.readAdditional(this, compound);
 
@@ -547,8 +547,9 @@ public class EntityDog extends EntityTameable {
 		            this.locationManager.remove(this);
 		        }
 		        
-	        	if(this.getOwner() != null)
-	        		this.dataManager.set(LAST_KNOWN_NAME, this.getOwner().getDisplayName());
+		        
+		        if(this.getOwner() != null)
+	        		this.dataManager.set(LAST_KNOWN_NAME, Optional.fromNullable(this.getOwner().getDisplayName()));
         	}
         	
         	
@@ -827,7 +828,8 @@ public class EntityDog extends EntityTameable {
                             this.aiSit.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
-                            this.setOwnerId(UUID.randomUUID());
+                            this.setOwnerId(null);
+                            this.dataManager.set(LAST_KNOWN_NAME, Optional.absent());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
                             if(this.hasRadarCollar())
@@ -1303,12 +1305,12 @@ public class EntityDog extends EntityTameable {
     public ITextComponent getOwnersName() {
     	if(this.getOwner() != null) {
 			return this.getOwner().getDisplayName();
-		} else if(this.dataManager.get(LAST_KNOWN_NAME) != null) {
-			return this.dataManager.get(LAST_KNOWN_NAME);
+		} else if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) {
+			return this.dataManager.get(LAST_KNOWN_NAME).get();
 		} else if(this.getOwnerId() != null) {
 			return new TextComponentString(this.getOwnerId().toString());
 		} else {
-			return new TextComponentString("dog.owner.unknown");
+			return new TextComponentTranslation("entity.doggytalents.dog.untamed");
 		}
 	}
     

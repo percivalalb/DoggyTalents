@@ -763,7 +763,8 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
                             this.aiSit.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
-                            this.setOwnerId(UUID.randomUUID());
+                            this.setOwnerId(null);
+                            this.dataManager.set(LAST_KNOWN_NAME, Optional.empty());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
                             if(this.hasRadarCollar())
@@ -1303,7 +1304,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		} else if(this.getOwnerId() != null) {
 			return new TextComponentString(this.getOwnerId().toString());
 		} else {
-			return new TextComponentString("dog.owner.unknown");
+			return new TextComponentTranslation("entity.doggytalents.dog.untamed");
 		}
 	}
     

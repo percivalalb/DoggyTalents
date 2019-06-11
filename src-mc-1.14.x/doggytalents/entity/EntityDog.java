@@ -775,7 +775,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                             this.field_70911_d.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
-                            this.setOwnerId(UUID.randomUUID());
+                            this.setOwnerId(null);
+                            this.dataManager.set(LAST_KNOWN_NAME, Optional.empty());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
                             if(this.hasRadarCollar())
@@ -1319,7 +1320,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		} else if(this.getOwnerId() != null) {
 			return new StringTextComponent(this.getOwnerId().toString());
 		} else {
-			return new StringTextComponent("dog.owner.unknown");
+			return new TranslationTextComponent("entity.doggytalents.dog.untamed");
 		}
 	}
     

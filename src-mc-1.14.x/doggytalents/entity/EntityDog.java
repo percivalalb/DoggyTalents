@@ -134,6 +134,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	public ModeFeature MODE;
 	public CoordFeature COORDS;
 	public DogGenderFeature GENDER;
+	public DogStats STATS;
 	private List<DogFeature> FEATURES;
 	
 	public Map<String, Object> objects;
@@ -168,7 +169,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.MODE = new ModeFeature(this);
 		this.COORDS = new CoordFeature(this);
 		this.GENDER = new DogGenderFeature(this);
-		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS);
+		this.STATS = new DogStats(this);
+		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
 		if(worldIn instanceof ServerWorld)
 			this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
 		this.objects = new HashMap<String, Object>();

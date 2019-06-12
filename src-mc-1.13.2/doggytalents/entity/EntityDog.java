@@ -135,6 +135,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	public ModeFeature MODE;
 	public CoordFeature COORDS;
 	public DogGenderFeature GENDER;
+	public DogStats STATS;
 	private List<DogFeature> FEATURES;
 	
 	public Map<String, Object> objects;
@@ -169,7 +170,8 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		this.MODE = new ModeFeature(this);
 		this.COORDS = new CoordFeature(this);
 		this.GENDER = new DogGenderFeature(this);
-		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS);
+		this.STATS = new DogStats(this);
+		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
 		this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
 		this.objects = new HashMap<String, Object>();
 		this.setSize(0.6F, 0.85F);

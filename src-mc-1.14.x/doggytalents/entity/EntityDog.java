@@ -29,7 +29,6 @@ import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
-import doggytalents.entity.ai.EntityAIOwnerTool;
 import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.entity.ai.EntityBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
@@ -192,7 +191,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
 		this.goalSelector.addGoal(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
 		this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
-		this.goalSelector.addGoal(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
 		this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.goalSelector.addGoal(11, new BreedGoal(this, 1.0D));
 		//this.goalSelector.addGoal(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));

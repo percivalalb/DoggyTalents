@@ -24,10 +24,10 @@ import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
+import doggytalents.entity.ai.EntityAIFindWater;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
-import doggytalents.entity.ai.EntityAIOwnerTool;
 import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.entity.ai.EntityBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
@@ -182,6 +182,7 @@ public class EntityDog extends EntityTameable {
     protected void initEntityAI() {
     	this.aiSit = new EntityAISit(this);
 		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIFindWater(this, 1.0D, 16));
 		this.tasks.addTask(2, this.aiSit);
 		this.tasks.addTask(3, new EntityAIFetchReturn(this, 1.0D));
 		this.tasks.addTask(4, new EntityAIDogWander(this, 1.0D));
@@ -190,7 +191,6 @@ public class EntityDog extends EntityTameable {
 		this.tasks.addTask(6, new EntityAIAttackMelee(this, 1.0D, true));
 		this.tasks.addTask(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
 		this.tasks.addTask(8, new EntityAIFetch(this, 1.0D, 32));
-		this.tasks.addTask(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
 		this.tasks.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(11, new EntityAIMate(this, 1.0D));
 		this.tasks.addTask(13, new EntityAIBegDog(this, 8.0F));

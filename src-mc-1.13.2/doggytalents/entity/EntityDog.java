@@ -1301,7 +1301,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		} else if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) {
 			return this.dataManager.get(LAST_KNOWN_NAME).get();
 		} else if(this.getOwnerId() != null) {
-			return new TextComponentString(this.getOwnerId().toString());
+			return new TextComponentTranslation("entity.doggytalents.dog.unknown_owner");
 		} else {
 			return new TextComponentTranslation("entity.doggytalents.dog.untamed");
 		}

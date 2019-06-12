@@ -1318,7 +1318,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		} else if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) {
 			return this.dataManager.get(LAST_KNOWN_NAME).get();
 		} else if(this.getOwnerId() != null) {
-			return new StringTextComponent(this.getOwnerId().toString());
+			return new TranslationTextComponent("entity.doggytalents.dog.unknown_owner");
 		} else {
 			return new TranslationTextComponent("entity.doggytalents.dog.untamed");
 		}

@@ -65,7 +65,7 @@ public class EntityAIBegDog extends EntityAIBase {
 	private boolean hasTemptationItemInHand(EntityPlayer player) {
 		for (EnumHand enumhand : EnumHand.values()) {
 			ItemStack itemstack = player.getHeldItem(enumhand);
-			if(this.dog.isTamed() && !itemstack.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
+			if((this.dog.isTamed() ? DoggyTalentsAPI.BEG_TAMED_WHITELIST : DoggyTalentsAPI.BEG_UNTAMED_WHITELIST).containsItem(itemstack))
             	return true;
 
             if(this.dog.foodValue(itemstack) > 0)

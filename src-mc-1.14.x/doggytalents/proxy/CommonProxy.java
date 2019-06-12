@@ -49,18 +49,6 @@ public class CommonProxy {
     
     protected void postInit(InterModProcessEvent event) {
         DoggyTalentsMod.LOGGER.debug("CommonProxy postInit");
-        
-        DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE, ModItems.THROW_BONE_WET);
-        DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_STICK, ModItems.THROW_STICK_WET);
-		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_STICK);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.TRAINING_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.SUPER_TREAT);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.DIRE_TREAT);
-        
 		AddonManager.runRegisteredAddons();
     }
     

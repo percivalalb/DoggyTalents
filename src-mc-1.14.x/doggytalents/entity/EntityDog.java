@@ -15,6 +15,7 @@ import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.ModItems;
 import doggytalents.ModSerializers;
+import doggytalents.ModTags;
 import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
@@ -929,7 +930,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
-		return DoggyTalentsAPI.BREED_WHITELIST.containsItem(stack);
+		return stack.getItem().isIn(ModTags.BREEDING_ITEMS);
 	}
 	
 	@Override

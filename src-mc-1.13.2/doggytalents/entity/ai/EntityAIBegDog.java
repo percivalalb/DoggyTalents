@@ -1,5 +1,6 @@
 package doggytalents.entity.ai;
 
+import doggytalents.ModTags;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIBase;
@@ -65,7 +66,7 @@ public class EntityAIBegDog extends EntityAIBase {
 	private boolean hasTemptationItemInHand(EntityPlayer player) {
 		for (EnumHand enumhand : EnumHand.values()) {
 			ItemStack itemstack = player.getHeldItem(enumhand);
-			if(this.dog.isTamed() && !itemstack.isEmpty() && DoggyTalentsAPI.BEG_WHITELIST.containsItem(itemstack))
+			if(itemstack.getItem().isIn(this.dog.isTamed() ? ModTags.BEG_ITEMS_TAMED : ModTags.BEG_ITEMS_UNTAMED))
             	return true;
 
             if(this.dog.foodValue(itemstack) > 0)

@@ -3,6 +3,7 @@ package doggytalents.talent;
 import java.util.List;
 import java.util.function.Predicate;
 
+import doggytalents.ModTags;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
@@ -27,7 +28,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class PackPuppyTalent extends Talent {
 
 	public static Predicate<EntityItem> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-		return entity.isAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
+		return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.PACK_PUPPY_BLACKLIST);
 	};
 	
 	@Override

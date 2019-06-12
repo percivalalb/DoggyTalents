@@ -140,11 +140,11 @@ public class ItemWhistle extends ItemDT {
     				
     				List<EntityDog> roarDogs = dogsList.stream().filter(dog -> dog.TALENTS.getLevel(ModTalents.ROARING_GALE) > 0).collect(Collectors.toList());
     				if(roarDogs.isEmpty()) {
-    					player.sendMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.level"));
+    					player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.level"), true);
     				} else {
     					List<EntityDog> cdDogs = roarDogs.stream().filter(dog -> ((int)dog.objects.get("roarcooldown")) == 0).collect(Collectors.toList());
     					if(cdDogs.isEmpty()) {
-    						player.sendMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.cooldown"));
+    						player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.cooldown"), true);
     					} else {
     						for(EntityDog dog : cdDogs) {
     	    					int level = dog.TALENTS.getLevel(ModTalents.ROARING_GALE);

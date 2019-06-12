@@ -24,10 +24,8 @@ public class ModSerializers {
 	public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
 	public static final DataSerializerEntry OPTIONAL_TEXT_COMPONENT = null;
 	
-	@SuppressWarnings("unchecked")
-	public static Supplier<DataSerializer<Map<Talent, Integer>>> TALENT_LEVEL_SERIALIZER = () -> (DataSerializer<Map<Talent, Integer>>)TALENT_LEVEL_LIST.getSerializer();
-	@SuppressWarnings("unchecked")
-	public static Supplier<DataSerializer<Optional<ITextComponent>>> OPTIONAL_TEXT_COMPONENT_SERIALIZER = () -> (DataSerializer<Optional<ITextComponent>>)OPTIONAL_TEXT_COMPONENT.getSerializer();
+	public static DataSerializer<Map<Talent, Integer>> TALENT_LEVEL_SERIALIZER = new TalentListSerializer();
+	public static DataSerializer<Optional<ITextComponent>> OPTIONAL_TEXT_COMPONENT_SERIALIZER = new OptionalTextComponentSerializer();
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
     public static class Registration {
@@ -36,8 +34,8 @@ public class ModSerializers {
 	    public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event){
 	    	IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
 	    	DoggyTalents.LOGGER.info("Registering Serializers");
-	        serializerRegistry.register(new DataSerializerEntry(new TalentListSerializer()).setRegistryName(Reference.MOD_ID, "talent_level_list"));
-	        serializerRegistry.register(new DataSerializerEntry(new OptionalTextComponentSerializer()).setRegistryName(Reference.MOD_ID, "optional_text_component"));
+	        serializerRegistry.register(new DataSerializerEntry(TALENT_LEVEL_SERIALIZER).setRegistryName(Reference.MOD_ID, "talent_level_list"));
+	        serializerRegistry.register(new DataSerializerEntry(OPTIONAL_TEXT_COMPONENT_SERIALIZER).setRegistryName(Reference.MOD_ID, "optional_text_component"));
 	        
 	        DoggyTalents.LOGGER.info("Finished Registering Serializers");
 	    }

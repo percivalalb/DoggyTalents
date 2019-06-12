@@ -110,7 +110,7 @@ public class EntityDog extends EntityTameable {
 	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Map<Talent, Integer>> 	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER.get());
+	private static final DataParameter<Map<Talent, Integer>> 	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
 	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
@@ -122,7 +122,7 @@ public class EntityDog extends EntityTameable {
 	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
-	private static final DataParameter<Optional<ITextComponent>>LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, ModSerializers.OPTIONAL_TEXT_COMPONENT_SERIALIZER.get());
+	private static final DataParameter<Optional<ITextComponent>>LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, ModSerializers.OPTIONAL_TEXT_COMPONENT_SERIALIZER);
 	
 	public DogLocationManager locationManager;
 	

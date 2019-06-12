@@ -169,18 +169,6 @@ public class BlockDogBed extends ContainerBlock {
 	}
 	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder p_220076_2_) {
-		List<ItemStack> drops = Lists.newArrayList();
-		drops.add(DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING)));
-		return drops; // TODO
-	}
-	
-	@Override
-	public ResourceLocation getLootTable() {
-		return LootTables.EMPTY;
-	}
-	
-	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
 		return DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING));
 	}

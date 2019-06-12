@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+	  "name": "doggytalents:dog_bed",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "doggytalents:dog_bed",
+		  "functions": [
+		   {
+		      "function": "minecraft:copy_nbt",
+			  "source": "block_entity",
+			  "ops": [
+			   {
+			    "source": "casingId",
+				"target": "doggytalents.casingId",
+				"op": "replace"
+			   },
+			   {
+			    "source": "beddingId",
+				"target": "doggytalents.beddingId",
+				"op": "replace"
+			   }
+			  ]
+		   }
+		  ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

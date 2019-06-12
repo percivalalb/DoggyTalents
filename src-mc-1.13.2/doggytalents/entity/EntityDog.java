@@ -44,6 +44,7 @@ import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
 import doggytalents.lib.Constants;
 import doggytalents.lib.GuiNames;
+import doggytalents.lib.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -99,6 +100,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
@@ -300,9 +302,11 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		return 0.4F;
 	}
 	
+	public static final ResourceLocation DOG_LOOT_TABLE = LootTableList.register(new ResourceLocation(Reference.MOD_ID, "entities/dog"));
+	
 	@Override
     protected ResourceLocation getLootTable() {
-        return null; //TODO DOG Loot
+        return DOG_LOOT_TABLE;
     }
 	
 	@Override

@@ -305,11 +305,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
 	
 	@Override
-	public ResourceLocation getLootTable() {
-		return LootTables.EMPTY; // TODO
-	}
-	
-	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
 		this.FEATURES.stream().forEach(f -> f.writeAdditional(compound));
@@ -1324,7 +1319,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		} else {
 			return new TranslationTextComponent("entity.doggytalents.dog.untamed");
 		}
-	}
+    }
     
 	public void setBegging(boolean flag) {
 		this.dataManager.set(BEGGING, flag);

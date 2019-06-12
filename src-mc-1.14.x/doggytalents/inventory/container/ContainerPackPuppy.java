@@ -33,7 +33,7 @@ public class ContainerPackPuppy extends Container {
     	this.packPuppy = packInventory;
     	this.dog = dog;
     	this.level = MathHelper.clamp(dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
-        func_216962_a(packInventory, 3 * 5);
+    	assertInventorySize(packInventory, 3 * 5);
         packInventory.openInventory(playerInventory.player);
 
         for (int j = 0; j < 3; j++) {

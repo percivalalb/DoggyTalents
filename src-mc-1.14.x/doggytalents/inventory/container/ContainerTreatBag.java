@@ -24,7 +24,7 @@ public class ContainerTreatBag extends Container {
 		this.slot = slotIn;
 		this.itemstack = itemstackIn;
 		this.inventoryTreatBag = new InventoryTreatBag(playerInventory, slotIn, itemstackIn);
-        func_216962_a(playerInventory, 3 * 5);
+		assertInventorySize(playerInventory, 3 * 5);
         this.inventoryTreatBag.openInventory(playerInventory.player);
 		
         for(int l = 0; l < 5; l++)

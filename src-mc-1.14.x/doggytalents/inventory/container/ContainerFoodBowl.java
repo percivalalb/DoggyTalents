@@ -25,7 +25,7 @@ public class ContainerFoodBowl extends Container {
     public ContainerFoodBowl(int windowId, PlayerInventory playerInventory, IInventory bowlInventory) {
     	super(ModContainerTypes.FOOD_BOWL, windowId);
         this.tileEntityFoodBowl = bowlInventory;
-        func_216962_a(bowlInventory, 5);
+        assertInventorySize(bowlInventory, 5);
         bowlInventory.openInventory(playerInventory.player);
         
         for(int i = 0; i < 1; i++)

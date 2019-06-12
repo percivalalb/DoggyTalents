@@ -1,23 +1,28 @@
 package doggytalents.entity.ai;
 
 import doggytalents.api.inferface.IWaterMovement;
-import doggytalents.entity.EntityDog;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.pathfinding.PathNodeType;
 
 public class WaterMovementHandler implements IWaterMovement {
 
-	public EntityDog dog;
+	public MobEntity dog;
     private float oldWaterCost;
+    private final float waterCost;
 	
-	public WaterMovementHandler(EntityDog dogIn) {
+	public WaterMovementHandler(MobEntity dogIn) {
+		this(dogIn, 0.0F);
+	}
+	
+	public WaterMovementHandler(MobEntity dogIn, float waterCostIn) {
 		this.dog = dogIn;
+		this.waterCost = waterCostIn;
 	}
 	
 	@Override
 	public void startExecuting() {
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
-		
+		this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
+		this.dog.setPathPriority(PathNodeType.WATER, this.waterCost);
 	}
 
 	@Override

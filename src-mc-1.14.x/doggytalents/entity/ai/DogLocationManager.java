@@ -50,7 +50,7 @@ public class DogLocationManager extends WorldSavedData {
 	}
 	
 	public static DogLocationManager getHandler(DimensionSavedDataManager storage) {
-		return storage.func_215752_a(DogLocationManager::new, "dog_locations");
+		return storage.getOrCreate(DogLocationManager::new, "dog_locations");
 	}
 	
 	public void update(EntityDog dog) {

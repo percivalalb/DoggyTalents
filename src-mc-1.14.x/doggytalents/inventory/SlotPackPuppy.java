@@ -18,6 +18,6 @@ public class SlotPackPuppy extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack itemstack) {
-        return level != 0;
+        return this.level != 0;
     }
 }

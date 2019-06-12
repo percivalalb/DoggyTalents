@@ -28,7 +28,7 @@ public class ModelDog extends EntityModel<EntityDog> {
 	
 	public ModelDog(float scaleFactor) {
         float f1 = 13.5F;
-		
+        
 		//Head
         this.wolfHeadMain = new RendererModel(this, 0, 0);
         this.wolfHeadMain.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);

@@ -6,12 +6,13 @@ import javax.annotation.Nullable;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIDogWander extends EntityAIWander {
+public class EntityAIDogWander extends EntityAIWanderAvoidWater {
 	
 	protected final EntityDog dog;
 	protected boolean wandering;
@@ -33,7 +34,7 @@ public class EntityAIDogWander extends EntityAIWander {
 	@Override
 	@Nullable
 	protected Vec3d getPosition() {
-		return this.wandering ? this.generateRandomPos(this.dog) : RandomPositionGenerator.findRandomTarget(this.entity, 7, 4);
+		return this.wandering ? this.generateRandomPos(this.dog) : super.getPosition();
 	}
 	
 	private Vec3d generateRandomPos(EntityDog dog) {

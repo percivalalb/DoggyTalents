@@ -11,6 +11,7 @@ import doggytalents.inventory.InventoryPackPuppy;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -18,6 +19,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 /**
  * @author ProPercivalalb
@@ -46,6 +48,16 @@ public class PackPuppyTalent extends Talent {
 	}
 	
 	@Override
+	public void onLevelReset(EntityDog dog, int preLevel) {
+		// No need to drop anything if dog didn't have pack puppy
+		if(preLevel > 0) {
+			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
+			InventoryHelper.dropInventoryItems(dog.world, dog, inventory);
+			inventory.clear();
+		}
+	}
+	
+	@Override
 	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
 		int level = dog.TALENTS.getLevel(this);
 		
@@ -59,7 +71,7 @@ public class PackPuppyTalent extends Talent {
 	    				if(inventory != null) {
 	    	                if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer)) {
 	    	                    ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)player;
-	    	                    entityPlayerMP.openContainer(inventory);
+	    	                    NetworkHooks.openGui(entityPlayerMP, inventory, buf -> buf.writeInt(dog.getEntityId()));
 	    	                }
 	    	            }
 	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);

@@ -11,9 +11,11 @@ import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.lib.GuiNames;
+import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -43,6 +45,16 @@ public class PackPuppyTalent extends Talent {
 	public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
 		InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 		inventory.readFromNBT(tagCompound);
+	}
+	
+	@Override
+	public void onLevelReset(EntityDog dog, int preLevel) {
+		// No need to drop anything if dog didn't have pack puppy
+		if(preLevel > 0) {
+			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
+			InventoryHelper.dropInventoryItems(dog.world, dog, inventory);
+			inventory.clear();
+		}
 	}
 	
 	@Override

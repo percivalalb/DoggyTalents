@@ -13,8 +13,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiTreatBag extends GuiContainer {
 
+	private ContainerTreatBag treatBagContainer;
+	
 	public GuiTreatBag(EntityPlayer playerIn, int slotIn, ItemStack theBag) {
 		super(new ContainerTreatBag(playerIn, slotIn, theBag));
+		this.treatBagContainer = (ContainerTreatBag)this.inventorySlots;
+		this.xSize = 176;
 		this.ySize = 127;
 	}
 	
@@ -27,7 +31,9 @@ public class GuiTreatBag extends GuiContainer {
 	
 	@Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.fontRenderer.drawString(I18n.format("container.doggytalents.treatbag"), 10, 8, 4210752);
+    	String s = this.treatBagContainer.inventoryTreatBag.getDisplayName().getUnformattedText();
+        this.fontRenderer.drawString(s, 10, 8, 4210752);
+        this.fontRenderer.drawString(I18n.format("container.inventory"), 8, this.ySize - 95 + 2, 4210752);
     }
 
 	@Override

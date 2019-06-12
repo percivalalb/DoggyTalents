@@ -112,7 +112,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER.get());
+	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
 	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
@@ -134,6 +134,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	public ModeFeature MODE;
 	public CoordFeature COORDS;
 	public DogGenderFeature GENDER;
+	public DogStats STATS;
 	private List<DogFeature> FEATURES;
 	
 	public Map<String, Object> objects;
@@ -168,7 +169,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.MODE = new ModeFeature(this);
 		this.COORDS = new CoordFeature(this);
 		this.GENDER = new DogGenderFeature(this);
-		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS);
+		this.STATS = new DogStats(this);
+		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
 		if(worldIn instanceof ServerWorld)
 			this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
 		this.objects = new HashMap<String, Object>();
@@ -300,11 +302,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	@Override
 	public float getSoundVolume() {
 		return 0.4F;
-	}
-	
-	@Override
-	public ResourceLocation getLootTable() {
-		return LootTables.EMPTY; // TODO
 	}
 	
 	@Override
@@ -608,7 +605,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
-                           babySpawn.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
+                           babySpawn.setGrowingAge(-Constants.TIME_TO_MATURE);
                            babySpawn.setTamed(true);
                            if(Constants.PUPS_GET_PARENT_LEVELS) {
                                babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
@@ -775,7 +772,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                             this.field_70911_d.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
-                            this.setOwnerId(UUID.randomUUID());
+                            this.setOwnerId(null);
+                            this.dataManager.set(LAST_KNOWN_NAME, Optional.empty());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
                             if(this.hasRadarCollar())
@@ -881,12 +879,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 this.world.addEntity(wolf);
             }
             return true;
-        } else if(stack.getItem() == Items.BONE) {
+        } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
         	if(!player.abilities.isCreativeMode)
         		stack.shrink(1);
 
         	if(!this.world.isRemote) {
-                if(this.rand.nextInt(3) == 0) {
+                if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
@@ -917,7 +915,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             entitydog.setTamed(true);
         }
 
-        entitydog.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
+        entitydog.setGrowingAge(-Constants.TIME_TO_MATURE);
 
         if(Constants.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
             int combinedLevel = this.LEVELS.getLevel() + ((EntityDog)entityAgeable).LEVELS.getLevel();
@@ -1238,7 +1236,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 	
 	public boolean canWander() {
-		return this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 256.0D;
 	}
 	
 	public boolean canInteract(PlayerEntity player) {
@@ -1317,11 +1315,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		} else if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) {
 			return this.dataManager.get(LAST_KNOWN_NAME).get();
 		} else if(this.getOwnerId() != null) {
-			return new StringTextComponent(this.getOwnerId().toString());
+			return new TranslationTextComponent("entity.doggytalents.dog.unknown_owner");
 		} else {
-			return new StringTextComponent("dog.owner.unknown");
+			return new TranslationTextComponent("entity.doggytalents.dog.untamed");
 		}
-	}
+    }
     
 	public void setBegging(boolean flag) {
 		this.dataManager.set(BEGGING, flag);
@@ -1632,9 +1630,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
         if (!TalentHelper.shouldDismountInWater(this, rider))
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
     
     @Override

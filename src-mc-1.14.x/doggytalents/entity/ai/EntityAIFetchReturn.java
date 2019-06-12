@@ -40,7 +40,7 @@ public class EntityAIFetchReturn extends FollowOwnerGoal {
 	
 	// Forces the dog to walk back to the owner every time
 	@Override
-	protected boolean func_220707_a(BlockPos pos) {
+	protected boolean canTeleportToBlock(BlockPos pos) {
 		return false;
 	}
 }

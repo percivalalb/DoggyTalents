@@ -59,7 +59,9 @@ public abstract class Talent extends net.minecraftforge.registries.IForgeRegistr
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) { return true; }
-	public void onLevelSet(EntityDog dog, int level) {}
+	public void onLevelSet(EntityDog dog, int postLevel) {}
+	public void onLevelReset(EntityDog dog, int preLevel) {}
+	
 	
 	
 	public int getHighestLevel(EntityDog dog) { return 5; }

@@ -17,7 +17,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	public ItemStack itemstack;
 	
 	public InventoryTreatBag(EntityPlayer playerIn, int slotIn, ItemStack itemstackIn) {
-		super("doggytalents.treatbag", false, 5);
+		super("container.doggytalents.treat_bag", false, 5);
 		this.player = playerIn;
 		this.slot = slotIn;
 		this.itemstack = itemstackIn.copy();

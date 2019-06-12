@@ -19,8 +19,7 @@ public class ModSerializers {
 	
 	public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
 	
-	@SuppressWarnings("unchecked")
-	public static Supplier<DataSerializer<Map<Talent, Integer>>> TALENT_LEVEL_SERIALIZER = () -> (DataSerializer<Map<Talent, Integer>>)TALENT_LEVEL_LIST.getSerializer();
+	public static DataSerializer<Map<Talent, Integer>> TALENT_LEVEL_SERIALIZER = new TalentListSerializer();
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
@@ -29,7 +28,7 @@ public class ModSerializers {
 	    public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event) {
 	    	IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
 	    	DoggyTalentsMod.LOGGER.info("Registering Serializers");
-	        serializerRegistry.register(new DataSerializerEntry(new TalentListSerializer()).setRegistryName(Reference.MOD_ID, "talent_level_list"));
+	        serializerRegistry.register(new DataSerializerEntry(TALENT_LEVEL_SERIALIZER).setRegistryName(Reference.MOD_ID, "talent_level_list"));
 	        DoggyTalentsMod.LOGGER.info("Finished Registering Serializers");
 	    }
     }

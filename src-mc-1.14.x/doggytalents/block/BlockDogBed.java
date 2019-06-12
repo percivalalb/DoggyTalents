@@ -157,11 +157,6 @@ public class BlockDogBed extends ContainerBlock {
 		builder.add(FACING, CASING, BEDDING);
 	}
 	
-	//@OnlyIn(Dist.CLIENT)
-    //public int getMixedBrightnessForBlock(IBlockAccess worldIn, BlockPos pos) {
-    //    return worldIn.getCombinedLight(pos, 0);
-    //}
-	
 	@Override
 	public boolean isSolid(BlockState state) {
 		return false;
@@ -171,18 +166,6 @@ public class BlockDogBed extends ContainerBlock {
 	@OnlyIn(Dist.CLIENT)
 	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.SOLID;
-	}
-	
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder p_220076_2_) {
-		List<ItemStack> drops = Lists.newArrayList();
-		drops.add(DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING)));
-		return drops; // TODO
-	}
-	
-	@Override
-	public ResourceLocation getLootTable() {
-		return LootTables.EMPTY;
 	}
 	
 	@Override
@@ -197,9 +180,7 @@ public class BlockDogBed extends ContainerBlock {
 	
 	@Override
 	public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-		BlockPos blockpos = pos.down();
-		BlockState blockstate = worldIn.getBlockState(blockpos);
-		return Block.hasSolidSide(blockstate, worldIn, blockpos, Direction.UP);
+		return func_220055_a(worldIn, pos.down(), Direction.UP);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package doggytalents.inventory;
 
+import doggytalents.ModItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -34,7 +35,7 @@ public class ContainerTreatBag extends Container {
         	this.addSlot(new Slot(playerIn.inventory, k, 8 + k * 18, 103) {
         		@Override
         		public boolean canTakeStack(EntityPlayer playerIn) {
-        			return this.getSlotIndex() != ContainerTreatBag.this.slot;
+        			return this.getStack().getItem() != ModItems.TREAT_BAG;
         		}
         	});
         

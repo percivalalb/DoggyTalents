@@ -82,7 +82,7 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
     public void renderName(EntityDog dog, double x, double y, double z) {
         if(this.canRenderName(dog)) {
         	GlStateManager.alphaFunc(516, 0.1F);
-            double d0 = dog.getDistanceSq(this.field_76990_c.field_217783_c.func_216785_c());
+            double d0 = dog.getDistanceSq(this.field_76990_c.field_217783_c.getProjectedView());
             
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	

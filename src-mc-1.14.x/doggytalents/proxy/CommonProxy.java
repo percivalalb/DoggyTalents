@@ -35,6 +35,7 @@ public class CommonProxy {
 	protected void preInit(FMLCommonSetupEvent event) {
         DoggyTalentsMod.LOGGER.debug("CommonProxy preInit");
         PacketHandler.register();
+        ConfigHandler.initTalentConfig(); // Needs to be after Talent registry event has happened
     }
     
     protected void init(InterModEnqueueEvent event) {

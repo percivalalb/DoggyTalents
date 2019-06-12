@@ -1,7 +1,10 @@
 package doggytalents.inventory.container;
 
 import doggytalents.ModContainerTypes;
+import doggytalents.ModTalents;
+import doggytalents.entity.EntityDog;
 import doggytalents.inventory.SlotPackPuppy;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -9,6 +12,7 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 
 /**
@@ -16,23 +20,25 @@ import net.minecraft.util.math.MathHelper;
  */
 public class ContainerPackPuppy extends Container {
 	
+	private EntityDog dog;
 	private IInventory packPuppy;
 	private int level;
 	
-    public ContainerPackPuppy(int windowId, PlayerInventory playerInventory) {
-    	this(windowId, playerInventory, new Inventory(3 * 5), 5);
-    }
+	public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, EntityDog dog) {
+		this(windowId, playerInventory, new Inventory(3 * 5), dog);
+	}
     
-    public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, IInventory packInventory, int level) {
+    public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, IInventory packInventory, EntityDog dog) {
     	super(ModContainerTypes.PACK_PUPPY, windowId);
     	this.packPuppy = packInventory;
-    	this.level = MathHelper.clamp(level, 0, 5);
-        func_216962_a(packInventory, 3 * 5);
+    	this.dog = dog;
+    	this.level = MathHelper.clamp(dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
+    	assertInventorySize(packInventory, 3 * 5);
         packInventory.openInventory(playerInventory.player);
 
         for (int j = 0; j < 3; j++) {
-            for (int i1 = 0; i1 < 5; i1++)
-                this.addSlot(new SlotPackPuppy(packInventory, i1 * 3 + j, 79 + 18 * i1, 1 + 18 * j + 24, level));
+            for (int i1 = 0; i1 < this.level; i1++)
+                this.addSlot(new SlotPackPuppy(packInventory, i1 * 3 + j, 79 + 18 * i1, 1 + 18 * j + 24, this.level));
         }
         
         int var3;
@@ -85,4 +91,12 @@ public class ContainerPackPuppy extends Container {
         super.onContainerClosed(player);
         this.packPuppy.closeInventory(player);
     }
+
+	public EntityDog getDog() {
+		return this.dog;
+	}
+
+	public int getDogLevel() {
+		return this.level;
+	}
 }

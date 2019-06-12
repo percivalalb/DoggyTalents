@@ -44,6 +44,7 @@ import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
 import doggytalents.lib.Constants;
 import doggytalents.lib.GuiNames;
+import doggytalents.lib.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -99,6 +100,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
@@ -114,7 +116,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER.get());
+	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
 	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
@@ -135,6 +137,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	public ModeFeature MODE;
 	public CoordFeature COORDS;
 	public DogGenderFeature GENDER;
+	public DogStats STATS;
 	private List<DogFeature> FEATURES;
 	
 	public Map<String, Object> objects;
@@ -169,7 +172,8 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		this.MODE = new ModeFeature(this);
 		this.COORDS = new CoordFeature(this);
 		this.GENDER = new DogGenderFeature(this);
-		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS);
+		this.STATS = new DogStats(this);
+		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
 		this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
 		this.objects = new HashMap<String, Object>();
 		this.setSize(0.6F, 0.85F);
@@ -193,7 +197,6 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		this.tasks.addTask(9, new EntityAIOwnerTool(this, 1.0D, 1.0F, 5F));
 		this.tasks.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(11, new EntityAIMate(this, 1.0D));
-		this.tasks.addTask(12, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(13, new EntityAIBegDog(this, 8.0F));
 		this.tasks.addTask(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -299,9 +302,11 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		return 0.4F;
 	}
 	
+	public static final ResourceLocation DOG_LOOT_TABLE = LootTableList.register(new ResourceLocation(Reference.MOD_ID, "entities/dog"));
+	
 	@Override
     protected ResourceLocation getLootTable() {
-        return null; //TODO DOG Loot
+        return DOG_LOOT_TABLE;
     }
 	
 	@Override
@@ -763,7 +768,8 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
                             this.aiSit.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
-                            this.setOwnerId(UUID.randomUUID());
+                            this.setOwnerId(null);
+                            this.dataManager.set(LAST_KNOWN_NAME, Optional.empty());
                             this.setWillObeyOthers(false);
                             this.MODE.setMode(EnumMode.DOCILE);
                             if(this.hasRadarCollar())
@@ -869,12 +875,12 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
                 this.world.spawnEntity(wolf);
             }
             return true;
-        } else if(stack.getItem() == Items.BONE) {
+        } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
         	if(!player.abilities.isCreativeMode)
         		stack.shrink(1);
 
         	if(!this.world.isRemote) {
-                if(this.rand.nextInt(3) == 0) {
+        		if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
                     this.navigator.clearPath();
                     this.setAttackTarget((EntityLivingBase) null);
@@ -1220,7 +1226,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
     }
 	
 	public boolean canWander() {
-		return this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
 	}
 	
 	public boolean canInteract(EntityPlayer player) {
@@ -1301,9 +1307,9 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 		} else if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) {
 			return this.dataManager.get(LAST_KNOWN_NAME).get();
 		} else if(this.getOwnerId() != null) {
-			return new TextComponentString(this.getOwnerId().toString());
+			return new TextComponentTranslation("entity.doggytalents.dog.unknown_owner");
 		} else {
-			return new TextComponentString("dog.owner.unknown");
+			return new TextComponentTranslation("entity.doggytalents.dog.untamed");
 		}
 	}
     
@@ -1621,9 +1627,9 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
         if (!TalentHelper.shouldDismountInWater(this, rider))
-            return true;
+            return false;
 
-        return false;
+        return true;
     }
     
     @Override

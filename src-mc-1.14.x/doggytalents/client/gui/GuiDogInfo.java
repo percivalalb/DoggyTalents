@@ -66,7 +66,7 @@ public class GuiDogInfo extends Screen {
 	    this.minecraft.keyboardListener.enableRepeatEvents(true);
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
-		TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "//TODO") {
+		TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "TEST") {
 			@Override
 			public boolean charTyped(char character, int keyId) {
 				boolean typed = super.charTyped(character, keyId);
@@ -89,7 +89,7 @@ public class GuiDogInfo extends Screen {
 		this.addButton(nameTextField);
 		this.doggyTex = this.dog.getTameSkin();
 		
-		int size = DoggyTalentsAPI.TALENTS.getKeys().size();
+		int size = (int)DoggyTalentsAPI.TALENTS.getKeys().stream().filter(loc -> Constants.ENABLED_TALENTS.getOrDefault(loc, false)).count();
 		
   		this.btnPerPages = Math.max(MathHelper.floor((double)(this.height - 10) / 21) - 2, 1);
     	
@@ -129,6 +129,9 @@ public class GuiDogInfo extends Screen {
 		
 		int i = -1;
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			if(!Constants.ENABLED_TALENTS.getOrDefault(talent.getRegistryName(), false))
+				continue;
+			
 			i++;
 			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
 				continue;
@@ -256,13 +259,12 @@ public class GuiDogInfo extends Screen {
 	    
 	    this.font.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 		
-		int i = -1;
-		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
-			i++;
-			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
-				continue;
-			this.font.drawString(I18n.format(talent.getTranslationKey()), 50, 17 + (i - this.currentPage * this.btnPerPages) * 21, 0xFFFFFF);
-    	}
+	    this.buttons.forEach(widget -> {
+	    	if(widget instanceof TalentButton) {
+	    		TalentButton talBut = (TalentButton)widget;
+	    		this.font.drawString(I18n.format(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
+	    	}
+	    });
 		
 		GlStateManager.disableRescaleNormal();
 	    RenderHelper.disableStandardItemLighting();
@@ -277,12 +279,13 @@ public class GuiDogInfo extends Screen {
 	    
 	    GlStateManager.pushMatrix();
 	    GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-	    for (int k = 0; k < this.buttons.size(); ++k) {
-	    	Widget widget = (Widget)this.buttons.get(k);
+	    
+	    this.buttons.forEach(widget -> {
 	    	if(widget.isMouseOver(mouseX, mouseY)) {
 	    		widget.renderToolTip(mouseX, mouseY);
 	    	}
-	    }
+	    });
+	    
 	    GlStateManager.popMatrix();
 	}
 	

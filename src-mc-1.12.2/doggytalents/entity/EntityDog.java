@@ -1026,6 +1026,12 @@ public class EntityDog extends EntityTameable {
     }
 
     @Override
+    protected int decreaseAirSupply(int air) {
+    	int level = this.TALENTS.getLevel(ModTalents.SWIMMER_DOG);
+    	return level > 0 && this.rand.nextInt(level + 1) > 0 ? air : super.decreaseAirSupply(air);
+    }
+    
+    @Override
     public boolean canBreatheUnderwater() {
         return TalentHelper.canBreatheUnderwater(this);
     }

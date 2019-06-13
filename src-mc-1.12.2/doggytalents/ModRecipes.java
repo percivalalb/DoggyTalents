@@ -19,8 +19,8 @@ public class ModRecipes {
 	
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<IRecipe> event) {
-		event.getRegistry().register(new RecipeDogBed().setRegistryName(Reference.MOD_ID + ":dogbed"));
-		event.getRegistry().register(new RecipeDogCollar().setRegistryName(Reference.MOD_ID + ":dogcollar"));
-		event.getRegistry().register(new RecipeDogCape().setRegistryName(Reference.MOD_ID + ":dogcape"));
+		event.getRegistry().register(new RecipeDogBed().setRegistryName(Reference.MOD_ID + ":dog_bed"));
+		event.getRegistry().register(new RecipeDogCollar().setRegistryName(Reference.MOD_ID + ":collar_colouring"));
+		event.getRegistry().register(new RecipeDogCape().setRegistryName(Reference.MOD_ID + ":cape_colouring"));
 	}
 }

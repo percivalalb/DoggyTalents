@@ -131,6 +131,6 @@ public class RecipeDogCollar extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.DOG_COLLAR;
+		return ModRecipes.COLLAR_COLOURING;
 	}
 }

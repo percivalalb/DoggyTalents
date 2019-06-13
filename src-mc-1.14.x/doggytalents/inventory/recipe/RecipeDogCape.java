@@ -151,6 +151,6 @@ public class RecipeDogCape extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.DOG_CAPE;
+		return ModRecipes.CAPE_COLOURING;
 	}
 }

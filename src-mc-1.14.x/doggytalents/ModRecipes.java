@@ -16,9 +16,9 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Reference.MOD_ID)
 public class ModRecipes {
 	
-	public static IRecipeSerializer<RecipeDogBed> DOG_BED;
-	public static IRecipeSerializer<RecipeDogCollar> DOG_COLLAR;
-	public static IRecipeSerializer<RecipeDogCape> DOG_CAPE;
+	public static final IRecipeSerializer<RecipeDogBed> DOG_BED = null;
+	public static final IRecipeSerializer<RecipeDogCollar> COLLAR_COLOURING = null;
+	public static final IRecipeSerializer<RecipeDogCape> CAPE_COLOURING = null;
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {

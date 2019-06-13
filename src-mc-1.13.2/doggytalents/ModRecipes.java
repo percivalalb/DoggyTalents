@@ -13,9 +13,9 @@ public class ModRecipes {
 
     public static class Registration {
 		public static void registerRecipes() {
-			DOG_BED = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogbed", RecipeDogBed::new));
-			DOG_COLLAR = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcollar", RecipeDogCollar::new));
-			DOG_CAPE = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dogcape", RecipeDogCape::new));
+			DOG_BED = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:dog_bed", RecipeDogBed::new));
+			DOG_COLLAR = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:collar_colouring", RecipeDogCollar::new));
+			DOG_CAPE = RecipeSerializers.register(new RecipeSerializers.SimpleSerializer<>("doggytalents:cape_colouring", RecipeDogCape::new));
 		}
     }
 

@@ -3,19 +3,17 @@ package doggytalents.proxy;
 import java.util.Random;
 
 import doggytalents.DoggyTalentsMod;
-import doggytalents.ModItems;
 import doggytalents.addon.AddonManager;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
+import doggytalents.handler.EntitySpawn;
 import doggytalents.handler.LivingDrops;
 import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.network.PacketHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -45,6 +43,7 @@ public class CommonProxy {
     	MinecraftForge.EVENT_BUS.register(new MissingMappings());
     	MinecraftForge.EVENT_BUS.register(new EntityInteract());
     	MinecraftForge.EVENT_BUS.register(new LivingDrops());
+    	MinecraftForge.EVENT_BUS.register(new EntitySpawn());
     }
     
     protected void postInit(InterModProcessEvent event) {

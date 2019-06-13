@@ -10,6 +10,7 @@ import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.ConfigChange;
 import doggytalents.handler.EntityInteract;
+import doggytalents.handler.EntitySpawn;
 import doggytalents.handler.LivingDrops;
 import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
@@ -79,6 +80,7 @@ public class CommonProxy implements IGuiHandler {
     	MinecraftForge.EVENT_BUS.register(new EntityInteract());
     	MinecraftForge.EVENT_BUS.register(new LivingDrops());
     	MinecraftForge.EVENT_BUS.register(new ConfigChange());
+    	MinecraftForge.EVENT_BUS.register(new EntitySpawn());
     	MinecraftForge.EVENT_BUS.register(new MissingMappings());
     }
 	

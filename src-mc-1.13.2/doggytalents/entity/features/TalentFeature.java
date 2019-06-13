@@ -12,6 +12,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.Compatibility;
+import doggytalents.lib.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
@@ -89,7 +90,7 @@ public class TalentFeature extends DogFeature {
 	
 	public int getLevel(@Nullable Talent talent) {
 		Map<Talent, Integer> map = this.dog.getTalentMap();
-		return map.containsKey(talent) ? map.get(talent) : 0;
+		return map.containsKey(talent) && Constants.ENABLED_TALENTS.getOrDefault(DoggyTalentsAPI.TALENTS.getKey(talent), false) ? map.get(talent) : 0;
 	}
 	
 	public void setLevel(@Nonnull Talent talent, int level) {

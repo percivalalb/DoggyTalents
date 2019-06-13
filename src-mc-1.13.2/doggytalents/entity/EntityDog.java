@@ -605,18 +605,18 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
-                           babySpawn.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
-                           babySpawn.setTamed(true);
-                           if(Constants.PUPS_GET_PARENT_LEVELS) {
-                               babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
-                           }
+                        	babySpawn.setGrowingAge(-Constants.TIME_TO_MATURE);
+                        	babySpawn.setTamed(true);
+                        	if(Constants.PUPS_GET_PARENT_LEVELS) {
+                        		babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
+                        	}
                            
-                           babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-                           this.world.spawnEntity(babySpawn);
+                        	babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                        	this.world.spawnEntity(babySpawn);
 
-                           if(!player.abilities.isCreativeMode) {
-                        	   stack.shrink(1);
-                           }
+                        	if(!player.abilities.isCreativeMode) {
+                        		stack.shrink(1);
+                        	}
                         }
                      }
 
@@ -910,7 +910,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
             entitydog.setTamed(true);
         }
 
-        entitydog.setGrowingAge(-24000 * (Constants.TEN_DAY_PUPS ? 10 : 1));
+        entitydog.setGrowingAge(-Constants.TIME_TO_MATURE);
 
         if(Constants.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
             int combinedLevel = this.LEVELS.getLevel() + ((EntityDog)entityAgeable).LEVELS.getLevel();

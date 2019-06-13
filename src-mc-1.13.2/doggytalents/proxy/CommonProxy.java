@@ -5,6 +5,7 @@ import java.util.Random;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModRecipes;
 import doggytalents.addon.AddonManager;
+import doggytalents.configuration.ConfigHandler;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.EntitySpawn;
 import doggytalents.handler.LivingDrops;
@@ -23,6 +24,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class CommonProxy {
 	
 	public CommonProxy() {
+        ConfigHandler.init();
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::preInit);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::postInit);
@@ -32,6 +34,7 @@ public class CommonProxy {
         DoggyTalentsMod.LOGGER.debug("CommonProxy preInit");
         ModRecipes.Registration.registerRecipes();
         PacketHandler.register();
+        ConfigHandler.initTalentConfig(); // Needs to be after Talent registry event has happened
     }
     
     protected void init(InterModEnqueueEvent event) {

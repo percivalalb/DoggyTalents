@@ -87,7 +87,7 @@ public class GuiDogInfo extends GuiScreen {
 		this.textfieldList.add(nameTextField);
 		this.doggyTex = this.dog.getTameSkin();
 		
-		int size = DoggyTalentsAPI.TALENTS.getKeys().size();
+		int size = (int)DoggyTalentsAPI.TALENTS.getKeys().stream().filter(loc -> Constants.ENABLED_TALENTS.getOrDefault(loc, false)).count();
 		
   		this.btnPerPages = Math.max(MathHelper.floor((double)(this.mc.mainWindow.getScaledHeight() - 10) / 21) - 2, 1);
     	
@@ -119,6 +119,8 @@ public class GuiDogInfo extends GuiScreen {
 		
 		int i = -1;
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+			if(!Constants.ENABLED_TALENTS.getOrDefault(talent.getRegistryName(), false))
+				continue;
 			i++;
 			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
 				continue;
@@ -236,13 +238,12 @@ public class GuiDogInfo extends GuiScreen {
 	    
 	    this.fontRenderer.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 		
-		int i = -1;
-		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
-			i++;
-			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
-				continue;
-			this.fontRenderer.drawString(I18n.format(talent.getTranslationKey()), 50, 17 + (i - this.currentPage * this.btnPerPages) * 21, 0xFFFFFF);
-    	}
+	    this.buttons.forEach(widget -> {
+	    	if(widget instanceof GuiTalentButton) {
+	    		GuiTalentButton talBut = (GuiTalentButton)widget;
+	    		this.fontRenderer.drawString(I18n.format(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
+	    	}
+	    });
 				
 		for(GuiTextField field : this.textfieldList)
 			field.drawTextField(mouseX, mouseY, partialTicks);

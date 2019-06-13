@@ -25,6 +25,5 @@ public class DoggyTalentsMod {
 	public DoggyTalentsMod() {
 		INSTANCE = this;
         PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-        ConfigHandler.init();
 	}
 }

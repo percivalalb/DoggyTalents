@@ -175,7 +175,7 @@ public class ConfigHandler {
 			DOG_GENDER = builder
 					.comment("When enabled, dogs will be randomly assigned genders and will only mate and produce children with the opposite gender.")
 					.translation("doggytalents.config.enable_gender")
-					.define("enable_gender", false);
+					.define("enable_gender", true);
 			DOG_WHINE_WHEN_HUNGER_LOW = builder
 					.comment("Determines if dogs should whine when hunger reaches below 20 DP.")
 					.translation("doggytalents.config.whine_when_hungry")
@@ -198,6 +198,7 @@ public class ConfigHandler {
 			DISABLED_TALENTS = new HashMap<ResourceLocation, ForgeConfigSpec.BooleanValue>();
 			
 			DoggyTalentsAPI.TALENTS.getKeys().forEach(loc -> DISABLED_TALENTS.put(loc, builder.define(loc.toString(), true)));
+			builder.pop();
 		}
 	}
 }

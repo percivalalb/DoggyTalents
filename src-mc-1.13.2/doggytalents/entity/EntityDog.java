@@ -24,6 +24,7 @@ import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIBerserkerMode;
 import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
+import doggytalents.entity.ai.EntityAIExtinguishFire;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
@@ -58,7 +59,6 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -186,6 +186,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	protected void initEntityAI() {
 		this.aiSit = new EntityAISit(this);
 		this.tasks.addTask(1, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIExtinguishFire(this, 1.15D, 16));
 		this.tasks.addTask(2, this.aiSit);
 		this.tasks.addTask(3, new EntityAIFetchReturn(this, 1.0D));
 		this.tasks.addTask(4, new EntityAIDogWander(this, 1.0D));

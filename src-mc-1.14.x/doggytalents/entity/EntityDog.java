@@ -24,6 +24,7 @@ import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
+import doggytalents.entity.ai.EntityAIExtinguishFire;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
@@ -184,6 +185,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	protected void registerGoals() {
 		this.field_70911_d = new SitGoal(this);
 		this.goalSelector.addGoal(1, new SwimGoal(this));
+		this.goalSelector.addGoal(1, new EntityAIExtinguishFire(this, 1.15D, 16));
 		this.goalSelector.addGoal(2, this.field_70911_d);
 		this.goalSelector.addGoal(3, new EntityAIFetchReturn(this, 1.0D));
 		this.goalSelector.addGoal(4, new EntityAIDogWander(this, 1.0D));

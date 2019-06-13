@@ -27,10 +27,11 @@ import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
+import doggytalents.entity.ai.EntityAIHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.entity.ai.EntityBerserkerMode;
+import doggytalents.entity.ai.EntityAIBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
 import doggytalents.entity.features.DogGenderFeature;
@@ -53,7 +54,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
@@ -194,7 +194,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
 		this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.goalSelector.addGoal(11, new BreedGoal(this, 1.0D));
-		//this.goalSelector.addGoal(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(13, new EntityAIBegDog(this, 8.0F));
 		this.goalSelector.addGoal(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.goalSelector.addGoal(15, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -202,8 +201,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		
 		this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
 		this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
-		this.targetSelector.addGoal(3, new HurtByTargetGoal(this).func_220794_a());
-		this.targetSelector.addGoal(4, new EntityBerserkerMode<>(this, MobEntity.class, false));
+		this.targetSelector.addGoal(3, new EntityAIHurtByTargetDog(this).func_220794_a());
+		this.targetSelector.addGoal(4, new EntityAIBerserkerMode<>(this, MobEntity.class, false));
 	}
 	
 	@Override

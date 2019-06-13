@@ -20,16 +20,17 @@ import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
+import doggytalents.entity.ai.EntityAIBerserkerMode;
 import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFindWater;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
+import doggytalents.entity.ai.EntityAIHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.entity.ai.EntityBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
 import doggytalents.entity.features.DogGenderFeature;
@@ -52,13 +53,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -200,8 +199,8 @@ public class EntityDog extends EntityTameable {
 		
 		this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetDog(this));
 		this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetDog(this));
-		this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(4, new EntityBerserkerMode<>(this, EntityMob.class, false));
+		this.targetTasks.addTask(3, new EntityAIHurtByTargetDog(this, true));
+		this.targetTasks.addTask(4, new EntityAIBerserkerMode<>(this, EntityMob.class, false));
     }
     
     @Override

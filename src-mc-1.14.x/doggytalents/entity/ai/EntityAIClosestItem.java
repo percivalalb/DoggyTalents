@@ -100,7 +100,7 @@ public class EntityAIClosestItem extends Goal {
 
 	@Override
 	public void tick() {
-		this.dog.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+		this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
 		if(!this.dog.isSitting()) {
 			if(--this.timeToRecalcPath <= 0) {

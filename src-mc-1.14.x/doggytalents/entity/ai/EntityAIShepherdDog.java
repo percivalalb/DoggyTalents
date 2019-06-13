@@ -144,7 +144,7 @@ public class EntityAIShepherdDog extends Goal {
 				
 				for(AnimalEntity target : this.targets) {
 			    	double distanceAway = target.getDistance(this.owner);
-					target.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)target.getVerticalFaceSpeed());
+					target.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)target.getVerticalFaceSpeed());
 					if(teleport) {
 						if(!target.getLeashed() && !target.isPassenger())
 							DogUtil.teleportDogToOwner(this.owner, target, this.world, target.getNavigator(), 4);
@@ -178,7 +178,7 @@ public class EntityAIShepherdDog extends Goal {
 					DogUtil.teleportDogToPos(j3, this.dog.posY, k3, this.dog, this.world, this.dogPathfinder, 1);
 				}
 	          	
-				this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+				this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 				if(!this.dogPathfinder.tryMoveToXYZ(j3, this.owner.getBoundingBox().minY, k3, this.followSpeed)) {
 					if(this.dog.getDistanceSq(j3, this.owner.getBoundingBox().minY, k3) > 144D) {
 						if(!this.dog.getLeashed() && !this.dog.isPassenger())

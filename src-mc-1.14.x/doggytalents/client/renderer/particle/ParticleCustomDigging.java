@@ -14,6 +14,6 @@ public class ParticleCustomDigging extends DiggingParticle {
 	public ParticleCustomDigging(World worldIn, double xIn, double yIn, double zIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, BlockState state, BlockPos pos, TextureAtlasSprite sprite) {
 		super(worldIn, xIn, yIn, zIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
 		this.setBlockPos(pos);
-		this.func_217567_a(sprite);
+		this.setSprite(sprite);
 	}
 }

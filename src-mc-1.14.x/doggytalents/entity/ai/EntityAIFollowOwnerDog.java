@@ -14,7 +14,6 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolItem;
 import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -123,12 +122,12 @@ public class EntityAIFollowOwnerDog extends Goal
             						DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.petPathfinder);
             			}
             			else 
-            				this.dog.getLookHelper().setLookPosition(diffVec.x, this.dog.posY + 1, diffVec.z, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+            				this.dog.getLookController().setLookPosition(diffVec.x, this.dog.posY + 1, diffVec.z, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
             		}
             	}
             	else {
-                    this.dog.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+                    this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 	                if(!this.petPathfinder.tryMoveToEntityLiving(this.owner, this.followSpeed))
 	                    if(!this.dog.getLeashed() && !this.dog.isPassenger())
 	                        if(distSq >= 144.0D)

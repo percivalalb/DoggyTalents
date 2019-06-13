@@ -35,7 +35,7 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
     
 			if (this.dog.getDistance(this.target) <= 1) {
 
-				this.dog.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+				this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 				
 				//Eat
 				this.dog.playSound(SoundEvents.ENTITY_PLAYER_BURP, this.dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);

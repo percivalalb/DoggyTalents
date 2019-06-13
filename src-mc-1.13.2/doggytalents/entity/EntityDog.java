@@ -924,7 +924,7 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
 	
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
-		return stack.getItem().isIn(ModTags.BREEDING_ITEMS);
+		return stack.getItem().isIn(ModTags.getTag(ModTags.BREEDING_ITEMS));
 	}
 	
 	@Override

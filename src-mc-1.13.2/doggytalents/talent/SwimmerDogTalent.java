@@ -25,4 +25,9 @@ public class SwimmerDogTalent extends Talent {
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) {
 		return !(dog.TALENTS.getLevel(this) > 0);
 	}
+	
+	@Override
+	public boolean canBreatheUnderwater(EntityDog dog) {
+		return dog.TALENTS.getLevel(this) == 5;
+	}
 }

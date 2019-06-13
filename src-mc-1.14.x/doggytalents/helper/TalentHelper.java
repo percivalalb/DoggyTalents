@@ -4,6 +4,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -157,9 +158,9 @@ public class TalentHelper {
 		return true;
 	}
 
-	public static boolean canAttackClass(EntityDog dog, Class entityClass) {
+	public static boolean canAttack(EntityDog dog, EntityType<?> entityType) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
-			if(talent.canAttackClass(dog, entityClass))
+			if(talent.canAttack(dog, entityType))
 				return true;
 		return false;
 	}

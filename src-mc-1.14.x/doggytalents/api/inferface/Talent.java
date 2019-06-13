@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -56,7 +57,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	}
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) { return true; }
 	public boolean shouldDamageMob(EntityDog dog, Entity entity) { return true; }
-	public boolean canAttackClass(EntityDog dog, Class entityClass) { return false; }
+	public boolean canAttack(EntityDog dog, EntityType<?> entityType) { return false; }
 	public boolean canAttackEntity(EntityDog dog, Entity entity) { return false; }
 	public boolean setFire(EntityDog dog, int amount) { return true; }
 	public boolean shouldDismountInWater(EntityDog dog, Entity rider) { return true; }

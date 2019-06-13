@@ -1080,19 +1080,18 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             	return !(target instanceof CatEntity) || !((CatEntity)target).isTamed();
             }
         }
-
+        
         return false;
     }
 
-    //TODO
-    /**
+
     @Override
-    public boolean canAttackClass(Class<? extends LivingEntity> cls) {
-        if(TalentHelper.canAttackClass(this, cls))
+    public boolean canAttack(EntityType<?> cls) {
+        if(TalentHelper.canAttack(this, cls))
             return true;
 
-        return super.canAttackClass(cls);
-    }**/
+        return super.canAttack(cls);
+    }
     
     @Override
     public Entity changeDimension(DimensionType dimType) {

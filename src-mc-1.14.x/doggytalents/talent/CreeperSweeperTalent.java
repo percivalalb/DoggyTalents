@@ -6,6 +6,7 @@ import java.util.Random;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.util.SoundEvents;
 
@@ -19,7 +20,6 @@ public class CreeperSweeperTalent extends Talent {
 	@Override
 	public void onClassCreation(EntityDog dog) {
 		dog.objects.put("creeper_timer", 0);
-		dog.objects.put("random_time", 30 + this.rand.nextInt(20));
 	}
 
 	@Override
@@ -29,14 +29,15 @@ public class CreeperSweeperTalent extends Talent {
 		if(dog.getAttackTarget() == null && dog.isTamed() && level > 0) {
             List<CreeperEntity> list = dog.world.getEntitiesWithinAABB(CreeperEntity.class, dog.getBoundingBox().grow(level * 5, level * 2, level * 5));
 
-            if(!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1)
-            	dog.objects.put("creeper_timer", (int)dog.objects.get("creeper_timer") + 1);
+            if(!list.isEmpty() && !dog.isSitting() && dog.getHealth() > 1) {
+            	int timer = (int)dog.objects.get("creeper_timer");
+            	dog.objects.put("creeper_timer", timer - 1);
+            }
         }
 		
-		if((int)dog.objects.get("creeper_timer") >= (int)dog.objects.get("random_time")) {
+		if((int)dog.objects.get("creeper_timer") < 0) {
 			dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-			dog.objects.put("creeper_timer", 0);
-			dog.objects.put("random_time", 30 + this.rand.nextInt(40));
+			dog.objects.put("creeper_timer", 60 + this.rand.nextInt(40));
 		}
 		
 		
@@ -48,8 +49,8 @@ public class CreeperSweeperTalent extends Talent {
 	}
 	
 	@Override
-	public boolean canAttackClass(EntityDog dog, Class entityClass) {
-		return CreeperEntity.class == entityClass && dog.TALENTS.getLevel(this) == 5; 
+	public boolean canAttack(EntityDog dog, EntityType<?> entityType) {
+		return entityType == EntityType.CREEPER && dog.TALENTS.getLevel(this) == 5; 
 	}
 	
 	@Override

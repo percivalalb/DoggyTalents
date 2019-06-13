@@ -11,8 +11,6 @@ import doggytalents.lib.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.IDataFixer;
-import net.minecraft.util.datafix.IDataWalker;
 import net.minecraft.util.datafix.IFixableData;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 

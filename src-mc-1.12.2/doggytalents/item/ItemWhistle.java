@@ -126,7 +126,7 @@ public class ItemWhistle extends ItemDT {
     				if(successful)
     					player.sendMessage(new TextComponentTranslation("dogcommand.ok"));
     			}
-    			else if(mode == 4){
+    			else if(mode == 4) {
     				world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
     				//player.sendMessage(new TextComponentTranslation("dogcommand.shepherd"));
     			} else if(mode == 5) {

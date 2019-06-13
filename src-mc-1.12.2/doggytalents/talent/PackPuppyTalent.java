@@ -11,7 +11,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.lib.GuiNames;
-import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

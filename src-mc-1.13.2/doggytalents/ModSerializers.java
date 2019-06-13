@@ -1,7 +1,6 @@
 package doggytalents;
 
 import java.util.Map;
-import java.util.function.Supplier;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.lib.Reference;

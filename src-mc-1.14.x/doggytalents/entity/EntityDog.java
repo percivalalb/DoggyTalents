@@ -17,7 +17,6 @@ import doggytalents.ModItems;
 import doggytalents.ModSerializers;
 import doggytalents.ModTags;
 import doggytalents.ModTalents;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
@@ -89,7 +88,6 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -101,7 +99,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.storage.loot.LootTables;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -1039,6 +1036,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         if(TalentHelper.setFire(this, amount))
             super.setFire(amount);
     }
+	
+	@Override
+	public boolean isSleeping() {
+		return false;
+	}
 	
 	@Override
     protected int decreaseAirSupply(int air) {

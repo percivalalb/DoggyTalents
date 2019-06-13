@@ -2,7 +2,6 @@ package doggytalents.client.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import doggytalents.entity.EntityDog;
 import doggytalents.inventory.container.ContainerPackPuppy;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;

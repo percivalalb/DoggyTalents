@@ -30,7 +30,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
 	    	
 	        GlStateManager.pushMatrix();
 	
-	        if (this.func_215332_c().isChild) { //isChild
+	        if(this.func_215332_c().isChild) { //isChild
 	            float f = 0.5F;
 	            GlStateManager.translatef(0.0F, 0.75F, 0.0F);
 	            GlStateManager.scalef(0.5F, 0.5F, 0.5F);

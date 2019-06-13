@@ -1,6 +1,5 @@
 package doggytalents.handler;
 
-import doggytalents.DoggyTalents;
 import doggytalents.entity.EntityDog;
 import doggytalents.network.packet.client.DogJumpMessage;
 import net.minecraft.entity.Entity;

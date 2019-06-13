@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
+
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.lib.Constants;
-import doggytalents.lib.TalentNames;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;

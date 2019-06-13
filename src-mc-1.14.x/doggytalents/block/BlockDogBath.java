@@ -1,28 +1,19 @@
 package doggytalents.block;
 
-import java.util.List;
-
-import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.BannerItem;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
-import net.minecraft.stats.Stats;
-import net.minecraft.tileentity.BannerTileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -36,7 +27,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.loot.LootContext;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -76,12 +66,6 @@ public class BlockDogBath extends Block {
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext selectionContext) {
 		return SHAPE_COLLISION;
 	}
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder p_220076_2_) {
-		List<ItemStack> drops = super.getDrops(state, p_220076_2_);
-		return drops; // TODO
-	}
-	
 	
 	@Override
 	public boolean isSolid(BlockState state) {

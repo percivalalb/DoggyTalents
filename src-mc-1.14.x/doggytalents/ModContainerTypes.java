@@ -8,7 +8,6 @@ import doggytalents.lib.GuiNames;
 import doggytalents.lib.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.event.RegistryEvent;

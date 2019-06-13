@@ -106,7 +106,7 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
         		
         		if(d0 <= (double)(5 * 5)) {
-        			//TODO Sneaking if(this.field_76990_c.field_217783_c.isSneaking()) {
+        			//TODO if(this.field_76990_c.field_217783_c.isSneaking()) {
     	    			//String ownerName = dog.getOwnersName().getFormattedText();
     	    			
     	    			

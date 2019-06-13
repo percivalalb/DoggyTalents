@@ -16,7 +16,6 @@ import doggytalents.ModItems;
 import doggytalents.ModSerializers;
 import doggytalents.ModTags;
 import doggytalents.ModTalents;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
@@ -1034,6 +1033,11 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
         if(TalentHelper.setFire(this, amount))
             super.setFire(amount);
     }
+	
+	@Override
+	public boolean isPlayerSleeping() {
+		return false;
+	}
 	
 	@Override
     protected int decreaseAirSupply(int air) {

@@ -1,6 +1,5 @@
 package doggytalents.inventory;
 
-import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
 import doggytalents.inventory.container.ContainerPackPuppy;
 import net.minecraft.entity.player.PlayerEntity;

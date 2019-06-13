@@ -15,14 +15,13 @@ import net.minecraft.entity.projectile.ThrowableEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.IPacket;
-import net.minecraft.network.play.server.SSpawnMobPacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 @OnlyIn(
 	value = Dist.CLIENT,

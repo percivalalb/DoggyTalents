@@ -1,6 +1,5 @@
 package doggytalents.entity.ai;
 
-import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
@@ -13,7 +12,6 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 

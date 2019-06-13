@@ -11,11 +11,28 @@ Update List Key
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.1 | 13th June 2019
++ Untamed dogs (don't mistake dogs with wolves) can also be tamed with training treats
++ When untaming a dog with collar shears it will drop it's pack puppy inventory 
++ Add two new dog textures
++ Can now Fill bottles from dog bath
++ Dogs now run to water when on fire
++ Update zh_cn lang file (Thanks to mcBegins2Snow from github)
++ Update zh_cn lang file (Thanks to kellixon from github)
+# Redone config file and options
+# Changed roaring whistle errors messages from chat messages to status update messsages
+# Improve last owner name tag (shift to see owner tag below dog name)
+# Change roaring gale chat messages to status messages
+# Improved follow AI
+# Beg, items, packpuppy blacklist now use Item tags
+* Fix not dismounting dog in water and not being able to stay underwater for long (swimmerdog)
+
 1.15.0.0 | 31st May 2019
 + The whistle now has different modes (shift click to change mode), replaces command emblem and is also used for shepherd dog and roaring gale talent.
 + Added whistle sounds
 + Shepherd Dog Talent now works, use the shepherd whistle and dogs will round up animals so they follow you and stay at the back keeping them in check. Level 1 allows 1 animal to follow while level 5 allows 16 animals to follow.
 + Wandering mode now works properly, if close enought to it's bowl will stay within 5 blocks, otherwise will continue to follow you until you get back to the bowl
++ Added Dog Owner changer, will change any dog to be yours
 + Using the doggy charm on a dog will spawn a tamed baby (creative only)
 + Using a stick will on an incapacitated dog will tell you how to revive your dog
 + Improved radar messages and it will now give info about dogs in other dimensions
@@ -69,12 +86,28 @@ Initial release, parent version 1.14.2.396
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.1 | 13th June 2019
++ Untamed dogs (don't mistake dogs with wolves) can also be tamed with training treats
++ When untaming a dog with collar shears it will drop it's pack puppy inventory 
++ Add two new dog textures
++ Can now Fill bottles from dog bath
++ Dogs now run to water when on fire
++ Update zh_cn lang file (Thanks to mcBegins2Snow from github)
++ Update zh_cn lang file (Thanks to kellixon from github)
+# Redone config file and options
+# Changed roaring whistle errors messages from chat messages to status update messsages
+# Improve last owner name tag (shift to see owner tag below dog name)
+# Change roaring gale chat messages to status messages
+# Improved follow AI
+* Fix not dismounting dog in water and not being able to stay underwater for long (swimmerdog)
+
 1.15.0.0 | 31st May 2019
 Requires forge 14.23.5.2826 or higher
 + The whistle now has different modes (shift click to change mode), replaces command emblem and is also used for shepherd dog and roaring gale talent.
 + Added whistle sounds
 + Shepherd Dog Talent now works, use the shepherd whistle and dogs will round up animals so they follow you and stay at the back keeping them in check. Level 1 allows 1 animal to follow while level 5 allows 16 animals to follow.
 + Wandering mode now works properly, if close enought to it's bowl will stay within 5 blocks, otherwise will continue to follow you until you get back to the bowl
++ Added Dog Owner changer, will change any dog to be yours
 + Using the doggy charm on a dog will spawn a tamed baby (creative only)
 + Using a stick will on an incapacitated dog will tell you how to revive your dog
 + Improved radar messages and it will now give info about dogs in other dimensions

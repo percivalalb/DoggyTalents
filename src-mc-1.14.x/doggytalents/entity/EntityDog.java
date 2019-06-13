@@ -64,6 +64,7 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
@@ -1062,16 +1063,17 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             } else if (target instanceof WolfEntity) {
             	WolfEntity entitywolf = (WolfEntity) target;
 
-                if (entitywolf.isTamed() && entitywolf.getOwner() == owner)
+                if(entitywolf.isTamed() && entitywolf.getOwner() == owner)
                     return false;
             }
 
-            if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity) owner).canAttackPlayer((PlayerEntity) target))
-                return false;
-            else if (target == owner)
-                return false;
-            else
-                return !(target instanceof AbstractHorseEntity) || !((AbstractHorseEntity) target).isTame();
+            if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+            	return false;
+            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+            	return false;
+            } else {
+            	return !(target instanceof CatEntity) || !((CatEntity)target).isTamed();
+            }
         }
 
         return false;

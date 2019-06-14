@@ -21,11 +21,11 @@ public class LayerRadioCollar extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     	if(dog.isTamed() && !dog.isInvisible() && dog.hasRadarCollar()) {
-        	this.func_215333_a(ResourceLib.MOB_LAYER_RADIO_COLLAR);
+        	this.bindTexture(ResourceLib.MOB_LAYER_RADIO_COLLAR);
         	GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        	this.func_215332_c().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        	this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

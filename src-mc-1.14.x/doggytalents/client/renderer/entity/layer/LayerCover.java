@@ -41,12 +41,12 @@ public class LayerCover extends LayerRenderer<EntityDog, ModelDog> {
     }
     
     @Override
-    public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(this.condition.test(dog) && !dog.isInvisible()) {
-            this.func_215333_a(this.resource.apply(dog));
+            this.bindTexture(this.resource.apply(dog));
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
             
-            this.func_215332_c().setModelAttributes(this.model);
+            this.getEntityModel().setModelAttributes(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             this.model.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }

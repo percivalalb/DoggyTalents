@@ -28,7 +28,7 @@ public class EntityAIBegDog extends Goal {
 
 	@Override
 	public boolean shouldExecute() {
-		this.player = this.world.func_217362_a(this.dog, (double) this.minPlayerDistance); // TODO
+		this.player = this.world.getClosestPlayer(this.dog, (double) this.minPlayerDistance); // TODO
 		return this.player == null ? false : this.hasTemptationItemInHand(this.player);
 	}
 

@@ -25,12 +25,12 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-	public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+	public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     	if(dog.hasBone()) {
 	    	
 	        GlStateManager.pushMatrix();
 	
-	        if(this.func_215332_c().isChild) { //isChild
+	        if(this.getEntityModel().isChild) { //isChild
 	            float f = 0.5F;
 	            GlStateManager.translatef(0.0F, 0.75F, 0.0F);
 	            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
@@ -39,7 +39,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
             if(dog.isSneaking())
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
 
-            this.func_215332_c().wolfHeadMain.postRender(0.0625F);
+            this.getEntityModel().wolfHeadMain.postRender(0.0625F);
             GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotatef(45.0F, 0.0F, 0.0F, 1.0F);

@@ -21,25 +21,25 @@ public class LayerCape extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.hasCape() && !dog.isInvisible()) {
         	if(dog.hasCapeColoured()) {
-                this.func_215333_a(ResourceLib.MOB_LAYER_CAPE_COLOURED);
+                this.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
         		if(dog.isCapeColoured()) {
     	            float[] afloat = dog.getCapeColour();
     	            GlStateManager.color3f(afloat[0], afloat[1], afloat[2]);
                 }
         	}
         	else if(dog.hasFancyCape()) {
-                this.func_215333_a(ResourceLib.MOB_LAYER_CAPE);
+                this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
         	}
         	else if(dog.hasLeatherJacket()) {
-                this.func_215333_a(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+                this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
         	}
 
-        	this.func_215332_c().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        	this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

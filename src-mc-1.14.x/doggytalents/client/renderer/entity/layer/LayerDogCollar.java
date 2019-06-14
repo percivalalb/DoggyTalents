@@ -18,20 +18,20 @@ public class LayerDogCollar extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.isTamed() && !dog.isInvisible() && dog.hasCollar()) {
         	if(dog.hasFancyCollar()) {
-        		 this.func_215333_a(ResourceLib.getFancyCollar(dog.getFancyCollarIndex()));
+        		 this.bindTexture(ResourceLib.getFancyCollar(dog.getFancyCollarIndex()));
         		 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
         	}
         	else if(dog.hasCollarColoured()) {
-	            this.func_215333_a(ResourceLib.MOB_LAYER_DOG_COLLAR);
+	            this.bindTexture(ResourceLib.MOB_LAYER_DOG_COLLAR);
 	            if(dog.isCollarColoured()) {
 		            float[] afloat = dog.getCollar();
 		            GlStateManager.color3f(afloat[0], afloat[1], afloat[2]);
 	            }
         	}
-            this.func_215332_c().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

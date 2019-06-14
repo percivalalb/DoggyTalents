@@ -22,11 +22,11 @@ public class LayerDogHurt extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_212842_a_(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.isTamed() && !dog.isInvisible() && (dog.getHealth() == 1 && dog.isImmortal() && Constants.RENDER_BLOOD)) {
-            this.func_215333_a(ResourceLib.MOB_LAYER_DOG_HURT);
+            this.bindTexture(ResourceLib.MOB_LAYER_DOG_HURT);
             GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        	this.func_215332_c().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        	this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

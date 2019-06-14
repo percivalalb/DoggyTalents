@@ -200,7 +200,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		
 		this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
 		this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
-		this.targetSelector.addGoal(3, new EntityAIHurtByTargetDog(this).func_220794_a());
+		this.targetSelector.addGoal(3, new EntityAIHurtByTargetDog(this).setCallsForHelp());
 		this.targetSelector.addGoal(4, new EntityAIBerserkerMode<>(this, MobEntity.class, false));
 	}
 	

@@ -92,6 +92,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -1163,6 +1164,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
    			}
    		}
    	}
+ 	
+ 	@Override
+ 	public ItemStack getPickedResult(RayTraceResult target) {
+ 		return new ItemStack(ModItems.DOGGY_CHARM);
+ 	}
 	
  	@OnlyIn(Dist.CLIENT)
    	public boolean isDogWet() {

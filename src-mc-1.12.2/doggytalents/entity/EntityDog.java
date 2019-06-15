@@ -90,6 +90,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -1155,6 +1156,11 @@ public class EntityDog extends EntityTameable {
    			}
    		}
    	}
+    
+    @Override
+ 	public ItemStack getPickedResult(RayTraceResult target) {
+ 		return new ItemStack(ModItems.DOGGY_CHARM);
+ 	}
     
     @SideOnly(Side.CLIENT)
    	public boolean isDogWet() {

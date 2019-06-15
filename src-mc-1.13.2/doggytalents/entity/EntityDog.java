@@ -93,6 +93,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -1154,6 +1155,11 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
    		}
    	}
 	
+ 	@Override
+ 	public ItemStack getPickedResult(RayTraceResult target) {
+ 		return new ItemStack(ModItems.DOGGY_CHARM);
+ 	}
+ 	
  	@OnlyIn(Dist.CLIENT)
    	public boolean isDogWet() {
 		return this.isWet;

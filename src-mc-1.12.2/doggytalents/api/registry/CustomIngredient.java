@@ -29,6 +29,14 @@ public class CustomIngredient {
         }
     }
 	
+	public ItemStack getStack() {
+		if(this.matchingStacks.length > 0) {
+			return this.matchingStacks[0];
+		} else {
+			return null;
+		}
+	}
+	
 	public static CustomIngredient fromStacks(ItemStack... stacks) {
         if(stacks.length > 0) {
             for(ItemStack itemstack : stacks) {

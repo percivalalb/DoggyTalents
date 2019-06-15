@@ -98,6 +98,12 @@ public class DogBedRegistry {
 		return "";
 	}
 	
+	public CustomIngredient getCraftingItemFromId(String id) {
+		if(!this.isValidId(id))
+			return null;
+		return this.craftingItems.get(id);
+	}
+	
 	public static ItemStack createItemStack(String casingId, String beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1, 0);
 		stack.setTagCompound(new NBTTagCompound());

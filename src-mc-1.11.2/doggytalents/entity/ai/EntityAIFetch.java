@@ -27,7 +27,7 @@ public class EntityAIFetch extends EntityAIClosestItem {
 		super.updateTask();
 		if(!this.dog.isSitting()) {
     
-			if(this.dog.getDistanceSq(this.target) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
+			if(this.dog.getDistanceSqToEntity(this.target) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
 				if(this.target.isEntityAlive()) {
 					Item item = this.target.getItem().getItem();
 	              		
@@ -36,7 +36,7 @@ public class EntityAIFetch extends EntityAIClosestItem {
 					else if(item == ModItems.THROW_STICK)
 						this.dog.setBoneVariant(1);
 	            	
-					this.dog.getNavigator().clearPath();
+					this.dog.getNavigator().clearPathEntity();
 					
 					this.target.setDead();
 				}

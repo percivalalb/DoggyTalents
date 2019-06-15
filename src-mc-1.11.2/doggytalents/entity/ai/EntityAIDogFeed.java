@@ -33,7 +33,7 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 		super.updateTask();
 		if(!this.dog.isSitting()) {
     
-			if (this.dog.getDistance(this.target) <= 1) {
+			if (this.dog.getDistanceToEntity(this.target) <= 1) {
 
 				this.dog.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 				
@@ -50,7 +50,7 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 				if (this.target.getItem().isEmpty()) {
 					this.target.setDead();
 					this.target = null;
-					this.dog.getNavigator().clearPath();
+					this.dog.getNavigator().clearPathEntity();
 				}
 			}
 	    }

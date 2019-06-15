@@ -65,6 +65,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -94,7 +95,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -168,7 +168,9 @@ public class EntityDog extends EntityTameable {
 		this.GENDER = new DogGenderFeature(this);
 		this.STATS = new DogStats(this);
 		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
-        this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
+		if(!this.world.isRemote) {
+			this.locationManager = DogLocationManager.getHandler(this.getEntityWorld());
+		}
         this.objects = new HashMap<String, Object>();
     	this.setSize(0.6F, 0.85F);
 		this.setTamed(false);
@@ -266,7 +268,7 @@ public class EntityDog extends EntityTameable {
 	}
 	
 	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+	protected SoundEvent getHurtSound() {
 		return SoundEvents.ENTITY_WOLF_HURT;
 	}
 
@@ -500,7 +502,7 @@ public class EntityDog extends EntityTameable {
             EntityPlayer player = (EntityPlayer) this.getOwner();
 
             if(player != null) {
-                float distanceToOwner = player.getDistance(this);
+                float distanceToOwner = player.getDistanceToEntity(this);
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
                     if(!this.world.isRemote) {
@@ -629,7 +631,7 @@ public class EntityDog extends EntityTameable {
         if(stack.getItem() == ModItems.OWNER_CHANGE && player.capabilities.isCreativeMode && !this.isOwner(player)) {
         	if(!this.world.isRemote) {
 	        	this.setTamed(true);
-	            this.navigator.clearPath();
+	            this.navigator.clearPathEntity();
 	            this.setAttackTarget((EntityLivingBase) null);
 	            this.aiSit.setSitting(true);
 	            this.setOwnerId(player.getUniqueID());
@@ -811,7 +813,7 @@ public class EntityDog extends EntityTameable {
                             }
                         } else if(this.reversionTime < 1) {
                             this.setTamed(false);
-                            this.navigator.clearPath();
+                            this.navigator.clearPathEntity();
                             this.aiSit.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
@@ -854,7 +856,7 @@ public class EntityDog extends EntityTameable {
 	                    	return false;
 	                    }
 	                    
-	                    float[] afloat = colour.getColorComponentValues();
+	                    float[] afloat = EntitySheep.getDyeRgb(colour);
 	                    int l1 = (int)(afloat[0] * 255.0F);
 	                    int i2 = (int)(afloat[1] * 255.0F);
 	                    int j2 = (int)(afloat[2] * 255.0F);
@@ -908,7 +910,7 @@ public class EntityDog extends EntityTameable {
                 if(!this.world.isRemote) {
                     this.aiSit.setSitting(!this.isSitting());
                     this.isJumping = false;
-                    this.navigator.clearPath();
+                    this.navigator.clearPathEntity();
                     this.setAttackTarget((EntityLivingBase) null);
                 }
                 return true;
@@ -929,7 +931,7 @@ public class EntityDog extends EntityTameable {
         	if(!this.world.isRemote) {
         		if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
                     this.setTamed(true);
-                    this.navigator.clearPath();
+                    this.navigator.clearPathEntity();
                     this.setAttackTarget((EntityLivingBase) null);
                     this.aiSit.setSitting(true);
                     this.setHealth(20.0F);
@@ -1067,8 +1069,8 @@ public class EntityDog extends EntityTameable {
     }
     
     @Override
-    public Entity changeDimension(int dimId, ITeleporter teleporter) {
-    	Entity entity = super.changeDimension(dimId, teleporter);
+    public Entity changeDimension(int dimId) {
+    	Entity entity = super.changeDimension(dimId);
     	if(entity instanceof EntityDog) {
     		EntityDog dog = (EntityDog)entity;
     		
@@ -1083,6 +1085,8 @@ public class EntityDog extends EntityTameable {
     	return entity;
     }
     
+    //TODO
+    /**
     @Override
     public void onAddedToWorld() { 
     	super.onAddedToWorld();
@@ -1096,7 +1100,7 @@ public class EntityDog extends EntityTameable {
     	if(!this.world.isRemote && !this.isEntityAlive())
     		this.locationManager.remove(this);
     }
-    
+    **/
 
     @Override
     public void onDeath(DamageSource cause) {
@@ -1629,7 +1633,7 @@ public class EntityDog extends EntityTameable {
 	}
 	
 	@Override
-	public void travel(float strafe, float vertical, float forward) {
+	public void moveEntityWithHeading(float strafe, float forward) {
 		if(this.isBeingRidden() && this.canBeSteered() && this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
 			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
 			this.rotationYaw = entitylivingbase.rotationYaw;
@@ -1672,7 +1676,7 @@ public class EntityDog extends EntityTameable {
 	        this.jumpMovementFactor = this.getAIMoveSpeed() * 0.3F;
 	        if(this.canPassengerSteer()) {
 	        	this.setAIMoveSpeed((float)this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue() * 0.5F);
-	        	super.travel(strafe, vertical, forward);
+	        	super.moveEntityWithHeading(strafe, forward);
 	        } else if(entitylivingbase instanceof EntityPlayer) {
 	        	this.motionX = 0.0D;
 	        	this.motionY = 0.0D;
@@ -1697,7 +1701,7 @@ public class EntityDog extends EntityTameable {
 		} else {
 			this.stepHeight = 0.6F;
 			this.jumpMovementFactor = 0.02F;
-			super.travel(strafe, vertical, forward);
+			super.moveEntityWithHeading(strafe, forward);
 		}
 	}
 }

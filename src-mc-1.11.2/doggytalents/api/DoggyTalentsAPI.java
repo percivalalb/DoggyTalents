@@ -2,7 +2,7 @@ package doggytalents.api;
 
 import doggytalents.api.inferface.Talent;
 import doggytalents.api.registry.ItemList;
-import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
 /**
  * @author ProPercivalalb

@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -21,16 +23,21 @@ public class ModelBake {
 	public static void onModelBakeEvent(ModelBakeEvent event) {
 	    
 	    try {
-	    	IModel model = ModelLoaderRegistry.getModel(new ResourceLocation("doggytalents:block/dog_bed"));
+	    	IModel baseModel = ModelLoaderRegistry.getModel(new ResourceLocation("doggytalents:block/dog_bed"));
 	    	
 	    	for(String thing : new String[] {"inventory", "facing=north", "facing=south", "facing=east", "facing=west"}) {
 		    	ModelResourceLocation modelVariantLocation = new ModelResourceLocation("doggytalents:dog_bed", thing);
-		
-		        IBakedModel bakedModel = event.getModelRegistry().getObject(modelVariantLocation);
 
-		        //Replace 
-		        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
-		        event.getModelRegistry().putObject(modelVariantLocation, customModel);
+		        if(baseModel instanceof IRetexturableModel) {
+		        	IBakedModel variantModel = event.getModelRegistry().getObject(modelVariantLocation);
+
+		        	if(variantModel instanceof IPerspectiveAwareModel) {
+
+		        		IBakedModel customModel = new DogBedModel((IPerspectiveAwareModel)variantModel, (IRetexturableModel)baseModel, DefaultVertexFormats.BLOCK);
+
+		        		event.getModelRegistry().putObject(modelVariantLocation, customModel);
+		        	}
+		        }
 		    }
 	    }
 	    catch(Exception e) {

@@ -14,7 +14,7 @@ public class ModCreativeTabs {
     public static final CreativeTabs GENERAL = new CreativeTabs("doggytalents") {
         @Override
         @SideOnly(Side.CLIENT)
-        public ItemStack createIcon() {
+        public ItemStack getTabIconItem() {
         	return new ItemStack(ModItems.TRAINING_TREAT);
         }
     };
@@ -24,7 +24,7 @@ public class ModCreativeTabs {
 		
         @Override
         @SideOnly(Side.CLIENT)
-        public ItemStack createIcon() {
+        public ItemStack getTabIconItem() {
         	return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
     	

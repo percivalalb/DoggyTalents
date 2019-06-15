@@ -23,13 +23,6 @@ public class GuiTreatBag extends GuiContainer {
 	}
 	
 	@Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.drawDefaultBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
-    }
-	
-	@Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     	String s = this.treatBagContainer.inventoryTreatBag.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, 10, 8, 4210752);

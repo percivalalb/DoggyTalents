@@ -46,6 +46,7 @@ public class GuiDogInfo extends GuiScreen {
 	public int btnPerPages = 0;
 	private final DecimalFormat dfShort = new DecimalFormat("0.0");
 	private final DecimalFormat dfShortDouble = new DecimalFormat("0.00");
+	private int numTalents = 0;
 	
 	public GuiDogInfo(EntityDog dog, EntityPlayer player) {
 		this.dog = dog;
@@ -85,7 +86,8 @@ public class GuiDogInfo extends GuiScreen {
 		this.textfieldList.add(nameTextField);
 		this.doggyTex = this.dog.getTameSkin();
 		
-		int size = DoggyTalentsAPI.TALENTS.getKeys().size();
+		int size = DoggyTalentsAPI.TALENTS.getValues().size();
+		this.numTalents = size;
 		
   		this.btnPerPages = Math.max(MathHelper.floor((double)(this.height - 10) / 21) - 2, 1);
     	
@@ -198,7 +200,7 @@ public class GuiDogInfo extends GuiScreen {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
 	    	if(button.mousePressed(this.mc, xMouse, yMouse)) {
 	    		List<String> list = new ArrayList<String>();
-	    		if(button.id >= 1 && button.id <= DoggyTalentsAPI.TALENTS.getKeys().size()) {
+	    		if(button.id >= 1 && button.id <= this.numTalents ) {
 	    			Talent talent = button instanceof GuiTalentButton ? ((GuiTalentButton)button).talent : null;
 	    			
 			    	list.add(TextFormatting.GREEN + I18n.format(talent.getTranslationKey()));
@@ -235,7 +237,7 @@ public class GuiDogInfo extends GuiScreen {
 	@Override
     protected void actionPerformed(GuiButton button)  {
 
-		if(button.id >= 1 && button.id <= DoggyTalentsAPI.TALENTS.getKeys().size()) {
+		if(button.id >= 1 && button.id <= this.numTalents) {
 			Talent talent = button instanceof GuiTalentButton ? ((GuiTalentButton)button).talent : null;
 			int level = this.dog.TALENTS.getLevel(talent);
 			if(level < talent.getHighestLevel(this.dog) && this.dog.spendablePoints() >= talent.getCost(this.dog, level + 1))

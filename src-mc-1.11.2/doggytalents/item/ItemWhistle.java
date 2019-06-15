@@ -66,7 +66,7 @@ public class ItemWhistle extends ItemDT {
 				if(mode == 0) { // Stand
     			    for(EntityDog dog : dogsList) {
     			    	dog.getAISit().setSitting(false);
-    			    	dog.getNavigator().clearPath();
+    			    	dog.getNavigator().clearPathEntity();
     			    	dog.setAttackTarget((EntityLivingBase)null);
     			    	if(dog.MODE.isMode(EnumMode.WANDERING))
     			    		dog.MODE.setMode(EnumMode.DOCILE);
@@ -94,7 +94,7 @@ public class ItemWhistle extends ItemDT {
     			else if(mode == 2) { // Stay
     				for(EntityDog dog : dogsList) {
     					dog.getAISit().setSitting(true);
-    					dog.getNavigator().clearPath();
+    					dog.getNavigator().clearPathEntity();
     					dog.setAttackTarget((EntityLivingBase)null);
     					if(dog.MODE.isMode(EnumMode.WANDERING))
     						dog.MODE.setMode(EnumMode.DOCILE);
@@ -110,12 +110,12 @@ public class ItemWhistle extends ItemDT {
     				for(EntityDog dog : dogsList) {
     					if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
     						dog.getAISit().setSitting(true);
-    						dog.getNavigator().clearPath();
+    						dog.getNavigator().clearPathEntity();
     						dog.setAttackTarget((EntityLivingBase)null);
     					}
     					else {
     						dog.getAISit().setSitting(false);
-    						dog.getNavigator().clearPath();
+    						dog.getNavigator().clearPathEntity();
     						dog.setAttackTarget((EntityLivingBase)null);
     					}
     					successful = true;      
@@ -133,7 +133,7 @@ public class ItemWhistle extends ItemDT {
     				world.playSound((EntityPlayer)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (this.itemRand.nextFloat() * 0.4F + 0.8F));
     				if(!world.isRemote) {
     					EntityDoggyBeam doggyBeam = new EntityDoggyBeam(world, player);
-    		            doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
+    		            doggyBeam.setHeadingFromThrower(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
     		            world.spawnEntity(doggyBeam);
     				}
     			} else if(mode == 6) {
@@ -197,13 +197,13 @@ public class ItemWhistle extends ItemDT {
 	}
 	
 	@Override
-	public String getTranslationKey(ItemStack stack) {
+	public String getUnlocalizedName(ItemStack stack) {
 		byte mode = 0;
 		
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("mode", 99)) {
 			mode = stack.getTagCompound().getByte("mode");
 		}
-		return this.getTranslationKey() + "." + mode;
+		return this.getUnlocalizedName() + "." + mode;
 
 	}
 	

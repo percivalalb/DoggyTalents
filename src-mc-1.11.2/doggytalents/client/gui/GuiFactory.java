@@ -29,4 +29,15 @@ public class GuiFactory implements IModGuiFactory {
 	public GuiScreen createConfigGui(GuiScreen parentScreen) {
 		return new ModGuiConfig(parentScreen);
 	}
+
+	@Override
+	public Class<? extends GuiScreen> mainConfigGuiClass() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
+		return null;
+	}
 }

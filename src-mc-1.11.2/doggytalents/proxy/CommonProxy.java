@@ -5,6 +5,9 @@ import java.util.Random;
 import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
 import doggytalents.ModItems;
+import doggytalents.ModRecipes;
+import doggytalents.ModSerializers;
+import doggytalents.ModTileEntities;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.entity.EntityDog;
@@ -12,7 +15,6 @@ import doggytalents.handler.ConfigChange;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.EntitySpawn;
 import doggytalents.handler.LivingDrops;
-import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
 import doggytalents.helper.Compatibility;
 import doggytalents.inventory.ContainerFoodBowl;
@@ -49,6 +51,8 @@ public class CommonProxy implements IGuiHandler {
 	public void preInit(FMLPreInitializationEvent event) {
         ModEntities.init();
 		ConfigurationHandler.init(new Configuration(event.getSuggestedConfigurationFile()));
+		ModSerializers.Registration.registerSerializers();
+		ModRecipes.onRegister();
     }
 	
 	public void init(FMLInitializationEvent event) {
@@ -73,6 +77,7 @@ public class CommonProxy implements IGuiHandler {
 		DoggyTalentsAPI.BEG_TAMED_WHITELIST.registerItem(ModItems.TREAT_BAG);
 		ModFixs fix = FMLCommonHandler.instance().getDataFixer().init(Reference.MOD_ID, 1);
 		fix.registerFix(FixTypes.ITEM_INSTANCE, new Compatibility.ThrowBoneDataFixer());
+		fix.registerFix(FixTypes.ENTITY, new Compatibility.EntityDogDataFixer());
     }
     
     protected void registerEventHandlers() {
@@ -81,7 +86,6 @@ public class CommonProxy implements IGuiHandler {
     	MinecraftForge.EVENT_BUS.register(new LivingDrops());
     	MinecraftForge.EVENT_BUS.register(new ConfigChange());
     	MinecraftForge.EVENT_BUS.register(new EntitySpawn());
-    	MinecraftForge.EVENT_BUS.register(new MissingMappings());
     }
 	
 	@Override
@@ -122,7 +126,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return (IThreadListener)ctx.getServerHandler().player.server;
+		return (IThreadListener)ctx.getServerHandler().player.getServer();
 	}
 	
 	public void spawnCrit(World world, Entity entity) {}

@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author ProPercivalalb
  */
-public abstract class Talent extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<Talent> {
+public abstract class Talent extends net.minecraftforge.fml.common.registry.IForgeRegistryEntry.Impl<Talent> {
 	
 	@Nullable
 	private String translationKey, translationInfoKey;
@@ -91,7 +91,7 @@ public abstract class Talent extends net.minecraftforge.registries.IForgeRegistr
 	
 	// 1.13 function Util.make(String, ResourceLocation)
 	public static String makeTranslationKey(String type, @Nullable ResourceLocation id) {
-		return id == null ? type + ".unregistered_sadface" : type + '.' + id.getNamespace() + '.' + id.getPath().replace('/', '.');
+		return id == null ? type + ".unregistered_sadface" : type + '.' + id.getResourceDomain() + '.' + id.getResourcePath().replace('/', '.');
 	}
 	
 	public String getInfoTranslationKey() {

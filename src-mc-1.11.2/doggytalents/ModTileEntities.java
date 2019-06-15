@@ -14,8 +14,8 @@ public class ModTileEntities {
 	    
 	    public static void registerTileEntities() {
 	    	DoggyTalents.LOGGER.info("Registering TileEnities");
-	    	GameRegistry.registerTileEntity(TileEntityDogBed.class, ResourceLib.get("dog_bed"));
-			GameRegistry.registerTileEntity(TileEntityFoodBowl.class, ResourceLib.get("dog_bowl"));
+	    	GameRegistry.registerTileEntity(TileEntityDogBed.class, ResourceLib.get("dog_bed").toString());
+			GameRegistry.registerTileEntity(TileEntityFoodBowl.class, ResourceLib.get("dog_bowl").toString());
 	        DoggyTalents.LOGGER.info("Finished Registering TileEnities");
 	    }
     }

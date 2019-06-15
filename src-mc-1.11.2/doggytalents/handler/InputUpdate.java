@@ -2,9 +2,13 @@ package doggytalents.handler;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.network.packet.client.DogJumpMessage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.client.event.InputUpdateEvent;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -12,10 +16,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class InputUpdate {
 
 	@SubscribeEvent
-	public void event(InputUpdateEvent event) {
-		if(event.getMovementInput().jump) {
-			Entity entity = event.getEntityPlayer().getRidingEntity();
-			if(event.getEntityPlayer().getRidingEntity() != null && entity instanceof EntityDog) {
+	public void event(KeyInputEvent event) {
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
+		if(player == null) return;
+		if(player.movementInput.jump) {
+			Entity entity = player.getRidingEntity();
+			if(player.getRidingEntity() != null && entity instanceof EntityDog) {
 				EntityDog dog = (EntityDog)entity;
 				
 				if(dog.canJump()) {

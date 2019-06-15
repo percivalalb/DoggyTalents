@@ -24,13 +24,13 @@ public class DogTalentMessage extends AbstractServerMessage {
 	@Override
 	public void read(PacketBuffer buf) {
 		this.entityId = buf.readInt();
-		this.talentId = buf.readResourceLocation();
+		this.talentId = new ResourceLocation(buf.readString(Short.MAX_VALUE));
 	}
 
 	@Override
 	public void write(PacketBuffer buf) {
 		buf.writeInt(this.entityId);
-		buf.writeResourceLocation(this.talentId);
+		buf.writeString(this.talentId.toString());
 	}
 	
 	@Override

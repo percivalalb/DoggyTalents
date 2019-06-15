@@ -37,7 +37,7 @@ public class LayerCover implements LayerRenderer<EntityDog> {
     }
     
     public LayerCover(RenderDog dogRendererIn, ModelBase modelIn, ResourceLocation resourceIn) {
-        this(dogRendererIn, modelIn, resourceIn, Predicates.<EntityDog>alwaysTrue());
+        this(dogRendererIn, modelIn, resourceIn, (e) -> true);
     }
     
     @Override

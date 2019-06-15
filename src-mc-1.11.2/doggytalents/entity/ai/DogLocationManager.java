@@ -19,9 +19,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.WorldSavedDataCallableSave;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.MapStorage;
-import net.minecraft.world.storage.WorldSavedData;
 
 public class DogLocationManager extends WorldSavedData {
 	

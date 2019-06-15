@@ -5,7 +5,6 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,7 +45,7 @@ public class BlockDogBath extends Block {
 	}
 	
 	@Override
-	public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
 		if(entity instanceof EntityDog) {
 			EntityDog dog = (EntityDog)entity;
 			dog.isWet = true;
@@ -68,7 +67,7 @@ public class BlockDogBath extends Block {
 	
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
 	}
 	
 	@Override
@@ -98,16 +97,9 @@ public class BlockDogBath extends Block {
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		if(facing == EnumFacing.DOWN) 
-			return BlockFaceShape.SOLID;
-		return BlockFaceShape.UNDEFINED;
-	}
 	
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

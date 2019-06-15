@@ -30,9 +30,4 @@ public class OptionalTextComponentSerializer implements DataSerializer<Optional<
 	public DataParameter<Optional<ITextComponent>> createKey(int id) {
 		return new DataParameter<>(id, this);
 	}
-
-	@Override
-	public Optional<ITextComponent> copyValue(Optional<ITextComponent> value) {
-		return value.isPresent() ? Optional.of(value.get().createCopy()) : Optional.absent();
-	}
 }

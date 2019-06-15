@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 import doggytalents.item.ItemCapeColoured;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;
@@ -16,7 +17,7 @@ import net.minecraft.world.World;
 /**
  * 1.12 Code
  */
-public class RecipeDogCape extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class RecipeDogCape implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
@@ -89,7 +90,7 @@ public class RecipeDogCape extends net.minecraftforge.registries.IForgeRegistryE
                     if(itemstack1.getItem() != Items.DYE)
                         return ItemStack.EMPTY;
 
-                    float[] afloat = EnumDyeColor.byDyeDamage(itemstack1.getMetadata()).getColorComponentValues();
+                    float[] afloat = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(itemstack1.getMetadata()));
                     int l1 = (int)(afloat[0] * 255.0F);
                     int i2 = (int)(afloat[1] * 255.0F);
                     int j2 = (int)(afloat[2] * 255.0F);
@@ -138,13 +139,7 @@ public class RecipeDogCape extends net.minecraftforge.registries.IForgeRegistryE
     }
 
 	@Override
-    public boolean isDynamic() {
-        return true;
-    }
-
-	//Is on a 3x3 grid or bigger
-	@Override
-    public boolean canFit(int width, int height) {
-        return width * height >= 2;
+	public int getRecipeSize() {
+        return 10;
     }
 }

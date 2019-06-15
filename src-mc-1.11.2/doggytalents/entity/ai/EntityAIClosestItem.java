@@ -43,10 +43,10 @@ public class EntityAIClosestItem extends EntityAIBase {
 			if(entity.isInvisible()) {
 				return false;
 			}
-			else if (targetSelector != null && !targetSelector.test(entity.getItem())) {
+			else if (targetSelector != null && !targetSelector.apply(entity.getItem())) {
 	            return false;
 	        } else {
-				return (double)entity.getDistance(this.dog) > d0 ? false : true;
+				return (double)entity.getDistanceToEntity(this.dog) > d0 ? false : true;
 			}
 		};
 		this.sorter = new EntityAINearestAttackableTarget.Sorter(dogIn);
@@ -80,7 +80,7 @@ public class EntityAIClosestItem extends EntityAIBase {
 			return false;
 		} else {
 			double d0 = this.getFollowRange();
-			if (this.dog.getDistanceSq(target) > d0 * d0) {
+			if (this.dog.getDistanceSqToEntity(target) > d0 * d0) {
 				return false;
 			} else {
 				return true;
@@ -113,7 +113,7 @@ public class EntityAIClosestItem extends EntityAIBase {
 	
 	@Override
 	public void resetTask() {
-        this.dogPathfinder.clearPath();
+        this.dogPathfinder.clearPathEntity();
         this.waterMovement.resetTask();
         this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
 	}

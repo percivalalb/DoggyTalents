@@ -5,9 +5,7 @@ import java.util.List;
 
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.util.NonNullList;
 
 public final class DogBedRecipeMaker {
 
@@ -20,16 +18,14 @@ public final class DogBedRecipeMaker {
 				ItemStack beddingStack = DogBedRegistry.BEDDINGS.getCraftingItemFromId(beddingId).getStack();
 				ItemStack casingStack = DogBedRegistry.CASINGS.getCraftingItemFromId(casingId).getStack();
 
-				Ingredient beddingIngredient = Ingredient.fromStacks(beddingStack);
-				Ingredient casingIngredient = Ingredient.fromStacks(casingStack);
-				NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY,
-					casingIngredient, beddingIngredient, casingIngredient,
-					casingIngredient, beddingIngredient, casingIngredient,
-					casingIngredient, casingIngredient, casingIngredient
-				);
+				ItemStack[] inputs = new ItemStack[] {
+						casingStack, beddingStack, casingStack,
+						casingStack, beddingStack, casingStack,
+						casingStack, casingStack, casingStack
+				};
 				ItemStack output = DogBedRegistry.createItemStack(casingId, beddingId);
 				
-				ShapedRecipes recipe = new ShapedRecipes(group, 3, 3, inputs, output);
+				ShapedRecipes recipe = new ShapedRecipes(3, 3, inputs, output);
 				recipes.add(recipe);
 			}
 		}

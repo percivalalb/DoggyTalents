@@ -39,7 +39,7 @@ public class ItemDireTreat extends ItemDT implements IDogInteractItem {
 				dogIn.LEVELS.increaseDireLevel();
 				dogIn.setHealth(dogIn.getMaxHealth());
 				dogIn.getAISit().setSitting(true);
-				dogIn.getNavigator().clearPath();
+				dogIn.getNavigator().clearPathEntity();
 				worldIn.setEntityState(dogIn, (byte)7);
 	            dogIn.playTameEffect(true);
 	            playerIn.sendMessage(new TextComponentTranslation("treat.dire_treat.level_up"));

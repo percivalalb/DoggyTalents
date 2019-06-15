@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -20,10 +20,10 @@ public class ItemCreativeOwnerChange extends ItemDT {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		super.addInformation(stack, playerIn, tooltip, advanced);
 		
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip").getFormattedText());
+		tooltip.add(new TextComponentTranslation(this.getUnlocalizedName() + ".tooltip").getFormattedText());
 	}
 	
 	@Override

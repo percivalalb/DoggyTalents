@@ -3,9 +3,11 @@ package doggytalents.item;
 import java.util.List;
 
 import doggytalents.helper.DogUtil;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
@@ -19,32 +21,30 @@ public class ItemWoolCollar extends ItemDT {
 	
 	@Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+		super.addInformation(stack, playerIn, tooltip, advanced);
 		
 		int[] rgb = ItemCapeColoured.WHITE;
 		if(stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour")) {
 			rgb = DogUtil.rgbIntToIntArray(stack.getTagCompound().getInteger("collar_colour"));
 		}
 
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]).getFormattedText());
+		tooltip.add(new TextComponentTranslation(this.getUnlocalizedName() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]).getFormattedText());
 	}
 	
 	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if(this.isInCreativeTab(tab)) {
-			for(EnumDyeColor color : EnumDyeColor.values()) {
-				ItemStack baseColours = new ItemStack(this);
-				baseColours.setTagCompound(new NBTTagCompound());
-				float[] colourComponents = color.getColorComponentValues();
-				int colour = (int) (colourComponents[0] * 255F);
-				colour = (int) ((colour << 8) + colourComponents[1] * 255F);
-				colour = (int) ((colour << 8) + colourComponents[2] * 255F);
+	public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+		for(EnumDyeColor color : EnumDyeColor.values()) {
+			ItemStack baseColours = new ItemStack(this);
+			baseColours.setTagCompound(new NBTTagCompound());
+			float[] colourComponents = EntitySheep.getDyeRgb(color);
+			int colour = (int) (colourComponents[0] * 255F);
+			colour = (int) ((colour << 8) + colourComponents[1] * 255F);
+			colour = (int) ((colour << 8) + colourComponents[2] * 255F);
 				
 				
-				baseColours.getTagCompound().setInteger("collar_colour", colour);
-	            items.add(baseColours);
-	        }
+			baseColours.getTagCompound().setInteger("collar_colour", colour);
+			subItems.add(baseColours);
         }
     }
 	

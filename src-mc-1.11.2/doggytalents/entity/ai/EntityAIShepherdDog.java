@@ -53,10 +53,10 @@ public class EntityAIShepherdDog extends EntityAIBase {
 			if(entity.isInvisible()) {
 				return false;
 			}
-			else if (targetSelector != null && !targetSelector.test(entity)) {
+			else if (targetSelector != null && !targetSelector.apply(entity)) {
 	            return false;
 	        } else {
-				return (double)entity.getDistance(this.dog) > d0 ? false : entity.canEntityBeSeen(this.dog);
+				return (double)entity.getDistanceToEntity(this.dog) > d0 ? false : entity.canEntityBeSeen(this.dog);
 			}
 		};
 		this.sorter = new EntityAINearestAttackableTarget.Sorter(dogIn);
@@ -138,10 +138,10 @@ public class EntityAIShepherdDog extends EntityAIBase {
 				}
 				
 				Collections.sort(this.targets, this.sorter);
-				boolean teleport = this.owner.getDistance(this.targets.get(0)) > 16;
+				boolean teleport = this.owner.getDistanceToEntity(this.targets.get(0)) > 16;
 				
 				for(EntityAnimal target : this.targets) {
-			    	double distanceAway = target.getDistance(this.owner);
+			    	double distanceAway = target.getDistanceToEntity(this.owner);
 					target.getLookHelper().setLookPositionWithEntity(this.owner, 10.0F, (float)target.getVerticalFaceSpeed());
 					if(teleport) {
 						if(!target.getLeashed() && target.getRidingEntity() == null)
@@ -153,7 +153,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 								DogUtil.teleportDogToOwner(this.owner, target, this.world, target.getNavigator(), 4);
 					}
 					else
-						target.getNavigator().clearPath();
+						target.getNavigator().clearPathEntity();
 				}
 				
 				Vec3d vec = Vec3d.ZERO;
@@ -184,7 +184,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 					}
 				}
 				
-				if(this.dog.getDistance(this.owner) > 40)
+				if(this.dog.getDistanceToEntity(this.owner) > 40)
 					DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.dogPathfinder, 2);
 				// Play woof sound
 				if(this.dog.getRandom().nextFloat() < 0.15F)
@@ -194,7 +194,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 				// Remove dead or faraway entities
 				List<EntityAnimal> toRemove = Lists.newArrayList();
 				for(EntityAnimal target : this.targets) {
-					if(!target.isEntityAlive() || target.getDistance(this.dog) > 25D)
+					if(!target.isEntityAlive() || target.getDistanceToEntity(this.dog) > 25D)
 						toRemove.add(target);
 				}
 				this.targets.removeAll(toRemove);
@@ -206,9 +206,9 @@ public class EntityAIShepherdDog extends EntityAIBase {
 	public void resetTask() {
 		this.owner = null;
 		for(EntityAnimal target : this.targets) {
-			target.getNavigator().clearPath();
+			target.getNavigator().clearPathEntity();
 		}
-        this.dogPathfinder.clearPath();
+        this.dogPathfinder.clearPathEntity();
         this.waterMovement.resetTask();
 	}
 	

@@ -56,7 +56,7 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
         	return false;
         } else {
         	
-	    	double distSq = this.dog.getDistanceSq(entitylivingbase);
+	    	double distSq = this.dog.getDistanceSqToEntity(entitylivingbase);
 	      	
 	      	if(this.isCommanding(entitylivingbase)) { //Holding Sword or tool
 	      		if(distSq >= 16D && distSq <= 100D) {
@@ -74,7 +74,7 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
     
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.petPathfinder.noPath() && this.isCommanding(this.owner) ? true : this.dog.getDistanceSq(this.owner) > (double)(this.finDis * this.finDis) && !this.dog.isSitting();
+        return !this.petPathfinder.noPath() && this.isCommanding(this.owner) ? true : this.dog.getDistanceSqToEntity(this.owner) > (double)(this.finDis * this.finDis) && !this.dog.isSitting();
     }
     
     @Override
@@ -88,7 +88,7 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
     @Override
     public void resetTask() {
         this.owner = null;
-        this.petPathfinder.clearPath();
+        this.petPathfinder.clearPathEntity();
         this.waterMovement.resetTask();
       	this.dog.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
@@ -100,7 +100,7 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
             if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
                 
-            	double distSq = this.dog.getDistanceSq(this.owner);
+            	double distSq = this.dog.getDistanceSqToEntity(this.owner);
                 
             	if(this.isCommanding(this.owner)) { //Holding Sword or tool
             		

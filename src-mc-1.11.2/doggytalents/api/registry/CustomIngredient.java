@@ -11,7 +11,7 @@ public class CustomIngredient {
 	}
 	
 	public boolean apply(ItemStack stack) {
-        if(stack == null) {
+        if(stack.isEmpty()) {
             return false;
         }
         else {

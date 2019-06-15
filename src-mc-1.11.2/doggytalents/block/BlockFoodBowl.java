@@ -8,7 +8,6 @@ import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -57,7 +56,7 @@ public class BlockFoodBowl extends BlockContainer {
 		return AABB;
 	}
 	
-	@Override
+    @Override
 	public boolean isFullCube(IBlockState state) {
 	    return false;
 	}
@@ -72,8 +71,14 @@ public class BlockFoodBowl extends BlockContainer {
 	    return EnumBlockRenderType.MODEL;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+	
     @Override
-    public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
+    public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
     	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
         
         if(entityIn instanceof EntityItem) {
@@ -105,14 +110,7 @@ public class BlockFoodBowl extends BlockContainer {
 
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		if(facing == EnumFacing.DOWN) 
-			return BlockFaceShape.SOLID;
-		return BlockFaceShape.UNDEFINED;
+		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
 	}
 	
 	@Override
@@ -164,10 +162,4 @@ public class BlockFoodBowl extends BlockContainer {
 	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 		return Container.calcRedstone(worldIn.getTileEntity(pos));
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
 }

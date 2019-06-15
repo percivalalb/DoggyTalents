@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
+import doggytalents.client.model.block.IStateParticleModel;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -24,31 +25,30 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.client.model.IRetexturableModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
-public class DogBedModel implements IBakedModel, IStateParticleModel {
+public class DogBedModel implements IPerspectiveAwareModel, IStateParticleModel {
 	
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 	
-    private IModel model;
-    private IBakedModel bakedModel;
-    
+    private IPerspectiveAwareModel variantModel;
+    private IRetexturableModel baseModel;
+
     private final Function<ResourceLocation, TextureAtlasSprite> textureGetter;
     private final VertexFormat format;
     private final Map<Map<String, EnumFacing>, IBakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(IModel model, IBakedModel bakedModel, VertexFormat format) {
-        this.model = model;
-        this.bakedModel = bakedModel;
+    public DogBedModel(IPerspectiveAwareModel modelDefault, IRetexturableModel modelWooden, VertexFormat format) {
+        this.variantModel = modelDefault;
+        this.baseModel = modelWooden;
         this.textureGetter = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
         this.format = format;
     }
 
-    public IBakedModel getCustomModelFromState(IBlockState state) {
+	public IBakedModel getCustomModelFromState(IBlockState state) {
 		String casing = "minecraft:blocks/planks_oak";
 		String bedding = "minecraft:blocks/wool_colored_white";
         EnumFacing facing = EnumFacing.NORTH;
@@ -69,7 +69,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 	}
     
     public IBakedModel getCustomModel(String casingResource, String beddingResource, EnumFacing facing) {
-        IBakedModel customModel = this.bakedModel;
+        IBakedModel customModel = this.variantModel;
         if(casingResource == null) casingResource = "nomissing";
         if(beddingResource == null) beddingResource = "nomissing";
 
@@ -78,12 +78,12 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
         if(this.cache.containsKey(cacheKey))
             customModel = this.cache.get(cacheKey);
-        else if(this.model != null) {
+        else if(this.baseModel != null) {
             ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
             builder.put("bedding", beddingResource);
             builder.put("casing", casingResource);
             builder.put("particle", casingResource);
-            IModel retexturedModel = this.model.retexture(builder.build());
+            IModel retexturedModel = this.baseModel.retexture(builder.build());
 
             //Likely inventory render
             if(facing == null) facing = EnumFacing.NORTH;
@@ -103,33 +103,33 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return this.bakedModel.isAmbientOcclusion();
+        return this.variantModel.isAmbientOcclusion();
     }
 
     @Override
     public boolean isGui3d() {
-        return this.bakedModel.isGui3d();
+        return this.variantModel.isGui3d();
     }
 
     @Override
     public boolean isBuiltInRenderer() {
-        return this.bakedModel.isBuiltInRenderer();
+        return this.variantModel.isBuiltInRenderer();
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return this.bakedModel.getParticleTexture();
-    }
-
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return this.bakedModel.getItemCameraTransforms();
+        return this.variantModel.getParticleTexture();
     }
     
-    @Override
+	@Override
 	public TextureAtlasSprite getParticleTexture(IBlockState state) {
 		return this.getCustomModelFromState(state).getParticleTexture();
 	}
+
+    @Override
+    public ItemCameraTransforms getItemCameraTransforms() {
+        return this.variantModel.getItemCameraTransforms();
+    }
 
     @Override
     public ItemOverrideList getOverrides() {
@@ -138,6 +138,6 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
     @Override
     public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return Pair.of(this, this.bakedModel.handlePerspective(cameraTransformType).getRight());
+        return Pair.of(this, this.variantModel.handlePerspective(cameraTransformType).getRight());
     }
 }

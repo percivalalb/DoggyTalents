@@ -99,7 +99,7 @@ public class EntityAIElementalRangedAttacks extends EntityAIBase
 
         if (d0 <= (double)this.maxAttackDistance && this.seeTime >= 20)
         {
-            this.entityHost.getNavigator().clearPath();
+            this.entityHost.getNavigator().clearPathEntity();
         }
         else
         {

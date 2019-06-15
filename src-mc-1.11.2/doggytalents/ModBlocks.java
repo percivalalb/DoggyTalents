@@ -16,9 +16,9 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
@@ -37,9 +37,9 @@ public class ModBlocks {
 	       	
 	       	
 			DoggyTalents.LOGGER.info("Registering Blocks");
-			blockRegistry.register(new BlockDogBed().setTranslationKey(BlockNames.DOG_BED.replace(":", ".")).setRegistryName(BlockNames.DOG_BED));
-		    blockRegistry.register(new BlockDogBath().setTranslationKey(BlockNames.DOG_BATH.replace(":", ".")).setRegistryName(BlockNames.DOG_BATH));
-		    blockRegistry.register(new BlockFoodBowl().setTranslationKey(BlockNames.FOOD_BOWL.replace(":", ".")).setRegistryName(BlockNames.FOOD_BOWL));
+			blockRegistry.register(new BlockDogBed().setUnlocalizedName(BlockNames.DOG_BED.replace(":", ".")).setRegistryName(BlockNames.DOG_BED));
+		    blockRegistry.register(new BlockDogBath().setUnlocalizedName(BlockNames.DOG_BATH.replace(":", ".")).setRegistryName(BlockNames.DOG_BATH));
+		    blockRegistry.register(new BlockFoodBowl().setUnlocalizedName(BlockNames.FOOD_BOWL.replace(":", ".")).setRegistryName(BlockNames.FOOD_BOWL));
 			DoggyTalents.LOGGER.info("Finished Registering Blocks");
 		    
 		    

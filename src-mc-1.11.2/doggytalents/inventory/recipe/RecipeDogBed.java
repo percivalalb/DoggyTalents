@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 /**
  * 1.12 Code
  */
-public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+public class RecipeDogBed implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
@@ -75,13 +75,7 @@ public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEn
     }
 
 	@Override
-    public boolean isDynamic() {
-        return true;
-    }
-
-	//Is on a 3x3 grid or bigger
-	@Override
-    public boolean canFit(int width, int height) {
-        return width >= 3 && height >= 3;
-    }
+	public int getRecipeSize() {
+		return 3 * 3;
+	}
 }

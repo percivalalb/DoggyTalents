@@ -231,23 +231,7 @@ public class EntityDog extends EntityTameable {
 	public void notifyDataManagerChange(DataParameter<?> key) {
 		super.notifyDataManagerChange(key);
 		if(SIZE.equals(key)) {
-			 switch(this.getDogSize()) {
-		        case 1:
-		            this.setScale(0.5F);
-		            break;
-		        case 2:
-		            this.setScale(0.7F);
-		            break;
-		        case 3:
-		            this.setScale(1.0F);
-		            break;
-		        case 4:
-		            this.setScale(1.3F);
-		            break;
-		        case 5:
-		            this.setScale(1.6F);
-		            break;
-		    }
+			this.setScale(this.getDogSize() * 0.3F + 0.1F);
 		}
 	}
     

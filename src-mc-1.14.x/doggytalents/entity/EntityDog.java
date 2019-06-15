@@ -232,7 +232,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	@Override
 	public void notifyDataManagerChange(DataParameter<?> key) {
 		super.notifyDataManagerChange(key);
-		
+		if(SIZE.equals(key)) {
+			this.recalculateSize();
+		}
 	}
 	
 	@Override
@@ -240,20 +242,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		if(this.isChild()) {
 			return 0.5F;
 		} else {
-			switch(this.getDogSize()) { 
-				case 1:
-		            return 0.5F;
-		        case 2:
-		        	return 0.7F;
-		        case 3:
-		        	return 1.0F;
-		        case 4:
-		        	return 1.3F;
-		        case 5:
-		        	return 1.6F;
-		        default:
-		        	return 1.0F;
-			}
+			return this.getDogSize() * 0.3F + 0.1F;
 		}
 	}
 	
@@ -1132,13 +1121,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     protected float getJumpUpwardsMotion() {
         return 0.42F;
     }
-    
-    //TODO
-    /**
+     
     @Override
-    public boolean canDespawn() {
+    public boolean canDespawn(double distanceToClosestPlayer) {
     	return false;
-    }**/
+    }
     
     @Override
     protected float getWaterSlowDown() {

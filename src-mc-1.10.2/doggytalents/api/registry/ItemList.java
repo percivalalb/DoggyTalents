@@ -30,7 +30,7 @@ public class ItemList {
 	}
 	
 	public boolean containsItem(Item item) { return this.containsItem(item, OreDictionary.WILDCARD_VALUE); }
-	public boolean containsItem(ItemStack stack) { return this.containsItem(stack.getItem(), stack.getItemDamage()); }
+	public boolean containsItem(ItemStack stack) { return stack != null && this.containsItem(stack.getItem(), stack.getItemDamage()); }
 	public boolean containsItem(Item item, int meta) {
 		List<Object> array = Arrays.asList(new Object[] {item, meta});
 		List<Object> array_any = Arrays.asList(new Object[] {item, OreDictionary.WILDCARD_VALUE});

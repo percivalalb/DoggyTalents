@@ -97,7 +97,7 @@ public class PuppyEyesTalent extends Talent {
 	
 	@SuppressWarnings("unchecked")
 	public EntityLiving charmVillagers(EntityDog dogIn, double radiusIn) {
-	    List<EntityVillager> list = dogIn.world.getEntitiesWithinAABB(EntityVillager.class, dogIn.getEntityBoundingBox().grow(radiusIn, radiusIn, radiusIn), village -> village.canEntityBeSeen(dogIn));
+	    List<EntityVillager> list = dogIn.world.getEntitiesWithinAABB(EntityVillager.class, dogIn.getEntityBoundingBox().expand(radiusIn, radiusIn, radiusIn), village -> village.canEntityBeSeen(dogIn));
 	    Collections.sort(list, (Comparator<Entity>)dogIn.objects.get("villagersorter"));
 	    
 	    if(list.isEmpty()) {

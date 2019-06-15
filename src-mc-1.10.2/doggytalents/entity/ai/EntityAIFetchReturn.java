@@ -80,7 +80,7 @@ public class EntityAIFetchReturn extends EntityAIBase
     /**
      * Returns whether an in-progress EntityAIBase should continue executing
      */
-    public boolean shouldContinueExecuting()
+    public boolean continueExecuting()
     {
         return !this.petPathfinder.noPath() && this.tameable.getDistanceSqToEntity(this.owner) > (double)(this.maxDist * this.maxDist) && !this.tameable.isSitting() && this.tameable.hasBone();
     }

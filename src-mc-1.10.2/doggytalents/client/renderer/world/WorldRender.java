@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  */
 @SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(value = Side.CLIENT)
 public class WorldRender {
 
 	@SubscribeEvent
@@ -35,7 +35,7 @@ public class WorldRender {
 						
 				    	GlStateManager.pushMatrix();
 						
-						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
+						AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).expandXyz(0.5D);
 						drawSelectionBox(player, event.getPartialTicks(), boundingBox);
 						GlStateManager.popMatrix();
 				    }

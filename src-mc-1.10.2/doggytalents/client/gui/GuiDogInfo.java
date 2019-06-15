@@ -63,7 +63,7 @@ public class GuiDogInfo extends GuiScreen {
 		Keyboard.enableRepeatEvents(true);
 		int topX = this.width / 2;
 	    int topY = this.height / 2;
-		GuiTextField nameTextField = new GuiTextField(0, this.fontRenderer, topX - 100, topY + 50, 200, 20) {
+		GuiTextField nameTextField = new GuiTextField(0, this.fontRendererObj, topX - 100, topY + 50, 200, 20) {
 			@Override
 			public boolean textboxKeyTyped(char character, int keyId) {
 				boolean typed = super.textboxKeyTyped(character, keyId);
@@ -155,31 +155,31 @@ public class GuiDogInfo extends GuiScreen {
 			
 		}
 		
-		this.fontRenderer.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
-		this.fontRenderer.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
-		this.fontRenderer.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
-		this.fontRenderer.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
-		if(Constants.DOG_GENDER) this.fontRenderer.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
+		if(Constants.DOG_GENDER) this.fontRendererObj.drawString(I18n.format("doggui.gender") + I18n.format(dog.GENDER.getGenderName()), this.width - 160, topY - 70, 0xFFFFFF);
 		
-		this.fontRenderer.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
-		this.fontRenderer.drawString(I18n.format("doggui.level") + " " + this.dog.LEVELS.getLevel(), topX - 65, topY + 75, 0xFF10F9);
-		this.fontRenderer.drawString(I18n.format("doggui.leveldire") + " " + this.dog.LEVELS.getDireLevel(), topX, topY + 75, 0xFF10F9);
-		this.fontRenderer.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+		this.fontRendererObj.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
+		this.fontRendererObj.drawString(I18n.format("doggui.level") + " " + this.dog.LEVELS.getLevel(), topX - 65, topY + 75, 0xFF10F9);
+		this.fontRendererObj.drawString(I18n.format("doggui.leveldire") + " " + this.dog.LEVELS.getDireLevel(), topX, topY + 75, 0xFF10F9);
+		this.fontRendererObj.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
 				
 		if(Constants.USE_DT_TEXTURES) 
-			this.fontRenderer.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
+			this.fontRendererObj.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
 		
 	    if(this.dog.isOwner(this.player))
-	    	this.fontRenderer.drawString(I18n.format("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
+	    	this.fontRendererObj.drawString(I18n.format("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
 	    
-	    this.fontRenderer.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
+	    this.fontRendererObj.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 		
 		int i = -1;
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
 			i++;
 			if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
 				continue;
-			this.fontRenderer.drawString(I18n.format(talent.getTranslationKey()), 50, 17 + (i - this.currentPage * this.btnPerPages) * 21, 0xFFFFFF);
+			this.fontRendererObj.drawString(I18n.format(talent.getTranslationKey()), 50, 17 + (i - this.currentPage * this.btnPerPages) * 21, 0xFFFFFF);
     	}
 				
 		for(GuiTextField field : this.textfieldList)
@@ -200,13 +200,13 @@ public class GuiDogInfo extends GuiScreen {
 	    	GuiButton button = (GuiButton)this.buttonList.get(k);
 	    	if(button.mousePressed(this.mc, xMouse, yMouse)) {
 	    		List<String> list = new ArrayList<String>();
-	    		if(button.id >= 1 && button.id <= this.numTalents ) {
+	    		if(button.id >= 1 && button.id <= this.numTalents) {
 	    			Talent talent = button instanceof GuiTalentButton ? ((GuiTalentButton)button).talent : null;
 	    			
 			    	list.add(TextFormatting.GREEN + I18n.format(talent.getTranslationKey()));
 			    	list.add("Level: " + this.dog.TALENTS.getLevel(talent));
 			    	list.add(TextFormatting.GRAY + "--------------------------------");
-		    		list.addAll(this.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, this.mc.fontRenderer));
+		    		list.addAll(this.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, this.mc.fontRendererObj));
 	    		}
 	    		if(button.id == -1) {
 	    			list.add(TextFormatting.ITALIC + I18n.format("doggui.prevpage"));
@@ -216,7 +216,7 @@ public class GuiDogInfo extends GuiScreen {
 	    		}
 	    		else if(button.id == -6) {
     				String str = I18n.format(dog.MODE.getMode().getUnlocalisedInfo());
-    				list.addAll(splitInto(str, 150, this.mc.fontRenderer));
+    				list.addAll(splitInto(str, 150, this.mc.fontRendererObj));
     				if(this.dog.MODE.isMode(EnumMode.WANDERING)) {
     					if(!this.dog.COORDS.hasBowlPos()) {
     						list.add(TextFormatting.RED + I18n.format("dog.mode.docile.nobowl"));
@@ -228,7 +228,7 @@ public class GuiDogInfo extends GuiScreen {
     				}
     			}
 	    		
-	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRenderer);
+	    		this.drawHoveringText(list, xMouse, yMouse, this.mc.fontRendererObj);
 	    	}
 	    }
 	    GlStateManager.popMatrix();

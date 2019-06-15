@@ -34,7 +34,7 @@ public class ItemTreat extends ItemDT implements IDogInteractItem {
 		}
 		if(level < this.maxLevel) {
 			if(!playerIn.capabilities.isCreativeMode)
-				stackIn.shrink(1);
+				stackIn.stackSize--;
 
 			if(!playerIn.world.isRemote) {
 	            dogIn.LEVELS.increaseLevel();

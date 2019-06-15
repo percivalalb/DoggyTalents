@@ -7,7 +7,6 @@ import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModTileEntities {
 
     public static class Registration {

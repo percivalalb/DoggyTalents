@@ -31,7 +31,7 @@ public class EntityAIBegDog extends EntityAIBase {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean continueExecuting() {
 		if(!this.player.isEntityAlive()) {
 			return false;
 		} else if(this.dog.getDistanceSqToEntity(this.player) > (double) (this.minPlayerDistance * this.minPlayerDistance)) {

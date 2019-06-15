@@ -23,7 +23,7 @@ public class HunterDogTalent extends Talent {
 			if(dog.getRNG().nextInt(10) < level + (level == 5 ? 1 : 0)) {
 				DoggyTalents.LOGGER.debug("EXTRA DROP");
 				for(EntityItem entityItem : drops)
-					living.entityDropItem(entityItem.getItem().copy(), 0.0F);
+					living.entityDropItem(entityItem.getEntityItem().copy(), 0.0F);
 			}
 				
 		}

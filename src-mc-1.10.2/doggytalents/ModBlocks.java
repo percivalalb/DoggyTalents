@@ -20,14 +20,13 @@ import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
 
-	public static final Block DOG_BED = null;
-	public static final Block DOG_BATH = null;
-    public static final Block FOOD_BOWL = null;
+	public static Block DOG_BED = null;
+	public static Block DOG_BATH = null;
+    public static Block FOOD_BOWL = null;
 
-    @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+    @Mod.EventBusSubscriber
     public static class Registration {
 
 	    @SubscribeEvent
@@ -37,9 +36,9 @@ public class ModBlocks {
 	       	
 	       	
 			DoggyTalents.LOGGER.info("Registering Blocks");
-			blockRegistry.register(new BlockDogBed().setUnlocalizedName(BlockNames.DOG_BED.replace(":", ".")).setRegistryName(BlockNames.DOG_BED));
-		    blockRegistry.register(new BlockDogBath().setUnlocalizedName(BlockNames.DOG_BATH.replace(":", ".")).setRegistryName(BlockNames.DOG_BATH));
-		    blockRegistry.register(new BlockFoodBowl().setUnlocalizedName(BlockNames.FOOD_BOWL.replace(":", ".")).setRegistryName(BlockNames.FOOD_BOWL));
+			blockRegistry.register(DOG_BED = new BlockDogBed().setUnlocalizedName(BlockNames.DOG_BED.replace(":", ".")).setRegistryName(BlockNames.DOG_BED));
+		    blockRegistry.register(DOG_BATH = new BlockDogBath().setUnlocalizedName(BlockNames.DOG_BATH.replace(":", ".")).setRegistryName(BlockNames.DOG_BATH));
+		    blockRegistry.register(FOOD_BOWL = new BlockFoodBowl().setUnlocalizedName(BlockNames.FOOD_BOWL.replace(":", ".")).setRegistryName(BlockNames.FOOD_BOWL));
 			DoggyTalents.LOGGER.info("Finished Registering Blocks");
 		    
 		    

@@ -28,9 +28,7 @@ public class ItemDoggyCharm extends ItemDT {
     }
     
     @Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand handIn, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
-    
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
     	if (worldIn.isRemote)
             return EnumActionResult.SUCCESS;
         else if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
@@ -54,7 +52,7 @@ public class ItemDoggyCharm extends ItemDT {
 
             if (entity != null)
                 if(!playerIn.capabilities.isCreativeMode)
-                	stack.shrink(1);
+                	stack.stackSize--;
            
 
             return EnumActionResult.SUCCESS;
@@ -62,9 +60,7 @@ public class ItemDoggyCharm extends ItemDT {
     }
     
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-    	
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         if(worldIn.isRemote)
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         else {
@@ -82,7 +78,7 @@ public class ItemDoggyCharm extends ItemDT {
                         return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
                     else {
                         if (!playerIn.capabilities.isCreativeMode)
-                        	itemStackIn.shrink(1);
+                        	itemStackIn.stackSize--;
       
 
                         playerIn.addStat(StatList.getObjectUseStats(this));

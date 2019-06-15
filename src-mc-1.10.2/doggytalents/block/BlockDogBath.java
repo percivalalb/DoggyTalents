@@ -76,7 +76,7 @@ public class BlockDogBath extends Block {
 	}
 	
 	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos) {
 		return SHAPE_COLLISION;
 	}
 	
@@ -102,9 +102,8 @@ public class BlockDogBath extends Block {
     }
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack itemstack = playerIn.getHeldItem(hand);
-		if(itemstack.isEmpty()) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack itemstack, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if(itemstack == null) {
 			return true;
 		} else {
 			Item item = itemstack.getItem();
@@ -112,8 +111,8 @@ public class BlockDogBath extends Block {
 				if(!worldIn.isRemote) {
 					if(!playerIn.capabilities.isCreativeMode) {
 						ItemStack itemstack4 = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WATER);
-						itemstack.shrink(1);
-						if(itemstack.isEmpty()) {
+						itemstack.stackSize--;
+						if(itemstack == null) {
 							playerIn.setHeldItem(hand, itemstack4);
 						} else if(!playerIn.inventory.addItemStackToInventory(itemstack4)) {
 							playerIn.dropItem(itemstack4, false);

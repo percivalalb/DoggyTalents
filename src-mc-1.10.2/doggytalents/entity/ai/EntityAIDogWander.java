@@ -5,35 +5,84 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-public class EntityAIDogWander extends EntityAIWanderAvoidWater {
+public class EntityAIDogWander extends EntityAIBase {
 	
 	protected final EntityDog dog;
+    private double xPosition;
+    private double yPosition;
+    private double zPosition;
+    private final double speed;
+    private int executionChance;
+    private boolean mustUpdate;
+    
 	protected boolean wandering;
 
 	public EntityAIDogWander(EntityDog dogIn, double speedIn) {
-		super(dogIn, speedIn);
 		this.dog = dogIn;
+		this.speed = speedIn;
+		this.executionChance = 120;
 		this.wandering = false;
+		this.setMutexBits(1);
 	}
 
 	@Override
 	public boolean shouldExecute() {
 		this.wandering = this.dog.canWander();
-		
 		this.setExecutionChance(this.wandering ? 40 : 120);
-		return super.shouldExecute();
+
+		if (this.dog.getAge() >= 100) {
+			return false;
+		}
+
+		if (this.dog.getRNG().nextInt(this.executionChance) != 0)
+		{
+			return false;
+		}
+		
+		 Vec3d vec3d = this.wandering ? this.generateRandomPos(this.dog) : RandomPositionGenerator.findRandomTarget(this.dog, 10, 7);
+
+        if (vec3d == null)
+        {
+            return false;
+        }
+        else
+        {
+            this.xPosition = vec3d.xCoord;
+            this.yPosition = vec3d.yCoord;
+            this.zPosition = vec3d.zCoord;
+            this.mustUpdate = false;
+            return true;
+        }
 	}
 	
 	@Override
-	@Nullable
-	protected Vec3d getPosition() {
-		return this.wandering ? this.generateRandomPos(this.dog) : super.getPosition();
-	}
+	public boolean continueExecuting()
+    {
+        return !this.dog.getNavigator().noPath();
+    }
+
+	@Override
+    public void startExecuting()
+    {
+        this.dog.getNavigator().tryMoveToXYZ(this.xPosition, this.yPosition, this.zPosition, this.speed);
+    }
+	
+    public void makeUpdate()
+    {
+        this.mustUpdate = true;
+    }
+
+    public void setExecutionChance(int newchance)
+    {
+        this.executionChance = newchance;
+    }
 	
 	private Vec3d generateRandomPos(EntityDog dog) {
         PathNavigate pathnavigate = dog.getNavigator();

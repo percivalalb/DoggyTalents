@@ -33,7 +33,7 @@ public class ItemRadarCreative extends ItemDT {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(!worldIn.isRemote) {
 			int dimCurr = playerIn.dimension;
 			
@@ -68,7 +68,7 @@ public class ItemRadarCreative extends ItemDT {
 			
 		}
 		
-		return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+		return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 	}
 	
 	public static String getDimensionName(int dim) {

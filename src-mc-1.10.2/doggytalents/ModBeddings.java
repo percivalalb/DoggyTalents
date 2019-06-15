@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ModBeddings {
 	
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+	@Mod.EventBusSubscriber
     public static class Registration {
 		
 		@SubscribeEvent

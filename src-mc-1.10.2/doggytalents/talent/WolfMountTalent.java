@@ -17,7 +17,7 @@ public class WolfMountTalent extends Talent {
 
 	@Override
 	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) { 
-		if(stack.isEmpty() && dog.canInteract(player)) {
+		if(stack == null && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.world.isRemote) {
         			dog.getAISit().setSitting(false);
@@ -58,7 +58,7 @@ public class WolfMountTalent extends Talent {
 	
 	@Override
 	public boolean attackEntityFrom(EntityDog dog, DamageSource damageSource, float damage) {
-		Entity entity = damageSource.getTrueSource();
+		Entity entity = damageSource.getEntity();
 		return dog.isBeingRidden() && entity != null && dog.isRidingOrBeingRiddenBy(entity) ? false : true; 
 	}
 }

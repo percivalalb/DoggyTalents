@@ -23,7 +23,7 @@ public class EntityAIPatrolArea extends EntityAIBase {
 	}
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean continueExecuting() {
     	return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1 && !this.dog.isSitting();
     }
     

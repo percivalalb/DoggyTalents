@@ -32,7 +32,7 @@ public class RangedAttackerTalent extends Talent {
 	
 	@Override
 	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
-		if(stack.isEmpty() && dog.canInteract(player)) {
+		if(stack == null && dog.canInteract(player)) {
         	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.isIncapacicated()) {
         		if(!dog.world.isRemote) {
         			//TODO RangedAttacker

@@ -48,9 +48,7 @@ public class ItemThrowBone extends ItemDT {
     }
 	
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-		
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(this.type == Type.WET) {
 			if(itemStackIn.getItem() == ModItems.THROW_BONE_WET)
 				itemStackIn = new ItemStack(ModItems.THROW_BONE);
@@ -66,7 +64,7 @@ public class ItemThrowBone extends ItemDT {
 	
 	        if(!worldIn.isRemote) {
 	        	ItemStack stack = itemStackIn.copy();
-	        	stack.setCount(1);
+	        	stack.stackSize = 1;
 	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
 	            entityitem.setPickupDelay(40);
 	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
@@ -74,7 +72,7 @@ public class ItemThrowBone extends ItemDT {
 	        }
 	        
 	        if(!playerIn.capabilities.isCreativeMode)
-	        	itemStackIn.shrink(1);
+	        	itemStackIn.stackSize--;
 
 	        playerIn.addStat(StatList.getObjectUseStats(this));
 	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);

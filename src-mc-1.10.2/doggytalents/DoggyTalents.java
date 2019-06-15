@@ -5,8 +5,12 @@ import org.apache.logging.log4j.Logger;
 
 import doggytalents.addon.AddonManager;
 import doggytalents.configuration.ConfigurationHandler;
+import doggytalents.helper.Compatibility;
 import doggytalents.lib.Reference;
 import doggytalents.proxy.CommonProxy;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.datafix.DataFixer;
+import net.minecraft.util.datafix.FixTypes;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,11 +18,12 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 /**
  * @author ProPercivalalb
  */
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY, dependencies = Reference.DEPENDENCIES, acceptedMinecraftVersions = Reference.ACCEPTED_MC_VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY, acceptedMinecraftVersions = Reference.ACCEPTED_MC_VERSION)
 public class DoggyTalents {
 
 	@Instance(value = Reference.MOD_ID)

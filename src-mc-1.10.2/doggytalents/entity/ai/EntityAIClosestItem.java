@@ -43,7 +43,7 @@ public class EntityAIClosestItem extends EntityAIBase {
 			if(entity.isInvisible()) {
 				return false;
 			}
-			else if (targetSelector != null && !targetSelector.apply(entity.getItem())) {
+			else if (targetSelector != null && !targetSelector.apply(entity.getEntityItem())) {
 	            return false;
 	        } else {
 				return (double)entity.getDistanceToEntity(this.dog) > d0 ? false : true;
@@ -60,7 +60,7 @@ public class EntityAIClosestItem extends EntityAIBase {
 	@Override
 	public boolean shouldExecute() {
 		double d0 = this.getFollowRange();
-		List<EntityItem> list = this.dog.world.getEntitiesWithinAABB(EntityItem.class, this.dog.getEntityBoundingBox().grow(d0, 4.0D, d0), this.predicate);
+		List<EntityItem> list = this.dog.world.getEntitiesWithinAABB(EntityItem.class, this.dog.getEntityBoundingBox().expand(d0, 4.0D, d0), this.predicate);
 		Collections.sort(list, this.sorter);
 		if(list.isEmpty()) {
 			return false;
@@ -72,7 +72,7 @@ public class EntityAIClosestItem extends EntityAIBase {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean continueExecuting() {
 		EntityItem target = this.target;
 		if(target == null) {
 			return false;

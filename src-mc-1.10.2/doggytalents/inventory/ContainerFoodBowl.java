@@ -36,7 +36,7 @@ public class ContainerFoodBowl extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(i);
 
         if(slot != null && slot.getHasStack()) {
@@ -45,20 +45,20 @@ public class ContainerFoodBowl extends Container {
 
             if(i < 5) {
                 if(!mergeItemStack(itemstack1, 5, inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
+                    return null;
                 }
             }
             else if(!mergeItemStack(itemstack1, 0, 5, false)) {
-                return ItemStack.EMPTY;
+                return null;
             }
 
-            if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+            if(itemstack1.stackSize == 0)
+            	slot.putStack(null);
             else
                 slot.onSlotChanged();
             
-            if(itemstack1.getCount() == itemstack.getCount())
-                return ItemStack.EMPTY;
+            if(itemstack1.stackSize == itemstack.stackSize)
+                return null;
         }
 
         return itemstack;

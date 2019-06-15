@@ -11,7 +11,7 @@ public class CustomIngredient {
 	}
 	
 	public boolean apply(ItemStack stack) {
-        if(stack.isEmpty()) {
+        if(stack == null) {
             return false;
         }
         else {
@@ -40,7 +40,7 @@ public class CustomIngredient {
 	public static CustomIngredient fromStacks(ItemStack... stacks) {
         if(stacks.length > 0) {
             for(ItemStack itemstack : stacks) {
-                if(!itemstack.isEmpty()) {
+                if(itemstack != null) {
                     return new CustomIngredient(stacks);
                 }
             }
@@ -52,7 +52,7 @@ public class CustomIngredient {
 	public static final CustomIngredient EMPTY = new CustomIngredient(new ItemStack[0]) {
 		@Override
 		public boolean apply(ItemStack stack) {
-			return stack.isEmpty();
+			return stack == null;
 		}
 	};
 }

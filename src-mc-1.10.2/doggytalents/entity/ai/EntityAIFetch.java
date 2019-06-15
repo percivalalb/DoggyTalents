@@ -18,8 +18,8 @@ public class EntityAIFetch extends EntityAIClosestItem {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return !this.dog.isSitting() && this.dog.MODE.isMode(EnumMode.DOCILE) && !this.dog.hasBone() && super.shouldContinueExecuting();
+	public boolean continueExecuting() {
+		return !this.dog.isSitting() && this.dog.MODE.isMode(EnumMode.DOCILE) && !this.dog.hasBone() && super.continueExecuting();
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class EntityAIFetch extends EntityAIClosestItem {
     
 			if(this.dog.getDistanceSqToEntity(this.target) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
 				if(this.target.isEntityAlive()) {
-					Item item = this.target.getItem().getItem();
+					Item item = this.target.getEntityItem().getItem();
 	              		
 					if(item == ModItems.THROW_BONE)
 						this.dog.setBoneVariant(0);

@@ -33,7 +33,7 @@ public class ItemDireTreat extends ItemDT implements IDogInteractItem {
 		}
 		else if(level >= 60 && direLevel < 30) {
 			if(!playerIn.capabilities.isCreativeMode)
-				stackIn.shrink(1);
+				stackIn.stackSize--;
 
 			if(!worldIn.isRemote) {
 				dogIn.LEVELS.increaseDireLevel();

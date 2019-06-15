@@ -36,11 +36,10 @@ public class ItemWhistle extends ItemDT {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 		if(world.isRemote) {
 			//world.playSound(player, player.getPosition(), player.isSneaking() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
 		} else {
-			ItemStack stack = player.getHeldItem(hand);
 			
 			if(player.isSneaking()) {
 				if(!stack.hasTagCompound()) {
@@ -60,7 +59,7 @@ public class ItemWhistle extends ItemDT {
 					mode = stack.getTagCompound().getByte("mode");
 				}
 				
-				List<EntityDog> dogsList = world.getEntitiesWithinAABB(EntityDog.class, player.getEntityBoundingBox().grow(100D, 50D, 100D), dog -> dog.isOwner(player));
+				List<EntityDog> dogsList = world.getEntitiesWithinAABB(EntityDog.class, player.getEntityBoundingBox().expand(100D, 50D, 100D), dog -> dog.isOwner(player));
 				boolean successful = false;
 				
 				if(mode == 0) { // Stand
@@ -140,11 +139,11 @@ public class ItemWhistle extends ItemDT {
     				
     				List<EntityDog> roarDogs = dogsList.stream().filter(dog -> dog.TALENTS.getLevel(ModTalents.ROARING_GALE) > 0).collect(Collectors.toList());
     				if(roarDogs.isEmpty()) {
-    					player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.level"), true);
+    					player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.level"));
     				} else {
     					List<EntityDog> cdDogs = roarDogs.stream().filter(dog -> ((int)dog.objects.get("roarcooldown")) == 0).collect(Collectors.toList());
     					if(cdDogs.isEmpty()) {
-    						player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.cooldown"), true);
+    						player.sendStatusMessage(new TextComponentTranslation("talent.doggytalents.roaring_gale.cooldown"));
     					} else {
     						for(EntityDog dog : cdDogs) {
     	    					int level = dog.TALENTS.getLevel(ModTalents.ROARING_GALE);
@@ -162,11 +161,11 @@ public class ItemWhistle extends ItemDT {
     	    					byte knockback = (byte)level;
     	    					
     	    					boolean hit = false;
-    	    					List<EntityLivingBase> list = dog.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).grow(0.0D, (double) dog.world.getHeight(), 0.0D));
+    	    					List<EntityLivingBase> list = dog.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().expand(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
     	    					for(EntityLivingBase mob : list) {
     	    						if(mob instanceof IMob) {
     	    							hit = true;
-    	    							mob.attackEntityFrom(DamageSource.GENERIC, damage);
+    	    							mob.attackEntityFrom(DamageSource.generic, damage);
     	    							mob.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 127, false, false));
     	    							mob.addPotionEffect(new PotionEffect(MobEffects.GLOWING, effectDuration, 1, false, false));
     	    							mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);

@@ -37,7 +37,7 @@ public class EntityAIExtinguishFire extends EntityAIBase {
 	}
 	
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean continueExecuting() {
 		return this.timeoutCounter < 400 && this.creature.isBurning() && this.shouldMoveTo(this.creature.world, this.destinationBlock);
 	}
 	

@@ -36,7 +36,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
             int j = nbttagcompound1.getByte("Slot") & 0xff;
 
             if(j >= 0 && j < this.inventory.getSizeInventory()) {
-            	this.inventory.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
+            	this.inventory.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound1));
             }
         }
     }
@@ -47,7 +47,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
         NBTTagList nbttaglist = new NBTTagList();
 
         for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
-            if(!this.inventory.getStackInSlot(i).isEmpty()) {
+            if(this.inventory.getStackInSlot(i) != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.inventory.getStackInSlot(i).writeToNBT(nbttagcompound1);
@@ -65,7 +65,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
     	//Only run update code every 5 ticks (0.25s)
     	if(++this.timeoutCounter < 5) { return; }
     	
-    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
+    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).expand(5, 5, 5));
 
     	for(EntityDog dog : dogList) {
     		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl

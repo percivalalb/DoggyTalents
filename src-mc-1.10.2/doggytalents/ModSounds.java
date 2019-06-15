@@ -9,13 +9,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModSounds {
 	
-	public static final SoundEvent WHISTLE_SHORT = null;
-	public static final SoundEvent WHISTLE_LONG = null;
+	public static SoundEvent WHISTLE_SHORT = null;
+	public static SoundEvent WHISTLE_LONG = null;
 	
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+	@Mod.EventBusSubscriber
     public static class Registration {
 	    
 	    @SubscribeEvent
@@ -23,8 +22,8 @@ public class ModSounds {
 	    	IForgeRegistry<SoundEvent> soundRegistry = event.getRegistry();
 	    	
 	    	DoggyTalents.LOGGER.info("Registering Sounds");
-	        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_SHORT).setRegistryName(SoundNames.WHISTLE_SHORT));
-	        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_LONG).setRegistryName(SoundNames.WHISTLE_LONG));
+	        soundRegistry.register(WHISTLE_SHORT = new SoundEvent(SoundNames.WHISTLE_SHORT).setRegistryName(SoundNames.WHISTLE_SHORT));
+	        soundRegistry.register(WHISTLE_LONG = new SoundEvent(SoundNames.WHISTLE_LONG).setRegistryName(SoundNames.WHISTLE_LONG));
 	        DoggyTalents.LOGGER.info("Finished Registering Sounds");
 	    }
     }

@@ -34,7 +34,7 @@ public class EntityDoggyBeam extends EntityThrowable {
     	
     	if(entityHit instanceof EntityLivingBase) {
  
-    		List<Entity> nearEnts = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().grow(100D, 10D, 100D));
+    		List<Entity> nearEnts = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(100D, 10D, 100D));
     		for(Object o : nearEnts) {
     			if(o instanceof EntityDog) {
                  	EntityDog dog = (EntityDog)o;

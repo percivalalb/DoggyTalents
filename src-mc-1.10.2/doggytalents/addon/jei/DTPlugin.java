@@ -7,8 +7,6 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.IModIngredientRegistration;
-import mezz.jei.api.recipe.IRecipeCategoryRegistration;
-import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -34,16 +32,11 @@ public class DTPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
-		registry.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+		registry.addRecipes(DogBedRecipeMaker.createDogBedRecipes());
 	}
 
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-		
-	}
-
-	@Override
-	public void registerCategories(IRecipeCategoryRegistration registry) {
 		
 	}
 }

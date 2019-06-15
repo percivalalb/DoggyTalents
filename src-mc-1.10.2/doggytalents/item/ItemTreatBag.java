@@ -17,15 +17,13 @@ public class ItemTreatBag extends ItemDT {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemstack = playerIn.getHeldItem(handIn);
-
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(worldIn.isRemote) {
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
 		}
 		else {
 			playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BAG, worldIn, playerIn.inventory.currentItem, 0, 0);
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemstack);
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
 	    }
 	}
 	

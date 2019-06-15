@@ -82,7 +82,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 		    } else if(!DogUtil.isHolding(entitylivingbase, ModItems.WHISTLE, nbt -> nbt.hasKey("mode") && nbt.getInteger("mode") == 4)) {
 				return false;
 		    } else {
-				List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getEntityBoundingBox().grow(12D, 4.0D, 12D), this.predicate);
+				List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getEntityBoundingBox().expand(12D, 4.0D, 12D), this.predicate);
 				Collections.sort(list, this.sorter);
 				if(list.isEmpty()) {
 					return false;
@@ -98,7 +98,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean continueExecuting() {
 		if(!this.dog.MODE.isMode(EnumMode.DOCILE)) {
 			return false;
 		} else if(this.dog.TALENTS.getLevel(ModTalents.SHEPHERD_DOG) <= 0) {
@@ -130,7 +130,7 @@ public class EntityAIShepherdDog extends EntityAIBase {
 
 				// Pick up more animals
 				if(this.targets.size() < MAX_FOLLOW) {
-					List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getEntityBoundingBox().grow(16, 4.0D, 16), this.predicate);
+					List<EntityAnimal> list = this.world.getEntitiesWithinAABB(EntityAnimal.class, this.dog.getEntityBoundingBox().expand(16, 4.0D, 16), this.predicate);
 					list.removeAll(this.targets);
 					Collections.sort(list, this.sorter);
 
@@ -165,11 +165,11 @@ public class EntityAIShepherdDog extends EntityAIBase {
 				
 				vec = vec.scale(1D / this.targets.size());
 				
-				double dPosX = vec.x - this.owner.posX;
-				double dPosZ = vec.z - this.owner.posZ;
+				double dPosX = vec.xCoord - this.owner.posX;
+				double dPosZ = vec.zCoord - this.owner.posZ;
 				double size = Math.sqrt(dPosX * dPosX + dPosZ * dPosZ);
-	        	double j3 = vec.x + dPosX / size * (2 + this.targets.size() / 16);
-	          	double k3 = vec.z + dPosZ / size * (2 + this.targets.size() / 16);
+	        	double j3 = vec.xCoord + dPosX / size * (2 + this.targets.size() / 16);
+	          	double k3 = vec.zCoord + dPosZ / size * (2 + this.targets.size() / 16);
 				
 	          	
 				if(teleport) {

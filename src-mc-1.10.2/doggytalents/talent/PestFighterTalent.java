@@ -23,13 +23,13 @@ public class PestFighterTalent extends Talent {
             if (level == 5)
                 damage = 2;
 
-            List<EntitySilverfish> list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, dog.getEntityBoundingBox().grow(level * 3, 4D, level * 3));
+            List<EntitySilverfish> list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, dog.getEntityBoundingBox().expand(level * 3, 4D, level * 3));
             Iterator<EntitySilverfish> iterator = list.iterator();
             
             while(iterator.hasNext()) {
             	EntitySilverfish entitySilverfish = (EntitySilverfish)iterator.next();
             	if(dog.getRNG().nextInt(20) == 0)
-            		entitySilverfish.attackEntityFrom(DamageSource.GENERIC, damage);
+            		entitySilverfish.attackEntityFrom(DamageSource.generic, damage);
             }
         }
 	}

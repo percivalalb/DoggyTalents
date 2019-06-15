@@ -33,7 +33,7 @@ public class BedFinderTalent extends Talent {
 	@Override
 	public ActionResult<ItemStack> onInteract(EntityDog dog, EntityPlayer player, ItemStack stack) {
 		int level = dog.TALENTS.getLevel(this);
-		if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
+		if(level > 0 && stack != null && stack.getItem() == Items.BONE && dog.canInteract(player)) {
 			dog.startRiding(player);
 			if(!dog.world.isRemote) {
 				if(!dog.isSitting()) {

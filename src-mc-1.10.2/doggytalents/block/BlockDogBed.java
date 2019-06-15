@@ -36,7 +36,6 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -112,7 +111,7 @@ public class BlockDogBed extends BlockContainer {
 	}
 	
 	@Override
-	public void getSubBlocks(Item itemIn, CreativeTabs creativeTab, NonNullList<ItemStack> items) {
+	public void getSubBlocks(Item itemIn, CreativeTabs creativeTab, List<ItemStack> items) {
 		for(String beddingId : DogBedRegistry.BEDDINGS.getKeys())
 			for(String casingId : DogBedRegistry.CASINGS.getKeys())
 				items.add(DogBedRegistry.createItemStack(casingId, beddingId));
@@ -215,7 +214,7 @@ public class BlockDogBed extends BlockContainer {
         TileEntity tile = world.getTileEntity(pos);
 		
 		if(!(tile instanceof TileEntityDogBed))
-			return ItemStack.EMPTY;
+			return null;
 		TileEntityDogBed dogBed = (TileEntityDogBed)tile;
 		
 		return DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId());
@@ -243,11 +242,6 @@ public class BlockDogBed extends BlockContainer {
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());
 		return blockstate.getBlock().isSideSolid(blockstate, world, pos.down(), EnumFacing.UP);
-	}
-	
-	@Override
-	public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-		return Items.AIR;
 	}
 	
 	@Override

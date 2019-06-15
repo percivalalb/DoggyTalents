@@ -29,7 +29,7 @@ public class ItemRadar extends ItemDT {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		if(!worldIn.isRemote) {
 			int dimCurr = playerIn.dimension;
 			
@@ -71,7 +71,7 @@ public class ItemRadar extends ItemDT {
 			if(otherDogs.size() > 0)
 				playerIn.sendMessage(new TextComponentTranslation("dogradar.notindim", otherDogs.stream().map(ItemRadarCreative::getDimensionName).collect(Collectors.joining(", "))));
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.FAIL, playerIn.getHeldItem(handIn));
+		return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
 	}
 
 	public static String getDirectionTranslationKey(DogLocation loc, Entity entity) {

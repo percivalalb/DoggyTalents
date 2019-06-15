@@ -26,7 +26,7 @@ import net.minecraft.util.EnumActionResult;
 public class PackPuppyTalent extends Talent {
 
 	public static Predicate<EntityItem> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-		return entity.isEntityAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
+		return entity.isEntityAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getEntityItem());
 	};
 	
 	@Override
@@ -62,7 +62,7 @@ public class PackPuppyTalent extends Talent {
 		
 	    if(dog.isTamed()) {
 	    	if(level > 0) {
-	    		if(stack.isEmpty()) {
+	    		if(stack == null) {
 	    			if(player.isSneaking() && !player.world.isRemote && dog.canInteract(player)) {
 	    				player.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_PACKPUPPY, dog.world, dog.getEntityId(), 0, 0);
 	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
@@ -80,13 +80,13 @@ public class PackPuppyTalent extends Talent {
 		if(!dog.world.isRemote && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
 			InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
 			
-			List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getEntityBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
+			List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getEntityBoundingBox().expand(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
 			
 	        for(EntityItem entityItem : list) {
-	            ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getItem());
+	            ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getEntityItem());
 
-	            if(!itemstack1.isEmpty())
-	            	entityItem.setItem(itemstack1);
+	            if(itemstack1 != null)
+	            	entityItem.setEntityItemStack(itemstack1);
 	            else {
 	                entityItem.setDead();
 	                dog.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.25F, ((dog.world.rand.nextFloat() - dog.world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

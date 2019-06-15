@@ -25,7 +25,7 @@ public class GuiTreatBag extends GuiContainer {
 	@Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
     	String s = this.treatBagContainer.inventoryTreatBag.getDisplayName().getUnformattedText();
-        this.fontRenderer.drawString(s, 10, 8, 4210752);
+        this.fontRendererObj.drawString(s, 10, 8, 4210752);
     }
 
 	@Override

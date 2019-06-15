@@ -40,7 +40,7 @@ public class ContainerPackPuppy extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = null;
         Slot slot = (Slot)this.inventorySlots.get(i);
         int packpuppyLevel = MathHelper.clamp(this.dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
 
@@ -50,18 +50,18 @@ public class ContainerPackPuppy extends Container {
 
             if (i < 3 * packpuppyLevel) {
                 if(!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
-                    return ItemStack.EMPTY;
+                    return null;
             }
             else if(!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
-                return ItemStack.EMPTY;
+                return null;
 
-            if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+            if(itemstack1.stackSize == 0)
+            	slot.putStack(null);
             else
                 slot.onSlotChanged();
             
-            if(itemstack1.getCount() == itemstack.getCount())
-                return ItemStack.EMPTY;
+            if(itemstack1.stackSize == itemstack.stackSize)
+                return null;
         }
 
         return itemstack;

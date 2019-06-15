@@ -54,7 +54,7 @@ public class DogLocationManager extends WorldSavedData {
 			return null;
 		}
 		
-		MapStorage storage = world.getMinecraftServer().getWorld(0).getMapStorage();
+		MapStorage storage = world.getMinecraftServer().worlds[0].getMapStorage();
 		DogLocationManager locationManager = (DogLocationManager)storage.getOrLoadData(DogLocationManager.class, "dog_locations");
 		
     	if (locationManager == null) {

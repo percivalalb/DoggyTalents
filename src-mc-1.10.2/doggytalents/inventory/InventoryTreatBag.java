@@ -38,7 +38,7 @@ public class InventoryTreatBag extends InventoryBasic {
 	            int j = nbttagcompound.getByte("Slot") & 255;
 	
 	            if(j >= 0 && j < this.getSizeInventory())
-	                this.setInventorySlotContents(j, new ItemStack(nbttagcompound));
+	                this.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound));
 	        }
 		}
 	}
@@ -50,7 +50,7 @@ public class InventoryTreatBag extends InventoryBasic {
         for(int i = 0; i < this.getSizeInventory(); ++i) {
             ItemStack itemstack = this.getStackInSlot(i);
 
-            if(!itemstack.isEmpty()) {
+            if(itemstack != null) {
                 NBTTagCompound nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte)i);
                 itemstack.writeToNBT(nbttagcompound);

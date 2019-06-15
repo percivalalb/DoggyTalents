@@ -11,7 +11,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 /**
@@ -21,20 +20,20 @@ public class RecipeDogCollar implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World worldIn) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack itemstack = null;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (!itemstack1.isEmpty())
+            if (itemstack1 != null)
             {
                 if (itemstack1.getItem() instanceof ItemWoolCollar)
                 {
                 	ItemWoolCollar itemarmor = (ItemWoolCollar)itemstack1.getItem();
 
-                    if(!itemstack.isEmpty())
+                    if(itemstack != null)
                     {
                         return false;
                     }
@@ -53,12 +52,12 @@ public class RecipeDogCollar implements IRecipe {
             }
         }
 
-        return !itemstack.isEmpty() && !list.isEmpty();
+        return itemstack != null && !list.isEmpty();
     }
 
 	@Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+		ItemStack itemstack = null;
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
@@ -67,12 +66,12 @@ public class RecipeDogCollar implements IRecipe {
         for(int k = 0; k < inv.getSizeInventory(); ++k) {
             ItemStack itemstack1 = inv.getStackInSlot(k);
 
-            if(!itemstack1.isEmpty()) {
+            if(itemstack1 != null) {
                 if(itemstack1.getItem() instanceof ItemWoolCollar) {
                     itemWoolCollar = (ItemWoolCollar)itemstack1.getItem();
 
                     itemstack = itemstack1.copy();
-                    itemstack.setCount(1);
+                    itemstack.stackSize = 1;
 
                     if(itemstack1.hasTagCompound() && itemstack1.getTagCompound().hasKey("collar_colour")) {
                         int l = itemstack1.getTagCompound().getInteger("collar_colour");
@@ -88,7 +87,7 @@ public class RecipeDogCollar implements IRecipe {
                 }
                 else {
                     if(itemstack1.getItem() != Items.DYE)
-                        return ItemStack.EMPTY;
+                        return null;
 
                     float[] afloat = EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(itemstack1.getMetadata()));
                     int l1 = (int)(afloat[0] * 255.0F);
@@ -104,7 +103,7 @@ public class RecipeDogCollar implements IRecipe {
         }
 
         if(itemWoolCollar == null)
-            return ItemStack.EMPTY;
+            return null;
         else {
             int i1 = aint[0] / count;
             int j1 = aint[1] / count;
@@ -123,19 +122,19 @@ public class RecipeDogCollar implements IRecipe {
 
 	@Override
     public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
+        return null;
     }
 
 	@Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
 
-        for(int i = 0; i < nonnulllist.size(); ++i) {
+        for(int i = 0; i < aitemstack.length; ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
         }
 
-        return nonnulllist;
+        return aitemstack;
     }
 
 	@Override

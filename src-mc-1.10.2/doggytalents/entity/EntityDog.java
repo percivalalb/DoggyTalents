@@ -63,8 +63,8 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityWolf;
@@ -506,7 +506,7 @@ public class EntityDog extends EntityTameable {
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
                     if(!this.world.isRemote) {
-                        ItemStack fetchItem = ItemStack.EMPTY;
+                        ItemStack fetchItem = null;
 
                         switch (this.getBoneVariant()) {
                             case 0:
@@ -517,7 +517,8 @@ public class EntityDog extends EntityTameable {
                                 break;
                         }
 
-                        this.entityDropItem(fetchItem, 0.0F);
+                        if(fetchItem != null)
+                        	this.entityDropItem(fetchItem, 0.0F);
                     }
 
                     this.setNoFetchItem();
@@ -563,7 +564,7 @@ public class EntityDog extends EntityTameable {
         if (this.isEntityInvulnerable(damageSource))
             return false;
         else {
-            Entity entity = damageSource.getTrueSource();
+            Entity entity = damageSource.getEntity();
             //Friendly fire
             if (!this.canFriendlyFire() && entity instanceof EntityPlayer && (this.willObeyOthers() || this.isOwner((EntityPlayer) entity)))
                 return false;
@@ -615,8 +616,7 @@ public class EntityDog extends EntityTameable {
    	}
     
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    public boolean processInteract(EntityPlayer player, EnumHand hand, ItemStack stack) {
         
         ActionResult<ItemStack> result = TalentHelper.interactWithPlayer(this, player, stack);
         switch(result.getType()) {
@@ -628,7 +628,7 @@ public class EntityDog extends EntityTameable {
 			break;
         }
         
-        if(stack.getItem() == ModItems.OWNER_CHANGE && player.capabilities.isCreativeMode && !this.isOwner(player)) {
+        if(stack != null && stack.getItem() == ModItems.OWNER_CHANGE && player.capabilities.isCreativeMode && !this.isOwner(player)) {
         	if(!this.world.isRemote) {
 	        	this.setTamed(true);
 	            this.navigator.clearPathEntity();
@@ -642,12 +642,12 @@ public class EntityDog extends EntityTameable {
         }
         
         if(this.isTamed()) {
-            if(!stack.isEmpty()) {
+            if(stack != null) {
                 int foodValue = this.foodValue(stack);
                 
                 if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
                     if (!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
 
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if (stack.getItem() == ModItems.CHEW_STICK)
@@ -669,7 +669,7 @@ public class EntityDog extends EntityTameable {
                            this.world.spawnEntity(babySpawn);
 
                            if(!player.capabilities.isCreativeMode) {
-                        	   stack.shrink(1);
+                        	   stack.stackSize--;
                            }
                         }
                      }
@@ -704,7 +704,7 @@ public class EntityDog extends EntityTameable {
                     this.hasRadarCollar(true);
 
                     if(!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
@@ -715,23 +715,23 @@ public class EntityDog extends EntityTameable {
                     this.setCollarData(colour);
 
                     if(!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     this.setCollarData(-3 - ((ItemFancyCollar)stack.getItem()).type.ordinal());
 
                     if(!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setFancyCape();
                     if(!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() == ModItems.LEATHER_JACKET && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setLeatherJacket();
                     if(!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     int colour = -1;
@@ -742,12 +742,12 @@ public class EntityDog extends EntityTameable {
                     this.setCapeData(colour);
 
                     if (!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) {
                     this.setHasSunglasses(true);
                     if (!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
                     return true;
                 } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
                 	IDogInteractItem treat = (IDogInteractItem) stack.getItem();
@@ -831,7 +831,7 @@ public class EntityDog extends EntityTameable {
                     return true;
                 } else if(stack.getItem() == Items.CAKE && this.canInteract(player) && this.isIncapacicated()) {
                     if (!player.capabilities.isCreativeMode)
-                        stack.shrink(1);
+                        stack.stackSize--;
 
                     if(!this.world.isRemote) {
                         this.aiSit.setSitting(true);
@@ -915,39 +915,41 @@ public class EntityDog extends EntityTameable {
                 }
                 return true;
             }
-        } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
-            if(!this.world.isRemote) {
-                this.locationManager.remove(this);
-                this.setDead();
-                EntityWolf wolf = new EntityWolf(this.world);
-                wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-                this.world.spawnEntity(wolf);
-            }
-            return true;
-        } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
-        	if(!player.capabilities.isCreativeMode)
-        		stack.shrink(1);
-
-        	if(!this.world.isRemote) {
-        		if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
-                    this.setTamed(true);
-                    this.navigator.clearPathEntity();
-                    this.setAttackTarget((EntityLivingBase) null);
-                    this.aiSit.setSitting(true);
-                    this.setHealth(20.0F);
-                    this.setOwnerId(player.getUniqueID());
-                    this.playTameEffect(true);
-                    this.world.setEntityState(this, (byte) 7);
-                } else {
-                    this.playTameEffect(false);
-                    this.world.setEntityState(this, (byte) 6);
-                }
-            }
-
-            return true;
+        } else if(stack != null) { 
+        	if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
+	            if(!this.world.isRemote) {
+	                this.locationManager.remove(this);
+	                this.setDead();
+	                EntityWolf wolf = new EntityWolf(this.world);
+	                wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+	                this.world.spawnEntity(wolf);
+	            }
+	            return true;
+	        } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
+	        	if(!player.capabilities.isCreativeMode)
+	        		stack.stackSize--;
+	
+	        	if(!this.world.isRemote) {
+	        		if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
+	                    this.setTamed(true);
+	                    this.navigator.clearPathEntity();
+	                    this.setAttackTarget((EntityLivingBase) null);
+	                    this.aiSit.setSitting(true);
+	                    this.setHealth(20.0F);
+	                    this.setOwnerId(player.getUniqueID());
+	                    this.playTameEffect(true);
+	                    this.world.setEntityState(this, (byte) 7);
+	                } else {
+	                    this.playTameEffect(false);
+	                    this.world.setEntityState(this, (byte) 6);
+	                }
+	            }
+	
+	            return true;
+	        }
         }
 
-        return super.processInteract(player, hand);
+        return super.processInteract(player, hand, stack);
     }
     
     @Override
@@ -1054,7 +1056,7 @@ public class EntityDog extends EntityTameable {
             else if (target == owner)
                 return false;
             else
-                return !(target instanceof AbstractHorse) || !((AbstractHorse) target).isTame();
+                return !(target instanceof EntityHorse) || !((EntityHorse) target).isTame();
         }
 
         return false;
@@ -1234,7 +1236,7 @@ public class EntityDog extends EntityTameable {
     }
 	
 	public int foodValue(ItemStack stack) {
-        if (stack.isEmpty())
+        if (stack == null)
             return 0;
 
         int foodValue = 0;

@@ -2,7 +2,6 @@ package doggytalents.addon;
 
 import doggytalents.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.addon.botania.BotaniaAddon;
-import doggytalents.addon.extratrees.ExtraTreesAddon;
 import doggytalents.addon.forestry.ForestryAddon;
 import doggytalents.addon.itemphysic.ItemPhysicAddon;
 import doggytalents.addon.natura.NaturaAddon;
@@ -22,7 +21,6 @@ public class AddonManager {
 		EVENT_BUS.register(new ForestryAddon());
 		EVENT_BUS.register(new ItemPhysicAddon());
 		EVENT_BUS.register(new BiomesOPlentyAddon());
-		EVENT_BUS.register(new ExtraTreesAddon());
 		EVENT_BUS.register(new TerraqueousAddon());
 		EVENT_BUS.register(new NaturaAddon());
 		EVENT_BUS.register(new BotaniaAddon());

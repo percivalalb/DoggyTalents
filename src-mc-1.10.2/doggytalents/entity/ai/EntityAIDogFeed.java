@@ -24,8 +24,8 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return this.dog.getDogHunger() < Constants.HUNGER_POINTS && !this.dog.isSitting() && super.shouldContinueExecuting();
+	public boolean continueExecuting() {
+		return this.dog.getDogHunger() < Constants.HUNGER_POINTS && !this.dog.isSitting() && super.continueExecuting();
 	}
 
 	@Override
@@ -39,18 +39,20 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 				
 				//Eat
 				this.dog.playSound(SoundEvents.ENTITY_PLAYER_BURP, this.dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-				int foodValue = this.dog.foodValue(this.target.getItem());
+				int foodValue = this.dog.foodValue(this.target.getEntityItem());
 				this.dog.setDogHunger(this.dog.getDogHunger() + foodValue);
-				ItemStack stack = target.getItem();
-				if(stack.getItem() == ModItems.CHEW_STICK) {
-					((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this.dog);
-				}
-
-				this.target.getItem().shrink(1);
-				if (this.target.getItem().isEmpty()) {
-					this.target.setDead();
-					this.target = null;
-					this.dog.getNavigator().clearPathEntity();
+				ItemStack stack = target.getEntityItem();
+				if(stack != null) {
+					if(stack.getItem() == ModItems.CHEW_STICK) {
+						((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this.dog);
+					}
+	
+					this.target.getEntityItem().stackSize--;
+					if (this.target.getEntityItem().stackSize <= 0) {
+						this.target.setDead();
+						this.target = null;
+						this.dog.getNavigator().clearPathEntity();
+					}
 				}
 			}
 	    }

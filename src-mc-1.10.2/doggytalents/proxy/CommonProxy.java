@@ -34,7 +34,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -75,9 +74,6 @@ public class CommonProxy implements IGuiHandler {
 		DoggyTalentsAPI.BEG_TAMED_WHITELIST.registerItem(ModItems.SUPER_TREAT);
 		DoggyTalentsAPI.BEG_TAMED_WHITELIST.registerItem(ModItems.DIRE_TREAT);
 		DoggyTalentsAPI.BEG_TAMED_WHITELIST.registerItem(ModItems.TREAT_BAG);
-		ModFixs fix = FMLCommonHandler.instance().getDataFixer().init(Reference.MOD_ID, 1);
-		fix.registerFix(FixTypes.ITEM_INSTANCE, new Compatibility.ThrowBoneDataFixer());
-		fix.registerFix(FixTypes.ENTITY, new Compatibility.EntityDogDataFixer());
     }
     
     protected void registerEventHandlers() {
@@ -118,7 +114,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public EntityPlayer getPlayerEntity(MessageContext ctx) {
-		return ctx.getServerHandler().player;
+		return ctx.getServerHandler().playerEntity;
 	}
 	
 	public EntityPlayer getPlayerEntity() {
@@ -126,7 +122,7 @@ public class CommonProxy implements IGuiHandler {
 	}
 	
 	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return (IThreadListener)ctx.getServerHandler().player.getServer();
+		return (IThreadListener)ctx.getServerHandler().playerEntity.getServer();
 	}
 	
 	public void spawnCrit(World world, Entity entity) {}

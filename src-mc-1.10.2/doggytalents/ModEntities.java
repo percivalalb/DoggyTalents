@@ -18,6 +18,6 @@ public class ModEntities {
 	}
 	
 	public static void registerEntity(Class<? extends Entity> entityClass, ResourceLocation entityName, int id, Object mod, int trackingRange, int updateFrequency, boolean sendsVelocityUpdates) {
-		EntityRegistry.registerModEntity(entityName, entityClass, entityName.toString().replace(":", "."), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
+		EntityRegistry.registerModEntity(entityClass, entityName.toString(), id, mod, trackingRange, updateFrequency, sendsVelocityUpdates);
 	}
 }

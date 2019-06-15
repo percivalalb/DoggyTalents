@@ -73,7 +73,7 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
     }
     
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean continueExecuting() {
         return !this.petPathfinder.noPath() && this.isCommanding(this.owner) ? true : this.dog.getDistanceSqToEntity(this.owner) > (double)(this.finDis * this.finDis) && !this.dog.isSitting();
     }
     
@@ -114,13 +114,13 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
             		
             		if(diffVec != null) {
          
-            			if(!this.dog.getNavigator().tryMoveToXYZ(diffVec.x, this.dog.posY, diffVec.z, this.followSpeed)) {
+            			if(!this.dog.getNavigator().tryMoveToXYZ(diffVec.xCoord, this.dog.posY, diffVec.zCoord, this.followSpeed)) {
             				if(!this.dog.getLeashed() && !this.dog.isRiding())
             					if(distSq >= 350.0D)
             						DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.petPathfinder);
             			}
             			else 
-            				this.dog.getLookHelper().setLookPosition(diffVec.x, this.dog.posY + 1, diffVec.z, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+            				this.dog.getLookHelper().setLookPosition(diffVec.xCoord, this.dog.posY + 1, diffVec.zCoord, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
             		}
             	}
@@ -138,6 +138,6 @@ public class EntityAIFollowOwnerDog extends EntityAIBase
     
     public boolean isCommanding(EntityLivingBase entitylivingbase) {
     	ItemStack mainStack = entitylivingbase.getHeldItemMainhand();
-    	return mainStack.getItem() instanceof ItemSword || mainStack.getItem() instanceof ItemTool;
+    	return mainStack != null && (mainStack.getItem() instanceof ItemSword || mainStack.getItem() instanceof ItemTool);
     }
 }

@@ -7,16 +7,10 @@ import doggytalents.DoggyTalents;
 import doggytalents.ModItems;
 import doggytalents.ModTalents;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import doggytalents.lib.Reference;
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityMinecartMobSpawner;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.util.datafix.IDataFixer;
 import net.minecraft.util.datafix.IDataWalker;
 import net.minecraft.util.datafix.IFixableData;
@@ -60,15 +54,11 @@ public class Compatibility {
 		OLD_NEW_TALENT.put("wolfmount", ()->ModTalents.WOLF_MOUNT);
 	}
 	
-	public static class ThrowBoneDataFixer implements IFixableData {
+	public static class ThrowBoneDataFixer implements IDataWalker {
 
 		@Override
-		public int getFixVersion() {
-			return 1;
-		}
-
-		@Override
-		public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
+		public NBTTagCompound process(IDataFixer fixer, NBTTagCompound compound, int versionIn) {
+			DoggyTalents.LOGGER.info("Try to fix tag");
 			String id = compound.getString("id");
 			short damage = compound.getShort("Damage");
 			
@@ -86,7 +76,7 @@ public class Compatibility {
 					compound.setString("id", ForgeRegistries.ITEMS.getKey(replacement).toString());
 				
 				compound.setShort("Damage", (short)0);
-				DoggyTalents.LOGGER.debug("Fixer: Throw bone damage fixed");
+				DoggyTalents.LOGGER.debug("Throw bone damage fixed");
 				
 			} else if(id.equals("doggytalents:fancy_collar")) {
 				Item replacement = null;
@@ -103,31 +93,11 @@ public class Compatibility {
 				
 				compound.setShort("Damage", (short)0);
 				
-				DoggyTalents.LOGGER.debug("Fixer: Fancy collar damage fixed");
+				DoggyTalents.LOGGER.debug("Fancy Collar damage fixed");
 			}
 			
 			return compound;
 		}
 		
-	}
-	
-	public static class EntityDogDataFixer implements IFixableData {
-
-		@Override
-		public int getFixVersion() {
-			return 1;
-		}
-
-		@Override
-		public NBTTagCompound fixTagCompound(NBTTagCompound compound) {
-			String s = compound.getString("id");
-
-            if("minecraft:doggytalents.dog".equals(s) || "minecraft:doggytalents:dog".equals(s)) {
-                compound.setString("id", "doggytalents.dog");
-                DoggyTalents.LOGGER.debug("Fixer: EntityDog id fixed");
-            }
-
-            return compound;
-		}
 	}
 }

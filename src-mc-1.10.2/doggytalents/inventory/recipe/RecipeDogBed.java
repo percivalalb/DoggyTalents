@@ -6,7 +6,6 @@ import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 /**
@@ -49,7 +48,6 @@ public class RecipeDogBed implements IRecipe {
 
 	@Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
 		
 		String beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInRowAndColumn(1, 0));
 		String casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInRowAndColumn(0, 0));
@@ -59,19 +57,19 @@ public class RecipeDogBed implements IRecipe {
 
 	@Override
     public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
+        return null;
     }
 
 	@Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+	public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
 
-        for(int i = 0; i < nonnulllist.size(); ++i) {
+        for(int i = 0; i < aitemstack.length; ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
         }
 
-        return nonnulllist;
+        return aitemstack;
     }
 
 	@Override

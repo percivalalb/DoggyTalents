@@ -48,7 +48,7 @@ public class DogUtil {
 	public static boolean isTeleportFriendlyBlock(Entity entity, World world, int xBase, int zBase, int y, int xAdd, int zAdd) {
 		BlockPos blockpos = new BlockPos(xBase + xAdd, y - 1, zBase + zAdd);
 		IBlockState iblockstate = world.getBlockState(blockpos);
-		return iblockstate.isTopSolid() && isEmptyBlock(world, blockpos.up()) && isEmptyBlock(world, blockpos.up(2));
+		return iblockstate.isFullyOpaque() && isEmptyBlock(world, blockpos.up()) && isEmptyBlock(world, blockpos.up(2));
 	}
 	
 	private static boolean isEmptyBlock(World world, BlockPos pos) {
@@ -57,7 +57,7 @@ public class DogUtil {
     }
     
     public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {
-        if(!inventory.getStackInSlot(slotIndex).isEmpty()) {
+        if(inventory.getStackInSlot(slotIndex) != null) {
             ItemStack itemstack = inventory.getStackInSlot(slotIndex);
             dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
             
@@ -65,23 +65,23 @@ public class DogUtil {
             	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(dog);
             }
 
-            if(inventory.getStackInSlot(slotIndex).getCount() <= 1) {
+            if(inventory.getStackInSlot(slotIndex).stackSize <= 1) {
                 ItemStack itemstack1 = inventory.getStackInSlot(slotIndex);
-                inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
+                inventory.setInventorySlotContents(slotIndex, null);
                 return itemstack1;
             }
 
             ItemStack itemstack2 = inventory.getStackInSlot(slotIndex).splitStack(1);
 
-            if(inventory.getStackInSlot(slotIndex).isEmpty())
-            	inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
+            if(inventory.getStackInSlot(slotIndex).stackSize <= 0)
+            	inventory.setInventorySlotContents(slotIndex, null);
             else
             	inventory.markDirty();
 
             return itemstack2;
         }
         else
-            return ItemStack.EMPTY;
+            return null;
     }
     
     public static boolean doesInventoryContainFood(EntityDog dog, IInventory inventory) {
@@ -103,36 +103,36 @@ public class DogUtil {
     }
     
     public static ItemStack addItem(IInventory inventory, ItemStack stack) {
-    	if(stack.isEmpty()) return ItemStack.EMPTY;
+    	if(stack == null) return null;
     	
         ItemStack itemstack = stack.copy();
 
         for(int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack itemstack1 = inventory.getStackInSlot(i);
 
-            if(itemstack1.isEmpty()) {
+            if(itemstack1 == null) {
             	inventory.setInventorySlotContents(i, itemstack);
             	inventory.markDirty();
-                return ItemStack.EMPTY;
+                return null;
             }
 
             if(ItemStack.areItemsEqual(itemstack1, itemstack)) {
                 int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
-                int k = Math.min(itemstack.getCount(), j - itemstack1.getCount());
+                int k = Math.min(itemstack.stackSize, j - itemstack1.stackSize);
 
                 if(k > 0) {
-                	itemstack1.grow(k);
-                	itemstack.shrink(k);
+                	itemstack1.stackSize += k;
+                	itemstack.stackSize -= k;
 
-                    if(itemstack.isEmpty()) {
+                    if(itemstack.stackSize <= 0) {
                     	inventory.markDirty();
-                        return ItemStack.EMPTY;
+                        return null;
                     }
                 }
             }
         }
 
-        if(itemstack.getCount() != stack.getCount())
+        if(itemstack.stackSize != stack.stackSize)
         	inventory.markDirty();
 
         return itemstack;
@@ -140,11 +140,11 @@ public class DogUtil {
     
 
     public static boolean isHolding(Entity entity, Item item, Predicate<NBTTagCompound> nbtPredicate) {
-		return isHolding(entity, stack -> stack.getItem() == item && stack.hasTagCompound() && nbtPredicate.test(stack.getTagCompound()));
+		return isHolding(entity, stack -> stack != null && stack.getItem() == item && stack.hasTagCompound() && nbtPredicate.test(stack.getTagCompound()));
 	}
     
     public static boolean isHolding(Entity entity, Item item) {
-		return isHolding(entity, stack -> stack.getItem() == item);
+		return isHolding(entity, stack -> stack != null && stack.getItem() == item);
 	}
     
 	public static boolean isHolding(Entity entity, Predicate<ItemStack> matcher) {

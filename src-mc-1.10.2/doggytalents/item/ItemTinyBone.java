@@ -19,7 +19,7 @@ public class ItemTinyBone extends ItemDT implements IDogInteractItem {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, EntityPlayer playerIn) {
 		if(dogIn.getGrowingAge() >= 0) {
 			if(!playerIn.isCreative())
-				stackIn.shrink(1);
+				stackIn.stackSize--;
 
 			if(!playerIn.world.isRemote) {
 				dogIn.setDogSize(dogIn.getDogSize() - 1);

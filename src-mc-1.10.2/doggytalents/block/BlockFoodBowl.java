@@ -83,11 +83,10 @@ public class BlockFoodBowl extends BlockContainer {
         
         if(entityIn instanceof EntityItem) {
             EntityItem entityItem = (EntityItem)entityIn;
-            ItemStack itemstack = entityItem.getItem().copy();
-            ItemStack itemstack1 = foodBowl.inventory.addItem(entityItem.getItem());
+            ItemStack itemstack1 = foodBowl.inventory.addItem(entityItem.getEntityItem());
 
-            if(!itemstack1.isEmpty())
-            	entityItem.setItem(itemstack1);
+            if(itemstack1 != null)
+            	entityItem.setEntityItemStack(itemstack1);
             else {
                 entityItem.setDead();
                 worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -114,27 +113,25 @@ public class BlockFoodBowl extends BlockContainer {
 	}
 	
 	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack stack, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if(worldIn.isRemote) {
             return true;
         }
         else {
-        	ItemStack stack = playerIn.getHeldItem(hand);
-        	
-        	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
+        	if(stack != null && stack.getItem() == ModItems.TREAT_BAG) {
         		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
         		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
         		treatBag.openInventory(playerIn);
         		
         		for(int i = 0; i < treatBag.getSizeInventory(); i++)
-        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
+        			if(treatBag.getStackInSlot(i) != null)
+        				treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
         		
         		treatBag.closeInventory(playerIn);
         		
         		return true;
         	}
         	else {
-	            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
 	            playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
 	            return true;
         	}

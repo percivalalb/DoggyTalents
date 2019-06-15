@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.common.registry.RegistryBuilder;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
+@Mod.EventBusSubscriber
 public class ModRegistries {
 
 	@SubscribeEvent

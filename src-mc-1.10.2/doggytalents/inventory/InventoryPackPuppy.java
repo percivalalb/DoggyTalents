@@ -27,7 +27,7 @@ public class InventoryPackPuppy extends InventoryBasic {
             int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.getSizeInventory())
-            	  this.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
+            	  this.setInventorySlotContents(j, ItemStack.loadItemStackFromNBT(nbttagcompound1));
         }
     }
 
@@ -35,7 +35,7 @@ public class InventoryPackPuppy extends InventoryBasic {
         NBTTagList nbttaglist = new NBTTagList();
 
         for(int i = 0; i < this.getSizeInventory(); ++i) {
-            if(!this.getStackInSlot(i).isEmpty()) {
+            if(this.getStackInSlot(i) != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Slot", (byte)i);
                 this.getStackInSlot(i).writeToNBT(nbttagcompound1);

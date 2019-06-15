@@ -8,6 +8,6 @@ public class LivingDrops {
 
 	@SubscribeEvent
 	public void onLootDrop(LivingDropsEvent event) {
-		HunterDogTalent.onLootDrop(event.getEntityLiving(), event.getSource().getTrueSource(), event.getDrops());
+		HunterDogTalent.onLootDrop(event.getEntityLiving(), event.getSource().getEntity(), event.getDrops());
 	}
 }

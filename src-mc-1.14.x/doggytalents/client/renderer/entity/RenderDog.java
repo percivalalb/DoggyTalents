@@ -20,6 +20,7 @@ import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,7 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @author ProPercivalalb
  */
 @OnlyIn(Dist.CLIENT)
-public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
+public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
 	
     public RenderDog(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelDog(0.0F), 0.5F);
@@ -82,7 +83,7 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
     public void renderName(EntityDog dog, double x, double y, double z) {
         if(this.canRenderName(dog)) {
         	GlStateManager.alphaFunc(516, 0.1F);
-            double d0 = dog.getDistanceSq(this.field_76990_c.field_217783_c.getProjectedView());
+            double d0 = dog.getDistanceSq(this.renderManager.info.getProjectedView());
             
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
         	
@@ -97,21 +98,21 @@ public class RenderDog extends LivingRenderer<EntityDog, ModelDog> {
         			new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText());
         	if(d0 <= (double)(64 * 64)) {
         		boolean flag = dog.isSneaking();
-        		float f = this.field_76990_c.playerViewY;
-        		float f1 = this.field_76990_c.playerViewX;
-        		boolean flag1 = this.field_76990_c.options.thirdPersonView == 2;
+        		float f = this.renderManager.playerViewY;
+        		float f1 = this.renderManager.playerViewX;
+        		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
         		float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isSleeping() ? 0.5F : 0);
         
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
         		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
         		
         		if(d0 <= (double)(5 * 5)) {
-        			//TODO if(this.field_76990_c.field_217783_c.isSneaking()) {
-    	    			//String ownerName = dog.getOwnersName().getFormattedText();
+        			if(this.renderManager.info.func_216773_g().isSneaking()) {
+    	    			String ownerName = dog.getOwnersName().getFormattedText();
     	    			
     	    			
-    	    			//RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-    	    	//	}
+    	    			RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+    	    		}
         		}
         	}
         }

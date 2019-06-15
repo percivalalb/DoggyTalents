@@ -271,7 +271,7 @@ public class BlockDogBed extends ContainerBlock {
 	@Override
 	public boolean addLandingEffects(BlockState state, ServerWorld world, BlockPos pos, BlockState stateAgain, LivingEntity entity, int numberOfParticles) {
 		PacketCustomParticle packet = new PacketCustomParticle(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15F);
-		PacketHandler.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunk(pos)), packet);
+		PacketHandler.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), packet);
 		return true;
 	}
 }

@@ -18,6 +18,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -28,12 +29,16 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -61,8 +66,9 @@ import net.minecraftforge.fml.network.PacketDistributor;
 /**
  * @author ProPercivalalb
  */
-public class BlockDogBed extends ContainerBlock {
+public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
 	
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
@@ -71,10 +77,8 @@ public class BlockDogBed extends ContainerBlock {
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE));
+		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE).with(WATERLOGGED, Boolean.valueOf(false)));
 	}
-	
-	
 	
 	@Override
 	@OnlyIn(Dist.CLIENT)
@@ -122,7 +126,8 @@ public class BlockDogBed extends ContainerBlock {
 	
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+		IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
+		return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
 	}
 	
 	@Override
@@ -149,7 +154,7 @@ public class BlockDogBed extends ContainerBlock {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING, CASING, BEDDING);
+		builder.add(FACING, CASING, BEDDING, WATERLOGGED);
 	}
 	
 	@Override
@@ -170,7 +175,15 @@ public class BlockDogBed extends ContainerBlock {
 	
 	@Override
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if(stateIn.get(WATERLOGGED)) {
+			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		}
 		return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+	}
+	
+	@Override
+	public IFluidState getFluidState(BlockState state) {
+		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
 	}
 	
 	@Override

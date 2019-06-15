@@ -1121,6 +1121,13 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
     
     @Override
+    public void remove(boolean keepData) {
+    	super.remove(keepData);
+    	if(!this.world.isRemote)
+    		this.locationManager.remove(this);
+    }
+    
+    @Override
     protected float getJumpUpwardsMotion() {
         return 0.42F;
     }

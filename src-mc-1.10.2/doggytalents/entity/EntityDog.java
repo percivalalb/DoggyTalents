@@ -1108,14 +1108,21 @@ public class EntityDog extends EntityTameable {
     **/
 
     @Override
-    public void onDeath(DamageSource cause) {
-        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
-            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
-        }
-        
-        if(!this.world.isRemote && !this.isImmortal()) {
-        	 this.locationManager.remove(this);
-        }
+    public void setDead() {
+    	super.setDead();
+    	if(!this.world.isRemote)
+    		this.locationManager.remove(this);
+    }
+	
+	@Override
+	public void onDeath(DamageSource cause) {
+		if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
+			this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
+		}
+	        
+		if(!this.world.isRemote && !this.isImmortal()) {
+			this.locationManager.remove(this);
+		}
     }
     
     @Override

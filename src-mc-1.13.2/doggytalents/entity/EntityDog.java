@@ -996,15 +996,6 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
    	}
 	
 	@Override
-	public void onDeath(DamageSource cause) {
-        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
-            DoggyTalentsMod.LOGGER.debug("From onDeath");
-            this.locationManager.remove(this);
-            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
-        }
-    }
-	
-	@Override
     public boolean isPotionApplicable(PotionEffect potioneffectIn) {
         if(this.isIncapacicated())
             return false;
@@ -1108,6 +1099,24 @@ public class EntityDog extends EntityTameable implements IInteractionObject {
     	super.onRemovedFromWorld();
     	if(!this.world.isRemote && !this.isAlive())
     		this.locationManager.remove(this);
+    }
+    
+	@Override
+    public void remove(boolean keepData) {
+    	super.remove(keepData);
+    	if(!this.world.isRemote)
+    		this.locationManager.remove(this);
+    }
+	
+	@Override
+	public void onDeath(DamageSource cause) {
+		if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof EntityPlayerMP) {
+			this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
+		}
+	        
+		if(!this.world.isRemote && !this.isImmortal()) {
+			this.locationManager.remove(this);
+		}
     }
     
     @Override

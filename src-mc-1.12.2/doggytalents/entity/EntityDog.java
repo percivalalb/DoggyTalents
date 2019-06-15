@@ -1100,6 +1100,12 @@ public class EntityDog extends EntityTameable {
     		this.locationManager.remove(this);
     }
     
+    @Override
+    public void setDead() {
+    	super.setDead();
+    	if(!this.world.isRemote)
+    		this.locationManager.remove(this);
+    }
 
     @Override
     public void onDeath(DamageSource cause) {

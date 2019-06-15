@@ -26,8 +26,22 @@ public class ModEntities {
 			 IForgeRegistry<EntityType<?>> entityRegistry = event.getRegistry();
 			 
 			 DoggyTalentsMod.LOGGER.info("Registering Entities");
-			 entityRegistry.register(EntityType.Builder.create(EntityDog::new, EntityClassification.CREATURE).size(0.6F, 0.85F).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
-			 entityRegistry.register(EntityType.Builder.<EntityDoggyBeam>create(EntityDoggyBeam::new, EntityClassification.MISC).setCustomClientFactory(EntityDoggyBeam::new).size(0.25F, 0.25F).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
+			 entityRegistry.register(EntityType.Builder.create(EntityDog::new, EntityClassification.CREATURE)
+					 .size(0.6F, 0.85F)
+					 .setUpdateInterval(3)
+					 .setTrackingRange(16)
+					 .setShouldReceiveVelocityUpdates(true)
+					 .build(EntityNames.DOG)
+					 .setRegistryName(EntityNames.DOG));
+			 entityRegistry.register(EntityType.Builder.<EntityDoggyBeam>create(EntityDoggyBeam::new, EntityClassification.MISC)
+					 .size(0.25F, 0.25F)
+					 .setUpdateInterval(4)
+					 .setTrackingRange(10)
+					 .setShouldReceiveVelocityUpdates(true)
+					 .setCustomClientFactory(EntityDoggyBeam::new)
+					 .disableSummoning()
+					 .build(EntityNames.DOGGY_BEAM)
+					 .setRegistryName(EntityNames.DOGGY_BEAM));
 			 DoggyTalentsMod.LOGGER.info("Finished Registering Entities");
 		 }
     }

@@ -25,8 +25,15 @@ public class ModEntities {
 			 IForgeRegistry<EntityType<?>> entityRegistry = event.getRegistry();
 			 
 			 DoggyTalentsMod.LOGGER.info("Registering Entities");
-			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new).build(EntityNames.DOG).setRegistryName(EntityNames.DOG));
-			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new).tracker(64, 1, true).build(EntityNames.DOGGY_BEAM).setRegistryName(EntityNames.DOGGY_BEAM));
+			 entityRegistry.register(EntityType.Builder.create(EntityDog.class, EntityDog::new)
+					 .tracker(16, 3, true)
+					 .build(EntityNames.DOG)
+					 .setRegistryName(EntityNames.DOG));
+			 entityRegistry.register(EntityType.Builder.create(EntityDoggyBeam.class, EntityDoggyBeam::new)
+					 .tracker(10, 4, true)
+					 .disableSummoning()
+					 .build(EntityNames.DOGGY_BEAM)
+					 .setRegistryName(EntityNames.DOGGY_BEAM));
 			 DoggyTalentsMod.LOGGER.info("Finished Registering Entities");
 		 }
     }

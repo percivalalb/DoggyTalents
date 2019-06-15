@@ -58,6 +58,7 @@ import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWanderAvoidWater;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGhast;
@@ -192,6 +193,7 @@ public class EntityDog extends EntityTameable {
 		this.tasks.addTask(8, new EntityAIFetch(this, 1.0D, 32));
 		this.tasks.addTask(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.tasks.addTask(11, new EntityAIMate(this, 1.0D));
+		this.tasks.addTask(12, new EntityAIWanderAvoidWater(this, 1.0D));
 		this.tasks.addTask(13, new EntityAIBegDog(this, 8.0F));
 		this.tasks.addTask(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.tasks.addTask(15, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
@@ -1228,7 +1230,7 @@ public class EntityDog extends EntityTameable {
     }
 	
 	public boolean canWander() {
-		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.getDistanceSq(this.COORDS.getBowlPos()) < 400.0D;
 	}
 	
 	public boolean canInteract(EntityPlayer player) {

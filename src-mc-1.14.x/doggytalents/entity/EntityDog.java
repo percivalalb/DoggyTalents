@@ -60,6 +60,7 @@ import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -194,6 +195,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
 		this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
 		this.goalSelector.addGoal(11, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		this.goalSelector.addGoal(13, new EntityAIBegDog(this, 8.0F));
 		this.goalSelector.addGoal(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
 		this.goalSelector.addGoal(15, new LookAtGoal(this, PlayerEntity.class, 8.0F));
@@ -1238,7 +1240,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 	
 	public boolean canWander() {
-		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 256.0D;
+		return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 400.0D;
 	}
 	
 	public boolean canInteract(PlayerEntity player) {

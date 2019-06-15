@@ -162,7 +162,7 @@ public class ItemWhistle extends ItemDT {
     	    					byte knockback = (byte)level;
     	    					
     	    					boolean hit = false;
-    	    					List<EntityLivingBase> list = dog.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
+    	    					List<EntityLivingBase> list = dog.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).grow(0.0D, (double) dog.world.getHeight(), 0.0D));
     	    					for(EntityLivingBase mob : list) {
     	    						if(mob instanceof IMob) {
     	    							hit = true;

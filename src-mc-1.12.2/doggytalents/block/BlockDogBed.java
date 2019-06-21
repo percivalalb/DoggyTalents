@@ -11,6 +11,7 @@ import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.CustomParticleMessage;
 import doggytalents.tileentity.TileEntityDogBed;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -228,18 +229,19 @@ public class BlockDogBed extends BlockContainer {
 	}
 
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay((World)world, pos)) {
-		    TileEntity tile = world.getTileEntity(pos);
-			if(tile instanceof TileEntityDogBed) {
-					
-				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
-				
-		        this.spawnAsEntity((World)world, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
-		        ((World) world).setBlockToAir(pos);
-			}
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if(!this.canBlockStay(worldIn, pos)) {
+        	TileEntity tile = worldIn.getTileEntity(pos);
+ 			if(tile instanceof TileEntityDogBed) {
+ 					
+ 				TileEntityDogBed dogBed = (TileEntityDogBed)tile;
+ 				
+ 		        spawnAsEntity(worldIn, pos, DogBedRegistry.createItemStack(dogBed.getCasingId(), dogBed.getBeddingId()));
+ 			}
+			worldIn.setBlockToAir(pos);
 		}
-	}
+    }
 
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());

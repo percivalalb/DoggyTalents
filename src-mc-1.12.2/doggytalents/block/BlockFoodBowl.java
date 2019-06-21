@@ -6,6 +6,7 @@ import doggytalents.ModItems;
 import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.lib.GuiNames;
 import doggytalents.tileentity.TileEntityFoodBowl;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -95,13 +96,14 @@ public class BlockFoodBowl extends BlockContainer {
 	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
 	}
 
-	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay((World)world, pos)) {
-			this.dropBlockAsItem((World)world, pos, world.getBlockState(pos), 0);
-			((World)world).setBlockToAir(pos);
+    @Override
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if(!this.canBlockStay(worldIn, pos)) {
+			this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
+			worldIn.setBlockToAir(pos);
 		}
-	}
+    }
 
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());

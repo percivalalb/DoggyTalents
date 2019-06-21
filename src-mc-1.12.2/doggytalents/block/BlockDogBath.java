@@ -57,14 +57,15 @@ public class BlockDogBath extends Block {
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
 	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
 	}
-
+	
 	@Override
-	public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-		if(!this.canBlockStay((World)world, pos)) {
-			this.dropBlockAsItem((World)world, pos, world.getBlockState(pos), 0);
-			((World)world).setBlockToAir(pos);
+	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if(!this.canBlockStay(worldIn, pos)) {
+			this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
+			worldIn.setBlockToAir(pos);
 		}
-	}
+    }
 	
 	public boolean canBlockStay(World world, BlockPos pos) {
 		IBlockState blockstate = world.getBlockState(pos.down());

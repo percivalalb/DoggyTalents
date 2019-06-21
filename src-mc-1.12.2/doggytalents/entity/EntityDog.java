@@ -106,23 +106,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EntityDog extends EntityTameable {
 
 	private static final DataParameter<Float> 					DATA_HEALTH_ID 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
-	private static final DataParameter<Boolean> 				BEGGING 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Byte> 					DOG_TEXTURE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<Integer>					COLLAR_COLOUR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte> 					LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> 					LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> 					MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<Map<Talent, Integer>> 	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
 	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> 				OBEY_OTHERS 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Byte> 					BONE_VARIANT 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	
+	
+	private static final DataParameter<Byte> 					DOG_FLAGS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	
 	private static final DataParameter<Integer> 				CAPE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Boolean> 				SUNGLASSES 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> 				RADAR_COLLAR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Optional<BlockPos>> 		BOWL_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte> 					SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
 	private static final DataParameter<Optional<ITextComponent>>LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, ModSerializers.OPTIONAL_TEXT_COMPONENT_SERIALIZER);
 	
@@ -209,23 +208,20 @@ public class EntityDog extends EntityTameable {
 	protected void entityInit() {
 		super.entityInit();
 		this.dataManager.register(DATA_HEALTH_ID, this.getHealth());
-		this.dataManager.register(BEGGING, Boolean.valueOf(false));
+		this.dataManager.register(DOG_FLAGS, (byte)0);
+		
 		this.dataManager.register(DOG_TEXTURE, (byte)0);
         this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
         this.dataManager.register(HUNGER, Integer.valueOf(60));
-        this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
-        this.dataManager.register(FRIENDLY_FIRE, Boolean.valueOf(false));
-        this.dataManager.register(BONE, -1);
-        this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
-        this.dataManager.register(MODE_PARAM, Integer.valueOf(0));
-        this.dataManager.register(LEVEL, Integer.valueOf(0));
-        this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
+        this.dataManager.register(BONE_VARIANT, (byte)-1);
+        this.dataManager.register(MODE_PARAM, (byte)0);
+        this.dataManager.register(LEVEL, (byte)0);
+        this.dataManager.register(LEVEL_DIRE, (byte)0);
         this.dataManager.register(BOWL_POS, Optional.absent());
         this.dataManager.register(BED_POS, Optional.absent());
         this.dataManager.register(CAPE, -2);
-        this.dataManager.register(SUNGLASSES, false);
-        this.dataManager.register(SIZE, Integer.valueOf(3));
+        this.dataManager.register(SIZE, (byte)3);
         this.dataManager.register(GENDER_PARAM, this.getRandom().nextInt(2) == 0 ? "male" : "female");
         this.dataManager.register(LAST_KNOWN_NAME, Optional.absent());
 	}
@@ -299,7 +295,7 @@ public class EntityDog extends EntityTameable {
         compound.setInteger("collarColour", this.getCollarData());
         compound.setInteger("dogHunger", this.getDogHunger());
         compound.setBoolean("willObey", this.willObeyOthers());
-        compound.setBoolean("friendlyFire", this.canFriendlyFire());
+        compound.setBoolean("friendlyFire", this.canPlayersAttack());
         compound.setBoolean("radioCollar", this.hasRadarCollar());
         compound.setBoolean("sunglasses", this.hasSunglasses());
         compound.setInteger("capeData", this.getCapeData());
@@ -321,7 +317,7 @@ public class EntityDog extends EntityTameable {
         if (compound.hasKey("collarColour", 99)) this.setCollarData(compound.getInteger("collarColour"));
         this.setDogHunger(compound.getInteger("dogHunger"));
         this.setWillObeyOthers(compound.getBoolean("willObey"));
-        this.setFriendlyFire(compound.getBoolean("friendlyFire"));
+        this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
         this.hasRadarCollar(compound.getBoolean("radioCollar"));
         this.setHasSunglasses(compound.getBoolean("sunglasses"));
         if(compound.hasKey("capeData", 99)) this.setCapeData(compound.getInteger("capeData"));
@@ -566,7 +562,7 @@ public class EntityDog extends EntityTameable {
         else {
             Entity entity = damageSource.getTrueSource();
             //Friendly fire
-            if (!this.canFriendlyFire() && entity instanceof EntityPlayer && (this.willObeyOthers() || this.isOwner((EntityPlayer) entity)))
+            if (!this.canPlayersAttack() && entity instanceof EntityPlayer && (this.willObeyOthers() || this.isOwner((EntityPlayer) entity)))
                 return false;
 
             if (!TalentHelper.attackEntityFrom(this, damageSource, damage))
@@ -1323,13 +1319,58 @@ public class EntityDog extends EntityTameable {
 		}
 	}
     
+    private boolean getDogFlag(int bit) {
+    	return (this.dataManager.get(DOG_FLAGS) & bit) != 0;
+	}
+
+    private void setDogFlag(int bit, boolean flag) {
+    	byte b0 = this.dataManager.get(DOG_FLAGS);
+    	if(flag) {
+    		this.dataManager.set(DOG_FLAGS, (byte)(b0 | bit));
+        } else {
+        	this.dataManager.set(DOG_FLAGS, (byte)(b0 & ~bit));
+        }
+	}
+    
     public void setBegging(boolean flag) {
-		this.dataManager.set(BEGGING, flag);
+    	this.setDogFlag(1, flag);
 	}
 	
 	public boolean isBegging() {
-		return this.dataManager.get(BEGGING);
+		return this.getDogFlag(1);
 	}
+    
+    public void setWillObeyOthers(boolean flag) {
+    	this.setDogFlag(2, flag);
+    }
+    
+    public boolean willObeyOthers() {
+    	return this.getDogFlag(2);
+    }
+    
+    public void setCanPlayersAttack(boolean flag) {
+    	this.setDogFlag(4, flag);
+    }
+    
+    public boolean canPlayersAttack() {
+    	return this.getDogFlag(4);
+    }
+    
+    public void hasRadarCollar(boolean flag) {
+    	this.setDogFlag(8, flag);
+    }
+    
+    public boolean hasRadarCollar() {
+    	return this.getDogFlag(8);
+    }
+    
+    public void setHasSunglasses(boolean hasSunglasses) {
+    	this.setDogFlag(16, hasSunglasses);
+    }
+    
+    public boolean hasSunglasses() {
+    	return this.getDogFlag(16);
+    }
     
 	public int getTameSkin() {
    	 	return this.dataManager.get(DOG_TEXTURE);
@@ -1337,22 +1378,6 @@ public class EntityDog extends EntityTameable {
 	
     public void setTameSkin(int index) {
    		this.dataManager.set(DOG_TEXTURE, (byte)index);
-    }
-    
-    public void setWillObeyOthers(boolean flag) {
-    	this.dataManager.set(OBEY_OTHERS, flag);
-    }
-    
-    public boolean willObeyOthers() {
-    	return this.dataManager.get(OBEY_OTHERS);
-    }
-    
-    public void setFriendlyFire(boolean flag) {
-    	this.dataManager.set(FRIENDLY_FIRE, flag);
-    }
-    
-    public boolean canFriendlyFire() {
-    	return this.dataManager.get(FRIENDLY_FIRE);
     }
     
     public int getDogHunger() {
@@ -1363,36 +1388,20 @@ public class EntityDog extends EntityTameable {
     	this.dataManager.set(HUNGER, Math.min(Constants.HUNGER_POINTS, Math.max(0, par1)));
     }
     
-    public void hasRadarCollar(boolean flag) {
-    	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
-    }
-    
-    public boolean hasRadarCollar() {
-    	return ((Boolean)this.dataManager.get(RADAR_COLLAR)).booleanValue();
-    }
-    
     public void setNoFetchItem() {
-    	this.dataManager.set(BONE, -1);
+    	this.dataManager.set(BONE_VARIANT, (byte)-1);
     }
-      
+    
 	public void setBoneVariant(int value) {
-    	this.dataManager.set(BONE, value);
+    	this.dataManager.set(BONE_VARIANT, (byte)value);
 	}
     
-    public int getBoneVariant() {
-    	return this.dataManager.get(BONE);
+    public byte getBoneVariant() {
+    	return this.dataManager.get(BONE_VARIANT);
     }
     
     public boolean hasBone() {
     	return this.getBoneVariant() >= 0;
-    }
-    
-    public void setHasSunglasses(boolean hasSunglasses) {
-    	this.dataManager.set(SUNGLASSES, hasSunglasses);
-    }
-    
-    public boolean hasSunglasses() {
-    	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
     }
     
     public int getCollarData() {
@@ -1412,7 +1421,7 @@ public class EntityDog extends EntityTameable {
     }
     
 	public void setDogSize(int value) {
-    	this.dataManager.set(SIZE, Math.min(5, Math.max(1, value)));
+    	this.dataManager.set(SIZE, (byte)Math.min(5, Math.max(1, value)));
     }
     
 	public int getDogSize() {
@@ -1428,7 +1437,7 @@ public class EntityDog extends EntityTameable {
 	}
     
 	public void setLevel(int level) {
-    	this.dataManager.set(LEVEL, level);	
+    	this.dataManager.set(LEVEL, (byte)level);	
 	}
 
 	public int getLevel() {
@@ -1436,7 +1445,7 @@ public class EntityDog extends EntityTameable {
 	}
 
 	public void setDireLevel(int level) {
-		this.dataManager.set(LEVEL_DIRE, level);
+		this.dataManager.set(LEVEL_DIRE, (byte)level);
 	}
 
 	public int getDireLevel() {
@@ -1444,7 +1453,7 @@ public class EntityDog extends EntityTameable {
 	}
 
 	public void setModeId(int mode) {
-		this.dataManager.set(MODE_PARAM, Math.min(mode, EnumMode.values().length - 1));
+		this.dataManager.set(MODE_PARAM, (byte)Math.min(mode, EnumMode.values().length - 1));
 	}
 
 	public int getModeId() {

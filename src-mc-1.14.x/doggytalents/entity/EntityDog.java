@@ -182,10 +182,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	
 	@Override
 	protected void registerGoals() {
-		this.field_70911_d = new SitGoal(this);
+		this.sitGoal = new SitGoal(this);
 		this.goalSelector.addGoal(1, new SwimGoal(this));
 		this.goalSelector.addGoal(1, new EntityAIExtinguishFire(this, 1.15D, 16));
-		this.goalSelector.addGoal(2, this.field_70911_d);
+		this.goalSelector.addGoal(2, this.sitGoal);
 		this.goalSelector.addGoal(3, new EntityAIFetchReturn(this, 1.0D));
 		this.goalSelector.addGoal(4, new EntityAIDogWander(this, 1.0D));
 		 //TODO this.tasks.addGoal(4, new EntityAIPatrolArea(this));
@@ -241,7 +241,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
 	
 	@Override
-	public float func_213355_cm() {
+	public float getRenderScale() {
 		if(this.isChild()) {
 			return 0.5F;
 		} else {
@@ -569,7 +569,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	        	this.setTamed(true);
 	            this.navigator.clearPath();
 	            this.setAttackTarget((LivingEntity) null);
-	            this.field_70911_d.setSitting(true);
+	            this.sitGoal.setSitting(true);
 	            this.setOwnerId(player.getUniqueID());
 	            this.playTameEffect(true);
 	            this.world.setEntityState(this, (byte) 7);
@@ -615,8 +615,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
             		this.startRiding(player);
             		
-            		if(this.field_70911_d != null)
-            			this.field_70911_d.setSitting(true);
+            		if(this.sitGoal != null)
+            			this.sitGoal.setSitting(true);
             		
                     return true;
                 }*/
@@ -759,7 +759,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                         } else if(this.reversionTime < 1) {
                             this.setTamed(false);
                             this.navigator.clearPath();
-                            this.field_70911_d.setSitting(false);
+                            this.sitGoal.setSitting(false);
                             this.setHealth(8);
                             this.TALENTS.resetTalents();
                             this.setOwnerId(null);
@@ -779,7 +779,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                         stack.shrink(1);
 
                     if(!this.world.isRemote) {
-                        this.field_70911_d.setSitting(true);
+                        this.sitGoal.setSitting(true);
                         this.setHealth(this.getMaxHealth());
                         this.setDogHunger(Constants.HUNGER_POINTS);
                         this.regenerationTick = 0;
@@ -853,7 +853,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
             if(!this.isBreedingItem(stack) && this.canInteract(player)) {
                 if(!this.world.isRemote) {
-                    this.field_70911_d.setSitting(!this.isSitting());
+                    this.sitGoal.setSitting(!this.isSitting());
                     this.isJumping = false;
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
@@ -878,7 +878,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     this.setTamed(true);
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
-                    this.field_70911_d.setSitting(true);
+                    this.sitGoal.setSitting(true);
                     this.setHealth(20.0F);
                     this.setOwnerId(player.getUniqueID());
                     this.playTameEffect(true);
@@ -954,8 +954,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             if (!TalentHelper.attackEntityFrom(this, damageSource, damage))
                 return false;
 
-            if (this.field_70911_d != null)
-                this.field_70911_d.setSitting(false);
+            if (this.sitGoal != null)
+                this.sitGoal.setSitting(false);
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof ArrowEntity))
                 damage = (damage + 1.0F) / 2.0F;

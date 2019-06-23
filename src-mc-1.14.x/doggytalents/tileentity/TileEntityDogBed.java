@@ -1,17 +1,27 @@
 package doggytalents.tileentity;
 
 import doggytalents.ModTileEntities;
-import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelProperty;
 
 public class TileEntityDogBed extends TileEntity {
 	
-	private BedMaterial casingId = BedMaterial.NULL;
-	private BedMaterial beddingId = BedMaterial.NULL;
+	private IBedMaterial casingId = IBedMaterial.MISSING;
+	private IBedMaterial beddingId = IBedMaterial.MISSING;
+	
+    
+    public static ModelProperty<IBedMaterial> CASING = new ModelProperty<IBedMaterial>();
+    public static ModelProperty<IBedMaterial> BEDDING = new ModelProperty<IBedMaterial>();
+    public static ModelProperty<Direction> FACING = new ModelProperty<Direction>();
 	
 	public TileEntityDogBed() {
 		super(ModTileEntities.DOG_BED);
@@ -27,8 +37,8 @@ public class TileEntityDogBed extends TileEntity {
     @Override
     public CompoundNBT write(CompoundNBT tag) {
 		super.write(tag);
-		tag.putString("casingId", this.casingId != null ? this.casingId.key : "missing");
-		tag.putString("beddingId", this.beddingId != null ? this.beddingId.key : "missing");
+		tag.putString("casingId", this.casingId != null ? this.casingId.getSaveId() : "missing");
+		tag.putString("beddingId", this.beddingId != null ? this.beddingId.getSaveId() : "missing");
 		return tag;
 	}
 	
@@ -52,19 +62,32 @@ public class TileEntityDogBed extends TileEntity {
 		this.read(pkt.getNbtCompound());
 	}
 	
-	public void setCasingId(BedMaterial newId) {
+	public void setCasingId(IBedMaterial newId) {
 		this.casingId = newId;
+		if(this.world.isRemote) {
+    		ModelDataManager.requestModelDataRefresh(this);
+    		this.world.markForRerender(this.getPos());
+		}
 	}
 	
-	public void setBeddingId(BedMaterial newId) {
+	public void setBeddingId(IBedMaterial newId) {
 		this.beddingId = newId;
+		if(this.world.isRemote) {
+            ModelDataManager.requestModelDataRefresh(this);
+            this.world.markForRerender(this.getPos());
+        }
 	}
 	
-	public BedMaterial getCasingId() {
+	public IBedMaterial getCasingId() {
 		return this.casingId;
 	}
 	
-	public BedMaterial getBeddingId() {
+	public IBedMaterial getBeddingId() {
 		return this.beddingId;
+	}
+	
+	@Override
+	public IModelData getModelData() {
+	    return new ModelDataMap.Builder().withProperty(CASING).withProperty(BEDDING).withInitial(FACING, Direction.NORTH).build();
 	}
 }

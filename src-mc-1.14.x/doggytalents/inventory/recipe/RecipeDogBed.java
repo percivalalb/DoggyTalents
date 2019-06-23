@@ -1,7 +1,7 @@
 package doggytalents.inventory.recipe;
 
 import doggytalents.ModRecipes;
-import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -20,29 +20,23 @@ public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<Craftin
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
-		BedMaterial beddingId = null;
-		BedMaterial casingId = null;
-		
-		boolean beddingSel = false;
-		boolean casingSel = false;
+		IBedMaterial beddingId = IBedMaterial.MISSING;
+		IBedMaterial casingId = IBedMaterial.MISSING;
 		
         for(int col = 0; col < 3; ++col) {
             for(int row = 0; row < 3; ++row) {
             	if((col == 1 && row == 0) || (col == 1 && row == 1)) {
-            		BedMaterial id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(id == BedMaterial.NULL || (!id.equals(beddingId) && beddingSel))
+            		IBedMaterial id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(!id.isValid() || (beddingId != IBedMaterial.MISSING && id != beddingId))
             			return false;
                 		
-            		beddingSel = true;
             		beddingId = id;
-
             	}
             	else {
-            		BedMaterial id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(id == BedMaterial.NULL || (!id.equals(casingId) && casingSel))
-                		return false;
-                		
-            		casingSel = true;
+            		IBedMaterial id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(!id.isValid() || (beddingId != IBedMaterial.MISSING && id != casingId))
+                        return false;
+                	
             		casingId = id;
             	}
             }
@@ -53,17 +47,12 @@ public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<Craftin
 
 	@Override
 	public ItemStack getCraftingResult(CraftingInventory inv) {
-		BedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
-		BedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
+		IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
+		IBedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
 		
 		return DogBedRegistry.createItemStack(casingId, beddingId);
     }
-
-	@Override
-    public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
-    }
-
+	
 	@Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
@@ -74,11 +63,6 @@ public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<Craftin
         }
 
         return nonnulllist;
-    }
-
-	@Override
-    public boolean isDynamic() {
-        return true;
     }
 
 	//Is on a 3x3 grid or bigger

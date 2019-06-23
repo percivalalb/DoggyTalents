@@ -10,10 +10,10 @@ import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -30,7 +30,7 @@ public class ModBlocks {
 	    @SubscribeEvent
 	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
-	        MinecraftForge.EVENT_BUS.post(new BeddingRegistryEvent());
+	    	FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent());
 	        
 	        DoggyTalentsMod.LOGGER.info("Registering Blocks");
 	        blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));

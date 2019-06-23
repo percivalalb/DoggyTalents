@@ -1,27 +1,57 @@
 package doggytalents.api.registry;
 
+import javax.annotation.Nullable;
+
+import doggytalents.api.inferface.IBedMaterial;
 import net.minecraft.block.Block;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BedMaterial implements Comparable<BedMaterial> {
+public class BedMaterial implements IBedMaterial, Comparable<BedMaterial> {
 
-	public static BedMaterial NULL = new BedMaterial("missing");
+    @Nullable
+    private String translationKey;
 	
-	public String key;
+	public ResourceLocation key;
+	public ResourceLocation texture;
+	public Ingredient ingredients;
+	public String regName;
 	
-	public BedMaterial(String key) {
+	public BedMaterial(ResourceLocation key, ResourceLocation texture, Ingredient ingredients) {
 		this.key = key;
+		this.texture = texture;
+		this.ingredients = ingredients;
 	}
 	
-	public BedMaterial(ResourceLocation location) {
-		this(location.toString());
-	}
-	
-	public BedMaterial(Block block) {
-		this(ForgeRegistries.BLOCKS.getKey(block));
+	public BedMaterial(Block block, ResourceLocation texture, Ingredient ingredients) {
+		this(ForgeRegistries.BLOCKS.getKey(block), texture, ingredients);
 	}
 
+	@Override
+	public ResourceLocation getTexture() {
+	    return this.texture;
+	}
+	
+    @Override
+    public Ingredient getIngredients() {
+        return this.ingredients;
+    }
+	
+	@Override
+	public String getTranslationKey() {
+        if(this.translationKey == null) {
+            this.translationKey = Util.makeTranslationKey("dogbed." + this.regName, this.key);
+        }
+        return this.translationKey;
+    }
+	
+    @Override
+    public String getSaveId() {
+        return this.key.toString();
+    }
+	
 	@Override
 	public int compareTo(BedMaterial o) {
 		return o.key.compareTo(this.key);
@@ -38,5 +68,10 @@ public class BedMaterial implements Comparable<BedMaterial> {
 	@Override
 	public int hashCode() {
 		return this.key.hashCode();
+	}
+	
+	public BedMaterial setRegName(String regName) {
+	    this.regName = regName;
+	    return this;
 	}
 }

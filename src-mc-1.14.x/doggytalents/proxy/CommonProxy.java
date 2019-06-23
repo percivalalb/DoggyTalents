@@ -14,6 +14,7 @@ import doggytalents.handler.PlayerConnection;
 import doggytalents.network.PacketHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -59,7 +60,7 @@ public class CommonProxy {
     	
     }
     
-    public void spawnCustomParticle(PlayerEntity player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+    public void spawnCustomParticle(PlayerEntity player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
     	
     }
 

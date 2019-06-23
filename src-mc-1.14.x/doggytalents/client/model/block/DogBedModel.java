@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -12,8 +14,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.ModBeddings;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.block.BlockDogBed;
+import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.BlockModel;
@@ -23,10 +27,14 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
@@ -47,20 +55,45 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         this.bakedModel = bakedModel;
         this.format = format;
     }
-
-    public IBakedModel getCustomModelFromState(BlockState state) {
-		String casing = "minecraft:block/oak_planks";
-		String bedding = "minecraft:block/white_wool";
-        Direction facing = Direction.NORTH;
+    
+    public IBakedModel getCustomModel(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+        String casingTex = casing.getTexture().toString();
+        String beddingTex = bedding.getTexture().toString();
         
-		if(state != null) {
-	        facing = state.get(BlockDogBed.FACING);
-	        casing = DogBedRegistry.CASINGS.getTexture(state, BlockDogBed.CASING);
-	        bedding = DogBedRegistry.BEDDINGS.getTexture(state, BlockDogBed.BEDDING);
-		}
-		
-		return this.getCustomModel(casing, bedding, facing);
-	}
+        return this.getCustomModel(casingTex, beddingTex, facing);
+    }
+    
+    @Override
+    public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
+        return this.getCustomModel(ModBeddings.OAK, ModBeddings.WHITE, Direction.NORTH).getQuads(state, side, rand);
+    }
+    
+    @Override
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
+        IBedMaterial casing = extraData.getData(TileEntityDogBed.CASING);
+        IBedMaterial bedding = extraData.getData(TileEntityDogBed.BEDDING);
+        Direction facing = extraData.getData(TileEntityDogBed.FACING);
+        return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand); //getBakedModel().getQuads(state, side, rand);
+    }
+
+    @Override
+    public IModelData getModelData(@Nonnull IEnviromentBlockReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
+        IBedMaterial casing = ModBeddings.OAK;
+        IBedMaterial bedding = ModBeddings.WHITE;
+        TileEntity tile = world.getTileEntity(pos);
+        if(tile instanceof TileEntityDogBed) {
+            casing = ((TileEntityDogBed)tile).getCasingId();
+            bedding = ((TileEntityDogBed)tile).getBeddingId();
+        }
+        if(state.has(BlockDogBed.FACING)) {
+            tileData.setData(TileEntityDogBed.FACING, state.get(BlockDogBed.FACING));
+        }
+        
+
+        tileData.setData(TileEntityDogBed.CASING, casing);
+        tileData.setData(TileEntityDogBed.BEDDING, bedding);
+        return tileData;
+    }
     
     public IBakedModel getCustomModel(String casingResource, String beddingResource, Direction facing) {
         IBakedModel customModel = this.bakedModel;
@@ -107,11 +140,6 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
 
     @Override
-    public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-    	return this.getCustomModelFromState(state).getQuads(state, side, rand);
-    }
-
-    @Override
     public boolean isAmbientOcclusion() {
         return this.bakedModel.isAmbientOcclusion();
     }
@@ -137,8 +165,8 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-	public TextureAtlasSprite getParticleTexture(BlockState state) {
-		return this.getCustomModelFromState(state).getParticleTexture();
+	public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+		return this.getCustomModel(casing, bedding, facing).getParticleTexture();
 	}
 
     @Override

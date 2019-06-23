@@ -9,7 +9,6 @@ import doggytalents.client.model.block.DogBedModel;
 import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +19,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ModelBake {
 
 	@SubscribeEvent
@@ -30,15 +29,15 @@ public class ModelBake {
 	    	BlockModel model = (BlockModel)event.getModelLoader().getUnbakedModel(new ResourceLocation(Reference.MOD_ID, "block/dog_bed"));
 		    IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(Direction.NORTH), DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
 
-		    List<ModelResourceLocation> modelsToReplace = new ArrayList<ModelResourceLocation>();
+		    List<ResourceLocation> modelsToReplace = new ArrayList<ResourceLocation>();
 		    	
-		    for(Entry<ModelResourceLocation, IBakedModel> entry : event.getModelRegistry().entrySet()) {
+		    for(Entry<ResourceLocation, IBakedModel> entry : event.getModelRegistry().entrySet()) {
 		    	if(entry.getKey().getNamespace().equals(Reference.MOD_ID) && entry.getKey().getPath().equals("dog_bed")) {
 		    		modelsToReplace.add(entry.getKey());
 		    	}
 		    }
 
-		    for(ModelResourceLocation location : modelsToReplace) {
+		    for(ResourceLocation location : modelsToReplace) {
 	    		//Replace 
 	    		event.getModelRegistry().put(location, customModel);
 		    }

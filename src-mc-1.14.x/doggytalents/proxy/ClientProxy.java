@@ -6,6 +6,8 @@ import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.ModContainerTypes;
 import doggytalents.ModItems;
+import doggytalents.api.inferface.IBedMaterial;
+import doggytalents.block.BlockDogBed;
 import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
@@ -18,6 +20,7 @@ import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.GameOverlay;
 import doggytalents.handler.InputUpdate;
+import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -28,6 +31,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
@@ -95,16 +99,22 @@ public class ClientProxy extends CommonProxy {
 	}
     
     @Override
-	public void spawnCustomParticle(PlayerEntity player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		TextureAtlasSprite sprite;
+	public void spawnCustomParticle(PlayerEntity player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+		TextureAtlasSprite sprite = null;
 		BlockState state = player.world.getBlockState((BlockPos)pos);
 		IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
 		if(model instanceof IStateParticleModel) {
-			state = state.getExtendedState(player.world, (BlockPos)pos);
-			sprite = ((IStateParticleModel)model).getParticleTexture(state);
+		    TileEntity tile = player.world.getTileEntity(pos);
+            if(tile instanceof TileEntityDogBed) {
+                IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
+                IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
+                sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(BlockDogBed.FACING));
+            }
 		} 
-		else
-			sprite = model.getParticleTexture();
+
+		if(sprite == null) {
+		    sprite = model.getParticleTexture();
+		}
 		
 		ParticleManager manager = Minecraft.getInstance().particles;
 
@@ -113,7 +123,7 @@ public class ClientProxy extends CommonProxy {
 			double ySpeed = rand.nextGaussian() * particleSpeed;
 			double zSpeed = rand.nextGaussian() * particleSpeed;
 			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
+			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite);
 			manager.addEffect(particle);
 		}
 	}

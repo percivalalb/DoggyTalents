@@ -1,23 +1,19 @@
 package doggytalents.api.registry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.annotation.Nonnull;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
-import doggytalents.block.PropertyMaterial;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.helper.Compatibility;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.registries.ForgeRegistries;
 
 /**
  * @author ProPercivalalb
@@ -28,114 +24,62 @@ public class DogBedRegistry {
 	public final static DogBedRegistry BEDDINGS = new DogBedRegistry("bedding");
 	
 	private final List<BedMaterial> keys = new ArrayList<BedMaterial>();
-	private final Map<BedMaterial, String> lookupnames = new HashMap<BedMaterial, String>();
-	private final Map<BedMaterial, String> textures = new HashMap<BedMaterial, String>();
-	private final Map<BedMaterial, CustomIngredient> craftingItems = new HashMap<BedMaterial, CustomIngredient>();
 	private final String key;
 	
 	public DogBedRegistry(String key) {
 		this.key = key;
 	}
 	
-	public BedMaterial registerMaterial(@Nonnull String blockId, String textureLocation) {
-		ResourceLocation resource = new ResourceLocation(blockId);
-		Block block = ForgeRegistries.BLOCKS.getValue(resource);
-		String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
-		ItemStack stack = new ItemStack(block, 1);
-		BedMaterial thing = new BedMaterial(blockId);
-		return this.registerMaterial(thing, lookupname, textureLocation, stack);
+	public IBedMaterial registerMaterial(@Nonnull Block block, ResourceLocation textureLocation) {
+		return this.registerMaterial(new BedMaterial(block, textureLocation, Ingredient.fromItems(block)));
 	}
 	
-	public BedMaterial registerMaterial(@Nonnull Block block, String textureLocation) {
-		ResourceLocation resource = ForgeRegistries.BLOCKS.getKey(block);
-		String blockId = resource.getNamespace() + "_" + resource.getPath();
-		String lookupname = String.format("dogbed.%s.%s.%s", this.key, resource.getNamespace(), resource.getPath());
-		ItemStack stack = new ItemStack(block, 1);
-		BedMaterial thing = new BedMaterial(blockId);
-		return this.registerMaterial(thing, lookupname, textureLocation, stack);
-	}
-	
-	public BedMaterial registerMaterial(BedMaterial key, String lookupname, String textureLocation, ItemStack craftingItem) {
-		if(this.isValidId(key)) {
-			DoggyTalentsMod.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", key); 
+	public BedMaterial registerMaterial(BedMaterial material) {
+		if(this.keys.contains(material)) {
+			DoggyTalentsMod.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", material); 
 			return null;
 		}
 		else {
-			this.keys.add(key);
-			this.lookupnames.put(key, lookupname);
-			this.textures.put(key, textureLocation);
-			this.craftingItems.put(key, CustomIngredient.fromStacks(craftingItem));
-			
-			DoggyTalentsMod.LOGGER.info("Register dog bed {} under the key {}", this.key, key);
-			return key;
+			this.keys.add(material.setRegName(this.key));
+			DoggyTalentsMod.LOGGER.info("Register dog bed {} under the key {}", this.key, material);
+			return material;
 		}
-	}
-	
-	public boolean isValidId(BedMaterial id) {
-		return this.keys.contains(id);
 	}
 	
 	public List<BedMaterial> getKeys() {
 		return this.keys;
 	}
 	
-	public BedMaterial getFromString(String key) {
+	public IBedMaterial getFromString(String key) {
 		if(key.equals("missing"))
-			return BedMaterial.NULL;
+			return IBedMaterial.MISSING;
 		
 		// Keep things when updating from 1.12
 		key = Compatibility.getBedOldNamingScheme(key);
 		
-		for(BedMaterial thing : this.keys) {
-			if(thing.key.equals(key)) {
+		for(IBedMaterial thing : this.keys) {
+			if(thing.getSaveId().equals(key)) {
 				return thing;
 			}
 		}
-		return BedMaterial.NULL;
+		return IBedMaterial.MISSING;
 	}
 	
-	public String getTranslationKey(BedMaterial id) {
-		if(!this.isValidId(id))
-			return "missing";
-		return this.lookupnames.get(id);
-	}
-	
-	private String getTexture(BedMaterial id) {
-		if(!this.isValidId(id))
-			return "missing";
-		return this.textures.get(id);
-	}
-	
-	public String getTexture(BlockState state, PropertyMaterial property) {
-		return this.getTexture(state.get(property));
-	}
-	
-	public String getTexture(CompoundNBT nbt, String key) {
-		return this.getTexture(this.getFromString(nbt.getString(key)));
-	}
-	
-	public BedMaterial getIdFromCraftingItem(ItemStack stack) {
-		for(Entry<BedMaterial, CustomIngredient> entry : craftingItems.entrySet()) {
-			if(entry.getValue().apply(stack))
-				return entry.getKey();
+	public IBedMaterial getIdFromCraftingItem(ItemStack stack) {
+	    for(IBedMaterial m : this.keys) {
+			if(m.getIngredients().test(stack))
+				return m;
 		}
-		return BedMaterial.NULL;
+		return IBedMaterial.MISSING;
 	}
 	
-	public ItemStack getCraftingItemFromBedMaterial(BedMaterial material) {
-		if(this.craftingItems.containsKey(material)) {
-			return this.craftingItems.get(material).getIngredient();
-		}
-		return ItemStack.EMPTY;
-	}
-	
-	public static ItemStack createItemStack(BedMaterial casingId, BedMaterial beddingId) {
+	public static ItemStack createItemStack(IBedMaterial casingId, IBedMaterial beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1);
 		stack.setTag(new CompoundNBT());
 		
 		CompoundNBT tag = new CompoundNBT();
-		tag.putString("casingId", casingId.key);
-		tag.putString("beddingId", beddingId.key);
+		tag.putString("casingId", casingId.getSaveId());
+		tag.putString("beddingId", beddingId.getSaveId());
 		stack.getTag().put("doggytalents", tag);
 		return stack;
 	}

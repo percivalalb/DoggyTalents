@@ -1,5 +1,5 @@
 {
     "variants": {
-		"": { "model": "doggytalents:block/dog_bed" }
+        "": { "model": "doggytalents:block/dog_bed" }
     }
 }

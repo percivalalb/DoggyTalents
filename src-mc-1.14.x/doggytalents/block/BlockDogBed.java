@@ -4,7 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import doggytalents.ModBeddings;
+import doggytalents.DoggyTalentsMod;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
@@ -22,7 +23,6 @@ import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -70,14 +70,13 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
+	protected static final VoxelShape SHAPE_COLLISION = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	
 	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-	public static final PropertyMaterial CASING = PropertyMaterial.create("casing", DogBedRegistry.CASINGS);
-	public static final PropertyMaterial BEDDING = PropertyMaterial.create("bedding", DogBedRegistry.BEDDINGS);
 	
 	public BlockDogBed() {
 		super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
-		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(CASING, ModBeddings.OAK).with(BEDDING, ModBeddings.WHITE).with(WATERLOGGED, Boolean.valueOf(false)));
+		this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.valueOf(false)));
 	}
 	
 	@Override
@@ -87,16 +86,16 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 		if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
 			CompoundNBT tag = stack.getTag().getCompound("doggytalents");
 		    
-			BedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
-	    	BedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
+			IBedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
+	    	IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
 		    
-		    if(DogBedRegistry.CASINGS.isValidId(casingId))
-		    	tooltip.add(new TranslationTextComponent(DogBedRegistry.CASINGS.getTranslationKey(casingId)));
+		    if(casingId.isValid())
+		    	tooltip.add(new TranslationTextComponent(casingId.getTranslationKey()));
 		    else
 		    	tooltip.add(new TranslationTextComponent("dogBed.woodError").applyTextStyle(TextFormatting.RED));
 		    	
-		    if(DogBedRegistry.BEDDINGS.isValidId(beddingId))
-		    	tooltip.add(new TranslationTextComponent(DogBedRegistry.BEDDINGS.getTranslationKey(beddingId)));	
+		    if(beddingId.isValid())
+		    	tooltip.add(new TranslationTextComponent(beddingId.getTranslationKey()));	
 		    else
 		    	tooltip.add(new TranslationTextComponent("dogBed.woolError").applyTextStyle(TextFormatting.RED));
 		}
@@ -120,6 +119,11 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	}
 	
 	@Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext selectionContext) {
+        return SHAPE_COLLISION;
+    }
+	
+	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 	    return BlockRenderType.MODEL;
 	}
@@ -137,16 +141,16 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	    	CompoundNBT tag = stack.getTag().getCompound("doggytalents");
 	    	
 	    	
-	    	BedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
-	    	if(DogBedRegistry.CASINGS.isValidId(casingId)) {
+	    	IBedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
+	    	if(casingId.isValid()) {
 	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setCasingId(casingId);
-	    		state = state.with(CASING, casingId);
+	    		//state = state.with(CASING, casingId);
 	    	}
 	    	
-	    	BedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
-	    	if(DogBedRegistry.BEDDINGS.isValidId(beddingId)) {
+	    	IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
+	    	if(beddingId.isValid()) {
 	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setBeddingId(beddingId);
-	    		state = state.with(BEDDING, beddingId);
+	    		//state = state.with(BEDDING, beddingId);
 	    	}
 	    }
         worldIn.setBlockState(pos, state, 2);
@@ -154,7 +158,7 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING, CASING, BEDDING, WATERLOGGED);
+		builder.add(FACING, WATERLOGGED);
 	}
 	
 	@Override
@@ -170,7 +174,16 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-		return DogBedRegistry.createItemStack(state.get(CASING), state.get(BEDDING));
+	    
+	    TileEntity tile = world.getTileEntity(pos);
+        if(tile instanceof TileEntityDogBed) {
+            IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
+            IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
+            return DogBedRegistry.createItemStack(casing, bedding);
+        }
+	    
+        DoggyTalentsMod.LOGGER.debug("Unable to get data from TileEntityDogBed. This should never happen.");
+		return ItemStack.EMPTY;
 	}
 	
 	@Override
@@ -212,22 +225,26 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	public boolean addDestroyEffects(BlockState state, World world, BlockPos pos, ParticleManager manager) {
 		IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
 		if(model instanceof IStateParticleModel) {
-			state = state.getExtendedState(world, pos);
-			TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(state);
-			if(sprite != null) {
-				for(int j = 0; j < 4; ++j) {
-					for(int k = 0; k < 4; ++k) {
-						for(int l = 0; l < 4; ++l) {
-							double d0 = ((double)j + 0.5D) / 4.0D;
-							double d1 = ((double)k + 0.5D) / 4.0D;
-							double d2 = ((double)l + 0.5D) / 4.0D;
-							manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
-						}
-					}
-				}
-
-				return true;
-			}
+		    TileEntity tile = world.getTileEntity(pos);
+	        if(tile instanceof TileEntityDogBed) {
+	            IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
+	            IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
+	            TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(FACING));
+    			if(sprite != null) {
+    				for(int j = 0; j < 4; ++j) {
+    					for(int k = 0; k < 4; ++k) {
+    						for(int l = 0; l < 4; ++l) {
+    							double d0 = ((double)j + 0.5D) / 4.0D;
+    							double d1 = ((double)k + 0.5D) / 4.0D;
+    							double d2 = ((double)l + 0.5D) / 4.0D;
+    							manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
+    						}
+    					}
+    				}
+    
+    				return true;
+    			}
+	        }
 		}
 
 		return false;
@@ -242,40 +259,45 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 			BlockPos pos = result.getPos();
 			Direction side = result.getFace();
 
-			state = this.getExtendedState(state.getExtendedState(world, pos), world, pos);
-			TextureAtlasSprite sprite = ((IStateParticleModel) model).getParticleTexture(state);
-			if(sprite != null) {
-				int x = pos.getX();
-				int y = pos.getY();
-				int z = pos.getZ();
-				AxisAlignedBB axisalignedbb = state.getShape(world, pos).getBoundingBox();
-				double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - (double)0.2F) + (double)0.1F + axisalignedbb.minX;
-				double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - (double)0.2F) + (double)0.1F + axisalignedbb.minY;
-				double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - (double)0.2F) + (double)0.1F + axisalignedbb.minZ;
-
-				if(side == Direction.DOWN)
-					d1 = (double)y + axisalignedbb.minY - 0.1F;
-				
-				if(side == Direction.UP)
-					d1 = (double)y + axisalignedbb.maxY + 0.1F;
-
-				if(side == Direction.NORTH)
-					d2 = (double)z + axisalignedbb.minZ - 0.1F;
-
-				if(side == Direction.SOUTH)
-					d2 = (double)z + axisalignedbb.maxZ + 0.1F;
-
-				if(side == Direction.WEST)
-					d0 = (double)x + axisalignedbb.minX - 0.1F;
-
-				if(side == Direction.EAST)
-					d0 = (double)x + axisalignedbb.maxX + 0.1F;
-
-				Particle particle = new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F);
-				manager.addEffect(particle);
-
-				return true;
-			}
+			TileEntity tile = world.getTileEntity(pos);
+            if(tile instanceof TileEntityDogBed) {
+                IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
+                IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
+                TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(FACING));
+    			if(sprite != null) {
+    				int x = pos.getX();
+    				int y = pos.getY();
+    				int z = pos.getZ();
+    				AxisAlignedBB axisalignedbb = state.getShape(world, pos).getBoundingBox();
+    				double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - (double)0.2F) + (double)0.1F + axisalignedbb.minX;
+    				double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - (double)0.2F) + (double)0.1F + axisalignedbb.minY;
+    				double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - (double)0.2F) + (double)0.1F + axisalignedbb.minZ;
+    
+    				
+    				
+    				if(side == Direction.DOWN)
+    					d1 = (double)y + axisalignedbb.minY - 0.1F;
+    				
+    				if(side == Direction.UP)
+    					d1 = (double)y + axisalignedbb.maxY + 0.1F;
+    
+    				if(side == Direction.NORTH)
+    					d2 = (double)z + axisalignedbb.minZ - 0.1F;
+    
+    				if(side == Direction.SOUTH)
+    					d2 = (double)z + axisalignedbb.maxZ + 0.1F;
+    
+    				if(side == Direction.WEST)
+    					d0 = (double)x + axisalignedbb.minX - 0.1F;
+    
+    				if(side == Direction.EAST)
+    					d0 = (double)x + axisalignedbb.maxX + 0.1F;
+    
+    				manager.addEffect(new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+    
+    				return true;
+    			}
+            }
 		}
 
 		return false;

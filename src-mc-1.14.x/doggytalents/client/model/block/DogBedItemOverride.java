@@ -20,8 +20,8 @@ public class DogBedItemOverride extends ItemOverrideList {
         	if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
     			CompoundNBT tag = stack.getTag().getCompound("doggytalents");
     		    
-    			String casingId = DogBedRegistry.CASINGS.getTexture(tag, "casingId");
-    			String beddingId = DogBedRegistry.BEDDINGS.getTexture(tag, "beddingId");
+    			String casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId")).getTexture().toString();
+    			String beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId")).getTexture().toString();
     			return ((DogBedModel)modelOriginal).getCustomModel(casingId, beddingId, Direction.NORTH);
         	}
         }

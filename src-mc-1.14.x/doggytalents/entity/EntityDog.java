@@ -948,7 +948,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         else {
             Entity entity = damageSource.getTrueSource();
             //Friendly fire
-            if (!this.canFriendlyFire() && entity instanceof PlayerEntity && (this.willObeyOthers() || this.isOwner((PlayerEntity) entity)))
+            if (!this.canFriendlyFire() && entity instanceof PlayerEntity)
                 return false;
 
             if (!TalentHelper.attackEntityFrom(this, damageSource, damage))

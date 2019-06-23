@@ -16,6 +16,6 @@ logoFile="dt_logo.png"
 [[dependencies.doggytalents]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[26.0.16,)" #mandatory
+    versionRange="[26.0.61,)" #mandatory
     ordering="NONE"
     side="BOTH"

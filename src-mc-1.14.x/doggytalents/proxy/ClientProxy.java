@@ -26,6 +26,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.renderer.color.BlockColors;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -37,6 +39,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeColors;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -51,6 +54,8 @@ public class ClientProxy extends CommonProxy {
     	super();
         DoggyTalentsMod.LOGGER.debug("Client Proxy");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColours);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerItemColours);
     }
     
     private void clientSetup(FMLClientSetupEvent event) {
@@ -61,7 +66,30 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.registerFactory(ModContainerTypes.TREAT_BAG, GuiTreatBag::new);
         //ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> GuiConfig.openGui(mc, screen));
         RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+    }
+    
+    private void registerBlockColours(ColorHandlerEvent.Block event) {
+        BlockColors blockColors = event.getBlockColors();
+        
+        blockColors.register((state, world, pos, tintIndex) -> {
+            return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
+         }, ModBlocks.DOG_BATH);
+    }
+    
+    private void registerItemColours(ColorHandlerEvent.Item event) {
+        ItemColors itemColors = event.getItemColors();
+        itemColors.register((stack, tintIndex) -> {
+            return stack.hasTag() && stack.getTag().contains("collar_colour") ? stack.getTag().getInt("collar_colour") : -1;
+          }, ModItems.WOOL_COLLAR);
+        
+        itemColors.register((stack, tintIndex) -> {
+            return stack.hasTag() && stack.getTag().contains("cape_colour") ? stack.getTag().getInt("cape_colour") : -1;
+          }, ModItems.CAPE_COLOURED);
+        
+        itemColors.register((stack, tintIndex) -> {
+             return 4159204;
+          }, ModBlocks.DOG_BATH);
     }
    
     @Override
@@ -75,22 +103,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void postInit(InterModProcessEvent event) {
     	super.postInit(event);
-
-        Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-        	return stack.hasTag() && stack.getTag().contains("collar_colour") ? stack.getTag().getInt("collar_colour") : -1;
-          }, ModItems.WOOL_COLLAR);
-        
-        Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-        	return stack.hasTag() && stack.getTag().contains("cape_colour") ? stack.getTag().getInt("cape_colour") : -1;
-          }, ModItems.CAPE_COLOURED);
-        
-		Minecraft.getInstance().getItemColors().register((stack, tintIndex) -> {
-	         return 4159204;
-	      }, ModBlocks.DOG_BATH);
-		
-		Minecraft.getInstance().getBlockColors().register((state, blockAccess, pos, tintIndex) -> {
-	         return blockAccess != null && pos != null ? BiomeColors.getWaterColor(blockAccess, pos) : -1;
-	      }, ModBlocks.DOG_BATH);
     }
     
     @Override

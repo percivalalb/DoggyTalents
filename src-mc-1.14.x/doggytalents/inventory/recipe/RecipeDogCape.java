@@ -11,7 +11,6 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -119,35 +118,12 @@ public class RecipeDogCape extends SpecialRecipe {
             return itemstack;
         }
     }
-
-	@Override
-    public ItemStack getRecipeOutput() {
-        return ItemStack.EMPTY;
-    }
-
-	@Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-
-        for(int i = 0; i < nonnulllist.size(); ++i) {
-            ItemStack itemstack = inv.getStackInSlot(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
-        }
-
-        return nonnulllist;
-    }
-
-	@Override
-    public boolean isDynamic() {
-        return true;
-    }
-
+	
 	//Is on a 3x3 grid or bigger
 	@Override
     public boolean canFit(int width, int height) {
         return width * height >= 2;
     }
-	
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {

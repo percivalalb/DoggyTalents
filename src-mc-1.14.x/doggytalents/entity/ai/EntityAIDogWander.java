@@ -6,9 +6,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;

@@ -19,7 +19,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TranslationTextComponent;

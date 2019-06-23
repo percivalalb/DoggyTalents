@@ -21,6 +21,7 @@ import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
+import doggytalents.entity.ai.EntityAIBerserkerMode;
 import doggytalents.entity.ai.EntityAIDogFeed;
 import doggytalents.entity.ai.EntityAIDogWander;
 import doggytalents.entity.ai.EntityAIExtinguishFire;
@@ -31,7 +32,6 @@ import doggytalents.entity.ai.EntityAIHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
-import doggytalents.entity.ai.EntityAIBerserkerMode;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
 import doggytalents.entity.features.DogGenderFeature;
@@ -194,12 +194,14 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.goalSelector.addGoal(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
 		this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
 		this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
-		this.goalSelector.addGoal(11, new BreedGoal(this, 1.0D));
-		this.goalSelector.addGoal(12, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-		this.goalSelector.addGoal(13, new EntityAIBegDog(this, 8.0F));
-		this.goalSelector.addGoal(14, new EntityAIDogFeed(this, 1.0D, 20.0F));
-		this.goalSelector.addGoal(15, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-		this.goalSelector.addGoal(15, new LookRandomlyGoal(this));
+		this.goalSelector.addGoal(12, new BreedGoal(this, 1.0D));
+		this.goalSelector.addGoal(13, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+		this.goalSelector.addGoal(14, new EntityAIBegDog(this, 8.0F));
+		this.goalSelector.addGoal(15, new EntityAIDogFeed(this, 1.0D, 20.0F));
+		
+		
+		this.goalSelector.addGoal(25, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+		this.goalSelector.addGoal(25, new LookRandomlyGoal(this));
 		
 		this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
 		this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
@@ -1217,7 +1219,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
    	public float getTailRotation() {
    		return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) / this.getMaxHealth() * 20.0F * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
    	}
-
+	
 	//TODO
 	/**
    	@Override

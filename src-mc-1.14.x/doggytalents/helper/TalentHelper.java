@@ -184,4 +184,11 @@ public class TalentHelper {
                 return false;
         return true;
     }
+
+    public static void onFinishShaking(EntityDog dogIn, boolean gotWetInWater) {
+        DoggyTalentsAPI.TALENTS.getValues().forEach(talent -> {
+            talent.onFinishShaking(dogIn, gotWetInWater);
+        });
+
+    }
 }

@@ -139,7 +139,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     private float headRotationCourse;
     private float headRotationCourseOld;
     public boolean isWet;
-    private boolean isShaking;
+    public boolean gotWetInWater;
+    public boolean isShaking;
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
     
@@ -439,26 +440,27 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         else {
             this.headRotationCourse += (0.0F - this.headRotationCourse) * 0.4F;
         }
-
+        
         if(this.isInWaterRainOrBubbleColumn()) {
             this.isWet = true;
             this.isShaking = false;
             this.timeWolfIsShaking = 0.0F;
             this.prevTimeWolfIsShaking = 0.0F;
+            this.gotWetInWater = this.isInWater();
         } else if((this.isWet || this.isShaking) && this.isShaking) {
             if(this.timeWolfIsShaking == 0.0F) {
                 this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
             }
-
+            
             this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
             this.timeWolfIsShaking += 0.05F;
-            if (this.prevTimeWolfIsShaking >= 2.0F) {
+            if(this.prevTimeWolfIsShaking >= 2.0F) {
                 this.isWet = false;
                 this.isShaking = false;
                 this.prevTimeWolfIsShaking = 0.0F;
                 this.timeWolfIsShaking = 0.0F;
                 
-                this.onFinishShaking();
+                TalentHelper.onFinishShaking(this, this.gotWetInWater);
             }
 
             if(this.timeWolfIsShaking > 0.4F) {
@@ -1098,13 +1100,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         return 0.8F;
     }
     
-    protected void onFinishShaking() {
-        if(!this.world.isRemote) {
-            int lvlFisherDog = this.TALENTS.getLevel(ModTalents.FISHER_DOG);
-            int lvlHellHound = this.TALENTS.getLevel(ModTalents.HELL_HOUND);
-
-            if (this.rand.nextInt(15) < lvlFisherDog * 2)
-                this.entityDropItem(this.rand.nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
         }
     }
     
@@ -1127,8 +1122,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                } else {
                    return this.isInLove() && entitydog.isInLove();
                }
-           }
-       }
      
      @Override
      public ItemStack getPickedResult(RayTraceResult target) {

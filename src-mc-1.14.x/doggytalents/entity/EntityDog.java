@@ -347,7 +347,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 			this.world.setEntityState(this, (byte)8);
 		}
         
-        if (Constants.IS_HUNGER_ON) {
+        if(!Constants.DISABLE_HUNGER) {
             this.prevHungerTick = this.hungerTick;
 
             if (!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)

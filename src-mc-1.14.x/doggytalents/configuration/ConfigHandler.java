@@ -73,7 +73,7 @@ public class ConfigHandler {
 		DoggyTalentsMod.LOGGER.debug("Refresh Common Config");
 		Constants.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
 		Constants.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
-		Constants.IS_HUNGER_ON = SERVER.DISABLE_HUNGER.get();
+		Constants.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
 		Constants.STARTING_ITEMS = SERVER.STARTING_ITEMS.get();
 		Constants.DOG_GENDER = SERVER.DOG_GENDER.get();
 		Constants.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();

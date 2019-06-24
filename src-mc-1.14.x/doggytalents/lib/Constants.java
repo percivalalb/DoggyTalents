@@ -17,7 +17,7 @@ public class Constants {
 	//Server
 	public static boolean DOGS_IMMORTAL;
 	public static int TIME_TO_MATURE;
-	public static boolean IS_HUNGER_ON;
+	public static boolean DISABLE_HUNGER;
 	public static boolean STARTING_ITEMS;
 	public static boolean DOG_GENDER;
 	public static boolean DOG_WHINE_WHEN_HUNGER_LOW;

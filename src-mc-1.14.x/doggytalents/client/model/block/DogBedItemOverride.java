@@ -17,11 +17,10 @@ public class DogBedItemOverride extends ItemOverrideList {
     @Override
     public IBakedModel getModelWithOverrides(IBakedModel modelOriginal, ItemStack stack, World world, LivingEntity entity) {
         if(modelOriginal instanceof DogBedModel) {
-        	if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
-    			CompoundNBT tag = stack.getTag().getCompound("doggytalents");
-    		    
-    			String casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId")).getTexture().toString();
-    			String beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId")).getTexture().toString();
+            CompoundNBT tag = stack.getChildTag("doggytalents");
+            if(tag != null) {
+    			String casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId")).getTexture().toString();
+    			String beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId")).getTexture().toString();
     			return ((DogBedModel)modelOriginal).getCustomModel(casingId, beddingId, Direction.NORTH);
         	}
         }

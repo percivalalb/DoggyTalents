@@ -23,7 +23,7 @@ public class DogBedRegistry {
 	public final static DogBedRegistry CASINGS = new DogBedRegistry("casing");
 	public final static DogBedRegistry BEDDINGS = new DogBedRegistry("bedding");
 	
-	private final List<BedMaterial> keys = new ArrayList<BedMaterial>();
+	private final List<BedMaterial> REGISTRY = new ArrayList<BedMaterial>();
 	private final String key;
 	
 	public DogBedRegistry(String key) {
@@ -35,52 +35,53 @@ public class DogBedRegistry {
 	}
 	
 	public BedMaterial registerMaterial(BedMaterial material) {
-		if(this.keys.contains(material)) {
+		if(this.REGISTRY.contains(material)) {
 			DoggyTalentsMod.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", material); 
 			return null;
 		}
 		else {
-			this.keys.add(material.setRegName(this.key));
+			this.REGISTRY.add(material.setRegName(this.key));
 			DoggyTalentsMod.LOGGER.info("Register dog bed {} under the key {}", this.key, material);
 			return material;
 		}
 	}
 	
 	public List<BedMaterial> getKeys() {
-		return this.keys;
+		return this.REGISTRY;
 	}
 	
-	public IBedMaterial getFromString(String key) {
-		if(key.equals("missing"))
-			return IBedMaterial.MISSING;
+	public IBedMaterial get(String saveId) {
+		if(saveId.equals("missing"))
+			return IBedMaterial.NULL;
 		
 		// Keep things when updating from 1.12
-		key = Compatibility.getBedOldNamingScheme(key);
+		saveId = Compatibility.getBedOldNamingScheme(saveId);
 		
-		for(IBedMaterial thing : this.keys) {
-			if(thing.getSaveId().equals(key)) {
+		// Try find a registered material
+		for(IBedMaterial thing : this.REGISTRY) {
+			if(thing.getSaveId().equals(saveId)) {
 				return thing;
 			}
 		}
-		return IBedMaterial.MISSING;
+		
+		// Gets a holders so saveId is preserved
+		return IBedMaterial.getHolder(saveId);
 	}
 	
-	public IBedMaterial getIdFromCraftingItem(ItemStack stack) {
-	    for(IBedMaterial m : this.keys) {
+	public IBedMaterial getFromStack(ItemStack stack) {
+	    for(IBedMaterial m : this.REGISTRY) {
 			if(m.getIngredients().test(stack))
 				return m;
 		}
-		return IBedMaterial.MISSING;
+		return IBedMaterial.NULL;
 	}
 	
 	public static ItemStack createItemStack(IBedMaterial casingId, IBedMaterial beddingId) {
 		ItemStack stack = new ItemStack(ModBlocks.DOG_BED, 1);
-		stack.setTag(new CompoundNBT());
 		
-		CompoundNBT tag = new CompoundNBT();
+		CompoundNBT tag = stack.getOrCreateChildTag("doggytalents");
 		tag.putString("casingId", casingId.getSaveId());
 		tag.putString("beddingId", beddingId.getSaveId());
-		stack.getTag().put("doggytalents", tag);
 		return stack;
 	}
 }

@@ -197,6 +197,8 @@
    "modgui.config.general.tooltip": "Общие настройки для мода",
    "modgui.config.talents": "Таланты",
    "modgui.config.talents.tooltip": "Включить или отключить таланты",
+   "dogbed.null": "Null",
+   "dogbed.missing": "Missing: %s",
    "dogbed.bedding.minecraft.white_wool": "Подстилка из белой шерсти",
    "dogbed.bedding.minecraft.orange_wool": "Подстилка из оранжевой шерсти",
    "dogbed.bedding.minecraft.magenta_wool": "Подстилка из пурпурной шерсти",

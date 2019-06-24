@@ -83,21 +83,21 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		if(stack.hasTag() && stack.getTag().contains("doggytalents")) {
-			CompoundNBT tag = stack.getTag().getCompound("doggytalents");
-		    
-			IBedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
-	    	IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
+		
+		CompoundNBT tag = stack.getChildTag("doggytalents");
+		if(tag != null) {
+			IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
+	    	IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
 		    
 		    if(casingId.isValid())
 		    	tooltip.add(new TranslationTextComponent(casingId.getTranslationKey()));
 		    else
-		    	tooltip.add(new TranslationTextComponent("dogBed.woodError").applyTextStyle(TextFormatting.RED));
+		    	tooltip.add(new TranslationTextComponent(casingId.getTranslationKey(), casingId.getSaveId()).applyTextStyle(TextFormatting.RED));
 		    	
 		    if(beddingId.isValid())
 		    	tooltip.add(new TranslationTextComponent(beddingId.getTranslationKey()));	
 		    else
-		    	tooltip.add(new TranslationTextComponent("dogBed.woolError").applyTextStyle(TextFormatting.RED));
+		    	tooltip.add(new TranslationTextComponent(beddingId.getTranslationKey(), beddingId.getSaveId()).applyTextStyle(TextFormatting.RED));
 		}
 	}
 	
@@ -140,17 +140,12 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
         if(stack != null && stack.hasTag() && stack.getTag().contains("doggytalents")) {
 	    	CompoundNBT tag = stack.getTag().getCompound("doggytalents");
 	    	
+	    	TileEntity tile = worldIn.getTileEntity(pos);
 	    	
-	    	IBedMaterial casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
-	    	if(casingId.isValid()) {
-	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setCasingId(casingId);
-	    		//state = state.with(CASING, casingId);
-	    	}
-	    	
-	    	IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
-	    	if(beddingId.isValid()) {
-	    		((TileEntityDogBed)worldIn.getTileEntity(pos)).setBeddingId(beddingId);
-	    		//state = state.with(BEDDING, beddingId);
+	    	if(tile instanceof TileEntityDogBed) {
+	    	    TileEntityDogBed dogBed = (TileEntityDogBed)tile;
+	    	    dogBed.setBeddingId(DogBedRegistry.BEDDINGS.get(tag.getString("beddingId")));
+	    	    dogBed.setCasingId(DogBedRegistry.CASINGS.get(tag.getString("casingId")));
 	    	}
 	    }
         worldIn.setBlockState(pos, state, 2);

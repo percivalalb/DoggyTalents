@@ -197,6 +197,8 @@
    "modgui.config.general.tooltip": "本模组的通用设置",
    "modgui.config.talents": "能力",
    "modgui.config.talents.tooltip": "启用/禁用能力",
+   "dogbed.null": "Null",
+   "dogbed.missing": "Missing: %s",
    "dogbed.bedding.minecraft.white_wool": "白色羊毛狗窝",
    "dogbed.bedding.minecraft.orange_wool": "橙色羊毛狗窝",
    "dogbed.bedding.minecraft.magenta_wool": "品红色羊毛狗窝",

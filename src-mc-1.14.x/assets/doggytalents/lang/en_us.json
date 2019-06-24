@@ -197,6 +197,8 @@
    "modgui.config.general.tooltip": "General settings for the mod",
    "modgui.config.talents": "Talents",
    "modgui.config.talents.tooltip": "Enable and disable talents",
+   "dogbed.null": "Null",
+   "dogbed.missing": "Missing: %s",
    "dogbed.bedding.minecraft.white_wool": "White Wool Bedding",
    "dogbed.bedding.minecraft.orange_wool": "Orange Wool Bedding",
    "dogbed.bedding.minecraft.magenta_wool": "Magenta Wool Bedding",

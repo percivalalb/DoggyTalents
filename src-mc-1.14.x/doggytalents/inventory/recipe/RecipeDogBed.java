@@ -20,21 +20,21 @@ public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<Craftin
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
-		IBedMaterial beddingId = IBedMaterial.MISSING;
-		IBedMaterial casingId = IBedMaterial.MISSING;
+		IBedMaterial beddingId = IBedMaterial.NULL;
+		IBedMaterial casingId = IBedMaterial.NULL;
 		
         for(int col = 0; col < 3; ++col) {
             for(int row = 0; row < 3; ++row) {
             	if((col == 1 && row == 0) || (col == 1 && row == 1)) {
-            		IBedMaterial id = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(!id.isValid() || (beddingId != IBedMaterial.MISSING && id != beddingId))
+            		IBedMaterial id = DogBedRegistry.BEDDINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(!id.isValid() || (beddingId != IBedMaterial.NULL && id != beddingId))
             			return false;
                 		
             		beddingId = id;
             	}
             	else {
-            		IBedMaterial id = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(col + row * inv.getWidth()));
-            		if(!id.isValid() || (beddingId != IBedMaterial.MISSING && id != casingId))
+            		IBedMaterial id = DogBedRegistry.CASINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
+            		if(!id.isValid() || (beddingId != IBedMaterial.NULL && id != casingId))
                         return false;
                 	
             		casingId = id;
@@ -47,8 +47,8 @@ public class RecipeDogBed extends SpecialRecipe implements IShapedRecipe<Craftin
 
 	@Override
 	public ItemStack getCraftingResult(CraftingInventory inv) {
-		IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getIdFromCraftingItem(inv.getStackInSlot(1));
-		IBedMaterial casingId = DogBedRegistry.CASINGS.getIdFromCraftingItem(inv.getStackInSlot(0));
+		IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromStack(inv.getStackInSlot(1));
+		IBedMaterial casingId = DogBedRegistry.CASINGS.getFromStack(inv.getStackInSlot(0));
 		
 		return DogBedRegistry.createItemStack(casingId, beddingId);
     }

@@ -15,8 +15,8 @@ import net.minecraftforge.client.model.data.ModelProperty;
 
 public class TileEntityDogBed extends TileEntity {
 	
-	private IBedMaterial casingId = IBedMaterial.MISSING;
-	private IBedMaterial beddingId = IBedMaterial.MISSING;
+	private IBedMaterial casingId = IBedMaterial.NULL;
+	private IBedMaterial beddingId = IBedMaterial.NULL;
 	
     
     public static ModelProperty<IBedMaterial> CASING = new ModelProperty<IBedMaterial>();
@@ -30,8 +30,8 @@ public class TileEntityDogBed extends TileEntity {
 	@Override
 	public void read(CompoundNBT tag) {
 		super.read(tag);
-		this.casingId = DogBedRegistry.CASINGS.getFromString(tag.getString("casingId"));
-		this.beddingId = DogBedRegistry.BEDDINGS.getFromString(tag.getString("beddingId"));
+		this.casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
+		this.beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
     }
 
     @Override

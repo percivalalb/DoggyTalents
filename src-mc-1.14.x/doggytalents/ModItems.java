@@ -64,10 +64,10 @@ public class ModItems {
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	IForgeRegistry<Item> itemRegistry = event.getRegistry();
 	    	DoggyTalentsMod.LOGGER.debug("Registering Items");
-	    	itemRegistry.register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
-	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
-	    	itemRegistry.register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
-	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.DRY, ()->THROW_BONE_WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET, ()->THROW_BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.DRY, ()->THROW_STICK_WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
+	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET, ()->THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
 	    	itemRegistry.register(new ItemTreat(20, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TRAINING_TREAT));
 	    	itemRegistry.register(new ItemTreat(40, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUPER_TREAT));
 	    	itemRegistry.register(new ItemTreat(60, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MASTER_TREAT));

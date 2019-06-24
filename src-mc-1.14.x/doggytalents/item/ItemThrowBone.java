@@ -1,5 +1,7 @@
 package doggytalents.item;
 
+import java.util.function.Supplier;
+
 import doggytalents.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
@@ -27,14 +29,12 @@ public class ItemThrowBone extends Item {
 	}
 	
 	public Type type;
+	public Supplier<Item> altBone;
 	
-	public ItemThrowBone(Properties properties) {
-		this(Type.DRY, properties);
-	}
-	
-	public ItemThrowBone(Type type, Properties properties) {
+	public ItemThrowBone(Type type, Supplier<Item> altBone, Properties properties) {
 		super(properties);
 		this.type = type;
+		this.altBone = altBone;
 	}
 	
 	public void setHeadingFromThrower(ItemEntity entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
@@ -51,13 +51,13 @@ public class ItemThrowBone extends Item {
 		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 		
 		if(this.type == Type.WET) {
-			if(itemStackIn.getItem() == ModItems.THROW_BONE_WET)
-				itemStackIn = new ItemStack(ModItems.THROW_BONE);
-			else if(itemStackIn.getItem() == ModItems.THROW_STICK_WET)
-				itemStackIn = new ItemStack(ModItems.THROW_STICK);
-
-    		playerIn.swingArm(handIn);
-    		return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
+		    if(itemStackIn.getItem() == this) {
+                itemStackIn = new ItemStack(this.altBone.get());
+                playerIn.swingArm(handIn);
+                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
+            }
+            
+            return new ActionResult<ItemStack>(ActionResultType.FAIL, itemStackIn);
     	}
 		else {
 	
@@ -67,7 +67,7 @@ public class ItemThrowBone extends Item {
 	        	ItemStack stack = itemStackIn.copy();
 	        	stack.setCount(1);
 	        	ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
-	            entityitem.setPickupDelay(40);
+	            entityitem.setPickupDelay(20);
 	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
                 worldIn.addEntity(entityitem);
 	        }

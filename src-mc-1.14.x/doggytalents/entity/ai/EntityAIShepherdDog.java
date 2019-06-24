@@ -189,8 +189,8 @@ public class EntityAIShepherdDog extends Goal {
 				if(this.dog.getDistance(this.owner) > 40)
 					DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.dogPathfinder, 2);
 				// Play woof sound
-				if(this.dog.getRandom().nextFloat() < 0.15F)
-					this.dog.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, this.dog.getSoundVolume() + 1.0F, (this.dog.getRandom().nextFloat() - this.dog.getRandom().nextFloat()) * 0.1F + 0.9F);
+				if(this.dog.getRNG().nextFloat() < 0.15F)
+					this.dog.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, this.dog.getSoundVolume() + 1.0F, (this.dog.getRNG().nextFloat() - this.dog.getRNG().nextFloat()) * 0.1F + 0.9F);
 				
 				
 				// Remove dead or faraway entities

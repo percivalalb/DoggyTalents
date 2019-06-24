@@ -1585,10 +1585,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     public float[] getCapeColour() {
         return DogUtil.rgbIntToFloatArray(this.getCapeData());
     }
-    
-    public Random getRandom() {
-    	return this.rand;
-    }
 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {

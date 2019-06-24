@@ -25,59 +25,6 @@ public class Compatibility {
 		return OLD_NEW_TALENT.containsKey(name) ? OLD_NEW_TALENT.get(name).get() : null;
 	}
 	
-	/**
-    @SubscribeEvent
-	public static void remapBlocks(MissingMappings<Block> event) {
-    	ImmutableList<Mapping<Block>> mappings = event.getAllMappings();
-    	
-    	for(Mapping<Block> mapping : mappings) {
-    		
-    		DoggyTalentsMod.LOGGER.info("Block: " + mapping.key.toString());
-    	}
-	}
-    
-    @SubscribeEvent
-	public static void remapTile(MissingMappings<TileEntityType<?>> event) {
-    	ImmutableList<Mapping<TileEntityType<?>>> mappings = event.getAllMappings();
-    	
-    	for(Mapping<TileEntityType<?>> mapping : mappings) {
-    		
-    		DoggyTalentsMod.LOGGER.info("Tile: " + mapping.key.toString());
-    	}
-	}
-    
-	@SubscribeEvent
-	public static void remapBlocks(FMLModIdMappingEvent event) {
-		ImmutableSet<ResourceLocation> registries = event.getRegistries();
-		for(ResourceLocation registry : registries) {
-	    	ImmutableList<ModRemapping> mappings = event.getRemaps(registry);
-	    	DoggyTalentsMod.LOGGER.info(registry.toString());
-	    	for(ModRemapping mapping : mappings) {
-	    		
-	    		DoggyTalentsMod.LOGGER.info("     : " + mapping.key.toString());
-	    	}
-		}
-	}
-	
-    @SubscribeEvent
-   	public static void remapItems(MissingMappings<Item> event) {
-    	ImmutableList<Mapping<Item>> mappings = event.getAllMappings();
-    	for(Mapping<Item> mapping : mappings) {
-    		
-    		DoggyTalentsMod.LOGGER.info("Item: " + mapping.key.toString());
-    	}
-   	}
-    
-    @SubscribeEvent
-   	public static void remapEntities(MissingMappings<EntityType<?>> event) {
-    	ImmutableList<Mapping<EntityType<?>>> mappings = event.getAllMappings();
-    	
-    	for(Mapping<EntityType<?>> mapping : mappings) {
-    		
-    		DoggyTalentsMod.LOGGER.info("Entity: " + mapping.key.toString());
-    	}
-   	}**/
-	 
 	static {
 	    // Update to 1.13
 		OLD_NEW_BED.put("minecraft:wool.0", "minecraft:white_wool");

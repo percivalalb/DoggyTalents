@@ -7,7 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.lib.Constants;
+import doggytalents.lib.ConfigValues;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -71,41 +71,41 @@ public class ConfigHandler {
 	
 	public static void refreshServer() {
 		DoggyTalentsMod.LOGGER.debug("Refresh Common Config");
-		Constants.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
-		Constants.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
-		Constants.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
-		Constants.STARTING_ITEMS = SERVER.STARTING_ITEMS.get();
-		Constants.DOG_GENDER = SERVER.DOG_GENDER.get();
-		Constants.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
-		Constants.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
+		ConfigValues.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
+		ConfigValues.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
+		ConfigValues.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
+		ConfigValues.STARTING_ITEMS = SERVER.STARTING_ITEMS.get();
+		ConfigValues.DOG_GENDER = SERVER.DOG_GENDER.get();
+		ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
+		ConfigValues.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
 	}
 	
 	public static void refreshClient() {
 		DoggyTalentsMod.LOGGER.debug("Refresh Client Config");
-		Constants.DIRE_PARTICLES = CLIENT.DIRE_PARTICLES.get();
-		Constants.RENDER_BLOOD = CLIENT.RENDER_BLOOD.get();
-		Constants.DOGGY_WINGS = CLIENT.DOGGY_WINGS.get();
-		Constants.DOGGY_CHEST = CLIENT.DOGGY_CHEST.get();
-		Constants.DOGGY_SADDLE = CLIENT.DOGGY_SADDLE.get();
-		Constants.USE_DT_TEXTURES = CLIENT.USE_DT_TEXTURES.get();
-		Constants.DOGGY_ARMOUR = CLIENT.DOGGY_ARMOUR.get();
+		ConfigValues.DIRE_PARTICLES = CLIENT.DIRE_PARTICLES.get();
+		ConfigValues.RENDER_BLOOD = CLIENT.RENDER_BLOOD.get();
+		ConfigValues.RENDER_WINGS = CLIENT.RENDER_WINGS.get();
+		ConfigValues.RENDER_CHEST = CLIENT.RENDER_CHEST.get();
+		ConfigValues.RENDER_ARMOUR = CLIENT.RENDER_ARMOUR.get();
+		ConfigValues.RENDER_SADDLE = CLIENT.RENDER_SADDLE.get();
+		ConfigValues.USE_DT_TEXTURES = CLIENT.USE_DT_TEXTURES.get();
 	}
 	
 	public static void refreshTalents() {
 		DoggyTalentsMod.LOGGER.debug("Refresh Talents Config");
-		Constants.ENABLED_TALENTS.clear();
-		TALENT.DISABLED_TALENTS.forEach((loc, val) -> Constants.ENABLED_TALENTS.put(loc, val.get()));
+		ConfigValues.ENABLED_TALENTS.clear();
+		TALENT.DISABLED_TALENTS.forEach((loc, val) -> ConfigValues.ENABLED_TALENTS.put(loc, val.get()));
 	}
 	
 	static class ClientConfig {
 
 		public ForgeConfigSpec.BooleanValue DIRE_PARTICLES;
 		public ForgeConfigSpec.BooleanValue RENDER_BLOOD;
-		public ForgeConfigSpec.BooleanValue DOGGY_WINGS;
-		public ForgeConfigSpec.BooleanValue DOGGY_CHEST;
-		public ForgeConfigSpec.BooleanValue DOGGY_SADDLE;
+		public ForgeConfigSpec.BooleanValue RENDER_WINGS;
+		public ForgeConfigSpec.BooleanValue RENDER_CHEST;
+		public ForgeConfigSpec.BooleanValue RENDER_SADDLE;
 		public ForgeConfigSpec.BooleanValue USE_DT_TEXTURES;
-		public ForgeConfigSpec.BooleanValue	DOGGY_ARMOUR;
+		public ForgeConfigSpec.BooleanValue	RENDER_ARMOUR;
 		
 		public ClientConfig(ForgeConfigSpec.Builder builder) {
 			builder.push("General");
@@ -121,26 +121,26 @@ public class ConfigHandler {
 					.comment("When enabled, Dogs will show blood texture while incapacitated.")
 					.translation("doggytalents.config.client.render_incapacitated_overlay")
 					.define("render_incapacitated_overlay", true);
-			DOGGY_WINGS = builder
+			RENDER_WINGS = builder
 					.comment("When enabled, Dogs will have wings when at level 5 pillow paw.")
 					.translation("doggytalents.config.client.render_wings")
 					.define("render_wings", false);
-			DOGGY_CHEST = builder
+			RENDER_CHEST = builder
 					.comment("When enabled, dogs with points in pack puppy will have chests on their side.")
 					.translation("doggytalents.config.client.render_chest")
 					.define("render_chest", true);
-			DOGGY_SADDLE = builder
+			RENDER_SADDLE = builder
 					.comment("When enabled, dogs with points in wolf mount will have a saddle on.")
 					.translation("doggytalents.config.client.render_saddle")
 					.define("render_saddle", true);
+	        RENDER_ARMOUR = builder
+	                    .comment("When enabled, dogs with points in guard dog will have armour.")
+	                    .translation("doggytalents.config.client.render_armour")
+	                    .define("render_armour", false);
 			USE_DT_TEXTURES = builder
 					.comment("If disabled will use the default minecraft wolf skin for all dog textures.")
 					.translation("doggytalents.config.client.enable_dt_textures")
 					.define("enable_dt_textures", true);
-			DOGGY_ARMOUR = builder
-					.comment("When enabled, dogs with points in guard dog will have armour.")
-					.translation("doggytalents.config.client.render_armour")
-					.define("render_armour", false);
 			
 			builder.pop();
 		}

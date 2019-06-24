@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author ProPercivalalb
  */
-public class Constants {
+public class ConfigValues {
 	
 	public static int LOW_HEATH_LEVEL = 1;
 	public static int HUNGER_POINTS = 120;
@@ -28,11 +28,11 @@ public class Constants {
 	//Client Only
 	public static boolean DIRE_PARTICLES;
 	public static boolean RENDER_BLOOD;
-	public static boolean DOGGY_WINGS;
-	public static boolean DOGGY_CHEST;
-	public static boolean DOGGY_SADDLE;
+	public static boolean RENDER_WINGS;
+	public static boolean RENDER_CHEST;
+	public static boolean RENDER_SADDLE;
 	public static boolean USE_DT_TEXTURES;
-	public static boolean DOGGY_ARMOUR;
+	public static boolean RENDER_ARMOUR;
 	
 	static {
 		ENABLED_TALENTS = new HashMap<ResourceLocation, Boolean>(16);

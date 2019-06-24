@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
+import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
 
 public class GenderFeature extends DogFeature {
@@ -23,11 +23,11 @@ public class GenderFeature extends DogFeature {
     }
 	
 	public String getTranslationKey(Function<EnumGender, String> function) {
-        return function.apply(Constants.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
+        return function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
     }
 	
 	public boolean canMateWith(EntityDog matedog) {
-		if(Constants.DOG_GENDER) {
+		if(ConfigValues.DOG_GENDER) {
 		    boolean equalGenders = this.getGender() == matedog.getGender();
 		    return (equalGenders && this.getGender() == EnumGender.UNISEX) || !equalGenders;
 		}
@@ -57,7 +57,7 @@ public class GenderFeature extends DogFeature {
 	
 	@Override
     public void writeAdditional(CompoundNBT compound) {
-        if(Constants.DOG_GENDER) {
+        if(ConfigValues.DOG_GENDER) {
             compound.putString("dogGender", this.getGender().getSaveName());
         }
     }
@@ -66,7 +66,7 @@ public class GenderFeature extends DogFeature {
     public void readAdditional(CompoundNBT compound) {
         if(compound.contains("dogGender", 8)) {
             this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
-        } else if(Constants.DOG_GENDER) {
+        } else if(ConfigValues.DOG_GENDER) {
             this.setGender(this.dog.getRNG().nextBoolean() ? EnumGender.MALE : EnumGender.FEMALE);
         }
     }

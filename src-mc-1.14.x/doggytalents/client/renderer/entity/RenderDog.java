@@ -16,7 +16,7 @@ import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerModel;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
+import doggytalents.lib.ConfigValues;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -41,10 +41,10 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         
         this.addLayer(new LayerCover(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_SUNGLASSES, EntityDog::hasSunglasses));
         
-        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> Constants.DOGGY_ARMOUR && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
-        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> Constants.DOGGY_WINGS && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
-        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> Constants.DOGGY_SADDLE && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
-        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> Constants.DOGGY_CHEST && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
+        this.addLayer(new LayerModel(this, new ModelDog(0.4F), ResourceLib.MOB_LAYER_ARMOR, dog -> ConfigValues.RENDER_ARMOUR && dog.TALENTS.getLevel(ModTalents.GUARD_DOG) > 0));
+        this.addLayer(new LayerModel(this, new ModelWings(), ResourceLib.MOB_LAYER_WINGS, dog -> ConfigValues.RENDER_WINGS && dog.TALENTS.getLevel(ModTalents.PILLOW_PAW) == 5));
+        this.addLayer(new LayerModel(this, new ModelSaddle(0.0F), ResourceLib.MOB_LAYER_SADDLE, dog -> ConfigValues.RENDER_SADDLE && dog.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0));
+        this.addLayer(new LayerModel(this, new ModelChest(0.0F), ResourceLib.MOB_LAYER_CHEST, dog -> ConfigValues.RENDER_CHEST && dog.TALENTS.getLevel(ModTalents.PACK_PUPPY) > 0));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(Constants.USE_DT_TEXTURES)
+    	if(ConfigValues.USE_DT_TEXTURES)
      		return ResourceLib.getTameSkin(dog.getTameSkin());
      	else
      		return ResourceLib.MOB_DOG_TAME;
@@ -94,7 +94,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         	String label = String.format("%s(%d)", 
         			new TranslationTextComponent(tip).getFormattedText(), 
         			dog.getDogHunger());
-        	if(Constants.DOG_GENDER) {
+        	if(ConfigValues.DOG_GENDER) {
         	    label += new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText();
         	}
         	if(d0 <= (double)(64 * 64)) {

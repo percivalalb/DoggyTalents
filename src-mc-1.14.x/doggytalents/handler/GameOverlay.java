@@ -3,7 +3,7 @@ package doggytalents.handler;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
+import doggytalents.lib.ConfigValues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.tags.FluidTags;
@@ -35,7 +35,7 @@ public class GameOverlay {
 	        int left = width / 2 + 91;
 	        int top = height - ForgeIngameGui.right_height;
 	        ForgeIngameGui.right_height += 10;
-	        int level = MathHelper.ceil(((double)dog.getDogHunger() / (double)Constants.HUNGER_POINTS) * 20.0D);
+	        int level = MathHelper.ceil(((double)dog.getDogHunger() / (double)ConfigValues.HUNGER_POINTS) * 20.0D);
 
 	        for (int i = 0; i < 10; ++i) {
 	            int idx = i * 2 + 1;

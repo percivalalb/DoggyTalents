@@ -44,7 +44,7 @@ import doggytalents.helper.TalentHelper;
 import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
-import doggytalents.lib.Constants;
+import doggytalents.lib.ConfigValues;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
@@ -260,7 +260,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	
 	@Override
     protected SoundEvent getAmbientSound() {
-        if(this.getDogHunger() <= Constants.LOW_HUNGER && Constants.DOG_WHINE_WHEN_HUNGER_LOW) {
+        if(this.getDogHunger() <= ConfigValues.LOW_HUNGER && ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW) {
             return SoundEvents.ENTITY_WOLF_WHINE;
         } else if(this.rand.nextInt(3) == 0) {
             return this.isTamed() && this.dataManager.get(DATA_HEALTH_ID) < this.getMaxHealth() / 2 ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
@@ -346,7 +346,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 			this.world.setEntityState(this, (byte)8);
 		}
         
-        if(!Constants.DISABLE_HUNGER) {
+        if(!ConfigValues.DISABLE_HUNGER) {
             this.prevHungerTick = this.hungerTick;
 
             if (!this.isBeingRidden() && !this.isSitting() /** && !this.mode.isMode(EnumMode.WANDERING) && !this.level.isDireDog() || worldObj.getWorldInfo().getWorldTime() % 2L == 0L **/)
@@ -360,7 +360,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             }
         }
 
-        if (Constants.DOGS_IMMORTAL) {
+        if (ConfigValues.DOGS_IMMORTAL) {
             this.prevRegenerationTick = this.regenerationTick;
 
             if (this.isSitting()) {
@@ -381,7 +381,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             }
         }
 
-        if (this.getHealth() != Constants.LOW_HEATH_LEVEL) {
+        if (this.getHealth() != ConfigValues.LOW_HEATH_LEVEL) {
             this.prevHealingTick = this.healingTick;
             this.healingTick += this.nourishment();
 
@@ -398,7 +398,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             this.setHealth(1);
         }
 
-        if(this.world.isRemote && this.LEVELS.isDireDog() && Constants.DIRE_PARTICLES) {
+        if(this.world.isRemote && this.LEVELS.isDireDog() && ConfigValues.DIRE_PARTICLES) {
             for (int i = 0; i < 2; i++) {
             	double width = this.getSize(this.getPose()).width;
             	double height = this.getSize(this.getPose()).height;
@@ -571,7 +571,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);
                 
-                if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
+                if(foodValue != 0 && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
                     this.consumeItemFromStack(player, stack);
 
                     this.setDogHunger(this.getDogHunger() + foodValue);
@@ -583,9 +583,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
-                           babySpawn.setGrowingAge(-Constants.TIME_TO_MATURE);
+                           babySpawn.setGrowingAge(-ConfigValues.TIME_TO_MATURE);
                            babySpawn.setTamed(true);
-                           if(Constants.PUPS_GET_PARENT_LEVELS) {
+                           if(ConfigValues.PUPS_GET_PARENT_LEVELS) {
                                babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
                            }
                            
@@ -736,7 +736,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     if(!this.world.isRemote) {
                         this.sitGoal.setSitting(true);
                         this.setHealth(this.getMaxHealth());
-                        this.setDogHunger(Constants.HUNGER_POINTS);
+                        this.setDogHunger(ConfigValues.HUNGER_POINTS);
                         this.regenerationTick = 0;
                         this.setAttackTarget((LivingEntity) null);
                         this.playTameEffect(true);
@@ -792,7 +792,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 	}
                 	
                     return true;
-                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
+                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player)) {
 
                     InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory, player.inventory.currentItem, stack);
                     treatBag.openInventory(player);
@@ -859,9 +859,9 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             entitydog.setTamed(true);
         }
 
-        entitydog.setGrowingAge(-Constants.TIME_TO_MATURE);
+        entitydog.setGrowingAge(-ConfigValues.TIME_TO_MATURE);
 
-        if(Constants.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
+        if(ConfigValues.PUPS_GET_PARENT_LEVELS && entityAgeable instanceof EntityDog) {
             int combinedLevel = this.LEVELS.getLevel() + ((EntityDog)entityAgeable).LEVELS.getLevel();
             combinedLevel /= 2;
             combinedLevel = Math.min(combinedLevel, 20);
@@ -1187,11 +1187,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
    	}
 	
 	public boolean isImmortal() {
-		return this.isTamed() && Constants.DOGS_IMMORTAL || this.LEVELS.isDireDog();
+		return this.isTamed() && ConfigValues.DOGS_IMMORTAL || this.LEVELS.isDireDog();
 	}
 	
 	public boolean isIncapacicated() {
-		return this.isImmortal() && this.getHealth() <= Constants.LOW_HEATH_LEVEL;
+		return this.isImmortal() && this.getHealth() <= ConfigValues.LOW_HEATH_LEVEL;
 	}
 	
 	public double effectiveLevel() {
@@ -1354,7 +1354,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
     
     public void setDogHunger(int par1) {
-    	this.dataManager.set(HUNGER, Math.min(Constants.HUNGER_POINTS, Math.max(0, par1)));
+    	this.dataManager.set(HUNGER, Math.min(ConfigValues.HUNGER_POINTS, Math.max(0, par1)));
     }
     
     public void setNoFetchItem() {

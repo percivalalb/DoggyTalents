@@ -91,10 +91,12 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         	if(dog.isIncapacicated())
         		tip = "dog.mode.incapacitated.indicator";
         	
-        	String label = String.format("%s(%d)%s", 
+        	String label = String.format("%s(%d)", 
         			new TranslationTextComponent(tip).getFormattedText(), 
-        			dog.getDogHunger(), 
-        			new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText());
+        			dog.getDogHunger());
+        	if(Constants.DOG_GENDER) {
+        	    label += new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText();
+        	}
         	if(d0 <= (double)(64 * 64)) {
         		boolean flag = dog.isSneaking();
         		float f = this.renderManager.playerViewY;

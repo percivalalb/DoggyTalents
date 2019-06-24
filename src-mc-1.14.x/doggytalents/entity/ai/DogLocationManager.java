@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.features.GenderFeature.EnumGender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -111,7 +112,7 @@ public class DogLocationManager extends WorldSavedData {
 		// Dog Data
 		private @Nullable UUID owner;
 		private ITextComponent name;
-		private String gender;
+		private EnumGender gender;
 		private boolean hasRadarCollar;
 		
 		public DogLocation(CompoundNBT compound) {
@@ -127,7 +128,7 @@ public class DogLocationManager extends WorldSavedData {
 				this.name = new StringTextComponent(compound.getString("name"));
 			}
 			
-			this.gender = compound.getString("gender");
+			this.gender = EnumGender.bySaveName(compound.getString("gender"));
 			this.hasRadarCollar = compound.getBoolean("collar");
 		}
 		
@@ -152,7 +153,7 @@ public class DogLocationManager extends WorldSavedData {
 			if(this.owner != null) compound.putUniqueId("ownerId", this.owner);
 			
 			compound.putString("name_text_component", ITextComponent.Serializer.toJson(this.name));
-			compound.putString("gender", this.gender);
+			compound.putString("gender", this.gender.getSaveName());
 			compound.putBoolean("collar", this.hasRadarCollar);
 			return compound;
 		}

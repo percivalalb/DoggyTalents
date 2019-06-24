@@ -34,7 +34,8 @@ import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
-import doggytalents.entity.features.DogGenderFeature;
+import doggytalents.entity.features.GenderFeature;
+import doggytalents.entity.features.GenderFeature.EnumGender;
 import doggytalents.entity.features.LevelFeature;
 import doggytalents.entity.features.ModeFeature;
 import doggytalents.entity.features.ModeFeature.EnumMode;
@@ -130,7 +131,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	public LevelFeature LEVELS;
 	public ModeFeature MODE;
 	public CoordFeature COORDS;
-	public DogGenderFeature GENDER;
+	public GenderFeature GENDER;
 	public DogStats STATS;
 	private List<DogFeature> FEATURES;
 	
@@ -165,13 +166,14 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		this.LEVELS = new LevelFeature(this);
 		this.MODE = new ModeFeature(this);
 		this.COORDS = new CoordFeature(this);
-		this.GENDER = new DogGenderFeature(this);
+		this.GENDER = new GenderFeature(this);
 		this.STATS = new DogStats(this);
-		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, STATS);
+		this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, GENDER, STATS);
 		if(worldIn instanceof ServerWorld)
 			this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
 		this.objects = new HashMap<String, Object>();
 		this.setTamed(false);
+        this.setGender(this.getRNG().nextBoolean() ? EnumGender.MALE : EnumGender.FEMALE);
 		
 		TalentHelper.onClassCreation(this);
 	}
@@ -222,7 +224,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.dataManager.register(BED_POS, Optional.empty());
         this.dataManager.register(CAPE, -2);
         this.dataManager.register(SIZE, (byte)3);
-        this.dataManager.register(GENDER_PARAM, (byte)this.getRNG().nextInt(2));
+        this.dataManager.register(GENDER_PARAM, (byte)EnumGender.UNISEX.getIndex());
         this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());  
 	}
 	
@@ -302,7 +304,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         compound.putBoolean("sunglasses", this.hasSunglasses());
         compound.putInt("capeData", this.getCapeData());
         compound.putInt("dogSize", this.getDogSize());
-        if(this.getGender().equals("male") || this.getGender().equals("female")) compound.putString("dogGender", this.getGender());
         compound.putBoolean("hasBone", this.hasBone());
         if(this.hasBone()) compound.putInt("boneVariant", this.getBoneVariant());
         if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) compound.putString("lastKnownOwnerName", ITextComponent.Serializer.toJson(this.dataManager.get(LAST_KNOWN_NAME).get()));
@@ -325,8 +326,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         if(compound.contains("capeData", 99)) this.setCapeData(compound.getInt("capeData"));
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
         
-        if(compound.contains("dogGender", 8)) this.setGender(compound.getString("dogGender"));
-        else if(Constants.DOG_GENDER) this.setGender(this.rand.nextInt(2) == 0 ? "male" : "female");
         if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInt("boneVariant"));
         if(compound.contains("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, Optional.of(ITextComponent.Serializer.fromJson(compound.getString("lastKnownOwnerName"))));
         
@@ -1157,7 +1156,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
    				return false;
    			} else if(entitydog.isSitting()) {
    				return false;
-   			} else if(this.getGender().equals(entitydog.getGender())) {
+   			} else if(!this.GENDER.canMateWith(entitydog)) {
    				return false;
    			} else {
    				return this.isInLove() && entitydog.isInLove();
@@ -1432,12 +1431,16 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     	return this.dataManager.get(SIZE);
     }
     
-	public void setGender(String data) {
-		this.dataManager.set(GENDER_PARAM, (byte)(data.equals("male") ? 0 : 1));
+	public void setGender(EnumGender gender) {
+		this.dataManager.set(GENDER_PARAM, (byte)gender.getIndex());
 	}
 
-	public String getGender() {
-		return this.dataManager.get(GENDER_PARAM) == 0 ? "male" : "female";
+	public EnumGender getGender() {
+	    int i = this.dataManager.get(GENDER_PARAM);
+	    if(i < 0 || i >= EnumGender.VALUES.length) {
+	        i = EnumGender.UNISEX.getIndex();
+	    }
+		return EnumGender.VALUES[i];
 	}
     
 	public void setLevel(int level) {

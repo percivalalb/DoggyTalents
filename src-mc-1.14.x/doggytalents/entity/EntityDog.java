@@ -994,8 +994,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     
     @Override
     protected int decreaseAirSupply(int air) {
-        int level = this.TALENTS.getLevel(ModTalents.SWIMMER_DOG);
-        return level > 0 && this.rand.nextInt(level + 1) > 0 ? air : super.decreaseAirSupply(air);
+        return TalentHelper.shouldDecreaseAir(this, air) ? super.decreaseAirSupply(air) : air;
     }
     
     @Override

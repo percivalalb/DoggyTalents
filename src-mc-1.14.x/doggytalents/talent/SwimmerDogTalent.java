@@ -30,4 +30,10 @@ public class SwimmerDogTalent extends Talent {
     public boolean canBreatheUnderwater(EntityDog dog) {
         return dog.TALENTS.getLevel(this) == 5;
     }
+    
+    @Override
+    public boolean shouldDecreaseAir(EntityDog dogIn, int air) {   
+        int level = dogIn.TALENTS.getLevel(this);
+        return level > 0 && dogIn.getRNG().nextInt(level + 1) > 0 ? false : true;
+    }
 }

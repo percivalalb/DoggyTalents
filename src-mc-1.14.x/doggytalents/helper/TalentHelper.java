@@ -191,4 +191,11 @@ public class TalentHelper {
         });
 
     }
+
+    public static boolean shouldDecreaseAir(EntityDog dogIn, int air) {
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
+            if(!talent.shouldDecreaseAir(dogIn, air))
+                return false;
+        return true;
+    }
 }

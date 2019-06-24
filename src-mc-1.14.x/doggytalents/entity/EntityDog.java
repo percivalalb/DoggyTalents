@@ -570,10 +570,13 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 if(foodValue != 0 && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
                     this.consumeItemFromStack(player, stack);
 
-                    this.setDogHunger(this.getDogHunger() + foodValue);
-                    if (stack.getItem() == ModItems.CHEW_STICK)
-                        ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
-
+                    if(!this.world.isRemote) {
+                        this.setDogHunger(this.getDogHunger() + foodValue);
+                        if(stack.getItem() == ModItems.CHEW_STICK)
+                            ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
+                        
+                    }
+                    this.playTameEffect(true);
                     return true;
                 } else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
                     if(!this.world.isRemote) {

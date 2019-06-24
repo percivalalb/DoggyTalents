@@ -217,7 +217,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
         this.dataManager.register(HUNGER, 60);
         this.dataManager.register(BONE_VARIANT, (byte)-1);
-        this.dataManager.register(MODE_PARAM, (byte)0);
+        this.dataManager.register(MODE_PARAM, (byte)EnumMode.DOCILE.getIndex());
         this.dataManager.register(LEVEL, (byte)0);
         this.dataManager.register(LEVEL_DIRE, (byte)0);
         this.dataManager.register(BOWL_POS, Optional.empty());
@@ -1459,12 +1459,16 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		return this.dataManager.get(LEVEL_DIRE);
 	}
 
-	public void setModeId(int mode) {
-		this.dataManager.set(MODE_PARAM,  (byte)Math.min(mode, EnumMode.values().length - 1));
-	}
+	public void setMode(EnumMode mode) {
+        this.dataManager.set(GENDER_PARAM, (byte)mode.getIndex());
+    }
 
-	public int getModeId() {
-		return this.dataManager.get(MODE_PARAM);
+	public EnumMode getMode() {
+	    int i = this.dataManager.get(MODE_PARAM);
+        if(i < 0 || i >= EnumMode.VALUES.length) {
+            i = EnumMode.DOCILE.getIndex();
+        }
+		return EnumMode.VALUES[i];
 	}
 
 	public void setTalentMap(Map<Talent, Integer> data) {

@@ -1,5 +1,8 @@
 package doggytalents.entity.features;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -13,36 +16,27 @@ public class ModeFeature extends DogFeature {
 	}
 	
 	public EnumMode getMode() {
-		return EnumMode.values()[this.getModeID()];
+		return this.dog.getMode();
 	}
 	
-	public EnumMode getMode(int index) {
-		return EnumMode.values()[index];
-	}
+	public void setMode(int index) {
+        if(index < 0 || index >= EnumMode.VALUES.length) {
+            index = EnumMode.DOCILE.getIndex();
+        }
+        this.setMode(EnumMode.VALUES[index]);
+    }
 	
-	public static int getId(EnumMode mode) {
-		return mode.ordinal();
-	}
+    public void setMode(EnumMode mode) {    
+        this.dog.setMode(mode);
+    }
 	
 	public boolean isMode(EnumMode mode) {
 		return this.getMode() == mode;
 	}
-
-	public void setMode(EnumMode mode) {	
-		this.setMode(this.getId(mode));
-	}
-	
-	public void setMode(int mode) {	
-		this.dog.setModeId(mode);
-	}
-	
-	protected int getModeID() {
-		return this.dog.getModeId();
-	}
 	
 	@Override
 	public void writeAdditional(CompoundNBT tagCompound) {
-		tagCompound.putInt("mode", this.getModeID());
+		tagCompound.putInt("mode", this.getMode().getIndex());
 	}
 	
 	@Override
@@ -52,25 +46,35 @@ public class ModeFeature extends DogFeature {
 	
 	public enum EnumMode {
 
-		DOCILE("docile"),
-		WANDERING("wandering"),
-		AGGRESIVE("aggressive"),
-		BERSERKER("berserker"),
-		TACTICAL("tactical");
-		//PATROL("patrol");
+		DOCILE(0, "docile"),
+		WANDERING(1, "wandering"),
+		AGGRESIVE(2, "aggressive"),
+		BERSERKER(3, "berserker"),
+		TACTICAL(4, "tactical");
+		//PATROL(5, "patrol");
 		
+	    private int index;
 		private String unlocalisedTip;
 		private String unlocalisedName;
 		private String unlocalisedInfo;
 
-		private EnumMode(String name) {
-			this("dog.mode." + name, "dog.mode." + name + ".indicator", "dog.mode." + name + ".description");
+		public static final EnumMode[] VALUES = Arrays.stream(EnumMode.values()).sorted(Comparator.comparingInt(EnumMode::getIndex)).toArray(size -> {
+            return new EnumMode[size];
+        });
+		
+		private EnumMode(int index, String name) {
+			this(index, "dog.mode." + name, "dog.mode." + name + ".indicator", "dog.mode." + name + ".description");
 		}
 		
-		private EnumMode(String unlocalisedName, String tip, String info) {
+		private EnumMode(int index, String unlocalisedName, String tip, String info) {
+		    this.index = index;
 			this.unlocalisedName = unlocalisedName;
 			this.unlocalisedTip = tip;
 			this.unlocalisedInfo = info;
+		}
+		
+		public int getIndex() {
+		    return this.index;
 		}
 		
 		public String getTip() {

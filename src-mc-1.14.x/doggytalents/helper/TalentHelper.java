@@ -133,11 +133,8 @@ public class TalentHelper {
             ActionResult<Integer> result = talent.fallProtection(dogIn);
             
             switch(result.getType()) {
-            case SUCCESS:
-                total += result.getResult();
-                break;
-            default:
-                continue;
+                case SUCCESS: total += result.getResult(); break;
+                default: continue;
             }
         }
         return total;

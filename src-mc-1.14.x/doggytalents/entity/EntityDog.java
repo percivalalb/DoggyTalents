@@ -189,6 +189,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.goalSelector.addGoal(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
         this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
         this.goalSelector.addGoal(10, new EntityAIFollowOwnerDog(this, 1.0D, 10.0F, 2.0F));
+        //this.goalSelector.addGoal(11, new EntityAISitOnBed(this, 0.8D));
         this.goalSelector.addGoal(12, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(13, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(14, new EntityAIBegDog(this, 8.0F));
@@ -410,8 +411,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         //Remove dog from players head if sneaking
         Entity entityRidden = this.getRidingEntity();
 
-        if (entityRidden instanceof PlayerEntity)
-            if (entityRidden.isSneaking())
+        if(entityRidden instanceof PlayerEntity)
+            if(entityRidden.isSneaking())
                 this.stopRiding();
 
         //Check if dog bowl still exists every 50t/2.5s, if not remove
@@ -849,7 +850,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         EntityDog entitydog = (EntityDog)this.getType().create(this.world);
         UUID uuid = this.getOwnerId();
 
-        if (uuid != null) {
+        if(uuid != null) {
             entitydog.setOwnerId(uuid);
             entitydog.setTamed(true);
         }
@@ -886,7 +887,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     // Talent Hooks
     @Override
     public void fall(float distance, float damageMultiplier) {
-        if (!TalentHelper.isImmuneToFalls(this))
+        if(!TalentHelper.isImmuneToFalls(this))
             super.fall(distance - TalentHelper.fallProtection(this), damageMultiplier);
     }
     
@@ -926,40 +927,47 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
         //TODO  (float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)damage);//(float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
-           if (flag) {
-               this.applyEnchantments(this, entityIn);
-           }
+        if(flag) {
+            this.applyEnchantments(this, entityIn);
+        }
 
-           return flag;
+        return flag;
     }
     
     @Override
-       public void setTamed(boolean tamed) {
-           super.setTamed(tamed);
-           this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tamed ? 20.0D : 8.0D);
-           this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
-       }
+    public void setTamed(boolean tamed) {
+        super.setTamed(tamed);
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tamed ? 20.0D : 8.0D);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+    }
     
     @Override
-       @OnlyIn(Dist.CLIENT)
-       public void handleStatusUpdate(byte id) {
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
         if(id == 8) {
-               this.isShaking = true;
-               this.timeWolfIsShaking = 0.0F;
-               this.prevTimeWolfIsShaking = 0.0F;
-           } else {
-               super.handleStatusUpdate(id);
-           }
-       }
+            this.isShaking = true;
+            this.timeWolfIsShaking = 0.0F;
+            this.prevTimeWolfIsShaking = 0.0F;
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
     
     @Override
     public void onDeath(DamageSource cause) {
-        if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof ServerPlayerEntity) {
-            this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
-        }
-        
-        if(!this.world.isRemote && !this.isImmortal()) {
-            this.locationManager.remove(this);
+        if(!this.isImmortal()) {
+            this.isWet = false;
+            this.isShaking = false;
+            this.prevTimeWolfIsShaking = 0.0F;
+            this.timeWolfIsShaking = 0.0F;
+            
+            if(!this.world.isRemote) {
+                this.locationManager.remove(this);
+                
+                if(this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof ServerPlayerEntity) {
+                    this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
+                }
+            }
         }
     }
     
@@ -1092,60 +1100,59 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         return 0.8F;
     }
     
+    @Override
+    public boolean canMateWith(AnimalEntity otherAnimal) {
+        if(otherAnimal == this) {
+            return false;
+        } else if(!this.isTamed()) {
+            return false;
+        } else if(!(otherAnimal instanceof EntityDog)) {
+            return false;
+        } else {
+            EntityDog entitydog = (EntityDog)otherAnimal;
+            if(!entitydog.isTamed()) {
+                return false;
+            } else if(entitydog.isSitting()) {
+                return false;
+            } else if(!this.GENDER.canMateWith(entitydog)) {
+                return false;
+            } else {
+                return this.isInLove() && entitydog.isInLove();
+            }
         }
     }
-    
-     @Override
-       public boolean canMateWith(AnimalEntity otherAnimal) {
-           if(otherAnimal == this) {
-               return false;
-           } else if(!this.isTamed()) {
-               return false;
-           } else if(!(otherAnimal instanceof EntityDog)) {
-               return false;
-           } else {
-               EntityDog entitydog = (EntityDog)otherAnimal;
-               if(!entitydog.isTamed()) {
-                   return false;
-               } else if(entitydog.isSitting()) {
-                   return false;
-               } else if(!this.GENDER.canMateWith(entitydog)) {
-                   return false;
-               } else {
-                   return this.isInLove() && entitydog.isInLove();
-               }
      
-     @Override
-     public ItemStack getPickedResult(RayTraceResult target) {
-         return new ItemStack(ModItems.DOGGY_CHARM);
-     }
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target) {
+        return new ItemStack(ModItems.DOGGY_CHARM);
+    }
     
-     @OnlyIn(Dist.CLIENT)
-       public boolean isDogWet() {
+    @OnlyIn(Dist.CLIENT)
+    public boolean isDogWet() {
         return this.isWet;
     }
 
-       @OnlyIn(Dist.CLIENT)
-       public float getShadingWhileWet(float p_70915_1_) {
+    @OnlyIn(Dist.CLIENT)
+    public float getShadingWhileWet(float p_70915_1_) {
         return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * p_70915_1_) / 2.0F * 0.25F;
-       }
+    }
 
-       @OnlyIn(Dist.CLIENT)
-       public float getShakeAngle(float partialTick, float offset) {
-       float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTick + offset) / 1.8F;
-       if (f < 0.0F) {
-           f = 0.0F;
-       } else if (f > 1.0F) {
-           f = 1.0F;
-       }
+    @OnlyIn(Dist.CLIENT)
+    public float getShakeAngle(float partialTick, float offset) {
+        float f = (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTick + offset) / 1.8F;
+        if(f < 0.0F) {
+            f = 0.0F;
+        } else if (f > 1.0F) {
+            f = 1.0F;
+        }
 
-       return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
-       }
+        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+    }
 
-       @OnlyIn(Dist.CLIENT)
-       public float getInterestedAngle(float p_70917_1_) {
-       return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * (float)Math.PI;
-       }
+    @OnlyIn(Dist.CLIENT)
+    public float getInterestedAngle(float p_70917_1_) {
+        return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * (float)Math.PI;
+    }
        
     public float getWagAngle(float partialTick, float offset) {
         float f = (this.prevTimeWolfIsHappy + (this.timeWolfIsHappy - this.prevTimeWolfIsHappy) * partialTick + offset) / 2.0F;
@@ -1155,21 +1162,21 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
     
     @OnlyIn(Dist.CLIENT)
-       public float getTailRotation() {
-           return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) / this.getMaxHealth() * 20.0F * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
-       }
+    public float getTailRotation() {
+        return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.dataManager.get(DATA_HEALTH_ID)) / this.getMaxHealth() * 20.0F * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
+    }
     
     //TODO
     /**
-       @Override
-       public float getEyeHeight() {
-           return this.height * 0.8F;
-       }**/
-
-       @Override
-       public int getVerticalFaceSpeed() {
-           return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
-       }
+    @Override
+    public float getEyeHeight() {
+         return this.height * 0.8F;
+    }**/
+  
+    @Override
+    public int getVerticalFaceSpeed() {
+        return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
+    }
     
     public boolean isImmortal() {
         return this.isTamed() && ConfigValues.DOGS_IMMORTAL || this.LEVELS.isDireDog();
@@ -1598,7 +1605,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
-        if (!TalentHelper.shouldDismountInWater(this, rider))
+        if(!TalentHelper.shouldDismountInWater(this, rider))
             return false;
 
         return true;
@@ -1615,7 +1622,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             this.jumpPower = 1.0F;
         }
     }
-
+    
     public boolean canJump() {
         return this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0;
     }

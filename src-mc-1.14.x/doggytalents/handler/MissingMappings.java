@@ -1,5 +1,7 @@
 package doggytalents.handler;
 
+import java.util.Objects;
+
 import com.google.common.collect.ImmutableList;
 
 import doggytalents.DoggyTalentsMod;
@@ -16,27 +18,27 @@ public class MissingMappings {
 
 	 @SubscribeEvent
 	 public void remapMissingEntities(final RegistryEvent.MissingMappings<EntityType<?>> event) {
+	     if(event.getAllMappings() == null) return; // Prevent crash
+	     
 		 ImmutableList<Mapping<EntityType<?>>> mappings = event.getMappings();
-		 if(mappings != null) {
-			 for(Mapping<EntityType<?>> mapping : mappings) {
-				 if(mapping.key != null && mapping.key.equals(Compatibility.DOGGY_BEAM)) {
-					 mapping.remap(ModEntities.DOG_BEAM);
-				     DoggyTalentsMod.LOGGER.info("Remapped Dog Beam id");
-				 }
-			 }
-		 }
+		 mappings.forEach(mapping -> {
+		     if(Objects.equals(mapping.key, Compatibility.DOGGY_BEAM)) {
+                 mapping.remap(ModEntities.DOG_BEAM);
+                 DoggyTalentsMod.LOGGER.info("Remapped Dog Beam id");
+             }
+         });
 	 }
 	 
 	 @SubscribeEvent
 	 public void remapMissingItems(final RegistryEvent.MissingMappings<Item> event) {
+	     if(event.getAllMappings() == null) return;  // Prevent crash
+	     
 		 ImmutableList<Mapping<Item>> mappings = event.getMappings();
-		 if(mappings != null) {
-			 for(Mapping<Item> mapping : mappings) {
-				 if(mapping.key != null && mapping.key.equals(Compatibility.COMMAND_EMBLEM)) {
-					 mapping.remap(ModItems.WHISTLE);
-				     DoggyTalentsMod.LOGGER.info("Remapped Command Emblem to Whistle");
-				 }
-			 }
-		 }
+		 mappings.forEach(mapping -> {
+		     if(Objects.equals(mapping.key, Compatibility.COMMAND_EMBLEM)) {
+                 mapping.remap(ModItems.WHISTLE);
+                 DoggyTalentsMod.LOGGER.info("Remapped Command Emblem to Whistle");
+             }
+		 });
 	 }
 }

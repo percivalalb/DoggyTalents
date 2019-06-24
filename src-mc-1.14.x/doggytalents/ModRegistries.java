@@ -15,11 +15,11 @@ public class ModRegistries {
 
 	@SubscribeEvent
     public static void newRegistry(RegistryEvent.NewRegistry event) {
-    	DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class, 256).create();
+    	DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class).disableSync().create();
 	}
 	
-	private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type, int max) {
-        return new RegistryBuilder<T>().setName(name).setType(type).setMaxID(max);
+	private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type) {
+        return new RegistryBuilder<T>().setName(name).setType(type);
     }
 
 }

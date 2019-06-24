@@ -64,6 +64,7 @@ public class TileEntityDogBed extends TileEntity {
 	
 	public void setCasingId(IBedMaterial newId) {
 		this.casingId = newId;
+		this.markDirty();
 		if(this.world.isRemote) {
     		ModelDataManager.requestModelDataRefresh(this);
     		this.world.markForRerender(this.getPos());
@@ -72,6 +73,7 @@ public class TileEntityDogBed extends TileEntity {
 	
 	public void setBeddingId(IBedMaterial newId) {
 		this.beddingId = newId;
+		this.markDirty();
 		if(this.world.isRemote) {
             ModelDataManager.requestModelDataRefresh(this);
             this.world.markForRerender(this.getPos());

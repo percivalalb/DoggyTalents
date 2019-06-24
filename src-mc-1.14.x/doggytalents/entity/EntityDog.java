@@ -573,8 +573,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 int foodValue = this.foodValue(stack);
                 
                 if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-                    if (!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
 
                     this.setDogHunger(this.getDogHunger() + foodValue);
                     if (stack.getItem() == ModItems.CHEW_STICK)
@@ -595,9 +594,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                            babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
                            this.world.addEntity(babySpawn);
 
-                           if(!player.abilities.isCreativeMode) {
-                        	   stack.shrink(1);
-                           }
+                           this.consumeItemFromStack(player, stack);
                         }
                      }
 
@@ -639,8 +636,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 } else if(stack.getItem() == ModItems.RADIO_COLLAR && this.canInteract(player) && !this.hasRadarCollar() && !this.isIncapacicated()) {
                     this.hasRadarCollar(true);
 
-                    if(!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
                     return true;
                 } else if(stack.getItem() == ModItems.WOOL_COLLAR && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     int colour = -1;
@@ -650,14 +646,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     this.setCollarData(colour);
 
-                    if(!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
                     return true;
                 } else if(stack.getItem() instanceof ItemFancyCollar && this.canInteract(player) && !this.hasCollar() && !this.isIncapacicated()) {
                     this.setCollarData(-3 - ((ItemFancyCollar)stack.getItem()).type.ordinal());
 
-                    if(!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
                     return true;
                 } else if(stack.getItem() == ModItems.CAPE && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) {
                     this.setFancyCape();
@@ -677,13 +671,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     this.setCapeData(colour);
 
-                    if(!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
                     return true;
                 } else if(stack.getItem() == ModItems.SUNGLASSES && this.canInteract(player) && !this.hasSunglasses() && !this.isIncapacicated()) {
                     this.setHasSunglasses(true);
-                    if(!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
                     return true;
                 } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
                 	IDogInteractItem treat = (IDogInteractItem) stack.getItem();
@@ -763,8 +755,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                     return true;
                 } else if(stack.getItem() == Blocks.CAKE.asItem() && this.canInteract(player) && this.isIncapacicated()) {
-                    if (!player.abilities.isCreativeMode)
-                        stack.shrink(1);
+                    this.consumeItemFromStack(player, stack);
 
                     if(!this.world.isRemote) {
                         this.sitGoal.setSitting(true);
@@ -858,8 +849,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             }
             return true;
         } else if(stack.getItem() == Items.BONE || stack.getItem() == ModItems.TRAINING_TREAT) {
-        	if(!player.abilities.isCreativeMode)
-        		stack.shrink(1);
+            this.consumeItemFromStack(player, stack);
 
         	if(!this.world.isRemote) {
                 if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {

@@ -155,10 +155,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     private int prevHealingTick;
     private int regenerationTick;
     private int prevRegenerationTick;
-    private int foodBowlCheck;
     private int reversionTime;
-    
-    private int generalTick;
     
     public EntityDog(EntityType<EntityDog> type, World worldIn) {
         super(type, worldIn);
@@ -418,12 +415,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 this.stopRiding();
 
         //Check if dog bowl still exists every 50t/2.5s, if not remove
-        if(this.foodBowlCheck++ > 50 && this.COORDS.hasBowlPos()) {
-            if(this.world.isBlockLoaded(this.COORDS.getBowlPos()))
-                if(this.world.getBlockState(this.COORDS.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL)
-                    this.COORDS.resetBowlPosition();
-
-            this.foodBowlCheck = 0;
+        if(this.ticksExisted % 50 == 0) {
+            if(this.COORDS.hasBowlPos() && this.world.isBlockLoaded(this.COORDS.getBowlPos()) && this.world.getBlockState(this.COORDS.getBowlPos()).getBlock() != ModBlocks.FOOD_BOWL) {
+                this.COORDS.resetBowlPosition();
+            }
         }
         
         TalentHelper.livingTick(this);
@@ -525,8 +520,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             }
         }
         
-        this.generalTick--;
-        if(this.generalTick < 0) {
+        if(this.ticksExisted % 40 == 0) {
             if(!this.world.isRemote) {
                 if(this.isAlive()) { //Prevent the data from being added when the entity dies
                     this.locationManager.update(this);
@@ -534,11 +528,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     this.locationManager.remove(this);
                 }
                 
-                if(this.getOwner() != null)
+                if(this.getOwner() != null) {
                     this.dataManager.set(LAST_KNOWN_NAME, Optional.ofNullable(this.getOwner().getDisplayName()));
+                }
             }
-            
-            this.generalTick = 40;
         }
         
         TalentHelper.tick(this);

@@ -54,8 +54,10 @@ public class ClientProxy extends CommonProxy {
         super();
         DoggyTalentsMod.LOGGER.debug("Client Proxy");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColours);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerItemColours);
+        
+        //TODO For now register in InterModProcessEvent#postInit() due to registry events not finishing sometimes
+        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColours);
+        //FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerItemColours);
     }
     
     private void clientSetup(FMLClientSetupEvent event) {
@@ -103,6 +105,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     protected void postInit(InterModProcessEvent event) {
         super.postInit(event);
+        
+        //TODO Work around
+        this.registerBlockColours(new ColorHandlerEvent.Block(Minecraft.getInstance().getBlockColors()));
+        this.registerItemColours(new ColorHandlerEvent.Item(Minecraft.getInstance().getItemColors(), Minecraft.getInstance().getBlockColors()));
     }
     
     @Override

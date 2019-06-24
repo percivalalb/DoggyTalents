@@ -14,16 +14,16 @@ import net.minecraft.item.ItemStack;
  */
 public class ContainerFoodBowl extends Container {
    
-	private IInventory tileEntityFoodBowl;
+    private IInventory tileEntityFoodBowl;
 
-	//CLient method
-	public ContainerFoodBowl(int windowId, PlayerInventory playerInventory) {
-    	this(windowId, playerInventory, new Inventory(5));
+    //CLient method
+    public ContainerFoodBowl(int windowId, PlayerInventory playerInventory) {
+        this(windowId, playerInventory, new Inventory(5));
     }
-	
-	//Server method
+    
+    //Server method
     public ContainerFoodBowl(int windowId, PlayerInventory playerInventory, IInventory bowlInventory) {
-    	super(ModContainerTypes.FOOD_BOWL, windowId);
+        super(ModContainerTypes.FOOD_BOWL, windowId);
         this.tileEntityFoodBowl = bowlInventory;
         assertInventorySize(bowlInventory, 5);
         bowlInventory.openInventory(playerInventory.player);
@@ -34,10 +34,10 @@ public class ContainerFoodBowl extends Container {
 
         for(int j = 0; j < 3; j++)
             for (int i1 = 0; i1 < 9; i1++)
-            	this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
+                this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
 
         for(int k = 0; k < 9; k++)
-        	this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103));
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ContainerFoodBowl extends Container {
             }
 
             if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             

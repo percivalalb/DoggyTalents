@@ -6,6 +6,6 @@ import net.minecraft.util.Direction;
 
 public interface IStateParticleModel {
 
-	public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing);
-	
+    public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing);
+    
 }

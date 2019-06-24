@@ -20,13 +20,13 @@ import net.minecraft.world.World;
  */
 public class RecipeDogCollar extends SpecialRecipe {
 
-	public RecipeDogCollar(ResourceLocation resource) {
-		super(resource);
-	}
-	
-	@Override
-	public boolean matches(CraftingInventory inv, World worldIn) {
-		ItemStack itemstack = ItemStack.EMPTY;
+    public RecipeDogCollar(ResourceLocation resource) {
+        super(resource);
+    }
+    
+    @Override
+    public boolean matches(CraftingInventory inv, World worldIn) {
+        ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
         for(int i = 0; i < inv.getSizeInventory(); ++i) {
@@ -34,14 +34,14 @@ public class RecipeDogCollar extends SpecialRecipe {
 
             if(!itemstack1.isEmpty()) {
                 if(itemstack1.getItem() instanceof ItemWoolCollar) {
-                	if(!itemstack.isEmpty()) {
-                		return false;
-                	}
+                    if(!itemstack.isEmpty()) {
+                        return false;
+                    }
 
                     itemstack = itemstack1;
                 }
                 else {
-                	if(DyeColor.getColor(itemstack1) == null) {
+                    if(DyeColor.getColor(itemstack1) == null) {
                         return false;
                     }
 
@@ -53,9 +53,9 @@ public class RecipeDogCollar extends SpecialRecipe {
         return !itemstack.isEmpty() && !list.isEmpty();
     }
 
-	@Override
+    @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
@@ -65,11 +65,11 @@ public class RecipeDogCollar extends SpecialRecipe {
             ItemStack itemstack1 = inv.getStackInSlot(k);
 
             if(!itemstack1.isEmpty()) {
-            	Item item = itemstack1.getItem();
+                Item item = itemstack1.getItem();
                 if(item instanceof ItemWoolCollar) {
                     itemWoolCollar = (ItemWoolCollar)item;
                     if(!itemstack.isEmpty()) {
-                    	return ItemStack.EMPTY;
+                        return ItemStack.EMPTY;
                     }
                     
                     itemstack = itemstack1.copy();
@@ -87,7 +87,7 @@ public class RecipeDogCollar extends SpecialRecipe {
                     }
                 }
                 else {
-                	DyeColor color = DyeColor.getColor(itemstack1);
+                    DyeColor color = DyeColor.getColor(itemstack1);
                     if (color == null) {
                        return ItemStack.EMPTY;
                     }
@@ -122,15 +122,15 @@ public class RecipeDogCollar extends SpecialRecipe {
             return itemstack;
         }
     }
-	
-	//Is on a 3x3 grid or bigger
-	@Override
+    
+    //Is on a 3x3 grid or bigger
+    @Override
     public boolean canFit(int width, int height) {
         return width * height >= 2;
     }
 
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.COLLAR_COLOURING;
-	}
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+        return ModRecipes.COLLAR_COLOURING;
+    }
 }

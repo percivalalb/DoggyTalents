@@ -20,76 +20,76 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemWoolCollar extends Item {
-	
-	public ItemWoolCollar(Properties properties) {
-		super(properties);
-	}
+    
+    public ItemWoolCollar(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		int[] rgb = ItemCapeColoured.WHITE;
-		if(stack.hasTag() && stack.getTag().contains("collar_colour")) {
-			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("collar_colour"));
-		}
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        int[] rgb = ItemCapeColoured.WHITE;
+        if(stack.hasTag() && stack.getTag().contains("collar_colour")) {
+            rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("collar_colour"));
+        }
 
-		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
-	}
-	
-	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if(this.isInGroup(group)) {
-			for(DyeColor color : DyeColor.values()) {
-				ItemStack baseColours = new ItemStack(this);
-				baseColours.setTag(new CompoundNBT());
-				float[] colourComponents = color.getColorComponentValues();
-				int colour = (int) (colourComponents[0] * 255F);
-				colour = (int) ((colour << 8) + colourComponents[1] * 255F);
-				colour = (int) ((colour << 8) + colourComponents[2] * 255F);
-				
-				
-				baseColours.getTag().putInt("collar_colour", colour);
-	            items.add(baseColours);
-	        }
-		}
-	}
-	
-	public boolean hasColor(ItemStack stack) {
-		CompoundNBT nbttagcompound = stack.getTag();
-		return nbttagcompound != null && nbttagcompound.contains("collar_colour", 3);
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
+    }
+    
+    @Override
+    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+        if(this.isInGroup(group)) {
+            for(DyeColor color : DyeColor.values()) {
+                ItemStack baseColours = new ItemStack(this);
+                baseColours.setTag(new CompoundNBT());
+                float[] colourComponents = color.getColorComponentValues();
+                int colour = (int) (colourComponents[0] * 255F);
+                colour = (int) ((colour << 8) + colourComponents[1] * 255F);
+                colour = (int) ((colour << 8) + colourComponents[2] * 255F);
+                
+                
+                baseColours.getTag().putInt("collar_colour", colour);
+                items.add(baseColours);
+            }
+        }
+    }
+    
+    public boolean hasColor(ItemStack stack) {
+        CompoundNBT nbttagcompound = stack.getTag();
+        return nbttagcompound != null && nbttagcompound.contains("collar_colour", 3);
         
     }
 
     public int getColor(ItemStack stack) {
        
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound != null)    
-    		return nbttagcompound.getInt("collar_colour");
+        if(nbttagcompound != null)    
+            return nbttagcompound.getInt("collar_colour");
 
-    	return 10511680;
+        return 10511680;
       
     }
 
     public void removeColor(ItemStack stack) {
 
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound != null)
-    		nbttagcompound.remove("collar_colour");
+        if(nbttagcompound != null)
+            nbttagcompound.remove("collar_colour");
         
     }
 
     public void setColor(ItemStack stack, int color) {
 
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound == null) {	
-    		nbttagcompound = new CompoundNBT();
-    		stack.setTag(nbttagcompound);
-    	}
+        if(nbttagcompound == null) {    
+            nbttagcompound = new CompoundNBT();
+            stack.setTag(nbttagcompound);
+        }
             
-    	nbttagcompound.putInt("collar_colour", color);
+        nbttagcompound.putInt("collar_colour", color);
     }
 }

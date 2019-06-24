@@ -13,11 +13,11 @@ import net.minecraft.util.DamageSource;
  */
 public class PestFighterTalent extends Talent {
 
-	@Override
-	public void livingTick(EntityDog dog) {
-		int level = dog.TALENTS.getLevel(this);
-		
-		if(level >= 0) {
+    @Override
+    public void livingTick(EntityDog dog) {
+        int level = dog.TALENTS.getLevel(this);
+        
+        if(level >= 0) {
             byte damage = 1;
 
             if (level == 5)
@@ -27,10 +27,10 @@ public class PestFighterTalent extends Talent {
             Iterator<SilverfishEntity> iterator = list.iterator();
             
             while(iterator.hasNext()) {
-            	SilverfishEntity entitySilverfish = (SilverfishEntity)iterator.next();
-            	if(dog.getRNG().nextInt(20) == 0)
-            		entitySilverfish.attackEntityFrom(DamageSource.GENERIC, damage);
+                SilverfishEntity entitySilverfish = (SilverfishEntity)iterator.next();
+                if(dog.getRNG().nextInt(20) == 0)
+                    entitySilverfish.attackEntityFrom(DamageSource.GENERIC, damage);
             }
         }
-	}
+    }
 }

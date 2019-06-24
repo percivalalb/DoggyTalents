@@ -9,22 +9,22 @@ import net.minecraft.util.math.BlockPos;
 
 public class EntityAIPatrolArea extends EntityAIBase {
 
-	public EntityDog dog;
-	public int index;
-	private int timeToRecalcPath;
-	
-	public EntityAIPatrolArea(EntityDog dogIn) {
-		this.dog = dogIn;
-	}
-	
-	@Override
-	public boolean shouldExecute() {
-		return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1;
-	}
+    public EntityDog dog;
+    public int index;
+    private int timeToRecalcPath;
+    
+    public EntityAIPatrolArea(EntityDog dogIn) {
+        this.dog = dogIn;
+    }
+    
+    @Override
+    public boolean shouldExecute() {
+        return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1;
+    }
 
     @Override
     public boolean shouldContinueExecuting() {
-    	return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1 && !this.dog.isSitting();
+        return this.dog.MODE.isMode(EnumMode.PATROL) && this.dog.patrolOutline.size() > 1 && !this.dog.isSitting();
     }
     
     @Override
@@ -35,27 +35,27 @@ public class EntityAIPatrolArea extends EntityAIBase {
     
     @Override
     public void resetTask() {
-    	this.dog.getNavigator().clearPathEntity();
+        this.dog.getNavigator().clearPathEntity();
     }
     
     @Override
     public void tick() {
-    	DoggyTalents.LOGGER.info("Update" + this.index);
-    	BlockPos pos = this.dog.patrolOutline.get(this.index);
-    	
-    	if(!this.dog.isSitting()) {
-	    	if(--this.timeToRecalcPath <= 0) {
-	            this.timeToRecalcPath = 10;
-		    	if(!this.dog.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 1.0F)) {
-		    		this.index = (this.index + 1) % this.dog.patrolOutline.size();
-	
-		    	}
-		    	else if(this.dog.getNavigator().getPath() == null) {
-		    		this.index = (this.index + 1) % this.dog.patrolOutline.size();
-		    	}
-		
-	    	}
-    	}
+        DoggyTalents.LOGGER.info("Update" + this.index);
+        BlockPos pos = this.dog.patrolOutline.get(this.index);
+        
+        if(!this.dog.isSitting()) {
+            if(--this.timeToRecalcPath <= 0) {
+                this.timeToRecalcPath = 10;
+                if(!this.dog.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 1.0F)) {
+                    this.index = (this.index + 1) % this.dog.patrolOutline.size();
+    
+                }
+                else if(this.dog.getNavigator().getPath() == null) {
+                    this.index = (this.index + 1) % this.dog.patrolOutline.size();
+                }
+        
+            }
+        }
     }
-	
+    
 }**/

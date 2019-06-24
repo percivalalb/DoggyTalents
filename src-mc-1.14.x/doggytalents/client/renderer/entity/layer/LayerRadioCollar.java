@@ -17,15 +17,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LayerRadioCollar extends LayerRenderer<EntityDog, ModelDog> {
 
     public LayerRadioCollar(RenderDog dogRendererIn) {
-     	super(dogRendererIn);
+         super(dogRendererIn);
     }
 
     @Override
     public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-    	if(dog.isTamed() && !dog.isInvisible() && dog.hasRadarCollar()) {
-        	this.bindTexture(ResourceLib.MOB_LAYER_RADIO_COLLAR);
-        	GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        	this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+        if(dog.isTamed() && !dog.isInvisible() && dog.hasRadarCollar()) {
+            this.bindTexture(ResourceLib.MOB_LAYER_RADIO_COLLAR);
+            GlStateManager.color3f(1.0F, 1.0F, 1.0F);
+            this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

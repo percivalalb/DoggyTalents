@@ -16,20 +16,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemCreativeOwnerChange extends Item {
 
-	public ItemCreativeOwnerChange(Properties properties) {
-		super(properties);
-	}
+    public ItemCreativeOwnerChange(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip"));
-	}
-	
-	@Override
-	public Rarity getRarity(ItemStack stack) {
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip"));
+    }
+    
+    @Override
+    public Rarity getRarity(ItemStack stack) {
         return Rarity.EPIC;
     }
 }

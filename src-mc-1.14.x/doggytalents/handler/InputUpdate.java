@@ -13,18 +13,18 @@ import net.minecraftforge.fml.network.PacketDistributor;
 @OnlyIn(Dist.CLIENT)
 public class InputUpdate {
 
-	@SubscribeEvent
-	public void event(InputUpdateEvent event) {
-		if(event.getMovementInput().jump) {
-			Entity entity = event.getEntityPlayer().getRidingEntity();
-			if(event.getEntityPlayer().isPassenger() && entity instanceof EntityDog) {
-				EntityDog dog = (EntityDog)entity;
-				
-				if(dog.canJump()) {
-					dog.setJumpPower(100);
-					PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
-				}
-			}
-		}
-	}
+    @SubscribeEvent
+    public void event(InputUpdateEvent event) {
+        if(event.getMovementInput().jump) {
+            Entity entity = event.getEntityPlayer().getRidingEntity();
+            if(event.getEntityPlayer().isPassenger() && entity instanceof EntityDog) {
+                EntityDog dog = (EntityDog)entity;
+                
+                if(dog.canJump()) {
+                    dog.setJumpPower(100);
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
+                }
+            }
+        }
+    }
 }

@@ -30,7 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  */
 @OnlyIn(Dist.CLIENT)
 public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
-	
+    
     public RenderDog(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new ModelDog(0.0F), 0.5F);
         this.addLayer(new LayerCape(this));
@@ -62,7 +62,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     
     @Override
     public void doRender(EntityDog dog, double x, double y, double z, float entityYaw, float partialTicks) {
-    	if(dog.isDogWet()) {
+        if(dog.isDogWet()) {
             float f2 = dog.getBrightness() * dog.getShadingWhileWet(partialTicks);
             GlStateManager.color3f(f2, f2, f2);
         }
@@ -72,58 +72,58 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
 
     @Override
     protected ResourceLocation getEntityTexture(EntityDog dog) {
-    	if(ConfigValues.USE_DT_TEXTURES)
-     		return ResourceLib.getTameSkin(dog.getTameSkin());
-     	else
-     		return ResourceLib.MOB_DOG_TAME;
+        if(ConfigValues.USE_DT_TEXTURES)
+             return ResourceLib.getTameSkin(dog.getTameSkin());
+         else
+             return ResourceLib.MOB_DOG_TAME;
     }
     
     @Override
     public void renderName(EntityDog dog, double x, double y, double z) {
         if(this.canRenderName(dog)) {
-        	GlStateManager.alphaFunc(516, 0.1F);
+            GlStateManager.alphaFunc(516, 0.1F);
             double d0 = dog.getDistanceSq(this.renderManager.info.getProjectedView());
             
             y += (double)((float)this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F);
-        	
-        	String tip = dog.MODE.getMode().getTip();
+            
+            String tip = dog.MODE.getMode().getTip();
                 
-        	if(dog.isIncapacicated())
-        		tip = "dog.mode.incapacitated.indicator";
-        	
-        	String label = String.format("%s(%d)", 
-        			new TranslationTextComponent(tip).getFormattedText(), 
-        			dog.getDogHunger());
-        	if(ConfigValues.DOG_GENDER) {
-        	    label += new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText();
-        	}
-        	if(d0 <= (double)(64 * 64)) {
-        		boolean flag = dog.isSneaking();
-        		float f = this.renderManager.playerViewY;
-        		float f1 = this.renderManager.playerViewX;
-        		boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-        		float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isSleeping() ? 0.5F : 0);
+            if(dog.isIncapacicated())
+                tip = "dog.mode.incapacitated.indicator";
+            
+            String label = String.format("%s(%d)", 
+                    new TranslationTextComponent(tip).getFormattedText(), 
+                    dog.getDogHunger());
+            if(ConfigValues.DOG_GENDER) {
+                label += new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText();
+            }
+            if(d0 <= (double)(64 * 64)) {
+                boolean flag = dog.isSneaking();
+                float f = this.renderManager.playerViewY;
+                float f1 = this.renderManager.playerViewX;
+                boolean flag1 = this.renderManager.options.thirdPersonView == 2;
+                float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isSleeping() ? 0.5F : 0);
         
-        		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-        		RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
-        		
-        		if(d0 <= (double)(5 * 5)) {
-        			if(this.renderManager.info.func_216773_g().isSneaking()) {
-    	    			String ownerName = dog.getOwnersName().getFormattedText();
-    	    			
-    	    			
-    	    			RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
-    	    		}
-        		}
-        	}
+                RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
+                RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
+                
+                if(d0 <= (double)(5 * 5)) {
+                    if(this.renderManager.info.func_216773_g().isSneaking()) {
+                        String ownerName = dog.getOwnersName().getFormattedText();
+                        
+                        
+                        RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+                    }
+                }
+            }
         }
     }
     
     @Override
     protected void preRenderCallback(EntityDog entitylivingbaseIn, float partialTickTime) {
-    	EntityDog dog = (EntityDog)entitylivingbaseIn;
-    	float size = dog.getDogSize() * 0.3F + 0.1F;
-    	GlStateManager.scalef(size, size, size);
-    	this.shadowSize = size * 0.5F;
-	}
+        EntityDog dog = (EntityDog)entitylivingbaseIn;
+        float size = dog.getDogSize() * 0.3F + 0.1F;
+        GlStateManager.scalef(size, size, size);
+        this.shadowSize = size * 0.5F;
+    }
 }

@@ -12,64 +12,64 @@ import net.minecraft.world.World;
 
 public class EntityAIExtinguishFire extends Goal {
 
-	private MobEntity creature;
-	private GroundPathNavigator navigator;
+    private MobEntity creature;
+    private GroundPathNavigator navigator;
     private final double movementSpeed;
     private final int searchLength;
-	private IWaterMovement waterMovement;
-	
+    private IWaterMovement waterMovement;
+    
     private int timeoutCounter;
     private boolean oldCanSwim;
-	
+    
     protected BlockPos destinationBlock = BlockPos.ZERO;
-	
-	public EntityAIExtinguishFire(MobEntity creature, double speedIn, int length) {
-		this.creature = creature;
-		this.navigator = (GroundPathNavigator)creature.getNavigator();
-		this.movementSpeed = speedIn;
-		this.searchLength = length;
-		this.waterMovement = new WaterMovementHandler(creature);
-		this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
-		//EntityAIMoveToBlock
-	}
+    
+    public EntityAIExtinguishFire(MobEntity creature, double speedIn, int length) {
+        this.creature = creature;
+        this.navigator = (GroundPathNavigator)creature.getNavigator();
+        this.movementSpeed = speedIn;
+        this.searchLength = length;
+        this.waterMovement = new WaterMovementHandler(creature);
+        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        //EntityAIMoveToBlock
+    }
 
-	@Override
-	public boolean shouldExecute() {
-		return this.creature.isBurning() && this.searchForDestination();
-	}
-	
-	@Override
-	public boolean shouldContinueExecuting() {
-		return this.timeoutCounter < 400 && this.creature.isBurning() && this.shouldMoveTo(this.creature.world, this.destinationBlock);
-	}
-	
-	@Override
-	public void startExecuting() {
-		this.waterMovement.startExecuting();
-		this.oldCanSwim = this.navigator.getCanSwim();
-		this.navigator.setCanSwim(true);
-		this.timeoutCounter = 0;
-		this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY()), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
-	}
-	
-	@Override
-	public void resetTask() {
-		super.resetTask();
-		this.waterMovement.resetTask();
-		
-		this.navigator.setCanSwim(this.oldCanSwim);
-	}
-	
-	@Override
-	public void tick() {
-		++this.timeoutCounter;
+    @Override
+    public boolean shouldExecute() {
+        return this.creature.isBurning() && this.searchForDestination();
+    }
+    
+    @Override
+    public boolean shouldContinueExecuting() {
+        return this.timeoutCounter < 400 && this.creature.isBurning() && this.shouldMoveTo(this.creature.world, this.destinationBlock);
+    }
+    
+    @Override
+    public void startExecuting() {
+        this.waterMovement.startExecuting();
+        this.oldCanSwim = this.navigator.getCanSwim();
+        this.navigator.setCanSwim(true);
+        this.timeoutCounter = 0;
+        this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY()), (double)((float)this.destinationBlock.getZ()) + 0.5D, this.movementSpeed);
+    }
+    
+    @Override
+    public void resetTask() {
+        super.resetTask();
+        this.waterMovement.resetTask();
+        
+        this.navigator.setCanSwim(this.oldCanSwim);
+    }
+    
+    @Override
+    public void tick() {
+        ++this.timeoutCounter;
 
         if(this.timeoutCounter % 40 == 0) {
-        	this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY()), (double)((float)this.destinationBlock.getZ()) + 0.5D, 1.0D);
+            this.creature.getNavigator().tryMoveToXYZ((double)((float)this.destinationBlock.getX()) + 0.5D, (double)(this.destinationBlock.getY()), (double)((float)this.destinationBlock.getZ()) + 0.5D, 1.0D);
         }
-	}
+    }
 
-	private boolean searchForDestination() {
+    private boolean searchForDestination() {
         BlockPos blockpos = new BlockPos(this.creature);
 
         for (int y = 0; y <= 5; y = y > 0 ? -y : 1 - y) {
@@ -89,16 +89,16 @@ public class EntityAIExtinguishFire extends Goal {
 
         return false;
     }
-	
-	protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
-		if(worldIn.isRainingAt(pos)) {
-			return true;
-		} else {
-			return this.isWaterDestination(worldIn, pos);
-		}
-	}
-	
-	protected boolean isWaterDestination(World world, BlockPos pos) {
+    
+    protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
+        if(worldIn.isRainingAt(pos)) {
+            return true;
+        } else {
+            return this.isWaterDestination(worldIn, pos);
+        }
+    }
+    
+    protected boolean isWaterDestination(World world, BlockPos pos) {
         return world.getBlockState(pos).getMaterial() == Material.WATER;
     }
 }

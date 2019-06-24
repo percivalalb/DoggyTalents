@@ -9,13 +9,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class EntitySpawn {
 
-	@SubscribeEvent
-	public void onEntitySpawn(EntityJoinWorldEvent event) {
-		Entity entity = event.getEntity();
-		
-		if(entity instanceof AbstractSkeletonEntity) {
-			AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity)entity;
-			skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, EntityDog.class, 6.0F, 1.0D, 1.2D));
-		}
-	}
+    @SubscribeEvent
+    public void onEntitySpawn(EntityJoinWorldEvent event) {
+        Entity entity = event.getEntity();
+        
+        if(entity instanceof AbstractSkeletonEntity) {
+            AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity)entity;
+            skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, EntityDog.class, 6.0F, 1.0D, 1.2D));
+        }
+    }
 }

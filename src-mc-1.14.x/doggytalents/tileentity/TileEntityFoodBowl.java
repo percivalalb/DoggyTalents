@@ -28,13 +28,13 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, INamedContainerProvider, ITickableTileEntity {
    
-	private static final int[] SLOTS_ALL = new int[] {0,1,2,3,4};
-	private NonNullList<ItemStack> bowlItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
+    private static final int[] SLOTS_ALL = new int[] {0,1,2,3,4};
+    private NonNullList<ItemStack> bowlItemStacks = NonNullList.withSize(5, ItemStack.EMPTY);
 
     public int timeoutCounter;
     
     public TileEntityFoodBowl() {
-    	super(ModTileEntities.FOOD_BOWL);
+        super(ModTileEntities.FOOD_BOWL);
     }
     
     @Override
@@ -53,36 +53,36 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
     @Override
     public void tick() {
-    	
-    	//Only run update code every 5 ticks (0.25s)
-    	if(++this.timeoutCounter < 5) { return; }
-    	
-    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
+        
+        //Only run update code every 5 ticks (0.25s)
+        if(++this.timeoutCounter < 5) { return; }
+        
+        List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
-    	for(EntityDog dog : dogList) {
-    		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl
-    		if(!dog.COORDS.hasBowlPos())
-    			dog.COORDS.setBowlPos(this.pos);
-            	
-    		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this);
-         	if(dog.getDogHunger() < 60 && slotIndex >= 0)
-         		DogUtil.feedDog(dog, this, slotIndex);
+        for(EntityDog dog : dogList) {
+            //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
+            if(!dog.COORDS.hasBowlPos())
+                dog.COORDS.setBowlPos(this.pos);
+                
+            int slotIndex = DogUtil.getFirstSlotWithFood(dog, this);
+             if(dog.getDogHunger() < 60 && slotIndex >= 0)
+                 DogUtil.feedDog(dog, this, slotIndex);
         }
-    	
-    	this.timeoutCounter = 0;
+        
+        this.timeoutCounter = 0;
     }
     
     @Override
     public int getSizeInventory() {
-    	return this.bowlItemStacks.size();
+        return this.bowlItemStacks.size();
     }
 
     @Override
     public boolean isEmpty() {
         for(ItemStack itemstack : this.bowlItemStacks) {
-        	if (!itemstack.isEmpty()) {
-        		return false;
-        	}
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
         }
 
         return true;
@@ -112,69 +112,69 @@ public class TileEntityFoodBowl extends TileEntity implements ISidedInventory, I
 
     }
 
-	@Override
-	public void clear() {
-		this.bowlItemStacks.clear();
-	}
+    @Override
+    public void clear() {
+        this.bowlItemStacks.clear();
+    }
 
-	@Override
-	public void openInventory(PlayerEntity player) {}
-	@Override
-	public void closeInventory(PlayerEntity player) {}
+    @Override
+    public void openInventory(PlayerEntity player) {}
+    @Override
+    public void closeInventory(PlayerEntity player) {}
 
-	@Override
-	public int getInventoryStackLimit() {
-		return 64;
-	}
+    @Override
+    public int getInventoryStackLimit() {
+        return 64;
+    }
 
 
-	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
-		if (this.world.getTileEntity(this.pos) != this) {
-			return false;
-		} 
-		else {
-			return !(player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) > 64.0D);
-		}
-	}
+    @Override
+    public boolean isUsableByPlayer(PlayerEntity player) {
+        if (this.world.getTileEntity(this.pos) != this) {
+            return false;
+        } 
+        else {
+            return !(player.getDistanceSq((double)this.pos.getX() + 0.5D, (double)this.pos.getY() + 0.5D, (double)this.pos.getZ() + 0.5D) > 64.0D);
+        }
+    }
 
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("container.doggytalents.food_bowl");
-	}
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("container.doggytalents.food_bowl");
+    }
 
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
-		return true; // TODO
-	}
+    public boolean isItemValidForSlot(int index, ItemStack stack) {
+        return true; // TODO
+    }
 
-	@Override
-	public int[] getSlotsForFace(Direction side) {
-		if(side == Direction.DOWN) {
-			return SLOTS_ALL;
-		} else {
-			return new int[0];
-		}
-	}
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        if(side == Direction.DOWN) {
+            return SLOTS_ALL;
+        } else {
+            return new int[0];
+        }
+    }
 
-	@Override
-	public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
-		return this.isItemValidForSlot(index, itemStackIn);
-	}
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, @Nullable Direction direction) {
+        return this.isItemValidForSlot(index, itemStackIn);
+    }
 
-	@Override
-	public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
-		if (direction == Direction.DOWN && index == 1) {
-			Item item = stack.getItem();
-			if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
-				return false;
-			}
-		}
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
+        if (direction == Direction.DOWN && index == 1) {
+            Item item = stack.getItem();
+            if (item != Items.WATER_BUCKET && item != Items.BUCKET) {
+                return false;
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity playerIn) {
-		return new ContainerFoodBowl(windowId, playerInventory, this);
-	}
+    @Override
+    public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity playerIn) {
+        return new ContainerFoodBowl(windowId, playerInventory, this);
+    }
 }

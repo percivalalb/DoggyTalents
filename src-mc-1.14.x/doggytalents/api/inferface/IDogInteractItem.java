@@ -16,5 +16,5 @@ public interface IDogInteractItem {
      * @param handIn The hand
      * @return The result
      */
-	public ActionResultType onInteractWithDog(EntityDog dogIn, World worldIn, PlayerEntity playerIn, Hand handIn);
+    public ActionResultType onInteractWithDog(EntityDog dogIn, World worldIn, PlayerEntity playerIn, Hand handIn);
 }

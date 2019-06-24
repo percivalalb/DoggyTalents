@@ -18,16 +18,16 @@ import net.minecraft.util.text.TranslationTextComponent;
  * @author ProPercivalalb
  */
 public class InventoryPackPuppy extends Inventory implements INamedContainerProvider {
-	
+    
     private EntityDog dog;
 
     public InventoryPackPuppy(EntityDog dog) {
-    	super(15);
+        super(15);
         this.dog = dog;
     }
 
-	
-	public void readFromNBT(CompoundNBT tagCompound) {
+    
+    public void readFromNBT(CompoundNBT tagCompound) {
         ListNBT nbttaglist = tagCompound.getList("packpuppyitems", 10);
         
         for(int i = 0; i < nbttaglist.size(); ++i) {
@@ -35,7 +35,7 @@ public class InventoryPackPuppy extends Inventory implements INamedContainerProv
             int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.getSizeInventory())
-            	  this.setInventorySlotContents(j, ItemStack.read(nbttagcompound1));
+                  this.setInventorySlotContents(j, ItemStack.read(nbttagcompound1));
         }
     }
 
@@ -55,12 +55,12 @@ public class InventoryPackPuppy extends Inventory implements INamedContainerProv
     }
     
     @Override
-	public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-		return new ContainerPackPuppy(windowId, inventory, (IInventory)this.dog.objects.get("packpuppyinventory"), this.dog);
-	}
+    public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
+        return new ContainerPackPuppy(windowId, inventory, (IInventory)this.dog.objects.get("packpuppyinventory"), this.dog);
+    }
 
-	@Override
-	public ITextComponent getDisplayName() {
-		return new TranslationTextComponent("container.doggytalents.pack_puppy");
-	}
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TranslationTextComponent("container.doggytalents.pack_puppy");
+    }
 }

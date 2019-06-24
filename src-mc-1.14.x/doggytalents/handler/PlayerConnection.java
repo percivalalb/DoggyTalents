@@ -10,22 +10,22 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class PlayerConnection {
 
-	@SubscribeEvent
-	public void playerLoggedIn(final PlayerLoggedInEvent event) {
-		PlayerEntity player = event.getPlayer();
-		
-		CompoundNBT tag = player.getEntityData();
+    @SubscribeEvent
+    public void playerLoggedIn(final PlayerLoggedInEvent event) {
+        PlayerEntity player = event.getPlayer();
+        
+        CompoundNBT tag = player.getEntityData();
 
         if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG))
-        	tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
+            tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
         
         CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
         
-		if(ConfigValues.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
-			persistTag.putBoolean("gotDTStartingItems", true);
+        if(ConfigValues.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
+            persistTag.putBoolean("gotDTStartingItems", true);
 
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));
             player.inventory.addItemStackToInventory(new ItemStack(ModItems.WHISTLE));
         }
-	}
+    }
 }

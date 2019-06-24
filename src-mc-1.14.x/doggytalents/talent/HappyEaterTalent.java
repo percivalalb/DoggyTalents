@@ -11,23 +11,23 @@ import net.minecraft.item.Items;
  */
 public class HappyEaterTalent extends Talent {
 
-	@Override
-	public int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
-		int level = dog.TALENTS.getLevel(this);
-		if(foodValue == 0) {
-	       if ((stack.getItem() == Items.COD || stack.getItem() == Items.COOKED_COD || stack.getItem() == Items.SALMON || stack.getItem() == Items.COOKED_SALMON || stack.getItem() == Items.TROPICAL_FISH) && level == 5)
-	        	foodValue = 30 + 3 * level;
-	
-	        if (stack.getItem() == Items.ROTTEN_FLESH && level >= 3)
-	        	foodValue = 30 + 3 * level;
-		}
-		else {
-			if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem().isFood()) {
-	            Food food = stack.getItem().getFood();
-	            if(food.isMeat())
-	            	foodValue += 4 * level;
-	        }
-		}
-		return foodValue; 
-	}
+    @Override
+    public int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
+        int level = dog.TALENTS.getLevel(this);
+        if(foodValue == 0) {
+           if ((stack.getItem() == Items.COD || stack.getItem() == Items.COOKED_COD || stack.getItem() == Items.SALMON || stack.getItem() == Items.COOKED_SALMON || stack.getItem() == Items.TROPICAL_FISH) && level == 5)
+                foodValue = 30 + 3 * level;
+    
+            if (stack.getItem() == Items.ROTTEN_FLESH && level >= 3)
+                foodValue = 30 + 3 * level;
+        }
+        else {
+            if(stack.getItem() != Items.ROTTEN_FLESH && stack.getItem().isFood()) {
+                Food food = stack.getItem().getFood();
+                if(food.isMeat())
+                    foodValue += 4 * level;
+            }
+        }
+        return foodValue; 
+    }
 }

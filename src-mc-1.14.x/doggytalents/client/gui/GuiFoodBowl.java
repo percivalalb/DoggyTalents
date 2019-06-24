@@ -20,9 +20,9 @@ public class GuiFoodBowl extends ContainerScreen<ContainerFoodBowl> {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-    	this.renderBackground();
-		super.render(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+        this.renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
     
     @Override
@@ -32,7 +32,7 @@ public class GuiFoodBowl extends ContainerScreen<ContainerFoodBowl> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-    	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(ResourceLib.GUI_FOOD_BOWL);
         int var2 = (this.width - this.xSize) / 2;
         int var3 = (this.height - this.ySize) / 2;

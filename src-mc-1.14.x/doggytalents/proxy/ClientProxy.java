@@ -49,9 +49,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
-	
+    
     public ClientProxy() {
-    	super();
+        super();
         DoggyTalentsMod.LOGGER.debug("Client Proxy");
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerBlockColours);
@@ -94,59 +94,59 @@ public class ClientProxy extends CommonProxy {
    
     @Override
     protected void preInit(FMLCommonSetupEvent event) {
-    	super.preInit(event);
-    	MinecraftForge.EVENT_BUS.register(new GameOverlay());
-    	MinecraftForge.EVENT_BUS.register(new InputUpdate());
-    	//DogTextureLoader.loadYourTexures();
+        super.preInit(event);
+        MinecraftForge.EVENT_BUS.register(new GameOverlay());
+        MinecraftForge.EVENT_BUS.register(new InputUpdate());
+        //DogTextureLoader.loadYourTexures();
     }
     
     @Override
     protected void postInit(InterModProcessEvent event) {
-    	super.postInit(event);
+        super.postInit(event);
     }
     
     @Override
-	public PlayerEntity getPlayerEntity() {
-		return Minecraft.getInstance().player;
-	}
+    public PlayerEntity getPlayerEntity() {
+        return Minecraft.getInstance().player;
+    }
     
     @Override
-	public void spawnCustomParticle(PlayerEntity player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		TextureAtlasSprite sprite = null;
-		BlockState state = player.world.getBlockState((BlockPos)pos);
-		IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
-		if(model instanceof IStateParticleModel) {
-		    TileEntity tile = player.world.getTileEntity(pos);
+    public void spawnCustomParticle(PlayerEntity player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+        TextureAtlasSprite sprite = null;
+        BlockState state = player.world.getBlockState((BlockPos)pos);
+        IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
+        if(model instanceof IStateParticleModel) {
+            TileEntity tile = player.world.getTileEntity(pos);
             if(tile instanceof TileEntityDogBed) {
                 IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
                 IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
                 sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(BlockDogBed.FACING));
             }
-		} 
+        } 
 
-		if(sprite == null) {
-		    sprite = model.getParticleTexture();
-		}
-		
-		ParticleManager manager = Minecraft.getInstance().particles;
+        if(sprite == null) {
+            sprite = model.getParticleTexture();
+        }
+        
+        ParticleManager manager = Minecraft.getInstance().particles;
 
-		for(int i = 0; i < numberOfParticles; i++) {
-			double xSpeed = rand.nextGaussian() * particleSpeed;
-			double ySpeed = rand.nextGaussian() * particleSpeed;
-			double zSpeed = rand.nextGaussian() * particleSpeed;
-			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite);
-			manager.addEffect(particle);
-		}
-	}
+        for(int i = 0; i < numberOfParticles; i++) {
+            double xSpeed = rand.nextGaussian() * particleSpeed;
+            double ySpeed = rand.nextGaussian() * particleSpeed;
+            double zSpeed = rand.nextGaussian() * particleSpeed;
+            
+            Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite);
+            manager.addEffect(particle);
+        }
+    }
     
     @Override
-	public void spawnCrit(World world, Entity entity) {
-		Minecraft.getInstance().particles.addParticleEmitter(entity, ParticleTypes.CRIT);
-	}
+    public void spawnCrit(World world, Entity entity) {
+        Minecraft.getInstance().particles.addParticleEmitter(entity, ParticleTypes.CRIT);
+    }
     
     @Override
     public void openDoggyInfo(EntityDog dog) {
-    	Minecraft.getInstance().displayGuiScreen(new GuiDogInfo(dog, this.getPlayerEntity()));
-	}
+        Minecraft.getInstance().displayGuiScreen(new GuiDogInfo(dog, this.getPlayerEntity()));
+    }
 }

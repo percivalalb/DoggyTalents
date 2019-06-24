@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  **/
 public class SlotPackPuppy extends Slot {
    
-	private int level;
+    private int level;
 
     public SlotPackPuppy(IInventory iinventory, int i, int j, int k, int level) {
         super(iinventory, i, j, k);

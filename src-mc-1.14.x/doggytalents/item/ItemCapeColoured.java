@@ -17,61 +17,61 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemCapeColoured extends Item {
-	
-	protected static int[] WHITE = new int[] {0,0,0};
-	
-	public ItemCapeColoured(Properties properties) {
-		super(properties);
-	}
+    
+    protected static int[] WHITE = new int[] {0,0,0};
+    
+    public ItemCapeColoured(Properties properties) {
+        super(properties);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		int[] rgb = WHITE;
-		if(stack.hasTag() && stack.getTag().contains("cape_colour")) {
-			rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("cape_colour"));
-		}
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        int[] rgb = WHITE;
+        if(stack.hasTag() && stack.getTag().contains("cape_colour")) {
+            rgb = DogUtil.rgbIntToIntArray(stack.getTag().getInt("cape_colour"));
+        }
 
-		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
-	}
-	
-	public boolean hasColor(ItemStack stack) {
-		CompoundNBT nbttagcompound = stack.getTag();
-		return nbttagcompound != null && nbttagcompound.contains("cape_colour", 3);
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip", TextFormatting.RED + "" + rgb[0] + TextFormatting.GREEN + " " + rgb[1] + TextFormatting.BLUE + " " + rgb[2]));
+    }
+    
+    public boolean hasColor(ItemStack stack) {
+        CompoundNBT nbttagcompound = stack.getTag();
+        return nbttagcompound != null && nbttagcompound.contains("cape_colour", 3);
         
     }
 
     public int getColor(ItemStack stack) {
        
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound != null)    
-    		return nbttagcompound.getInt("cape_colour");
+        if(nbttagcompound != null)    
+            return nbttagcompound.getInt("cape_colour");
 
-    	return 10511680;
+        return 10511680;
       
     }
 
     public void removeColor(ItemStack stack) {
 
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound != null)
-    		nbttagcompound.remove("cape_colour");
+        if(nbttagcompound != null)
+            nbttagcompound.remove("cape_colour");
         
     }
 
     public void setColor(ItemStack stack, int color) {
 
-    	CompoundNBT nbttagcompound = stack.getTag();
+        CompoundNBT nbttagcompound = stack.getTag();
 
-    	if(nbttagcompound == null) {	
-    		nbttagcompound = new CompoundNBT();
-    		stack.setTag(nbttagcompound);
-    	}
+        if(nbttagcompound == null) {    
+            nbttagcompound = new CompoundNBT();
+            stack.setTag(nbttagcompound);
+        }
             
-    	nbttagcompound.putInt("cape_colour", color);
+        nbttagcompound.putInt("cape_colour", color);
     }
 }

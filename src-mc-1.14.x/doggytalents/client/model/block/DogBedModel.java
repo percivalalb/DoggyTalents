@@ -39,7 +39,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements IBakedModel, IStateParticleModel {
-	
+    
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 
     private ModelLoader modelLoader;
@@ -51,7 +51,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
     public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel, VertexFormat format) {
         this.modelLoader = modelLoader;
-    	this.model = model;
+        this.model = model;
         this.bakedModel = bakedModel;
         this.format = format;
     }
@@ -165,9 +165,9 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-	public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
-		return this.getCustomModel(casing, bedding, facing).getParticleTexture();
-	}
+    public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+        return this.getCustomModel(casing, bedding, facing).getParticleTexture();
+    }
 
     @Override
     public ItemOverrideList getOverrides() {

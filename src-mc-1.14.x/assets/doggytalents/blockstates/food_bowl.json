@@ -1,5 +1,5 @@
 {
-	"variants": {
+    "variants": {
         "": { "model": "doggytalents:block/food_bowl" }
     }
 }

@@ -19,13 +19,13 @@ import net.minecraft.world.World;
  */
 public class RecipeDogCape extends SpecialRecipe {
 
-	public RecipeDogCape(ResourceLocation resource) {
-		super(resource);
-	}
-	
-	@Override
-	public boolean matches(CraftingInventory inv, World worldIn) {
-		ItemStack itemstack = ItemStack.EMPTY;
+    public RecipeDogCape(ResourceLocation resource) {
+        super(resource);
+    }
+    
+    @Override
+    public boolean matches(CraftingInventory inv, World worldIn) {
+        ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
 
         for(int i = 0; i < inv.getSizeInventory(); ++i) {
@@ -33,7 +33,7 @@ public class RecipeDogCape extends SpecialRecipe {
 
             if(!itemstack1.isEmpty()) {
                 if(itemstack1.getItem() instanceof ItemCapeColoured) {
-                	ItemCapeColoured itemarmor = (ItemCapeColoured)itemstack1.getItem();
+                    ItemCapeColoured itemarmor = (ItemCapeColoured)itemstack1.getItem();
 
                     if(!itemstack.isEmpty()) {
                         return false;
@@ -41,7 +41,7 @@ public class RecipeDogCape extends SpecialRecipe {
 
                     itemstack = itemstack1;
                 } else {
-                	if(DyeColor.getColor(itemstack1) == null) {
+                    if(DyeColor.getColor(itemstack1) == null) {
                         return false;
                     }
 
@@ -53,9 +53,9 @@ public class RecipeDogCape extends SpecialRecipe {
         return !itemstack.isEmpty() && !list.isEmpty();
     }
 
-	@Override
+    @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
@@ -84,7 +84,7 @@ public class RecipeDogCape extends SpecialRecipe {
                     }
                 }
                 else {
-                	DyeColor color = DyeColor.getColor(itemstack1);
+                    DyeColor color = DyeColor.getColor(itemstack1);
                     if (color == null) {
                        return ItemStack.EMPTY;
                     }
@@ -118,15 +118,15 @@ public class RecipeDogCape extends SpecialRecipe {
             return itemstack;
         }
     }
-	
-	//Is on a 3x3 grid or bigger
-	@Override
+    
+    //Is on a 3x3 grid or bigger
+    @Override
     public boolean canFit(int width, int height) {
         return width * height >= 2;
     }
 
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.CAPE_COLOURING;
-	}
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+        return ModRecipes.CAPE_COLOURING;
+    }
 }

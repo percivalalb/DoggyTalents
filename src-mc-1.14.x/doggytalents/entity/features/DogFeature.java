@@ -5,22 +5,22 @@ import net.minecraft.nbt.CompoundNBT;
 
 public class DogFeature {
 
-	protected EntityDog dog;
-	
-	public DogFeature(EntityDog dogIn) {
-		this.dog = dogIn;
-	}
-	
-	public void writeAdditional(CompoundNBT compound) {
+    protected EntityDog dog;
+    
+    public DogFeature(EntityDog dogIn) {
+        this.dog = dogIn;
+    }
+    
+    public void writeAdditional(CompoundNBT compound) {
 
-	}
+    }
 
-	public void readAdditional(CompoundNBT compound) {
-		
-	}
-	
-	//TODO
-	public void tick() {
-	    
-	}
+    public void readAdditional(CompoundNBT compound) {
+        
+    }
+    
+    //TODO
+    public void tick() {
+        
+    }
 }

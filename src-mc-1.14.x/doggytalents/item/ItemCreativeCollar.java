@@ -14,15 +14,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemCreativeCollar extends ItemFancyCollar {
 
-	public ItemCreativeCollar(Type type, Properties properties) {
-		super(type, properties);
-	}
+    public ItemCreativeCollar(Type type, Properties properties) {
+        super(type, properties);
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip"));
-	}
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        tooltip.add(new TranslationTextComponent(this.getTranslationKey() + ".tooltip"));
+    }
 }

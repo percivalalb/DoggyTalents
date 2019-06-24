@@ -11,45 +11,45 @@ import net.minecraft.item.ItemStack;
 
 public class ContainerTreatBag extends Container {
 
-	public int slot;
-	public ItemStack itemstack;
-	public InventoryTreatBag inventoryTreatBag;
-		
+    public int slot;
+    public ItemStack itemstack;
+    public InventoryTreatBag inventoryTreatBag;
+        
     public ContainerTreatBag(int windowId, PlayerInventory playerInventory) {
-    	this(windowId, playerInventory, 0, ItemStack.EMPTY);
+        this(windowId, playerInventory, 0, ItemStack.EMPTY);
     }
-	
-	public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
-		super(ModContainerTypes.TREAT_BAG, windowId);
-		this.slot = slotIn;
-		this.itemstack = itemstackIn;
-		this.inventoryTreatBag = new InventoryTreatBag(playerInventory, slotIn, itemstackIn);
-		assertInventorySize(playerInventory, 3 * 5);
+    
+    public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
+        super(ModContainerTypes.TREAT_BAG, windowId);
+        this.slot = slotIn;
+        this.itemstack = itemstackIn;
+        this.inventoryTreatBag = new InventoryTreatBag(playerInventory, slotIn, itemstackIn);
+        assertInventorySize(playerInventory, 3 * 5);
         this.inventoryTreatBag.openInventory(playerInventory.player);
-		
+        
         for(int l = 0; l < 5; l++)
-        	this.addSlot(new Slot(this.inventoryTreatBag, l, 44 + l * 18, 22) {
-        		@Override
-        		public boolean isItemValid(ItemStack stack) {
-        	        return ContainerTreatBag.this.inventoryTreatBag.isItemValidForSlot(this.getSlotIndex(), stack);
-        	    }
-        	});
+            this.addSlot(new Slot(this.inventoryTreatBag, l, 44 + l * 18, 22) {
+                @Override
+                public boolean isItemValid(ItemStack stack) {
+                    return ContainerTreatBag.this.inventoryTreatBag.isItemValidForSlot(this.getSlotIndex(), stack);
+                }
+            });
 
         for(int j = 0; j < 3; j++)
             for(int i1 = 0; i1 < 9; i1++)
-            	this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
+                this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
 
         for(int k = 0; k < 9; k++)
-        	this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
-        		@Override
-        		public boolean canTakeStack(PlayerEntity playerIn) {
-        			return this.getStack().getItem() != ModItems.TREAT_BAG;
-        		}
-        	});
+            this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
+                @Override
+                public boolean canTakeStack(PlayerEntity playerIn) {
+                    return this.getStack().getItem() != ModItems.TREAT_BAG;
+                }
+            });
         
-	}
+    }
 
-	@Override
+    @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = (Slot)this.inventorySlots.get(index);
@@ -68,7 +68,7 @@ public class ContainerTreatBag extends Container {
             }
 
             if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             
@@ -78,16 +78,16 @@ public class ContainerTreatBag extends Container {
 
         return itemstack;
     }
-	
-	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
-		//TODO return playerIn.inventory.getStackInSlot(this.slot).isItemEqual(this.itemstack);
-		return true;
-	}
+    
+    @Override
+    public boolean canInteractWith(PlayerEntity playerIn) {
+        //TODO return playerIn.inventory.getStackInSlot(this.slot).isItemEqual(this.itemstack);
+        return true;
+    }
 
-	@Override
+    @Override
     public void onContainerClosed(PlayerEntity playerIn) {
-		super.onContainerClosed(playerIn);
-		this.inventoryTreatBag.closeInventory(playerIn);
+        super.onContainerClosed(playerIn);
+        this.inventoryTreatBag.closeInventory(playerIn);
     }
 }

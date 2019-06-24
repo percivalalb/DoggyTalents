@@ -17,21 +17,21 @@ import net.minecraft.util.math.MathHelper;
  * @author ProPercivalalb
  */
 public class ContainerPackPuppy extends Container {
-	
-	private EntityDog dog;
-	private IInventory packPuppy;
-	private int level;
-	
-	public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, EntityDog dog) {
-		this(windowId, playerInventory, new Inventory(3 * 5), dog);
-	}
+    
+    private EntityDog dog;
+    private IInventory packPuppy;
+    private int level;
+    
+    public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, EntityDog dog) {
+        this(windowId, playerInventory, new Inventory(3 * 5), dog);
+    }
     
     public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, IInventory packInventory, EntityDog dog) {
-    	super(ModContainerTypes.PACK_PUPPY, windowId);
-    	this.packPuppy = packInventory;
-    	this.dog = dog;
-    	this.level = MathHelper.clamp(dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
-    	assertInventorySize(packInventory, 3 * 5);
+        super(ModContainerTypes.PACK_PUPPY, windowId);
+        this.packPuppy = packInventory;
+        this.dog = dog;
+        this.level = MathHelper.clamp(dog.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
+        assertInventorySize(packInventory, 3 * 5);
         packInventory.openInventory(playerInventory.player);
 
         for (int j = 0; j < 3; j++) {
@@ -68,7 +68,7 @@ public class ContainerPackPuppy extends Container {
                 return ItemStack.EMPTY;
 
             if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             
@@ -90,11 +90,11 @@ public class ContainerPackPuppy extends Container {
         this.packPuppy.closeInventory(player);
     }
 
-	public EntityDog getDog() {
-		return this.dog;
-	}
+    public EntityDog getDog() {
+        return this.dog;
+    }
 
-	public int getDogLevel() {
-		return this.level;
-	}
+    public int getDogLevel() {
+        return this.level;
+    }
 }

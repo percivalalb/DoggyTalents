@@ -9,53 +9,53 @@ import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
 
 public class GenderFeature extends DogFeature {
-	
-	public GenderFeature(EntityDog dogIn) {
-		super(dogIn);
-	}
-	
-	public EnumGender getGender() {
-	    return this.dog.getGender();
-	}
-	
-	public void setGender(EnumGender gender) {
-	    this.dog.setGender(gender);
+    
+    public GenderFeature(EntityDog dogIn) {
+        super(dogIn);
     }
-	
-	public String getTranslationKey(Function<EnumGender, String> function) {
+    
+    public EnumGender getGender() {
+        return this.dog.getGender();
+    }
+    
+    public void setGender(EnumGender gender) {
+        this.dog.setGender(gender);
+    }
+    
+    public String getTranslationKey(Function<EnumGender, String> function) {
         return function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
     }
-	
-	public boolean canMateWith(EntityDog matedog) {
-		if(ConfigValues.DOG_GENDER) {
-		    boolean equalGenders = this.getGender() == matedog.getGender();
-		    return (equalGenders && this.getGender() == EnumGender.UNISEX) || !equalGenders;
-		}
-		
-		return true;
-	}
-	
-	public String getGenderPronoun() {
-	    return this.getTranslationKey(EnumGender::getUnlocalisedPronoun);
-	}
+    
+    public boolean canMateWith(EntityDog matedog) {
+        if(ConfigValues.DOG_GENDER) {
+            boolean equalGenders = this.getGender() == matedog.getGender();
+            return (equalGenders && this.getGender() == EnumGender.UNISEX) || !equalGenders;
+        }
+        
+        return true;
+    }
+    
+    public String getGenderPronoun() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedPronoun);
+    }
 
-	public String getGenderSubject() {
-	    return this.getTranslationKey(EnumGender::getUnlocalisedSubject);
-	}
-	
-	public String getGenderTitle() {
-	    return this.getTranslationKey(EnumGender::getUnlocalisedTitle);
-	}
-	
-	public String getGenderTip() {
-	    return this.getTranslationKey(EnumGender::getUnlocalisedTip);
-	}
-	
-	public String getGenderName() {
-	    return this.getTranslationKey(EnumGender::getUnlocalisedName);
-	}
-	
-	@Override
+    public String getGenderSubject() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedSubject);
+    }
+    
+    public String getGenderTitle() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedTitle);
+    }
+    
+    public String getGenderTip() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedTip);
+    }
+    
+    public String getGenderName() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedName);
+    }
+    
+    @Override
     public void writeAdditional(CompoundNBT compound) {
         if(ConfigValues.DOG_GENDER) {
             compound.putString("dogGender", this.getGender().getSaveName());
@@ -70,15 +70,15 @@ public class GenderFeature extends DogFeature {
             this.setGender(this.dog.getRNG().nextBoolean() ? EnumGender.MALE : EnumGender.FEMALE);
         }
     }
-	
-	public enum EnumGender {
+    
+    public enum EnumGender {
 
         MALE(1, "male"),
         FEMALE(2, "female"),
         UNISEX(0, "unisex");
-	    
-	    private int index;
-	    private String saveName;
+        
+        private int index;
+        private String saveName;
         private String unlocalisedTip;
         private String unlocalisedName;
         private String unlocalisedPronoun;

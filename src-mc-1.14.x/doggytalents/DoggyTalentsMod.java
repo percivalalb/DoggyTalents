@@ -15,14 +15,14 @@ import net.minecraftforge.fml.common.Mod;
  */
 @Mod(value = Reference.MOD_ID)
 public class DoggyTalentsMod {
-	
-	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
-	
-	public static DoggyTalentsMod INSTANCE;
-	public static CommonProxy PROXY;
     
-	public DoggyTalentsMod() {
-		INSTANCE = this;
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
+    
+    public static DoggyTalentsMod INSTANCE;
+    public static CommonProxy PROXY;
+    
+    public DoggyTalentsMod() {
+        INSTANCE = this;
         PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-	}
+    }
 }

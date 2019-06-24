@@ -20,40 +20,40 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
 
-	public static final Block DOG_BED = null;
-	public static final Block DOG_BATH = null;
+    public static final Block DOG_BED = null;
+    public static final Block DOG_BATH = null;
     public static final Block FOOD_BOWL = null;
     
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
 
-	    @SubscribeEvent
-	    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
-	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
-	    	FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent());
-	        
-	        DoggyTalentsMod.LOGGER.debug("Registering Blocks");
-	        blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));
-	        blockRegistry.register(new BlockDogBath().setRegistryName(BlockNames.DOG_BATH));
-	        blockRegistry.register(new BlockFoodBowl().setRegistryName(BlockNames.FOOD_BOWL));
-	        DoggyTalentsMod.LOGGER.debug("Finished Registering Blocks");
-	    }
+        @SubscribeEvent
+        public static void registerBlocks(final RegistryEvent.Register<Block> event) {
+            IForgeRegistry<Block> blockRegistry = event.getRegistry();
+            FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent());
+            
+            DoggyTalentsMod.LOGGER.debug("Registering Blocks");
+            blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));
+            blockRegistry.register(new BlockDogBath().setRegistryName(BlockNames.DOG_BATH));
+            blockRegistry.register(new BlockFoodBowl().setRegistryName(BlockNames.FOOD_BOWL));
+            DoggyTalentsMod.LOGGER.debug("Finished Registering Blocks");
+        }
 
-	    @SubscribeEvent
-	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
-	    	DoggyTalentsMod.LOGGER.debug("Registering ItemBlocks");
-	    	event.getRegistry().register(makeItemBlock(DOG_BED, ModCreativeTabs.DOG_BED));
-	    	event.getRegistry().register(makeItemBlock(DOG_BATH));
-	    	event.getRegistry().register(makeItemBlock(FOOD_BOWL));
-	    	DoggyTalentsMod.LOGGER.debug("Finished Registering ItemBlocks");
-	    }
-	    
-	    private static BlockItem makeItemBlock(Block block) {
-	    	return makeItemBlock(block, ModCreativeTabs.GENERAL);
-	    }
-	    
-	    private static BlockItem makeItemBlock(Block block, ItemGroup group) {
-	        return (BlockItem)new BlockItem(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
-	    }
+        @SubscribeEvent
+        public static void onItemRegister(final RegistryEvent.Register<Item> event) {
+            DoggyTalentsMod.LOGGER.debug("Registering ItemBlocks");
+            event.getRegistry().register(makeItemBlock(DOG_BED, ModCreativeTabs.DOG_BED));
+            event.getRegistry().register(makeItemBlock(DOG_BATH));
+            event.getRegistry().register(makeItemBlock(FOOD_BOWL));
+            DoggyTalentsMod.LOGGER.debug("Finished Registering ItemBlocks");
+        }
+        
+        private static BlockItem makeItemBlock(Block block) {
+            return makeItemBlock(block, ModCreativeTabs.GENERAL);
+        }
+        
+        private static BlockItem makeItemBlock(Block block, ItemGroup group) {
+            return (BlockItem)new BlockItem(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
+        }
     }
 }

@@ -5,7 +5,7 @@ package doggytalents.lib;
  */
 public class Reference {
 
-	//Mod Related Constants 
-	public static final String 		 MOD_ID 	    		  		= "doggytalents";
-	public static final String		 MOD_NAME      				    = "Doggy Talents";
+    //Mod Related Constants 
+    public static final String          MOD_ID                           = "doggytalents";
+    public static final String         MOD_NAME                          = "Doggy Talents";
 }

@@ -9,8 +9,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class GuiConfig {
 
-	public static Screen openGui(Minecraft mc, Screen screen) {
-		DoggyTalentsMod.LOGGER.info("" + screen);
-		return screen;
-	}
+    public static Screen openGui(Minecraft mc, Screen screen) {
+        DoggyTalentsMod.LOGGER.info("" + screen);
+        return screen;
+    }
 }

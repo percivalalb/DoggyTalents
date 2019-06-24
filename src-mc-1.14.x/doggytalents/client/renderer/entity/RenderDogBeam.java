@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.entity.SpriteRenderer;
 
 public class RenderDogBeam extends SpriteRenderer<EntityDoggyBeam> {
 
-	public RenderDogBeam(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn, Minecraft.getInstance().getItemRenderer());
-	}
+    public RenderDogBeam(EntityRendererManager renderManagerIn) {
+        super(renderManagerIn, Minecraft.getInstance().getItemRenderer());
+    }
 
 }

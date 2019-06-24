@@ -20,21 +20,21 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     public ItemStack[] itemToRender;
     
     public LayerBone(RenderDog dogRendererIn) {
-    	super(dogRendererIn);
+        super(dogRendererIn);
         this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_STICK)};
     }
 
     @Override
-	public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-    	if(dog.hasBone()) {
-	    	
-	        GlStateManager.pushMatrix();
-	
-	        if(this.getEntityModel().isChild) { //isChild
-	            float f = 0.5F;
-	            GlStateManager.translatef(0.0F, 0.75F, 0.0F);
-	            GlStateManager.scalef(0.5F, 0.5F, 0.5F);
-	        }
+    public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        if(dog.hasBone()) {
+            
+            GlStateManager.pushMatrix();
+    
+            if(this.getEntityModel().isChild) { //isChild
+                float f = 0.5F;
+                GlStateManager.translatef(0.0F, 0.75F, 0.0F);
+                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+            }
 
             if(dog.isSneaking())
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
@@ -46,8 +46,8 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
 
             GlStateManager.translated(0.20, -0.10, -0.10);
             Minecraft.getInstance().getItemRenderer().renderItem(this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
-	        GlStateManager.popMatrix();
-    	}
+            GlStateManager.popMatrix();
+        }
     }
     
     @Override

@@ -2,11 +2,11 @@ package doggytalents.lib;
 
 public class ItemNames {
 
-	public static final String THROW_BONE = Reference.MOD_ID + ":throw_bone";
-	public static final String THROW_BONE_WET = Reference.MOD_ID + ":throw_bone_wet";
-	public static final String THROW_STICK = Reference.MOD_ID + ":throw_stick";
-	public static final String THROW_STICK_WET = Reference.MOD_ID + ":throw_stick_wet";
-	public static final String TRAINING_TREAT = Reference.MOD_ID + ":training_treat";
+    public static final String THROW_BONE = Reference.MOD_ID + ":throw_bone";
+    public static final String THROW_BONE_WET = Reference.MOD_ID + ":throw_bone_wet";
+    public static final String THROW_STICK = Reference.MOD_ID + ":throw_stick";
+    public static final String THROW_STICK_WET = Reference.MOD_ID + ":throw_stick_wet";
+    public static final String TRAINING_TREAT = Reference.MOD_ID + ":training_treat";
     public static final String SUPER_TREAT = Reference.MOD_ID + ":super_treat";
     public static final String MASTER_TREAT = Reference.MOD_ID + ":master_treat";
     public static final String DIRE_TREAT = Reference.MOD_ID + ":dire_treat";
@@ -25,9 +25,9 @@ public class ItemNames {
     public static final String CHEW_STICK = Reference.MOD_ID + ":chew_stick";
     public static final String CAPE = Reference.MOD_ID + ":cape";
     public static final String CAPE_COLOURED = Reference.MOD_ID + ":cape_coloured";
-	public static final String SUNGLASSES = Reference.MOD_ID + ":sunglasses";
-	public static final String LEATHER_JACKET = Reference.MOD_ID + ":leather_jacket";
-	public static final String TINY_BONE = Reference.MOD_ID + ":tiny_bone";
-	public static final String BIG_BONE = Reference.MOD_ID + ":big_bone";
-	public static final String OWNER_CHANGE = Reference.MOD_ID + ":owner_change";
+    public static final String SUNGLASSES = Reference.MOD_ID + ":sunglasses";
+    public static final String LEATHER_JACKET = Reference.MOD_ID + ":leather_jacket";
+    public static final String TINY_BONE = Reference.MOD_ID + ":tiny_bone";
+    public static final String BIG_BONE = Reference.MOD_ID + ":big_bone";
+    public static final String OWNER_CHANGE = Reference.MOD_ID + ":owner_change";
 }

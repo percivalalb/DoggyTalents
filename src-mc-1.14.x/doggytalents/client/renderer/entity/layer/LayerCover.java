@@ -26,7 +26,7 @@ public class LayerCover extends LayerRenderer<EntityDog, ModelDog> {
     private final Predicate<EntityDog> condition;
     
     public LayerCover(RenderDog dogRendererIn, EntityModel<EntityDog> modelIn, Function<EntityDog, ResourceLocation> resourceIn, Predicate<EntityDog> conditionIn) {
-    	super(dogRendererIn);
+        super(dogRendererIn);
         this.model = modelIn;
         this.resource = resourceIn;
         this.condition = conditionIn;

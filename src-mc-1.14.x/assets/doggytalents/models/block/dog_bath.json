@@ -1,6 +1,6 @@
 {
-	"ambientocclusion": false,
-	"parent": "block/block",
+    "ambientocclusion": false,
+    "parent": "block/block",
     "textures": {
         "particle": "block/iron_block",
         "water": "block/water_still",
@@ -14,7 +14,7 @@
                 "up":    { "texture": "#water", "tintindex": 0 }
 
             },
-			"__comment": "Water"
+            "__comment": "Water"
         },
          {   "from": [ 1, 0, 1 ],
             "to": [ 15, 6, 15 ],
@@ -22,9 +22,9 @@
                 "down":    { "texture": "#bottom" }
 
             },
-			"__comment": "Bottom"
+            "__comment": "Bottom"
         },
-		{   "from": [ 0, 0, 0 ],
+        {   "from": [ 0, 0, 0 ],
             "to": [ 16, 8, 1 ],
             "faces": {
                 "down":  { "texture": "#side" },
@@ -36,7 +36,7 @@
             },
             "__comment": "North Side"
         },
-		{   "from": [ 15, 0, 0 ],
+        {   "from": [ 15, 0, 0 ],
             "to": [ 16, 8, 16 ],
             "faces": {
                 "down":  { "texture": "#side" },
@@ -48,7 +48,7 @@
             },
             "__comment": "East Side"
         },
-		{   "from": [ 0, 0, 15 ],
+        {   "from": [ 0, 0, 15 ],
             "to": [ 16, 8, 16 ],
             "faces": {
                 "down":  { "texture": "#side" },
@@ -60,7 +60,7 @@
             },
             "__comment": "South Side"
         },
-		{   "from": [ 0, 0, 0 ],
+        {   "from": [ 0, 0, 0 ],
             "to": [ 1, 8, 16 ],
             "faces": {
                 "down":  { "texture": "#side" },

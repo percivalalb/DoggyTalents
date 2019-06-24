@@ -25,9 +25,9 @@ public class GuiPackPuppy extends ContainerScreen<ContainerPackPuppy> {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
-    	this.renderBackground();
-		super.render(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+        this.renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
     
     @Override
@@ -38,15 +38,15 @@ public class GuiPackPuppy extends ContainerScreen<ContainerPackPuppy> {
     
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int xMouse, int yMouse) {
-    	GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(ResourceLib.GUI_PACK_PUPPY);
         int l = (this.width - this.xSize) / 2;
         int i1 = (this.height - this.ySize) / 2;
         this.blit(l, i1, 0, 0, this.xSize, this.ySize);
 
         for (int j1 = 0; j1 < 3; j1++)
-        	for (int k1 = 0; k1 < MathHelper.clamp(this.getContainer().getDogLevel(), 0, 5); k1++)
-        		this.blit(l + 78 + 18 * k1, i1 + 9 + 18 * j1 + 15, 197, 2, 18, 18);
+            for (int k1 = 0; k1 < MathHelper.clamp(this.getContainer().getDogLevel(), 0, 5); k1++)
+                this.blit(l + 78 + 18 * k1, i1 + 9 + 18 * j1 + 15, 197, 2, 18, 18);
 
         InventoryScreen.drawEntityOnScreen(l + 42, i1 + 51, 30, (float)(l + 51) - xMouse, (float)((i1 + 75) - 50) - yMouse, this.getContainer().getDog());
     }

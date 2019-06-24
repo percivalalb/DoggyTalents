@@ -7,40 +7,40 @@ import net.minecraft.util.math.BlockPos;
 
 public class EntityAIFetchReturn extends FollowOwnerGoal {
 
-	private EntityDog dog;
-	private double oldRangeSense;
-	
-	public EntityAIFetchReturn(EntityDog dogIn, double followSpeedIn) {
-		super(dogIn, followSpeedIn, 0, 1F);
-		this.dog = dogIn;
-	}
+    private EntityDog dog;
+    private double oldRangeSense;
+    
+    public EntityAIFetchReturn(EntityDog dogIn, double followSpeedIn) {
+        super(dogIn, followSpeedIn, 0, 1F);
+        this.dog = dogIn;
+    }
 
-	@Override
-	public boolean shouldExecute() {
-		return this.dog.hasBone() && super.shouldExecute();
-	}
-	
-	@Override
-	public boolean shouldContinueExecuting() {
-		return this.dog.hasBone() && super.shouldContinueExecuting();
-	}
-	
-	@Override
-	public void startExecuting() {
-		super.startExecuting();
-		this.oldRangeSense = this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
-		this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32);
-	}
+    @Override
+    public boolean shouldExecute() {
+        return this.dog.hasBone() && super.shouldExecute();
+    }
+    
+    @Override
+    public boolean shouldContinueExecuting() {
+        return this.dog.hasBone() && super.shouldContinueExecuting();
+    }
+    
+    @Override
+    public void startExecuting() {
+        super.startExecuting();
+        this.oldRangeSense = this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
+        this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(32);
+    }
 
-	@Override
-	public void resetTask() {
-		super.resetTask();
-		this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
-	}
-	
-	// Forces the dog to walk back to the owner every time
-	@Override
-	protected boolean canTeleportToBlock(BlockPos pos) {
-		return false;
-	}
+    @Override
+    public void resetTask() {
+        super.resetTask();
+        this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
+    }
+    
+    // Forces the dog to walk back to the owner every time
+    @Override
+    protected boolean canTeleportToBlock(BlockPos pos) {
+        return false;
+    }
 }

@@ -19,35 +19,35 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(Reference.MOD_ID)
 public class ModContainerTypes {
-	
-	public static final ContainerType<ContainerFoodBowl> FOOD_BOWL = null;
-	public static final ContainerType<ContainerPackPuppy> PACK_PUPPY = null;
-	public static final ContainerType<ContainerTreatBag> TREAT_BAG = null;
-	
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    
+    public static final ContainerType<ContainerFoodBowl> FOOD_BOWL = null;
+    public static final ContainerType<ContainerPackPuppy> PACK_PUPPY = null;
+    public static final ContainerType<ContainerTreatBag> TREAT_BAG = null;
+    
+    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
-	    
-	    @SubscribeEvent
-	    public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
-	    	IForgeRegistry<ContainerType<?>> containerRegistry = event.getRegistry();
-	    	
-	    	DoggyTalentsMod.LOGGER.debug("Registering Containers");
-	        containerRegistry.register(new ContainerType<ContainerFoodBowl>(ContainerFoodBowl::new).setRegistryName(GuiNames.FOOD_BOWL));
-	        containerRegistry.register(new ContainerType<ContainerPackPuppy>(new IContainerFactory<ContainerPackPuppy>() {
+        
+        @SubscribeEvent
+        public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
+            IForgeRegistry<ContainerType<?>> containerRegistry = event.getRegistry();
+            
+            DoggyTalentsMod.LOGGER.debug("Registering Containers");
+            containerRegistry.register(new ContainerType<ContainerFoodBowl>(ContainerFoodBowl::new).setRegistryName(GuiNames.FOOD_BOWL));
+            containerRegistry.register(new ContainerType<ContainerPackPuppy>(new IContainerFactory<ContainerPackPuppy>() {
 
-				@Override
-				public ContainerPackPuppy create(int windowId, PlayerInventory inv, PacketBuffer data) {
-					Entity entity = inv.player.world.getEntityByID(data.readInt());
-					if(entity instanceof EntityDog) {
-						return new ContainerPackPuppy(windowId, inv, (EntityDog)entity);
-					} else {
-						return null;
-					}
-				}
-	        	
-	        }).setRegistryName(GuiNames.PACK_PUPPY));
-	        containerRegistry.register(new ContainerType<ContainerTreatBag>(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
-	        DoggyTalentsMod.LOGGER.debug("Finished Registering Containers");
-	    }
+                @Override
+                public ContainerPackPuppy create(int windowId, PlayerInventory inv, PacketBuffer data) {
+                    Entity entity = inv.player.world.getEntityByID(data.readInt());
+                    if(entity instanceof EntityDog) {
+                        return new ContainerPackPuppy(windowId, inv, (EntityDog)entity);
+                    } else {
+                        return null;
+                    }
+                }
+                
+            }).setRegistryName(GuiNames.PACK_PUPPY));
+            containerRegistry.register(new ContainerType<ContainerTreatBag>(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
+            DoggyTalentsMod.LOGGER.debug("Finished Registering Containers");
+        }
     }
 }

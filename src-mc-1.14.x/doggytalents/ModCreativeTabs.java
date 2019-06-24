@@ -16,21 +16,21 @@ public class ModCreativeTabs {
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-        	return new ItemStack(ModItems.TRAINING_TREAT);
+            return new ItemStack(ModItems.TRAINING_TREAT);
         }
     };
-	
-	public static final ItemGroup DOG_BED = new ItemGroup("doggytalents.dogbed") {
-		private Random random = new Random();
-		
+    
+    public static final ItemGroup DOG_BED = new ItemGroup("doggytalents.dogbed") {
+        private Random random = new Random();
+        
         @Override
         @OnlyIn(Dist.CLIENT)
         public ItemStack createIcon() {
-        	return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
+            return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
-    	
-    	public BedMaterial pickRandomString(List<BedMaterial> strs) {
-    		return strs.get(this.random.nextInt(strs.size()));
-    	}
+        
+        public BedMaterial pickRandomString(List<BedMaterial> strs) {
+            return strs.get(this.random.nextInt(strs.size()));
+        }
     };
 }

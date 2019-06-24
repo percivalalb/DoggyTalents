@@ -11,9 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ParticleCustomDigging extends DiggingParticle {
 
-	public ParticleCustomDigging(World worldIn, double xIn, double yIn, double zIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, BlockState state, BlockPos pos, TextureAtlasSprite sprite) {
-		super(worldIn, xIn, yIn, zIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
-		this.setBlockPos(pos);
-		this.setSprite(sprite);
-	}
+    public ParticleCustomDigging(World worldIn, double xIn, double yIn, double zIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, BlockState state, BlockPos pos, TextureAtlasSprite sprite) {
+        super(worldIn, xIn, yIn, zIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
+        this.setBlockPos(pos);
+        this.setSprite(sprite);
+    }
 }

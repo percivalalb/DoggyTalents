@@ -15,29 +15,29 @@ import net.minecraft.util.ResourceLocation;
 @JeiPlugin
 public class DTPlugin implements IModPlugin {
 
-	@Override
-	public ResourceLocation getPluginUid() {
-		return new ResourceLocation(ModIds.JEI_ID, "doggytalents");
-	}
-	
-	@Override
-	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.registerSubtypeInterpreter(ModBlocks.DOG_BED.asItem(), itemStack -> {
-			if(itemStack.hasTag() && itemStack.getTag().contains("doggytalents")) {
-				CompoundNBT tag = itemStack.getTag().getCompound("doggytalents");
-			    
-				IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
-				IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
-			    
-		    	return casingId.getSaveId() + "+" + beddingId.getSaveId();
-			}
-			
-			return "missing+missing";
-		});
-	}
-	
-	@Override
-	public void registerRecipes(IRecipeRegistration registration) {
-		registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
-	}
+    @Override
+    public ResourceLocation getPluginUid() {
+        return new ResourceLocation(ModIds.JEI_ID, "doggytalents");
+    }
+    
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
+        registration.registerSubtypeInterpreter(ModBlocks.DOG_BED.asItem(), itemStack -> {
+            if(itemStack.hasTag() && itemStack.getTag().contains("doggytalents")) {
+                CompoundNBT tag = itemStack.getTag().getCompound("doggytalents");
+                
+                IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
+                IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
+                
+                return casingId.getSaveId() + "+" + beddingId.getSaveId();
+            }
+            
+            return "missing+missing";
+        });
+    }
+    
+    @Override
+    public void registerRecipes(IRecipeRegistration registration) {
+        registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+    }
 }

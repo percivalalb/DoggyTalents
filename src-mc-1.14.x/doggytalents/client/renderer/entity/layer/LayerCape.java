@@ -17,29 +17,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LayerCape extends LayerRenderer<EntityDog, ModelDog> {
 
     public LayerCape(RenderDog dogRendererIn) {
-    	super(dogRendererIn);
+        super(dogRendererIn);
     }
 
     @Override
     public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.hasCape() && !dog.isInvisible()) {
-        	if(dog.hasCapeColoured()) {
+            if(dog.hasCapeColoured()) {
                 this.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
-        		if(dog.isCapeColoured()) {
-    	            float[] afloat = dog.getCapeColour();
-    	            GlStateManager.color3f(afloat[0], afloat[1], afloat[2]);
+                if(dog.isCapeColoured()) {
+                    float[] afloat = dog.getCapeColour();
+                    GlStateManager.color3f(afloat[0], afloat[1], afloat[2]);
                 }
-        	}
-        	else if(dog.hasFancyCape()) {
+            }
+            else if(dog.hasFancyCape()) {
                 this.bindTexture(ResourceLib.MOB_LAYER_CAPE);
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        	}
-        	else if(dog.hasLeatherJacket()) {
+            }
+            else if(dog.hasLeatherJacket()) {
                 this.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
                 GlStateManager.color3f(1.0F, 1.0F, 1.0F);
-        	}
+            }
 
-        	this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.getEntityModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

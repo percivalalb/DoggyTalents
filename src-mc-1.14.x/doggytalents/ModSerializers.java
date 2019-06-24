@@ -15,20 +15,20 @@ import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(Reference.MOD_ID)
 public class ModSerializers {
-	
-	public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
-	
-	public static IDataSerializer<Map<Talent, Integer>> TALENT_LEVEL_SERIALIZER = new TalentListSerializer();
-	
-	@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    
+    public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
+    
+    public static IDataSerializer<Map<Talent, Integer>> TALENT_LEVEL_SERIALIZER = new TalentListSerializer();
+    
+    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Registration {
-	    
-	    @SubscribeEvent
-	    public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event) {
-	    	IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
-	    	DoggyTalentsMod.LOGGER.debug("Registering Serializers");
-	        serializerRegistry.register(new DataSerializerEntry(TALENT_LEVEL_SERIALIZER).setRegistryName(Reference.MOD_ID, "talent_level_list"));
-	        DoggyTalentsMod.LOGGER.debug("Finished Registering Serializers");
-	    }
+        
+        @SubscribeEvent
+        public static void registerTileEntities(final RegistryEvent.Register<DataSerializerEntry> event) {
+            IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
+            DoggyTalentsMod.LOGGER.debug("Registering Serializers");
+            serializerRegistry.register(new DataSerializerEntry(TALENT_LEVEL_SERIALIZER).setRegistryName(Reference.MOD_ID, "talent_level_list"));
+            DoggyTalentsMod.LOGGER.debug("Finished Registering Serializers");
+        }
     }
 }

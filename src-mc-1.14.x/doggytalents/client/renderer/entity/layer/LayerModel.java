@@ -25,7 +25,7 @@ public class LayerModel extends LayerRenderer<EntityDog, ModelDog> {
     private final Predicate<EntityDog> condition;
     
     public LayerModel(RenderDog dogRendererIn, EntityModel<EntityDog> modelIn, ResourceLocation resourceIn, Predicate<EntityDog> condition) {
-     	super(dogRendererIn);
+        super(dogRendererIn);
         this.model = modelIn;
         this.resource = resourceIn;
         this.condition = condition;

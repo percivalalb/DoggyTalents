@@ -106,25 +106,21 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class EntityDog extends TameableEntity implements INamedContainerProvider {
 	
-	private static final DataParameter<Float> 					DATA_HEALTH_ID 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
-	private static final DataParameter<Boolean> 				BEGGING 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Byte> 					DOG_TEXTURE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
-	private static final DataParameter<Integer>					COLLAR_COLOUR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				LEVEL 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				LEVEL_DIRE 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				MODE_PARAM 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Map<Talent, Integer>>	TALENTS_PARAM 	= EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
-	private static final DataParameter<Integer> 				HUNGER 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Integer> 				BONE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Boolean> 				FRIENDLY_FIRE 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> 				OBEY_OTHERS 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Integer> 				CAPE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Boolean> 				SUNGLASSES 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Boolean> 				RADAR_COLLAR 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<Optional<BlockPos>> 		BOWL_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	private static final DataParameter<Optional<BlockPos>> 		BED_POS 		= EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
-	private static final DataParameter<Integer> 				SIZE 			= EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<String> 					GENDER_PARAM 	= EntityDataManager.createKey(EntityDog.class, DataSerializers.STRING);
+	private static final DataParameter<Float>                    DATA_HEALTH_ID  = EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
+	private static final DataParameter<Byte>                     DOG_TEXTURE     = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer>                  COLLAR_COLOUR   = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte>                     LEVEL           = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte>                     LEVEL_DIRE      = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte>                     DOG_FLAGS       = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Map<Talent, Integer>>     TALENTS_PARAM   = EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
+	private static final DataParameter<Integer>                  HUNGER          = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte>                     BONE_VARIANT            = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer>                  CAPE            = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
+	private static final DataParameter<Optional<BlockPos>>       BOWL_POS        = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	private static final DataParameter<Optional<BlockPos>>       BED_POS         = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	private static final DataParameter<Byte>                     SIZE            = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte>                     GENDER_PARAM    = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte>                     MODE_PARAM      = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_TEXT_COMPONENT);
 	
 	@Nullable
@@ -213,24 +209,20 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	protected void registerData() {
 		super.registerData();
 		this.dataManager.register(DATA_HEALTH_ID, this.getHealth());
-		this.dataManager.register(BEGGING, Boolean.valueOf(false));
+		this.dataManager.register(DOG_FLAGS, (byte)0);
 		this.dataManager.register(DOG_TEXTURE, (byte)0);
         this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
-        this.dataManager.register(HUNGER, Integer.valueOf(60));
-        this.dataManager.register(OBEY_OTHERS, Boolean.valueOf(false));
-        this.dataManager.register(FRIENDLY_FIRE, Boolean.valueOf(false));
-        this.dataManager.register(BONE, -1);
-        this.dataManager.register(RADAR_COLLAR, Boolean.valueOf(false));
-        this.dataManager.register(MODE_PARAM, Integer.valueOf(0));
-        this.dataManager.register(LEVEL, Integer.valueOf(0));
-        this.dataManager.register(LEVEL_DIRE, Integer.valueOf(0));
+        this.dataManager.register(HUNGER, 60);
+        this.dataManager.register(BONE_VARIANT, (byte)-1);
+        this.dataManager.register(MODE_PARAM, (byte)0);
+        this.dataManager.register(LEVEL, (byte)0);
+        this.dataManager.register(LEVEL_DIRE, (byte)0);
         this.dataManager.register(BOWL_POS, Optional.empty());
         this.dataManager.register(BED_POS, Optional.empty());
         this.dataManager.register(CAPE, -2);
-        this.dataManager.register(SUNGLASSES, false);
-        this.dataManager.register(SIZE, Integer.valueOf(3));
-        this.dataManager.register(GENDER_PARAM, this.getRandom().nextInt(2) == 0 ? "male" : "female");
+        this.dataManager.register(SIZE, (byte)3);
+        this.dataManager.register(GENDER_PARAM, (byte)this.getRNG().nextInt(2));
         this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());  
 	}
 	
@@ -1336,36 +1328,65 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 		}
     }
     
+    private boolean getDogFlag(int bit) {
+        return (this.dataManager.get(DOG_FLAGS) & bit) != 0;
+    }
+
+    private void setDogFlag(int bit, boolean flag) {
+        byte b0 = this.dataManager.get(DOG_FLAGS);
+        if(flag) {
+            this.dataManager.set(DOG_FLAGS, (byte)(b0 | bit));
+        } else {
+            this.dataManager.set(DOG_FLAGS, (byte)(b0 & ~bit));
+        }
+    }
+    
 	public void setBegging(boolean flag) {
-		this.dataManager.set(BEGGING, flag);
+	    this.setDogFlag(1, flag);
 	}
 	
 	public boolean isBegging() {
-		return this.dataManager.get(BEGGING);
+	    return this.getDogFlag(1);
 	}
     
-	public int getTameSkin() {
-   	 	return this.dataManager.get(DOG_TEXTURE);
-    }
-	
-    public void setTameSkin(int index) {
-   		this.dataManager.set(DOG_TEXTURE, (byte)index);
-    }
-    
     public void setWillObeyOthers(boolean flag) {
-    	this.dataManager.set(OBEY_OTHERS, flag);
+        this.setDogFlag(2, flag);
     }
     
     public boolean willObeyOthers() {
-    	return this.dataManager.get(OBEY_OTHERS);
+        return this.getDogFlag(2);
     }
     
     public void setFriendlyFire(boolean flag) {
-    	this.dataManager.set(FRIENDLY_FIRE, flag);
+        this.setDogFlag(4, flag);
     }
     
     public boolean canFriendlyFire() {
-    	return this.dataManager.get(FRIENDLY_FIRE);
+        return this.getDogFlag(4);
+    }
+    
+    public void hasRadarCollar(boolean flag) {
+        this.setDogFlag(8, flag);
+    }
+    
+    public boolean hasRadarCollar() {
+        return this.getDogFlag(8);
+    }
+    
+    public void setHasSunglasses(boolean hasSunglasses) {
+        this.setDogFlag(16, hasSunglasses);
+    }
+    
+    public boolean hasSunglasses() {
+        return this.getDogFlag(16);
+    }
+    
+    public int getTameSkin() {
+        return this.dataManager.get(DOG_TEXTURE);
+    }
+    
+    public void setTameSkin(int index) {
+        this.dataManager.set(DOG_TEXTURE, (byte)index);
     }
     
     public int getDogHunger() {
@@ -1376,36 +1397,20 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     	this.dataManager.set(HUNGER, Math.min(Constants.HUNGER_POINTS, Math.max(0, par1)));
     }
     
-    public void hasRadarCollar(boolean flag) {
-    	this.dataManager.set(RADAR_COLLAR, Boolean.valueOf(flag));
-    }
-    
-    public boolean hasRadarCollar() {
-    	return ((Boolean)this.dataManager.get(RADAR_COLLAR)).booleanValue();
-    }
-    
     public void setNoFetchItem() {
-    	this.dataManager.set(BONE, -1);
+    	this.dataManager.set(BONE_VARIANT, (byte)-1);
     }
       
 	public void setBoneVariant(int value) {
-    	this.dataManager.set(BONE, value);
+    	this.dataManager.set(BONE_VARIANT, (byte)value);
 	}
     
     public int getBoneVariant() {
-    	return this.dataManager.get(BONE);
+    	return this.dataManager.get(BONE_VARIANT);
     }
     
     public boolean hasBone() {
     	return this.getBoneVariant() >= 0;
-    }
-    
-    public void setHasSunglasses(boolean hasSunglasses) {
-    	this.dataManager.set(SUNGLASSES, hasSunglasses);
-    }
-    
-    public boolean hasSunglasses() {
-    	return ((Boolean)this.dataManager.get(SUNGLASSES)).booleanValue();
     }
     
     public int getCollarData() {
@@ -1425,7 +1430,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
     
 	public void setDogSize(int value) {
-    	this.dataManager.set(SIZE, Math.min(5, Math.max(1, value)));
+    	this.dataManager.set(SIZE, (byte)Math.min(5, Math.max(1, value)));
     }
     
 	public int getDogSize() {
@@ -1433,15 +1438,15 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
     
 	public void setGender(String data) {
-		this.dataManager.set(GENDER_PARAM, data);
+		this.dataManager.set(GENDER_PARAM, (byte)(data.equals("male") ? 0 : 1));
 	}
 
 	public String getGender() {
-		return this.dataManager.get(GENDER_PARAM);
+		return this.dataManager.get(GENDER_PARAM) == 0 ? "male" : "female";
 	}
     
 	public void setLevel(int level) {
-    	this.dataManager.set(LEVEL, level);	
+    	this.dataManager.set(LEVEL,  (byte)level);	
 	}
 
 	public int getLevel() {
@@ -1449,7 +1454,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
 
 	public void setDireLevel(int level) {
-		this.dataManager.set(LEVEL_DIRE, level);
+		this.dataManager.set(LEVEL_DIRE,  (byte)level);
 	}
 
 	public int getDireLevel() {
@@ -1457,7 +1462,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	}
 
 	public void setModeId(int mode) {
-		this.dataManager.set(MODE_PARAM, Math.min(mode, EnumMode.values().length - 1));
+		this.dataManager.set(MODE_PARAM,  (byte)Math.min(mode, EnumMode.values().length - 1));
 	}
 
 	public int getModeId() {

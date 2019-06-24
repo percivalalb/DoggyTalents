@@ -9,8 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 
 /**
  * @author ProPercivalalb
@@ -18,23 +18,24 @@ import net.minecraft.util.ActionResultType;
 public class PoisonFangTalent extends Talent {
 
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
-		int level = dog.TALENTS.getLevel(this);
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+	    ItemStack stack = playerIn.getHeldItem(handIn);
+		int level = dogIn.TALENTS.getLevel(this);
 		
-	    if (dog.isTamed()) {
+	    if (dogIn.isTamed()) {
 	    	if (stack != null) {
-	    		if(stack.getItem() == Items.SPIDER_EYE && !player.world.isRemote && dog.getDogHunger() > 30) {
-	    			if(!dog.world.isRemote) {
-	    				player.clearActivePotions();
+	    		if(stack.getItem() == Items.SPIDER_EYE && !playerIn.world.isRemote && dogIn.getDogHunger() > 30) {
+	    			if(!dogIn.world.isRemote) {
+	    			    playerIn.clearActivePotions();
 	    			}
 
-	    			dog.setDogHunger(dog.getDogHunger() - 30);
-	    			return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+	    			dogIn.setDogHunger(dogIn.getDogHunger() - 30);
+	    			return ActionResultType.SUCCESS;
 	    		}
 	    	}
 	    }
 		
-	    return ActionResult.newResult(ActionResultType.PASS, stack);
+	    return ActionResultType.PASS;
 	}
 	
 	@Override

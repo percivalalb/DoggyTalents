@@ -86,7 +86,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
@@ -546,17 +546,15 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	
 	@Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
-        ItemStack stack = player.getHeldItem(hand);
         
-        ActionResult<ItemStack> result = TalentHelper.interactWithPlayer(this, player, stack);
-        switch(result.getType()) {
-        case SUCCESS:
-        	return true;
-        case FAIL:
-        	return false;
-        case PASS:
-			break;
+        ActionResultType result = TalentHelper.interactWithPlayer(this, player, hand);
+        switch(result) {
+            case SUCCESS: return true;
+            case FAIL: return false;
+            case PASS: break;
         }
+        
+        ItemStack stack = player.getHeldItem(hand);
         
         if(stack.getItem() == ModItems.OWNER_CHANGE && player.abilities.isCreativeMode && !this.isOwner(player)) {
         	if(!this.world.isRemote) {
@@ -690,15 +688,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     return true;
                 } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
                 	IDogInteractItem treat = (IDogInteractItem) stack.getItem();
-                	ActionResult<ItemStack> treatResult = treat.onItemRightClick(stack, this, this.world, player);
+                	ActionResultType treatResult = treat.onInteractWithDog(this, this.world, player, hand);
                   
-                	switch(treatResult.getType()) {
-                    case SUCCESS:
-                    	return true;
-                    case FAIL:
-                    	return false;
-                    case PASS:
-            			break;
+                	switch(treatResult) {
+                        case SUCCESS: return true;
+                        case FAIL: return false;
+                        case PASS: break;
                     }
                 	
                 } else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {

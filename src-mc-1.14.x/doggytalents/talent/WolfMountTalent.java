@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
@@ -16,18 +17,20 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class WolfMountTalent extends Talent {
 
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) { 
-		if(stack.isEmpty() && dog.canInteract(player)) {
-        	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null && !player.onGround && !dog.isIncapacicated()) {
-        		if(!dog.world.isRemote) {
-        			dog.getAISit().setSitting(false);
-        			dog.mountTo(player);
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) { 
+	    ItemStack stack = playerIn.getHeldItem(handIn);
+	    
+		if(stack.isEmpty() && dogIn.canInteract(playerIn)) {
+        	if(dogIn.TALENTS.getLevel(this) > 0 && playerIn.getRidingEntity() == null && !playerIn.onGround && !dogIn.isIncapacicated()) {
+        		if(!dogIn.world.isRemote) {
+        		    dogIn.getAISit().setSitting(false);
+        			dogIn.mountTo(playerIn);
         		}
-        		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+        		return ActionResultType.SUCCESS;
         	}
         }
 		
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResultType.PASS;
 	}
 	
 	@Override

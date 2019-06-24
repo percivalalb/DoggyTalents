@@ -4,9 +4,8 @@ import doggytalents.api.inferface.IDogInteractItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -22,7 +21,7 @@ public class ItemTreat extends Item implements IDogInteractItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(ItemStack stackIn, EntityDog dogIn, World worldIn, PlayerEntity playerIn) {
+    public ActionResultType onInteractWithDog(EntityDog dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
 		int level = dogIn.LEVELS.getLevel();
 		
 		if (dogIn.getGrowingAge() < 0) {
@@ -31,11 +30,11 @@ public class ItemTreat extends Item implements IDogInteractItem {
 				 playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.too_young"));
 			}
 			
-			return ActionResult.newResult(ActionResultType.FAIL, stackIn);
+			return ActionResultType.FAIL;
 		}
 		if(level < this.maxLevel) {
 			if(!playerIn.abilities.isCreativeMode)
-				stackIn.shrink(1);
+			    playerIn.getHeldItem(handIn).shrink(1);
 
 			if(!playerIn.world.isRemote) {
 	            dogIn.LEVELS.increaseLevel();
@@ -46,7 +45,7 @@ public class ItemTreat extends Item implements IDogInteractItem {
 	            playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.level_up"));
 			}
 			
-			return ActionResult.newResult(ActionResultType.SUCCESS, stackIn);
+			return ActionResultType.SUCCESS;
         }
 		else {
 			worldIn.setEntityState(dogIn, (byte)6);
@@ -55,7 +54,7 @@ public class ItemTreat extends Item implements IDogInteractItem {
 				playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.max_level"));
 			}
 			
-			return ActionResult.newResult(ActionResultType.FAIL, stackIn);
+			return ActionResultType.FAIL;
 		}
 	}
 }

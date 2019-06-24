@@ -15,8 +15,8 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class PackPuppyTalent extends Talent {
 
 	public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-		return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.getTag(ModTags.PACK_PUPPY_BLACKLIST));
+		return entity.isAlive() && !entity.cannotPickup() && !entity.getItem().getItem().isIn(ModTags.getTag(ModTags.PACK_PUPPY_BLACKLIST));
 	};
 	
 	@Override
@@ -58,30 +58,29 @@ public class PackPuppyTalent extends Talent {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
-		int level = dog.TALENTS.getLevel(this);
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+	    ItemStack stack = playerIn.getHeldItem(handIn);
+		int level = dogIn.TALENTS.getLevel(this);
 		
-	    if(dog.isTamed()) {
-	    	if(level > 0) {
-	    		if(stack.isEmpty()) {
+	    if(dogIn.isTamed() && level > 0) { // Dog requirements
+	    	if(playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
+	    		
+	    		if(!playerIn.world.isRemote && dogIn.canInteract(playerIn)) {
+	    			INamedContainerProvider inventory = (INamedContainerProvider)dogIn.objects.get("packpuppyinventory");
 	    			
-	    			if(player.isSneaking() && !player.world.isRemote && dog.canInteract(player)) {
-	    				INamedContainerProvider inventory = (INamedContainerProvider)dog.objects.get("packpuppyinventory");
-	    
-	    				if(inventory != null) {
-	    	                if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer)) {
-	    	                    ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)player;
-	    	                    NetworkHooks.openGui(entityPlayerMP, inventory, buf -> buf.writeInt(dog.getEntityId()));
-	    	                }
-	    	            }
-	    				dog.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dog.world.rand.nextFloat() * 0.1F + 0.9F);
-	    				return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+	    			if(inventory != null) {
+	    			    if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+	    			        ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
+	    			        NetworkHooks.openGui(entityPlayerMP, inventory, buf -> buf.writeInt(dogIn.getEntityId()));
+	    			    }
 	    			}
+	    			dogIn.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dogIn.world.rand.nextFloat() * 0.1F + 0.9F);
+	    			return ActionResultType.SUCCESS;
 	    		}
 	    	}
 	    }
 		
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResultType.PASS;
 	}
 	
 	@Override

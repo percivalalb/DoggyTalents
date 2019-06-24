@@ -5,8 +5,8 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 
 public class RangedAttackerTalent extends Talent {
 	
@@ -31,16 +31,18 @@ public class RangedAttackerTalent extends Talent {
 	}
 	
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
-		if(stack.isEmpty() && dog.canInteract(player)) {
-        	if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.isIncapacicated()) {
-        		if(!dog.world.isRemote) {
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+	    ItemStack stack = playerIn.getHeldItem(handIn);
+	    
+		if(stack.isEmpty() && dogIn.canInteract(playerIn)) {
+        	if(dogIn.TALENTS.getLevel(this) > 0 && playerIn.getRidingEntity() == null  && !playerIn.onGround && !dogIn.isIncapacicated()) {
+        		if(!dogIn.world.isRemote) {
         			//TODO RangedAttacker
         		}
-        		return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+        		return ActionResultType.SUCCESS;
         	}
         }
 		
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResultType.PASS;
 	}
 }

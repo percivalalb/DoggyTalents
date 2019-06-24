@@ -12,6 +12,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 
 /**
  * @author ProPercivalalb
@@ -33,19 +34,17 @@ public class TalentHelper {
 			talent.readAdditional(dog, compound);
 	}
 	
-	public static ActionResult<ItemStack> interactWithPlayer(EntityDog dog, PlayerEntity player, ItemStack stack) {
+	public static ActionResultType interactWithPlayer(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
 		for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
-			ActionResult<ItemStack> result = talent.onInteract(dog, player, stack);
+			ActionResultType result = talent.onInteract(dogIn, playerIn, handIn);
 			
-			switch(result.getType()) {
-			case PASS:
-				continue;
-			default:
-				return result;
+			switch(result) {
+			    case PASS: continue;
+			    default: return result;
 			}
 		}
 
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResultType.PASS;
 	}
 
 	public static void tick(EntityDog  dog) {

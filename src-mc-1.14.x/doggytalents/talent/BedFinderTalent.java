@@ -6,8 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 
 /**
  * @author ProPercivalalb
@@ -31,17 +31,19 @@ public class BedFinderTalent extends Talent {
 	
 	
 	@Override
-	public ActionResult<ItemStack> onInteract(EntityDog dog, PlayerEntity player, ItemStack stack) {
-		int level = dog.TALENTS.getLevel(this);
-		if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
-			dog.startRiding(player);
-			if(!dog.world.isRemote) {
-				if(!dog.isSitting()) {
-					dog.getAISit().setSitting(true);
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+	    ItemStack stack = playerIn.getHeldItem(handIn);
+	    
+		int level = dogIn.TALENTS.getLevel(this);
+		if(level > 0 && stack.getItem() == Items.BONE && dogIn.canInteract(playerIn)) {
+		    dogIn.startRiding(playerIn);
+			if(!dogIn.world.isRemote) {
+				if(!dogIn.isSitting()) {
+				    dogIn.getAISit().setSitting(true);
 				}
 			}
-			return ActionResult.newResult(ActionResultType.SUCCESS, stack);
+			return ActionResultType.SUCCESS;
         }
-		return ActionResult.newResult(ActionResultType.PASS, stack);
+		return ActionResultType.PASS;
 	}
 }

@@ -2,7 +2,6 @@ package doggytalents.item;
 
 import java.util.function.Supplier;
 
-import doggytalents.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;

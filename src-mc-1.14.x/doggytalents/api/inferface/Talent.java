@@ -13,6 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
@@ -32,8 +33,8 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
 	 * PASS will indicate no action is required
 	 * SUCCESS and FAIL results are passed to the final interact
 	 */
-	public ActionResult<ItemStack> onInteract(EntityDog dogIn, PlayerEntity playerIn, ItemStack stackIn) { 
-		return ActionResult.newResult(ActionResultType.PASS, stackIn); 
+	public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) { 
+		return ActionResultType.PASS; 
 	}
 	
 	public void tick(EntityDog dog) {}

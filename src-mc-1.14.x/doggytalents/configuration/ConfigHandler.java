@@ -30,12 +30,13 @@ public class ConfigHandler {
         Pair<ClientConfig, ForgeConfigSpec> clientPair = new ForgeConfigSpec.Builder().configure(ClientConfig::new);
         CONFIG_CLIENT_SPEC = clientPair.getRight();
         CLIENT = clientPair.getLeft();
-        
+        DoggyTalentsMod.LOGGER.debug("Register configs");
         
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CONFIG_CLIENT_SPEC);
         
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigHandler::modConfig);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigHandler::loadConfig);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigHandler::reloadConfig);
 	}
 	
 	public static void initTalentConfig() {
@@ -46,7 +47,7 @@ public class ConfigHandler {
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_TALENT_SPEC, "doggytalents-talents.toml");
 	}
 	
-	public static void modConfig(final ModConfig.ModConfigEvent event) {
+	public static void loadConfig(final ModConfig.Loading event) {
         ModConfig config = event.getConfig();
         if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
         	ConfigHandler.refreshClient();
@@ -54,6 +55,17 @@ public class ConfigHandler {
         	ConfigHandler.refreshServer();
         } else if(config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
         	ConfigHandler.refreshTalents();
+        }
+    }
+	
+    public static void reloadConfig(final ModConfig.ConfigReloading event) {
+        ModConfig config = event.getConfig();
+        if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
+            ConfigHandler.refreshClient();
+        } else if(config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
+            ConfigHandler.refreshServer();
+        } else if(config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
+            ConfigHandler.refreshTalents();
         }
     }
 	

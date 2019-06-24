@@ -293,7 +293,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
-		this.FEATURES.stream().forEach(f -> f.writeAdditional(compound));
+		this.FEATURES.forEach(f -> f.writeAdditional(compound));
 
         compound.putInt("doggyTex", this.getTameSkin());
         compound.putInt("collarColour", this.getCollarData());
@@ -314,7 +314,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	@Override
 	public void readAdditional(CompoundNBT compound) {
 		super.readAdditional(compound);
-		this.FEATURES.stream().forEach(f -> f.readAdditional(compound));
+		this.FEATURES.forEach(f -> f.readAdditional(compound));
 		
         this.setTameSkin(compound.getInt("doggyTex"));
         if (compound.contains("collarColour", 99)) this.setCollarData(compound.getInt("collarColour"));

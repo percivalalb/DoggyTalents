@@ -1008,9 +1008,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	@Override
 	public void onDeath(DamageSource cause) {
         if(!this.world.isRemote && this.world.getGameRules().getBoolean("showDeathMessages") && !this.isImmortal() && this.getOwner() instanceof ServerPlayerEntity) {
-            DoggyTalentsMod.LOGGER.debug("From onDeath");
-            this.locationManager.remove(this);
             this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
+        }
+        
+        if(!this.world.isRemote && !this.isImmortal()) {
+            this.locationManager.remove(this);
         }
     }
 	

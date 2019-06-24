@@ -31,7 +31,7 @@ public class ModContainerTypes {
 	    public static void registerContainers(final RegistryEvent.Register<ContainerType<?>> event) {
 	    	IForgeRegistry<ContainerType<?>> containerRegistry = event.getRegistry();
 	    	
-	    	DoggyTalentsMod.LOGGER.info("Registering Containers");
+	    	DoggyTalentsMod.LOGGER.debug("Registering Containers");
 	        containerRegistry.register(new ContainerType<ContainerFoodBowl>(ContainerFoodBowl::new).setRegistryName(GuiNames.FOOD_BOWL));
 	        containerRegistry.register(new ContainerType<ContainerPackPuppy>(new IContainerFactory<ContainerPackPuppy>() {
 
@@ -47,7 +47,7 @@ public class ModContainerTypes {
 	        	
 	        }).setRegistryName(GuiNames.PACK_PUPPY));
 	        containerRegistry.register(new ContainerType<ContainerTreatBag>(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
-	        DoggyTalentsMod.LOGGER.info("Finished Registering Containers");
+	        DoggyTalentsMod.LOGGER.debug("Finished Registering Containers");
 	    }
     }
 }

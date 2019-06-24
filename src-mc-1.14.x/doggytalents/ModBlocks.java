@@ -32,20 +32,20 @@ public class ModBlocks {
 	    	IForgeRegistry<Block> blockRegistry = event.getRegistry();
 	    	FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent());
 	        
-	        DoggyTalentsMod.LOGGER.info("Registering Blocks");
+	        DoggyTalentsMod.LOGGER.debug("Registering Blocks");
 	        blockRegistry.register(new BlockDogBed().setRegistryName(BlockNames.DOG_BED));
 	        blockRegistry.register(new BlockDogBath().setRegistryName(BlockNames.DOG_BATH));
 	        blockRegistry.register(new BlockFoodBowl().setRegistryName(BlockNames.FOOD_BOWL));
-	        DoggyTalentsMod.LOGGER.info("Finished Registering Blocks");
+	        DoggyTalentsMod.LOGGER.debug("Finished Registering Blocks");
 	    }
 
 	    @SubscribeEvent
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
-	    	DoggyTalentsMod.LOGGER.info("Registering ItemBlocks");
+	    	DoggyTalentsMod.LOGGER.debug("Registering ItemBlocks");
 	    	event.getRegistry().register(makeItemBlock(DOG_BED, ModCreativeTabs.DOG_BED));
 	    	event.getRegistry().register(makeItemBlock(DOG_BATH));
 	    	event.getRegistry().register(makeItemBlock(FOOD_BOWL));
-	    	DoggyTalentsMod.LOGGER.info("Finished Registering ItemBlocks");
+	    	DoggyTalentsMod.LOGGER.debug("Finished Registering ItemBlocks");
 	    }
 	    
 	    private static BlockItem makeItemBlock(Block block) {

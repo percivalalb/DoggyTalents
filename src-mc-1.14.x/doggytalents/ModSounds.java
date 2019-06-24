@@ -22,10 +22,10 @@ public class ModSounds {
 	    public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {
 	    	IForgeRegistry<SoundEvent> soundRegistry = event.getRegistry();
 	    	
-	    	DoggyTalentsMod.LOGGER.info("Registering Sounds");
+	    	DoggyTalentsMod.LOGGER.debug("Registering Sounds");
 	        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_SHORT).setRegistryName(SoundNames.WHISTLE_SHORT));
 	        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_LONG).setRegistryName(SoundNames.WHISTLE_LONG));
-	        DoggyTalentsMod.LOGGER.info("Finished Registering Sounds");
+	        DoggyTalentsMod.LOGGER.debug("Finished Registering Sounds");
 	    }
     }
 }

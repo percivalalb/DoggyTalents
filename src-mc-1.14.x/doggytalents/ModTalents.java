@@ -61,7 +61,7 @@ public class ModTalents {
 	    public static final void registerTalents(final RegistryEvent.Register<Talent> event) {
 	    	IForgeRegistry<Talent> talentRegistry = event.getRegistry();
 	        
-	        DoggyTalentsMod.LOGGER.info("Registering Talents");
+	        DoggyTalentsMod.LOGGER.debug("Registering Talents");
 	        talentRegistry.register(new BedFinderTalent().setRegistryName(TalentNames.BED_FINDER));
 			talentRegistry.register(new BlackPeltTalent().setRegistryName(TalentNames.BLACK_PELT));
 			talentRegistry.register(new CreeperSweeperTalent().setRegistryName(TalentNames.CREEPER_SWEEPER));
@@ -83,7 +83,7 @@ public class ModTalents {
 			talentRegistry.register(new ShepherdDogTalent().setRegistryName(TalentNames.SHEPHERD_DOG));
 			talentRegistry.register(new SwimmerDogTalent().setRegistryName(TalentNames.SWIMMER_DOG));
 			talentRegistry.register(new WolfMountTalent().setRegistryName(TalentNames.WOLF_MOUNT));
-			DoggyTalentsMod.LOGGER.info("Finished Registering Talents");
+			DoggyTalentsMod.LOGGER.debug("Finished Registering Talents");
 	    }
     }
 }

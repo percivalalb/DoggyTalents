@@ -24,7 +24,7 @@ public class MissingMappings {
 		 mappings.forEach(mapping -> {
 		     if(Objects.equals(mapping.key, Compatibility.DOGGY_BEAM)) {
                  mapping.remap(ModEntities.DOG_BEAM);
-                 DoggyTalentsMod.LOGGER.info("Remapped Dog Beam id");
+                 DoggyTalentsMod.LOGGER.debug("Remapped Dog Beam id");
              }
          });
 	 }
@@ -37,7 +37,7 @@ public class MissingMappings {
 		 mappings.forEach(mapping -> {
 		     if(Objects.equals(mapping.key, Compatibility.COMMAND_EMBLEM)) {
                  mapping.remap(ModItems.WHISTLE);
-                 DoggyTalentsMod.LOGGER.info("Remapped Command Emblem to Whistle");
+                 DoggyTalentsMod.LOGGER.debug("Remapped Command Emblem to Whistle");
              }
 		 });
 	 }

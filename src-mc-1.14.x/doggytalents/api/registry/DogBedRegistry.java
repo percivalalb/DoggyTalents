@@ -41,7 +41,7 @@ public class DogBedRegistry {
 		}
 		else {
 			this.REGISTRY.add(material.setRegName(this.key));
-			DoggyTalentsMod.LOGGER.info("Register dog bed {} under the key {}", this.key, material);
+			DoggyTalentsMod.LOGGER.debug("Register dog bed {} under the key {}", this.key, material);
 			return material;
 		}
 	}

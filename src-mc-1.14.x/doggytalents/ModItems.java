@@ -63,7 +63,7 @@ public class ModItems {
 	    @SubscribeEvent
 	    public static void onItemRegister(final RegistryEvent.Register<Item> event) {
 	    	IForgeRegistry<Item> itemRegistry = event.getRegistry();
-	    	DoggyTalentsMod.LOGGER.info("Registering Items");
+	    	DoggyTalentsMod.LOGGER.debug("Registering Items");
 	    	itemRegistry.register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
 	    	itemRegistry.register(new ItemThrowBone(ItemThrowBone.Type.WET, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
 	    	itemRegistry.register(new ItemThrowBone(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
@@ -92,7 +92,7 @@ public class ModItems {
 	     	itemRegistry.register(new ItemTinyBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TINY_BONE));
 	     	itemRegistry.register(new ItemBigBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BIG_BONE));
 	     	itemRegistry.register(new ItemCreativeOwnerChange(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.OWNER_CHANGE));
-	     	DoggyTalentsMod.LOGGER.info("Finished Registering Items");
+	     	DoggyTalentsMod.LOGGER.debug("Finished Registering Items");
 	    }
     }
 }

@@ -27,11 +27,11 @@ public class ModRecipes {
 	    public static void registerSoundEvents(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
 	    	IForgeRegistry<IRecipeSerializer<?>> recipeRegistry = event.getRegistry();
 	    	
-	    	DoggyTalentsMod.LOGGER.info("Registering Recipes");
+	    	DoggyTalentsMod.LOGGER.debug("Registering Recipes");
 	    	recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogBed::new).setRegistryName(BlockNames.DOG_BED));
 	    	recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogCollar::new).setRegistryName(Reference.MOD_ID, "collar_colouring"));
 	    	recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogCape::new).setRegistryName(Reference.MOD_ID, "cape_colouring"));
-	        DoggyTalentsMod.LOGGER.info("Finished Registering Recipes");
+	        DoggyTalentsMod.LOGGER.debug("Finished Registering Recipes");
 	    }
     }
 }

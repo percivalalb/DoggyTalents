@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -115,7 +114,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 	private static final DataParameter<Byte>                     DOG_FLAGS       = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<Map<Talent, Integer>>     TALENTS_PARAM   = EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
 	private static final DataParameter<Integer>                  HUNGER          = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-	private static final DataParameter<Byte>                     BONE_VARIANT            = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte>                     BONE_VARIANT    = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
 	private static final DataParameter<Integer>                  CAPE            = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
 	private static final DataParameter<Optional<BlockPos>>       BOWL_POS        = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	private static final DataParameter<Optional<BlockPos>>       BED_POS         = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -580,8 +579,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                         ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
 
                     return true;
-                }
-                else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
+                } else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
                 	if(!this.world.isRemote) {
                 		EntityDog babySpawn = this.createChild(this);
                         if(babySpawn != null) {
@@ -599,22 +597,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                      }
 
                 	return true;
-                }
-            	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
-            		this.startRiding(player);
-            		
-            		if(this.sitGoal != null)
-            			this.sitGoal.setSitting(true);
-            		
-                    return true;
-                }*/
-                //TODO else if(stack.getItem() == Items.BIRCH_DOOR && this.canInteract(player)) {
-                //	this.patrolOutline.add(this.getPosition());
-                //}
-                //else if(stack.getItem() == Items.OAK_DOOR && this.canInteract(player)) {
-                //	this.patrolOutline.clear();
-                //}
-                else if(stack.getItem() == Items.STICK && this.canInteract(player)) {
+                } else if(stack.getItem() == Items.STICK && this.canInteract(player)) {
                 	
                 	if(this.isIncapacicated()) {
                 		if(!this.world.isRemote)
@@ -623,13 +606,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                 		if(this.world.isRemote) {
                 			DoggyTalentsMod.PROXY.openDoggyInfo(this);
                 		}
-                		
-                		//TODO
-	                	//if(player instanceof ServerPlayerEntity && !(player instanceof FakePlayer)) {
-	        	        //	ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity) player;
-	        	
-	        	        //	NetworkHooks.openGui(entityPlayerMP, this, buf -> buf.writeInt(this.getEntityId()));
-	        	        //}
                 	}
                 	
                     return true;

@@ -103,7 +103,7 @@ public class GuiDogInfo extends Screen {
     			public void renderToolTip(int mouseX, int mouseY) {
     				List<String> list = new ArrayList<String>();
     				list.add(TextFormatting.ITALIC + I18n.format("doggui.prevpage"));
-    		    	GuiDogInfo.this.renderTooltip(list, mouseX, mouseY, GuiDogInfo.this.font);
+    				GuiDogInfo.this.renderTooltip(list, mouseX, mouseY, GuiDogInfo.this.font);
     			}
     		});
     	    this.addButton(new Button(48, this.btnPerPages * 21 + 10, 20, 20, ">", button -> {

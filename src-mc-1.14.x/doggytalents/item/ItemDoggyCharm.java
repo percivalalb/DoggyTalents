@@ -19,7 +19,6 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -98,21 +97,5 @@ public class ItemDoggyCharm extends Item {
 				return new ActionResult<>(ActionResultType.PASS, itemstack);
 			}
 		}
-	}
-	
-    public Entity spawnCreature(World worldIn, double x, double y, double z, PlayerEntity playerIn) {
-
-        EntityDog dog = ModEntities.DOG.create(worldIn);
-
-        dog.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
-        dog.rotationYawHead = dog.rotationYaw;
-        dog.renderYawOffset = dog.rotationYaw;
-        dog.setTamed(true);
-        dog.setOwnerId(playerIn.getUniqueID());
-        worldIn.addEntity(dog);
-        dog.playAmbientSound();
-
-        return dog;
-    }
-       
+	} 
 }

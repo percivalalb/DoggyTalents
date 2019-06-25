@@ -173,9 +173,9 @@ public class GuiDogInfo extends Screen {
             }));
         
         
-        this.addButton(new Button(this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canFriendlyFire()), button -> {
-            button.setMessage(String.valueOf(!GuiDogInfo.this.dog.canFriendlyFire()));
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketFriendlyFire(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.canFriendlyFire()));
+        this.addButton(new Button(this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canPlayersAttack()), button -> {
+            button.setMessage(String.valueOf(!GuiDogInfo.this.dog.canPlayersAttack()));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketFriendlyFire(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.canPlayersAttack()));
         }));
         
         this.addButton(new Button(topX + 40, topY + 25, 60, 20, I18n.format(this.dog.MODE.getMode().getUnlocalisedName()), button -> {

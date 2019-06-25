@@ -38,7 +38,7 @@ public class PacketFriendlyFire {
                 
                 EntityDog dog = (EntityDog)target;
                 
-                dog.setFriendlyFire(message.friendlyFire);
+                dog.setCanPlayersAttack(message.friendlyFire);
             });
 
             ctx.get().setPacketHandled(true);

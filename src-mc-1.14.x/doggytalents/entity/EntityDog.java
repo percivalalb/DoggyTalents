@@ -298,7 +298,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         compound.putInt("collarColour", this.getCollarData());
         compound.putInt("dogHunger", this.getDogHunger());
         compound.putBoolean("willObey", this.willObeyOthers());
-        compound.putBoolean("friendlyFire", this.canFriendlyFire());
+        compound.putBoolean("friendlyFire", this.canPlayersAttack());
         compound.putBoolean("radioCollar", this.hasRadarCollar());
         compound.putBoolean("sunglasses", this.hasSunglasses());
         compound.putInt("capeData", this.getCapeData());
@@ -319,7 +319,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         if (compound.contains("collarColour", 99)) this.setCollarData(compound.getInt("collarColour"));
         this.setDogHunger(compound.getInt("dogHunger"));
         this.setWillObeyOthers(compound.getBoolean("willObey"));
-        this.setFriendlyFire(compound.getBoolean("friendlyFire"));
+        this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
         this.hasRadarCollar(compound.getBoolean("radioCollar"));
         this.setHasSunglasses(compound.getBoolean("sunglasses"));
         if(compound.contains("capeData", 99)) this.setCapeData(compound.getInt("capeData"));
@@ -902,7 +902,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         else {
             Entity entity = damageSource.getTrueSource();
             //Friendly fire
-            if (!this.canFriendlyFire() && entity instanceof PlayerEntity)
+            if (!this.canPlayersAttack() && entity instanceof PlayerEntity)
                 return false;
 
             if (!TalentHelper.attackEntityFrom(this, damageSource, damage))
@@ -1137,8 +1137,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 
     @OnlyIn(Dist.CLIENT)
-    public float getShadingWhileWet(float p_70915_1_) {
-        return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * p_70915_1_) / 2.0F * 0.25F;
+    public float getShadingWhileWet(float partialTick) {
+        return 0.75F + (this.prevTimeWolfIsShaking + (this.timeWolfIsShaking - this.prevTimeWolfIsShaking) * partialTick) / 2.0F * 0.25F;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -1154,8 +1154,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 
     @OnlyIn(Dist.CLIENT)
-    public float getInterestedAngle(float p_70917_1_) {
-        return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * p_70917_1_) * 0.15F * (float)Math.PI;
+    public float getInterestedAngle(float partialTick) {
+        return (this.headRotationCourseOld + (this.headRotationCourse - this.headRotationCourseOld) * partialTick) * 0.15F * (float)Math.PI;
     }
        
     public float getWagAngle(float partialTick, float offset) {
@@ -1313,11 +1313,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         return this.getDogFlag(2);
     }
     
-    public void setFriendlyFire(boolean flag) {
+    public void setCanPlayersAttack(boolean flag) {
         this.setDogFlag(4, flag);
     }
     
-    public boolean canFriendlyFire() {
+    public boolean canPlayersAttack() {
         return this.getDogFlag(4);
     }
     

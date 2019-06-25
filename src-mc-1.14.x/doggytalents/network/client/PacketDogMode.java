@@ -29,7 +29,6 @@ public class PacketDogMode {
         return new PacketDogMode(entityId, EnumMode.byIndex(modeIndex));
     }
     
-    
     public static class Handler {
         public static void handle(final PacketDogMode message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {

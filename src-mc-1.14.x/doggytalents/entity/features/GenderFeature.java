@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
 

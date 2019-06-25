@@ -8,8 +8,93 @@ Update List Key
 (/) Other
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.14.3
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.4 | 25th June 2019
+Requires forge 27.0.2 or higher
+Initial release, parent version 1.14.2-1.15.0.4
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+MC 1.14.2
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.4 | 25th June 2019
+Requires forge 26.0.63 or higher
++ Add summary of treat bag contents to tooltip
+* Fix change mode actually changing gender
+* Correct bone render for child dog
+
+1.15.0.3 | 24th June 2019
++ Readded JEI intergration (dog bed recipes and seperation in item list)
++ Remove max id limit on talent registry and disable sync
++ Play hearts effect when dog is fed
+# Reduced size of dog data payload sent to client
+# Change log level of registration events to 'debug'
+# Dogs respect pickup delay on fetch items and pack puppy
+# Cleaned up gender dog and added unisex gender
+* Fix crash when registering block/item colors
+* Fix inverted hunger setting
+* Fix fisher dogs dropping fish in rain
+* Fix dog model going crazy when shaking and death animation starts
+
+1.15.0.2 | 23rd June 2019
+Requires forge 26.0.61 or higher
+* Fixed dog bed rendering
+* Fixed friendly fire not working
+* Fixed incompatibility with latest versions of forge
+
+1.15.0.0-pr6 | 15th June 2019
++ Dog Bath, Bed and Bowl can now all be waterlogged
++ Can use pick block button on dog with gives doggycharm
++ Fix dogs wandering when trying to follow owner
+# Change entity tracking param to be less demanding
+* Fix incorrect bounding box for different dog sizes
+
+1.15.0.0-pr5 | 13th June 2019
+* Fixed being unable to connect to servers (that was a pesky bug to track down)
+* Fixed dogs being able to attack tamed cats
+* Skeletons run from dogs like wolves
+* Dogs run to water when on fire
+* Fixed swimmer dog
+* Beg, items, packpuppy blacklist now use Item tags
+
+1.15.0.0-pr4 | 12th June 2019
+* Added two new doggy textures
+* Improved follow AI
+* Use Tags for item lists
+* Change roaring gale msgs to status msg
+* Don't display UUID if owner unknown
+
+* Updated ru_ru lang file 
+1.15.0.0-pr3 | 11th June 2019
+* Fix pack puppy not rendering dog and incorrect number of slots
+* Fix sunglasses not rendering properly
+* Implement config properly and change config option names and add a few more.
+* Fix tactical beam being invisible
+* Fix crash on server
+* Others
+* Re-added ability to disable talents in server-config/doggytalents-talents.toml
+* You can now fill glass bottles on dog bath
+* Updated zh_cn lang file 
+
+1.15.0.0-pr2 | 9th June 2019
+Requires forge 26.0.12 or higher
+* GUI's are working now
+* Fixed bed recipe and dye-able collar/cape recipes
+
+1.15.0.0-pr1 | 8th June 2019
+Initial release, parent version 1.13.2-1.15.0.0
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.13.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.2 | 15th June 2019
++ Can use pick block button on dog with gives doggycharm
++ Fix dogs wandering when trying to follow owner
+# Change entity tracking param to be less demanding
+* Fix incorrect bounding box for different dog sizes
 
 1.15.0.1 | 13th June 2019
 + Untamed dogs (don't mistake dogs with wolves) can also be tamed with training treats
@@ -85,6 +170,17 @@ Initial release, parent version 1.14.2.396
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.3 | th June 2019
+* Fix dog bed, dog bath and food bowl staying when block below is destroyed
+
+1.15.0.2 | 15th June 2019
++ Can use pick block button on dog with gives doggycharm
++ Fix dogs wandering when trying to follow owner
+# Change entity tracking param to be less demanding
+* Fix natura fusewood casing texture
+* Remove inventory string in treat bag GUI
+* Fix incorrect bounding box for different dog sizes
 
 1.15.0.1 | 13th June 2019
 + Untamed dogs (don't mistake dogs with wolves) can also be tamed with training treats

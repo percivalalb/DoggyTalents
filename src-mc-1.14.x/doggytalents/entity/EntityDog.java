@@ -98,6 +98,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
@@ -967,7 +968,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             if(!this.world.isRemote) {
                 this.locationManager.remove(this);
                 
-                if(this.world.getGameRules().getBoolean("showDeathMessages") && this.getOwner() instanceof ServerPlayerEntity) {
+                if(this.world.getGameRules().func_223586_b(GameRules.field_223609_l) && this.getOwner() instanceof ServerPlayerEntity) {
                     this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
                 }
             }

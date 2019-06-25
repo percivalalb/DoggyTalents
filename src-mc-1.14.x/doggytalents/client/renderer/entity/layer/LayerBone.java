@@ -32,7 +32,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     
             if(this.getEntityModel().isChild) { //isChild
                 float f = 0.5F;
-                GlStateManager.translatef(0.0F, 0.75F, 0.0F);
+                GlStateManager.translatef(0.0F, 0.75F, -0.25F);
                 GlStateManager.scalef(0.5F, 0.5F, 0.5F);
             }
 

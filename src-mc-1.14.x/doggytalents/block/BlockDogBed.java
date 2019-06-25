@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.BedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
@@ -103,8 +102,8 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
     
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        for(BedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys())
-            for(BedMaterial casingId : DogBedRegistry.CASINGS.getKeys())
+        for(IBedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys())
+            for(IBedMaterial casingId : DogBedRegistry.CASINGS.getKeys())
                 items.add(DogBedRegistry.createItemStack(casingId, beddingId));
     }
     

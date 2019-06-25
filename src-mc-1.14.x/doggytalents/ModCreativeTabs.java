@@ -3,7 +3,7 @@ package doggytalents;
 import java.util.List;
 import java.util.Random;
 
-import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ public class ModCreativeTabs {
             return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
         
-        public BedMaterial pickRandomString(List<BedMaterial> strs) {
+        public IBedMaterial pickRandomString(List<IBedMaterial> strs) {
             return strs.get(this.random.nextInt(strs.size()));
         }
     };

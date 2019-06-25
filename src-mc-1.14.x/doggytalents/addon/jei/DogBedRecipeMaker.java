@@ -3,7 +3,7 @@ package doggytalents.addon.jei;
 import java.util.ArrayList;
 import java.util.List;
 
-import doggytalents.api.registry.BedMaterial;
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.lib.Reference;
 import net.minecraft.inventory.IInventory;
@@ -19,8 +19,8 @@ public final class DogBedRecipeMaker {
     public static List<IShapedRecipe<? extends IInventory>> createDogBedRecipes() {
         List<IShapedRecipe<? extends IInventory>> recipes = new ArrayList<>();
         String group = "doggytalents.dogbed";
-        for(BedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys()) {
-            for(BedMaterial casingId : DogBedRegistry.CASINGS.getKeys()) {
+        for(IBedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys()) {
+            for(IBedMaterial casingId : DogBedRegistry.CASINGS.getKeys()) {
                 
                 Ingredient beddingIngredient = beddingId.getIngredients();
                 Ingredient casingIngredient = casingId.getIngredients();

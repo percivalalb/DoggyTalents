@@ -23,7 +23,7 @@ public class DogBedRegistry {
     public final static DogBedRegistry CASINGS = new DogBedRegistry("casing");
     public final static DogBedRegistry BEDDINGS = new DogBedRegistry("bedding");
     
-    private final List<BedMaterial> REGISTRY = new ArrayList<BedMaterial>();
+    private final List<IBedMaterial> REGISTRY = new ArrayList<IBedMaterial>();
     private final String key;
     
     public DogBedRegistry(String key) {
@@ -34,7 +34,7 @@ public class DogBedRegistry {
         return this.registerMaterial(new BedMaterial(block, textureLocation, Ingredient.fromItems(block)));
     }
     
-    public BedMaterial registerMaterial(BedMaterial material) {
+    public IBedMaterial registerMaterial(IBedMaterial material) {
         if(this.REGISTRY.contains(material)) {
             DoggyTalentsMod.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", material); 
             return null;
@@ -46,7 +46,7 @@ public class DogBedRegistry {
         }
     }
     
-    public List<BedMaterial> getKeys() {
+    public List<IBedMaterial> getKeys() {
         return this.REGISTRY;
     }
     

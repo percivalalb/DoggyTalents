@@ -8,12 +8,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBeddings;
 import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.block.BlockDogBed;
@@ -29,6 +31,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IEnviromentBlockReader;
 import net.minecraftforge.api.distmarker.Dist;
@@ -47,7 +50,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     private IBakedModel bakedModel;
     
     private final VertexFormat format;
-    private final Map<Map<String, Direction>, IBakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<String, String, Direction>, IBakedModel> cache = Maps.newHashMap();
 
     public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel, VertexFormat format) {
         this.modelLoader = modelLoader;
@@ -57,8 +60,8 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     public IBakedModel getCustomModel(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
-        String casingTex = casing.getTexture().toString();
-        String beddingTex = bedding.getTexture().toString();
+        String casingTex = casing.getTexture();
+        String beddingTex = bedding.getTexture();
         
         return this.getCustomModel(casingTex, beddingTex, facing);
     }
@@ -73,48 +76,42 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         IBedMaterial casing = extraData.getData(TileEntityDogBed.CASING);
         IBedMaterial bedding = extraData.getData(TileEntityDogBed.BEDDING);
         Direction facing = extraData.getData(TileEntityDogBed.FACING);
-        return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand); //getBakedModel().getQuads(state, side, rand);
+        return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand);
     }
 
     @Override
     public IModelData getModelData(@Nonnull IEnviromentBlockReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
         IBedMaterial casing = ModBeddings.OAK;
         IBedMaterial bedding = ModBeddings.WHITE;
+        Direction facing = Direction.NORTH;
+        
         TileEntity tile = world.getTileEntity(pos);
         if(tile instanceof TileEntityDogBed) {
             casing = ((TileEntityDogBed)tile).getCasingId();
             bedding = ((TileEntityDogBed)tile).getBeddingId();
         }
-        if(state.has(BlockDogBed.FACING)) {
-            tileData.setData(TileEntityDogBed.FACING, state.get(BlockDogBed.FACING));
-        }
         
+        if(state.has(BlockDogBed.FACING)) {
+            facing = state.get(BlockDogBed.FACING);
+        }
 
         tileData.setData(TileEntityDogBed.CASING, casing);
         tileData.setData(TileEntityDogBed.BEDDING, bedding);
+        tileData.setData(TileEntityDogBed.FACING, facing);
         return tileData;
     }
     
-    public IBakedModel getCustomModel(String casingResource, String beddingResource, Direction facing) {
+    public IBakedModel getCustomModel(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
         IBakedModel customModel = this.bakedModel;
-        if(casingResource == null) casingResource = "nomissing";
-        if(beddingResource == null) beddingResource = "nomissing";
-        if(facing == null) facing = Direction.NORTH;
+
+        Triple<String, String, Direction> key = ImmutableTriple.of(casingResource, beddingResource, facing);
+
+        IBakedModel possibleModel = this.cache.get(key);
         
-
-        Map<String, Direction> cacheKey = Maps.newHashMap();
-        cacheKey.put(beddingResource + casingResource, facing);
-
-        if(this.cache.containsKey(cacheKey))
-            customModel = this.cache.get(cacheKey);
-        else if(this.model != null) {
-            ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
-            builder.put("bedding", beddingResource);
-            builder.put("casing", casingResource);
-            builder.put("particle", casingResource);
-            ImmutableMap<String, String> textures = builder.build();
-            
-            
+        if(possibleModel != null) {
+            customModel = possibleModel;
+        } else if(this.model != null) {
+            DoggyTalentsMod.LOGGER.info("Create");
             List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
             for (BlockPart part : this.model.getElements()) {
                 elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
@@ -122,7 +119,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
             BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
                 Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(), //New Textures man VERY IMPORTANT
-                this.model.getAllTransforms(), Lists.newArrayList(model.getOverrides()));
+                this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
             newModel.name = this.model.name;
             newModel.parent = this.model.parent;
 
@@ -130,10 +127,8 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
             newModel.textures.put("casing", casingResource);
             newModel.textures.put("particle", casingResource);
             
-
-           // customModel = retexturedModel.bake(new TRSRTransformation(TRSRTransformation.getMatrix(facing)), this.format, this.textureGetter::apply);
             customModel = newModel.bake(this.modelLoader, ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), this.format);
-            this.cache.put(cacheKey, customModel);
+            this.cache.put(key, customModel);
         }
 
         return customModel;
@@ -165,7 +160,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-    public TextureAtlasSprite getParticleTexture(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+    public TextureAtlasSprite getParticleTexture(@Nonnull IBedMaterial casing, @Nonnull IBedMaterial bedding, @Nonnull Direction facing) {
         return this.getCustomModel(casing, bedding, facing).getParticleTexture();
     }
 

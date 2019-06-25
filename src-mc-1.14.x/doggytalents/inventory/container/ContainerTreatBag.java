@@ -1,13 +1,13 @@
 package doggytalents.inventory.container;
 
 import doggytalents.ModContainerTypes;
-import doggytalents.ModItems;
 import doggytalents.inventory.InventoryTreatBag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketBuffer;
 
 public class ContainerTreatBag extends Container {
 
@@ -15,15 +15,15 @@ public class ContainerTreatBag extends Container {
     public ItemStack itemstack;
     public InventoryTreatBag inventoryTreatBag;
         
-    public ContainerTreatBag(int windowId, PlayerInventory playerInventory) {
-        this(windowId, playerInventory, 0, ItemStack.EMPTY);
+    public ContainerTreatBag(int windowId, PlayerInventory playerInventory, PacketBuffer buf) {
+        this(windowId, playerInventory, buf.readByte(), ItemStack.EMPTY);
     }
     
     public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
         super(ModContainerTypes.TREAT_BAG, windowId);
         this.slot = slotIn;
         this.itemstack = itemstackIn;
-        this.inventoryTreatBag = new InventoryTreatBag(playerInventory, slotIn, itemstackIn);
+        this.inventoryTreatBag = new InventoryTreatBag(slotIn, itemstackIn);
         assertInventorySize(playerInventory, 3 * 5);
         this.inventoryTreatBag.openInventory(playerInventory.player);
         
@@ -43,7 +43,7 @@ public class ContainerTreatBag extends Container {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
                 @Override
                 public boolean canTakeStack(PlayerEntity playerIn) {
-                    return this.getStack().getItem() != ModItems.TREAT_BAG;
+                    return ContainerTreatBag.this.slot != this.getSlotIndex();
                 }
             });
         

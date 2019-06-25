@@ -141,7 +141,7 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
                 ItemStack stack = playerIn.getHeldItem(handIn);
                 
                 if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-                    InventoryTreatBag treatBag = new InventoryTreatBag(playerIn.inventory, playerIn.inventory.currentItem, stack);
+                    InventoryTreatBag treatBag = new InventoryTreatBag(playerIn.inventory.currentItem, stack);
                     treatBag.openInventory(playerIn);
                     
                     for(int i = 0; i < treatBag.getSizeInventory(); i++)

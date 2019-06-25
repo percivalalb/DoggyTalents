@@ -793,7 +793,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     return true;
                 } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player)) {
 
-                    InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory, player.inventory.currentItem, stack);
+                    InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory.currentItem, stack);
                     treatBag.openInventory(player);
 
                     int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);

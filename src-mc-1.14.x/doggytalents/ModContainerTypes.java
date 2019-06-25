@@ -10,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -46,7 +47,7 @@ public class ModContainerTypes {
                 }
                 
             }).setRegistryName(GuiNames.PACK_PUPPY));
-            containerRegistry.register(new ContainerType<ContainerTreatBag>(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
+            containerRegistry.register(IForgeContainerType.create(ContainerTreatBag::new).setRegistryName(GuiNames.TREAT_BAG));
             DoggyTalentsMod.LOGGER.debug("Finished Registering Containers");
         }
     }

@@ -42,6 +42,7 @@
    "item.doggytalents.creative_collar.tooltip": "Дает 1000 очков, чтобы потратить",
    "item.doggytalents.creative_radar.tooltip": "Находит ЛЮБЫХ принадлежащих собак",
    "item.doggytalents.owner_change.tooltip": "Устанавливает ЛЮБУЮ собаку вашей",
+   "item.doggytalents.treat_bag.contents": "%d %s",
    "container.doggytalents.pack_puppy": "Рюкзак пёсика",
    "container.doggytalents.food_bowl": "Миска для еды",
    "container.doggytalents.treat_bag": "Мешочек с пряностями",

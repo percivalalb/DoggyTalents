@@ -42,6 +42,7 @@
    "item.doggytalents.creative_collar.tooltip": "给予1000点以花费",
    "item.doggytalents.creative_radar.tooltip": "找到任何拥有的狗",
    "item.doggytalents.owner_change.tooltip": "设置任何狗是你的",
+   "item.doggytalents.treat_bag.contents": "%d %s",
    "container.doggytalents.pack_puppy": "小狗背包",
    "container.doggytalents.food_bowl": "狗食盆",
    "container.doggytalents.treat_bag": "口粮袋子",

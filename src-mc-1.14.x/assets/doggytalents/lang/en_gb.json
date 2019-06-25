@@ -42,6 +42,7 @@
    "item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
    "item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
    "item.doggytalents.owner_change.tooltip": "Sets ANY dog to be yours",
+   "item.doggytalents.treat_bag.contents": "%d %s",
    "container.doggytalents.pack_puppy": "Pack Puppy",
    "container.doggytalents.food_bowl": "Food Bowl",
    "container.doggytalents.treat_bag": "Treat Bag",

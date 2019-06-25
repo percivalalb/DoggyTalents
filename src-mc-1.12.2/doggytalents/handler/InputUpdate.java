@@ -11,18 +11,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class InputUpdate {
 
-	@SubscribeEvent
-	public void event(InputUpdateEvent event) {
-		if(event.getMovementInput().jump) {
-			Entity entity = event.getEntityPlayer().getRidingEntity();
-			if(event.getEntityPlayer().getRidingEntity() != null && entity instanceof EntityDog) {
-				EntityDog dog = (EntityDog)entity;
-				
-				if(dog.canJump()) {
-					dog.setJumpPower(100);
-					DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
-				}
-			}
-		}
-	}
+    @SubscribeEvent
+    public void event(InputUpdateEvent event) {
+        if(event.getMovementInput().jump) {
+            Entity entity = event.getEntityPlayer().getRidingEntity();
+            if(event.getEntityPlayer().getRidingEntity() != null && entity instanceof EntityDog) {
+                EntityDog dog = (EntityDog)entity;
+                
+                if(dog.canJump()) {
+                    dog.setJumpPower(100);
+                    DogJumpMessage jumpMessage = new DogJumpMessage(dog.getEntityId());
+                }
+            }
+        }
+    }
 }

@@ -11,9 +11,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(value = Side.CLIENT)
 public class ParticleCustomDigging extends ParticleDigging {
 
-	public ParticleCustomDigging(World worldIn, double xIn, double yIn, double zIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, IBlockState state, BlockPos pos, TextureAtlasSprite sprite) {
-		super(worldIn, xIn, yIn, zIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
-		this.setBlockPos(pos);
-		this.setParticleTexture(sprite);
-	}
+    public ParticleCustomDigging(World worldIn, double xIn, double yIn, double zIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, IBlockState state, BlockPos pos, TextureAtlasSprite sprite) {
+        super(worldIn, xIn, yIn, zIn, xSpeedIn, ySpeedIn, zSpeedIn, state);
+        this.setBlockPos(pos);
+        this.setParticleTexture(sprite);
+    }
 }

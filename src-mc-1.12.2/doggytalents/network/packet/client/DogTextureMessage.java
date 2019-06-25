@@ -8,35 +8,35 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class DogTextureMessage extends AbstractServerMessage {
-	
-	public int entityId, doggyTexture;
-	
-	public DogTextureMessage() {}
+    
+    public int entityId, doggyTexture;
+    
+    public DogTextureMessage() {}
     public DogTextureMessage(int entityId, int doggyTexture) {
         this.entityId = entityId;
         this.doggyTexture = doggyTexture;
     }
     
-	@Override
-	public void read(PacketBuffer buffer) {
-		this.entityId = buffer.readInt();
-		this.doggyTexture = buffer.readInt();
-	}
+    @Override
+    public void read(PacketBuffer buffer) {
+        this.entityId = buffer.readInt();
+        this.doggyTexture = buffer.readInt();
+    }
 
-	@Override
-	public void write(PacketBuffer buffer) {
-		buffer.writeInt(this.entityId);
-		buffer.writeInt(this.doggyTexture);
-	}
-	
-	@Override
-	public void process(EntityPlayer player, Side side) {
-		Entity target = player.world.getEntityByID(this.entityId);
+    @Override
+    public void write(PacketBuffer buffer) {
+        buffer.writeInt(this.entityId);
+        buffer.writeInt(this.doggyTexture);
+    }
+    
+    @Override
+    public void process(EntityPlayer player, Side side) {
+        Entity target = player.world.getEntityByID(this.entityId);
         if(!(target instanceof EntityDog))
-        	return;
+            return;
         
         EntityDog dog = (EntityDog)target;
         
-		dog.setTameSkin(this.doggyTexture);
-	}
+        dog.setTameSkin(this.doggyTexture);
+    }
 }

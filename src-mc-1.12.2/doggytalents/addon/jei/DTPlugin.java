@@ -14,36 +14,36 @@ import net.minecraft.nbt.NBTTagCompound;
 
 @JEIPlugin
 public class DTPlugin implements IModPlugin {
-	
-	@Override
-	public void registerItemSubtypes(ISubtypeRegistry registration) {
-		registration.registerSubtypeInterpreter(Item.getItemFromBlock(ModBlocks.DOG_BED), itemStack -> {
-			if(itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("doggytalents")) {
-				NBTTagCompound tag = itemStack.getTagCompound().getCompoundTag("doggytalents");
-		    	return tag.getString("casingId") + ":" + tag.getString("beddingId");
-			}
-			
-			return "missing:missing";
-		});
-	}
+    
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry registration) {
+        registration.registerSubtypeInterpreter(Item.getItemFromBlock(ModBlocks.DOG_BED), itemStack -> {
+            if(itemStack.hasTagCompound() && itemStack.getTagCompound().hasKey("doggytalents")) {
+                NBTTagCompound tag = itemStack.getTagCompound().getCompoundTag("doggytalents");
+                return tag.getString("casingId") + ":" + tag.getString("beddingId");
+            }
+            
+            return "missing:missing";
+        });
+    }
 
-	@Override
-	public void registerIngredients(IModIngredientRegistration registry) {
-		
-	}
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
+        
+    }
 
-	@Override
-	public void register(IModRegistry registry) {
-		registry.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
-	}
+    @Override
+    public void register(IModRegistry registry) {
+        registry.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+    }
 
-	@Override
-	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-		
-	}
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        
+    }
 
-	@Override
-	public void registerCategories(IRecipeCategoryRegistration registry) {
-		
-	}
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry) {
+        
+    }
 }

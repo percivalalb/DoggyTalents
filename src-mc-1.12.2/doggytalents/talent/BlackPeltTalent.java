@@ -10,17 +10,17 @@ import net.minecraft.entity.Entity;
  */
 public class BlackPeltTalent extends Talent {
 
-	@Override
-	public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
-		int level = dog.TALENTS.getLevel(this);
-		
-		int critChance = level == 5 ? 1 : 0;
+    @Override
+    public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
+        int level = dog.TALENTS.getLevel(this);
+        
+        int critChance = level == 5 ? 1 : 0;
         critChance += level;
         //TODO redo crit to be better in line with text info
         if (dog.getRNG().nextInt(6) < critChance) {
-        	damage += (damage + 1) / 2;
-        	DoggyTalents.PROXY.spawnCrit(dog.world, entity);
+            damage += (damage + 1) / 2;
+            DoggyTalents.PROXY.spawnCrit(dog.world, entity);
         }
         return damage;
-	}
+    }
 }

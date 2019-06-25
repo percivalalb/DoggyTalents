@@ -11,8 +11,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderDogBeam extends RenderSnowball<EntityDoggyBeam> {
 
-	public RenderDogBeam(RenderManager renderManagerIn) {
-		super(renderManagerIn, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem());
-	}
+    public RenderDogBeam(RenderManager renderManagerIn) {
+        super(renderManagerIn, Items.SNOWBALL, Minecraft.getMinecraft().getRenderItem());
+    }
 
 }

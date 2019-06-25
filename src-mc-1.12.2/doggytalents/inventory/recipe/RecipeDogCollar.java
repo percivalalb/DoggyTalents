@@ -18,9 +18,9 @@ import net.minecraft.world.World;
  */
 public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
 
-	@Override
-	public boolean matches(InventoryCrafting inv, World worldIn) {
-		ItemStack itemstack = ItemStack.EMPTY;
+    @Override
+    public boolean matches(InventoryCrafting inv, World worldIn) {
+        ItemStack itemstack = ItemStack.EMPTY;
         List<ItemStack> list = Lists.<ItemStack>newArrayList();
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
@@ -31,7 +31,7 @@ public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistr
             {
                 if (itemstack1.getItem() instanceof ItemWoolCollar)
                 {
-                	ItemWoolCollar itemarmor = (ItemWoolCollar)itemstack1.getItem();
+                    ItemWoolCollar itemarmor = (ItemWoolCollar)itemstack1.getItem();
 
                     if(!itemstack.isEmpty())
                     {
@@ -55,9 +55,9 @@ public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistr
         return !itemstack.isEmpty() && !list.isEmpty();
     }
 
-	@Override
+    @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
-		ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack = ItemStack.EMPTY;
         int[] aint = new int[3];
         int i = 0;
         int count = 0; //The number of different sources of colour
@@ -120,12 +120,12 @@ public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistr
         }
     }
 
-	@Override
+    @Override
     public ItemStack getRecipeOutput() {
         return ItemStack.EMPTY;
     }
 
-	@Override
+    @Override
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
@@ -137,13 +137,13 @@ public class RecipeDogCollar extends net.minecraftforge.registries.IForgeRegistr
         return nonnulllist;
     }
 
-	@Override
+    @Override
     public boolean isDynamic() {
         return true;
     }
 
-	//Is on a 3x3 grid or bigger
-	@Override
+    //Is on a 3x3 grid or bigger
+    @Override
     public boolean canFit(int width, int height) {
         return width * height >= 2;
     }

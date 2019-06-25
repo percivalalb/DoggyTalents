@@ -23,23 +23,23 @@ public class LayerCape implements LayerRenderer<EntityDog> {
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.hasCape()) {
-        	if(dog.hasCapeColoured()) {
+            if(dog.hasCapeColoured()) {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_CAPE_COLOURED);
-        		if(dog.isCapeColoured()) {
-    	            float[] afloat = dog.getCapeColour();
-    	            GlStateManager.color(afloat[0], afloat[1], afloat[2]);
+                if(dog.isCapeColoured()) {
+                    float[] afloat = dog.getCapeColour();
+                    GlStateManager.color(afloat[0], afloat[1], afloat[2]);
                 }
-        	}
-        	else if(dog.hasFancyCape()) {
+            }
+            else if(dog.hasFancyCape()) {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_CAPE);
                 GlStateManager.color(1.0F, 1.0F, 1.0F);
-        	}
-        	else if(dog.hasLeatherJacket()) {
+            }
+            else if(dog.hasLeatherJacket()) {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
                 GlStateManager.color(1.0F, 1.0F, 1.0F);
-        	}
+            }
 
-        	this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

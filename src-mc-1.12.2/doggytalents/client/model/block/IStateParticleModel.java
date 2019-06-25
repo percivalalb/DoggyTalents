@@ -5,6 +5,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public interface IStateParticleModel {
 
-	public TextureAtlasSprite getParticleTexture(IBlockState state);
-	
+    public TextureAtlasSprite getParticleTexture(IBlockState state);
+    
 }

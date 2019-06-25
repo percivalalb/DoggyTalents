@@ -8,31 +8,31 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class DogJumpMessage extends AbstractServerMessage {
-	
-	public int entityId;
-	
-	public DogJumpMessage() {}
+    
+    public int entityId;
+    
+    public DogJumpMessage() {}
     public DogJumpMessage(int entityId) {
         this.entityId = entityId;
     }
     
-	@Override
-	public void read(PacketBuffer buffer) {
-		this.entityId = buffer.readInt();
-	}
+    @Override
+    public void read(PacketBuffer buffer) {
+        this.entityId = buffer.readInt();
+    }
 
-	@Override
-	public void write(PacketBuffer buffer) {
-		buffer.writeInt(this.entityId);
-	}
-	
-	@Override
-	public void process(EntityPlayer player, Side side) {
-		Entity target = player.world.getEntityByID(this.entityId);
+    @Override
+    public void write(PacketBuffer buffer) {
+        buffer.writeInt(this.entityId);
+    }
+    
+    @Override
+    public void process(EntityPlayer player, Side side) {
+        Entity target = player.world.getEntityByID(this.entityId);
         if(!(target instanceof EntityDog))
-        	return;
+            return;
         
         EntityDog dog = (EntityDog)target;
-		
-	}
+        
+    }
 }

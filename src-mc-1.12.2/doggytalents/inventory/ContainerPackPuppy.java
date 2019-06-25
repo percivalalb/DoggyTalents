@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
  * @author ProPercivalalb
  */
 public class ContainerPackPuppy extends Container {
-	
+    
     private EntityDog dog;
 
     public ContainerPackPuppy(EntityPlayer player, EntityDog dog) {
@@ -56,7 +56,7 @@ public class ContainerPackPuppy extends Container {
                 return ItemStack.EMPTY;
 
             if(itemstack1.isEmpty())
-            	slot.putStack(ItemStack.EMPTY);
+                slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
             

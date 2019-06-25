@@ -8,10 +8,10 @@ import net.minecraftforge.common.property.IUnlistedProperty;
  */
 public class PropertyString implements IUnlistedProperty<String> {
 
-	private final String name;	
+    private final String name;    
 
     public PropertyString(String name) {
-    	this.name = name;
+        this.name = name;
     }
 
     public String getName() {

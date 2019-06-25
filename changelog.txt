@@ -171,8 +171,19 @@ Initial release, parent version 1.14.2.396
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-1.15.0.3 | th June 2019
+1.15.0.4 | 25th June 2019
++ Add summary of treat bag contents to tooltip
++ Remove max id limit on talent registry
++ Play hearts effect when dog is fed
+# Reduced size of dog data payload sent to client
+# Change log level of registration events to 'debug'
+# Dogs respect pickup delay on fetch items and pack puppy
+# Cleaned up gender dog and added unisex gender
+# Change time for dog pups to 2 minecraft days (can change in config)
 * Fix dog bed, dog bath and food bowl staying when block below is destroyed
+* Fix fisher dogs dropping fish in rain
+* Fix dog model going crazy when shaking and death animation starts
+* Correct bone render for child dog
 
 1.15.0.2 | 15th June 2019
 + Can use pick block button on dog with gives doggycharm

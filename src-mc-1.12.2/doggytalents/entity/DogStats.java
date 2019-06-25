@@ -5,15 +5,15 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class DogStats extends DogFeature {
 
-	public DogStats(EntityDog dogIn) {
-		super(dogIn);
-	}
+    public DogStats(EntityDog dogIn) {
+        super(dogIn);
+    }
 
-	public NBTTagCompound write(NBTTagCompound compound) {
-		return compound;
-	}
-	
-	public void read(NBTTagCompound compound) {
-		
-	}
+    public NBTTagCompound write(NBTTagCompound compound) {
+        return compound;
+    }
+    
+    public void read(NBTTagCompound compound) {
+        
+    }
 }

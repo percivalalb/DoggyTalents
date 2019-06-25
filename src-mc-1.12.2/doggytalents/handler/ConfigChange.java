@@ -7,10 +7,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ConfigChange {
 
-	@SubscribeEvent
-	public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(Reference.MOD_ID))
-			ConfigurationHandler.loadConfig();
-	}
-	
+    @SubscribeEvent
+    public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if(event.getModID().equals(Reference.MOD_ID))
+            ConfigurationHandler.loadConfig();
+    }
+    
 }

@@ -1,10 +1,12 @@
 package doggytalents.item;
 
-import doggytalents.ModItems;
+import com.google.common.base.Supplier;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
@@ -18,24 +20,22 @@ import net.minecraft.world.World;
  * @author ProPercivalalb
  **/
 public class ItemThrowBone extends ItemDT {
-	
-	public enum Type {
-		DRY,
-		WET
-	}
-	
-	public Type type;
-	
-	public ItemThrowBone() {
-		this(Type.DRY);
-	}
-	
-	public ItemThrowBone(Type type) {
-		super();
-		this.type = type;
-	}
-	
-	public void setHeadingFromThrower(EntityItem entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
+    
+    public enum Type {
+        DRY,
+        WET
+    }
+    
+    public Type type;
+    public Supplier<Item> altBone;
+    
+    public ItemThrowBone(Type type, Supplier<Item> altBone) {
+        super();
+        this.type = type;
+        this.altBone = altBone;
+    }
+    
+    public void setHeadingFromThrower(EntityItem entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
         float f = -MathHelper.sin(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
         float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * 0.017453292F);
         float f2 = MathHelper.cos(rotationYawIn * 0.017453292F) * MathHelper.cos(rotationPitchIn * 0.017453292F);
@@ -44,51 +44,51 @@ public class ItemThrowBone extends ItemDT {
         entityItem.motionZ += entityThrower.motionZ;
 
         if(!entityThrower.onGround)
-        	entityItem.motionY += entityThrower.motionY;
+            entityItem.motionY += entityThrower.motionY;
     }
-	
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-		
-		if(this.type == Type.WET) {
-			if(itemStackIn.getItem() == ModItems.THROW_BONE_WET)
-				itemStackIn = new ItemStack(ModItems.THROW_BONE);
-			else if(itemStackIn.getItem() == ModItems.THROW_STICK_WET)
-				itemStackIn = new ItemStack(ModItems.THROW_STICK);
-
-    		playerIn.swingArm(handIn);
-    		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-    	}
-		else {
-	
-	        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-	
-	        if(!worldIn.isRemote) {
-	        	ItemStack stack = itemStackIn.copy();
-	        	stack.setCount(1);
-	        	EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
-	            entityitem.setPickupDelay(40);
-	            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
+    
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+        
+        if(this.type == Type.WET) {
+            if(itemStackIn.getItem() == this) {
+                itemStackIn = new ItemStack(this.altBone.get());
+                playerIn.swingArm(handIn);
+                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+            }
+            
+            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+        }
+        else {
+    
+            worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+    
+            if(!worldIn.isRemote) {
+                ItemStack stack = itemStackIn.copy();
+                stack.setCount(1);
+                EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
+                entityitem.setPickupDelay(20);
+                this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
                 worldIn.spawnEntity(entityitem);
-	        }
-	        
-	        if(!playerIn.capabilities.isCreativeMode)
-	        	itemStackIn.shrink(1);
+            }
+            
+            if(!playerIn.capabilities.isCreativeMode)
+                itemStackIn.shrink(1);
 
-	        playerIn.addStat(StatList.getObjectUseStats(this));
-	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-		}
-	}
+            playerIn.addStat(StatList.getObjectUseStats(this));
+            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+        }
+    }
 
     public void setThrowableHeading(EntityItem entityItem, double x, double y, double z, float velocity, float inaccuracy) {
         float f = MathHelper.sqrt(x * x + y * y + z * z);
         x = x / (double)f;
         y = y / (double)f;
         z = z / (double)f;
-        x = x + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-        y = y + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-        z = z + this.itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        x = x + itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        y = y + itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
+        z = z + itemRand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
         x = x * (double)velocity;
         y = y * (double)velocity;
         z = z * (double)velocity;

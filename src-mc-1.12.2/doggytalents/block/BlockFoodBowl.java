@@ -35,47 +35,47 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * @author ProPercivalalb
  **/
 public class BlockFoodBowl extends BlockContainer {
-	
-	protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 1.0D - 0.0625D, 0.5D, 1.0D - 0.0625D);
-	
+    
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 1.0D - 0.0625D, 0.5D, 1.0D - 0.0625D);
+    
     public BlockFoodBowl() {
         super(Material.IRON);
         this.setHardness(5.0F);
         this.setTickRandomly(true);
         this.setCreativeTab(ModCreativeTabs.GENERAL);
-		this.setResistance(5.0F);
-		this.setHarvestLevel("pickaxe", 0);
+        this.setResistance(5.0F);
+        this.setHarvestLevel("pickaxe", 0);
     }
     
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-    	return new TileEntityFoodBowl();
+        return new TileEntityFoodBowl();
     }
     
     
     @Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		return AABB;
-	}
-	
-	@Override
-	public boolean isFullCube(IBlockState state) {
-	    return false;
-	}
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return AABB;
+    }
+    
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
 
-	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-	    return false;
-	}
-	
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-	    return EnumBlockRenderType.MODEL;
-	}
-	
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+    
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.MODEL;
+    }
+    
     @Override
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-    	TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
+        TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
         
         if(entityIn instanceof EntityItem) {
             EntityItem entityItem = (EntityItem)entityIn;
@@ -83,7 +83,7 @@ public class BlockFoodBowl extends BlockContainer {
             ItemStack itemstack1 = foodBowl.inventory.addItem(entityItem.getItem());
 
             if(!itemstack1.isEmpty())
-            	entityItem.setItem(itemstack1);
+                entityItem.setItem(itemstack1);
             else {
                 entityItem.setDead();
                 worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -92,83 +92,83 @@ public class BlockFoodBowl extends BlockContainer {
     }
 
     @Override
-	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-	    return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
-	}
-
-    @Override
-	public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
-        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-        if(!this.canBlockStay(worldIn, pos)) {
-			this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-			worldIn.setBlockToAir(pos);
-		}
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return super.canPlaceBlockAt(worldIn, pos) ? this.canBlockStay(worldIn, pos) : false;
     }
 
-	public boolean canBlockStay(World world, BlockPos pos) {
-		IBlockState blockstate = world.getBlockState(pos.down());
-		return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
-	}
-	
-	@Override
-	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
-		if(facing == EnumFacing.DOWN) 
-			return BlockFaceShape.SOLID;
-		return BlockFaceShape.UNDEFINED;
-	}
-	
-	@Override
-	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if(worldIn.isRemote) {
+    @Override
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
+        if(!this.canBlockStay(worldIn, pos)) {
+            this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
+            worldIn.setBlockToAir(pos);
+        }
+    }
+
+    public boolean canBlockStay(World world, BlockPos pos) {
+        IBlockState blockstate = world.getBlockState(pos.down());
+        return blockstate.getBlockFaceShape(world, pos.down(), EnumFacing.UP) == BlockFaceShape.SOLID;
+    }
+    
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing facing) {
+        if(facing == EnumFacing.DOWN) 
+            return BlockFaceShape.SOLID;
+        return BlockFaceShape.UNDEFINED;
+    }
+    
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if(worldIn.isRemote) {
             return true;
         }
         else {
-        	ItemStack stack = playerIn.getHeldItem(hand);
-        	
-        	if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-        		TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-        		InventoryTreatBag treatBag = new InventoryTreatBag(playerIn, playerIn.inventory.currentItem, stack);
-        		treatBag.openInventory(playerIn);
-        		
-        		for(int i = 0; i < treatBag.getSizeInventory(); i++)
-        			treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
-        		
-        		treatBag.closeInventory(playerIn);
-        		
-        		return true;
-        	}
-        	else {
-	            TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
-	            playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
-	            return true;
-        	}
+            ItemStack stack = playerIn.getHeldItem(hand);
+            
+            if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
+                TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+                InventoryTreatBag treatBag = new InventoryTreatBag(playerIn.inventory.currentItem, stack);
+                treatBag.openInventory(playerIn);
+                
+                for(int i = 0; i < treatBag.getSizeInventory(); i++)
+                    treatBag.setInventorySlotContents(i, tileentitydogfoodbowl.inventory.addItem(treatBag.getStackInSlot(i)));
+                
+                treatBag.closeInventory(playerIn);
+                
+                return true;
+            }
+            else {
+                TileEntityFoodBowl tileentitydogfoodbowl = (TileEntityFoodBowl)worldIn.getTileEntity(pos);
+                playerIn.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_FOOD_BOWL, worldIn, pos.getX(), pos.getY(), pos.getZ());
+                return true;
+            }
         }
-	}
-	
-	@Override
-	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntity tileentity = worldIn.getTileEntity(pos);
+    }
+    
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
 
-		if(tileentity instanceof TileEntityFoodBowl) {
-			InventoryHelper.dropInventoryItems(worldIn, pos, ((TileEntityFoodBowl)tileentity).inventory);
-			worldIn.updateComparatorOutputLevel(pos, this);
-		}
+        if(tileentity instanceof TileEntityFoodBowl) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, ((TileEntityFoodBowl)tileentity).inventory);
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
 
-		super.breakBlock(worldIn, pos, state);
-	}
+        super.breakBlock(worldIn, pos, state);
+    }
 
-	@Override
-	public boolean hasComparatorInputOverride(IBlockState state) {
-		return true;
-	}
+    @Override
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
 
-	@Override
-	public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-		return Container.calcRedstone(worldIn.getTileEntity(pos));
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        return Container.calcRedstone(worldIn.getTileEntity(pos));
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.CUTOUT;
     }

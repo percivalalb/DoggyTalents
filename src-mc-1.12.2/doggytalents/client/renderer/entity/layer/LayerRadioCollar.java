@@ -23,9 +23,9 @@ public class LayerRadioCollar implements LayerRenderer<EntityDog> {
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.isTamed() && !dog.isInvisible() && dog.hasRadarCollar()) {
-        	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_RADIO_COLLAR);
-        	GlStateManager.color(1.0F, 1.0F, 1.0F);
-        	this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
+            this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_RADIO_COLLAR);
+            GlStateManager.color(1.0F, 1.0F, 1.0F);
+            this.dogRenderer.getMainModel().render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }
     }
 

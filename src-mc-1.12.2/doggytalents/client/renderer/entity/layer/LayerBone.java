@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class LayerBone implements LayerRenderer<EntityDog> {
-	
+    
     protected final RenderDog dogRenderer;
     public ItemStack[] itemToRender;
     
@@ -26,15 +26,15 @@ public class LayerBone implements LayerRenderer<EntityDog> {
 
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-    	if(dog.hasBone()) {
-	    	
-	        GlStateManager.pushMatrix();
-	
-	        if (this.dogRenderer.getMainModel().isChild) {
-	            float f = 0.5F;
-	            GlStateManager.translate(0.0F, 0.75F, 0.0F);
-	            GlStateManager.scale(0.5F, 0.5F, 0.5F);
-	        }
+        if(dog.hasBone()) {
+            
+            GlStateManager.pushMatrix();
+    
+            if (this.dogRenderer.getMainModel().isChild) {
+                float f = 0.5F;
+                GlStateManager.translate(0.0F, 0.75F, -0.25F);
+                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+            }
 
             if(dog.isSneaking())
                 GlStateManager.translate(0.0F, 0.2F, 0.0F);
@@ -46,8 +46,8 @@ public class LayerBone implements LayerRenderer<EntityDog> {
 
             GlStateManager.translate(0.20, -0.10, -0.10);
             Minecraft.getMinecraft().getItemRenderer().renderItem(dog, this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
-	        GlStateManager.popMatrix();
-    	}
+            GlStateManager.popMatrix();
+        }
     }
     
     @Override

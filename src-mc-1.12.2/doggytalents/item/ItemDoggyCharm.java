@@ -21,17 +21,17 @@ import net.minecraft.world.World;
  * @author ProPercivalalb
  **/
 public class ItemDoggyCharm extends ItemDT {
-	
+    
     public ItemDoggyCharm() {
         super();
         this.setMaxStackSize(1);
     }
     
     @Override
-	public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand handIn, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		ItemStack stack = playerIn.getHeldItem(handIn);
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand handIn, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ItemStack stack = playerIn.getHeldItem(handIn);
     
-    	if (worldIn.isRemote)
+        if (worldIn.isRemote)
             return EnumActionResult.SUCCESS;
         else if (!playerIn.canPlayerEdit(pos.offset(facing), facing, stack))
         {
@@ -54,17 +54,17 @@ public class ItemDoggyCharm extends ItemDT {
 
             if (entity != null)
                 if(!playerIn.capabilities.isCreativeMode)
-                	stack.shrink(1);
+                    stack.shrink(1);
            
 
             return EnumActionResult.SUCCESS;
         }
     }
     
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-		ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-    	
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+        
         if(worldIn.isRemote)
             return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
         else {
@@ -82,7 +82,7 @@ public class ItemDoggyCharm extends ItemDT {
                         return new ActionResult<ItemStack>(EnumActionResult.PASS, itemStackIn);
                     else {
                         if (!playerIn.capabilities.isCreativeMode)
-                        	itemStackIn.shrink(1);
+                            itemStackIn.shrink(1);
       
 
                         playerIn.addStat(StatList.getObjectUseStats(this));

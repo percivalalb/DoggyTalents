@@ -21,28 +21,28 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, updateJSON = Reference.UPDATE_URL, guiFactory = Reference.GUI_FACTORY, dependencies = Reference.DEPENDENCIES, acceptedMinecraftVersions = Reference.ACCEPTED_MC_VERSION)
 public class DoggyTalents {
 
-	@Instance(value = Reference.MOD_ID)
-	public static DoggyTalents INSTANCE;
-	
-	@SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
+    @Instance(value = Reference.MOD_ID)
+    public static DoggyTalents INSTANCE;
+    
+    @SidedProxy(clientSide = Reference.CLIENT_PROXY, serverSide = Reference.SERVER_PROXY)
     public static CommonProxy PROXY;
-	
-	public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
-		PROXY.preInit(event);
-	}
-	
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
-		PROXY.init(event);
-	}
-	
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-		AddonManager.registerAddons();
-		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);
-		PROXY.postInit(event);
-	}
+    
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
+    
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        PROXY.preInit(event);
+    }
+    
+    @EventHandler
+    public void init(FMLInitializationEvent event) {
+        PROXY.init(event);
+    }
+    
+    @EventHandler
+    public void postInit(FMLPostInitializationEvent event) {
+        AddonManager.registerAddons();
+        AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);
+        PROXY.postInit(event);
+    }
 }

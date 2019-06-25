@@ -13,15 +13,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCreativeCollar extends ItemFancyCollar {
 
-	public ItemCreativeCollar(Type type) {
-		super(type);
-	}
+    public ItemCreativeCollar(Type type) {
+        super(type);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip").getFormattedText());
-	}
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip").getFormattedText());
+    }
 }

@@ -6,8 +6,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class LivingDrops {
 
-	@SubscribeEvent
-	public void onLootDrop(LivingDropsEvent event) {
-		HunterDogTalent.onLootDrop(event.getEntityLiving(), event.getSource().getTrueSource(), event.getDrops());
-	}
+    @SubscribeEvent
+    public void onLootDrop(LivingDropsEvent event) {
+        HunterDogTalent.onLootDrop(event.getEntityLiving(), event.getSource().getTrueSource(), event.getDrops());
+    }
 }

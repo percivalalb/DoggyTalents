@@ -10,20 +10,20 @@ import net.minecraft.util.EnumActionResult;
  */
 public class PillowPawTalent extends Talent {
 
-	@Override
-	public void livingTick(EntityDog dog) {
-		if(dog.TALENTS.getLevel(this) == 5)
-			if(dog.motionY < -0.12F && !dog.isInWater())
-				dog.motionY = -0.12F;
-	}
-	
-	@Override
-	public boolean isImmuneToFalls(EntityDog dog) { 
-		return dog.TALENTS.getLevel(this) == 5; 
-	}
-	
-	@Override
-	public ActionResult<Integer> fallProtection(EntityDog dog) { 
-		return ActionResult.newResult(EnumActionResult.SUCCESS, dog.TALENTS.getLevel(this) * 3);
-	}
+    @Override
+    public void livingTick(EntityDog dog) {
+        if(dog.TALENTS.getLevel(this) == 5)
+            if(dog.motionY < -0.12F && !dog.isInWater())
+                dog.motionY = -0.12F;
+    }
+    
+    @Override
+    public boolean isImmuneToFalls(EntityDog dog) { 
+        return dog.TALENTS.getLevel(this) == 5; 
+    }
+    
+    @Override
+    public ActionResult<Integer> fallProtection(EntityDog dog) { 
+        return ActionResult.newResult(EnumActionResult.SUCCESS, dog.TALENTS.getLevel(this) * 3);
+    }
 }

@@ -31,9 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class DogBedModel implements IBakedModel, IStateParticleModel {
-	
+    
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
-	
+    
     private IModel model;
     private IBakedModel bakedModel;
     
@@ -49,24 +49,24 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
 
     public IBakedModel getCustomModelFromState(IBlockState state) {
-		String casing = "minecraft:blocks/planks_oak";
-		String bedding = "minecraft:blocks/wool_colored_white";
+        String casing = "minecraft:blocks/planks_oak";
+        String bedding = "minecraft:blocks/wool_colored_white";
         EnumFacing facing = EnumFacing.NORTH;
         
-		if(state instanceof IExtendedBlockState) {
+        if(state instanceof IExtendedBlockState) {
             IExtendedBlockState extendedState = (IExtendedBlockState)state;
  
             if(extendedState.getUnlistedNames().contains(BlockDogBed.CASING))
-            	casing = DogBedRegistry.CASINGS.getTexture(extendedState.getValue(BlockDogBed.CASING));
+                casing = DogBedRegistry.CASINGS.get(extendedState.getValue(BlockDogBed.CASING)).getTexture().toString();
 
             if(extendedState.getUnlistedNames().contains(BlockDogBed.BEDDING))
-            	bedding = DogBedRegistry.BEDDINGS.getTexture(extendedState.getValue(BlockDogBed.BEDDING));
+                bedding = DogBedRegistry.BEDDINGS.get(extendedState.getValue(BlockDogBed.BEDDING)).getTexture().toString();
             
             facing = extendedState.getValue(BlockDogBed.FACING);
         }
-		
-		return this.getCustomModel(casing, bedding, facing);
-	}
+        
+        return this.getCustomModel(casing, bedding, facing);
+    }
     
     public IBakedModel getCustomModel(String casingResource, String beddingResource, EnumFacing facing) {
         IBakedModel customModel = this.bakedModel;
@@ -98,7 +98,7 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
 
     @Override
     public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
-    	return this.getCustomModelFromState(state).getQuads(state, side, rand);
+        return this.getCustomModelFromState(state).getQuads(state, side, rand);
     }
 
     @Override
@@ -127,9 +127,9 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-	public TextureAtlasSprite getParticleTexture(IBlockState state) {
-		return this.getCustomModelFromState(state).getParticleTexture();
-	}
+    public TextureAtlasSprite getParticleTexture(IBlockState state) {
+        return this.getCustomModelFromState(state).getParticleTexture();
+    }
 
     @Override
     public ItemOverrideList getOverrides() {

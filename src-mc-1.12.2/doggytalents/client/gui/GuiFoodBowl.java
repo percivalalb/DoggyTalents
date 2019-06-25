@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiFoodBowl extends GuiContainer {
-	
+    
     private TileEntityFoodBowl foodBowl;
 
     public GuiFoodBowl(InventoryPlayer playerInventory, TileEntityFoodBowl foodBowl) {
@@ -22,20 +22,20 @@ public class GuiFoodBowl extends GuiContainer {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		this.drawDefaultBackground();
-		super.drawScreen(mouseX, mouseY, partialTicks);
-		this.renderHoveredToolTip(mouseX, mouseY);
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
     
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-    	String s = this.foodBowl.inventory.getDisplayName().getUnformattedText();
+        String s = this.foodBowl.inventory.getDisplayName().getUnformattedText();
         this.fontRenderer.drawString(s, 10, 8, 4210752);
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-    	GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(ResourceLib.GUI_FOOD_BOWL);
         int var2 = (this.width - this.xSize) / 2;
         int var3 = (this.height - this.ySize) / 2;

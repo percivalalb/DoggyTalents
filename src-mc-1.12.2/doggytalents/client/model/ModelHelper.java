@@ -9,16 +9,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ModelHelper {
-	
-	@SideOnly(Side.CLIENT)
+    
+    @SideOnly(Side.CLIENT)
     public static void setModel(Item item, int meta, String modelName) {
-		ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, "inventory"));
     }
-	
-	@SideOnly(Side.CLIENT)
-	public static void setModel(Block block, int meta, String modelName) {
-		setModel(Item.getItemFromBlock(block), meta, modelName);
-	}
+    
+    @SideOnly(Side.CLIENT)
+    public static void setModel(Block block, int meta, String modelName) {
+        setModel(Item.getItemFromBlock(block), meta, modelName);
+    }
 
     @SideOnly(Side.CLIENT)
     public static void setDefaultModel(Item item) {

@@ -14,20 +14,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemCreativeOwnerChange extends ItemDT {
 
-	public ItemCreativeOwnerChange() {
-		super();
-	}
+    public ItemCreativeOwnerChange() {
+        super();
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
-		
-		tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip").getFormattedText());
-	}
-	
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
+        
+        tooltip.add(new TextComponentTranslation(this.getTranslationKey() + ".tooltip").getFormattedText());
+    }
+    
+    @Override
+    public EnumRarity getRarity(ItemStack stack) {
         return EnumRarity.EPIC;
     }
 }

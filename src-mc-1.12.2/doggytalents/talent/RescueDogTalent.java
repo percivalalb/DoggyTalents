@@ -9,20 +9,20 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class RescueDogTalent extends Talent {
 
-	@Override
-	public void livingTick(EntityDog dog) {
-		EntityPlayer player = (EntityPlayer)dog.getOwner();
-		
-		int level = dog.TALENTS.getLevel(this);
-		
-		//TODO add particles and check how far away dog is
-		if (player != null && player.getHealth() <= 6 && level != 0 && dog.getDogHunger() > this.healCost(dog)) {
+    @Override
+    public void livingTick(EntityDog dog) {
+        EntityPlayer player = (EntityPlayer)dog.getOwner();
+        
+        int level = dog.TALENTS.getLevel(this);
+        
+        //TODO add particles and check how far away dog is
+        if (player != null && player.getHealth() <= 6 && level != 0 && dog.getDogHunger() > this.healCost(dog)) {
             player.heal((int)(level * 1.5D));
             dog.setDogHunger(dog.getDogHunger() - this.healCost(dog));
         }
-	}
-	
-	public int healCost(EntityDog dog) {
+    }
+    
+    public int healCost(EntityDog dog) {
         byte byte0 = 100;
 
         if (dog.TALENTS.getLevel(this) == 5)

@@ -17,13 +17,13 @@ import net.minecraft.util.math.AxisAlignedBB;
  */
 public class TileEntityFoodBowl extends TileEntity implements ITickable {
    
-	public InventoryBasic inventory;
+    public InventoryBasic inventory;
 
     public int timeoutCounter;
     
     
     public TileEntityFoodBowl() {
-    	this.inventory = new InventoryBasic("container.doggytalents.food_bowl", false, 5);
+        this.inventory = new InventoryBasic("container.doggytalents.food_bowl", false, 5);
     }
     
     @Override
@@ -36,7 +36,7 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
             int j = nbttagcompound1.getByte("Slot") & 0xff;
 
             if(j >= 0 && j < this.inventory.getSizeInventory()) {
-            	this.inventory.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
+                this.inventory.setInventorySlotContents(j, new ItemStack(nbttagcompound1));
             }
         }
     }
@@ -56,27 +56,27 @@ public class TileEntityFoodBowl extends TileEntity implements ITickable {
         }
 
         tag.setTag("Items", nbttaglist);
-		return tag;
+        return tag;
     }
 
     @Override
     public void update() {
-    	
-    	//Only run update code every 5 ticks (0.25s)
-    	if(++this.timeoutCounter < 5) { return; }
-    	
-    	List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
+        
+        //Only run update code every 5 ticks (0.25s)
+        if(++this.timeoutCounter < 5) { return; }
+        
+        List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
-    	for(EntityDog dog : dogList) {
-    		//TODO make dog bowl remember who placed and only their dogs can attach to the bowl
-    		if(!dog.COORDS.hasBowlPos())
-    			dog.COORDS.setBowlPos(this.pos);
-            	
-    		int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
-         	if(dog.getDogHunger() < 60 && slotIndex >= 0)
-         		DogUtil.feedDog(dog, this.inventory, slotIndex);
+        for(EntityDog dog : dogList) {
+            //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
+            if(!dog.COORDS.hasBowlPos())
+                dog.COORDS.setBowlPos(this.pos);
+                
+            int slotIndex = DogUtil.getFirstSlotWithFood(dog, this.inventory);
+             if(dog.getDogHunger() < 60 && slotIndex >= 0)
+                 DogUtil.feedDog(dog, this.inventory, slotIndex);
         }
-    	
-    	this.timeoutCounter = 0;
+        
+        this.timeoutCounter = 0;
     }
 }

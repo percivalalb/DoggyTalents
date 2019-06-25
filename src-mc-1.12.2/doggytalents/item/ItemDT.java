@@ -7,8 +7,8 @@ import net.minecraft.item.Item;
  * @author ProPercivalalb
  **/
 public class ItemDT extends Item {
-	
-	public ItemDT() {
-		this.setCreativeTab(ModCreativeTabs.GENERAL);
-	}
+    
+    public ItemDT() {
+        this.setCreativeTab(ModCreativeTabs.GENERAL);
+    }
 }

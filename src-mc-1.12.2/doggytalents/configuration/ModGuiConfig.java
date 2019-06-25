@@ -85,51 +85,51 @@ public class ModGuiConfig extends GuiConfig {
     }
 
     //TODO All of this down here you can use as reference to create categories with nested categories
-	/*public static class MiscEntry extends CategoryEntry // Miscellaneous Entry
-	{
-		public MiscEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
+    /*public static class MiscEntry extends CategoryEntry // Miscellaneous Entry
+    {
+        public MiscEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
 
-		@Override
-		protected GuiScreen buildChildScreen() {
-			List<IConfigElement> list = new ArrayList<IConfigElement>();
-			list.add(new DummyCategoryElement("dimensions", Strings.getGuiName(ModReference.MOD_ID, "config", "dimensions"), DimensionsEntry.class));
-			list.add(new DummyCategoryElement("biomes", Strings.getGuiName(ModReference.MOD_ID, "config", "biomes"), BiomesEntry.class));
-			list.addAll((new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_MISC))).getChildElements());
+        @Override
+        protected GuiScreen buildChildScreen() {
+            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            list.add(new DummyCategoryElement("dimensions", Strings.getGuiName(ModReference.MOD_ID, "config", "dimensions"), DimensionsEntry.class));
+            list.add(new DummyCategoryElement("biomes", Strings.getGuiName(ModReference.MOD_ID, "config", "biomes"), BiomesEntry.class));
+            list.addAll((new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_MISC))).getChildElements());
 
-			return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigHandler.CATEGORY_MISC, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "misc"), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "misc"))));
-		}
-	}
+            return new GuiConfig(this.owningScreen, list, this.owningScreen.modID, ConfigHandler.CATEGORY_MISC, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
+                    this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "misc"), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "misc"))));
+        }
+    }
 
-	public static class DimensionsEntry extends CategoryEntry // Miscellaneous Entry
-	{
-		public DimensionsEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
+    public static class DimensionsEntry extends CategoryEntry // Miscellaneous Entry
+    {
+        public DimensionsEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
 
-		@Override
-		protected GuiScreen buildChildScreen() {
-			return new GuiConfig(this.owningScreen, (new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_DIMENSION)).getChildElements()), this.owningScreen.modID, ConfigHandler.CATEGORY_DIMENSION, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "dimensions")), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "dimensions")));
-		}
-	}
+        @Override
+        protected GuiScreen buildChildScreen() {
+            return new GuiConfig(this.owningScreen, (new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_DIMENSION)).getChildElements()), this.owningScreen.modID, ConfigHandler.CATEGORY_DIMENSION, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
+                    this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "dimensions")), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "dimensions")));
+        }
+    }
 
-	public static class BiomesEntry extends CategoryEntry // Miscellaneous Entry
-	{
-		public BiomesEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
-			super(owningScreen, owningEntryList, prop);
-		}
+    public static class BiomesEntry extends CategoryEntry // Miscellaneous Entry
+    {
+        public BiomesEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement prop) {
+            super(owningScreen, owningEntryList, prop);
+        }
 
-		@Override
-		protected GuiScreen buildChildScreen() {
+        @Override
+        protected GuiScreen buildChildScreen() {
 
-			return new GuiConfig(this.owningScreen, (new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_BIOME)).getChildElements()), this.owningScreen.modID, ConfigHandler.CATEGORY_BIOME, this.configElement.requiresWorldRestart() ||
-					this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
-					this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "biomes")), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "biomes")));
-		}
-	}*/
+            return new GuiConfig(this.owningScreen, (new ConfigElement(ConfigHandler.config.getCategory(ConfigHandler.CATEGORY_BIOME)).getChildElements()), this.owningScreen.modID, ConfigHandler.CATEGORY_BIOME, this.configElement.requiresWorldRestart() ||
+                    this.owningScreen.allRequireWorldRestart, this.configElement.requiresMcRestart() ||
+                    this.owningScreen.allRequireMcRestart, I18n.format(Strings.getGuiName(ModReference.MOD_ID, "config", "biomes")), I18n.format(Strings.getGuiTooltip(ModReference.MOD_ID, "config", "biomes")));
+        }
+    }*/
 }

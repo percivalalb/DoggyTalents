@@ -46,7 +46,7 @@ public class LayerCover implements LayerRenderer<EntityDog> {
             this.dogRenderer.bindTexture(this.resource.apply(dog));
             GlStateManager.color(1.0F, 1.0F, 1.0F);
             
-        	this.model.setModelAttributes(this.dogRenderer.getMainModel());
+            this.model.setModelAttributes(this.dogRenderer.getMainModel());
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             this.model.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         }

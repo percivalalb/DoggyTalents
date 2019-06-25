@@ -8,36 +8,36 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class DogObeyMessage extends AbstractServerMessage {
-	
-	public int entityId;
-	public boolean obey;
-	
-	public DogObeyMessage() {}
+    
+    public int entityId;
+    public boolean obey;
+    
+    public DogObeyMessage() {}
     public DogObeyMessage(int entityId, boolean obey) {
         this.entityId = entityId;
         this.obey = obey;
     }
     
-	@Override
-	public void read(PacketBuffer buffer) {
-		this.entityId = buffer.readInt();
-		this.obey = buffer.readBoolean();
-	}
+    @Override
+    public void read(PacketBuffer buffer) {
+        this.entityId = buffer.readInt();
+        this.obey = buffer.readBoolean();
+    }
 
-	@Override
-	public void write(PacketBuffer buffer) {
-		buffer.writeInt(this.entityId);
-		buffer.writeBoolean(this.obey);
-	}
-	
-	@Override
-	public void process(EntityPlayer player, Side side) {
-		Entity target = player.world.getEntityByID(this.entityId);
+    @Override
+    public void write(PacketBuffer buffer) {
+        buffer.writeInt(this.entityId);
+        buffer.writeBoolean(this.obey);
+    }
+    
+    @Override
+    public void process(EntityPlayer player, Side side) {
+        Entity target = player.world.getEntityByID(this.entityId);
         if(!(target instanceof EntityDog))
-        	return;
+            return;
         
         EntityDog dog = (EntityDog)target;
         
-		dog.setWillObeyOthers(this.obey);
-	}
+        dog.setWillObeyOthers(this.obey);
+    }
 }

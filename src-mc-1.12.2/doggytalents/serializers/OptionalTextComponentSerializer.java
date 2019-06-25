@@ -10,29 +10,29 @@ import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.util.text.ITextComponent;
 
 public class OptionalTextComponentSerializer implements DataSerializer<Optional<ITextComponent>> {
-	
-	@Override
-	public void write(PacketBuffer buf, Optional<ITextComponent> value) {
-		if(value.isPresent()) {
-			buf.writeBoolean(true);
-			buf.writeTextComponent(value.get());
+    
+    @Override
+    public void write(PacketBuffer buf, Optional<ITextComponent> value) {
+        if(value.isPresent()) {
+            buf.writeBoolean(true);
+            buf.writeTextComponent(value.get());
         } else {
-        	buf.writeBoolean(false);
+            buf.writeBoolean(false);
         }
-	}
+    }
 
-	@Override
-	public Optional<ITextComponent> read(PacketBuffer buf) throws IOException {
-    	 return buf.readBoolean() ? Optional.of(buf.readTextComponent()) : Optional.absent();
-  	}
+    @Override
+    public Optional<ITextComponent> read(PacketBuffer buf) throws IOException {
+         return buf.readBoolean() ? Optional.of(buf.readTextComponent()) : Optional.absent();
+      }
 
-	@Override
-	public DataParameter<Optional<ITextComponent>> createKey(int id) {
-		return new DataParameter<>(id, this);
-	}
+    @Override
+    public DataParameter<Optional<ITextComponent>> createKey(int id) {
+        return new DataParameter<>(id, this);
+    }
 
-	@Override
-	public Optional<ITextComponent> copyValue(Optional<ITextComponent> value) {
-		return value.isPresent() ? Optional.of(value.get().createCopy()) : Optional.absent();
-	}
+    @Override
+    public Optional<ITextComponent> copyValue(Optional<ITextComponent> value) {
+        return value.isPresent() ? Optional.of(value.get().createCopy()) : Optional.absent();
+    }
 }

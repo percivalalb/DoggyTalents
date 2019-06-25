@@ -3,6 +3,7 @@ package doggytalents;
 import java.util.List;
 import java.util.Random;
 
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.api.registry.DogBedRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -15,21 +16,21 @@ public class ModCreativeTabs {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack createIcon() {
-        	return new ItemStack(ModItems.TRAINING_TREAT);
+            return new ItemStack(ModItems.TRAINING_TREAT);
         }
     };
-	
-	public static final CreativeTabs DOG_BED = new CreativeTabs("doggytalents.dogbed") {
-		private Random random = new Random();
-		
+    
+    public static final CreativeTabs DOG_BED = new CreativeTabs("doggytalents.dogbed") {
+        private Random random = new Random();
+        
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack createIcon() {
-        	return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
+            return DogBedRegistry.createItemStack(this.pickRandomString(DogBedRegistry.CASINGS.getKeys()), this.pickRandomString(DogBedRegistry.BEDDINGS.getKeys()));
         }
-    	
-        public String pickRandomString(List<String> strs) {
-    		return strs.get(this.random.nextInt(strs.size()));
-    	}
+        
+        public IBedMaterial pickRandomString(List<IBedMaterial> strs) {
+            return strs.get(this.random.nextInt(strs.size()));
+        }
     };
 }

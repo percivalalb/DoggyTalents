@@ -13,13 +13,13 @@ import net.minecraftforge.registries.RegistryBuilder;
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 public class ModRegistries {
 
-	@SubscribeEvent
+    @SubscribeEvent
     public static void newRegistry(RegistryEvent.NewRegistry event) {
-    	DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class, 256).create();
-	}
-	
-	private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type, int max) {
-        return new RegistryBuilder<T>().setName(name).setType(type).setMaxID(max);
+        DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class).create();
+    }
+    
+    private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type) {
+        return new RegistryBuilder<T>().setName(name).setType(type);
     }
 
 }

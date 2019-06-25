@@ -48,114 +48,114 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-	@Override
-	public void preInit(FMLPreInitializationEvent event) {
-		super.preInit(event);
-		
-		RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
-	}
-	
-	@Override
-	public void init(FMLInitializationEvent event) {
-		super.init(event);
-	 	MinecraftForge.EVENT_BUS.register(new GameOverlay());
-    	MinecraftForge.EVENT_BUS.register(new InputUpdate());
-	   	//DogTextureLoader.loadYourTexures();
-	}
-	
-	@Override
-	public void postInit(FMLPostInitializationEvent event) {
-		super.postInit(event);
-		
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
-			return stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour") ? stack.getTagCompound().getInteger("collar_colour") : -1;
-		}, ModItems.WOOL_COLLAR);
-	        
-		Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
-			return stack.hasTagCompound() && stack.getTagCompound().hasKey("cape_colour") ? stack.getTagCompound().getInteger("cape_colour") : -1;
-		}, ModItems.CAPE_COLOURED);		
-	}
-	
-	@Override
+    @Override
+    public void preInit(FMLPreInitializationEvent event) {
+        super.preInit(event);
+        
+        RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
+        RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+    }
+    
+    @Override
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+           //DogTextureLoader.loadYourTexures();
+    }
+    
+    @Override
+    public void postInit(FMLPostInitializationEvent event) {
+        super.postInit(event);
+        
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+            return stack.hasTagCompound() && stack.getTagCompound().hasKey("collar_colour") ? stack.getTagCompound().getInteger("collar_colour") : -1;
+        }, ModItems.WOOL_COLLAR);
+            
+        Minecraft.getMinecraft().getItemColors().registerItemColorHandler((stack, tintIndex) -> {
+            return stack.hasTagCompound() && stack.getTagCompound().hasKey("cape_colour") ? stack.getTagCompound().getInteger("cape_colour") : -1;
+        }, ModItems.CAPE_COLOURED);        
+    }
+    
+    @Override
     protected void registerEventHandlers() {
         super.registerEventHandlers();
         MinecraftForge.EVENT_BUS.register(new WorldRender());
-		MinecraftForge.EVENT_BUS.register(new ModelBake());
+        MinecraftForge.EVENT_BUS.register(new ModelBake());
+        MinecraftForge.EVENT_BUS.register(new GameOverlay());
+        MinecraftForge.EVENT_BUS.register(new InputUpdate());
     }
-	
+    
 
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
-		if(ID == GuiNames.GUI_ID_DOGGY) {
-			Entity target = player.world.getEntityByID(x);
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) { 
+        if(ID == GuiNames.GUI_ID_DOGGY) {
+            Entity target = player.world.getEntityByID(x);
             if(!(target instanceof EntityDog))
-            	return null;
-			EntityDog dog = (EntityDog)target;
-			return new GuiDogInfo(dog, player);
-		}
-		else if(ID == GuiNames.GUI_ID_PACKPUPPY) {
-			Entity target = player.world.getEntityByID(x);
+                return null;
+            EntityDog dog = (EntityDog)target;
+            return new GuiDogInfo(dog, player);
+        }
+        else if(ID == GuiNames.GUI_ID_PACKPUPPY) {
+            Entity target = player.world.getEntityByID(x);
             if(!(target instanceof EntityDog)) 
-            	return null;
-			EntityDog dog = (EntityDog)target;
-			return new GuiPackPuppy(player, dog);
-		}
-		else if(ID == GuiNames.GUI_ID_FOOD_BOWL) {
-			TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
-			if(!(target instanceof TileEntityFoodBowl))
-				return null;
-			TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
-			return new GuiFoodBowl(player.inventory, foodBowl);
-		}
-		else if(ID == GuiNames.GUI_ID_FOOD_BAG) {
-			return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
-		}
-		return null;
-	}
-	
-	@Override
-	public EntityPlayer getPlayerEntity(MessageContext ctx) {
-		return (ctx.side.isClient() ? Minecraft.getMinecraft().player : super.getPlayerEntity(ctx));
-	}
-	
-	@Override
-	public EntityPlayer getPlayerEntity() {
-		return Minecraft.getMinecraft().player;
-	}
-	
-	@Override
-	public IThreadListener getThreadFromContext(MessageContext ctx) {
-		return (ctx.side.isClient() ? Minecraft.getMinecraft() : super.getThreadFromContext(ctx));
-	}
-	
-	@Override
-	public void spawnCrit(World world, Entity entity) {
-		FMLClientHandler.instance().getClient().effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
-	}
-	
-	@Override
-	public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-		TextureAtlasSprite sprite;
+                return null;
+            EntityDog dog = (EntityDog)target;
+            return new GuiPackPuppy(player, dog);
+        }
+        else if(ID == GuiNames.GUI_ID_FOOD_BOWL) {
+            TileEntity target = world.getTileEntity(new BlockPos(x, y, z));
+            if(!(target instanceof TileEntityFoodBowl))
+                return null;
+            TileEntityFoodBowl foodBowl = (TileEntityFoodBowl)target;
+            return new GuiFoodBowl(player.inventory, foodBowl);
+        }
+        else if(ID == GuiNames.GUI_ID_FOOD_BAG) {
+            return new GuiTreatBag(player, x, player.inventory.getStackInSlot(x));
+        }
+        return null;
+    }
+    
+    @Override
+    public EntityPlayer getPlayerEntity(MessageContext ctx) {
+        return (ctx.side.isClient() ? Minecraft.getMinecraft().player : super.getPlayerEntity(ctx));
+    }
+    
+    @Override
+    public EntityPlayer getPlayerEntity() {
+        return Minecraft.getMinecraft().player;
+    }
+    
+    @Override
+    public IThreadListener getThreadFromContext(MessageContext ctx) {
+        return (ctx.side.isClient() ? Minecraft.getMinecraft() : super.getThreadFromContext(ctx));
+    }
+    
+    @Override
+    public void spawnCrit(World world, Entity entity) {
+        FMLClientHandler.instance().getClient().effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
+    }
+    
+    @Override
+    public void spawnCustomParticle(EntityPlayer player, Object pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
+        TextureAtlasSprite sprite;
 
-		IBlockState state = player.world.getBlockState((BlockPos)pos);
-		IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
-		if(model instanceof IStateParticleModel) {
-			state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
-			sprite = ((IStateParticleModel)model).getParticleTexture(state);
-		} 
-		else
-			sprite = model.getParticleTexture();
-		
-		ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
+        IBlockState state = player.world.getBlockState((BlockPos)pos);
+        IBakedModel model = Minecraft.getMinecraft().getBlockRendererDispatcher().getModelForState(state);
+        if(model instanceof IStateParticleModel) {
+            state = state.getBlock().getExtendedState(state.getActualState(player.world, (BlockPos)pos), player.world, (BlockPos)pos);
+            sprite = ((IStateParticleModel)model).getParticleTexture(state);
+        } 
+        else
+            sprite = model.getParticleTexture();
+        
+        ParticleManager manager = Minecraft.getMinecraft().effectRenderer;
 
-		for(int i = 0; i < numberOfParticles; i++) {
-			double xSpeed = rand.nextGaussian() * particleSpeed;
-			double ySpeed = rand.nextGaussian() * particleSpeed;
-			double zSpeed = rand.nextGaussian() * particleSpeed;
-			
-			Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
-			manager.addEffect(particle);
-		}
-	}
+        for(int i = 0; i < numberOfParticles; i++) {
+            double xSpeed = rand.nextGaussian() * particleSpeed;
+            double ySpeed = rand.nextGaussian() * particleSpeed;
+            double zSpeed = rand.nextGaussian() * particleSpeed;
+            
+            Particle particle = new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, (BlockPos)pos, sprite);
+            manager.addEffect(particle);
+        }
+    }
 }

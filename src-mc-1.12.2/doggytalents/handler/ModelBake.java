@@ -17,24 +17,24 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value = Side.CLIENT, modid = Reference.MOD_ID)
 public class ModelBake {
 
-	@SubscribeEvent
-	public static void onModelBakeEvent(ModelBakeEvent event) {
-	    
-	    try {
-	    	IModel model = ModelLoaderRegistry.getModel(new ResourceLocation("doggytalents:block/dog_bed"));
-	    	
-	    	for(String thing : new String[] {"inventory", "facing=north", "facing=south", "facing=east", "facing=west"}) {
-		    	ModelResourceLocation modelVariantLocation = new ModelResourceLocation("doggytalents:dog_bed", thing);
-		
-		        IBakedModel bakedModel = event.getModelRegistry().getObject(modelVariantLocation);
+    @SubscribeEvent
+    public static void onModelBakeEvent(ModelBakeEvent event) {
+        
+        try {
+            IModel model = ModelLoaderRegistry.getModel(new ResourceLocation("doggytalents:block/dog_bed"));
+            
+            for(String thing : new String[] {"inventory", "facing=north", "facing=south", "facing=east", "facing=west"}) {
+                ModelResourceLocation modelVariantLocation = new ModelResourceLocation("doggytalents:dog_bed", thing);
+        
+                IBakedModel bakedModel = event.getModelRegistry().getObject(modelVariantLocation);
 
-		        //Replace 
-		        IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
-		        event.getModelRegistry().putObject(modelVariantLocation, customModel);
-		    }
-	    }
-	    catch(Exception e) {
-	    	DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
-	    }
-	}
+                //Replace 
+                IBakedModel customModel = new DogBedModel(model, bakedModel, DefaultVertexFormats.BLOCK);
+                event.getModelRegistry().putObject(modelVariantLocation, customModel);
+            }
+        }
+        catch(Exception e) {
+            DoggyTalents.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
+        }
+    }
 }

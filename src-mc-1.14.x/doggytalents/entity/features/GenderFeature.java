@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.function.Function;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -125,6 +126,13 @@ public class GenderFeature extends DogFeature {
         
         public String getUnlocalisedTitle() {
             return this.unlocalisedTitle;
+        }
+        
+        public static EnumGender byIndex(int i) {
+            if(i < 0 | i >= VALUES.length) {
+                i = EnumGender.UNISEX.getIndex();
+            }
+            return VALUES[i];
         }
         
         public static EnumGender bySaveName(String saveName) {

@@ -19,13 +19,6 @@ public class ModeFeature extends DogFeature {
         return this.dog.getMode();
     }
     
-    public void setMode(int index) {
-        if(index < 0 || index >= EnumMode.VALUES.length) {
-            index = EnumMode.DOCILE.getIndex();
-        }
-        this.setMode(EnumMode.VALUES[index]);
-    }
-    
     public void setMode(EnumMode mode) {    
         this.dog.setMode(mode);
     }
@@ -41,7 +34,7 @@ public class ModeFeature extends DogFeature {
     
     @Override
     public void readAdditional(CompoundNBT tagCompound) {
-        this.setMode(tagCompound.getInt("mode"));
+        this.setMode(EnumMode.byIndex(tagCompound.getInt("mode")));
     }
     
     public enum EnumMode {
@@ -87,6 +80,29 @@ public class ModeFeature extends DogFeature {
         
         public String getUnlocalisedInfo() {
             return this.unlocalisedInfo;
+        }
+        
+        public EnumMode previousMode() {
+            int i = this.getIndex() - 1;
+            if(i < 0) {
+                i = VALUES.length - 1;
+            }
+            return VALUES[i];
+        }
+        
+        public EnumMode nextMode() {
+            int i = this.getIndex() + 1;
+            if(i >= VALUES.length) {
+                i = 0;
+            }
+            return VALUES[i];
+        }
+        
+        public static EnumMode byIndex(int i) {
+            if(i < 0 | i >= VALUES.length) {
+                i = EnumMode.DOCILE.getIndex();
+            }
+            return VALUES[i];
         }
     }
 }

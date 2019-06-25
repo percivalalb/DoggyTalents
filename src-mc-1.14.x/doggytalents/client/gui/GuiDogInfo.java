@@ -179,13 +179,12 @@ public class GuiDogInfo extends Screen {
         }));
         
         this.addButton(new Button(topX + 40, topY + 25, 60, 20, I18n.format(this.dog.MODE.getMode().getUnlocalisedName()), button -> {
-            int newMode = (GuiDogInfo.this.dog.MODE.getMode().ordinal() + 1) % EnumMode.values().length;
-            EnumMode mode = EnumMode.values()[newMode];
-            if(mode == EnumMode.WANDERING && !dog.COORDS.hasBowlPos())
+            EnumMode mode = GuiDogInfo.this.dog.getMode().nextMode();
+            if(mode == EnumMode.WANDERING && !GuiDogInfo.this.dog.COORDS.hasBowlPos())
                 button.setMessage(TextFormatting.RED + I18n.format(mode.getUnlocalisedName()));
             else
                 button.setMessage(I18n.format(mode.getUnlocalisedName()));
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogMode(GuiDogInfo.this.dog.getEntityId(), newMode));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogMode(GuiDogInfo.this.dog.getEntityId(), mode));
         }) {
             @Override
             public void renderToolTip(int mouseX, int mouseY) {

@@ -3,28 +3,30 @@ package doggytalents.network.client;
 import java.util.function.Supplier;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class PacketDogMode {
     
-    public int entityId, doggyMode;
+    public int entityId;
+    public EnumMode mode;
     
-    public PacketDogMode(int entityId, int dogMode) {
+    public PacketDogMode(int entityId, EnumMode modeIn) {
         this.entityId = entityId;
-        this.doggyMode = dogMode;
+        this.mode = modeIn;
     }
     
     public static void encode(PacketDogMode msg, PacketBuffer buf) {
         buf.writeInt(msg.entityId);
-        buf.writeInt(msg.doggyMode);
+        buf.writeInt(msg.mode.getIndex());
     }
     
     public static PacketDogMode decode(PacketBuffer buf) {
         int entityId = buf.readInt();
-        int doggyMode = buf.readInt();
-        return new PacketDogMode(entityId, doggyMode);
+        int modeIndex = buf.readInt();
+        return new PacketDogMode(entityId, EnumMode.byIndex(modeIndex));
     }
     
     
@@ -37,7 +39,7 @@ public class PacketDogMode {
                 
                 EntityDog dog = (EntityDog)target;
                 
-                dog.MODE.setMode(message.doggyMode);
+                dog.setMode(message.mode);
             });
 
             ctx.get().setPacketHandled(true);

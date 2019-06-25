@@ -1397,11 +1397,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 
     public EnumGender getGender() {
-        int i = this.dataManager.get(GENDER_PARAM);
-        if(i < 0 || i >= EnumGender.VALUES.length) {
-            i = EnumGender.UNISEX.getIndex();
-        }
-        return EnumGender.VALUES[i];
+        return EnumGender.byIndex(this.dataManager.get(GENDER_PARAM));
     }
     
     public void setLevel(int level) {
@@ -1421,15 +1417,11 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     }
 
     public void setMode(EnumMode mode) {
-        this.dataManager.set(GENDER_PARAM, (byte)mode.getIndex());
+        this.dataManager.set(MODE_PARAM, (byte)mode.getIndex());
     }
 
     public EnumMode getMode() {
-        int i = this.dataManager.get(MODE_PARAM);
-        if(i < 0 || i >= EnumMode.VALUES.length) {
-            i = EnumMode.DOCILE.getIndex();
-        }
-        return EnumMode.VALUES[i];
+        return EnumMode.byIndex(this.dataManager.get(MODE_PARAM));
     }
 
     public void setTalentMap(Map<Talent, Integer> data) {

@@ -133,7 +133,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     public ModeFeature MODE;
     public CoordFeature COORDS;
     public GenderFeature GENDER;
-    public DogStats STATS;
+    public StatsFeature STATS;
     private List<DogFeature> FEATURES;
     
     public Map<String, Object> objects;
@@ -166,7 +166,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.MODE = new ModeFeature(this);
         this.COORDS = new CoordFeature(this);
         this.GENDER = new GenderFeature(this);
-        this.STATS = new DogStats(this);
+        this.STATS = new StatsFeature(this);
         this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, GENDER, STATS);
         if(worldIn instanceof ServerWorld)
             this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
@@ -540,6 +540,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         }
         
         TalentHelper.tick(this);
+        this.FEATURES.forEach(DogFeature::tick);
     }
     
     @Override
@@ -932,6 +933,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         if (entityIn instanceof ZombieEntity)
             ((ZombieEntity)entityIn).setAttackTarget(this);
 
+        this.STATS.increaseDamageDealt(damage);
         //TODO  (float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)damage);//(float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
         if(flag) {
@@ -1273,6 +1275,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
             return new int[] {1,3,6,10,15}[id - 1];
         
         return 0;
+    }
+    
+    @Override
+    public void onKillEntity(LivingEntity entityLivingIn) {
+        super.onKillEntity(entityLivingIn);
+        this.STATS.incrementKillCount(entityLivingIn);
     }
     
     public ITextComponent getOwnersName() {

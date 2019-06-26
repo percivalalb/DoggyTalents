@@ -19,7 +19,6 @@ public class DogFeature {
         
     }
     
-    //TODO
     public void tick() {
         
     }

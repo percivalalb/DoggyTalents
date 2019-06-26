@@ -571,15 +571,20 @@ public class EntityDog extends TameableEntity {
                 int foodValue = this.foodValue(stack);
                 
                 if(foodValue != 0 && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-                    this.consumeItemFromStack(player, stack);
-
-                    if(!this.world.isRemote) {
-                        this.setDogHunger(this.getDogHunger() + foodValue);
-                        if(stack.getItem() == ModItems.CHEW_STICK)
-                            ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
-                        
+                    if(this.isIncapacicated()) {
+                        if(!this.world.isRemote)
+                            player.sendMessage(new TranslationTextComponent("dog.mode.incapacitated.help", this.getDisplayName(), this.GENDER.getGenderPronoun()));
+                    } else {
+                        this.consumeItemFromStack(player, stack);
+                    
+                        if(!this.world.isRemote) {
+                            this.setDogHunger(this.getDogHunger() + foodValue);
+                            if(stack.getItem() == ModItems.CHEW_STICK)
+                                ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
+                            
+                        }
+                        this.playTameEffect(true);
                     }
-                    this.playTameEffect(true);
                     return true;
                 } else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
                     if(!this.world.isRemote) {
@@ -603,7 +608,6 @@ public class EntityDog extends TameableEntity {
                     
                     if(this.isIncapacicated()) {
                         if(!this.world.isRemote)
-                            player.sendMessage(new TranslationTextComponent("dog.mode.incapacitated.help", this.getDisplayName()));
                     } else {
                         if(this.world.isRemote) {
                             DoggyTalentsMod.PROXY.openDoggyInfo(this);
@@ -794,7 +798,7 @@ public class EntityDog extends TameableEntity {
                     }
                     
                     return true;
-                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player)) {
+                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
 
                     InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory.currentItem, stack);
                     treatBag.openInventory(player);

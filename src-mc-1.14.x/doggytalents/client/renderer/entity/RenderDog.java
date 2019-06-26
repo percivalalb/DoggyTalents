@@ -95,7 +95,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
                     new TranslationTextComponent(tip).getFormattedText(), 
                     dog.getDogHunger());
             if(ConfigValues.DOG_GENDER) {
-                label += new TranslationTextComponent(dog.GENDER.getGenderTip()).getFormattedText();
+                label += dog.GENDER.getGenderTip().getFormattedText();
             }
             if(d0 <= (double)(64 * 64)) {
                 boolean flag = dog.isSneaking();

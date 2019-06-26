@@ -7,6 +7,7 @@ import java.util.function.Function;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class GenderFeature extends DogFeature {
     
@@ -31,27 +32,27 @@ public class GenderFeature extends DogFeature {
         return true;
     }
     
-    public String getTranslationKey(Function<EnumGender, String> function) {
-        return function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
+    public TranslationTextComponent getTranslationKey(Function<EnumGender, String> function) {
+        return new TranslationTextComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
     }
     
-    public String getGenderPronoun() {
+    public TranslationTextComponent getGenderPronoun() {
         return this.getTranslationKey(EnumGender::getUnlocalisedPronoun);
     }
 
-    public String getGenderSubject() {
+    public TranslationTextComponent getGenderSubject() {
         return this.getTranslationKey(EnumGender::getUnlocalisedSubject);
     }
     
-    public String getGenderTitle() {
+    public TranslationTextComponent getGenderTitle() {
         return this.getTranslationKey(EnumGender::getUnlocalisedTitle);
     }
     
-    public String getGenderTip() {
+    public TranslationTextComponent getGenderTip() {
         return this.getTranslationKey(EnumGender::getUnlocalisedTip);
     }
     
-    public String getGenderName() {
+    public TranslationTextComponent getGenderName() {
         return this.getTranslationKey(EnumGender::getUnlocalisedName);
     }
     

@@ -16,7 +16,7 @@ public class TalentListSerializer implements IDataSerializer<Map<Talent, Integer
     public void write(PacketBuffer buf, Map<Talent, Integer> value) {
         buf.writeInt(value.size());
         for(Entry<Talent, Integer> entry : value.entrySet()) {
-            buf.writeResourceLocation(DoggyTalentsAPI.TALENTS.getKey(entry.getKey()));
+            buf.writeRegistryIdUnsafe(DoggyTalentsAPI.TALENTS, entry.getKey());
             buf.writeByte(entry.getValue());
         }
     }
@@ -26,7 +26,9 @@ public class TalentListSerializer implements IDataSerializer<Map<Talent, Integer
         Map<Talent, Integer> map = new HashMap<>();
         int size = buf.readInt();
         for(int i = 0; i < size; i++) {
-            map.put(DoggyTalentsAPI.TALENTS.getValue(buf.readResourceLocation()), (int)buf.readByte());
+            Talent talent = buf.readRegistryIdUnsafe(DoggyTalentsAPI.TALENTS);
+            byte level = buf.readByte();
+            map.put(talent, (int)level);
         }
         return map;
     }

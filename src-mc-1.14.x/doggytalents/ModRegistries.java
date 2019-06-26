@@ -15,7 +15,7 @@ public class ModRegistries {
 
     @SubscribeEvent
     public static void newRegistry(RegistryEvent.NewRegistry event) {
-        DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class).disableSync().create();
+        DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class).create();
     }
     
     private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(ResourceLocation name, Class<T> type) {

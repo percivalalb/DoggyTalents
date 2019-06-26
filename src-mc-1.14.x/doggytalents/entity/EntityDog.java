@@ -339,9 +339,10 @@ public class EntityDog extends TameableEntity {
         
         if(compound.getBoolean("hasBone")) {
             int variant = compound.getInt("boneVariant");
-            switch(variant) {
-            case 0: this.setBoneVariant(new ItemStack(ModItems.THROW_BONE));
-            case 1: this.setBoneVariant(new ItemStack(ModItems.THROW_STICK));
+            if(variant == 0) {
+                this.setBoneVariant(new ItemStack(ModItems.THROW_BONE));
+            } else if(variant == 1) {
+                this.setBoneVariant(new ItemStack(ModItems.THROW_STICK));
             }
         }
     }

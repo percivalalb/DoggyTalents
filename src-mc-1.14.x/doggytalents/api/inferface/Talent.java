@@ -34,7 +34,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
      * SUCCESS and FAIL results are passed to the final interact
      */
     public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) { 
-        return ActionResultType.PASS; 
+        return ActionResultType.PASS;
     }
     
     public void tick(EntityDog dog) {}

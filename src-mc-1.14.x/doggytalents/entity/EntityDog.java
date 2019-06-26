@@ -971,7 +971,7 @@ public class EntityDog extends TameableEntity {
             if(!this.world.isRemote) {
                 this.locationManager.remove(this);
                 
-                if(this.world.getGameRules().func_223586_b(GameRules.field_223609_l) && this.getOwner() instanceof ServerPlayerEntity) {
+                if(this.world.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES) && this.getOwner() instanceof ServerPlayerEntity) {
                     this.getOwner().sendMessage(this.getCombatTracker().getDeathMessage());
                 }
             }

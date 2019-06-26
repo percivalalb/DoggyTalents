@@ -11,6 +11,18 @@ Update List Key
 MC 1.14.3
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.5 | 26th June 2019
++ Add some secret dog stat trackering in the background (more coming soon)
++ Add help message when trying to feed food to incapacicated dog
+- Remove buggy vanilla leaping for now till a fix is found
+# Improve dog bed material API
+# Recode fetch item, so fetch items now keep nbt tag and will allow easy addition of more throwable items in the future
+# Sync talent ids so we can use ids in entity datasync to reduce payload
+* Fixed dogs attacking players when obey others is on
+* Fixed dog not sitting when on head
+* Fixed dog bed custom particles being sent to far away players
+* Fixed dogs still attacking entities when incapacicated
+
 1.15.0.4 | 25th June 2019
 Requires forge 27.0.2 or higher
 Initial release, parent version 1.14.2-1.15.0.4
@@ -170,6 +182,16 @@ Initial release, parent version 1.14.2.396
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.0.5 | 26th June 2019
++ Add some secret dog stat trackering in the background (more coming soon)
++ Add help message when trying to feed food to incapacicated dog
+# Improve dog bed material API
+# Recode fetch item, so fetch items now keep nbt tag and will allow easy addition of more throwable items in the future
+* Fixed dogs attacking players when obey others is on
+* Fixed dog not sitting when on head
+* Fixed dog bed custom particles being sent to far away players
+* Fixed dogs still attacking entities when incapacicated
 
 1.15.0.4 | 25th June 2019
 + Add summary of treat bag contents to tooltip

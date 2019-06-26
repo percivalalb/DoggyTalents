@@ -4,6 +4,8 @@ import java.util.Random;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.addon.AddonManager;
+import doggytalents.api.BeddingRegistryEvent;
+import doggytalents.block.DogBedRegistry;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.EntityInteract;
@@ -49,6 +51,7 @@ public class CommonProxy {
     
     protected void postInit(InterModProcessEvent event) {
         DoggyTalentsMod.LOGGER.debug("CommonProxy postInit");
+        FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent(DogBedRegistry.CASINGS, DogBedRegistry.BEDDINGS));
         AddonManager.runRegisteredAddons();
     }
     

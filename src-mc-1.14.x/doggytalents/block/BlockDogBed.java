@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.network.PacketHandler;
@@ -51,8 +50,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -88,16 +85,8 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
         if(tag != null) {
             IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
             IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
-            
-            if(casingId.isValid())
-                tooltip.add(new TranslationTextComponent(casingId.getTranslationKey()));
-            else
-                tooltip.add(new TranslationTextComponent(casingId.getTranslationKey(), casingId.getSaveId()).applyTextStyle(TextFormatting.RED));
-                
-            if(beddingId.isValid())
-                tooltip.add(new TranslationTextComponent(beddingId.getTranslationKey()));    
-            else
-                tooltip.add(new TranslationTextComponent(beddingId.getTranslationKey(), beddingId.getSaveId()).applyTextStyle(TextFormatting.RED));
+            tooltip.add(casingId.getTooltip());
+            tooltip.add(beddingId.getTooltip());    
         }
     }
     

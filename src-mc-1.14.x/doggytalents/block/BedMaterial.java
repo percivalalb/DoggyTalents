@@ -1,4 +1,4 @@
-package doggytalents.api.registry;
+package doggytalents.block;
 
 import javax.annotation.Nullable;
 
@@ -7,6 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BedMaterial implements IBedMaterial {
@@ -35,16 +37,16 @@ public class BedMaterial implements IBedMaterial {
     }
     
     @Override
-    public Ingredient getIngredients() {
+    public Ingredient getIngredient() {
         return this.ingredients;
     }
     
     @Override
-    public String getTranslationKey() {
+    public ITextComponent getTooltip() {
         if(this.translationKey == null) {
             this.translationKey = Util.makeTranslationKey("dogbed." + this.regName, this.key);
         }
-        return this.translationKey;
+        return new TranslationTextComponent(this.translationKey);
     }
     
     @Override

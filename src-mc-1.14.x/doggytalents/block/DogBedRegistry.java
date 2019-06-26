@@ -1,4 +1,4 @@
-package doggytalents.api.registry;
+package doggytalents.block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBlocks;
 import doggytalents.api.inferface.IBedMaterial;
+import doggytalents.api.inferface.IDogBedRegistry;
 import doggytalents.helper.Compatibility;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author ProPercivalalb
  */
-public class DogBedRegistry {
+public class DogBedRegistry implements IDogBedRegistry {
 
     public final static DogBedRegistry CASINGS = new DogBedRegistry("casing");
     public final static DogBedRegistry BEDDINGS = new DogBedRegistry("bedding");
@@ -30,10 +31,12 @@ public class DogBedRegistry {
         this.key = key;
     }
     
+    @Override
     public IBedMaterial registerMaterial(@Nonnull Block block, ResourceLocation textureLocation) {
         return this.registerMaterial(new BedMaterial(block, textureLocation, Ingredient.fromItems(block)));
     }
     
+    @Override
     public IBedMaterial registerMaterial(IBedMaterial material) {
         if(this.REGISTRY.contains(material)) {
             DoggyTalentsMod.LOGGER.warn("Tried to register a dog bed material with the id {} more that once", material); 
@@ -70,7 +73,7 @@ public class DogBedRegistry {
     
     public IBedMaterial getFromStack(ItemStack stack) {
         for(IBedMaterial m : this.REGISTRY) {
-            if(m.getIngredients().test(stack))
+            if(m.getIngredient().test(stack))
                 return m;
         }
         return IBedMaterial.NULL;

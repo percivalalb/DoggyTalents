@@ -17,12 +17,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
-
-    public ItemStack[] itemToRender;
     
     public LayerBone(RenderDog dogRendererIn) {
         super(dogRendererIn);
-        this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_STICK)};
     }
 
     @Override

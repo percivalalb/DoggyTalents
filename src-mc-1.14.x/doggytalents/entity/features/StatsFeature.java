@@ -1,4 +1,4 @@
-package doggytalents.entity;
+package doggytalents.entity.features;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -8,7 +8,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 
 import doggytalents.DoggyTalentsMod;
-import doggytalents.entity.features.DogFeature;
+import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -55,17 +55,7 @@ public class StatsFeature extends DogFeature {
     
     @Override
     public void tick() {
-        if(this.dog.ticksExisted % 40 == 0 && this.dog.isServerWorld() && false) {
-            for(EntityClassification classification : EntityClassification.values()) {
-                DoggyTalentsMod.LOGGER.info("Classification {}: {}", classification.func_220363_a(), getKillCountFor(classification::equals));
-            }
-            
-            DoggyTalentsMod.LOGGER.info("Peaceful Creatures: {}", getKillCountFor(EntityClassification::getPeacefulCreature));
-            DoggyTalentsMod.LOGGER.info("Hostile Creatures: {}", getKillCountFor(Predicates.not(EntityClassification::getPeacefulCreature)));
-            DoggyTalentsMod.LOGGER.info("Animals: {}", getKillCountFor(EntityClassification::getAnimal));
-            
-            //DoggyTalentsMod.LOGGER.info(ENTITY_KILLS.toString());
-        }
+        
     }
     
     public int getKillCountFor(EntityType<?> type) {

@@ -31,7 +31,6 @@ public class EntityAIIncapacitatedTargetDog extends Goal {
 
     @Override
     public void startExecuting() {
-        DoggyTalentsMod.LOGGER.debug("Dog Incapacitated stop attacking");
         this.dog.setAttackTarget(null);
         this.dog.setRevengeTarget(null);
         this.dog.getNavigator().clearPath();

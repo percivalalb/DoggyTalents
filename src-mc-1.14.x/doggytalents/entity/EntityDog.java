@@ -39,6 +39,7 @@ import doggytalents.entity.features.GenderFeature;
 import doggytalents.entity.features.GenderFeature.EnumGender;
 import doggytalents.entity.features.LevelFeature;
 import doggytalents.entity.features.ModeFeature;
+import doggytalents.entity.features.StatsFeature;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.entity.features.TalentFeature;
 import doggytalents.helper.DogUtil;
@@ -608,6 +609,7 @@ public class EntityDog extends TameableEntity {
                     
                     if(this.isIncapacicated()) {
                         if(!this.world.isRemote)
+                            player.sendMessage(new TranslationTextComponent("dog.mode.incapacitated.help", this.getDisplayName(), this.GENDER.getGenderPronoun()));
                     } else {
                         if(this.world.isRemote) {
                             DoggyTalentsMod.PROXY.openDoggyInfo(this);
@@ -935,10 +937,10 @@ public class EntityDog extends TameableEntity {
         if (entityIn instanceof ZombieEntity)
             ((ZombieEntity)entityIn).setAttackTarget(this);
 
-        this.STATS.increaseDamageDealt(damage);
         //TODO  (float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()
         boolean flag = entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), (float)damage);//(float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
         if(flag) {
+            this.STATS.increaseDamageDealt(damage);
             this.applyEnchantments(this, entityIn);
         }
 
@@ -1142,6 +1144,12 @@ public class EntityDog extends TameableEntity {
         return new ItemStack(ModItems.DOGGY_CHARM);
     }
     
+    @Override
+    public void onKillEntity(LivingEntity entityLivingIn) {
+        super.onKillEntity(entityLivingIn);
+        this.STATS.incrementKillCount(entityLivingIn);
+    }
+    
     @OnlyIn(Dist.CLIENT)
     public boolean isDogWet() {
         return this.isWet;
@@ -1281,12 +1289,6 @@ public class EntityDog extends TameableEntity {
             return new int[] {1,3,6,10,15}[id - 1];
         
         return 0;
-    }
-    
-    @Override
-    public void onKillEntity(LivingEntity entityLivingIn) {
-        super.onKillEntity(entityLivingIn);
-        this.STATS.incrementKillCount(entityLivingIn);
     }
     
     public ITextComponent getOwnersName() {

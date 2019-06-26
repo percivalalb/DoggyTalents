@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.ModItems;
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
 import doggytalents.inventory.container.ContainerTreatBag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -105,7 +105,7 @@ public class InventoryTreatBag extends Inventory implements IInventoryChangedLis
     
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return stack.getItem() instanceof IDogInteractItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat()); 
+        return stack.getItem() instanceof IDogItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat()); 
     }
 
     @Override

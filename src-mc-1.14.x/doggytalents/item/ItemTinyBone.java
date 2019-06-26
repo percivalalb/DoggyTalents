@@ -1,6 +1,6 @@
 package doggytalents.item;
 
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -9,7 +9,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class ItemTinyBone extends Item implements IDogInteractItem {
+public class ItemTinyBone extends Item implements IDogItem {
 
     public ItemTinyBone(Properties properties) {
         super(properties);

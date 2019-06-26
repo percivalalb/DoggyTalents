@@ -656,8 +656,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
                     this.setHasSunglasses(true);
                     this.consumeItemFromStack(player, stack);
                     return true;
-                } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
-                    IDogInteractItem treat = (IDogInteractItem) stack.getItem();
+                } else if(stack.getItem() instanceof IDogItem && this.canInteract(player) && !this.isIncapacicated()) {
+                    IDogItem treat = (IDogItem) stack.getItem();
                     ActionResultType treatResult = treat.onInteractWithDog(this, this.world, player, hand);
                   
                     switch(treatResult) {

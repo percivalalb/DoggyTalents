@@ -1,6 +1,6 @@
 package doggytalents.item;
 
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  **/
-public class ItemDireTreat extends Item implements IDogInteractItem {
+public class ItemDireTreat extends Item implements IDogItem {
     
     public ItemDireTreat(Properties properties) {
         super(properties);

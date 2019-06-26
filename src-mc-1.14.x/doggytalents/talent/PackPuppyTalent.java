@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import doggytalents.ModTags;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
 import net.minecraft.entity.item.ItemEntity;
@@ -27,7 +28,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class PackPuppyTalent extends Talent {
 
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-        return entity.isAlive() && !entity.cannotPickup() && !entity.getItem().getItem().isIn(ModTags.getTag(ModTags.PACK_PUPPY_BLACKLIST));
+        return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.getTag(ModTags.PACK_PUPPY_BLACKLIST)) && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
     };
     
     @Override

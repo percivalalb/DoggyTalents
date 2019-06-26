@@ -3,6 +3,7 @@ package doggytalents.client.renderer.entity.layer;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.ModItems;
+import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -45,7 +46,8 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
             GlStateManager.rotatef(45.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager.translated(0.20, -0.10, -0.10);
-            Minecraft.getInstance().getItemRenderer().renderItem(this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
+            IThrowableItem throwableItem = dog.getThrowableItem();
+            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE);
             GlStateManager.popMatrix();
         }
     }

@@ -100,13 +100,14 @@ public class EntityAIClosestItem extends Goal {
 
     @Override
     public void tick() {
-        this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
         if(!this.dog.isSitting()) {
             if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                this.dogPathfinder.tryMoveToEntityLiving(this.target, this.followSpeed);
+                if(!this.dogPathfinder.tryMoveToEntityLiving(this.target, this.followSpeed)) {
+                    this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+                }
             }
         }
     }

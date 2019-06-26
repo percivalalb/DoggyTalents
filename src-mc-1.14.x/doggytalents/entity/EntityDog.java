@@ -16,7 +16,8 @@ import doggytalents.ModItems;
 import doggytalents.ModSerializers;
 import doggytalents.ModTags;
 import doggytalents.ModTalents;
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
+import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
@@ -115,7 +116,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     private static final DataParameter<Byte>                     DOG_FLAGS       = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
     private static final DataParameter<Map<Talent, Integer>>     TALENTS_PARAM   = EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
     private static final DataParameter<Integer>                  HUNGER          = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-    private static final DataParameter<Byte>                     BONE_VARIANT    = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+    private static final DataParameter<ItemStack>                BONE_VARIANT    = EntityDataManager.createKey(EntityDog.class, DataSerializers.ITEMSTACK);
     private static final DataParameter<Integer>                  CAPE            = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
     private static final DataParameter<Optional<BlockPos>>       BOWL_POS        = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Optional<BlockPos>>       BED_POS         = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -215,7 +216,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
         this.dataManager.register(HUNGER, 60);
-        this.dataManager.register(BONE_VARIANT, (byte)-1);
+        this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
         this.dataManager.register(MODE_PARAM, (byte)EnumMode.DOCILE.getIndex());
         this.dataManager.register(LEVEL, (byte)0);
         this.dataManager.register(LEVEL_DIRE, (byte)0);
@@ -304,7 +305,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         compound.putInt("capeData", this.getCapeData());
         compound.putInt("dogSize", this.getDogSize());
         compound.putBoolean("hasBone", this.hasBone());
-        if(this.hasBone()) compound.putInt("boneVariant", this.getBoneVariant());
+        if(this.hasBone()) {
+            compound.put("fetchItem", this.getBoneVariant().write(new CompoundNBT()));
+        }
+        
         if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) compound.putString("lastKnownOwnerName", ITextComponent.Serializer.toJson(this.dataManager.get(LAST_KNOWN_NAME).get()));
         
         TalentHelper.writeAdditional(this, compound);
@@ -324,8 +328,8 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.setHasSunglasses(compound.getBoolean("sunglasses"));
         if(compound.contains("capeData", 99)) this.setCapeData(compound.getInt("capeData"));
         if(compound.contains("dogSize", 99)) this.setDogSize(compound.getInt("dogSize"));
+        if(compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) this.setBoneVariant(ItemStack.read(compound.getCompound("fetchItem")));
         
-        if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInt("boneVariant"));
         if(compound.contains("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, Optional.of(ITextComponent.Serializer.fromJson(compound.getString("lastKnownOwnerName"))));
         
         TalentHelper.readAdditional(this, compound);
@@ -333,6 +337,14 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         //Backwards Compatibility
         if (compound.contains("dogName"))
             this.setCustomName(new StringTextComponent(compound.getString("dogName")));
+        
+        if(compound.getBoolean("hasBone")) {
+            int variant = compound.getInt("boneVariant");
+            switch(variant) {
+            case 0: this.setBoneVariant(new ItemStack(ModItems.THROW_BONE));
+            case 1: this.setBoneVariant(new ItemStack(ModItems.THROW_STICK));
+            }
+        }
     }
     
     @Override
@@ -503,21 +515,12 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
                     if(!this.world.isRemote) {
-                        ItemStack fetchItem = ItemStack.EMPTY;
-
-                        switch (this.getBoneVariant()) {
-                            case 0:
-                                fetchItem = new ItemStack(ModItems.THROW_BONE_WET);
-                                break;
-                            case 1:
-                                fetchItem = new ItemStack(ModItems.THROW_STICK_WET);
-                                break;
-                        }
+                        IThrowableItem throwableItem = this.getThrowableItem();
+                        ItemStack fetchItem = throwableItem != null ? throwableItem.getReturnStack(this.getBoneVariant()) : this.getBoneVariant();
 
                         this.entityDropItem(fetchItem, 0.0F);
+                        this.setBoneVariant(ItemStack.EMPTY);
                     }
-
-                    this.setNoFetchItem();
                 }
             }
         }
@@ -1352,21 +1355,27 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     public void setDogHunger(int par1) {
         this.dataManager.set(HUNGER, Math.min(ConfigValues.HUNGER_POINTS, Math.max(0, par1)));
     }
-    
-    public void setNoFetchItem() {
-        this.dataManager.set(BONE_VARIANT, (byte)-1);
-    }
       
-    public void setBoneVariant(int value) {
-        this.dataManager.set(BONE_VARIANT, (byte)value);
+    public void setBoneVariant(ItemStack stack) {
+        this.dataManager.set(BONE_VARIANT, stack);
     }
     
-    public int getBoneVariant() {
+    public ItemStack getBoneVariant() {
         return this.dataManager.get(BONE_VARIANT);
     }
     
+    @Nullable
+    public IThrowableItem getThrowableItem() {
+        Item item = this.dataManager.get(BONE_VARIANT).getItem();
+        if(item instanceof IThrowableItem) {
+            return (IThrowableItem)item;
+        } else {
+            return null;
+        }
+    }
+    
     public boolean hasBone() {
-        return this.getBoneVariant() >= 0;
+        return !this.getBoneVariant().isEmpty();
     }
     
     public int getCollarData() {

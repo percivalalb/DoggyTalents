@@ -2,7 +2,7 @@ package doggytalents.addon.biomesoplenty;
 
 import doggytalents.addon.AddonEvent;
 import doggytalents.addon.AddonManager;
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;

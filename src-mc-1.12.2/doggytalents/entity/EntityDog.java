@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Optional;
 
 import doggytalents.DoggyTalents;
@@ -15,7 +17,8 @@ import doggytalents.ModItems;
 import doggytalents.ModSerializers;
 import doggytalents.ModTalents;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
+import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
@@ -27,11 +30,13 @@ import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
 import doggytalents.entity.ai.EntityAIHurtByTargetDog;
+import doggytalents.entity.ai.EntityAIIncapacitatedTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
 import doggytalents.entity.features.CoordFeature;
 import doggytalents.entity.features.DogFeature;
+import doggytalents.entity.features.DogStats;
 import doggytalents.entity.features.GenderFeature;
 import doggytalents.entity.features.GenderFeature.EnumGender;
 import doggytalents.entity.features.LevelFeature;
@@ -96,6 +101,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -113,7 +119,7 @@ public class EntityDog extends EntityTameable {
     private static final DataParameter<Byte>                     DOG_FLAGS       = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
     private static final DataParameter<Map<Talent, Integer>>     TALENTS_PARAM   = EntityDataManager.createKey(EntityDog.class, ModSerializers.TALENT_LEVEL_SERIALIZER);
     private static final DataParameter<Integer>                  HUNGER          = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
-    private static final DataParameter<Byte>                     BONE_VARIANT    = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
+    private static final DataParameter<ItemStack>                BONE_VARIANT    = EntityDataManager.createKey(EntityDog.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<Integer>                  CAPE            = EntityDataManager.createKey(EntityDog.class, DataSerializers.VARINT);
     private static final DataParameter<Optional<BlockPos>>       BOWL_POS        = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Optional<BlockPos>>       BED_POS         = EntityDataManager.createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -196,6 +202,7 @@ public class EntityDog extends EntityTameable {
         this.tasks.addTask(25, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(25, new EntityAILookIdle(this));
         
+        this.targetTasks.addTask(0, new EntityAIIncapacitatedTargetDog(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTargetDog(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTargetDog(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTargetDog(this, true));
@@ -211,7 +218,7 @@ public class EntityDog extends EntityTameable {
         this.dataManager.register(COLLAR_COLOUR, -2);
         this.dataManager.register(TALENTS_PARAM, Collections.emptyMap());
         this.dataManager.register(HUNGER, 60);
-        this.dataManager.register(BONE_VARIANT, (byte)-1);
+        this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
         this.dataManager.register(MODE_PARAM, (byte)EnumMode.DOCILE.getIndex());
         this.dataManager.register(LEVEL, (byte)0);
         this.dataManager.register(LEVEL_DIRE, (byte)0);
@@ -298,7 +305,9 @@ public class EntityDog extends EntityTameable {
         compound.setInteger("capeData", this.getCapeData());
         compound.setInteger("dogSize", this.getDogSize());
         compound.setBoolean("hasBone", this.hasBone());
-        if(this.hasBone()) compound.setInteger("boneVariant", this.getBoneVariant());
+        if(this.hasBone()) {
+            compound.setTag("fetchItem", this.getBoneVariant().writeToNBT(new NBTTagCompound()));
+        }
         if(this.dataManager.get(LAST_KNOWN_NAME).isPresent()) compound.setString("lastKnownOwnerName", ITextComponent.Serializer.componentToJson(this.dataManager.get(LAST_KNOWN_NAME).get()));
         
         TalentHelper.writeAdditional(this, compound);
@@ -319,7 +328,7 @@ public class EntityDog extends EntityTameable {
         if(compound.hasKey("capeData", 99)) this.setCapeData(compound.getInteger("capeData"));
         if(compound.hasKey("dogSize", 99)) this.setDogSize(compound.getInteger("dogSize"));
         
-        if(compound.getBoolean("hasBone")) this.setBoneVariant(compound.getInteger("boneVariant"));
+        if(compound.hasKey("fetchItem", Constants.NBT.TAG_COMPOUND)) this.setBoneVariant(new ItemStack(compound.getCompoundTag("fetchItem")));
         if(compound.hasKey("lastKnownOwnerName", 8)) this.dataManager.set(LAST_KNOWN_NAME, Optional.of(ITextComponent.Serializer.jsonToComponent(compound.getString("lastKnownOwnerName"))));
 
         TalentHelper.readAdditional(this, compound);
@@ -327,6 +336,14 @@ public class EntityDog extends EntityTameable {
         //Backwards Compatibility
         if (compound.hasKey("dogName"))
             this.setCustomNameTag(compound.getString("dogName"));
+        
+        if(compound.getBoolean("hasBone")) {
+            int variant = compound.getInteger("boneVariant");
+            switch(variant) {
+            case 0: this.setBoneVariant(new ItemStack(ModItems.THROW_BONE));
+            case 1: this.setBoneVariant(new ItemStack(ModItems.THROW_STICK));
+            }
+        }
     }
 
     public EntityAISit getSitAI() {
@@ -496,21 +513,12 @@ public class EntityDog extends EntityTameable {
 
                 if(distanceToOwner <= 2F && this.hasBone()) {
                     if(!this.world.isRemote) {
-                        ItemStack fetchItem = ItemStack.EMPTY;
-
-                        switch (this.getBoneVariant()) {
-                            case 0:
-                                fetchItem = new ItemStack(ModItems.THROW_BONE_WET);
-                                break;
-                            case 1:
-                                fetchItem = new ItemStack(ModItems.THROW_STICK_WET);
-                                break;
-                        }
+                        IThrowableItem throwableItem = this.getThrowableItem();
+                        ItemStack fetchItem = throwableItem != null ? throwableItem.getReturnStack(this.getBoneVariant()) : this.getBoneVariant();
 
                         this.entityDropItem(fetchItem, 0.0F);
+                        this.setBoneVariant(ItemStack.EMPTY);
                     }
-
-                    this.setNoFetchItem();
                 }
             }
         }
@@ -529,6 +537,7 @@ public class EntityDog extends EntityTameable {
             }
         }
 
+        this.FEATURES.forEach(DogFeature::tick);
         TalentHelper.tick(this);
     }
 
@@ -576,7 +585,14 @@ public class EntityDog extends EntityTameable {
         if (entity instanceof EntityZombie)
             ((EntityZombie) entity).setAttackTarget(this);
 
-        return entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float) damage);
+        boolean flag = entity.attackEntityFrom(DamageSource.causeMobDamage(this), (float)damage);//(float)((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue()));
+        if(flag) {
+            this.STATS.increaseDamageDealt(damage);
+            this.applyEnchantments(this, entity);
+        }
+        
+        return flag;
+        
     }
 
     @Override
@@ -626,16 +642,21 @@ public class EntityDog extends EntityTameable {
             if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);
                 
-                if(foodValue != 0 && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-                    this.consumeItemFromStack(player, stack);
-
-                    if(!this.world.isRemote) {
-                        this.setDogHunger(this.getDogHunger() + foodValue);
-                        if(stack.getItem() == ModItems.CHEW_STICK)
-                            ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
-                        
+                if(foodValue != 0 && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player)) {
+                    if(this.isIncapacicated()) {
+                        if(!this.world.isRemote)
+                            player.sendMessage(new TextComponentTranslation("dog.mode.incapacitated.help", this.getDisplayName(), this.GENDER.getGenderPronoun()));
+                    } else {
+                        this.consumeItemFromStack(player, stack);
+    
+                        if(!this.world.isRemote) {
+                            this.setDogHunger(this.getDogHunger() + foodValue);
+                            if(stack.getItem() == ModItems.CHEW_STICK)
+                                ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
+                            
+                        }
+                        this.playTameEffect(true);
                     }
-                    this.playTameEffect(true);
                     return true;
                 }
                 else if(stack.getItem() == ModItems.DOGGY_CHARM && player.capabilities.isCreativeMode) {
@@ -657,25 +678,11 @@ public class EntityDog extends EntityTameable {
 
                     return true;
                 }
-                /*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
-                    this.startRiding(player);
-                    
-                    if(this.aiSit != null)
-                        this.aiSit.setSitting(true);
-                    
-                    return true;
-                }*/
-                //TODO else if(stack.getItem() == Items.BIRCH_DOOR && this.canInteract(player)) {
-                //    this.patrolOutline.add(this.getPosition());
-                //}
-                //else if(stack.getItem() == Items.OAK_DOOR && this.canInteract(player)) {
-                //    this.patrolOutline.clear();
-                //}
                 else if(stack.getItem() == Items.STICK && this.canInteract(player)) {
                     
                     if(this.isIncapacicated()) {
                         if(!this.world.isRemote)
-                            player.sendMessage(new TextComponentTranslation("dog.mode.incapacitated.help", this.getDisplayName()));
+                            player.sendMessage(new TextComponentTranslation("dog.mode.incapacitated.help", this.getDisplayName(), this.GENDER.getGenderPronoun()));
                     } else {
                          player.openGui(DoggyTalents.INSTANCE, GuiNames.GUI_ID_DOGGY, this.world, this.getEntityId(), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
                     }
@@ -723,8 +730,8 @@ public class EntityDog extends EntityTameable {
                     this.setHasSunglasses(true);
                     this.consumeItemFromStack(player, stack);
                     return true;
-                } else if(stack.getItem() instanceof IDogInteractItem && this.canInteract(player) && !this.isIncapacicated()) {
-                    IDogInteractItem treat = (IDogInteractItem) stack.getItem();
+                } else if(stack.getItem() instanceof IDogItem && this.canInteract(player) && !this.isIncapacicated()) {
+                    IDogItem treat = (IDogItem) stack.getItem();
                     EnumActionResult treatResult = treat.onInteractWithDog(this, this.world, player, hand);
                   
                     switch(treatResult) {
@@ -862,7 +869,7 @@ public class EntityDog extends EntityTameable {
                     }
                     
                     return true;
-                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player)) {
+                } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
 
                     InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory.currentItem, stack);
                     treatBag.openInventory(player);
@@ -1134,6 +1141,12 @@ public class EntityDog extends EntityTameable {
         return new ItemStack(ModItems.DOGGY_CHARM);
     }
 
+    @Override
+    public void onKillEntity(EntityLivingBase entityLivingIn) {
+        super.onKillEntity(entityLivingIn);
+        this.STATS.incrementKillCount(entityLivingIn);
+    }
+    
     @SideOnly(Side.CLIENT)
     public boolean isDogWet() {
         return this.isWet;
@@ -1349,11 +1362,11 @@ public class EntityDog extends EntityTameable {
     }
     
     public int getTameSkin() {
-            return this.dataManager.get(DOG_TEXTURE);
+        return this.dataManager.get(DOG_TEXTURE);
     }
     
     public void setTameSkin(int index) {
-           this.dataManager.set(DOG_TEXTURE, (byte)index);
+        this.dataManager.set(DOG_TEXTURE, (byte)index);
     }
     
     public int getDogHunger() {
@@ -1364,20 +1377,26 @@ public class EntityDog extends EntityTameable {
         this.dataManager.set(HUNGER, Math.min(ConfigValues.HUNGER_POINTS, Math.max(0, par1)));
     }
     
-    public void setNoFetchItem() {
-        this.dataManager.set(BONE_VARIANT, (byte)-1);
+    public void setBoneVariant(ItemStack stack) {
+        this.dataManager.set(BONE_VARIANT, stack);
     }
     
-    public void setBoneVariant(int value) {
-        this.dataManager.set(BONE_VARIANT, (byte)value);
-    }
-    
-    public byte getBoneVariant() {
+    public ItemStack getBoneVariant() {
         return this.dataManager.get(BONE_VARIANT);
     }
     
+    @Nullable
+    public IThrowableItem getThrowableItem() {
+        Item item = this.dataManager.get(BONE_VARIANT).getItem();
+        if(item instanceof IThrowableItem) {
+            return (IThrowableItem)item;
+        } else {
+            return null;
+        }
+    }
+    
     public boolean hasBone() {
-        return this.getBoneVariant() >= 0;
+        return !this.getBoneVariant().isEmpty();
     }
     
     public int getCollarData() {

@@ -1,6 +1,5 @@
 package doggytalents;
 
-import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
@@ -11,7 +10,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,7 +32,6 @@ public class ModBlocks {
         @SubscribeEvent
         public static void registerBlocks(final RegistryEvent.Register<Block> event) {
             IForgeRegistry<Block> blockRegistry = event.getRegistry();
-            MinecraftForge.EVENT_BUS.post(new BeddingRegistryEvent());
                
                
             DoggyTalents.LOGGER.debug("Registering Blocks");

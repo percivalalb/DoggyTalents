@@ -200,7 +200,8 @@ modgui.config.general=Общие настройки
 modgui.config.general.tooltip=Общие настройки для мода
 modgui.config.talents=Таланты
 modgui.config.talents.tooltip=Включить или отключить таланты
-
+dogbed.null=Null
+dogbed.missing=Missing: %s
 dogbed.bedding.minecraft.wool.0=Подстилка из белой шерсти
 dogbed.bedding.minecraft.wool.1=Подстилка из оранжевой шерсти
 dogbed.bedding.minecraft.wool.2=Подстилка из пурпурной шерсти

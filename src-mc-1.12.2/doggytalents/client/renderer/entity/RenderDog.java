@@ -92,7 +92,7 @@ public class RenderDog extends RenderLiving<EntityDog> {
                     dog.getDogHunger());
             
             if(ConfigValues.DOG_GENDER) {
-                label += new TextComponentTranslation(dog.GENDER.getGenderTip()).getFormattedText();
+                label += dog.GENDER.getGenderTip().getFormattedText();
             }
             
             if(d0 <= (double)(64 * 64)) {

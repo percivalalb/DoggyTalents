@@ -2,7 +2,7 @@ package doggytalents.client.model.block;
 
 import com.google.common.collect.Lists;
 
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;

@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.ModCreativeTabs;
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.network.PacketDispatcher;
@@ -42,15 +41,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -107,19 +104,10 @@ public class BlockDogBed extends BlockContainer {
         super.addInformation(stack, worldIn, tooltip, flagIn);
         if(stack.hasTagCompound() && stack.getTagCompound().hasKey("doggytalents")) {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("doggytalents");
-            
             IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
             IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
-            
-            if(casingId.isValid())
-                tooltip.add(new TextComponentTranslation(casingId.getTranslationKey()).getFormattedText());
-            else
-                tooltip.add(new TextComponentTranslation(casingId.getTranslationKey(), casingId.getSaveId()).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText());
-                
-             if(beddingId.isValid())
-                tooltip.add(new TextComponentTranslation(beddingId.getTranslationKey()).getFormattedText());    
-            else
-                tooltip.add(new TextComponentTranslation(beddingId.getTranslationKey(), beddingId.getSaveId()).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText());
+            tooltip.add(casingId.getTooltip().getFormattedText());
+            tooltip.add(beddingId.getTooltip().getFormattedText());    
         }
     }
     
@@ -362,8 +350,8 @@ public class BlockDogBed extends BlockContainer {
 
     @Override
     public boolean addLandingEffects(IBlockState state, WorldServer world, BlockPos pos, IBlockState stateAgain, EntityLivingBase entity, int numberOfParticles) {
-        CustomParticleMessage packet = new CustomParticleMessage(world, pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15f);
-        PacketDispatcher.sendToDimension(packet, world.provider.getDimension());
+        CustomParticleMessage packet = new CustomParticleMessage(world, pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15F);
+        PacketDispatcher.sendToAllAround(packet, world.provider.getDimension(), entity.posX, entity.posY, entity.posZ, 32.0D);
         return true;
     }
 }

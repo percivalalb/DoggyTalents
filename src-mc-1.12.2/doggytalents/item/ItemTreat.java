@@ -1,6 +1,6 @@
 package doggytalents.item;
 
-import doggytalents.api.inferface.IDogInteractItem;
+import doggytalents.api.inferface.IDogItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  **/
-public class ItemTreat extends ItemDT implements IDogInteractItem {
+public class ItemTreat extends ItemDT implements IDogItem {
 
     private int maxLevel;
     public ItemTreat(int maxLevel) {

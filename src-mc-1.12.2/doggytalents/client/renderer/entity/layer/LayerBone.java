@@ -1,6 +1,6 @@
 package doggytalents.client.renderer.entity.layer;
 
-import doggytalents.ModItems;
+import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
@@ -8,8 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,11 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerBone implements LayerRenderer<EntityDog> {
     
     protected final RenderDog dogRenderer;
-    public ItemStack[] itemToRender;
-    
     public LayerBone(RenderDog dogRendererIn) {
         this.dogRenderer = dogRendererIn;
-        this.itemToRender = new ItemStack[] {new ItemStack(Items.BONE), new ItemStack(ModItems.THROW_STICK)};
     }
 
     @Override
@@ -45,7 +40,8 @@ public class LayerBone implements LayerRenderer<EntityDog> {
             GlStateManager.rotate(45.0F, 0.0F, 0.0F, 1.0F);
 
             GlStateManager.translate(0.20, -0.10, -0.10);
-            Minecraft.getMinecraft().getItemRenderer().renderItem(dog, this.itemToRender[dog.getBoneVariant()], ItemCameraTransforms.TransformType.NONE);
+            IThrowableItem throwableItem = dog.getThrowableItem();
+            Minecraft.getMinecraft().getItemRenderer().renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE);
             GlStateManager.popMatrix();
         }
     }

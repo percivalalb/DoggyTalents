@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
@@ -18,8 +18,8 @@ public final class DogBedRecipeMaker {
         for(IBedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys()) {
             for(IBedMaterial casingId : DogBedRegistry.CASINGS.getKeys()) {
 
-                Ingredient beddingIngredient = beddingId.getIngredients();
-                Ingredient casingIngredient = casingId.getIngredients();
+                Ingredient beddingIngredient = beddingId.getIngredient();
+                Ingredient casingIngredient = casingId.getIngredient();
                 NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY,
                     casingIngredient, beddingIngredient, casingIngredient,
                     casingIngredient, beddingIngredient, casingIngredient,

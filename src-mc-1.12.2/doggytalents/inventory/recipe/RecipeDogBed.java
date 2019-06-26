@@ -1,7 +1,7 @@
 package doggytalents.inventory.recipe;
 
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -22,14 +22,14 @@ public class RecipeDogBed extends net.minecraftforge.registries.IForgeRegistryEn
             for(int row = 0; row < 3; ++row) {
                 if((col == 1 && row == 0) || (col == 1 && row == 1)) {
                     IBedMaterial id = DogBedRegistry.BEDDINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
-                    if(!id.isValid() || (beddingId != IBedMaterial.NULL && id != beddingId))
+                    if(id == IBedMaterial.NULL || (beddingId != IBedMaterial.NULL && id != beddingId))
                         return false;
                         
                     beddingId = id;
                 }
                 else {
                     IBedMaterial id = DogBedRegistry.CASINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
-                    if(!id.isValid() || (beddingId != IBedMaterial.NULL && id != casingId))
+                    if(id == IBedMaterial.NULL || (beddingId != IBedMaterial.NULL && id != casingId))
                         return false;
                     
                     casingId = id;

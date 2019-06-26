@@ -3,7 +3,7 @@ package doggytalents.tileentity;
 import java.util.List;
 
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

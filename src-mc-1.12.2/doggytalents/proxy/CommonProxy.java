@@ -5,7 +5,9 @@ import java.util.Random;
 import doggytalents.DoggyTalents;
 import doggytalents.ModEntities;
 import doggytalents.ModItems;
+import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.block.DogBedRegistry;
 import doggytalents.configuration.ConfigurationHandler;
 import doggytalents.entity.EntityDog;
 import doggytalents.handler.ConfigChange;
@@ -58,6 +60,7 @@ public class CommonProxy implements IGuiHandler {
     }
 
     public void postInit(FMLPostInitializationEvent event) {
+        MinecraftForge.EVENT_BUS.post(new BeddingRegistryEvent(DogBedRegistry.CASINGS, DogBedRegistry.BEDDINGS));
         DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE, ModItems.THROW_BONE_WET);
         DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_STICK, ModItems.THROW_STICK_WET);
         DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);

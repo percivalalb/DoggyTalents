@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.api.registry.DogBedRegistry;
+import doggytalents.block.DogBedRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;

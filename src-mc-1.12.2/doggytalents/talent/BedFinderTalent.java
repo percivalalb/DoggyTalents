@@ -16,8 +16,6 @@ public class BedFinderTalent extends Talent {
     
     @Override
     public void livingTick(EntityDog dog) {
-        int level = dog.TALENTS.getLevel(this);
-        
         Entity entityRidden = dog.getRidingEntity();
         
         if(entityRidden instanceof EntityPlayer && !dog.world.isRemote) {
@@ -37,9 +35,7 @@ public class BedFinderTalent extends Talent {
         if(level > 0 && stack.getItem() == Items.BONE && dog.canInteract(player)) {
             dog.startRiding(player);
             if(!dog.world.isRemote) {
-                if(!dog.isSitting()) {
-                    dog.getAISit().setSitting(true);
-                }
+                dog.getAISit().setSitting(true);
             }
             return EnumActionResult.SUCCESS;
         }

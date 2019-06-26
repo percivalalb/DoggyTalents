@@ -18,4 +18,8 @@ public class DogFeature {
     public void readAdditional(NBTTagCompound compound) {
         
     }
+    
+    public void tick() {
+        
+    }
 }

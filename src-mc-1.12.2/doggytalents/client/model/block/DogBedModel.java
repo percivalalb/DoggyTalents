@@ -11,8 +11,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
-import doggytalents.api.registry.DogBedRegistry;
 import doggytalents.block.BlockDogBed;
+import doggytalents.block.DogBedRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;

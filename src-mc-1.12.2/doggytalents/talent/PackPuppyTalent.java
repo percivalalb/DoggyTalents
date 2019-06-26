@@ -26,7 +26,7 @@ import net.minecraft.util.EnumHand;
 public class PackPuppyTalent extends Talent {
 
     public static Predicate<EntityItem> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-        return entity.isEntityAlive() && !entity.cannotPickup() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
+        return entity.isEntityAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
     };
     
     @Override

@@ -2,6 +2,7 @@ package doggytalents.item;
 
 import com.google.common.base.Supplier;
 
+import doggytalents.api.inferface.IThrowableItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,20 +20,30 @@ import net.minecraft.world.World;
 /**
  * @author ProPercivalalb
  **/
-public class ItemThrowBone extends ItemDT {
+public class ItemThrowBone extends ItemDT implements IThrowableItem {
     
-    public enum Type {
-        DRY,
-        WET
+    public Supplier<Item> altBone;
+    public Supplier<Item> renderBone;
+    
+    public ItemThrowBone(Supplier<Item> altBone, Supplier<Item> renderBone) {
+        super();
+        this.altBone = altBone;
+        this.renderBone = renderBone;
     }
     
-    public Type type;
-    public Supplier<Item> altBone;
-    
-    public ItemThrowBone(Type type, Supplier<Item> altBone) {
-        super();
-        this.type = type;
-        this.altBone = altBone;
+    @Override
+    public ItemStack getReturnStack(ItemStack stack) {
+        ItemStack returnStack = new ItemStack(this.altBone.get());
+        if(stack.hasTagCompound()) {
+            returnStack.setTagCompound(stack.getTagCompound().copy());
+        }
+        
+        return returnStack;
+    }
+
+    @Override
+    public ItemStack getRenderStack(ItemStack stack) {
+        return new ItemStack(this.renderBone.get());
     }
     
     public void setHeadingFromThrower(EntityItem entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
@@ -50,35 +61,23 @@ public class ItemThrowBone extends ItemDT {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         ItemStack itemStackIn = playerIn.getHeldItem(handIn);
-        
-        if(this.type == Type.WET) {
-            if(itemStackIn.getItem() == this) {
-                itemStackIn = new ItemStack(this.altBone.get());
-                playerIn.swingArm(handIn);
-                return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
-            }
-            
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
-        }
-        else {
-    
-            worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-    
-            if(!worldIn.isRemote) {
-                ItemStack stack = itemStackIn.copy();
-                stack.setCount(1);
-                EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
-                entityitem.setPickupDelay(20);
-                this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
-                worldIn.spawnEntity(entityitem);
-            }
-            
-            if(!playerIn.capabilities.isCreativeMode)
-                itemStackIn.shrink(1);
 
-            playerIn.addStat(StatList.getObjectUseStats(this));
-            return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
+        worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+    
+        if(!worldIn.isRemote) {
+            ItemStack stack = itemStackIn.copy();
+            stack.setCount(1);
+            EntityItem entityitem = new EntityItem(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
+            entityitem.setPickupDelay(20);
+            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
+            worldIn.spawnEntity(entityitem);
         }
+            
+        if(!playerIn.capabilities.isCreativeMode)
+            itemStackIn.shrink(1);
+
+        playerIn.addStat(StatList.getObjectUseStats(this));
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     public void setThrowableHeading(EntityItem entityItem, double x, double y, double z, float velocity, float inaccuracy) {

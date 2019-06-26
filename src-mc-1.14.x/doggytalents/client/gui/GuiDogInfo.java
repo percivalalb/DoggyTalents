@@ -42,7 +42,6 @@ public class GuiDogInfo extends Screen {
 
     public EntityDog dog;
     public PlayerEntity player;
-    private TextFieldWidget nameTextField;
     public int doggyTex;
     private int currentPage = 0;
     private int maxPages = 1;
@@ -65,32 +64,20 @@ public class GuiDogInfo extends Screen {
         this.minecraft.keyboardListener.enableRepeatEvents(true);
         int topX = this.width / 2;
         int topY = this.height / 2;
-        TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "TEST") {
-            @Override
-            public boolean charTyped(char character, int keyId) {
-                boolean typed = super.charTyped(character, keyId);
-                if(typed)
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), this.getText()));
-                return typed;
-            }
-            
-            @Override
-            public void deleteFromCursor(int index) {
-                super.deleteFromCursor(index);
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), this.getText()));
-            }
-        };
+        TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "TEST");
+        nameTextField.func_212954_a(text ->  {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), text));
+        });
         nameTextField.setFocused2(false);
         nameTextField.setMaxStringLength(32);
         if(this.dog.hasCustomName()) nameTextField.setText(this.dog.getCustomName().getUnformattedComponentText());
-        this.nameTextField = nameTextField;
         
         this.addButton(nameTextField);
         this.doggyTex = this.dog.getTameSkin();
         
         int size = (int)DoggyTalentsAPI.TALENTS.getKeys().stream().filter(loc -> ConfigValues.ENABLED_TALENTS.getOrDefault(loc, false)).count();
         
-          this.btnPerPages = Math.max(MathHelper.floor((double)(this.height - 10) / 21) - 2, 1);
+        this.btnPerPages = Math.max(MathHelper.floor((double)(this.height - 10) / 21) - 2, 1);
         
         if(this.btnPerPages < size) {
             this.addButton(new Button(25, this.btnPerPages * 21 + 10, 20, 20, "<", button -> {

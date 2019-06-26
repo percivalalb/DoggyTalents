@@ -1054,6 +1054,11 @@ public class EntityDog extends TameableEntity {
     }
     
     @Override
+    public boolean canAttack(LivingEntity target) {
+        return this.canInteract(target) ? false : super.canAttack(target);
+    }
+    
+    @Override
     public Entity changeDimension(DimensionType dimType) {
         Entity entity = super.changeDimension(dimType);
         if(entity instanceof EntityDog) {
@@ -1204,7 +1209,7 @@ public class EntityDog extends TameableEntity {
         return this.isTamed() && this.MODE.isMode(EnumMode.WANDERING) && this.COORDS.hasBowlPos() && this.COORDS.getBowlPos().distanceSq(this.getPosition()) < 400.0D;
     }
     
-    public boolean canInteract(PlayerEntity player) {
+    public boolean canInteract(LivingEntity player) {
         return this.isOwner(player) || this.willObeyOthers();
     }
     

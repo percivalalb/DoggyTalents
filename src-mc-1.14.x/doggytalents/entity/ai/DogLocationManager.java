@@ -47,7 +47,7 @@ public class DogLocationManager extends WorldSavedData {
     
     
     public static DogLocationManager getHandler(@Nonnull ServerWorld world) {
-        return getHandler(world.getServer().getWorld(DimensionType.field_223227_a_).getSavedData());
+        return getHandler(world.getServer().getWorld(DimensionType.OVERWORLD).getSavedData());
     }
     
     public static DogLocationManager getHandler(DimensionSavedDataManager storage) {

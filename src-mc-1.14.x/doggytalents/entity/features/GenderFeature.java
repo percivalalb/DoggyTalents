@@ -20,11 +20,7 @@ public class GenderFeature extends DogFeature {
     
     public void setGender(EnumGender gender) {
         this.dog.setGender(gender);
-    }
-    
-    public String getTranslationKey(Function<EnumGender, String> function) {
-        return function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
-    }
+    } 
     
     public boolean canMateWith(EntityDog matedog) {
         if(ConfigValues.DOG_GENDER) {
@@ -33,6 +29,10 @@ public class GenderFeature extends DogFeature {
         }
         
         return true;
+    }
+    
+    public String getTranslationKey(Function<EnumGender, String> function) {
+        return function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX);
     }
     
     public String getGenderPronoun() {

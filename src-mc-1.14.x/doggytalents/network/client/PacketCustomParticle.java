@@ -43,7 +43,6 @@ public class PacketCustomParticle {
         return new PacketCustomParticle(pos, posX, posY, posZ, numberOfParticles, particleSpeed);
     }
     
-    
     public static class Handler {
         public static void handle(final PacketCustomParticle message, Supplier<NetworkEvent.Context> ctx) {
             ctx.get().enqueueWork(() -> {

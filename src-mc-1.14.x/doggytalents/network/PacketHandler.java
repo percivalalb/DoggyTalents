@@ -25,7 +25,7 @@ public final class PacketHandler
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
     
-    public static void register()  {
+    public static void register() {
         int disc = 0;
 
         HANDLER.registerMessage(disc++, PacketDogMode.class, PacketDogMode::encode, PacketDogMode::decode, PacketDogMode.Handler::handle);

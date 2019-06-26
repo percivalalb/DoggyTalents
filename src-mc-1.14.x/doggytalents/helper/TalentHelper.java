@@ -47,7 +47,7 @@ public class TalentHelper {
         return ActionResultType.PASS;
     }
 
-    public static void tick(EntityDog  dog) {
+    public static void tick(EntityDog dog) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.tick(dog);
     }

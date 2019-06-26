@@ -1,13 +1,17 @@
 package doggytalents.client.model.block;
 
-import javax.annotation.Nonnull;
 
-import doggytalents.api.inferface.IBedMaterial;
+import javax.annotation.Nullable;
+
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public interface IStateParticleModel {
 
-    public TextureAtlasSprite getParticleTexture(@Nonnull IBedMaterial casing, @Nonnull IBedMaterial bedding, @Nonnull Direction facing);
+    @Nullable
+    public TextureAtlasSprite getParticleTexture(World worldIn, BlockPos pos, BlockState state, @Nullable Direction side);
     
 }

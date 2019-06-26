@@ -15,7 +15,6 @@ import org.apache.commons.lang3.tuple.Triple;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModBeddings;
 import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.block.BlockDogBed;
@@ -31,9 +30,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
@@ -111,7 +110,6 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
         if(possibleModel != null) {
             customModel = possibleModel;
         } else if(this.model != null) {
-            DoggyTalentsMod.LOGGER.info("Create");
             List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
             for (BlockPart part : this.model.getElements()) {
                 elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
@@ -160,7 +158,21 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-    public TextureAtlasSprite getParticleTexture(@Nonnull IBedMaterial casing, @Nonnull IBedMaterial bedding, @Nonnull Direction facing) {
+    public TextureAtlasSprite getParticleTexture(World worldIn, BlockPos pos, BlockState state, Direction side) {
+        IBedMaterial casing = ModBeddings.OAK;
+        IBedMaterial bedding = ModBeddings.WHITE;
+        Direction facing = Direction.NORTH;
+        
+        TileEntity tile = worldIn.getTileEntity(pos);
+        if(tile instanceof TileEntityDogBed) {
+            casing = ((TileEntityDogBed)tile).getCasingId();
+            bedding = ((TileEntityDogBed)tile).getBeddingId();
+        }
+        
+        if(state.has(BlockDogBed.FACING)) {
+            facing = state.get(BlockDogBed.FACING);
+        }
+        
         return this.getCustomModel(casing, bedding, facing).getParticleTexture();
     }
 

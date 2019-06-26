@@ -61,6 +61,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.PacketDistributor.TargetPoint;
 
 /**
  * @author ProPercivalalb
@@ -219,25 +220,20 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
     public boolean addDestroyEffects(BlockState state, World world, BlockPos pos, ParticleManager manager) {
         IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
         if(model instanceof IStateParticleModel) {
-            TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof TileEntityDogBed) {
-                IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
-                IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
-                TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(FACING));
-                if(sprite != null) {
-                    for(int j = 0; j < 4; ++j) {
-                        for(int k = 0; k < 4; ++k) {
-                            for(int l = 0; l < 4; ++l) {
-                                double d0 = ((double)j + 0.5D) / 4.0D;
-                                double d1 = ((double)k + 0.5D) / 4.0D;
-                                double d2 = ((double)l + 0.5D) / 4.0D;
-                                manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
-                            }
+            TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(world, pos, state, null);
+            if(sprite != null) {
+                for(int j = 0; j < 4; ++j) {
+                    for(int k = 0; k < 4; ++k) {
+                        for(int l = 0; l < 4; ++l) {
+                            double d0 = ((double)j + 0.5D) / 4.0D;
+                            double d1 = ((double)k + 0.5D) / 4.0D;
+                            double d2 = ((double)l + 0.5D) / 4.0D;
+                            manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
                         }
                     }
-    
-                    return true;
                 }
+    
+                return true;
             }
         }
 
@@ -252,45 +248,36 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
             BlockRayTraceResult result = ((BlockRayTraceResult)target);
             BlockPos pos = result.getPos();
             Direction side = result.getFace();
-
-            TileEntity tile = world.getTileEntity(pos);
-            if(tile instanceof TileEntityDogBed) {
-                IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
-                IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
-                TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(casing, bedding, state.get(FACING));
-                if(sprite != null) {
-                    int x = pos.getX();
-                    int y = pos.getY();
-                    int z = pos.getZ();
-                    AxisAlignedBB axisalignedbb = state.getShape(world, pos).getBoundingBox();
-                    double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - (double)0.2F) + (double)0.1F + axisalignedbb.minX;
-                    double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - (double)0.2F) + (double)0.1F + axisalignedbb.minY;
-                    double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - (double)0.2F) + (double)0.1F + axisalignedbb.minZ;
+            TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(world, pos, state, side);
+            if(sprite != null) {
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
+                AxisAlignedBB axisalignedbb = state.getShape(world, pos).getBoundingBox();
+                double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - (double)0.2F) + (double)0.1F + axisalignedbb.minX;
+                double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - (double)0.2F) + (double)0.1F + axisalignedbb.minY;
+                double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - (double)0.2F) + (double)0.1F + axisalignedbb.minZ;
     
+                if(side == Direction.DOWN)
+                    d1 = (double)y + axisalignedbb.minY - 0.1F;
                     
-                    
-                    if(side == Direction.DOWN)
-                        d1 = (double)y + axisalignedbb.minY - 0.1F;
-                    
-                    if(side == Direction.UP)
-                        d1 = (double)y + axisalignedbb.maxY + 0.1F;
+                if(side == Direction.UP)
+                    d1 = (double)y + axisalignedbb.maxY + 0.1F;
     
-                    if(side == Direction.NORTH)
-                        d2 = (double)z + axisalignedbb.minZ - 0.1F;
+                if(side == Direction.NORTH)
+                    d2 = (double)z + axisalignedbb.minZ - 0.1F;
     
-                    if(side == Direction.SOUTH)
-                        d2 = (double)z + axisalignedbb.maxZ + 0.1F;
+                if(side == Direction.SOUTH)
+                    d2 = (double)z + axisalignedbb.maxZ + 0.1F;
     
-                    if(side == Direction.WEST)
-                        d0 = (double)x + axisalignedbb.minX - 0.1F;
+                if(side == Direction.WEST)
+                    d0 = (double)x + axisalignedbb.minX - 0.1F;
     
-                    if(side == Direction.EAST)
-                        d0 = (double)x + axisalignedbb.maxX + 0.1F;
+                if(side == Direction.EAST)
+                    d0 = (double)x + axisalignedbb.maxX + 0.1F;
     
-                    manager.addEffect(new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-    
-                    return true;
-                }
+                manager.addEffect(new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
+                return true;
             }
         }
 
@@ -300,7 +287,7 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
     @Override
     public boolean addLandingEffects(BlockState state, ServerWorld world, BlockPos pos, BlockState stateAgain, LivingEntity entity, int numberOfParticles) {
         PacketCustomParticle packet = new PacketCustomParticle(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15F);
-        PacketHandler.send(PacketDistributor.TRACKING_CHUNK.with(() -> world.getChunkAt(pos)), packet);
+        PacketHandler.send(PacketDistributor.NEAR.with(TargetPoint.p(entity.posX, entity.posY, entity.posZ, 32.0D, world.getDimension().getType())), packet);
         return true;
     }
 }

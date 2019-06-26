@@ -29,6 +29,7 @@ import doggytalents.entity.ai.EntityAIFetch;
 import doggytalents.entity.ai.EntityAIFetchReturn;
 import doggytalents.entity.ai.EntityAIFollowOwnerDog;
 import doggytalents.entity.ai.EntityAIHurtByTargetDog;
+import doggytalents.entity.ai.EntityAIIncapacitatedTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtByTargetDog;
 import doggytalents.entity.ai.EntityAIOwnerHurtTargetDog;
 import doggytalents.entity.ai.EntityAIShepherdDog;
@@ -55,7 +56,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.BreedGoal;
-import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
@@ -186,7 +186,7 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.goalSelector.addGoal(3, new EntityAIFetchReturn(this, 1.0D));
         this.goalSelector.addGoal(4, new EntityAIDogWander(this, 1.0D));
          //TODO this.tasks.addGoal(4, new EntityAIPatrolArea(this));
-        this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4F));
+        //TODO this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(7, new EntityAIShepherdDog(this, 1.0D, 8F, entity -> !(entity instanceof EntityDog)));
         this.goalSelector.addGoal(8, new EntityAIFetch(this, 1.0D, 32));
@@ -197,10 +197,10 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         this.goalSelector.addGoal(14, new EntityAIBegDog(this, 8.0F));
         this.goalSelector.addGoal(15, new EntityAIDogFeed(this, 1.0D, 20.0F));
         
-        
         this.goalSelector.addGoal(25, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         this.goalSelector.addGoal(25, new LookRandomlyGoal(this));
         
+        this.targetSelector.addGoal(0, new EntityAIIncapacitatedTargetDog(this));
         this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
         this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
         this.targetSelector.addGoal(3, new EntityAIHurtByTargetDog(this).setCallsForHelp());

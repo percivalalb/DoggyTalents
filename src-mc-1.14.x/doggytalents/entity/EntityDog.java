@@ -71,11 +71,8 @@ import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -105,8 +102,9 @@ import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 
-public class EntityDog extends TameableEntity implements INamedContainerProvider {
+public class EntityDog extends TameableEntity {
     
     private static final DataParameter<Float>                    DATA_HEALTH_ID  = EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
     private static final DataParameter<Byte>                     DOG_TEXTURE     = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
@@ -1047,7 +1045,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
         return false;
     }
 
-
     @Override
     public boolean canAttack(EntityType<?> cls) {
         if(TalentHelper.canAttack(this, cls))
@@ -1558,17 +1555,6 @@ public class EntityDog extends TameableEntity implements INamedContainerProvider
     public float[] getCapeColour() {
         return DogUtil.rgbIntToFloatArray(this.getCapeData());
     }
-
-    @Override
-    public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-        return new Container(null, windowId) { //TODO
-            @Override
-            public boolean canInteractWith(PlayerEntity playerIn) {
-                return true;
-            }
-        };
-    }
-    
     
     protected boolean dogJumping;
     protected float jumpPower;

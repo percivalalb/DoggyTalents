@@ -20,7 +20,7 @@ public class MissingMappings {
      public void remapMissingEntities(final RegistryEvent.MissingMappings<EntityType<?>> event) {
          if(event.getAllMappings() == null) return; // Prevent crash
          
-         ImmutableList<Mapping<EntityType<?>>> mappings = event.getMappings();
+         ImmutableList<Mapping<EntityType<?>>> mappings = event.getAllMappings();
          mappings.forEach(mapping -> {
              if(Objects.equals(mapping.key, Compatibility.DOGGY_BEAM)) {
                  mapping.remap(ModEntities.DOG_BEAM);
@@ -33,7 +33,7 @@ public class MissingMappings {
      public void remapMissingItems(final RegistryEvent.MissingMappings<Item> event) {
          if(event.getAllMappings() == null) return;  // Prevent crash
          
-         ImmutableList<Mapping<Item>> mappings = event.getMappings();
+         ImmutableList<Mapping<Item>> mappings = event.getAllMappings();
          mappings.forEach(mapping -> {
              if(Objects.equals(mapping.key, Compatibility.COMMAND_EMBLEM)) {
                  mapping.remap(ModItems.WHISTLE);

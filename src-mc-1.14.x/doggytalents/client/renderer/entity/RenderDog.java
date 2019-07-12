@@ -108,7 +108,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
                 RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
                 
                 if(d0 <= (double)(5 * 5)) {
-                    if(this.renderManager.info.func_216773_g().isSneaking()) {
+                    if(this.renderManager.info.getRenderViewEntity().isSneaking()) {
                         String ownerName = dog.getOwnersName().getFormattedText();
                         
                         

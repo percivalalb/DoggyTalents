@@ -1,5 +1,6 @@
 package doggytalents.entity.features;
 
+import doggytalents.api.feature.ICoordFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
@@ -7,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 /**
  * @author ProPercivalalb
  **/
-public class CoordFeature extends DogFeature {
+public class CoordFeature extends DogFeature implements ICoordFeature {
     
     public CoordFeature(EntityDog dogIn) {
         super(dogIn);

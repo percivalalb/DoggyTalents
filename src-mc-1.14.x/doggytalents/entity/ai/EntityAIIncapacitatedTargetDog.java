@@ -3,7 +3,6 @@ package doggytalents.entity.ai;
 import java.util.EnumSet;
 import java.util.List;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
@@ -54,7 +53,6 @@ public class EntityAIIncapacitatedTargetDog extends Goal {
 
     @Override
     public void resetTask() {
-        DoggyTalentsMod.LOGGER.debug("Reset task");
         this.ticksExecuting = 0;
     }
     

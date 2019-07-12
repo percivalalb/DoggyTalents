@@ -3,13 +3,14 @@ package doggytalents.entity.features;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import doggytalents.api.feature.IModeFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.nbt.CompoundNBT;
 
 /**
  * @author ProPercivalalb
  **/
-public class ModeFeature extends DogFeature {
+public class ModeFeature extends DogFeature implements IModeFeature {
     
     public ModeFeature(EntityDog dogIn) {
         super(dogIn);

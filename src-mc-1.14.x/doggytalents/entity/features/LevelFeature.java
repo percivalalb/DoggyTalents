@@ -2,6 +2,7 @@ package doggytalents.entity.features;
 
 import java.util.UUID;
 
+import doggytalents.api.feature.ILevelFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -11,7 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 /**
  * @author ProPercivalalb
  */
-public class LevelFeature extends DogFeature {
+public class LevelFeature extends DogFeature implements ILevelFeature {
         
     private static UUID HEALTH_BOOST_ID = UUID.fromString("da97255c-6281-45db-8198-f79226438583");
     

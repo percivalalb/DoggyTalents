@@ -42,7 +42,7 @@ public class ModelBake {
             
             // Replace inventory model
             modelRegistry.put(new ModelResourceLocation(resourceLocation, "inventory"), customModel);
-            
+
         }
         catch(Exception e) {
             DoggyTalentsMod.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");

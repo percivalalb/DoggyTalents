@@ -4,12 +4,13 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 
+import doggytalents.api.feature.IGenderFeature;
 import doggytalents.entity.EntityDog;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class GenderFeature extends DogFeature {
+public class GenderFeature extends DogFeature implements IGenderFeature {
     
     public GenderFeature(EntityDog dogIn) {
         super(dogIn);

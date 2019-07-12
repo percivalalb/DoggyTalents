@@ -4,10 +4,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Maps;
 
 import doggytalents.DoggyTalentsMod;
+import doggytalents.api.feature.IStatsFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -18,10 +18,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class StatsFeature extends DogFeature {
+public class StatsFeature extends DogFeature implements IStatsFeature {
 
     private Map<EntityType<?>, Integer> ENTITY_KILLS = Maps.newHashMap();
     private double damageDealt = 0;
+    private int distanceOnWater = 0;
+    private int distanceInWater = 0;
+    private int distanceSprinting = 0;
+    private int distanceSneaking = 0;
+    private int distanceWalking = 0;
+    private int distanceRidden = 0;
     
     public StatsFeature(EntityDog dogIn) {
         super(dogIn);
@@ -38,6 +44,12 @@ public class StatsFeature extends DogFeature {
         }
         compound.put("entityKills", killList);
         compound.putDouble("damageDealt", this.damageDealt);
+        compound.putInt("distanceOnWater", this.distanceOnWater);
+        compound.putInt("distanceInWater", this.distanceInWater);
+        compound.putInt("distanceSprinting", this.distanceSprinting);
+        compound.putInt("distanceSneaking", this.distanceSneaking);
+        compound.putInt("distanceWalking", this.distanceWalking);
+        compound.putInt("distanceRidden", this.distanceRidden);
     }
     
     @Override
@@ -51,11 +63,19 @@ public class StatsFeature extends DogFeature {
             }
         }
         this.damageDealt = compound.getDouble("damageDealt");
+        this.distanceOnWater = compound.getInt("distanceOnWater");
+        this.distanceInWater = compound.getInt("distanceInWater");
+        this.distanceSprinting = compound.getInt("distanceSprinting");
+        this.distanceSneaking = compound.getInt("distanceSneaking");
+        this.distanceWalking = compound.getInt("distanceWalking");
+        this.distanceRidden = compound.getInt("distanceRidden");
     }
     
     @Override
     public void tick() {
-        
+        //if(this.dog.ticksExisted % 20 == 0 && this.dog.isServerWorld()) {
+        //    DoggyTalentsMod.LOGGER.info("OnWater:{} InWater{} {} Walking:{} Ridden:{}", this.distanceOnWater, this.distanceInWater, this.distanceSneaking, this.distanceWalking, this.distanceRidden);
+        //}
     }
     
     public int getKillCountFor(EntityType<?> type) {
@@ -90,5 +110,29 @@ public class StatsFeature extends DogFeature {
     
     public void increaseDamageDealt(double damage) {
         this.damageDealt += damage;
+    }
+
+    public void increaseDistanceOnWater(int distance) {
+        this.distanceOnWater  += distance;
+    }
+    
+    public void increaseDistanceInWater(int distance) {
+        this.distanceInWater += distance;
+    }
+
+    public void increaseDistanceSprint(int distance) {
+        this.distanceSprinting += distance;
+    }
+
+    public void increaseDistanceSneaking(int distance) {
+        this.distanceSneaking += distance;
+    }
+
+    public void increaseDistanceWalk(int distance) {
+        this.distanceWalking += distance;
+    }
+
+    public void increaseDistanceRidden(int distance) {
+        this.distanceRidden += distance;
     }
 }

@@ -16,6 +16,13 @@ import doggytalents.ModItems;
 import doggytalents.ModSerializers;
 import doggytalents.ModTags;
 import doggytalents.ModTalents;
+import doggytalents.api.feature.ICoordFeature;
+import doggytalents.api.feature.IDog;
+import doggytalents.api.feature.IGenderFeature;
+import doggytalents.api.feature.ILevelFeature;
+import doggytalents.api.feature.IModeFeature;
+import doggytalents.api.feature.IStatsFeature;
+import doggytalents.api.feature.ITalentFeature;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.inferface.Talent;
@@ -39,8 +46,8 @@ import doggytalents.entity.features.GenderFeature;
 import doggytalents.entity.features.GenderFeature.EnumGender;
 import doggytalents.entity.features.LevelFeature;
 import doggytalents.entity.features.ModeFeature;
-import doggytalents.entity.features.StatsFeature;
 import doggytalents.entity.features.ModeFeature.EnumMode;
+import doggytalents.entity.features.StatsFeature;
 import doggytalents.entity.features.TalentFeature;
 import doggytalents.helper.DogUtil;
 import doggytalents.helper.TalentHelper;
@@ -85,6 +92,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -105,7 +114,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 
-public class EntityDog extends TameableEntity {
+public class EntityDog extends TameableEntity implements IDog {
     
     private static final DataParameter<Float>                    DATA_HEALTH_ID  = EntityDataManager.createKey(EntityDog.class, DataSerializers.FLOAT);
     private static final DataParameter<Byte>                     DOG_TEXTURE     = EntityDataManager.createKey(EntityDog.class, DataSerializers.BYTE);
@@ -166,6 +175,7 @@ public class EntityDog extends TameableEntity {
         this.COORDS = new CoordFeature(this);
         this.GENDER = new GenderFeature(this);
         this.STATS = new StatsFeature(this);
+        
         this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, GENDER, STATS);
         if(worldIn instanceof ServerWorld)
             this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
@@ -1317,16 +1327,16 @@ public class EntityDog extends TameableEntity {
         }
     }
     
-    public void setBegging(boolean flag) {
-        this.setDogFlag(1, flag);
+    public void setBegging(boolean begging) {
+        this.setDogFlag(1, begging);
     }
     
     public boolean isBegging() {
         return this.getDogFlag(1);
     }
     
-    public void setWillObeyOthers(boolean flag) {
-        this.setDogFlag(2, flag);
+    public void setWillObeyOthers(boolean obeyOthers) {
+        this.setDogFlag(2, obeyOthers);
     }
     
     public boolean willObeyOthers() {
@@ -1341,20 +1351,36 @@ public class EntityDog extends TameableEntity {
         return this.getDogFlag(4);
     }
     
-    public void hasRadarCollar(boolean flag) {
-        this.setDogFlag(8, flag);
+    public void hasRadarCollar(boolean collar) {
+        this.setDogFlag(8, collar);
     }
     
     public boolean hasRadarCollar() {
         return this.getDogFlag(8);
     }
     
-    public void setHasSunglasses(boolean hasSunglasses) {
-        this.setDogFlag(16, hasSunglasses);
+    public void setHasSunglasses(boolean sunglasses) {
+        this.setDogFlag(16, sunglasses);
     }
     
     public boolean hasSunglasses() {
         return this.getDogFlag(16);
+    }
+    
+    public void setLyingDown(boolean lying) {
+        this.setDogFlag(32, lying);
+    }
+    
+    public boolean isLyingDown() {
+        return this.getDogFlag(32);
+    }
+    
+    public void set64Flag(boolean lying) {
+        this.setDogFlag(64, lying);
+    }
+    
+    public boolean get64Flag() {
+        return this.getDogFlag(64);
     }
     
     public int getTameSkin() {
@@ -1366,7 +1392,7 @@ public class EntityDog extends TameableEntity {
     }
     
     public int getDogHunger() {
-        return ((Integer)this.dataManager.get(HUNGER)).intValue();
+        return this.dataManager.get(HUNGER);
     }
     
     public void setDogHunger(int par1) {
@@ -1640,6 +1666,10 @@ public class EntityDog extends TameableEntity {
     
     @Override
     public void travel(Vec3d travelVec) {
+        double prevX = this.posX;
+        double prevY = this.posY;
+        double prevZ = this.posZ;
+        
         if(this.isAlive()) {
             if(this.isBeingRidden() && this.canBeSteered() && this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
                 LivingEntity livingentity = (LivingEntity)this.getControllingPassenger();
@@ -1705,6 +1735,81 @@ public class EntityDog extends TameableEntity {
                  this.jumpMovementFactor = 0.02F;
                  super.travel(travelVec);
              }
+            
+            this.addMovementStat(this.posX - prevX, this.posY - prevY, this.posZ - prevZ);
         }
+    }
+    
+    public void addMovementStat(double xD, double yD, double zD) {
+        if(this.isBeingRidden()) {
+            int j = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+            this.STATS.increaseDistanceRidden(j);
+        }
+        if(!this.isPassenger()) {
+            if(this.areEyesInFluid(FluidTags.WATER, true)) {
+                int j = Math.round(MathHelper.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
+                if (j > 0) {
+                    this.STATS.increaseDistanceOnWater(j);
+                }
+            } else if(this.isInWater()) {
+                int k = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                if (k > 0) {
+                    this.STATS.increaseDistanceInWater(k);
+                }
+            } else if(this.onGround) {
+                int l = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                if(l > 0) {
+                    if (this.isSprinting()) {
+                        this.STATS.increaseDistanceSprint(l);
+                    } else if(this.isSneaking()) {
+                        this.STATS.increaseDistanceSneaking(l);
+                    } else {
+                        this.STATS.increaseDistanceWalk(l);
+                    }
+                }
+            } else { // Time in air
+                int j1 = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                //this.STATS.increaseDistanceInWater(k);
+            }
+            
+
+        }
+    }
+
+    // IDog 
+    
+    @Override
+    public ICoordFeature getCoordFeature() {
+        return this.COORDS;
+    }
+
+    @Override
+    public IGenderFeature getGenderFeature() {
+        return this.GENDER;
+    }
+
+    @Override
+    public ILevelFeature getLevelFeature() {
+        return this.LEVELS;
+    }
+
+    @Override
+    public IModeFeature getModeFeature() {
+        return this.MODE;
+    }
+
+    @Override
+    public IStatsFeature getStatsFeature() {
+        return this.STATS;
+    }
+
+    @Override
+    public ITalentFeature getTalentFeature() {
+        return this.TALENTS;
+    }
+
+    @Override
+    public TameableEntity getDog() {
+        return this;
     }
 }

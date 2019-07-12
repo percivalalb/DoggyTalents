@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.feature.ITalentFeature;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.helper.Compatibility;
@@ -20,7 +21,7 @@ import net.minecraft.util.ResourceLocation;
 /**
  * @author ProPercivalalb
  */
-public class TalentFeature extends DogFeature {
+public class TalentFeature extends DogFeature implements ITalentFeature {
     
     public TalentFeature(EntityDog dogIn) {
         super(dogIn);
@@ -88,11 +89,13 @@ public class TalentFeature extends DogFeature {
         }
     }
     
+    @Override
     public int getLevel(@Nullable Talent talent) {
         Map<Talent, Integer> map = this.dog.getTalentMap();
         return map.containsKey(talent) && ConfigValues.ENABLED_TALENTS.getOrDefault(DoggyTalentsAPI.TALENTS.getKey(talent), false) ? map.get(talent) : 0;
     }
     
+    @Override
     public void setLevel(@Nonnull Talent talent, int level) {
         Map<Talent, Integer> map = new HashMap<>(this.dog.getTalentMap());
         map.put(talent, level);
@@ -100,6 +103,7 @@ public class TalentFeature extends DogFeature {
         this.dog.setTalentMap(map);
     }
     
+    @Override
     public void resetTalents() {
         this.dog.getTalentMap().forEach((talent, fromLevel) -> talent.onLevelReset(this.dog, fromLevel));
         this.dog.setTalentMap(Collections.emptyMap());

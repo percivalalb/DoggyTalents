@@ -11,9 +11,16 @@ Update List Key
 MC 1.14.3
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.7 | 12th July 2019
+# Upon changing mode dogs will reset attack target and pathing
+* Fixed dogs attacking each other and other pets in berseker mode.
+
+1.15.0.6 | 5th July 2019
+* Fix possible crash due to missing registy
+
 1.15.0.5 | 26th June 2019
-+ Add some secret dog stat trackering in the background (more coming soon)
-+ Add help message when trying to feed food to incapacicated dog
++ Add some secret dog stat tracking in the background (more coming soon)
++ Add help message when trying to feed food to incapacitated dog
 - Remove buggy vanilla leaping for now till a fix is found
 # Improve dog bed material API
 # Recode fetch item, so fetch items now keep nbt tag and will allow easy addition of more throwable items in the future
@@ -21,7 +28,7 @@ MC 1.14.3
 * Fixed dogs attacking players when obey others is on
 * Fixed dog not sitting when on head
 * Fixed dog bed custom particles being sent to far away players
-* Fixed dogs still attacking entities when incapacicated
+* Fixed dogs still attacking entities when incapacitated
 
 1.15.0.4 | 25th June 2019
 Requires forge 27.0.2 or higher
@@ -134,7 +141,7 @@ MC 1.13.2
 + Using a stick will on an incapacitated dog will tell you how to revive your dog
 + Improved radar messages and it will now give info about dogs in other dimensions
 + Added tooltips to creative collar and creative radar
-+ Added help message when using stick on incapacicated dogs
++ Added help message when using stick on incapacitated dogs
 - Removed command emblem - whistle has the command emblem features
 - Dogs no longer take damage when on 0 hunger
 # Changed versioning protocol
@@ -183,15 +190,18 @@ Initial release, parent version 1.14.2.396
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.0.6 | 5th July 2019
+* Fix broken throw stick & bone recipes
+
 1.15.0.5 | 26th June 2019
-+ Add some secret dog stat trackering in the background (more coming soon)
-+ Add help message when trying to feed food to incapacicated dog
++ Add some secret dog stat tracking in the background (more coming soon)
++ Add help message when trying to feed food to incapacitated dog
 # Improve dog bed material API
 # Recode fetch item, so fetch items now keep nbt tag and will allow easy addition of more throwable items in the future
 * Fixed dogs attacking players when obey others is on
 * Fixed dog not sitting when on head
 * Fixed dog bed custom particles being sent to far away players
-* Fixed dogs still attacking entities when incapacicated
+* Fixed dogs still attacking entities when incapacitated
 
 1.15.0.4 | 25th June 2019
 + Add summary of treat bag contents to tooltip
@@ -241,7 +251,7 @@ Requires forge 14.23.5.2826 or higher
 + Using a stick will on an incapacitated dog will tell you how to revive your dog
 + Improved radar messages and it will now give info about dogs in other dimensions
 + Added tooltips to creative collar and creative radar
-+ Added help message when using stick on incapacicated dogs
++ Added help message when using stick on incapacitated dogs
 - Removed command emblem - whistle has the command emblem features
 - Dogs no longer take damage when on 0 hunger
 # Changed versioning protocol

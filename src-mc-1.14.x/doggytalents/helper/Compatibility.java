@@ -89,7 +89,7 @@ public class Compatibility {
         OLD_NEW_TALENT.put("poisonfang", ()->ModTalents.POISON_FANG);
         OLD_NEW_TALENT.put("puppyeyes", ()->ModTalents.PUPPY_EYES);
         OLD_NEW_TALENT.put("quickhealer", ()->ModTalents.QUICK_HEALER);
-        OLD_NEW_TALENT.put("rangedattacker", ()->ModTalents.RANGED_ATTACKER);
+        //OLD_NEW_TALENT.put("rangedattacker", ()->ModTalents.RANGED_ATTACKER);
         OLD_NEW_TALENT.put("rescuedog", ()->ModTalents.RESCUE_DOG);
         OLD_NEW_TALENT.put("roaringgale", ()->ModTalents.ROARING_GALE);
         OLD_NEW_TALENT.put("shepherddog", ()->ModTalents.SHEPHERD_DOG);

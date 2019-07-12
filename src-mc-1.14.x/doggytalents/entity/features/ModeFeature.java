@@ -83,6 +83,16 @@ public class ModeFeature extends DogFeature implements IModeFeature {
             return this.unlocalisedInfo;
         }
         
+        public void onModeSet(EntityDog dog, EnumMode prev) {
+            switch(prev) {
+            default:
+                dog.getNavigator().clearPath();
+                dog.setAttackTarget(null);
+                dog.setRevengeTarget(null);
+                break;
+            }
+        }
+        
         public EnumMode previousMode() {
             int i = this.getIndex() - 1;
             if(i < 0) {

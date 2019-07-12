@@ -47,7 +47,7 @@ public class ModTalents {
     public static final Talent POISON_FANG = null;
     public static final Talent PUPPY_EYES = null;
     public static final Talent QUICK_HEALER = null;
-    public static final Talent RANGED_ATTACKER = null;
+    //public static final Talent RANGED_ATTACKER = null;
     public static final Talent RESCUE_DOG = null;
     public static final Talent ROARING_GALE = null;
     public static final ShepherdDogTalent SHEPHERD_DOG = null;

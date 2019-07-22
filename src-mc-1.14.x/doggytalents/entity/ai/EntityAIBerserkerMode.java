@@ -2,9 +2,9 @@ package doggytalents.entity.ai;
 
 import java.util.EnumSet;
 import java.util.function.Predicate;
+
 import javax.annotation.Nullable;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityPredicate;

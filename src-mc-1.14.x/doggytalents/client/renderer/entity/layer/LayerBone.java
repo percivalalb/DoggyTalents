@@ -2,7 +2,6 @@ package doggytalents.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import doggytalents.ModItems;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.entity.RenderDog;
@@ -10,8 +9,6 @@ import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -37,7 +34,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
             if(dog.isSneaking())
                 GlStateManager.translatef(0.0F, 0.2F, 0.0F);
 
-            this.getEntityModel().wolfHeadMain.postRender(0.0625F);
+            this.getEntityModel().head.postRender(0.0625F);
             GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotatef(45.0F, 0.0F, 0.0F, 1.0F);

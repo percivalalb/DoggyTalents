@@ -31,7 +31,7 @@ public interface IBedMaterial {
     }
     
     /**
-     * Receives the registry name, in default implementation is used
+     * Receives the registry name, in default implementation this is used for tooltip translation key
      */
     default IBedMaterial setRegName(String regName) {
         return this;

@@ -30,7 +30,7 @@ public class EntityAIFetch extends EntityAIClosestItem {
         super.tick();
         if(!this.dog.isSitting()) {
     
-            if(this.dog.getDistanceSq(this.target) < (double)(1.5F * 1.5F) && !this.dog.hasBone()) {
+            if(this.dog.getDistance(this.target) < 2F && !this.dog.hasBone()) {
                 if(this.target.isAlive() && !this.target.cannotPickup()) {
 
                     this.dog.setBoneVariant(this.target.getItem());

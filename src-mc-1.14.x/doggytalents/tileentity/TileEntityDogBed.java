@@ -67,7 +67,6 @@ public class TileEntityDogBed extends TileEntity {
         this.markDirty();
         if(this.world.isRemote) {
             ModelDataManager.requestModelDataRefresh(this);
-            this.world.markForRerender(this.getPos());
         }
     }
     
@@ -76,7 +75,6 @@ public class TileEntityDogBed extends TileEntity {
         this.markDirty();
         if(this.world.isRemote) {
             ModelDataManager.requestModelDataRefresh(this);
-            this.world.markForRerender(this.getPos());
         }
     }
     

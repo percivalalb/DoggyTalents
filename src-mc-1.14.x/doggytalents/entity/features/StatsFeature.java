@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.Maps;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.feature.IStatsFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;

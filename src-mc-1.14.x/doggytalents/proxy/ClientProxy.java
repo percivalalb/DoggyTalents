@@ -10,7 +10,6 @@ import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.client.gui.GuiFoodBowl;
 import doggytalents.client.gui.GuiPackPuppy;
 import doggytalents.client.gui.GuiTreatBag;
-import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.particle.ParticleCustomLanding;
@@ -110,31 +109,7 @@ public class ClientProxy extends CommonProxy {
     public PlayerEntity getPlayerEntity() {
         return Minecraft.getInstance().player;
     }
-    
-    @Override
-    public void spawnCustomParticle(PlayerEntity player, BlockPos pos, Random rand, float posX, float posY, float posZ, int numberOfParticles, float particleSpeed) {
-        BlockState state = player.world.getBlockState(pos);
-        IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
-        TextureAtlasSprite sprite = null;
-        if(model instanceof IStateParticleModel) {
-            sprite = ((IStateParticleModel)model).getParticleTexture(player.world, pos, state, null);
-        } 
 
-        if(sprite == null) {
-            sprite = model.getParticleTexture();
-        }
-        
-        ParticleManager manager = Minecraft.getInstance().particles;
-
-        for(int i = 0; i < numberOfParticles; i++) {
-            double xSpeed = rand.nextGaussian() * particleSpeed;
-            double ySpeed = rand.nextGaussian() * particleSpeed;
-            double zSpeed = rand.nextGaussian() * particleSpeed;
-            
-            manager.addEffect(new ParticleCustomLanding(player.world, posX, posY, posZ, xSpeed, ySpeed, zSpeed, state, pos, sprite));
-        }
-    }
-    
     @Override
     public void spawnCrit(World world, Entity entity) {
         Minecraft.getInstance().particles.addParticleEmitter(entity, ParticleTypes.CRIT);

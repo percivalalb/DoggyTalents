@@ -40,7 +40,7 @@ import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
-public class DogBedModel implements IBakedModel, IStateParticleModel {
+public class DogBedModel implements IBakedModel {
     
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 
@@ -71,11 +71,19 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     }
     
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData extraData) {
-        IBedMaterial casing = extraData.getData(TileEntityDogBed.CASING);
-        IBedMaterial bedding = extraData.getData(TileEntityDogBed.BEDDING);
-        Direction facing = extraData.getData(TileEntityDogBed.FACING);
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData data) {
+        IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
+        IBedMaterial bedding = data.getData(TileEntityDogBed.BEDDING);
+        Direction facing = data.getData(TileEntityDogBed.FACING);
         return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand);
+    }
+    
+    @Override
+    public TextureAtlasSprite getParticleTexture(@Nonnull IModelData data) {
+        IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
+        IBedMaterial bedding = data.getData(TileEntityDogBed.BEDDING);
+        Direction facing = data.getData(TileEntityDogBed.FACING);
+        return this.getCustomModel(casing, bedding, facing).getParticleTexture();
     }
 
     @Override
@@ -155,25 +163,6 @@ public class DogBedModel implements IBakedModel, IStateParticleModel {
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
         return this.bakedModel.getItemCameraTransforms();
-    }
-    
-    @Override
-    public TextureAtlasSprite getParticleTexture(World worldIn, BlockPos pos, BlockState state, Direction side) {
-        IBedMaterial casing = ModBeddings.OAK;
-        IBedMaterial bedding = ModBeddings.WHITE;
-        Direction facing = Direction.NORTH;
-        
-        TileEntity tile = worldIn.getTileEntity(pos);
-        if(tile instanceof TileEntityDogBed) {
-            casing = ((TileEntityDogBed)tile).getCasingId();
-            bedding = ((TileEntityDogBed)tile).getBeddingId();
-        }
-        
-        if(state.has(BlockDogBed.FACING)) {
-            facing = state.get(BlockDogBed.FACING);
-        }
-        
-        return this.getCustomModel(casing, bedding, facing).getParticleTexture();
     }
 
     @Override

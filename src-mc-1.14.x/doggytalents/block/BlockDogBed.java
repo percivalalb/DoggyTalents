@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketCustomParticle;
@@ -196,87 +195,5 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
     @Override
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.toRotation(state.get(FACING)));
-    }
-    
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean hasCustomBreakingProgress(BlockState state) {
-        return true;
-    }
-    
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean addDestroyEffects(BlockState state, World world, BlockPos pos, ParticleManager manager) {
-        IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
-        if(model instanceof IStateParticleModel) {
-            TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(world, pos, state, null);
-            if(sprite != null) {
-                for(int j = 0; j < 4; ++j) {
-                    for(int k = 0; k < 4; ++k) {
-                        for(int l = 0; l < 4; ++l) {
-                            double d0 = ((double)j + 0.5D) / 4.0D;
-                            double d1 = ((double)k + 0.5D) / 4.0D;
-                            double d2 = ((double)l + 0.5D) / 4.0D;
-                            manager.addEffect(new ParticleCustomDigging(world, (double)pos.getX() + d0, (double)pos.getY() + d1, (double)pos.getZ() + d2, d0 - 0.5D, d1 - 0.5D, d2 - 0.5D, state, pos, sprite));
-                        }
-                    }
-                }
-    
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    @OnlyIn(Dist.CLIENT)
-    public boolean addHitEffects(BlockState state, World world, RayTraceResult target, ParticleManager manager) {
-        IBakedModel model = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
-        if(model instanceof IStateParticleModel && target.getType() == RayTraceResult.Type.BLOCK) {
-            BlockRayTraceResult result = ((BlockRayTraceResult)target);
-            BlockPos pos = result.getPos();
-            Direction side = result.getFace();
-            TextureAtlasSprite sprite = ((IStateParticleModel)model).getParticleTexture(world, pos, state, side);
-            if(sprite != null) {
-                int x = pos.getX();
-                int y = pos.getY();
-                int z = pos.getZ();
-                AxisAlignedBB axisalignedbb = state.getShape(world, pos).getBoundingBox();
-                double d0 = (double)x + RANDOM.nextDouble() * (axisalignedbb.maxX - axisalignedbb.minX - (double)0.2F) + (double)0.1F + axisalignedbb.minX;
-                double d1 = (double)y + RANDOM.nextDouble() * (axisalignedbb.maxY - axisalignedbb.minY - (double)0.2F) + (double)0.1F + axisalignedbb.minY;
-                double d2 = (double)z + RANDOM.nextDouble() * (axisalignedbb.maxZ - axisalignedbb.minZ - (double)0.2F) + (double)0.1F + axisalignedbb.minZ;
-    
-                if(side == Direction.DOWN)
-                    d1 = (double)y + axisalignedbb.minY - 0.1F;
-                    
-                if(side == Direction.UP)
-                    d1 = (double)y + axisalignedbb.maxY + 0.1F;
-    
-                if(side == Direction.NORTH)
-                    d2 = (double)z + axisalignedbb.minZ - 0.1F;
-    
-                if(side == Direction.SOUTH)
-                    d2 = (double)z + axisalignedbb.maxZ + 0.1F;
-    
-                if(side == Direction.WEST)
-                    d0 = (double)x + axisalignedbb.minX - 0.1F;
-    
-                if(side == Direction.EAST)
-                    d0 = (double)x + axisalignedbb.maxX + 0.1F;
-    
-                manager.addEffect(new ParticleCustomDigging(world, d0, d1, d2, 0.0D, 0.0D, 0.0D, state, pos, sprite).multiplyVelocity(0.2F).multipleParticleScaleBy(0.6F));
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean addLandingEffects(BlockState state, ServerWorld world, BlockPos pos, BlockState stateAgain, LivingEntity entity, int numberOfParticles) {
-        PacketCustomParticle packet = new PacketCustomParticle(pos, entity.posX, entity.posY, entity.posZ, numberOfParticles, 0.15F);
-        PacketHandler.send(PacketDistributor.NEAR.with(TargetPoint.p(entity.posX, entity.posY, entity.posZ, 32.0D, world.getDimension().getType())), packet);
-        return true;
     }
 }

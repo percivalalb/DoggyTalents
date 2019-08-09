@@ -1,3 +1,6 @@
+Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/full_doggy-talents_downloads.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/For%20MC_doggy-talents_all.svg)](https://minecraft.curseforge.com/projects/doggy-talents)
+===========
+
 <p align="center"><img src="https://github.com/ProPercivalalb/DoggyTalents/blob/master/images/logo.PNG"></p>
 <p align="center">A day dogs would not drown!</p>
 

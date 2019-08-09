@@ -11,6 +11,11 @@ Update List Key
 MC 1.14.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.1.1 | 7th August 2019
+Requires forge 28.0.45 or higher
+# Changed dog bed particles to use the forge ModelData system
+* Fixed crash with newer versions of forge
+
 1.15.1.0 | 22nd July 2019
 Requires forge 28.0.11 or higher
 Initial release, parent version 1.14.3-1.15.0.7

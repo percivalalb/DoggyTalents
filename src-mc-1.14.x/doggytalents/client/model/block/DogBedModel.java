@@ -59,6 +59,11 @@ public class DogBedModel implements IBakedModel {
     }
     
     public IBakedModel getCustomModel(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+        // Hotfix for possible optifine bug
+        if (casing == null) { casing = ModBeddings.OAK; }
+        if (bedding == null) { bedding = ModBeddings.WHITE; }
+        if (facing == null) { facing = Direction.NORTH; }
+        
         String casingTex = casing.getTexture();
         String beddingTex = bedding.getTexture();
         

@@ -11,6 +11,12 @@ Update List Key
 MC 1.14.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.1.3 | 15th August 2019
+* Fix shearing baby dogs turning into adult wolves
+
+1.15.1.2 | 14th August 2019
+* I have been getting reports of the render of the dog bed crashing the game. This appears to be due to a bug in optifine, this DT version disables the proper rendering of the dog bed when optifine of installed.
+
 1.15.1.1 | 7th August 2019
 Requires forge 28.0.45 or higher
 # Changed dog bed particles to use the forge ModelData system
@@ -203,6 +209,10 @@ Initial release, parent version 1.14.2.396
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.12.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1.15.1.3 | 15th August 2019
+* Fix shearing baby dogs turning into adult wolves
+# Upon changing mode dogs will reset attack target and pathing
 
 1.15.0.6 | 5th July 2019
 * Fix broken throw stick & bone recipes

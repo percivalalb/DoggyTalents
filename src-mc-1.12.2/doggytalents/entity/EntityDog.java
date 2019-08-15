@@ -899,6 +899,8 @@ public class EntityDog extends EntityTameable {
                 this.setDead();
                 EntityWolf wolf = new EntityWolf(this.world);
                 wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                wolf.setHealth(this.getHealth());
+                wolf.setGrowingAge(this.getGrowingAge());
                 this.world.spawnEntity(wolf);
             }
             return true;

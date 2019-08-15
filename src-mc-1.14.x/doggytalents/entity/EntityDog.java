@@ -840,6 +840,8 @@ public class EntityDog extends TameableEntity implements IDog {
                 this.remove();
                 WolfEntity wolf = EntityType.WOLF.create(this.world);
                 wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                wolf.setHealth(this.getHealth());
+                wolf.setGrowingAge(this.getGrowingAge());
                 this.world.addEntity(wolf);
             }
             return true;

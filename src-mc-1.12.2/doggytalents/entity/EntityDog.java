@@ -1449,7 +1449,9 @@ public class EntityDog extends EntityTameable {
     }
     
     public void setMode(EnumMode mode) {
+        EnumMode prevMode = this.getMode();
         this.dataManager.set(MODE_PARAM, (byte)mode.getIndex());
+        mode.onModeSet(this, prevMode);
     }
 
     public EnumMode getMode() {

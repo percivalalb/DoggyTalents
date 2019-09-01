@@ -1074,7 +1074,7 @@ public class EntityDog extends TameableEntity implements IDog {
     
     @Override
     public boolean canAttack(LivingEntity target) {
-        return this.canInteract(target) ? false : super.canAttack(target);
+        return target instanceof PlayerEntity && this.canInteract(target) ? false : super.canAttack(target);
     }
     
     @Override

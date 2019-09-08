@@ -19,11 +19,11 @@ import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.ItemNames;
 import doggytalents.lib.Reference;
+import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -59,42 +59,52 @@ public class ModItems {
     public static final Item BIG_BONE = null;
     public static final Item OWNER_CHANGE = null;
     
-    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class Registration {
+    public static void registerItems(final RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> itemRegistry = event.getRegistry();
+        DoggyTalentsMod.LOGGER.debug("Registering Items");
+        itemRegistry.register(new ItemThrowBone(()->THROW_BONE_WET, ()->Items.BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
+        itemRegistry.register(new ItemDroolBone(()->THROW_BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
+        itemRegistry.register(new ItemThrowBone(()->THROW_STICK_WET, ()->ModItems.THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
+        itemRegistry.register(new ItemDroolBone(()->THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
+        itemRegistry.register(new ItemTreat(20, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TRAINING_TREAT));
+        itemRegistry.register(new ItemTreat(40, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUPER_TREAT));
+        itemRegistry.register(new ItemTreat(60, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MASTER_TREAT));
+        itemRegistry.register(new ItemDireTreat(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.DIRE_TREAT));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BREEDING_BONE));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.COLLAR_SHEARS));
+        itemRegistry.register(new ItemDoggyCharm(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.DOGGY_CHARM));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADIO_COLLAR));
+        itemRegistry.register(new ItemWoolCollar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WOOL_COLLAR));
+        itemRegistry.register(new ItemCreativeCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
+        itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
+        itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
+        itemRegistry.register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.CREATIVE_RADAR));
+        itemRegistry.register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.RADAR));
+        itemRegistry.register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.WHISTLE));
+        itemRegistry.register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.TREAT_BAG));
+        itemRegistry.register(new ItemChewStick(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CHEW_STICK));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE));
+        itemRegistry.register(new ItemCapeColoured(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE_COLOURED));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUNGLASSES));
+        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.LEATHER_JACKET));
+        itemRegistry.register(new ItemTinyBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TINY_BONE));
+        itemRegistry.register(new ItemBigBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BIG_BONE));
+        itemRegistry.register(new ItemCreativeOwnerChange(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.OWNER_CHANGE));
+        DoggyTalentsMod.LOGGER.debug("Finished Registering Items");
+    }
+    
+    public static void registerItemColours(final ColorHandlerEvent.Item event) {
+        ItemColors itemColors = event.getItemColors();
+        itemColors.register((stack, tintIndex) -> {
+            return stack.hasTag() && stack.getTag().contains("collar_colour") ? stack.getTag().getInt("collar_colour") : -1;
+          }, ModItems.WOOL_COLLAR);
         
-        @SubscribeEvent
-        public static void onItemRegister(final RegistryEvent.Register<Item> event) {
-            IForgeRegistry<Item> itemRegistry = event.getRegistry();
-            DoggyTalentsMod.LOGGER.debug("Registering Items");
-            itemRegistry.register(new ItemThrowBone(()->THROW_BONE_WET, ()->Items.BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
-            itemRegistry.register(new ItemDroolBone(()->THROW_BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
-            itemRegistry.register(new ItemThrowBone(()->THROW_STICK_WET, ()->ModItems.THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
-            itemRegistry.register(new ItemDroolBone(()->THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
-            itemRegistry.register(new ItemTreat(20, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TRAINING_TREAT));
-            itemRegistry.register(new ItemTreat(40, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUPER_TREAT));
-            itemRegistry.register(new ItemTreat(60, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MASTER_TREAT));
-            itemRegistry.register(new ItemDireTreat(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.DIRE_TREAT));
-            itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BREEDING_BONE));
-            itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.COLLAR_SHEARS));
-            itemRegistry.register(new ItemDoggyCharm(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.DOGGY_CHARM));
-            itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADIO_COLLAR));
-            itemRegistry.register(new ItemWoolCollar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WOOL_COLLAR));
-            itemRegistry.register(new ItemCreativeCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
-              itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
-              itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
-            itemRegistry.register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.CREATIVE_RADAR));
-              itemRegistry.register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.RADAR));
-            itemRegistry.register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.WHISTLE));
-            itemRegistry.register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.TREAT_BAG));
-             itemRegistry.register(new ItemChewStick(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CHEW_STICK));
-             itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE));
-             itemRegistry.register(new ItemCapeColoured(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE_COLOURED));
-             itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUNGLASSES));
-             itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.LEATHER_JACKET));
-             itemRegistry.register(new ItemTinyBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TINY_BONE));
-             itemRegistry.register(new ItemBigBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BIG_BONE));
-             itemRegistry.register(new ItemCreativeOwnerChange(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.OWNER_CHANGE));
-             DoggyTalentsMod.LOGGER.debug("Finished Registering Items");
-        }
+        itemColors.register((stack, tintIndex) -> {
+            return stack.hasTag() && stack.getTag().contains("cape_colour") ? stack.getTag().getInt("cape_colour") : -1;
+          }, ModItems.CAPE_COLOURED);
+        
+        itemColors.register((stack, tintIndex) -> {
+             return 4159204;
+          }, ModBlocks.DOG_BATH);
     }
 }

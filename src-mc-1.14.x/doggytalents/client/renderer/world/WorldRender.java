@@ -2,30 +2,22 @@ package doggytalents.client.renderer.world;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.ModTalents;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Reference;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
 /**
  * @author ProPercivalalb
  */
-@OnlyIn(Dist.CLIENT)
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class WorldRender {
 
-    @SubscribeEvent
     public static void onWorldRenderLast(RenderWorldLastEvent event) {
-        PlayerEntity player = DoggyTalentsMod.PROXY.getPlayerEntity();
+        PlayerEntity player = Minecraft.getInstance().player;
         for(Entity passenger : player.getPassengers()) {
             if(passenger instanceof EntityDog) {
                 EntityDog dog = (EntityDog)passenger;

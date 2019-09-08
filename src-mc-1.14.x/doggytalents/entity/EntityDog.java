@@ -26,6 +26,7 @@ import doggytalents.api.feature.ITalentFeature;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.inferface.Talent;
+import doggytalents.client.gui.GuiDogInfo;
 import doggytalents.entity.ai.DogLocationManager;
 import doggytalents.entity.ai.EntityAIBegDog;
 import doggytalents.entity.ai.EntityAIBerserkerMode;
@@ -113,6 +114,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.DistExecutor;
 
 public class EntityDog extends TameableEntity implements IDog {
     
@@ -623,7 +625,7 @@ public class EntityDog extends TameableEntity implements IDog {
                             player.sendMessage(new TranslationTextComponent("dog.mode.incapacitated.help", this.getDisplayName(), this.GENDER.getGenderPronoun()));
                     } else {
                         if(this.world.isRemote) {
-                            DoggyTalentsMod.PROXY.openDoggyInfo(this);
+                            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> GuiDogInfo.open(this));
                         }
                     }
                     

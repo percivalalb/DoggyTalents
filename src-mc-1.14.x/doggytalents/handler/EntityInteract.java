@@ -9,14 +9,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
  **/
 public class EntityInteract {
     
-    @SubscribeEvent
     public void rightClickEntity(PlayerInteractEvent.EntityInteract event) {
         PlayerEntity player = event.getEntityPlayer();
         World world = event.getWorld();

@@ -6,12 +6,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class PlayerConnection {
 
-    @SubscribeEvent
-    public void playerLoggedIn(final PlayerLoggedInEvent event) {
+    public static void playerLoggedIn(final PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         
         CompoundNBT tag = player.getPersistantData();

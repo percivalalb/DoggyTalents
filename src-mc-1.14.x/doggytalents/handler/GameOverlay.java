@@ -8,22 +8,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ForgeIngameGui;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * @author ProPercivalalb
  **/
-@OnlyIn(Dist.CLIENT)
 public class GameOverlay {
 
     private static Minecraft mc = Minecraft.getInstance();
     
-    @SubscribeEvent
-    public void onPreRenderGameOverlay(RenderGameOverlayEvent.Post event) {
+    public static void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
         if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
             EntityDog dog = (EntityDog)mc.player.getRidingEntity();
             int width = Minecraft.getInstance().mainWindow.getScaledWidth();

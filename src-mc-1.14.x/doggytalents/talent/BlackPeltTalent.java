@@ -1,9 +1,12 @@
 package doggytalents.talent;
 
-import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 
 /**
  * @author ProPercivalalb
@@ -19,7 +22,8 @@ public class BlackPeltTalent extends Talent {
         //TODO redo crit to be better in line with text info
         if (dog.getRNG().nextInt(6) < critChance) {
             damage += (damage + 1) / 2;
-            DoggyTalentsMod.PROXY.spawnCrit(dog.world, entity);
+
+            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particles.addParticleEmitter(entity, ParticleTypes.CRIT));
         }
         return damage;
     }

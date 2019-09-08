@@ -5,15 +5,11 @@ import doggytalents.api.inferface.Talent;
 import doggytalents.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModRegistries {
 
-    @SubscribeEvent
     public static void newRegistry(RegistryEvent.NewRegistry event) {
         DoggyTalentsAPI.TALENTS = makeRegistry(new ResourceLocation(Reference.MOD_ID, "talents"), Talent.class).create();
     }

@@ -24,8 +24,6 @@ import doggytalents.talent.ShepherdDogTalent;
 import doggytalents.talent.SwimmerDogTalent;
 import doggytalents.talent.WolfMountTalent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.ObjectHolder;
 
@@ -54,36 +52,31 @@ public class ModTalents {
     public static final Talent SWIMMER_DOG = null;
     public static final Talent WOLF_MOUNT = null;
     
-    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static final class Registration {
-
-        @SubscribeEvent
-        public static final void registerTalents(final RegistryEvent.Register<Talent> event) {
-            IForgeRegistry<Talent> talentRegistry = event.getRegistry();
-            
-            DoggyTalentsMod.LOGGER.debug("Registering Talents");
-            talentRegistry.register(new BedFinderTalent().setRegistryName(TalentNames.BED_FINDER));
-            talentRegistry.register(new BlackPeltTalent().setRegistryName(TalentNames.BLACK_PELT));
-            talentRegistry.register(new CreeperSweeperTalent().setRegistryName(TalentNames.CREEPER_SWEEPER));
-            talentRegistry.register(new DoggyDashTalent().setRegistryName(TalentNames.DOGGY_DASH));
-            talentRegistry.register(new FisherDogTalent().setRegistryName(TalentNames.FISHER_DOG));
-            talentRegistry.register(new GuardDogTalent().setRegistryName(TalentNames.GUARD_DOG));
-            talentRegistry.register(new HappyEaterTalent().setRegistryName(TalentNames.HAPPY_EATER));
-            talentRegistry.register(new HellHoundTalent().setRegistryName(TalentNames.HELL_HOUND));
-            talentRegistry.register(new HunterDogTalent().setRegistryName(TalentNames.HUNTER_DOG));
-            talentRegistry.register(new PackPuppyTalent().setRegistryName(TalentNames.PACK_PUPPY));
-            talentRegistry.register(new PestFighterTalent().setRegistryName(TalentNames.PEST_FIGHTER));
-            talentRegistry.register(new PillowPawTalent().setRegistryName(TalentNames.PILLOW_PAW));
-            talentRegistry.register(new PoisonFangTalent().setRegistryName(TalentNames.POISON_FANG));
-            talentRegistry.register(new PuppyEyesTalent().setRegistryName(TalentNames.PUPPY_EYES));
-            talentRegistry.register(new QuickHealerTalent().setRegistryName(TalentNames.QUICK_HEALER));
-            //talentRegistry.register(new RangedAttacker().setRegistryName(TalentNames.RANGED_ATTACKER)); TODO RangedAttacker
-            talentRegistry.register(new RescueDogTalent().setRegistryName(TalentNames.RESCUE_DOG));
-            talentRegistry.register(new RoaringGaleTalent().setRegistryName(TalentNames.ROARING_GALE));
-            talentRegistry.register(new ShepherdDogTalent().setRegistryName(TalentNames.SHEPHERD_DOG));
-            talentRegistry.register(new SwimmerDogTalent().setRegistryName(TalentNames.SWIMMER_DOG));
-            talentRegistry.register(new WolfMountTalent().setRegistryName(TalentNames.WOLF_MOUNT));
-            DoggyTalentsMod.LOGGER.debug("Finished Registering Talents");
-        }
+    public static final void registerTalents(final RegistryEvent.Register<Talent> event) {
+        IForgeRegistry<Talent> talentRegistry = event.getRegistry();
+        
+        DoggyTalentsMod.LOGGER.debug("Registering Talents");
+        talentRegistry.register(new BedFinderTalent().setRegistryName(TalentNames.BED_FINDER));
+        talentRegistry.register(new BlackPeltTalent().setRegistryName(TalentNames.BLACK_PELT));
+        talentRegistry.register(new CreeperSweeperTalent().setRegistryName(TalentNames.CREEPER_SWEEPER));
+        talentRegistry.register(new DoggyDashTalent().setRegistryName(TalentNames.DOGGY_DASH));
+        talentRegistry.register(new FisherDogTalent().setRegistryName(TalentNames.FISHER_DOG));
+        talentRegistry.register(new GuardDogTalent().setRegistryName(TalentNames.GUARD_DOG));
+        talentRegistry.register(new HappyEaterTalent().setRegistryName(TalentNames.HAPPY_EATER));
+        talentRegistry.register(new HellHoundTalent().setRegistryName(TalentNames.HELL_HOUND));
+        talentRegistry.register(new HunterDogTalent().setRegistryName(TalentNames.HUNTER_DOG));
+        talentRegistry.register(new PackPuppyTalent().setRegistryName(TalentNames.PACK_PUPPY));
+        talentRegistry.register(new PestFighterTalent().setRegistryName(TalentNames.PEST_FIGHTER));
+        talentRegistry.register(new PillowPawTalent().setRegistryName(TalentNames.PILLOW_PAW));
+        talentRegistry.register(new PoisonFangTalent().setRegistryName(TalentNames.POISON_FANG));
+        talentRegistry.register(new PuppyEyesTalent().setRegistryName(TalentNames.PUPPY_EYES));
+        talentRegistry.register(new QuickHealerTalent().setRegistryName(TalentNames.QUICK_HEALER));
+        //talentRegistry.register(new RangedAttacker().setRegistryName(TalentNames.RANGED_ATTACKER)); TODO RangedAttacker
+        talentRegistry.register(new RescueDogTalent().setRegistryName(TalentNames.RESCUE_DOG));
+        talentRegistry.register(new RoaringGaleTalent().setRegistryName(TalentNames.ROARING_GALE));
+        talentRegistry.register(new ShepherdDogTalent().setRegistryName(TalentNames.SHEPHERD_DOG));
+        talentRegistry.register(new SwimmerDogTalent().setRegistryName(TalentNames.SWIMMER_DOG));
+        talentRegistry.register(new WolfMountTalent().setRegistryName(TalentNames.WOLF_MOUNT));
+        DoggyTalentsMod.LOGGER.debug("Finished Registering Talents");
     }
 }

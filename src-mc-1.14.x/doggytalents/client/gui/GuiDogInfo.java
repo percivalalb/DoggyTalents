@@ -19,6 +19,7 @@ import doggytalents.network.client.PacketDogObey;
 import doggytalents.network.client.PacketDogTalent;
 import doggytalents.network.client.PacketDogTexture;
 import doggytalents.network.client.PacketFriendlyFire;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -53,6 +54,11 @@ public class GuiDogInfo extends Screen {
         super(new TranslationTextComponent("doggytalents.screen.dog.title"));
         this.dog = dog;
         this.player = player;
+    }
+    
+    public static void open(EntityDog dog) {
+        Minecraft mc = Minecraft.getInstance();
+        mc.displayGuiScreen(new GuiDogInfo(dog, mc.player));
     }
 
     @Override

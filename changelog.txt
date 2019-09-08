@@ -11,6 +11,9 @@ Update List Key
 MC 1.14.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.1.6 | 8th September 2019
+* Fixed treats not converting wolves into dogs
+
 1.15.1.5 | 8th September 2019
 Requires forge 28.0.92 or higher
 + Added message when a dog mounts a player (bed finder talent)

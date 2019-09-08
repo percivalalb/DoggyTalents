@@ -6,7 +6,6 @@ import doggytalents.inventory.container.ContainerPackPuppy;
 import doggytalents.inventory.container.ContainerTreatBag;
 import doggytalents.lib.GuiNames;
 import doggytalents.lib.Reference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +27,7 @@ public class ModContainerTypes {
         DoggyTalentsMod.LOGGER.debug("Registering Containers");
         containerRegistry.register(IForgeContainerType.create((windowId, inv, data) -> {
             BlockPos pos = data.readBlockPos();
-            return new ContainerFoodBowl(windowId, Minecraft.getInstance().player.world, pos, inv, Minecraft.getInstance().player);
+            return new ContainerFoodBowl(windowId, inv.player.world, pos, inv, inv.player);
         }).setRegistryName(GuiNames.FOOD_BOWL));
 
         containerRegistry.register(IForgeContainerType.create((windowId, inv, data) -> {

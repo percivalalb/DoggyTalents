@@ -1044,7 +1044,7 @@ public class EntityDog extends TameableEntity implements IDog {
             if (target instanceof EntityDog) {
                 EntityDog entitydog = (EntityDog) target;
 
-                if (entitydog.isTamed() && entitydog.getOwner() == owner)
+                if ((entitydog.isTamed() && entitydog.getOwner() == owner) || !entitydog.isTamed())
                     return false;
             } else if (target instanceof WolfEntity) {
                 WolfEntity entitywolf = (WolfEntity) target;

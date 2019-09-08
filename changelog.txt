@@ -13,8 +13,13 @@ MC 1.14.4
 
 1.15.1.5 | 8th September 2019
 Requires forge 28.0.92 or higher
++ Added message when a dog mounts a player (bed finder talent)
+# (Internal) Use item stack capabilities instead of IInventory
+# Remove sided proxies and reorganise loading/registration which should...
+# Dogs in Berserker mode will no longer attack other untamed dogs
+* Fixed crash related to Talent registry type not existing
 * Fixed crash due to breaking change in forge
-* Fixed spider eye usage being available at all levels not just level 5 posion fang 
+* Fixed spider eye usage being available at all levels not just level 5 posion fang
 
 1.15.1.4 | 1st September 2019
 + Added German language file (de_de.json), thanks to Creepingpasta from github

@@ -6,9 +6,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.client.renderer.particle.ParticleCustomDigging;
-import doggytalents.network.PacketHandler;
-import doggytalents.network.client.PacketCustomParticle;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -19,10 +16,6 @@ import net.minecraft.block.HorizontalBlock;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,9 +35,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -53,11 +44,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.network.PacketDistributor;
-import net.minecraftforge.fml.network.PacketDistributor.TargetPoint;
 
 /**
  * @author ProPercivalalb

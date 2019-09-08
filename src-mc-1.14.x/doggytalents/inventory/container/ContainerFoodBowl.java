@@ -1,48 +1,54 @@
 package doggytalents.inventory.container;
 
+import doggytalents.ModBlocks;
 import doggytalents.ModContainerTypes;
+import doggytalents.helper.CapabilityHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IWorldPosCallable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 
 /**
  * @author ProPercivalalb
  */
 public class ContainerFoodBowl extends Container {
-   
-    private IInventory tileEntityFoodBowl;
-
-    //CLient method
-    public ContainerFoodBowl(int windowId, PlayerInventory playerInventory) {
-        this(windowId, playerInventory, new Inventory(5));
-    }
+    
+    private TileEntity tileEntity;
     
     //Server method
-    public ContainerFoodBowl(int windowId, PlayerInventory playerInventory, IInventory bowlInventory) {
+    public ContainerFoodBowl(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(ModContainerTypes.FOOD_BOWL, windowId);
-        this.tileEntityFoodBowl = bowlInventory;
-        assertInventorySize(bowlInventory, 5);
-        bowlInventory.openInventory(playerInventory.player);
-        
-        for(int i = 0; i < 1; i++)
-            for (int l = 0; l < 5; l++)
-                this.addSlot(new Slot(bowlInventory, l + i * 9, 44 + l * 18, 22 + i * 18));
+        this.tileEntity = world.getTileEntity(pos);
+        IItemHandler inventory = CapabilityHelper.getOrThrow(this.tileEntity, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 
-        for(int j = 0; j < 3; j++)
-            for (int i1 = 0; i1 < 9; i1++)
+        for(int i = 0; i < 1; i++) {
+            for (int l = 0; l < 5; l++) {
+                this.addSlot(new SlotItemHandler(inventory, l + i * 9, 44 + l * 18, 22 + i * 18));
+            }
+        }
+
+        for(int j = 0; j < 3; j++) {
+            for (int i1 = 0; i1 < 9; i1++) {
                 this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
+            }
+        }
 
-        for(int k = 0; k < 9; k++)
+        for(int k = 0; k < 9; k++) {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103));
+        }
     }
 
     @Override
     public boolean canInteractWith(PlayerEntity player) {
-        return this.tileEntityFoodBowl.isUsableByPlayer(player);
+        return isWithinUsableDistance(IWorldPosCallable.of(this.tileEntity.getWorld(), this.tileEntity.getPos()), player, ModBlocks.FOOD_BOWL);
     }
 
     @Override

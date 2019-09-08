@@ -9,7 +9,6 @@ import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -17,6 +16,8 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class DogUtil {
 
@@ -50,86 +51,28 @@ public class DogUtil {
         return iblockstate.canEntitySpawn(world, blockpos, entity.getType()) && world.isAirBlock(blockpos.up()) && world.isAirBlock(blockpos.up(2));
     }
     
-    public static ItemStack feedDog(EntityDog dog, IInventory inventory, int slotIndex) {
-        if(!inventory.getStackInSlot(slotIndex).isEmpty()) {
-            ItemStack itemstack = inventory.getStackInSlot(slotIndex);
-            dog.setDogHunger(dog.getDogHunger() + dog.foodValue(itemstack));
-            
-            if(itemstack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
-                ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(dog);
-            }
+    /**
+     * Tries to feed a max of one item to the dog
+     */
+    public static boolean feedDogFrom(EntityDog dogIn, IItemHandler source) {
+        for(int i = 0; i < source.getSlots(); i++) {
+            ItemStack stack = source.extractItem(i, 1, true);
+            int foodValue = 0;
+            if((foodValue = dogIn.foodValue(stack)) > 0) {
+                stack = source.extractItem(i, 1, false);
+                dogIn.setDogHunger(dogIn.getDogHunger() + foodValue);
+                
+                if(stack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
+                    ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(dogIn);
+                }
 
-            if(inventory.getStackInSlot(slotIndex).getCount() <= 1) {
-                ItemStack itemstack1 = inventory.getStackInSlot(slotIndex);
-                inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
-                return itemstack1;
-            }
-
-            ItemStack itemstack2 = inventory.getStackInSlot(slotIndex).split(1);
-
-            if(inventory.getStackInSlot(slotIndex).isEmpty())
-                inventory.setInventorySlotContents(slotIndex, ItemStack.EMPTY);
-            else
-                inventory.markDirty();
-
-            return itemstack2;
-        }
-        else
-            return ItemStack.EMPTY;
-    }
-    
-    public static boolean doesInventoryContainFood(EntityDog dog, IInventory inventory) {
-        for(int i = 0; i < inventory.getSizeInventory(); i++) {
-            if(dog.foodValue(inventory.getStackInSlot(i)) > 0)
                 return true;
+            }
         }
-
+        
         return false;
     }
-    
-    public static int getFirstSlotWithFood(EntityDog dog, IInventory inventory) {
-         for(int i = 0; i < inventory.getSizeInventory(); i++) {
-             if(dog.foodValue(inventory.getStackInSlot(i)) > 0)
-                 return i;
-         }
 
-        return -1;
-    }
-    
-    public static ItemStack addItem(IInventory inventory, ItemStack stack) {
-        ItemStack itemstack = stack.copy();
-
-        for(int i = 0; i < inventory.getSizeInventory(); i++) {
-            ItemStack itemstack1 = inventory.getStackInSlot(i);
-
-            if(itemstack1.isEmpty()) {
-                inventory.setInventorySlotContents(i, itemstack);
-                inventory.markDirty();
-                return ItemStack.EMPTY;
-            }
-
-            if(ItemStack.areItemsEqual(itemstack1, itemstack)) {
-                int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
-                int k = Math.min(itemstack.getCount(), j - itemstack1.getCount());
-
-                if(k > 0) {
-                    itemstack1.grow(k);
-                    itemstack.shrink(k);
-
-                    if(itemstack.isEmpty()) {
-                        inventory.markDirty();
-                        return ItemStack.EMPTY;
-                    }
-                }
-            }
-        }
-
-        if(itemstack.getCount() != stack.getCount())
-            inventory.markDirty();
-
-        return itemstack;
-    }
-    
     public static boolean isHolding(Entity entity, Item item, Predicate<CompoundNBT> nbtPredicate) {
         return isHolding(entity, stack -> stack.getItem() == item && stack.hasTag() && nbtPredicate.test(stack.getTag()));
     }
@@ -186,5 +129,20 @@ public class DogUtil {
                 return d0 > d1 ? 1 : 0;
             }
         }
+    }
+
+    public static void transferStacks(IItemHandlerModifiable source, IItemHandler target) {
+        for (int i = 0; i < source.getSlots(); i++) {
+            source.setStackInSlot(i, addItem(target, source.getStackInSlot(i)));
+        }
+    }
+    
+    public static ItemStack addItem(IItemHandler target, ItemStack remaining) {
+        // Try to insert item into all slots
+        for (int i = 0; i < target.getSlots(); i++) {
+            remaining = target.insertItem(i, remaining, false);
+            if (remaining.isEmpty()) { break; }
+        }
+        return remaining;
     }
 }

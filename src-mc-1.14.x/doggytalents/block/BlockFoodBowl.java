@@ -3,8 +3,9 @@ package doggytalents.block;
 import javax.annotation.Nullable;
 
 import doggytalents.ModItems;
+import doggytalents.helper.CapabilityHelper;
 import doggytalents.helper.DogUtil;
-import doggytalents.inventory.InventoryTreatBag;
+import doggytalents.item.ItemTreatBag;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -45,6 +46,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
 
@@ -90,15 +94,14 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         TileEntityFoodBowl foodBowl = (TileEntityFoodBowl) worldIn.getTileEntity(pos);
-     
+
         if(entityIn instanceof ItemEntity) {
             ItemEntity entityItem = (ItemEntity)entityIn;
-            ItemStack itemstack = entityItem.getItem().copy();
-            
-            ItemStack itemstack1 = DogUtil.addItem(foodBowl, entityItem.getItem());
 
-            if(!itemstack1.isEmpty())
-                entityItem.setItem(itemstack1);
+            IItemHandler bowlInventory = CapabilityHelper.getOrThrow(foodBowl, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+            ItemStack remaining = DogUtil.addItem(bowlInventory, entityItem.getItem());
+            if(!remaining.isEmpty())
+                entityItem.setItem(remaining);
             else {
                 entityItem.remove();
                 worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -111,7 +114,10 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
         if(state.getBlock() != newState.getBlock()) {
             TileEntity tileentity = worldIn.getTileEntity(pos);
             if(tileentity instanceof TileEntityFoodBowl) {
-                InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityFoodBowl)tileentity);
+                IItemHandler bowlInventory = CapabilityHelper.getOrThrow(tileentity, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                for(int i = 0; i < bowlInventory.getSlots(); ++i) {
+                    InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), bowlInventory.getStackInSlot(i));
+                }
                 worldIn.updateComparatorOutputLevel(pos, this);
             }
 
@@ -141,20 +147,12 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
                 ItemStack stack = playerIn.getHeldItem(handIn);
                 
                 if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-                    InventoryTreatBag treatBag = new InventoryTreatBag(playerIn.inventory.currentItem, stack);
-                    treatBag.openInventory(playerIn);
-                    
-                    for(int i = 0; i < treatBag.getSizeInventory(); i++)
-                        treatBag.setInventorySlotContents(i, DogUtil.addItem(foodBowl, treatBag.getStackInSlot(i)));
-                    
-                    treatBag.closeInventory(playerIn);
-                    
-                    return true;
-                }
-                
-                else if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+                    ItemStackHandler bagInventory = CapabilityHelper.getOrThrow(stack, ItemTreatBag.TREAT_BAG_CAPABILITY);
+                    IItemHandler bowlInventory = CapabilityHelper.getOrThrow(foodBowl, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+                    DogUtil.transferStacks(bagInventory, bowlInventory);
+                } else if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
-                    NetworkHooks.openGui(entityPlayerMP, foodBowl);
+                    NetworkHooks.openGui(entityPlayerMP, foodBowl, posIn);
                 }
             }
 

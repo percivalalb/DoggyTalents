@@ -12,7 +12,10 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * @author ProPercivalalb
@@ -194,5 +197,22 @@ public class TalentHelper {
             if(!talent.shouldDecreaseAir(dogIn, air))
                 return false;
         return true;
+    }
+
+    public static void invalidateCapabilities(EntityDog dogIn) {
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            talent.invalidateCapabilities(dogIn);
+        }
+    }
+
+    public static <T> LazyOptional<T> getCapability(EntityDog dogIn, Capability<T> cap, Direction side) {
+        LazyOptional<T> capOut = null;
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            if ((capOut = talent.getCapability(dogIn, cap, side)) != null) {
+                return capOut;
+            }
+        }
+        
+        return null;
     }
 }

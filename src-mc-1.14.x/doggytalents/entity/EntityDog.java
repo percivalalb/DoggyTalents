@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
@@ -50,11 +51,12 @@ import doggytalents.entity.features.ModeFeature;
 import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.entity.features.StatsFeature;
 import doggytalents.entity.features.TalentFeature;
+import doggytalents.helper.CapabilityHelper;
 import doggytalents.helper.DogUtil;
 import doggytalents.helper.TalentHelper;
-import doggytalents.inventory.InventoryTreatBag;
 import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
+import doggytalents.item.ItemTreatBag;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -97,6 +99,7 @@ import net.minecraft.potion.Effects;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -113,8 +116,11 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityDog extends TameableEntity implements IDog {
     
@@ -814,15 +820,8 @@ public class EntityDog extends TameableEntity implements IDog {
                     
                     return true;
                 } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-
-                    InventoryTreatBag treatBag = new InventoryTreatBag(player.inventory.currentItem, stack);
-                    treatBag.openInventory(player);
-
-                    int slotIndex = DogUtil.getFirstSlotWithFood(this, treatBag);
-                    if (slotIndex >= 0)
-                        DogUtil.feedDog(this, treatBag, slotIndex);
-
-                    treatBag.closeInventory(player);
+                    ItemStackHandler treatBag = CapabilityHelper.getOrThrow(stack, ItemTreatBag.TREAT_BAG_CAPABILITY);
+                    DogUtil.feedDogFrom(this, treatBag);
                     return true;
                 }
             }
@@ -1079,6 +1078,17 @@ public class EntityDog extends TameableEntity implements IDog {
         return target instanceof PlayerEntity && this.canInteract(target) ? false : super.canAttack(target);
     }
     
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        LazyOptional<T> capOut = TalentHelper.getCapability(this, cap, side);
+        if (capOut != null) {
+            return capOut.cast();
+        }
+
+        return super.getCapability(cap, side);
+    }
+    
     @Override
     public Entity changeDimension(DimensionType dimType) {
         Entity entity = super.changeDimension(dimType);
@@ -1115,6 +1125,10 @@ public class EntityDog extends TameableEntity implements IDog {
         super.remove(keepData);
         if(!this.world.isRemote)
             this.locationManager.remove(this);
+        
+        if (!keepData) {
+            TalentHelper.invalidateCapabilities(this);
+        }
     }
     
     @Override

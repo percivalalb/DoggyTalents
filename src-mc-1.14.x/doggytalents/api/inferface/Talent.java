@@ -13,8 +13,11 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -66,6 +69,9 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
     public boolean shouldDecreaseAir(EntityDog dogIn, int air) { return true; }
     public void onLevelSet(EntityDog dog, int postLevel) {}
     public void onLevelReset(EntityDog dog, int preLevel) {}
+    
+    public <T> LazyOptional<T> getCapability(EntityDog dogIn, Capability<T> cap, Direction side) { return null; }
+    public void invalidateCapabilities(EntityDog dogIn) {}
     
     public int getHighestLevel(EntityDog dog) { return 5; }
     //public int getTotalCost(EntityDog dog) { return 15; }

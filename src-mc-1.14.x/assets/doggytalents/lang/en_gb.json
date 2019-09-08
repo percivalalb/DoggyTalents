@@ -117,6 +117,7 @@
    "talent.doggytalents.puppy_eyes.msg.6.line.1": "Villager: aaaaAAAAAAAAAAAAAAAAAAAAAAAAA",
    "talent.doggytalents.puppy_eyes.msg.6.line.2": "AAAAAAAAAAAAAAAAAAAaaaaaaaaaa",
    "talent.doggytalents.puppy_eyes.msg.6.line.3": "aaaaaaaaaAAAAAAAAWWWWWWWWW!",
+    "talent.doggytalents.bed_finder.dog_mount": "Shift to make %s dismount",
    "dog.mode.wandering": "Wandering",
    "dog.mode.tactical": "Tactical",
    "dog.mode.aggressive": "Aggressive",

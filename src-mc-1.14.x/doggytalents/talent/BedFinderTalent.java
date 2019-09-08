@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /**
  * @author ProPercivalalb
@@ -38,6 +39,7 @@ public class BedFinderTalent extends Talent {
             if(!dogIn.world.isRemote) {
                 dogIn.getAISit().setSitting(true);
             }
+            playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.GENDER.getGenderPronoun()), true);
             return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;

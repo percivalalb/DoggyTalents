@@ -560,7 +560,7 @@ public class EntityDog extends TameableEntity implements IDog {
         TalentHelper.tick(this);
         this.FEATURES.forEach(DogFeature::tick);
     }
-    
+
     @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
         
@@ -585,7 +585,7 @@ public class EntityDog extends TameableEntity implements IDog {
             }
             return true;
         }
-        
+
         if(this.isTamed()) {
             if(!stack.isEmpty()) {
                 int foodValue = this.foodValue(stack);

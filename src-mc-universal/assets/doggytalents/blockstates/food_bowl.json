@@ -1,6 +1,0 @@
-{
-	"variants": {
-        "normal": { "model": "doggytalents:food_bowl" },
-        "version=1.8": { "model": "doggytalents:1.8.9/food_bowl" }
-    }
-}

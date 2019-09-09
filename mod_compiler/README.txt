@@ -1,1 +1,0 @@
-This is a compiles a given mod using a pre defined forge version, this is designed to work on my pc only. Use on another pc may cause damage

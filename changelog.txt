@@ -11,6 +11,10 @@ Update List Key
 MC 1.14.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.1.7 | 13th September 2019
+Requires forge 28.1.0 or higher
+* Fixed crash with 1.14.4 forge RB 
+
 1.15.1.6 | 8th September 2019
 * Fixed treats not converting wolves into dogs
 

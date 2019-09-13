@@ -12,7 +12,7 @@ public class PlayerConnection {
     public static void playerLoggedIn(final PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
         
-        CompoundNBT tag = player.getPersistantData();
+        CompoundNBT tag = player.getPersistentData();
 
         if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG))
             tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());

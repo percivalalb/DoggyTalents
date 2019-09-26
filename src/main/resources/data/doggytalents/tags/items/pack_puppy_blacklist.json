@@ -1,7 +1,9 @@
 {
   "replace": false,
   "values": [
+    "doggytalents:throw_bone",
     "doggytalents:throw_bone_wet",
+    "doggytalents:throw_stick",
     "doggytalents:throw_stick_wet"
   ]
 }

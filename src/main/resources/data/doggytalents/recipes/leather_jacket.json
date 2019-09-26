@@ -6,15 +6,14 @@
     "LWL"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:black_wool"
-    },
     "L": {
       "item": "minecraft:leather"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     }
   },
   "result": {
-    "item": "doggytalents:leather_jacket",
-    "count": 1
+    "item": "doggytalents:leather_jacket"
   }
 }

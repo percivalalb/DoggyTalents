@@ -14,6 +14,8 @@ import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.world.WorldRender;
 import doggytalents.configuration.ConfigHandler;
+import doggytalents.data.DTItemTagsProvider;
+import doggytalents.data.DTRecipeProvider;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.EntityInteract;
@@ -27,6 +29,7 @@ import doggytalents.lib.Reference;
 import doggytalents.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.entity.EntityType;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
@@ -42,7 +45,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -84,10 +87,10 @@ public class DoggyTalentsMod {
         modEventBus.addListener(ModRegistries::newRegistry);
         modEventBus.addListener(ModBeddings::registerBeddingMaterial);
         
+        modEventBus.addListener(this::gatherData);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::interModProcess);
-        modEventBus.addListener(this::loadComplete);
         
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.register(new PlayerConnection());
@@ -115,7 +118,6 @@ public class DoggyTalentsMod {
 
         
         ConfigHandler.initTalentConfig();
-        //SlotItemCapability.register();
     }
 
     public void clientSetup(FMLClientSetupEvent event) {
@@ -132,7 +134,12 @@ public class DoggyTalentsMod {
         AddonManager.runRegisteredAddons();
     }
 
-    public void loadComplete(FMLLoadCompleteEvent event) {
-        //DistExecutor.runWhenOn(Dist.CLIENT, () -> ClientEvents::initKeybinds);
+    public void gatherData(GatherDataEvent event) {
+        DataGenerator gen = event.getGenerator();
+
+        if (event.includeServer()) {
+            gen.addProvider(new DTItemTagsProvider(gen));
+            gen.addProvider(new DTRecipeProvider(gen));
+        }
     }
 }

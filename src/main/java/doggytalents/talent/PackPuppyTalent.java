@@ -42,7 +42,7 @@ public class PackPuppyTalent extends Talent {
     public static Capability<PackPuppyItemHandler> PACK_PUPPY_CAPABILITY = null;
 
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-        return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.getTag(ModTags.PACK_PUPPY_BLACKLIST)) && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
+        return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.PACK_PUPPY_BLACKLIST) && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
     };
     
     @Override

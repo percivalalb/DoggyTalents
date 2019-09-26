@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "BWB",
-    "WCW",
-    "BSB"
+    "WBW",
+    "BCB",
+    "WSW"
   ],
   "key": {
     "C": {

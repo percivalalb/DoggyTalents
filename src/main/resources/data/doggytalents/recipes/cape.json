@@ -6,18 +6,17 @@
     "WLW"
   ],
   "key": {
-    "S": {
-      "item": "minecraft:string"
-    },
     "L": {
       "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:string"
     },
     "W": {
       "tag": "minecraft:wool"
     }
   },
   "result": {
-    "item": "doggytalents:cape",
-    "count": 1
+    "item": "doggytalents:cape"
   }
 }

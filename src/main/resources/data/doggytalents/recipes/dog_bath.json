@@ -1,20 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "IiI",
-    "III"
+    "XXX",
+    "XYX",
+    "XXX"
   ],
   "key": {
-    "I": {
+    "X": {
       "item": "minecraft:iron_ingot"
     },
-    "i": {
+    "Y": {
       "item": "minecraft:water_bucket"
     }
   },
   "result": {
-    "item": "doggytalents:dog_bath",
-    "count": 1
+    "item": "doggytalents:dog_bath"
   }
 }

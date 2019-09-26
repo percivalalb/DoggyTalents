@@ -1,20 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " I ",
-    "IiI",
-    " I "
+    " X ",
+    "XYX",
+    " X "
   ],
   "key": {
-    "I": {
+    "X": {
       "item": "minecraft:bone"
     },
-    "i": {
+    "Y": {
       "item": "minecraft:slime_ball"
     }
   },
   "result": {
-    "item": "doggytalents:throw_bone",
-    "count": 1
+    "item": "doggytalents:throw_bone"
   }
 }

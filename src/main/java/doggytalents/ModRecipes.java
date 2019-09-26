@@ -14,9 +14,9 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(Reference.MOD_ID)
 public class ModRecipes {
     
-    public static final IRecipeSerializer<RecipeDogBed> DOG_BED = null;
-    public static final IRecipeSerializer<RecipeDogCollar> COLLAR_COLOURING = null;
-    public static final IRecipeSerializer<RecipeDogCape> CAPE_COLOURING = null;
+    public static final SpecialRecipeSerializer<RecipeDogBed> DOG_BED = null;
+    public static final SpecialRecipeSerializer<RecipeDogCollar> COLLAR_COLOURING = null;
+    public static final SpecialRecipeSerializer<RecipeDogCape> CAPE_COLOURING = null;
 
     public static void registerRecipes(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
         IForgeRegistry<IRecipeSerializer<?>> recipeRegistry = event.getRegistry();

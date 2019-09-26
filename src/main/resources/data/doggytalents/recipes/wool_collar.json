@@ -1,17 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "III",
-    "I I",
-    "III"
+    "SSS",
+    "S S",
+    "SSS"
   ],
   "key": {
-    "I": {
+    "S": {
       "item": "minecraft:string"
     }
   },
   "result": {
-    "item": "doggytalents:wool_collar",
-    "count": 1
+    "item": "doggytalents:wool_collar"
   }
 }

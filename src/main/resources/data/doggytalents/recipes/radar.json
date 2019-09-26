@@ -2,17 +2,16 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "doggytalents:radio_collar"
+      "item": "minecraft:map"
     },
     {
       "item": "minecraft:redstone"
     },
     {
-      "item": "minecraft:map"
+      "item": "doggytalents:radio_collar"
     }
   ],
   "result": {
-    "item": "doggytalents:radar",
-    "count": 1
+    "item": "doggytalents:radar"
   }
 }

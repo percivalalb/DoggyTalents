@@ -5,6 +5,9 @@
       "item": "doggytalents:wool_collar"
     },
     {
+      "item": "minecraft:string"
+    },
+    {
       "item": "minecraft:blue_dye"
     },
     {
@@ -21,13 +24,9 @@
     },
     {
       "item": "minecraft:purple_dye"
-    },
-    {
-      "item": "minecraft:string"
     }
   ],
   "result": {
-    "item": "doggytalents:multicoloured_collar",
-    "count": 1
+    "item": "doggytalents:multicoloured_collar"
   }
 }

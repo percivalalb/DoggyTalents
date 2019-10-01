@@ -12,7 +12,7 @@ import net.minecraft.util.SoundEvents;
 public class EntityAIDogFeed extends EntityAIClosestItem {
 
     private Random rand;
-    
+
     public EntityAIDogFeed(EntityDog dogIn, double speedIn, float range) {
         super(dogIn, speedIn, range, stack -> dogIn.foodValue(stack) > 0);
         this.rand = dogIn.world.rand;
@@ -25,18 +25,18 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return this.dog.getDogHunger() < ConfigValues.HUNGER_POINTS && !this.dog.isSitting() && super.shouldContinueExecuting();
+        return this.dog.getDogHunger() < this.dog.getHungerFeature().getMaxHunger()  && !this.dog.isSitting() && super.shouldContinueExecuting();
     }
 
     @Override
     public void tick() {
         super.tick();
         if(!this.dog.isSitting()) {
-    
+
             if (this.dog.getDistance(this.target) <= 1) {
 
-                this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, (float)this.dog.getVerticalFaceSpeed());
-                
+                this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, this.dog.getVerticalFaceSpeed());
+
                 //Eat
                 this.dog.playSound(SoundEvents.ENTITY_PLAYER_BURP, this.dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
                 int foodValue = this.dog.foodValue(this.target.getItem());

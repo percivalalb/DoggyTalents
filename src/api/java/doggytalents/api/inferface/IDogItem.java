@@ -1,6 +1,5 @@
 package doggytalents.api.inferface;
 
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -16,5 +15,5 @@ public interface IDogItem {
      * @param handIn The hand used
      * @return The result of the interaction
      */
-    public ActionResultType onInteractWithDog(EntityDog dogIn, World worldIn, PlayerEntity playerIn, Hand handIn);
+    public ActionResultType onInteractWithDog(IDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn);
 }

@@ -1,5 +1,6 @@
 package doggytalents.item;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,9 +15,9 @@ public class ItemTinyBone extends Item implements IDogItem {
     public ItemTinyBone(Properties properties) {
         super(properties);
     }
-    
+
     @Override
-    public ActionResultType onInteractWithDog(EntityDog dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType onInteractWithDog(IDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         if(dogIn.getGrowingAge() >= 0) {
             if(!playerIn.isCreative())
                 playerIn.getHeldItem(handIn).shrink(1);
@@ -31,6 +32,6 @@ public class ItemTinyBone extends Item implements IDogItem {
                 playerIn.sendMessage(new TranslationTextComponent("treat.tiny_bone.too_young"));
             }
             return ActionResultType.FAIL;
-        }    
+        }
     }
 }

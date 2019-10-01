@@ -8,9 +8,9 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.ConfigValues;
 import doggytalents.network.PacketHandler;
 import doggytalents.network.client.PacketDogMode;

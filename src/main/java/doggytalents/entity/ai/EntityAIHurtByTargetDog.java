@@ -1,7 +1,7 @@
 package doggytalents.entity.ai;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 
 public class EntityAIHurtByTargetDog extends HurtByTargetGoal {

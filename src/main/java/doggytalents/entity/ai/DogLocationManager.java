@@ -1,7 +1,9 @@
 package doggytalents.entity.ai;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -11,8 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalentsMod;
+import doggytalents.api.feature.EnumGender;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.GenderFeature.EnumGender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -27,14 +29,15 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.util.Constants;
 
 public class DogLocationManager extends WorldSavedData {
     
-    private List<DogLocation> locations;
+    private Set<DogLocation> locations;
     
     public DogLocationManager() {
         super("dog_locations");
-        this.locations = new ArrayList<DogLocation>();
+        this.locations = new HashSet<>();
     }
     
     public List<DogLocation> getList(DimensionType type, Predicate<DogLocation> selector) {
@@ -57,13 +60,8 @@ public class DogLocationManager extends WorldSavedData {
     public void update(EntityDog dog) {
         DogLocation temp = new DogLocation(dog);
         
-        int index = this.locations.indexOf(temp);
-        if(index >= 0) {
-            this.locations.set(index, temp);
-        } else {
-            DoggyTalentsMod.LOGGER.debug("ADDED NEW DATA: " + temp);
-            this.locations.add(temp);
-        }
+        boolean isUpdate = this.locations.remove(temp);
+        this.locations.add(temp);
 
         this.markDirty();
     }
@@ -79,8 +77,8 @@ public class DogLocationManager extends WorldSavedData {
 
     @Override
     public void read(CompoundNBT nbt) {
-        if(nbt.contains("dog_locations", 9)) {
-            ListNBT nbtlist = nbt.getList("dog_locations", 10);
+        if(nbt.contains("dog_locations", Constants.NBT.TAG_LIST)) {
+            ListNBT nbtlist = nbt.getList("dog_locations", Constants.NBT.TAG_COMPOUND);
         
             for(int i = 0; i < nbtlist.size(); i++) {
                 DogLocation location = new DogLocation(nbtlist.getCompound(i));
@@ -117,14 +115,14 @@ public class DogLocationManager extends WorldSavedData {
         
         public DogLocation(CompoundNBT compound) {
             super(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
-            if(compound.contains("dimension", 8))
+            if(compound.contains("dimension", Constants.NBT.TAG_STRING))
                 this.type = Registry.DIMENSION_TYPE.getOrDefault(new ResourceLocation(compound.getString("dimension")));
             this.entityId = compound.getUniqueId("entityId");
             if(compound.hasUniqueId("ownerId")) this.owner = compound.getUniqueId("ownerId");
             
-            if(compound.contains("name_text_component", 8)) {
+            if(compound.contains("name_text_component", Constants.NBT.TAG_STRING)) {
                 this.name = ITextComponent.Serializer.fromJson(compound.getString("name_text_component"));
-            } else if(compound.contains("name", 8)) { //
+            } else if(compound.contains("name", Constants.NBT.TAG_STRING)) { //
                 this.name = new StringTextComponent(compound.getString("name"));
             }
             
@@ -218,10 +216,10 @@ public class DogLocationManager extends WorldSavedData {
             return this.entityId != null && other.entityId != null && this.entityId.equals(other.entityId);
         }
         
-        /*@Override
+        @Override
         public int hashCode() {
-            return this.entityId;
-        }*/
+            return Objects.hash(this.entityId);
+        }
         
         @Override
         public String toString() {

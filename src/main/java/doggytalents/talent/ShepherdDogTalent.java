@@ -1,23 +1,23 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 
 /**
  * @author ProPercivalalb
  */
 public class ShepherdDogTalent extends Talent {
-    
+
     @Override
-    public int onHungerTick(EntityDog dog, int totalInTick) { 
+    public int onHungerTick(IDogEntity dog, int totalInTick) {
         if(dog.getControllingPassenger() != null && !(dog.getControllingPassenger() instanceof PlayerEntity))
-            totalInTick += 5 - dog.TALENTS.getLevel(this);
+            totalInTick += 5 - dog.getTalentFeature().getLevel(this);
         return totalInTick;
     }
-    
-    public int getMaxFollowers(EntityDog dog) {
-        int level = dog.TALENTS.getLevel(this);
+
+    public int getMaxFollowers(IDogEntity dog) {
+        int level = dog.getTalentFeature().getLevel(this);
         switch(level) {
         case 1:
             return 1;

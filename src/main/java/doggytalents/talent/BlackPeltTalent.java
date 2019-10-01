@@ -1,7 +1,7 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.particles.ParticleTypes;
@@ -14,9 +14,9 @@ import net.minecraftforge.fml.DistExecutor;
 public class BlackPeltTalent extends Talent {
 
     @Override
-    public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
-        int level = dog.TALENTS.getLevel(this);
-        
+    public int attackEntityAsMob(IDogEntity dog, Entity entity, int damage) {
+        int level = dog.getTalentFeature().getLevel(this);
+
         int critChance = level == 5 ? 1 : 0;
         critChance += level;
         //TODO redo crit to be better in line with text info

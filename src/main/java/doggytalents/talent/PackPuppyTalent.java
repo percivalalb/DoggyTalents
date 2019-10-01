@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import doggytalents.ModTags;
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.ai.EntityAIFetch;
@@ -44,26 +45,26 @@ public class PackPuppyTalent extends Talent {
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
         return entity.isAlive() && !entity.getItem().getItem().isIn(ModTags.PACK_PUPPY_BLACKLIST) && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
     };
-    
+
     @Override
-    public void onClassCreation(EntityDog dog) {
-        dog.objects.put("packpuppyinventory", LazyOptional.of(() -> new PackPuppyItemHandler(dog)));
+    public void onClassCreation(IDogEntity dog) {
+        dog.putObject("packpuppyinventory", LazyOptional.of(() -> new PackPuppyItemHandler((EntityDog) dog)));
     }
 
     @Override
-    public void writeAdditional(EntityDog dog, CompoundNBT nbt) {
+    public void writeAdditional(IDogEntity dog, CompoundNBT nbt) {
         PackPuppyItemHandler inventory = CapabilityHelper.getOrThrow(dog, PACK_PUPPY_CAPABILITY);
         nbt.merge(inventory.serializeNBT());
     }
-    
+
     @Override
-    public void readAdditional(EntityDog dog, CompoundNBT nbt) {
+    public void readAdditional(IDogEntity dog, CompoundNBT nbt) {
         PackPuppyItemHandler inventory = CapabilityHelper.getOrThrow(dog, PACK_PUPPY_CAPABILITY);
         inventory.deserializeNBT(nbt);
     }
-    
+
     @Override
-    public void onLevelReset(EntityDog dog, int preLevel) {
+    public void onLevelReset(IDogEntity dog, int preLevel) {
         // No need to drop anything if dog didn't have pack puppy
         if(preLevel > 0) {
             PackPuppyItemHandler inventory = CapabilityHelper.getOrThrow(dog, PACK_PUPPY_CAPABILITY);
@@ -73,15 +74,15 @@ public class PackPuppyTalent extends Talent {
             }
         }
     }
-    
+
     @Override
-    public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType onInteract(IDogEntity dogIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        int level = dogIn.TALENTS.getLevel(this);
-        
+        int level = dogIn.getTalentFeature().getLevel(this);
+
         if(dogIn.isTamed() && level > 0) { // Dog requirements
             if(playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
-                
+
                 if(!playerIn.world.isRemote && dogIn.canInteract(playerIn)) {
 
                     if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
@@ -89,7 +90,7 @@ public class PackPuppyTalent extends Talent {
                         NetworkHooks.openGui(entityPlayerMP, new INamedContainerProvider() {
                             @Override
                             public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
-                                return new ContainerPackPuppy(windowId, inventory, dogIn);
+                                return new ContainerPackPuppy(windowId, inventory, (EntityDog) dogIn);
                             }
 
                             @Override
@@ -106,15 +107,15 @@ public class PackPuppyTalent extends Talent {
                 }
             }
         }
-        
+
         return ActionResultType.PASS;
     }
-    
+
     @Override
-    public void livingTick(EntityDog dog) {
-        if(!dog.world.isRemote && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
+    public void livingTick(IDogEntity dog) {
+        if(!dog.world.isRemote && dog.getTalentFeature().getLevel(this) >= 5 && dog.getHealth() > 1) {
             IItemHandler inventory = CapabilityHelper.getOrThrow(dog, PACK_PUPPY_CAPABILITY);
-            
+
             List<ItemEntity> list = dog.world.getEntitiesWithinAABB(ItemEntity.class, dog.getBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
             for(ItemEntity entityItem : list) {
                 ItemStack remaining = DogUtil.addItem(inventory, entityItem.getItem());
@@ -128,17 +129,17 @@ public class PackPuppyTalent extends Talent {
             }
         }
     }
-    
+
     @Override
-    public <T> LazyOptional<T> getCapability(EntityDog dogIn, Capability<T> cap, Direction side) {
+    public <T> LazyOptional<T> getCapability(IDogEntity dogIn, Capability<T> cap, Direction side) {
         if (cap == PACK_PUPPY_CAPABILITY) {
-            return ((LazyOptional<?>)dogIn.objects.get("packpuppyinventory")).cast();
+            return ((LazyOptional<?>)dogIn.getObject("packpuppyinventory", LazyOptional.class)).cast();
         }
-        return null; 
+        return null;
     }
 
     @Override
-    public void invalidateCapabilities(EntityDog dogIn) {
-        ((LazyOptional<?>)dogIn.objects.get("packpuppyinventory")).invalidate();
+    public void invalidateCapabilities(IDogEntity dogIn) {
+        ((LazyOptional<?>)dogIn.getObject("packpuppyinventory", LazyOptional.class)).invalidate();
     }
 }

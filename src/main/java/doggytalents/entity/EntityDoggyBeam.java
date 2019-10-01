@@ -3,7 +3,7 @@ package doggytalents.entity;
 import java.util.List;
 
 import doggytalents.ModEntities;
-import doggytalents.entity.features.ModeFeature.EnumMode;
+import doggytalents.api.feature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.IRendersAsItem;

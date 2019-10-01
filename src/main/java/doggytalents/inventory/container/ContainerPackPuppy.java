@@ -18,11 +18,11 @@ import net.minecraftforge.items.SlotItemHandler;
  * @author ProPercivalalb
  */
 public class ContainerPackPuppy extends Container {
-    
+
     private EntityDog dog;
     private ItemStackHandler packInventory;
     private int level;
-    
+
     public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, EntityDog dogIn) {
         super(ModContainerTypes.PACK_PUPPY, windowId);
         this.dog = dogIn;
@@ -34,10 +34,10 @@ public class ContainerPackPuppy extends Container {
                 this.addSlot(new SlotItemHandler(this.packInventory, i1 * 3 + j, 79 + 18 * i1, 1 + 18 * j + 24));
             }
         }
-        
+
         int var3;
         int var4;
-        
+
         for (var3 = 0; var3 < 3; ++var3) {
             for (var4 = 0; var4 < 9; ++var4) {
                 this.addSlot(new Slot(playerInventory, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
@@ -52,7 +52,7 @@ public class ContainerPackPuppy extends Container {
     @Override
     public ItemStack transferStackInSlot(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.inventorySlots.get(i);
+        Slot slot = this.inventorySlots.get(i);
         int packpuppyLevel = MathHelper.clamp(this.level, 0, 5);
 
         if (slot != null && slot.getHasStack()) {
@@ -70,7 +70,7 @@ public class ContainerPackPuppy extends Container {
                 slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
-            
+
             if(itemstack1.getCount() == itemstack.getCount())
                 return ItemStack.EMPTY;
         }
@@ -82,7 +82,7 @@ public class ContainerPackPuppy extends Container {
     public boolean canInteractWith(PlayerEntity player) {
         return this.dog.getDistanceSq(player) < 144D;
     }
-    
+
     @Override
     public void onContainerClosed(PlayerEntity player) {
         super.onContainerClosed(player);

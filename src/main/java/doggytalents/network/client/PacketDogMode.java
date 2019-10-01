@@ -2,8 +2,8 @@ package doggytalents.network.client;
 
 import java.util.function.Supplier;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;

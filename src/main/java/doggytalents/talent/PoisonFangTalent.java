@@ -1,7 +1,7 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,41 +18,41 @@ import net.minecraft.util.Hand;
 public class PoisonFangTalent extends Talent {
 
     @Override
-    public ActionResultType onInteract(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType onInteract(IDogEntity dogIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        int level = dogIn.TALENTS.getLevel(this);
-        
+        int level = dogIn.getTalentFeature().getLevel(this);
+
         if (dogIn.isTamed() && level == 5) {
-            if(stack.getItem() == Items.SPIDER_EYE && dogIn.getDogHunger() > 30) {
+            if(stack.getItem() == Items.SPIDER_EYE && dogIn.getHungerFeature().getDogHunger() > 30) {
                 playerIn.clearActivePotions();
-                dogIn.setDogHunger(dogIn.getDogHunger() - 30);
-                    
+                dogIn.getHungerFeature().setDogHunger(dogIn.getHungerFeature().getDogHunger() - 30);
+
                 return ActionResultType.SUCCESS;
             }
         }
-        
+
         return ActionResultType.PASS;
     }
-    
+
     @Override
-    public boolean isPostionApplicable(EntityDog dog, EffectInstance potionEffect) {
-        if(dog.TALENTS.getLevel(this) >= 3) {
+    public boolean isPostionApplicable(IDogEntity dog, EffectInstance potionEffect) {
+        if(dog.getTalentFeature().getLevel(this) >= 3) {
             if(potionEffect.getPotion() == Effects.POISON) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     @Override
-    public int attackEntityAsMob(EntityDog dog, Entity entity, int damage) {
-        int level = dog.TALENTS.getLevel(this);
-        
+    public int attackEntityAsMob(IDogEntity dog, Entity entity, int damage) {
+        int level = dog.getTalentFeature().getLevel(this);
+
         if(entity instanceof LivingEntity && level > 0) {
             ((LivingEntity)entity).addPotionEffect(new EffectInstance(Effects.POISON, level * 20, 0));
         }
-        
+
         return damage;
     }
 }

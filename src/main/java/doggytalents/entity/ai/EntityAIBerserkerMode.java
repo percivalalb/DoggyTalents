@@ -5,8 +5,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;

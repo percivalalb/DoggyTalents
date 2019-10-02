@@ -67,7 +67,6 @@ import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.goal.BreedGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
@@ -79,6 +78,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CatEntity;
@@ -224,7 +224,7 @@ public class EntityDog extends IDogEntity implements IDog {
         this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTargetDog(this));
         this.targetSelector.addGoal(2, new EntityAIOwnerHurtTargetDog(this));
         this.targetSelector.addGoal(3, new EntityAIHurtByTargetDog(this).setCallsForHelp());
-        this.targetSelector.addGoal(4, new EntityAIBerserkerMode<>(this, MobEntity.class, false));
+        this.targetSelector.addGoal(4, new EntityAIBerserkerMode<>(this, MonsterEntity.class, false));
     }
 
     @Override

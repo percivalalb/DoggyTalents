@@ -11,6 +11,13 @@ Update List Key
 MC 1.14.4
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.2.0 | 2nd October 2019
++ Added config option for the revive item, default still cake
+* Fixed tactical whistle not working
+* Fixed dogs attacking all entities not just monsters in berserker mode (#193)
+* Fixed being forced dismount when in water even on level 5 swimmer dog
++ Added an API to add talents, bed materials etc (will try to get some docs out)
+
 1.15.1.6 | 8th September 2019
 * Fixed treats not converting wolves into dogs
 

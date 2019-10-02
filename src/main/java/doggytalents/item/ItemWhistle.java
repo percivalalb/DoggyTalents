@@ -3,7 +3,6 @@ package doggytalents.item;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import doggytalents.ModEntities;
 import doggytalents.ModSounds;
 import doggytalents.ModTalents;
 import doggytalents.api.feature.EnumMode;

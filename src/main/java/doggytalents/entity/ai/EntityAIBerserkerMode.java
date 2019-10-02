@@ -20,7 +20,7 @@ public class EntityAIBerserkerMode<T extends LivingEntity> extends TargetGoal {
     private final EntityDog dog;
     private final Class<T> targetClass;
     private final int targetChance;
-    
+
     protected LivingEntity nearestTarget;
     protected EntityPredicate targetEntitySelector;
 
@@ -62,11 +62,11 @@ public class EntityAIBerserkerMode<T extends LivingEntity> extends TargetGoal {
         if (this.targetClass != PlayerEntity.class && this.targetClass != ServerPlayerEntity.class) {
             this.nearestTarget = this.goalOwner.world.<T>getClosestEntityWithinAABB(this.targetClass,
                     this.targetEntitySelector, this.goalOwner, this.goalOwner.posX,
-                    this.goalOwner.posY + (double) this.goalOwner.getEyeHeight(), this.goalOwner.posZ,
+                    this.goalOwner.posY + this.goalOwner.getEyeHeight(), this.goalOwner.posZ,
                     this.getTargetableArea(this.getTargetDistance()));
         } else {
             this.nearestTarget = this.goalOwner.world.getClosestPlayer(this.targetEntitySelector, this.goalOwner,
-                    this.goalOwner.posX, this.goalOwner.posY + (double) this.goalOwner.getEyeHeight(),
+                    this.goalOwner.posX, this.goalOwner.posY + this.goalOwner.getEyeHeight(),
                     this.goalOwner.posZ);
         }
 

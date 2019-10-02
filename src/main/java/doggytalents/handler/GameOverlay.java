@@ -3,7 +3,6 @@ package doggytalents.handler;
 import com.mojang.blaze3d.platform.GlStateManager;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.ConfigValues;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.tags.FluidTags;

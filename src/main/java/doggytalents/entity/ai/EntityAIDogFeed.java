@@ -5,7 +5,6 @@ import java.util.Random;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
-import doggytalents.lib.ConfigValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvents;
 

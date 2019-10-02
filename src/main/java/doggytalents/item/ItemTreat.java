@@ -2,7 +2,6 @@ package doggytalents.item;
 
 import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ActionResultType;

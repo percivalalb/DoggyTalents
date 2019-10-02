@@ -1664,10 +1664,11 @@ public class EntityDog extends IDogEntity implements IDog {
 
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
-        if(!TalentHelper.shouldDismountInWater(this, rider))
-            return false;
-
-        return true;
+        switch (TalentHelper.canBeRiddenInWater(this, rider)) {
+            case SUCCESS: return true;
+            case FAIL: return false;
+            default: return false;
+        }
     }
 
     @Override

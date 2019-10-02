@@ -26,21 +26,21 @@ public class TalentHelper {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.onClassCreation(dog);
     }
-    
+
     public static void writeAdditional(EntityDog dog, CompoundNBT compound) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.writeAdditional(dog, compound);
     }
-    
+
     public static void readAdditional(EntityDog dog, CompoundNBT compound) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.readAdditional(dog, compound);
     }
-    
+
     public static ActionResultType interactWithPlayer(EntityDog dogIn, PlayerEntity playerIn, Hand handIn) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
             ActionResultType result = talent.onInteract(dogIn, playerIn, handIn);
-            
+
             switch(result) {
                 case PASS: continue;
                 default: return result;
@@ -54,19 +54,19 @@ public class TalentHelper {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.tick(dog);
     }
-    
+
     public static void livingTick(EntityDog dog) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             talent.livingTick(dog);
     }
-    
+
     public static int hungerTick(EntityDog dog, int totalInTick) {
         int total = totalInTick;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             total = talent.onHungerTick(dog, total);
         return total;
     }
-    
+
     public static int regenerationTick(EntityDog dog, int totalInTick) {
         int total = totalInTick;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
@@ -80,14 +80,14 @@ public class TalentHelper {
             total = talent.attackEntityAsMob(dog, entity, total);
         return total;
     }
-    
+
     public static int changeFoodValue(EntityDog dog, ItemStack stack, int foodValue) {
         int total = foodValue;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             total = talent.changeFoodValue(dog, stack, total);
         return total;
     }
-    
+
     public static int getUsedPoints(EntityDog dog) {
         int total = 0;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
@@ -115,7 +115,7 @@ public class TalentHelper {
                 return true;
         return false;
     }
-    
+
     public static boolean canTriggerWalking(EntityDog dog) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             if(!talent.canTriggerWalking(dog))
@@ -129,12 +129,12 @@ public class TalentHelper {
                 return true;
         return false;
     }
-    
+
     public static int fallProtection(EntityDog dogIn) {
         int total = 0;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
             ActionResult<Integer> result = talent.fallProtection(dogIn);
-            
+
             switch(result.getType()) {
                 case SUCCESS: total += result.getResult(); break;
                 default: continue;
@@ -163,7 +163,7 @@ public class TalentHelper {
                 return true;
         return false;
     }
-    
+
     public static boolean canAttackEntity(EntityDog dog, Entity entity) {
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
             if(talent.canAttackEntity(dog, entity))
@@ -177,12 +177,18 @@ public class TalentHelper {
                 return false;
         return true;
     }
-    
-    public static boolean shouldDismountInWater(EntityDog dog, Entity rider) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
-            if(!talent.shouldDismountInWater(dog, rider))
-                return false;
-        return true;
+
+    public static ActionResultType canBeRiddenInWater(EntityDog dog, Entity rider) {
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            ActionResultType result = talent.canBeRiddenInWater(dog, rider);
+
+            switch(result) {
+                case PASS: continue;
+                default: return result;
+            }
+        }
+
+        return ActionResultType.PASS;
     }
 
     public static void onFinishShaking(EntityDog dogIn, boolean gotWetInWater) {
@@ -212,7 +218,7 @@ public class TalentHelper {
                 return capOut;
             }
         }
-        
+
         return null;
     }
 }

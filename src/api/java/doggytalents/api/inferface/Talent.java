@@ -63,7 +63,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
     public boolean canAttack(IDogEntity dog, EntityType<?> entityType) { return false; }
     public boolean canAttackEntity(IDogEntity dog, Entity entity) { return false; }
     public boolean setFire(IDogEntity dog, int amount) { return true; }
-    public boolean shouldDismountInWater(IDogEntity dog, Entity rider) { return true; }
+    public ActionResultType canBeRiddenInWater(IDogEntity dog, Entity rider) { return ActionResultType.PASS; }
     public void onFinishShaking(IDogEntity dogIn, boolean gotWetInWater) {}
     public boolean shouldDecreaseAir(IDogEntity dogIn, int air) { return true; }
     public void onLevelSet(IDogEntity dog, int postLevel) {}

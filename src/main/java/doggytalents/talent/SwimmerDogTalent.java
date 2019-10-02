@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ActionResultType;
 
 /**
  * @author ProPercivalalb
@@ -22,8 +23,8 @@ public class SwimmerDogTalent extends Talent {
     }
 
     @Override
-    public boolean shouldDismountInWater(IDogEntity dog, Entity rider) {
-        return !(dog.getTalentFeature().getLevel(this) > 0);
+    public ActionResultType canBeRiddenInWater(IDogEntity dog, Entity rider) {
+        return dog.getTalentFeature().getLevel(this) < 5 ? ActionResultType.PASS : ActionResultType.SUCCESS;
     }
 
     @Override

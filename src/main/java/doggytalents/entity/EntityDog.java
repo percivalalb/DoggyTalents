@@ -761,7 +761,7 @@ public class EntityDog extends IDogEntity implements IDog {
                     }
 
                     return true;
-                } else if(stack.getItem() == Blocks.CAKE.asItem() && this.canInteract(player) && this.isIncapacicated()) {
+                } else if(stack.getItem() == ConfigValues.REVIVE_ITEM && this.canInteract(player) && this.isIncapacicated()) {
                     this.consumeItemFromStack(player, stack);
 
                     if(!this.world.isRemote) {

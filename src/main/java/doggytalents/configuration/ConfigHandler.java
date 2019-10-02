@@ -8,11 +8,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import doggytalents.DoggyTalentsMod;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.lib.ConfigValues;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ConfigHandler {
 
@@ -22,7 +25,7 @@ public class ConfigHandler {
     private static ForgeConfigSpec CONFIG_SERVER_SPEC;
     private static ForgeConfigSpec CONFIG_CLIENT_SPEC;
     private static ForgeConfigSpec CONFIG_TALENT_SPEC;
-    
+
     public static void init() {
         Pair<ServerConfig, ForgeConfigSpec> commonPair = new ForgeConfigSpec.Builder().configure(ServerConfig::new);
         CONFIG_SERVER_SPEC = commonPair.getRight();
@@ -31,22 +34,22 @@ public class ConfigHandler {
         CONFIG_CLIENT_SPEC = clientPair.getRight();
         CLIENT = clientPair.getLeft();
         DoggyTalentsMod.LOGGER.debug("Register configs");
-        
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CONFIG_CLIENT_SPEC);
-        
+
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigHandler::loadConfig);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ConfigHandler::reloadConfig);
     }
-    
+
     public static void initTalentConfig() {
         Pair<TalentConfig, ForgeConfigSpec> talentPair = new ForgeConfigSpec.Builder().configure(TalentConfig::new);
         CONFIG_TALENT_SPEC = talentPair.getRight();
         TALENT = talentPair.getLeft();
-        
+
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_TALENT_SPEC, "doggytalents-talents.toml");
     }
-    
+
     public static void loadConfig(final ModConfig.Loading event) {
         ModConfig config = event.getConfig();
         if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
@@ -57,7 +60,7 @@ public class ConfigHandler {
             ConfigHandler.refreshTalents();
         }
     }
-    
+
     public static void reloadConfig(final ModConfig.ConfigReloading event) {
         ModConfig config = event.getConfig();
         if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
@@ -68,7 +71,7 @@ public class ConfigHandler {
             ConfigHandler.refreshTalents();
         }
     }
-    
+
     public static void refreshServer() {
         DoggyTalentsMod.LOGGER.debug("Refresh Common Config");
         ConfigValues.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
@@ -78,8 +81,10 @@ public class ConfigHandler {
         ConfigValues.DOG_GENDER = SERVER.DOG_GENDER.get();
         ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
         ConfigValues.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
+        ResourceLocation reviveResource = ResourceLocation.tryCreate(SERVER.REVIVE_ITEM.get());
+        ConfigValues.REVIVE_ITEM = ForgeRegistries.ITEMS.containsKey(reviveResource) ? ForgeRegistries.ITEMS.getValue(reviveResource) : Items.CAKE;
     }
-    
+
     public static void refreshClient() {
         DoggyTalentsMod.LOGGER.debug("Refresh Client Config");
         ConfigValues.DIRE_PARTICLES = CLIENT.DIRE_PARTICLES.get();
@@ -90,13 +95,13 @@ public class ConfigHandler {
         ConfigValues.RENDER_SADDLE = CLIENT.RENDER_SADDLE.get();
         ConfigValues.USE_DT_TEXTURES = CLIENT.USE_DT_TEXTURES.get();
     }
-    
+
     public static void refreshTalents() {
         DoggyTalentsMod.LOGGER.debug("Refresh Talents Config");
         ConfigValues.ENABLED_TALENTS.clear();
         TALENT.DISABLED_TALENTS.forEach((loc, val) -> ConfigValues.ENABLED_TALENTS.put(loc, val.get()));
     }
-    
+
     static class ClientConfig {
 
         public ForgeConfigSpec.BooleanValue DIRE_PARTICLES;
@@ -105,11 +110,11 @@ public class ConfigHandler {
         public ForgeConfigSpec.BooleanValue RENDER_CHEST;
         public ForgeConfigSpec.BooleanValue RENDER_SADDLE;
         public ForgeConfigSpec.BooleanValue USE_DT_TEXTURES;
-        public ForgeConfigSpec.BooleanValue    RENDER_ARMOUR;
-        
+        public ForgeConfigSpec.BooleanValue RENDER_ARMOUR;
+
         public ClientConfig(ForgeConfigSpec.Builder builder) {
             builder.push("General");
-            
+
             builder.pop();
             builder.push("Dog Render");
 
@@ -141,13 +146,13 @@ public class ConfigHandler {
                     .comment("If disabled will use the default minecraft wolf skin for all dog textures.")
                     .translation("doggytalents.config.client.enable_dt_textures")
                     .define("enable_dt_textures", true);
-            
+
             builder.pop();
         }
     }
-    
+
     static class ServerConfig {
-        
+
         public ForgeConfigSpec.BooleanValue DOGS_IMMORTAL;
         public ForgeConfigSpec.IntValue TIME_TO_MATURE;
         public ForgeConfigSpec.BooleanValue DISABLE_HUNGER;
@@ -155,19 +160,20 @@ public class ConfigHandler {
         public ForgeConfigSpec.BooleanValue DOG_GENDER;
         public ForgeConfigSpec.BooleanValue DOG_WHINE_WHEN_HUNGER_LOW;
         public ForgeConfigSpec.BooleanValue PUPS_GET_PARENT_LEVELS;
-        
+        public ConfigValue<String> REVIVE_ITEM;
+
         public Map<String, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
-        
+
         public ServerConfig(ForgeConfigSpec.Builder builder) {
             builder.push("General");
-              
+
             //DEBUG_MODE = builder
             //        .comment("Enables debugging mode, which would output values for the sake of finding issues in the mod.")
-            //        .define("debugMode", false);    
-            
+            //        .define("debugMode", false);
+
             builder.pop();
             builder.push("Dog Constants");
-              
+
             DOGS_IMMORTAL = builder
                     .comment("Determines if dogs die when their health reaches zero. If true, dogs will not die, and will instead become incapacitated.")
                     .translation("doggytalents.config.dog.enable_immortality")
@@ -196,19 +202,23 @@ public class ConfigHandler {
                     .comment("When enabled, puppies get some levels from parents. When disabled, puppies start at 0 points.")
                     .translation("doggytalents.config.enable_pup_get_parent_levels")
                     .define("enable_pup_get_parent_levels", false);
-            
+            REVIVE_ITEM = builder
+                    .comment("The item resource path that can be used to revive an incapacitated dog. If item is not valid defaults to minecraft:cake")
+                    .translation("doggytalents.config.revive_item")
+                    .define("revive_item", "minecraft:cake");
+
             builder.pop();
         }
     }
-    
+
     static class TalentConfig {
         public Map<ResourceLocation, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
-        
+
         public TalentConfig(ForgeConfigSpec.Builder builder) {
             builder.comment("Here you can disable talents.").push("Talents");
-            
+
             DISABLED_TALENTS = new HashMap<ResourceLocation, ForgeConfigSpec.BooleanValue>();
-            
+
             DoggyTalentsAPI.TALENTS.getKeys().forEach(loc -> DISABLED_TALENTS.put(loc, builder.define(loc.toString(), true)));
             builder.pop();
         }

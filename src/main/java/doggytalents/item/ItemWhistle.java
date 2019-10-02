@@ -28,9 +28,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class ItemWhistle extends Item {
-    
+
     public ItemWhistle(Properties properties) {
         super(properties);
     }
@@ -41,28 +42,28 @@ public class ItemWhistle extends Item {
             //world.playSound(player, player.getPosition(), player.isSneaking() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
         } else {
             ItemStack stack = player.getHeldItem(hand);
-            
+
             if(player.isSneaking()) {
                 if(!stack.hasTag()) {
                     stack.setTag(new CompoundNBT());
                     stack.getTag().putByte("mode", (byte)0);
                 }
-                
+
                 int mode = stack.getTag().getInt("mode");
                 stack.getTag().putInt("mode", (mode + 1) % 7);
-                
+
                 return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
             }
             else {
                 byte mode = 0;
-                
-                if(stack.hasTag() && stack.getTag().contains("mode", 99)) {
+
+                if(stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
                     mode = stack.getTag().getByte("mode");
                 }
-                
+
                 List<EntityDog> dogsList = world.getEntitiesWithinAABB(EntityDog.class, player.getBoundingBox().grow(100D, 50D, 100D), dog -> dog.isOwner(player));
                 boolean successful = false;
-                
+
                 if(mode == 0) { // Stand
                     for(EntityDog dog : dogsList) {
                         dog.getAISit().setSitting(false);
@@ -72,9 +73,9 @@ public class ItemWhistle extends Item {
                             dog.MODE.setMode(EnumMode.DOCILE);
                         successful = true;
                     }
-                
+
                     world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
-                    
+
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.come"));
                 }
@@ -83,11 +84,11 @@ public class ItemWhistle extends Item {
                         if(!dog.isSitting() && !dog.MODE.isMode(EnumMode.WANDERING)) {
                             DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
                             successful = true;
-                        }  
+                        }
                     }
-                    
+
                     world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
-                    
+
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
                 }
@@ -100,9 +101,9 @@ public class ItemWhistle extends Item {
                             dog.MODE.setMode(EnumMode.DOCILE);
                         successful = true;
                     }
-                    
+
                     world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
-                    
+
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
                 }
@@ -118,11 +119,11 @@ public class ItemWhistle extends Item {
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget((LivingEntity)null);
                         }
-                        successful = true;      
+                        successful = true;
                     }
-                    
+
                     world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
-                    
+
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
                 }
@@ -132,7 +133,7 @@ public class ItemWhistle extends Item {
                 } else if(mode == 5) {
                     world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
                     if(!world.isRemote) {
-                        EntityDoggyBeam doggyBeam = new EntityDoggyBeam(ModEntities.DOG_BEAM, world, player);
+                        EntityDoggyBeam doggyBeam = new EntityDoggyBeam(world, player);
                         doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
                         world.addEntity(doggyBeam);
                     }
@@ -150,17 +151,17 @@ public class ItemWhistle extends Item {
                                 int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 
                                 roarCooldown = level == 5 ? 60 : 100;
-                                    
+
                                 byte damage = (byte)(level > 4 ? level * 2 : level);
-                                    
+
                                 /**
                                  * If level = 1, set duration to  20 ticks (1 second); level = 2, set duration to 24 ticks (1.2 seconds)
                                  * If level = 3, set duration to 36 ticks (1.8 seconds); If level = 4, set duration to 48 ticks (2.4 seconds)
-                                 * If level = max (5), set duration to 70 ticks (3.5 seconds); 
+                                 * If level = max (5), set duration to 70 ticks (3.5 seconds);
                                  * */
                                 byte effectDuration = (byte)(level > 4 ? level * 14 : level * (level == 1 ? 20 : 12));
                                 byte knockback = (byte)level;
-                                    
+
                                 boolean hit = false;
                                 List<LivingEntity> list = dog.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, dog.getBoundingBox().grow(level * 4, 4D, level * 4));
                                 for(LivingEntity mob : list) {
@@ -172,41 +173,41 @@ public class ItemWhistle extends Item {
                                         mob.addVelocity(MathHelper.sin(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -MathHelper.cos(mob.rotationYaw * (float) Math.PI / 180.0F) * knockback * 0.5F);
                                     }
                                 }
-                                    
+
                                 if(hit) {
                                     dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, 0.7F, 1.0F);
                                 } else {
                                     dog.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1F, 1.2F);
                                     roarCooldown /= 2;
                                 }
-                                    
+
                                 dog.objects.put("roarcooldown", roarCooldown);
                             }
                         }
                     }
                 }
-                
-                
+
+
                 //world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.8F, 0.8F + world.rand.nextFloat() * 0.2F);
                 //world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.8F, 0.6F + world.rand.nextFloat() * 0.2F);
 
             }
         }
-        
+
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, player.getHeldItem(hand));
     }
-    
+
     @Override
     public String getTranslationKey(ItemStack stack) {
         byte mode = 0;
-        
+
         if(stack.hasTag() && stack.getTag().contains("mode", 99)) {
             mode = stack.getTag().getByte("mode");
         }
         return this.getTranslationKey() + "." + mode;
 
     }
-    
+
     @Override
     public Rarity getRarity(ItemStack stack) {
         return Rarity.UNCOMMON;

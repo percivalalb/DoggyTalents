@@ -185,9 +185,10 @@ public class EntityDog extends IDogEntity implements IDog {
         this.MODE = new ModeFeature(this);
         this.COORDS = new CoordFeature(this);
         this.GENDER = new GenderFeature(this);
+        this.HUNGER = new HungerFeature(this);
         this.STATS = new StatsFeature(this);
 
-        this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, GENDER, STATS);
+        this.FEATURES = Arrays.asList(TALENTS, LEVELS, MODE, COORDS, GENDER, HUNGER, STATS);
         if(worldIn instanceof ServerWorld)
             this.locationManager = DogLocationManager.getHandler((ServerWorld)this.getEntityWorld());
         this.objects = new HashMap<String, Object>();

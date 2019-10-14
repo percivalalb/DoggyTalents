@@ -18,6 +18,10 @@ MC 1.14.4
 * Fixed being forced dismount when in water even on level 5 swimmer dog
 + Added an API to add talents, bed materials etc (will try to get some docs out)
 
+1.15.1.7 | 13th September 2019
+Requires forge 28.1.0 or higher
+* Fixed crash with 1.14.4 forge RB
+
 1.15.1.6 | 8th September 2019
 * Fixed treats not converting wolves into dogs
 

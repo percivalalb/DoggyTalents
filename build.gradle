@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "https://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+version = project.output_version
+group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'DoggyTalents-1.12.2'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+
+repositories {
+    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "https://modmaven.k-4u.nl" }
+}
+
+sourceSets {
+	api
+	main {
+		compileClasspath += sourceSets.api.output
+		runtimeClasspath += sourceSets.api.output
+	}
+	test {
+		compileClasspath += sourceSets.api.output
+		runtimeClasspath += sourceSets.api.output
+	}
+}
+
+configurations {
+	apiCompile.extendsFrom(compile)
+}
+
+minecraft {
+    version = project.forge_version
+    runDir = "run"
+
+    mappings = project.mcp_mappings
+}
+
+dependencies {
+    deobfProvided "mezz.jei:jei_${jei_version}:api"
+    runtime "mezz.jei:jei_${jei_version}" 
+}
+
+task sourcesJar(type: Jar) {
+	classifier = "sources"
+	from sourceSets.main.allJava
+	from sourceSets.api.allJava
+}
+
+task apiJar(type: Jar) {
+	classifier = "api"
+	from sourceSets.api.output
+	from sourceSets.api.allJava
+}
+
+artifacts {
+    archives sourcesJar
+    archives apiJar
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

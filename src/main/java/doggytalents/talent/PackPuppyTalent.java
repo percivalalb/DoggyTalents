@@ -6,8 +6,8 @@ import com.google.common.base.Predicate;
 
 import doggytalents.DoggyTalents;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import doggytalents.helper.DogUtil;
 import doggytalents.inventory.InventoryPackPuppy;
 import doggytalents.lib.GuiNames;
@@ -28,38 +28,38 @@ public class PackPuppyTalent extends Talent {
     public static Predicate<EntityItem> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
         return entity.isEntityAlive() && !DoggyTalentsAPI.PACKPUPPY_BLACKLIST.containsItem(entity.getItem());
     };
-    
+
     @Override
-    public void onClassCreation(EntityDog dog) {
-        dog.objects.put("packpuppyinventory", new InventoryPackPuppy(dog));
+    public void onClassCreation(IDogEntity dog) {
+        dog.putObject("packpuppyinventory", new InventoryPackPuppy(dog));
     }
-    
+
     @Override
-    public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
-        InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
+    public void writeAdditional(IDogEntity dog, NBTTagCompound tagCompound) {
+        InventoryPackPuppy inventory = dog.getObject("packpuppyinventory", InventoryPackPuppy.class);
         inventory.writeToNBT(tagCompound);
     }
-    
+
     @Override
-    public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
-        InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
+    public void readAdditional(IDogEntity dog, NBTTagCompound tagCompound) {
+        InventoryPackPuppy inventory = dog.getObject("packpuppyinventory", InventoryPackPuppy.class);
         inventory.readFromNBT(tagCompound);
     }
-    
+
     @Override
-    public void onLevelReset(EntityDog dog, int preLevel) {
+    public void onLevelReset(IDogEntity dog, int preLevel) {
         // No need to drop anything if dog didn't have pack puppy
         if(preLevel > 0) {
-            InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
+            InventoryPackPuppy inventory = dog.getObject("packpuppyinventory", InventoryPackPuppy.class);
             InventoryHelper.dropInventoryItems(dog.world, dog, inventory);
             inventory.clear();
         }
     }
-    
+
     @Override
-    public EnumActionResult onInteract(EntityDog dog, EntityPlayer player, EnumHand hand) {
+    public EnumActionResult onInteract(IDogEntity dog, EntityPlayer player, EnumHand hand) {
         if(dog.isTamed()) {
-            int level = dog.TALENTS.getLevel(this);
+            int level = dog.getTalentFeature().getLevel(this);
             if(level > 0) {
                 ItemStack stack = player.getHeldItem(hand);
                 if(stack.isEmpty()) {
@@ -71,17 +71,17 @@ public class PackPuppyTalent extends Talent {
                 }
             }
         }
-        
+
         return EnumActionResult.PASS;
     }
-    
+
     @Override
-    public void livingTick(EntityDog dog) {
-        if(!dog.world.isRemote && dog.TALENTS.getLevel(this) >= 5 && dog.getHealth() > 1) {
-            InventoryPackPuppy inventory = (InventoryPackPuppy)dog.objects.get("packpuppyinventory");
-            
+    public void livingTick(IDogEntity dog) {
+        if(!dog.world.isRemote && dog.getTalentFeature().getLevel(this) >= 5 && dog.getHealth() > 1) {
+            InventoryPackPuppy inventory = dog.getObject("packpuppyinventory", InventoryPackPuppy.class);
+
             List<EntityItem> list = dog.world.getEntitiesWithinAABB(EntityItem.class, dog.getEntityBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
-            
+
             for(EntityItem entityItem : list) {
                 ItemStack itemstack1 = DogUtil.addItem(inventory, entityItem.getItem());
 

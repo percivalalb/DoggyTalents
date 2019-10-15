@@ -1,7 +1,7 @@
 package doggytalents.network.packet.client;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

@@ -8,9 +8,9 @@ import java.util.List;
 import org.lwjgl.input.Keyboard;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.lib.ConfigValues;
 import doggytalents.network.PacketDispatcher;
 import doggytalents.network.packet.client.DogFriendlyFireMessage;

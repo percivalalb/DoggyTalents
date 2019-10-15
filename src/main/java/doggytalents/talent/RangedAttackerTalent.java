@@ -1,7 +1,7 @@
 package doggytalents.talent;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,39 +9,39 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 
 public class RangedAttackerTalent extends Talent {
-    
+
     @Override
-    public void onClassCreation(EntityDog dog) {
-        dog.objects.put("rangedcooldown", 0);
-        dog.objects.put("rangedattacktype", "");
+    public void onClassCreation(IDogEntity dog) {
+        dog.putObject("rangedcooldown", 0);
+        dog.putObject("rangedattacktype", "");
     }
-    
+
     @Override
-    public void writeAdditional(EntityDog dog, NBTTagCompound tagCompound) {
-        int rangedCooldown = (Integer)dog.objects.get("rangedcooldown");
+    public void writeAdditional(IDogEntity dog, NBTTagCompound tagCompound) {
+        int rangedCooldown = dog.getObject("rangedcooldown", Integer.TYPE);
         tagCompound.setInteger("rangedcooldown", rangedCooldown);
-        
+
         String rangedAttackType = tagCompound.getString("rangedattacktype");
         tagCompound.setString("rangedattacktype", rangedAttackType);
     }
-    
+
     @Override
-    public void readAdditional(EntityDog dog, NBTTagCompound tagCompound) {
-        dog.objects.put("rangedcooldown", tagCompound.getInteger("rangedcooldown"));
+    public void readAdditional(IDogEntity dog, NBTTagCompound tagCompound) {
+        dog.putObject("rangedcooldown", tagCompound.getInteger("rangedcooldown"));
     }
-    
+
     @Override
-    public EnumActionResult onInteract(EntityDog dog, EntityPlayer player, EnumHand hand) {
+    public EnumActionResult onInteract(IDogEntity dog, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
         if(stack.isEmpty() && dog.canInteract(player)) {
-            if(dog.TALENTS.getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.isIncapacicated()) {
+            if(dog.getTalentFeature().getLevel(this) > 0 && player.getRidingEntity() == null  && !player.onGround && !dog.getHungerFeature().isIncapacicated()) {
                 if(!dog.world.isRemote) {
                     //TODO RangedAttacker
                 }
                 return EnumActionResult.SUCCESS;
             }
         }
-        
+
         return EnumActionResult.PASS;
     }
 }

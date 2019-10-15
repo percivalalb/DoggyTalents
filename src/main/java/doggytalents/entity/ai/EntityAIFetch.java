@@ -2,9 +2,9 @@ package doggytalents.entity.ai;
 
 import com.google.common.base.Predicate;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.item.ItemStack;
 
 public class EntityAIFetch extends EntityAIClosestItem {

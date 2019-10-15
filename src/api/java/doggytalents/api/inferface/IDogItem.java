@@ -1,6 +1,5 @@
 package doggytalents.api.inferface;
 
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -16,5 +15,5 @@ public interface IDogItem {
      * @param handIn The hand used
      * @return The result of the interaction
      */
-    public EnumActionResult onInteractWithDog(EntityDog dogIn, World worldIn, EntityPlayer playerIn, EnumHand handIn);
+    public EnumActionResult onInteractWithDog(IDogEntity dogIn, World worldIn, EntityPlayer playerIn, EnumHand handIn);
 }

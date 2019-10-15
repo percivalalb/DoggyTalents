@@ -1,7 +1,7 @@
 package doggytalents.item;
 
+import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import doggytalents.entity.EntityDog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -20,15 +20,15 @@ public class ItemTreat extends ItemDT implements IDogItem {
     }
 
     @Override
-    public EnumActionResult onInteractWithDog(EntityDog dogIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        int level = dogIn.LEVELS.getLevel();
-        
+    public EnumActionResult onInteractWithDog(IDogEntity dogIn, World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        int level = dogIn.getLevelFeature().getLevel();
+
         if (dogIn.getGrowingAge() < 0) {
             if(!worldIn.isRemote) {
                  dogIn.playTameEffect(false);
                  playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.too_young"));
             }
-            
+
             return EnumActionResult.FAIL;
         }
         if(level < this.maxLevel) {
@@ -36,14 +36,14 @@ public class ItemTreat extends ItemDT implements IDogItem {
                 playerIn.getHeldItem(handIn).shrink(1);
 
             if(!playerIn.world.isRemote) {
-                dogIn.LEVELS.increaseLevel();
+                dogIn.getLevelFeature().increaseLevel();
                 dogIn.setHealth(dogIn.getMaxHealth());
                 dogIn.getAISit().setSitting(true);
                 worldIn.setEntityState(dogIn, (byte)7);
                 dogIn.playTameEffect(true);
                 playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.level_up"));
             }
-            
+
             return EnumActionResult.SUCCESS;
         }
         else {
@@ -52,7 +52,7 @@ public class ItemTreat extends ItemDT implements IDogItem {
                 dogIn.playTameEffect(false);
                 playerIn.sendMessage(new TextComponentTranslation("treat.normal_treat.max_level"));
             }
-            
+
             return EnumActionResult.FAIL;
         }
     }

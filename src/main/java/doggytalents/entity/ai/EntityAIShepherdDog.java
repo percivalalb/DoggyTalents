@@ -10,9 +10,9 @@ import com.google.common.collect.Lists;
 
 import doggytalents.ModItems;
 import doggytalents.ModTalents;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.helper.DogUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;

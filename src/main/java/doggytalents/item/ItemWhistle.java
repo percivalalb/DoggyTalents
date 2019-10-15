@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 import doggytalents.ModSounds;
 import doggytalents.ModTalents;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import doggytalents.helper.DogUtil;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

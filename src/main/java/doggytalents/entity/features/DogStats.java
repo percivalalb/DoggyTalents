@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.Maps;
 
+import doggytalents.api.feature.IStatsFeature;
 import doggytalents.entity.EntityDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,11 +16,11 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.GameData;
 
-public class DogStats extends DogFeature {
+public class DogStats extends DogFeature implements IStatsFeature {
 
     private Map<EntityEntry, Integer> ENTITY_KILLS = Maps.newHashMap();
     private double damageDealt = 0;
-    
+
     public DogStats(EntityDog dogIn) {
         super(dogIn);
     }
@@ -36,7 +37,7 @@ public class DogStats extends DogFeature {
         compound.setTag("entityKills", killList);
         compound.setDouble("damageDealt", this.damageDealt);
     }
-    
+
     @Override
     public void readAdditional(NBTTagCompound compound) {
         NBTTagList killList = compound.getTagList("entityKills", Constants.NBT.TAG_COMPOUND);
@@ -49,16 +50,18 @@ public class DogStats extends DogFeature {
         }
         this.damageDealt = compound.getDouble("damageDealt");
     }
-    
+
     @Override
     public void tick() {
-        
+
     }
-    
+
+    @Override
     public int getKillCountFor(EntityEntry type) {
         return this.ENTITY_KILLS.getOrDefault(type, 0);
     }
-    
+
+    @Override
     public int getTotalKillCount() {
         int total = 0;
         for(Entry<EntityEntry, Integer> entry : this.ENTITY_KILLS.entrySet()) {
@@ -66,17 +69,17 @@ public class DogStats extends DogFeature {
         }
         return total;
     }
-    
+
     public void incrementKillCount(Entity entity) {
         EntityEntry entityEntry = GameData.getEntityClassMap().get(entity.getClass());
         if(entityEntry != null)
             this.incrementKillCount(entityEntry);
     }
-    
+
     private void incrementKillCount(EntityEntry type) {
         this.ENTITY_KILLS.put(type, this.getKillCountFor(type) + 1);
     }
-    
+
     public void increaseDamageDealt(double damage) {
         this.damageDealt += damage;
     }

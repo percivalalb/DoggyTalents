@@ -2,8 +2,8 @@ package doggytalents.entity.ai;
 
 import com.google.common.base.Predicate;
 
+import doggytalents.api.feature.EnumMode;
 import doggytalents.entity.EntityDog;
-import doggytalents.entity.features.ModeFeature.EnumMode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 

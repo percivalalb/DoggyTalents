@@ -1,6 +1,6 @@
 package doggytalents.inventory;
 
-import doggytalents.entity.EntityDog;
+import doggytalents.api.inferface.IDogEntity;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,20 +10,20 @@ import net.minecraft.nbt.NBTTagList;
  * @author ProPercivalalb
  */
 public class InventoryPackPuppy extends InventoryBasic {
-    
-    private EntityDog dog;
 
-    public InventoryPackPuppy(EntityDog dog) {
+    private IDogEntity dog;
+
+    public InventoryPackPuppy(IDogEntity dog) {
         super("container.doggytalents.pack_puppy", false, 15);
         this.dog = dog;
     }
 
-    
+
     public void readFromNBT(NBTTagCompound tagCompound) {
         NBTTagList nbttaglist = tagCompound.getTagList("packpuppyitems", 10);
-        
+
         for(int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound1.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.getSizeInventory())

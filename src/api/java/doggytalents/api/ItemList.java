@@ -1,4 +1,4 @@
-package doggytalents.api.registry;
+package doggytalents.api;
 
 import java.util.ArrayList;
 import java.util.Arrays;

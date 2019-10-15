@@ -15,7 +15,7 @@ public interface IDogBedRegistry {
      * @return The created IBedMaterial instance
      */
     public IBedMaterial registerMaterial(@Nonnull Block block, int meta, ResourceLocation textureLocation);
-    
+
     /**
      * Registers an IBedMaterial instance
      */

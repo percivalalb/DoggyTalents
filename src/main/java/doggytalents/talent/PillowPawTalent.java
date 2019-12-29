@@ -3,7 +3,6 @@ package doggytalents.talent;
 import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
 
 /**
  * @author ProPercivalalb
@@ -24,6 +23,6 @@ public class PillowPawTalent extends Talent {
 
     @Override
     public ActionResult<Integer> fallProtection(IDogEntity dog) {
-        return ActionResult.newResult(ActionResultType.SUCCESS, dog.getTalentFeature().getLevel(this) * 3);
+        return ActionResult.func_226248_a_(dog.getTalentFeature().getLevel(this) * 3);
     }
 }

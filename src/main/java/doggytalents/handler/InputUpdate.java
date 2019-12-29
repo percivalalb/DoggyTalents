@@ -11,10 +11,10 @@ public class InputUpdate {
 
     public static void on(final InputUpdateEvent event) {
         if(event.getMovementInput().jump) {
-            Entity entity = event.getEntityPlayer().getRidingEntity();
-            if(event.getEntityPlayer().isPassenger() && entity instanceof EntityDog) {
+            Entity entity = event.getPlayer().getRidingEntity();
+            if(event.getPlayer().isPassenger() && entity instanceof EntityDog) {
                 EntityDog dog = (EntityDog)entity;
-                
+
                 if(dog.canJump()) {
                     dog.setJumpPower(100);
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));

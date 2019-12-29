@@ -60,12 +60,12 @@ public class ItemThrowBone extends Item implements IThrowableItem {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStackIn = playerIn.getHeldItem(handIn);
         
-        worldIn.playSound((PlayerEntity)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((PlayerEntity)null, playerIn.func_226277_ct_(), playerIn.func_226278_cu_(), playerIn.func_226281_cx_(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
     
         if(!worldIn.isRemote) {
             ItemStack stack = itemStackIn.copy();
             stack.setCount(1);
-            ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.posX, (playerIn.posY - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.posZ, stack);
+            ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.func_226277_ct_(), (playerIn.func_226278_cu_() - 0.30000001192092896D) + (double)playerIn.getEyeHeight(), playerIn.func_226281_cx_(), stack);
             entityitem.setPickupDelay(20);
             this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
             worldIn.addEntity(entityitem);

@@ -6,47 +6,50 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.datafixers.util.Either;
 
 import doggytalents.ModBeddings;
 import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.block.BlockDogBed;
+import doggytalents.lib.Reference;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.TransformationMatrix;
 import net.minecraft.client.renderer.model.BakedQuad;
 import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.BlockPart;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IEnviromentBlockReader;
+import net.minecraft.world.ILightReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.common.model.TRSRTransformation;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements IBakedModel {
-    
+
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
 
     private ModelLoader modelLoader;
     private BlockModel model;
     private IBakedModel bakedModel;
-    
+
     private final VertexFormat format;
     private final Map<Triple<String, String, Direction>, IBakedModel> cache = Maps.newHashMap();
 
@@ -56,24 +59,24 @@ public class DogBedModel implements IBakedModel {
         this.bakedModel = bakedModel;
         this.format = format;
     }
-    
+
     public IBakedModel getCustomModel(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
         // Hotfix for possible optifine bug
         if (casing == null) { casing = ModBeddings.OAK; }
         if (bedding == null) { bedding = ModBeddings.WHITE; }
         if (facing == null) { facing = Direction.NORTH; }
-        
+
         String casingTex = casing.getTexture();
         String beddingTex = bedding.getTexture();
-        
+
         return this.getCustomModel(casingTex, beddingTex, facing);
     }
-    
+
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
         return this.getCustomModel(ModBeddings.OAK, ModBeddings.WHITE, Direction.NORTH).getQuads(state, side, rand);
     }
-    
+
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData data) {
         IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
@@ -81,7 +84,7 @@ public class DogBedModel implements IBakedModel {
         Direction facing = data.getData(TileEntityDogBed.FACING);
         return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand);
     }
-    
+
     @Override
     public TextureAtlasSprite getParticleTexture(@Nonnull IModelData data) {
         IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
@@ -91,17 +94,17 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public IModelData getModelData(@Nonnull IEnviromentBlockReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
+    public IModelData getModelData(@Nonnull ILightReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
         IBedMaterial casing = ModBeddings.OAK;
         IBedMaterial bedding = ModBeddings.WHITE;
         Direction facing = Direction.NORTH;
-        
+
         TileEntity tile = world.getTileEntity(pos);
         if(tile instanceof TileEntityDogBed) {
             casing = ((TileEntityDogBed)tile).getCasingId();
             bedding = ((TileEntityDogBed)tile).getBeddingId();
         }
-        
+
         if(state.has(BlockDogBed.FACING)) {
             facing = state.get(BlockDogBed.FACING);
         }
@@ -111,14 +114,14 @@ public class DogBedModel implements IBakedModel {
         tileData.setData(TileEntityDogBed.FACING, facing);
         return tileData;
     }
-    
+
     public IBakedModel getCustomModel(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
         IBakedModel customModel = this.bakedModel;
 
         Triple<String, String, Direction> key = ImmutableTriple.of(casingResource, beddingResource, facing);
 
         IBakedModel possibleModel = this.cache.get(key);
-        
+
         if(possibleModel != null) {
             customModel = possibleModel;
         } else if(this.model != null) {
@@ -133,11 +136,13 @@ public class DogBedModel implements IBakedModel {
             newModel.name = this.model.name;
             newModel.parent = this.model.parent;
 
-            newModel.textures.put("bedding", beddingResource);
-            newModel.textures.put("casing", casingResource);
-            newModel.textures.put("particle", casingResource);
-            
-            customModel = newModel.bake(this.modelLoader, ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(facing), this.format);
+            newModel.textures.put("bedding", Either.right(beddingResource));
+            newModel.textures.put("casing", Either.right(casingResource));
+            newModel.textures.put("particle", Either.right(casingResource));
+
+
+
+            customModel = newModel.func_225613_a_(this.modelLoader, ModelLoader.defaultTextureGetter(), ModelRotation.X0_Y0, ResourceLocation.tryCreate(Reference.MOD_ID + ":dog_bed"));
             this.cache.put(key, customModel);
         }
 
@@ -175,7 +180,7 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        return Pair.of(this, this.bakedModel.handlePerspective(cameraTransformType).getRight());
+    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
+        return this;
     }
 }

@@ -1,6 +1,6 @@
 package doggytalents.client.gui;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.inventory.container.ContainerTreatBag;
 import doggytalents.lib.ResourceLib;
@@ -17,14 +17,14 @@ public class GuiTreatBag extends ContainerScreen<ContainerTreatBag> {
         super(treatBag, playerInventory, displayName);
         this.ySize = 127;
     }
-    
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         this.renderBackground();
         super.render(mouseX, mouseY, partialTicks);
         this.renderHoveredToolTip(mouseX, mouseY);
     }
-    
+
     @Override
     protected void drawGuiContainerForegroundLayer(int var1, int var2) {
         this.font.drawString(this.title.getFormattedText(), 10.0F, 8.0F, 4210752);
@@ -32,7 +32,7 @@ public class GuiTreatBag extends ContainerScreen<ContainerTreatBag> {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(ResourceLib.GUI_TREAT_BAG);
         int var2 = (this.width - this.xSize) / 2;
         int var3 = (this.height - this.ySize) / 2;

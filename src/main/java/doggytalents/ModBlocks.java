@@ -22,7 +22,7 @@ public class ModBlocks {
     public static final Block DOG_BED = null;
     public static final Block DOG_BATH = null;
     public static final Block FOOD_BOWL = null;
-    
+
     public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> blockRegistry = event.getRegistry();
         DoggyTalentsMod.LOGGER.debug("Registering Blocks");
@@ -39,19 +39,19 @@ public class ModBlocks {
         event.getRegistry().register(makeItemBlock(FOOD_BOWL));
         DoggyTalentsMod.LOGGER.debug("Finished Registering ItemBlocks");
     }
-    
+
     public static void registerBlockColours(final ColorHandlerEvent.Block event) {
         BlockColors blockColors = event.getBlockColors();
-        
+
         blockColors.register((state, world, pos, tintIndex) -> {
-            return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
+            return world != null && pos != null ? BiomeColors.func_228363_c_(world, pos) : -1; // 1.14 getWaterColor
          }, ModBlocks.DOG_BATH);
     }
-    
+
     private static BlockItem makeItemBlock(Block block) {
         return makeItemBlock(block, ModCreativeTabs.GENERAL);
     }
-    
+
     private static BlockItem makeItemBlock(Block block, ItemGroup group) {
         return (BlockItem)new BlockItem(block, new Item.Properties().group(group)).setRegistryName(block.getRegistryName());
     }

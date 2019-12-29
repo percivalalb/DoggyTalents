@@ -167,22 +167,22 @@ public class EntityAIShepherdDog extends Goal {
                 
                 vec = vec.scale(1D / this.targets.size());
                 
-                double dPosX = vec.x - this.owner.posX;
-                double dPosZ = vec.z - this.owner.posZ;
+                double dPosX = vec.x - this.owner.func_226277_ct_();
+                double dPosZ = vec.z - this.owner.func_226281_cx_();
                 double size = Math.sqrt(dPosX * dPosX + dPosZ * dPosZ);
                 double j3 = vec.x + dPosX / size * (2 + this.targets.size() / 16);
                   double k3 = vec.z + dPosZ / size * (2 + this.targets.size() / 16);
                 
                   
                 if(teleport) {
-                    DogUtil.teleportDogToPos(j3, this.dog.posY, k3, this.dog, this.world, this.dogPathfinder, 1);
+                    DogUtil.teleportDogToPos(j3, this.dog.func_226278_cu_(), k3, this.dog, this.world, this.dogPathfinder, 1);
                 }
                   
                 this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
                 if(!this.dogPathfinder.tryMoveToXYZ(j3, this.owner.getBoundingBox().minY, k3, this.followSpeed)) {
                     if(this.dog.getDistanceSq(j3, this.owner.getBoundingBox().minY, k3) > 144D) {
                         if(!this.dog.getLeashed() && !this.dog.isPassenger())
-                            DogUtil.teleportDogToPos(j3, this.dog.posY, k3, this.dog, this.world, this.dogPathfinder, 4);
+                            DogUtil.teleportDogToPos(j3, this.dog.func_226278_cu_(), k3, this.dog, this.world, this.dogPathfinder, 4);
                     }
                 }
                 

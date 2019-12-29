@@ -116,13 +116,13 @@ public class EntityAIFollowOwnerDog extends Goal
                     
                     if(diffVec != null) {
          
-                        if(!this.dog.getNavigator().tryMoveToXYZ(diffVec.x, this.dog.posY, diffVec.z, this.followSpeed)) {
+                        if(!this.dog.getNavigator().tryMoveToXYZ(diffVec.x, this.dog.func_226278_cu_(), diffVec.z, this.followSpeed)) {
                             if(!this.dog.getLeashed() && !this.dog.isPassenger())
                                 if(distSq >= 350.0D)
                                     DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.petPathfinder);
                         }
                         else 
-                            this.dog.getLookController().setLookPosition(diffVec.x, this.dog.posY + 1, diffVec.z, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+                            this.dog.getLookController().setLookPosition(diffVec.x, this.dog.func_226278_cu_() + 1, diffVec.z, 10.0F, (float)this.dog.getVerticalFaceSpeed());
 
                     }
                 }

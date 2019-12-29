@@ -10,13 +10,12 @@ import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -27,19 +26,19 @@ public class ModelBake {
     @SubscribeEvent
     public static void onModelBakeEvent(final ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
-        
+
         try {
             ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(ModBlocks.DOG_BED);
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
-            
+
             BlockModel model = (BlockModel)event.getModelLoader().getUnbakedModel(unbakedModelLoc);
-            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), ModelLoader.defaultTextureGetter(), TRSRTransformation.getRotation(Direction.NORTH), DefaultVertexFormats.BLOCK), DefaultVertexFormats.BLOCK);
+            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.func_225613_a_(event.getModelLoader(), ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc), DefaultVertexFormats.BLOCK);
 
             // Replace all valid block states
             ModBlocks.DOG_BED.getStateContainer().getValidStates().forEach(state -> {
                 modelRegistry.put(BlockModelShapes.getModelLocation(state), customModel);
             });
-            
+
             // Replace inventory model
             modelRegistry.put(new ModelResourceLocation(resourceLocation, "inventory"), customModel);
 

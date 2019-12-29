@@ -1,35 +1,33 @@
 package doggytalents.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
+
 import doggytalents.entity.EntityDog;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ModelChest extends EntityModel<EntityDog> {
-    
-    public RendererModel chest1;
-    public RendererModel chest2;
-    
-    public ModelChest(float scaleFactor) {   
-        this.chest1 = new RendererModel(this, 52, 0);
-        this.chest1.addBox(2.0F, -1F, 0F, 2, 7, 4, scaleFactor);
+public class ModelChest extends SegmentedModel<EntityDog> {
+
+    public ModelRenderer chest1;
+    public ModelRenderer chest2;
+
+    public ModelChest(float scaleFactor) {
+        this.chest1 = new ModelRenderer(this, 52, 0);
+        this.chest1.func_228301_a_(2.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
         this.chest1.setRotationPoint(0.0F, 14.0F, 2.0F);
-        this.chest2 = new RendererModel(this, 52, 0);
-        this.chest2.addBox(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor);
-        this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);   
+        this.chest2 = new ModelRenderer(this, 52, 0);
+        this.chest2.func_228301_a_(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
+        this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);
     }
-  
+
     @Override
-    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        super.render(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        
-        this.chest1.render(scale);         
-        this.chest2.render(scale);
+    public Iterable<ModelRenderer> func_225601_a_() {
+        return ImmutableList.of(this.chest1, this.chest2);
     }
-  
+
     @Override
     public void setLivingAnimations(EntityDog dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
         if(dogIn.isSitting()) {
@@ -43,15 +41,15 @@ public class ModelChest extends EntityModel<EntityDog> {
             this.chest1.rotateAngleX = ((float)Math.PI / 2F);
             this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);
             this.chest2.rotateAngleX = ((float)Math.PI / 2F);
-           
+
         }
-        
+
         this.chest1.rotateAngleZ = dogIn.getShakeAngle(partialTickTime, -0.16F);
         this.chest2.rotateAngleZ = this.chest1.rotateAngleZ;
     }
-  
+
     @Override
-    public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor) {
-        super.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor);
+    public void func_225597_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
     }
 }

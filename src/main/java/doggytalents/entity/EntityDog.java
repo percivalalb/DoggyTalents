@@ -62,7 +62,6 @@ import doggytalents.item.ItemFancyCollar;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -436,7 +435,7 @@ public class EntityDog extends IDogEntity implements IDog {
             for (int i = 0; i < 2; i++) {
                 double width = this.getSize(this.getPose()).width;
                 double height = this.getSize(this.getPose()).height;
-                this.world.addParticle(ParticleTypes.PORTAL, this.posX + (this.rand.nextDouble() - 0.5D) * width, (this.posY + rand.nextDouble() * height) - 0.25D, posZ + (rand.nextDouble() - 0.5D) * width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
+                this.world.addParticle(ParticleTypes.PORTAL, this.func_226277_ct_() + (this.rand.nextDouble() - 0.5D) * width, (this.func_226278_cu_() + rand.nextDouble() * height) - 0.25D, this.func_226281_cx_() + (rand.nextDouble() - 0.5D) * width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
             }
         }
 
@@ -447,7 +446,7 @@ public class EntityDog extends IDogEntity implements IDog {
         Entity entityRidden = this.getRidingEntity();
 
         if(entityRidden instanceof PlayerEntity)
-            if(entityRidden.isSneaking())
+            if(entityRidden.isCrouching())
                 this.stopRiding();
 
         //Check if dog bowl still exists every 50t/2.5s, if not remove
@@ -502,7 +501,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 for(int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
                     float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-                    this.world.addParticle(ParticleTypes.SPLASH, this.posX + f1, f + 0.8F, this.posZ + f2, vec3d.x, vec3d.y, vec3d.z);
+                    this.world.addParticle(ParticleTypes.SPLASH, this.func_226277_ct_() + f1, f + 0.8F, this.func_226281_cx_() + f2, vec3d.x, vec3d.y, vec3d.z);
                 }
             }
         }
@@ -620,7 +619,7 @@ public class EntityDog extends IDogEntity implements IDog {
                                babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
                            }
 
-                           babySpawn.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
+                           babySpawn.setLocationAndAngles(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), 0.0F, 0.0F);
                            this.world.addEntity(babySpawn);
 
                            this.consumeItemFromStack(player, stack);
@@ -844,7 +843,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 this.locationManager.remove(this);
                 this.remove();
                 WolfEntity wolf = EntityType.WOLF.create(this.world);
-                wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+                wolf.setLocationAndAngles(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), this.rotationYaw, this.rotationPitch);
                 wolf.setHealth(this.getHealth());
                 wolf.setGrowingAge(this.getGrowingAge());
                 this.world.addEntity(wolf);
@@ -916,9 +915,10 @@ public class EntityDog extends IDogEntity implements IDog {
 
     // Talent Hooks
     @Override
-    public void fall(float distance, float damageMultiplier) {
+    public boolean func_225503_b_(float distance, float damageMultiplier) { // 1.14 fall
         if(!TalentHelper.isImmuneToFalls(this))
-            super.fall(distance - TalentHelper.fallProtection(this), damageMultiplier);
+            return super.func_225503_b_(distance - TalentHelper.fallProtection(this), damageMultiplier);
+        return false;
     }
 
     @Override
@@ -1035,7 +1035,7 @@ public class EntityDog extends IDogEntity implements IDog {
     }
 
     @Override
-    protected boolean canTriggerWalking() {
+    public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) { //TODO replacement for 1.14 canTriggerWalking
         return TalentHelper.canTriggerWalking(this);
     }
 
@@ -1689,9 +1689,9 @@ public class EntityDog extends IDogEntity implements IDog {
 
     @Override
     public void travel(Vec3d travelVec) {
-        double prevX = this.posX;
-        double prevY = this.posY;
-        double prevZ = this.posZ;
+        double prevX = this.func_226277_ct_();
+        double prevY = this.func_226278_cu_();
+        double prevZ = this.func_226281_cx_();
 
         if(this.isAlive()) {
             if(this.isBeingRidden() && this.canBeSteered() && this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
@@ -1745,8 +1745,8 @@ public class EntityDog extends IDogEntity implements IDog {
                 }
 
                 this.prevLimbSwingAmount = this.limbSwingAmount;
-                double d2 = this.posX - this.prevPosX;
-                double d3 = this.posZ - this.prevPosZ;
+                double d2 = this.func_226277_ct_() - this.prevPosX;
+                double d3 = this.func_226281_cx_() - this.prevPosZ;
                 float f4 = MathHelper.sqrt(d2 * d2 + d3 * d3) * 4.0F;
                 if (f4 > 1.0F) {
                    f4 = 1.0F;
@@ -1759,7 +1759,7 @@ public class EntityDog extends IDogEntity implements IDog {
                  super.travel(travelVec);
              }
 
-            this.addMovementStat(this.posX - prevX, this.posY - prevY, this.posZ - prevZ);
+            this.addMovementStat(this.func_226277_ct_() - prevX, this.func_226278_cu_() - prevY, this.func_226281_cx_() - prevZ);
         }
     }
 
@@ -1784,7 +1784,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 if(l > 0) {
                     if (this.isSprinting()) {
                         this.STATS.increaseDistanceSprint(l);
-                    } else if(this.isSneaking()) {
+                    } else if(this.isCrouching()) {
                         this.STATS.increaseDistanceSneaking(l);
                     } else {
                         this.STATS.increaseDistanceWalk(l);

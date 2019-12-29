@@ -59,9 +59,9 @@ public class WolfMountTalent extends Talent {
     @Override
     public ActionResult<Integer> fallProtection(IDogEntity dog) {
         if(dog.getTalentFeature().getLevel(this) == 5)
-            return ActionResult.newResult(ActionResultType.SUCCESS, 1);
+            return ActionResult.func_226248_a_(1);
 
-        return ActionResult.newResult(ActionResultType.PASS, 0);
+        return ActionResult.func_226250_c_(0);
     }
 
     @Override

@@ -16,8 +16,6 @@ import doggytalents.client.renderer.world.WorldRender;
 import doggytalents.configuration.ConfigHandler;
 import doggytalents.data.DTItemTagsProvider;
 import doggytalents.data.DTRecipeProvider;
-import doggytalents.entity.EntityDog;
-import doggytalents.entity.EntityDoggyBeam;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.EntitySpawn;
 import doggytalents.handler.GameOverlay;
@@ -57,18 +55,18 @@ import net.minecraftforge.registries.DataSerializerEntry;
  */
 @Mod(value = Reference.MOD_ID)
 public class DoggyTalentsMod {
-    
+
     public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
-    
+
     private static final String PROTOCOL_VERSION = Integer.toString(2);
     public static final SimpleChannel HANDLER = NetworkRegistry.ChannelBuilder.named(new ResourceLocation(Reference.MOD_ID, "channel"))
             .clientAcceptedVersions(PROTOCOL_VERSION::equals)
             .serverAcceptedVersions(PROTOCOL_VERSION::equals)
             .networkProtocolVersion(() -> PROTOCOL_VERSION)
             .simpleChannel();
-    
+
     public static DoggyTalentsMod INSTANCE;
-    
+
     public DoggyTalentsMod() {
         INSTANCE = this;
 
@@ -86,19 +84,19 @@ public class DoggyTalentsMod {
         modEventBus.addGenericListener(Talent.class, ModTalents::registerTalents);
         modEventBus.addListener(ModRegistries::newRegistry);
         modEventBus.addListener(ModBeddings::registerBeddingMaterial);
-        
+
         modEventBus.addListener(this::gatherData);
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::interModProcess);
-        
+
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.register(new PlayerConnection());
         forgeEventBus.register(new MissingMappings());
         forgeEventBus.register(new EntityInteract());
         forgeEventBus.register(new LivingDrops());
         forgeEventBus.register(new EntitySpawn());
-        
+
         // Client Events
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
             modEventBus.addListener(ModBlocks::registerBlockColours);
@@ -109,14 +107,14 @@ public class DoggyTalentsMod {
         });
 
         //DogTextureLoader.loadYourTexures();
-        
+
         ConfigHandler.init();
     }
-    
+
     public void commonSetup(FMLCommonSetupEvent event) {
         PacketHandler.register();
 
-        
+
         ConfigHandler.initTalentConfig();
     }
 
@@ -124,11 +122,11 @@ public class DoggyTalentsMod {
         ScreenManager.registerFactory(ModContainerTypes.FOOD_BOWL, GuiFoodBowl::new);
         ScreenManager.registerFactory(ModContainerTypes.PACK_PUPPY, GuiPackPuppy::new);
         ScreenManager.registerFactory(ModContainerTypes.TREAT_BAG, GuiTreatBag::new);
-        
-        RenderingRegistry.registerEntityRenderingHandler(EntityDog.class, RenderDog::new);
-        RenderingRegistry.registerEntityRenderingHandler(EntityDoggyBeam.class, RenderDogBeam::new);
+
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG, RenderDog::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG_BEAM, RenderDogBeam::new);
     }
-    
+
     protected void interModProcess(InterModProcessEvent event) {
         FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent(DogBedRegistry.CASINGS, DogBedRegistry.BEDDINGS));
         AddonManager.runRegisteredAddons();

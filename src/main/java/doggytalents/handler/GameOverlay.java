@@ -1,14 +1,14 @@
 package doggytalents.handler;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.client.ForgeIngameGui;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 
 /**
  * @author ProPercivalalb
@@ -20,12 +20,12 @@ public class GameOverlay {
     public static void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
         if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
             EntityDog dog = (EntityDog)mc.player.getRidingEntity();
-            int width = Minecraft.getInstance().mainWindow.getScaledWidth();
-            int height = Minecraft.getInstance().mainWindow.getScaledHeight();
-            GlStateManager.pushMatrix();
+            int width = Minecraft.getInstance().func_228018_at_().getScaledWidth();
+            int height = Minecraft.getInstance().func_228018_at_().getScaledHeight();
+            RenderSystem.pushMatrix();
             mc.getTextureManager().bindTexture(Screen.GUI_ICONS_LOCATION);
 
-            GlStateManager.enableBlend();
+            RenderSystem.enableBlend();
             int left = width / 2 + 91;
             int top = height - ForgeIngameGui.right_height;
             ForgeIngameGui.right_height += 10;
@@ -46,12 +46,12 @@ public class GameOverlay {
                 else if (idx == level)
                     mc.ingameGUI.blit(x, y, icon + 45, 27, 9, 9);
             }
-            GlStateManager.disableBlend();
+            RenderSystem.disableBlend();
 
-            GlStateManager.enableBlend();
+            RenderSystem.enableBlend();
             left = width / 2 + 91;
             top = height - ForgeIngameGui.right_height;
-            GlStateManager.color4f(1.0F, 1.0F, 0.0F, 1.0F);
+            RenderSystem.color4f(1.0F, 1.0F, 0.0F, 1.0F);
             int l6 = dog.getAir();
             int j7 = dog.getMaxAir();
 
@@ -65,10 +65,10 @@ public class GameOverlay {
                 }
                 ForgeIngameGui.right_height += 10;
             }
-            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.disableBlend();
+            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableBlend();
 
-            GlStateManager.popMatrix();
+            RenderSystem.popMatrix();
         }
     }
 }

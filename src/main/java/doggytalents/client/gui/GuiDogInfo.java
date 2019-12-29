@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
@@ -23,6 +23,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
@@ -49,13 +50,13 @@ public class GuiDogInfo extends Screen {
     public int btnPerPages = 0;
     private final DecimalFormat dfShort = new DecimalFormat("0.0");
     private final DecimalFormat dfShortDouble = new DecimalFormat("0.00");
-    
+
     public GuiDogInfo(EntityDog dog, PlayerEntity player) {
         super(new TranslationTextComponent("doggytalents.screen.dog.title"));
         this.dog = dog;
         this.player = player;
     }
-    
+
     public static void open(EntityDog dog) {
         Minecraft mc = Minecraft.getInstance();
         mc.displayGuiScreen(new GuiDogInfo(dog, mc.player));
@@ -66,25 +67,25 @@ public class GuiDogInfo extends Screen {
         this.buttons.clear();
         this.children.clear();
         super.init();
-        
+
         this.minecraft.keyboardListener.enableRepeatEvents(true);
         int topX = this.width / 2;
         int topY = this.height / 2;
         TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "TEST");
-        nameTextField.func_212954_a(text ->  {
+        nameTextField.setResponder(text ->  {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogName(GuiDogInfo.this.dog.getEntityId(), text));
         });
         nameTextField.setFocused2(false);
         nameTextField.setMaxStringLength(32);
         if(this.dog.hasCustomName()) nameTextField.setText(this.dog.getCustomName().getUnformattedComponentText());
-        
+
         this.addButton(nameTextField);
         this.doggyTex = this.dog.getTameSkin();
-        
+
         int size = (int)DoggyTalentsAPI.TALENTS.getKeys().stream().filter(loc -> ConfigValues.ENABLED_TALENTS.getOrDefault(loc, false)).count();
-        
+
         this.btnPerPages = Math.max(MathHelper.floor((double)(this.height - 10) / 21) - 2, 1);
-        
+
         if(this.btnPerPages < size) {
             this.addButton(new Button(25, this.btnPerPages * 21 + 10, 20, 20, "<", button -> {
                 if(GuiDogInfo.this.currentPage > 0) {
@@ -113,17 +114,17 @@ public class GuiDogInfo extends Screen {
                 }
             });
         }
-        
+
         this.maxPages = MathHelper.ceil((double)size / this.btnPerPages);
-        
+
         if(this.currentPage >= this.maxPages)
             this.currentPage = 0;
-        
+
         int i = -1;
         for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
             if(!ConfigValues.ENABLED_TALENTS.getOrDefault(talent.getRegistryName(), false))
                 continue;
-            
+
             i++;
             if(i < this.currentPage * this.btnPerPages || i >= (this.currentPage + 1) * this.btnPerPages)
                 continue;
@@ -131,7 +132,7 @@ public class GuiDogInfo extends Screen {
                 int level = GuiDogInfo.this.dog.TALENTS.getLevel(button.talent);
                 if(level < button.talent.getHighestLevel(GuiDogInfo.this.dog) && GuiDogInfo.this.dog.spendablePoints() >= button.talent.getCost(GuiDogInfo.this.dog, level + 1))
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogTalent(GuiDogInfo.this.dog.getEntityId(), button.talent.getRegistryName()));
-                
+
             }) {
                 @Override
                 public void renderToolTip(int mouseX, int mouseY) {
@@ -146,7 +147,7 @@ public class GuiDogInfo extends Screen {
                 }
             });
         }
-        
+
         if(ConfigValues.USE_DT_TEXTURES) {
             this.addButton(new Button(this.width - 42, topY + 30, 20, 20, "+", button -> {
                 GuiDogInfo.this.doggyTex += 1;
@@ -164,13 +165,13 @@ public class GuiDogInfo extends Screen {
                 button.setMessage(String.valueOf(!dog.willObeyOthers()));
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketDogObey(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.willObeyOthers()));
             }));
-        
-        
+
+
         this.addButton(new Button(this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canPlayersAttack()), button -> {
             button.setMessage(String.valueOf(!GuiDogInfo.this.dog.canPlayersAttack()));
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketFriendlyFire(GuiDogInfo.this.dog.getEntityId(), !GuiDogInfo.this.dog.canPlayersAttack()));
         }));
-        
+
         this.addButton(new Button(topX + 40, topY + 25, 60, 20, I18n.format(this.dog.MODE.getMode().getUnlocalisedName()), button -> {
             EnumMode mode = GuiDogInfo.this.dog.getMode().nextMode();
             if(mode == EnumMode.WANDERING && !GuiDogInfo.this.dog.COORDS.hasBowlPos())
@@ -197,14 +198,14 @@ public class GuiDogInfo extends Screen {
             }
         });
     }
-    
+
     @Override
     public void render(int mouseX, int mouseY, float partialTicks) {
         //Background
         int topX = this.width / 2;
         int topY = this.height / 2;
         this.renderBackground();
-        
+
         // Background
         String health = dfShort.format(this.dog.getHealth());
         String healthMax = dfShort.format(this.dog.getMaxHealth());
@@ -215,12 +216,12 @@ public class GuiDogInfo extends Screen {
         String ageRel = "";
         if(this.dog.isChild()) {
             ageRel = I18n.format("doggui.age.baby");
-        } 
+        }
         else {
             ageRel = I18n.format("doggui.age.adult");
         }
         String ageString = ageValue +" "+ ageRel;
-        
+
         String tamedString = "";
         if(this.dog.isTamed()) {
             if(this.dog.isOwner(this.player)) {
@@ -228,93 +229,87 @@ public class GuiDogInfo extends Screen {
             } else {
                 tamedString = this.dog.getOwnersName().getFormattedText();
             }
-            
+
         }
-        
+
         this.font.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
         this.font.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
         this.font.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
         this.font.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
         if(ConfigValues.DOG_GENDER) this.font.drawString(I18n.format("doggui.gender") + dog.GENDER.getGenderName().getFormattedText(), this.width - 160, topY - 70, 0xFFFFFF);
-        
+
         this.font.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
         this.font.drawString(I18n.format("doggui.level") + " " + this.dog.LEVELS.getLevel(), topX - 65, topY + 75, 0xFF10F9);
         this.font.drawString(I18n.format("doggui.leveldire") + " " + this.dog.LEVELS.getDireLevel(), topX, topY + 75, 0xFF10F9);
         this.font.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.spendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
-                
-        if(ConfigValues.USE_DT_TEXTURES) 
+
+        if(ConfigValues.USE_DT_TEXTURES)
             this.font.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
-        
+
         if(this.dog.isOwner(this.player))
             this.font.drawString(I18n.format("doggui.obeyothers"), this.width - 76, topY + 55, 0xFFFFFF);
-        
+
         this.font.drawString(I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
-        
+
         this.buttons.forEach(widget -> {
             if(widget instanceof TalentButton) {
                 TalentButton talBut = (TalentButton)widget;
                 this.font.drawString(I18n.format(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
             }
         });
-        
-        GlStateManager.disableRescaleNormal();
-        RenderHelper.disableStandardItemLighting();
-        GlStateManager.disableLighting();
-        GlStateManager.disableDepthTest();
-        super.render(mouseX, mouseY, partialTicks);
-        RenderHelper.enableGUIStandardItemLighting();
-        
-        
-        //Foreground
 
-        
-        GlStateManager.pushMatrix();
-        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
-        this.buttons.forEach(widget -> {
-            if(widget.isMouseOver(mouseX, mouseY)) {
-                widget.renderToolTip(mouseX, mouseY);
+        RenderSystem.disableRescaleNormal();
+        RenderHelper.disableStandardItemLighting();
+        RenderSystem.disableLighting();
+        RenderSystem.disableDepthTest();
+        super.render(mouseX, mouseY, partialTicks);
+        RenderHelper.disableStandardItemLighting(); // 1.14 enableGUIStandardItemLighting
+
+        for(Widget widget : this.buttons) {
+            if (widget.isHovered()) {
+               widget.renderToolTip(mouseX, mouseY);
+               break;
             }
-        });
-        
-        GlStateManager.popMatrix();
+         }
+
+        RenderHelper.func_227780_a_();
     }
-    
+
     @Override
     public void onClose() {
         super.onClose();
         this.minecraft.keyboardListener.enableRepeatEvents(false);
     }
-    
+
     @Override
     public boolean isPauseScreen() {
         return false;
     }
-    
+
     public List<String> splitInto(String text, int maxLength, FontRenderer font) {
-        List<String> list = new ArrayList<String>(); 
-        
+        List<String> list = new ArrayList<String>();
+
         String temp = "";
         String[] split = text.split(" ");
-        
+
         for(int i = 0; i < split.length; ++i) {
             String str = split[i];
             int length = font.getStringWidth(temp + str);
-            
+
             if(length > maxLength) {
                 list.add(temp);
                 temp = "";
             }
-            
+
             temp += str + " ";
-            
+
             if(i == split.length - 1)
                 list.add(temp);
         }
 
         return list;
     }
-    
+
     private static class TalentButton extends Button {
 
         protected Talent talent;
@@ -322,6 +317,6 @@ public class GuiDogInfo extends Screen {
             super(x, y, widthIn, heightIn, buttonText, button -> onPress.accept((TalentButton)button));
             this.talent = talent;
         }
-        
+
     }
 }

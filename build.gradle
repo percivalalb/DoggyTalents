@@ -20,8 +20,8 @@ archivesBaseName = 'DoggyTalents-1.15.1'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 repositories {
-    // maven { url "http://dvs1.progwml6.com/files/maven" }
-    // maven { url "https://modmaven.k-4u.nl" }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "https://modmaven.k-4u.nl" }
 }
 
 sourceSets {
@@ -83,8 +83,8 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-	// compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
-	// runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+	compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+	runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 task sourcesJar(type: Jar) {

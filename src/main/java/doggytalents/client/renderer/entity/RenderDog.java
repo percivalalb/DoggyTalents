@@ -8,6 +8,7 @@ import doggytalents.client.model.entity.ModelChest;
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.model.entity.ModelSaddle;
 import doggytalents.client.model.entity.ModelWings;
+import doggytalents.client.renderer.RenderUtil;
 import doggytalents.client.renderer.entity.layer.LayerBone;
 import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerCover;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /**
  * @author ProPercivalalb
@@ -58,69 +60,42 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     //}
 
     @Override
-    public void func_225623_a_(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) { // 1.14 doRender
+    public void func_225623_a_(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) { // 1.14 doRender
         if (dogIn.isDogWet()) {
            float f = dogIn.getBrightness() * dogIn.getShadingWhileWet(partialTicks);
            this.entityModel.func_228253_a_(f, f, f);
         }
 
-        super.func_225623_a_(dogIn, entityYaw, partialTicks, p_225623_4_, p_225623_5_, p_225623_6_);
-        if (dogIn.isDogWet()) {
-           this.entityModel.func_228253_a_(1.0F, 1.0F, 1.0F);
-        }
+        super.func_225623_a_(dogIn, entityYaw, partialTicks, stack, buffer, p_225623_6_);
+        if (this.canRenderName(dogIn)) {
 
-     }
-
-    @Override
-    public ResourceLocation getEntityTexture(EntityDog dog) {
-        if(ConfigValues.USE_DT_TEXTURES)
-             return ResourceLib.getTameSkin(dog.getTameSkin());
-         else
-             return ResourceLib.MOB_DOG_TAME;
-    }
-
-    // TODO
-    /**
-    @Override
-    public void renderName(EntityDog dog, double x, double y, double z) {
-        if(this.canRenderName(dog)) {
-            RenderSystem.alphaFunc(516, 0.1F);
-            double d0 = dog.getDistanceSq(this.renderManager.info.getProjectedView());
-
-            y += this.getFontRendererFromRenderManager().FONT_HEIGHT * 1.15F * 0.016666668F * 0.7F;
-
-            String tip = dog.MODE.getMode().getTip();
-
-            if(dog.isIncapacicated())
-                tip = "dog.mode.incapacitated.indicator";
-
-            String label = String.format("%s(%d)",
-                    new TranslationTextComponent(tip).getFormattedText(),
-                    dog.getDogHunger());
-            if(ConfigValues.DOG_GENDER) {
-                label += dog.GENDER.getGenderTip().getFormattedText();
-            }
+            double d0 = this.renderManager.func_229099_b_(dogIn);
             if(d0 <= 64 * 64) {
-                boolean flag = dog.addedToChunk.isCrouching();
-                float f = this.renderManager.playerViewY;
-                float f1 = this.renderManager.playerViewX;
-                boolean flag1 = this.renderManager.options.thirdPersonView == 2;
-                float f2 = dog.getSize(dog.getPose()).height + 0.42F - (flag ? 0.25F : 0.0F) - (dog.isSleeping() ? 0.5F : 0);
+                String tip = dogIn.isIncapacicated() ? "dog.mode.incapacitated.indicator" : dogIn.MODE.getMode().getTip();
+                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
+                        new TranslationTextComponent(tip).getFormattedText(),
+                        dogIn.getDogHunger(),
+                        dogIn.GENDER.getGenderTip().getFormattedText());
 
-                RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), label, (float)x, (float)y + f2, (float)z, 0, f, f1, flag1, flag, 0.01F);
-                RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), dog.getDisplayName().getFormattedText(), (float)x, (float)y + f2 - 0.12F, (float)z, 0, f, f1, flag1, flag, 0.026F);
+                RenderUtil.renderLabelWithScale(dogIn, this, label, stack, buffer, p_225623_6_, 0.01F, -12);
 
                 if(d0 <= 5 * 5) {
-                    if(this.renderManager.info.getRenderViewEntity().isCrouching()()) {
-                        String ownerName = dog.getOwnersName().getFormattedText();
-
-
-                        RenderUtil.renderLabelWithScale(this.getFontRendererFromRenderManager(), ownerName, (float)x, (float)y + f2 - 0.34F, (float)z, 0, f, f1, flag1, flag, 0.01F);
+                    if(this.renderManager.info.getRenderViewEntity().func_225608_bj_()) {
+                        RenderUtil.renderLabelWithScale(dogIn, this, dogIn.getOwnersName().getFormattedText(), stack, buffer, p_225623_6_, 0.01F, 24);
                     }
                 }
             }
         }
-    }**/
+
+        if (dogIn.isDogWet()) {
+           this.entityModel.func_228253_a_(1.0F, 1.0F, 1.0F);
+        }
+    }
+
+    @Override
+    public ResourceLocation getEntityTexture(EntityDog dog) {
+        return ConfigValues.USE_DT_TEXTURES ? ResourceLib.getTameSkin(dog.getTameSkin()) : ResourceLib.MOB_DOG_TAME;
+    }
 
     @Override // 1.14 preRenderCallback
     protected void func_225620_a_(EntityDog entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {

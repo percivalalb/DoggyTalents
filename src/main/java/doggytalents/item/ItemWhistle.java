@@ -38,11 +38,11 @@ public class ItemWhistle extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         if(world.isRemote) {
-            //world.playSound(player, player.getPosition(), player.isCrouching()() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
+            //world.playSound(player, player.getPosition(), player.func_225608_bj_()() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
         } else {
             ItemStack stack = player.getHeldItem(hand);
 
-            if(player.isCrouching()) {
+            if(player.func_225608_bj_()) {
                 if(!stack.hasTag()) {
                     stack.setTag(new CompoundNBT());
                     stack.getTag().putByte("mode", (byte)0);

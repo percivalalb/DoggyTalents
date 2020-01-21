@@ -34,7 +34,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
                 RenderSystem.scalef(0.5F, 0.5F, 0.5F);
             }
 
-            if(dog.isCrouching())
+            if(dog.func_225608_bj_())
                 RenderSystem.translatef(0.0F, 0.2F, 0.0F);
 
             //this.getEntityModel().head.postRender(0.0625F);

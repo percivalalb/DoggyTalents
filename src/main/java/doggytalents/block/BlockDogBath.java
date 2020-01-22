@@ -56,7 +56,7 @@ public class BlockDogBath extends Block implements IWaterLoggable {
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return func_220055_a(worldIn, pos.down(), Direction.UP);
+        return Block.hasEnoughSolidSide(worldIn, pos.down(), Direction.UP);
     }
 
     @Override
@@ -69,8 +69,8 @@ public class BlockDogBath extends Block implements IWaterLoggable {
         return SHAPE_COLLISION;
     }
 
-    @Override // 1.14 onBlockActivated
-    public ActionResultType func_225533_a_(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    @Override
+    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack itemstack = player.getHeldItem(handIn);
 
         if(itemstack.isEmpty()) {

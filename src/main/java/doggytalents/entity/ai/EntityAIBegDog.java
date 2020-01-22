@@ -57,7 +57,7 @@ public class EntityAIBegDog extends Goal {
     
     @Override
     public void tick() {
-        this.dog.getLookController().setLookPosition(this.player.func_226277_ct_(), this.player.func_226278_cu_() + (double) this.player.getEyeHeight(), this.player.func_226281_cx_(), 10.0F, (float) this.dog.getVerticalFaceSpeed());
+        this.dog.getLookController().setLookPosition(this.player.getPosX(), this.player.getPosY() + (double) this.player.getEyeHeight(), this.player.getPosZ(), 10.0F, (float) this.dog.getVerticalFaceSpeed());
         --this.timeoutCounter;
     }
 

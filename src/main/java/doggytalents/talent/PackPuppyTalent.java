@@ -69,7 +69,7 @@ public class PackPuppyTalent extends Talent {
         if(preLevel > 0) {
             PackPuppyItemHandler inventory = CapabilityHelper.getOrThrow(dog, PACK_PUPPY_CAPABILITY);
             for(int i = 0; i < inventory.getSlots(); ++i) {
-                InventoryHelper.spawnItemStack(dog.world, dog.func_226277_ct_(), dog.func_226278_cu_(), dog.func_226281_cx_(), inventory.getStackInSlot(i));
+                InventoryHelper.spawnItemStack(dog.world, dog.getPosX(), dog.getPosY(), dog.getPosZ(), inventory.getStackInSlot(i));
                 inventory.setStackInSlot(i, ItemStack.EMPTY);
             }
         }

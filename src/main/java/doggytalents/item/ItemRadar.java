@@ -78,8 +78,8 @@ public class ItemRadar extends Item {
     }
 
     public static String getDirectionTranslationKey(DogLocation loc, Entity entity) {
-        double angle = MathHelper.atan2(loc.x - entity.func_226277_ct_(), loc.z - entity.func_226281_cx_());
-        
+        double angle = MathHelper.atan2(loc.x - entity.getPosX(), loc.z - entity.getPosZ());
+
         if(angle < -Math.PI + Math.PI / 8)
             return "dogradar.north";
         else if(angle < -Math.PI + 3 * Math.PI / 8)

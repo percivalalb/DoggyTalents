@@ -20,8 +20,8 @@ public class GameOverlay {
     public static void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
         if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT && mc.player != null && mc.player.getRidingEntity() instanceof EntityDog) {
             EntityDog dog = (EntityDog)mc.player.getRidingEntity();
-            int width = Minecraft.getInstance().func_228018_at_().getScaledWidth();
-            int height = Minecraft.getInstance().func_228018_at_().getScaledHeight();
+            int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
+            int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
             RenderSystem.pushMatrix();
             mc.getTextureManager().bindTexture(Screen.GUI_ICONS_LOCATION);
 

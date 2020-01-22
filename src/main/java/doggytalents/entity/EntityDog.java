@@ -435,7 +435,7 @@ public class EntityDog extends IDogEntity implements IDog {
             for (int i = 0; i < 2; i++) {
                 double width = this.getSize(this.getPose()).width;
                 double height = this.getSize(this.getPose()).height;
-                this.world.addParticle(ParticleTypes.PORTAL, this.func_226277_ct_() + (this.rand.nextDouble() - 0.5D) * width, (this.func_226278_cu_() + rand.nextDouble() * height) - 0.25D, this.func_226281_cx_() + (rand.nextDouble() - 0.5D) * width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
+                this.world.addParticle(ParticleTypes.PORTAL, this.getPosX() + (this.rand.nextDouble() - 0.5D) * width, (this.getPosY() + rand.nextDouble() * height) - 0.25D, this.getPosZ() + (rand.nextDouble() - 0.5D) * width, (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
             }
         }
 
@@ -501,7 +501,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 for(int j = 0; j < i; ++j) {
                     float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
                     float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-                    this.world.addParticle(ParticleTypes.SPLASH, this.func_226277_ct_() + f1, f + 0.8F, this.func_226281_cx_() + f2, vec3d.x, vec3d.y, vec3d.z);
+                    this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + f1, f + 0.8F, this.getPosZ() + f2, vec3d.x, vec3d.y, vec3d.z);
                 }
             }
         }
@@ -619,7 +619,7 @@ public class EntityDog extends IDogEntity implements IDog {
                                babySpawn.LEVELS.setLevel(Math.min(this.LEVELS.getLevel(), 20));
                            }
 
-                           babySpawn.setLocationAndAngles(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), 0.0F, 0.0F);
+                           babySpawn.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), 0.0F, 0.0F);
                            this.world.addEntity(babySpawn);
 
                            this.consumeItemFromStack(player, stack);
@@ -843,7 +843,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 this.locationManager.remove(this);
                 this.remove();
                 WolfEntity wolf = EntityType.WOLF.create(this.world);
-                wolf.setLocationAndAngles(this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), this.rotationYaw, this.rotationPitch);
+                wolf.setLocationAndAngles(this.getPosX(), this.getPosY(), this.getPosZ(), this.rotationYaw, this.rotationPitch);
                 wolf.setHealth(this.getHealth());
                 wolf.setGrowingAge(this.getGrowingAge());
                 this.world.addEntity(wolf);
@@ -1689,9 +1689,9 @@ public class EntityDog extends IDogEntity implements IDog {
 
     @Override
     public void travel(Vec3d travelVec) {
-        double prevX = this.func_226277_ct_();
-        double prevY = this.func_226278_cu_();
-        double prevZ = this.func_226281_cx_();
+        double prevX = this.getPosX();
+        double prevY = this.getPosY();
+        double prevZ = this.getPosZ();
 
         if(this.isAlive()) {
             if(this.isBeingRidden() && this.canBeSteered() && this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
@@ -1745,8 +1745,8 @@ public class EntityDog extends IDogEntity implements IDog {
                 }
 
                 this.prevLimbSwingAmount = this.limbSwingAmount;
-                double d2 = this.func_226277_ct_() - this.prevPosX;
-                double d3 = this.func_226281_cx_() - this.prevPosZ;
+                double d2 = this.getPosX() - this.prevPosX;
+                double d3 = this.getPosZ() - this.prevPosZ;
                 float f4 = MathHelper.sqrt(d2 * d2 + d3 * d3) * 4.0F;
                 if (f4 > 1.0F) {
                    f4 = 1.0F;
@@ -1759,7 +1759,7 @@ public class EntityDog extends IDogEntity implements IDog {
                  super.travel(travelVec);
              }
 
-            this.addMovementStat(this.func_226277_ct_() - prevX, this.func_226278_cu_() - prevY, this.func_226281_cx_() - prevZ);
+            this.addMovementStat(this.getPosX() - prevX, this.getPosY() - prevY, this.getPosZ() - prevZ);
         }
     }
 

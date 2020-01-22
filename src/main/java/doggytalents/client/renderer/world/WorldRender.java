@@ -35,7 +35,7 @@ public class WorldRender {
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
                         IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().func_228019_au_().func_228487_b_();
-                        drawSelectionBox(event.getMatrixStack(), irendertypebuffer$impl.getBuffer(RenderType.func_228659_m_()), player, event.getPartialTicks(), boundingBox);
+                        drawSelectionBox(event.getMatrixStack(), irendertypebuffer$impl.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
                         RenderSystem.popMatrix();
                     }
                 }
@@ -55,9 +55,9 @@ public class WorldRender {
         RenderSystem.lineWidth(2.0F);
 
         RenderSystem.disableTexture();
-        double d0 = player.lastTickPosX + (player.func_226277_ct_() - player.lastTickPosX) * particleTicks;
-        double d1 = player.lastTickPosY + (player.func_226278_cu_() - player.lastTickPosY) * particleTicks;
-        double d2 = player.lastTickPosZ + (player.func_226281_cx_() - player.lastTickPosZ) * particleTicks;
+        double d0 = player.lastTickPosX + (player.getPosX() - player.lastTickPosX) * particleTicks;
+        double d1 = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * particleTicks;
+        double d2 = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * particleTicks;
 
         WorldRenderer.func_228430_a_(p_228430_0_, p_228430_1_, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F); // 1.14 drawSelectionBoundingBox
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);

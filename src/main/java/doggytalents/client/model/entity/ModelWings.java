@@ -1,12 +1,9 @@
 package doggytalents.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,13 +17,13 @@ public class ModelWings extends SegmentedModel<EntityDog> {
 
     public ModelWings() {
         this.wingA = new ModelRenderer(this, 50, 14);
-        this.wingA.func_228300_a_(-3F, -3F, 0F, 6, 17, 1);
+        this.wingA.addBox(-3F, -3F, 0F, 6, 17, 1);
         this.wingA.setRotationPoint(2F, 10F, -2F);
         this.setRotation(this.wingA, 1.570796F, 0F, 0F);
 
         this.wingB = new ModelRenderer(this, 50, 14);
         this.wingB.mirror = true;
-        this.wingB.func_228300_a_(-3F, -3F, 0F, 6, 17, 1);
+        this.wingB.addBox(-3F, -3F, 0F, 6, 17, 1);
         this.wingB.setRotationPoint(-2F, 10F, -2F);
         this.setRotation(this.wingB, 1.570796F, 0F, 0F);
     }
@@ -67,7 +64,7 @@ public class ModelWings extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public void func_225597_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
+    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
 
         /*Wing1.rotateAngleY = -1.48353F;
         Wing2.rotateAngleY = 1.48353F; */

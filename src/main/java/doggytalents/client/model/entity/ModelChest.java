@@ -16,10 +16,10 @@ public class ModelChest extends SegmentedModel<EntityDog> {
 
     public ModelChest(float scaleFactor) {
         this.chest1 = new ModelRenderer(this, 52, 0);
-        this.chest1.func_228301_a_(2.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
+        this.chest1.addBox(2.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
         this.chest1.setRotationPoint(0.0F, 14.0F, 2.0F);
         this.chest2 = new ModelRenderer(this, 52, 0);
-        this.chest2.func_228301_a_(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
+        this.chest2.addBox(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
         this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);
     }
 
@@ -49,7 +49,7 @@ public class ModelChest extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public void func_225597_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

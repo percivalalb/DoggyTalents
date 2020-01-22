@@ -60,13 +60,13 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     //}
 
     @Override
-    public void func_225623_a_(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) { // 1.14 doRender
+    public void render(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) {
         if (dogIn.isDogWet()) {
            float f = dogIn.getBrightness() * dogIn.getShadingWhileWet(partialTicks);
            this.entityModel.func_228253_a_(f, f, f);
         }
 
-        super.func_225623_a_(dogIn, entityYaw, partialTicks, stack, buffer, p_225623_6_);
+        super.render(dogIn, entityYaw, partialTicks, stack, buffer, p_225623_6_);
         if (this.canRenderName(dogIn)) {
 
             double d0 = this.renderManager.func_229099_b_(dogIn);

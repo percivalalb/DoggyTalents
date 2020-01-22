@@ -30,55 +30,55 @@ public class ModelDog extends TintedAgeableModel<EntityDog> {
 
         //Head
         this.head = new ModelRenderer(this, 0, 0);
-        this.head.func_228301_a_(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
+        this.head.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.head.setRotationPoint(-1.0F, f1, -7.0F);
 
         //Body
         this.body = new ModelRenderer(this, 18, 14);
-        this.body.func_228301_a_(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
+        this.body.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.body.setRotationPoint(0.0F, 14.0F, 2.0F);
 
         //Mane
         this.mane = new ModelRenderer(this, 21, 0);
-        this.mane.func_228301_a_(-3.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
+        this.mane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
         this.mane.setRotationPoint(-1.0F, 14.0F, 2.0F);
 
         //Limbs
         this.legBackRight = new ModelRenderer(this, 0, 18);
-        this.legBackRight.func_228301_a_(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
+        this.legBackRight.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legBackRight.setRotationPoint(-2.5F, 16.0F, 7.0F);
         this.legBackLeft = new ModelRenderer(this, 0, 18);
-        this.legBackLeft.func_228301_a_(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
+        this.legBackLeft.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legBackLeft.setRotationPoint(0.5F, 16.0F, 7.0F);
         this.legFrontRight = new ModelRenderer(this, 0, 18);
-        this.legFrontRight.func_228301_a_(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
+        this.legFrontRight.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legFrontRight.setRotationPoint(-2.5F, 16.0F, -4.0F);
         this.legFrontLeft = new ModelRenderer(this, 0, 18);
-        this.legFrontLeft.func_228301_a_(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
+        this.legFrontLeft.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legFrontLeft.setRotationPoint(0.5F, 16.0F, -4.0F);
 
         //Tail1
         this.tail = new ModelRenderer(this, 9, 18);
-        this.tail.func_228301_a_(-0.5F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
+        this.tail.addBox(-0.5F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.tail.setRotationPoint(-0.5F, 12.0F, 8.0F);
 
         //Tail2
-        this.tail.setTextureOffset(45, 0).func_228300_a_(0.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);
+        this.tail.setTextureOffset(45, 0).addBox(0.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);
 
         //HeadMain EarsNormal
-        this.head.setTextureOffset(16, 14).func_228301_a_(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
-        this.head.setTextureOffset(16, 14).func_228301_a_(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
+        this.head.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
+        this.head.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
 
         //HeadMain EarsBoni
-        this.head.setTextureOffset(42, 14).func_228301_a_(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
-        this.head.setTextureOffset(42, 14).func_228301_a_(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
+        this.head.setTextureOffset(42, 14).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
+        this.head.setTextureOffset(42, 14).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
 
         //HeadMain EarsSmall
-        this.head.setTextureOffset(18, 0).func_228301_a_(-2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
-        this.head.setTextureOffset(18, 0).func_228301_a_(2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
+        this.head.setTextureOffset(18, 0).addBox(-2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
+        this.head.setTextureOffset(18, 0).addBox(2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);
 
         //HeadMain Nose
-        this.head.setTextureOffset(0, 10).func_228301_a_(-0.5F, 0.0F, -5.0F, 3, 3, 4, scaleFactor);
+        this.head.setTextureOffset(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, scaleFactor);
     }
 
     @Override
@@ -187,7 +187,7 @@ public class ModelDog extends TintedAgeableModel<EntityDog> {
     }
 
     @Override
-    public void func_225597_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
+    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
         this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
         this.tail.rotateAngleX = ageInTicks;

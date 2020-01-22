@@ -160,7 +160,7 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return func_220055_a(worldIn, pos.down(), Direction.UP);
+        return Block.hasEnoughSolidSide(worldIn, pos.down(), Direction.UP);
     }
 
     @Override

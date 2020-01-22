@@ -39,7 +39,7 @@ public class EntityInteract {
                      dog.setHealth(dog.getMaxHealth());
                      dog.getAISit().setSitting(false);
                      dog.setGrowingAge(wolf.getGrowingAge());
-                     dog.setPositionAndRotation(wolf.func_226277_ct_(), wolf.func_226278_cu_(), wolf.func_226281_cx_(), wolf.rotationYaw, wolf.rotationPitch);
+                     dog.setPositionAndRotation(wolf.getPosX(), wolf.getPosY(), wolf.getPosZ(), wolf.rotationYaw, wolf.rotationPitch);
                  
                      world.addEntity(dog);
                      

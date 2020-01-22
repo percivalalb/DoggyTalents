@@ -44,7 +44,7 @@ public class ModBlocks {
         BlockColors blockColors = event.getBlockColors();
 
         blockColors.register((state, world, pos, tintIndex) -> {
-            return world != null && pos != null ? BiomeColors.func_228363_c_(world, pos) : -1; // 1.14 getWaterColor
+            return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
          }, ModBlocks.DOG_BATH);
     }
 

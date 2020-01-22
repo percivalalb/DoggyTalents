@@ -44,7 +44,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
 
             RenderSystem.translated(0.20, -0.10, -0.10);
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemRenderer().func_229110_a_(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE, 15728880, OverlayTexture.field_229196_a_, p_225628_1_, p_225628_2_); // 1.14 renderItem
+            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE, 15728880, OverlayTexture.DEFAULT_LIGHT, p_225628_1_, p_225628_2_);
             RenderSystem.popMatrix();
         }
     }

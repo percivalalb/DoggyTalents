@@ -65,7 +65,7 @@ public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem, 
             }
 
             for (int j = 0; j < 8; ++j) {
-                this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), 0.0D, 0.0D, 0.0D);
+                this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
             }
         }
 

@@ -22,11 +22,11 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 public class DogUtil {
 
     public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigator pathfinder, int radius) {
-        teleportDogToPos(owner.func_226277_ct_(), owner.getBoundingBox().minY, owner.func_226281_cx_(), entity, world, pathfinder, radius);
+        teleportDogToPos(owner.getPosX(), owner.getBoundingBox().minY, owner.getPosZ(), entity, world, pathfinder, radius);
     }
     
     public static void teleportDogToOwner(Entity owner, Entity entity, World world, PathNavigator pathfinder) {
-        teleportDogToPos(owner.func_226277_ct_(), owner.getBoundingBox().minY, owner.func_226281_cx_(), entity, world, pathfinder, 2);
+        teleportDogToPos(owner.getPosX(), owner.getBoundingBox().minY, owner.getPosZ(), entity, world, pathfinder, 2);
     }
     
     public static void teleportDogToPos(double x, double y, double z, Entity entity, World world, PathNavigator pathfinder, int radius) {

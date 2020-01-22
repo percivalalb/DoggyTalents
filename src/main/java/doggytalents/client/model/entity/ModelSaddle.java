@@ -1,11 +1,8 @@
 package doggytalents.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import doggytalents.entity.EntityDog;
-import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,13 +17,13 @@ public class ModelSaddle extends SegmentedModel<EntityDog> {
 
     public ModelSaddle(float scaleFactor) {
         this.chest1 = new ModelRenderer(this, 52, 11);
-        this.chest1.func_228301_a_(-2.5F, 0F, 3F, 5, 6, 1, scaleFactor);
+        this.chest1.addBox(-2.5F, 0F, 3F, 5, 6, 1, scaleFactor);
         this.chest1.setRotationPoint(0.0F, 14.0F, 2.0F);
         this.chest2 = new ModelRenderer(this, 52, 18);
-        this.chest2.func_228301_a_(-2.0F, 0F, 3.5F, 4, 1, 1, scaleFactor);
+        this.chest2.addBox(-2.0F, 0F, 3.5F, 4, 1, 1, scaleFactor);
         this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);
         this.chest3 = new ModelRenderer(this, 52, 18);
-        this.chest3.func_228301_a_(-2.0F, 5F, 3.5F, 4, 1, 1, scaleFactor);
+        this.chest3.addBox(-2.0F, 5F, 3.5F, 4, 1, 1, scaleFactor);
         this.chest3.setRotationPoint(0.0F, 14.0F, 2.0F);
     }
 
@@ -61,7 +58,7 @@ public class ModelSaddle extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public void func_225597_a_(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

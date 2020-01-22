@@ -70,7 +70,7 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return func_220055_a(worldIn, pos.down(), Direction.UP);
+        return Block.hasEnoughSolidSide(worldIn, pos.down(), Direction.UP);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
     }
 
     @Override
-    public ActionResultType func_225533_a_(BlockState blockStateIn, World worldIn, BlockPos posIn, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult result) {
+    public ActionResultType onBlockActivated(BlockState blockStateIn, World worldIn, BlockPos posIn, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult result) {
         if(worldIn.isRemote) {
             return ActionResultType.SUCCESS;
         }

@@ -131,7 +131,7 @@ public class DogLocationManager extends WorldSavedData {
         }
 
         public DogLocation(EntityDog dog) {
-            super(dog.func_226277_ct_(), dog.func_226278_cu_(), dog.func_226281_cx_());
+            super(dog.getPosX(), dog.getPosY(), dog.getPosZ());
             this.type = dog.dimension;
             this.entityId = dog.getUniqueID();
             this.owner = dog.getOwnerId();

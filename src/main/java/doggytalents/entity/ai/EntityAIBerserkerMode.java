@@ -61,13 +61,13 @@ public class EntityAIBerserkerMode<T extends LivingEntity> extends TargetGoal {
     protected void findNearestTarget() {
         if (this.targetClass != PlayerEntity.class && this.targetClass != ServerPlayerEntity.class) {
             this.nearestTarget = this.goalOwner.world.<T>getClosestEntityWithinAABB(this.targetClass,
-                    this.targetEntitySelector, this.goalOwner, this.goalOwner.func_226277_ct_(),
-                    this.goalOwner.func_226278_cu_() + this.goalOwner.getEyeHeight(), this.goalOwner.func_226281_cx_(),
+                    this.targetEntitySelector, this.goalOwner, this.goalOwner.getPosX(),
+                    this.goalOwner.getPosY() + this.goalOwner.getEyeHeight(), this.goalOwner.getPosZ(),
                     this.getTargetableArea(this.getTargetDistance()));
         } else {
             this.nearestTarget = this.goalOwner.world.getClosestPlayer(this.targetEntitySelector, this.goalOwner,
-                    this.goalOwner.func_226277_ct_(), this.goalOwner.func_226278_cu_() + this.goalOwner.getEyeHeight(),
-                    this.goalOwner.func_226281_cx_());
+                    this.goalOwner.getPosX(), this.goalOwner.getPosY() + this.goalOwner.getEyeHeight(),
+                    this.goalOwner.getPosZ());
         }
 
     }

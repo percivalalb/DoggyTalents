@@ -29,7 +29,7 @@ public class ModelWings extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public Iterable<ModelRenderer> func_225601_a_() {
+    public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(this.wingA, this.wingB);
     }
 

@@ -446,7 +446,7 @@ public class EntityDog extends IDogEntity implements IDog {
         Entity entityRidden = this.getRidingEntity();
 
         if(entityRidden instanceof PlayerEntity)
-            if(entityRidden.func_225608_bj_())
+            if(entityRidden.isShiftKeyDown())
                 this.stopRiding();
 
         //Check if dog bowl still exists every 50t/2.5s, if not remove
@@ -1784,7 +1784,7 @@ public class EntityDog extends IDogEntity implements IDog {
                 if(l > 0) {
                     if (this.isSprinting()) {
                         this.STATS.increaseDistanceSprint(l);
-                    } else if(this.func_225608_bj_()) {
+                    } else if(this.isShiftKeyDown()) {
                         this.STATS.increaseDistanceSneaking(l);
                     } else {
                         this.STATS.increaseDistanceWalk(l);

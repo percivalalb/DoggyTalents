@@ -15,11 +15,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class RenderUtil {
 
     public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int p_225629_5_, float scale, int yChange) {
-       boolean flag = !entity.func_226273_bm_();
+       boolean flag = !entity.isDiscrete();
        float f = entity.getHeight() + 0.5F;
        stack.push();
        stack.translate(0.0D, f, 0.0D);
-       stack.rotate(renderer.getRenderManager().func_229098_b_());
+       stack.rotate(renderer.getRenderManager().getCameraOrientation());
        stack.scale(-scale, -scale, scale);
        Matrix4f matrix4f = stack.getLast().getPositionMatrix();
        float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);

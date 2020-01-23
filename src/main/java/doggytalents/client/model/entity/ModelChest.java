@@ -24,7 +24,7 @@ public class ModelChest extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public Iterable<ModelRenderer> func_225601_a_() {
+    public Iterable<ModelRenderer> getParts() {
         return ImmutableList.of(this.chest1, this.chest2);
     }
 

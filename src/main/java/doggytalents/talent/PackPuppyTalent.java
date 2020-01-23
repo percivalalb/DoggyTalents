@@ -81,7 +81,7 @@ public class PackPuppyTalent extends Talent {
         int level = dogIn.getTalentFeature().getLevel(this);
 
         if(dogIn.isTamed() && level > 0) { // Dog requirements
-            if(playerIn.func_225608_bj_() && stack.isEmpty()) { // Player requirements
+            if(playerIn.isShiftKeyDown() && stack.isEmpty()) { // Player requirements
 
                 if(!playerIn.world.isRemote && dogIn.canInteract(playerIn)) {
 

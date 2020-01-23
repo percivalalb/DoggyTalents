@@ -142,7 +142,7 @@ public class DogBedModel implements IBakedModel {
 
 
 
-            customModel = newModel.func_225613_a_(this.modelLoader, ModelLoader.defaultTextureGetter(), ModelRotation.X0_Y0, ResourceLocation.tryCreate(Reference.MOD_ID + ":dog_bed"));
+            customModel = newModel.bakeModel(this.modelLoader, ModelLoader.defaultTextureGetter(), ModelRotation.X0_Y0, ResourceLocation.tryCreate(Reference.MOD_ID + ":dog_bed"));
             this.cache.put(key, customModel);
         }
 

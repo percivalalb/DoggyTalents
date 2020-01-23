@@ -23,7 +23,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_225628_a_(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.hasBone()) {
 
             RenderSystem.pushMatrix();
@@ -34,7 +34,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
                 RenderSystem.scalef(0.5F, 0.5F, 0.5F);
             }
 
-            if(dog.func_225608_bj_())
+            if(dog.isShiftKeyDown())
                 RenderSystem.translatef(0.0F, 0.2F, 0.0F);
 
             //this.getEntityModel().head.postRender(0.0625F);

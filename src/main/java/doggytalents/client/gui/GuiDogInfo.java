@@ -272,7 +272,7 @@ public class GuiDogInfo extends Screen {
             }
          }
 
-        RenderHelper.func_227780_a_();
+        RenderHelper.enableStandardItemLighting();
     }
 
     @Override

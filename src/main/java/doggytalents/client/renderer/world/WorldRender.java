@@ -34,7 +34,7 @@ public class WorldRender {
                         RenderSystem.pushMatrix();
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
-                        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().func_228019_au_().func_228487_b_();
+                        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
                         drawSelectionBox(event.getMatrixStack(), irendertypebuffer$impl.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
                         RenderSystem.popMatrix();
                     }
@@ -59,7 +59,7 @@ public class WorldRender {
         double d1 = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * particleTicks;
         double d2 = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * particleTicks;
 
-        WorldRenderer.func_228430_a_(p_228430_0_, p_228430_1_, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F); // 1.14 drawSelectionBoundingBox
+        WorldRenderer.drawBoundingBox(p_228430_0_, p_228430_1_, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F); // 1.14 drawSelectionBoundingBox
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks
         RenderSystem.depthMask(true);

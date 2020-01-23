@@ -82,12 +82,12 @@ public class ModelDog extends TintedAgeableModel<EntityDog> {
     }
 
     @Override
-    protected Iterable<ModelRenderer> func_225602_a_() {
+    protected Iterable<ModelRenderer> getHeadParts() {
         return ImmutableList.of(this.head);
     }
 
     @Override
-    protected Iterable<ModelRenderer> func_225600_b_() {
+    protected Iterable<ModelRenderer> getBodyParts() {
         return ImmutableList.of(this.body, this.legBackRight, this.legBackLeft, this.legFrontRight, this.legFrontLeft, this.tail, this.mane);
     }
 

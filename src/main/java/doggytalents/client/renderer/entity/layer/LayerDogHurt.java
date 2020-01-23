@@ -23,9 +23,9 @@ public class LayerDogHurt extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void func_225628_a_(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.isTamed() && !dog.isInvisible() && (dog.getHealth() == 1 && dog.isImmortal() && ConfigValues.RENDER_BLOOD)) {
-            func_229141_a_(this.getEntityModel(), ResourceLib.MOB_LAYER_DOG_HURT, p_225628_1_, p_225628_2_, p_225628_3_, dog, 1.0f, 1.0f, 1.0f);
+            renderCutoutModel(this.getEntityModel(), ResourceLib.MOB_LAYER_DOG_HURT, p_225628_1_, p_225628_2_, p_225628_3_, dog, 1.0f, 1.0f, 1.0f);
         }
     }
 }

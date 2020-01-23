@@ -69,7 +69,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         super.render(dogIn, entityYaw, partialTicks, stack, buffer, p_225623_6_);
         if (this.canRenderName(dogIn)) {
 
-            double d0 = this.renderManager.func_229099_b_(dogIn);
+            double d0 = this.renderManager.squareDistanceTo(dogIn);
             if(d0 <= 64 * 64) {
                 String tip = dogIn.isIncapacicated() ? "dog.mode.incapacitated.indicator" : dogIn.MODE.getMode().getTip();
                 String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
@@ -80,7 +80,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
                 RenderUtil.renderLabelWithScale(dogIn, this, label, stack, buffer, p_225623_6_, 0.01F, -12);
 
                 if(d0 <= 5 * 5) {
-                    if(this.renderManager.info.getRenderViewEntity().func_225608_bj_()) {
+                    if(this.renderManager.info.getRenderViewEntity().isShiftKeyDown()) {
                         RenderUtil.renderLabelWithScale(dogIn, this, dogIn.getOwnersName().getFormattedText(), stack, buffer, p_225623_6_, 0.01F, 24);
                     }
                 }
@@ -97,8 +97,8 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         return ConfigValues.USE_DT_TEXTURES ? ResourceLib.getTameSkin(dog.getTameSkin()) : ResourceLib.MOB_DOG_TAME;
     }
 
-    @Override // 1.14 preRenderCallback
-    protected void func_225620_a_(EntityDog entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {
+    @Override
+    protected void preRenderCallback(EntityDog entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {
         EntityDog dog = entitylivingbaseIn;
         float size = dog.getDogSize() * 0.3F + 0.1F;
         RenderSystem.scalef(size, size, size);

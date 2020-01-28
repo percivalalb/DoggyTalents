@@ -28,7 +28,11 @@ import net.minecraft.client.renderer.model.BlockPart;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
+import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.MissingTextureSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.tileentity.TileEntity;
@@ -50,17 +54,15 @@ public class DogBedModel implements IBakedModel {
     private BlockModel model;
     private IBakedModel bakedModel;
 
-    private final VertexFormat format;
     private final Map<Triple<String, String, Direction>, IBakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel, VertexFormat format) {
+    public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel) {
         this.modelLoader = modelLoader;
         this.model = model;
         this.bakedModel = bakedModel;
-        this.format = format;
     }
 
-    public IBakedModel getCustomModel(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
+    public IBakedModel getModelVariant(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
         // Hotfix for possible optifine bug
         if (casing == null) { casing = ModBeddings.OAK; }
         if (bedding == null) { bedding = ModBeddings.WHITE; }
@@ -68,13 +70,13 @@ public class DogBedModel implements IBakedModel {
 
         String casingTex = casing.getTexture();
         String beddingTex = bedding.getTexture();
-
-        return this.getCustomModel(casingTex, beddingTex, facing);
+        Triple<String, String, Direction> key = ImmutableTriple.of(casingTex, beddingTex, facing);
+        return this.cache.computeIfAbsent(key, k -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
     }
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-        return this.getCustomModel(ModBeddings.OAK, ModBeddings.WHITE, Direction.NORTH).getQuads(state, side, rand);
+        return this.getModelVariant(ModBeddings.OAK, ModBeddings.WHITE, Direction.NORTH).getQuads(state, side, rand);
     }
 
     @Override
@@ -82,7 +84,7 @@ public class DogBedModel implements IBakedModel {
         IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
         IBedMaterial bedding = data.getData(TileEntityDogBed.BEDDING);
         Direction facing = data.getData(TileEntityDogBed.FACING);
-        return this.getCustomModel(casing, bedding, facing).getQuads(state, side, rand);
+        return this.getModelVariant(casing, bedding, facing).getQuads(state, side, rand);
     }
 
     @Override
@@ -90,7 +92,7 @@ public class DogBedModel implements IBakedModel {
         IBedMaterial casing = data.getData(TileEntityDogBed.CASING);
         IBedMaterial bedding = data.getData(TileEntityDogBed.BEDDING);
         Direction facing = data.getData(TileEntityDogBed.FACING);
-        return this.getCustomModel(casing, bedding, facing).getParticleTexture();
+        return this.getModelVariant(casing, bedding, facing).getParticleTexture();
     }
 
     @Override
@@ -115,38 +117,40 @@ public class DogBedModel implements IBakedModel {
         return tileData;
     }
 
-    public IBakedModel getCustomModel(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
-        IBakedModel customModel = this.bakedModel;
-
-        Triple<String, String, Direction> key = ImmutableTriple.of(casingResource, beddingResource, facing);
-
-        IBakedModel possibleModel = this.cache.get(key);
-
-        if(possibleModel != null) {
-            customModel = possibleModel;
-        } else if(this.model != null) {
-            List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
-            for (BlockPart part : this.model.getElements()) {
-                elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
-            }
-
-            BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
-                Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(), //New Textures man VERY IMPORTANT
-                this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
-            newModel.name = this.model.name;
-            newModel.parent = this.model.parent;
-
-            newModel.textures.put("bedding", Either.right(beddingResource));
-            newModel.textures.put("casing", Either.right(casingResource));
-            newModel.textures.put("particle", Either.right(casingResource));
-
-
-
-            customModel = newModel.bakeModel(this.modelLoader, ModelLoader.defaultTextureGetter(), ModelRotation.X0_Y0, ResourceLocation.tryCreate(Reference.MOD_ID + ":dog_bed"));
-            this.cache.put(key, customModel);
+    public IBakedModel bakeModelVariant(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
+        List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
+        for (BlockPart part : this.model.getElements()) {
+            elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
         }
 
-        return customModel;
+        BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
+            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(),
+            this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
+        newModel.name = this.model.name;
+        newModel.parent = this.model.parent;
+
+        newModel.textures.put("bedding", findTexture(ResourceLocation.tryCreate(beddingResource)));
+        newModel.textures.put("casing", findTexture(ResourceLocation.tryCreate(casingResource)));
+        newModel.textures.put("particle", findTexture(ResourceLocation.tryCreate(casingResource)));
+
+        return newModel.bakeModel(this.modelLoader, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing));
+    }
+
+    private ResourceLocation createResourceVariant(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
+        return new ResourceLocation(Reference.MOD_ID, "block/dog_bed"); // #bedding=" + beddingResource + ",casing=" + casingResource + ",facing=" + facing.getName()
+    }
+
+    private Either<Material, String> findTexture(ResourceLocation resource) {
+        return Either.left(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, resource));
+    }
+
+    private ModelRotation getModelRotation(Direction dir) {
+        switch(dir) {
+        default:    return ModelRotation.X0_Y0; // North
+        case EAST:  return ModelRotation.X0_Y90;
+        case SOUTH: return ModelRotation.X0_Y180;
+        case WEST:  return ModelRotation.X0_Y270;
+        }
     }
 
     @Override

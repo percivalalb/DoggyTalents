@@ -1,5 +1,6 @@
 package doggytalents.client.model.block;
 
+import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.block.DogBedRegistry;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemOverrideList;
@@ -19,9 +20,9 @@ public class DogBedItemOverride extends ItemOverrideList {
         if(modelOriginal instanceof DogBedModel) {
             CompoundNBT tag = stack.getChildTag("doggytalents");
             if(tag != null) {
-                String casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId")).getTexture();
-                String beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId")).getTexture();
-                return ((DogBedModel)modelOriginal).getCustomModel(casingId, beddingId, Direction.NORTH);
+                IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
+                IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
+                return ((DogBedModel)modelOriginal).getModelVariant(casingId, beddingId, Direction.NORTH);
             }
         }
 

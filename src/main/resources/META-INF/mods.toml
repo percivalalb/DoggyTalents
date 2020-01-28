@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[28,)"
+loaderVersion="[30,)"
 issueTrackerURL="https://github.com/percivalalb/DoggyTalents/issues"
 displayURL="https://minecraft.curseforge.com/projects/doggy-talents/"
 logoFile="dt_logo.png"
@@ -16,6 +16,6 @@ logoFile="dt_logo.png"
 [[dependencies.doggytalents]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[28.1.0,)" #mandatory
+    versionRange="[30.0.0,)" #mandatory
     ordering="NONE"
     side="BOTH"

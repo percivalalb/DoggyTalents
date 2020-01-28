@@ -61,7 +61,7 @@ public class ConfigHandler {
         }
     }
 
-    public static void reloadConfig(final ModConfig.ConfigReloading event) {
+    public static void reloadConfig(final ModConfig.Reloading event) {
         ModConfig config = event.getConfig();
         if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
             ConfigHandler.refreshClient();

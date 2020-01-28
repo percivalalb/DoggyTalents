@@ -915,9 +915,9 @@ public class EntityDog extends IDogEntity implements IDog {
 
     // Talent Hooks
     @Override
-    public boolean func_225503_b_(float distance, float damageMultiplier) { // 1.14 fall
+    public boolean onLivingFall(float distance, float damageMultiplier) {
         if(!TalentHelper.isImmuneToFalls(this))
-            return super.func_225503_b_(distance - TalentHelper.fallProtection(this), damageMultiplier);
+            return super.onLivingFall(distance - TalentHelper.fallProtection(this), damageMultiplier);
         return false;
     }
 

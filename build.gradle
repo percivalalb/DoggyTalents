@@ -15,7 +15,7 @@ apply plugin: 'maven'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DoggyTalents-1.15.1'
+archivesBaseName = 'DoggyTalents-1.15.2'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 

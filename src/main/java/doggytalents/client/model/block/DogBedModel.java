@@ -124,7 +124,7 @@ public class DogBedModel implements IBakedModel {
         }
 
         BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
-            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.isGui3d(),
+            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.func_230176_c_(),
             this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
@@ -161,6 +161,11 @@ public class DogBedModel implements IBakedModel {
     @Override
     public boolean isGui3d() {
         return this.bakedModel.isGui3d();
+    }
+
+    @Override
+    public boolean func_230044_c_() {
+        return this.bakedModel.func_230044_c_();
     }
 
     @Override

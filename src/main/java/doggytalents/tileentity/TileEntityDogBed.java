@@ -14,19 +14,19 @@ import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 public class TileEntityDogBed extends TileEntity {
-    
+
     private IBedMaterial casingId = IBedMaterial.NULL;
     private IBedMaterial beddingId = IBedMaterial.NULL;
-    
-    
-    public static ModelProperty<IBedMaterial> CASING = new ModelProperty<IBedMaterial>();
-    public static ModelProperty<IBedMaterial> BEDDING = new ModelProperty<IBedMaterial>();
-    public static ModelProperty<Direction> FACING = new ModelProperty<Direction>();
-    
+
+
+    public static ModelProperty<IBedMaterial> CASING = new ModelProperty<>();
+    public static ModelProperty<IBedMaterial> BEDDING = new ModelProperty<>();
+    public static ModelProperty<Direction> FACING = new ModelProperty<>();
+
     public TileEntityDogBed() {
         super(ModTileEntities.DOG_BED);
     }
-    
+
     @Override
     public void read(CompoundNBT tag) {
         super.read(tag);
@@ -41,12 +41,12 @@ public class TileEntityDogBed extends TileEntity {
         tag.putString("beddingId", this.beddingId != null ? this.beddingId.getSaveId() : "missing");
         return tag;
     }
-    
+
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
-    
+
     @Override
     public void handleUpdateTag(CompoundNBT tag) {
         super.handleUpdateTag(tag);
@@ -56,12 +56,12 @@ public class TileEntityDogBed extends TileEntity {
     public CompoundNBT getUpdateTag() {
         return write(new CompoundNBT());
     }
-    
+
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.read(pkt.getNbtCompound());
     }
-    
+
     public void setCasingId(IBedMaterial newId) {
         this.casingId = newId;
         this.markDirty();
@@ -69,7 +69,7 @@ public class TileEntityDogBed extends TileEntity {
             ModelDataManager.requestModelDataRefresh(this);
         }
     }
-    
+
     public void setBeddingId(IBedMaterial newId) {
         this.beddingId = newId;
         this.markDirty();
@@ -77,15 +77,15 @@ public class TileEntityDogBed extends TileEntity {
             ModelDataManager.requestModelDataRefresh(this);
         }
     }
-    
+
     public IBedMaterial getCasingId() {
         return this.casingId;
     }
-    
+
     public IBedMaterial getBeddingId() {
         return this.beddingId;
     }
-    
+
     @Override
     public IModelData getModelData() {
         return new ModelDataMap.Builder().withProperty(CASING).withProperty(BEDDING).withInitial(FACING, Direction.NORTH).build();

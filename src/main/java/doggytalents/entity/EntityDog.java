@@ -578,11 +578,10 @@ public class EntityDog extends IDogEntity implements IDog {
 
         if(stack.getItem() == ModItems.OWNER_CHANGE && player.abilities.isCreativeMode && !this.isOwner(player)) {
             if(!this.world.isRemote) {
-                this.setTamed(true);
+                this.setTamedBy(player);
                 this.navigator.clearPath();
                 this.setAttackTarget((LivingEntity) null);
                 this.sitGoal.setSitting(true);
-                this.setOwnerId(player.getUniqueID());
                 this.world.setEntityState(this, (byte) 7);
             }
             return true;
@@ -852,12 +851,11 @@ public class EntityDog extends IDogEntity implements IDog {
 
             if(!this.world.isRemote) {
                 if(stack.getItem() == ModItems.TRAINING_TREAT || this.rand.nextInt(3) == 0) {
-                    this.setTamed(true);
+                    this.setTamedBy(player);
                     this.navigator.clearPath();
                     this.setAttackTarget((LivingEntity) null);
                     this.sitGoal.setSitting(true);
                     this.setHealth(20.0F);
-                    this.setOwnerId(player.getUniqueID());
                     this.world.setEntityState(this, (byte) 7);
                 } else {
                     this.world.setEntityState(this, (byte) 6);

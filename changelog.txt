@@ -11,6 +11,9 @@ Update List Key
 MC 1.15.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.2.1 | 1st February 2020
+* Fixed crash on server when feeding or giving treats to dogs (#213)
+
 1.15.2.0 | 28th January 2020
 Requires forge 30.0.0 or higher
 Initial release, parent version 1.14.4-1.15.2.0

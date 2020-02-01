@@ -25,7 +25,6 @@ public class ItemDireTreat extends Item implements IDogItem {
 
         if (dogIn.getGrowingAge() < 0) {
             if(!worldIn.isRemote){
-                 dogIn.playTameEffect(false);
                  playerIn.sendMessage(new TranslationTextComponent("treat.dire_treat.too_young"));
             }
 
@@ -41,7 +40,6 @@ public class ItemDireTreat extends Item implements IDogItem {
                 dogIn.getAISit().setSitting(true);
                 dogIn.getNavigator().clearPath();
                 worldIn.setEntityState(dogIn, (byte)7);
-                dogIn.playTameEffect(true);
                 playerIn.sendMessage(new TranslationTextComponent("treat.dire_treat.level_up"));
             }
 
@@ -50,7 +48,6 @@ public class ItemDireTreat extends Item implements IDogItem {
         else if(level < 60) {
             worldIn.setEntityState(dogIn, (byte)6);
             if(!worldIn.isRemote) {
-                dogIn.playTameEffect(false);
                 playerIn.sendMessage(new TranslationTextComponent("treat.dire_treat.low_level"));
             }
 

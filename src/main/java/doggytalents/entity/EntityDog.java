@@ -583,7 +583,6 @@ public class EntityDog extends IDogEntity implements IDog {
                 this.setAttackTarget((LivingEntity) null);
                 this.sitGoal.setSitting(true);
                 this.setOwnerId(player.getUniqueID());
-                this.playTameEffect(true);
                 this.world.setEntityState(this, (byte) 7);
             }
             return true;
@@ -606,7 +605,7 @@ public class EntityDog extends IDogEntity implements IDog {
                                 ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
 
                         }
-                        this.playTameEffect(true);
+                        this.world.setEntityState(this, (byte)7);
                     }
                     return true;
                 } else if(stack.getItem() == ModItems.DOGGY_CHARM && player.abilities.isCreativeMode) {
@@ -769,7 +768,6 @@ public class EntityDog extends IDogEntity implements IDog {
                         this.setDogHunger(ConfigValues.HUNGER_POINTS);
                         this.regenerationTick = 0;
                         this.setAttackTarget((LivingEntity) null);
-                        this.playTameEffect(true);
                         this.world.setEntityState(this, (byte) 7);
                     }
 
@@ -860,10 +858,8 @@ public class EntityDog extends IDogEntity implements IDog {
                     this.sitGoal.setSitting(true);
                     this.setHealth(20.0F);
                     this.setOwnerId(player.getUniqueID());
-                    this.playTameEffect(true);
                     this.world.setEntityState(this, (byte) 7);
                 } else {
-                    this.playTameEffect(false);
                     this.world.setEntityState(this, (byte) 6);
                 }
             }

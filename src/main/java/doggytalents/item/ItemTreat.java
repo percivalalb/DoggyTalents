@@ -25,8 +25,8 @@ public class ItemTreat extends Item implements IDogItem {
         int level = dogIn.getLevelFeature().getLevel();
 
         if (dogIn.getGrowingAge() < 0) {
+            worldIn.setEntityState(dogIn, (byte)6);
             if(!worldIn.isRemote) {
-                 dogIn.playTameEffect(false);
                  playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.too_young"));
             }
 
@@ -41,7 +41,6 @@ public class ItemTreat extends Item implements IDogItem {
                 dogIn.setHealth(dogIn.getMaxHealth());
                 dogIn.getAISit().setSitting(true);
                 worldIn.setEntityState(dogIn, (byte)7);
-                dogIn.playTameEffect(true);
                 playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.level_up"));
             }
 
@@ -50,7 +49,6 @@ public class ItemTreat extends Item implements IDogItem {
         else {
             worldIn.setEntityState(dogIn, (byte)6);
             if(!worldIn.isRemote) {
-                dogIn.playTameEffect(false);
                 playerIn.sendMessage(new TranslationTextComponent("treat.normal_treat.max_level"));
             }
 

@@ -31,10 +31,7 @@ public class WorldRender {
                     double distance = (level * 200D) - Math.sqrt(dog.COORDS.getBedPos().distanceSq(dog.getPosition()));
                     if(level == 5 || distance >= 0.0D) {
 
-                        RenderSystem.pushMatrix();
-
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
-                        RenderSystem.popMatrix();
                         IRenderTypeBuffer bufferIn = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
                         drawSelectionBox(event.getMatrixStack(), bufferIn.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
                     }
@@ -44,13 +41,13 @@ public class WorldRender {
     }
 
     public static void drawSelectionBox(MatrixStack matrixStackIn, IVertexBuilder bufferIn, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
+        matrixStackIn.push();
         RenderSystem.disableAlphaTest();
         RenderSystem.disableLighting(); //Make the line see thought blocks
         RenderSystem.depthMask(false);
         RenderSystem.disableDepthTest(); //Make the line see thought blocks
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(1.0F, 0.0F, 0.0F, 0.7F);
         //TODO Used when drawing outline of bounding box
         RenderSystem.lineWidth(2.0F);
 
@@ -59,7 +56,6 @@ public class WorldRender {
         double d1 = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * particleTicks;
         double d2 = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * particleTicks;
 
-        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         WorldRenderer.drawBoundingBox(matrixStackIn, bufferIn, boundingBox.offset(-d0, -d1, -d2), 1.0F, 0.0F, 0.0F, 0.7F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks
         RenderSystem.depthMask(true);
@@ -67,5 +63,6 @@ public class WorldRender {
         RenderSystem.enableLighting(); //Make the line see thought blocks
         RenderSystem.disableBlend();
         RenderSystem.enableAlphaTest();
+        matrixStackIn.pop();
     }
 }

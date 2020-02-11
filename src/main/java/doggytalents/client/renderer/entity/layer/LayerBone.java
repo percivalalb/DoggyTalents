@@ -23,7 +23,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.hasBone()) {
 
             RenderSystem.pushMatrix();
@@ -44,8 +44,8 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
 
             RenderSystem.translated(0.20, -0.10, -0.10);
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE, 15728880, OverlayTexture.DEFAULT_LIGHT, p_225628_1_, p_225628_2_);
             RenderSystem.popMatrix();
+            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.DEFAULT_LIGHT, matrixStackIn, bufferIn);
         }
     }
 }

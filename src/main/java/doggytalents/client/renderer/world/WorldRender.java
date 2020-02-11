@@ -34,16 +34,16 @@ public class WorldRender {
                         RenderSystem.pushMatrix();
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
-                        IRenderTypeBuffer.Impl irendertypebuffer$impl = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-                        drawSelectionBox(event.getMatrixStack(), irendertypebuffer$impl.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
                         RenderSystem.popMatrix();
+                        IRenderTypeBuffer bufferIn = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+                        drawSelectionBox(event.getMatrixStack(), bufferIn.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
                     }
                 }
             }
         }
     }
 
-    public static void drawSelectionBox(MatrixStack p_228430_0_, IVertexBuilder p_228430_1_, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
+    public static void drawSelectionBox(MatrixStack matrixStackIn, IVertexBuilder bufferIn, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
         RenderSystem.disableAlphaTest();
         RenderSystem.disableLighting(); //Make the line see thought blocks
         RenderSystem.depthMask(false);
@@ -59,8 +59,8 @@ public class WorldRender {
         double d1 = player.lastTickPosY + (player.getPosY() - player.lastTickPosY) * particleTicks;
         double d2 = player.lastTickPosZ + (player.getPosZ() - player.lastTickPosZ) * particleTicks;
 
-        WorldRenderer.drawBoundingBox(p_228430_0_, p_228430_1_, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F); // 1.14 drawSelectionBoundingBox
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
+        WorldRenderer.drawBoundingBox(matrixStackIn, bufferIn, boundingBox.offset(-d0, -d1, -d2), 1.0F, 0.0F, 0.0F, 0.7F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks
         RenderSystem.depthMask(true);
         RenderSystem.enableTexture();

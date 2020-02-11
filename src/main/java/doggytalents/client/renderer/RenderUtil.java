@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderUtil {
 
-    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int p_225629_5_, float scale, int yChange) {
+    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, int yChange) {
        boolean flag = !entity.isDiscrete();
        float f = entity.getHeight() + 0.5F;
        stack.push();
@@ -26,9 +26,9 @@ public class RenderUtil {
        int j = (int)(f1 * 255.0F) << 24;
        FontRenderer fontrenderer = renderer.getFontRendererFromRenderManager();
        float f2 = -fontrenderer.getStringWidth(text) / 2;
-       fontrenderer.renderString(text, f2, yChange, 553648127, false, matrix4f, buffer, flag, j, p_225629_5_);
+       fontrenderer.renderString(text, f2, yChange, 553648127, false, matrix4f, buffer, flag, j, packedLightIn);
        if (flag) {
-          fontrenderer.renderString(text, f2, yChange, -1, false, matrix4f, buffer, false, 0, p_225629_5_);
+          fontrenderer.renderString(text, f2, yChange, -1, false, matrix4f, buffer, false, 0, packedLightIn);
        }
 
        stack.pop();

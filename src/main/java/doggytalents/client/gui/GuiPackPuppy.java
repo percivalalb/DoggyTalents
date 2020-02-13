@@ -48,6 +48,6 @@ public class GuiPackPuppy extends ContainerScreen<ContainerPackPuppy> {
             for (int k1 = 0; k1 < MathHelper.clamp(this.getContainer().getDogLevel(), 0, 5); k1++)
                 this.blit(l + 78 + 18 * k1, i1 + 9 + 18 * j1 + 15, 197, 2, 18, 18);
 
-        InventoryScreen.func_228187_a_(l + 42, i1 + 51, 30, (float)(l + 51) - xMouse, (float)((i1 + 75) - 50) - yMouse, this.getContainer().getDog()); // 1.14 drawEntityOnScreen
+        InventoryScreen.drawEntityOnScreen(l + 42, i1 + 51, 30, (float)(l + 51) - xMouse, (float)((i1 + 75) - 50) - yMouse, this.getContainer().getDog());
     }
 }

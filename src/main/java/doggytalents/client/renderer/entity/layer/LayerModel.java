@@ -39,7 +39,7 @@ public class LayerModel extends LayerRenderer<EntityDog, ModelDog> {
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(this.condition.test(dog) && !dog.isInvisible()) {
-            this.model.setModelAttributes(this.getEntityModel());
+            this.getEntityModel().copyModelAttributesTo(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             renderCutoutModel(this.model, this.resource, matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
         }

@@ -64,7 +64,7 @@ public class ModelWings extends SegmentedModel<EntityDog> {
     }
 
     @Override
-    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
+    public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
         /*Wing1.rotateAngleY = -1.48353F;
         Wing2.rotateAngleY = 1.48353F; */

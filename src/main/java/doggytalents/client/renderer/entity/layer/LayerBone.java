@@ -39,14 +39,14 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
             if(dog.isShiftKeyDown())
                 matrixStackIn.translate(0.0F, 0.2F, 0.0F);
            // matrixStackIn.rotate(Vector3f.ZP.rotation((float) (Math.PI / 4)));
-            this.getEntityModel().head.setAnglesAndRotation(matrixStackIn);
+            this.getEntityModel().head.translateRotate(matrixStackIn);
            // matrixStackIn.rotate(new Quaternion(90.0F, 0.0F, 1.0F, 0.0F));
            /// matrixStackIn.rotate(new Quaternion(90.0F, 1.0F, 0.0F, 0.0F));
            // matrixStackIn.rotate(new Quaternion(45.0F, 0.0F, 0.0F, 1.0F));
 
             matrixStackIn.translate(0.00, 0.0, -0.3);
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.DEFAULT_LIGHT, matrixStackIn, bufferIn);
+            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
             matrixStackIn.pop();
         }
     }

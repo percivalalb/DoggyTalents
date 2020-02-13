@@ -45,24 +45,24 @@ public class DTRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shapedRecipe(ModItems.CHEW_STICK, 1).patternLine("SW").patternLine("WS").key('W', Items.WHEAT).key('S', Items.SUGAR).addCriterion("has_sugar", this.hasItem(Items.SUGAR)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.WOOL_COLLAR, 1).patternLine("SSS").patternLine("S S").patternLine("SSS").key('S', Items.STRING).addCriterion("has_stick", this.hasItem(Items.STRING)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.TREAT_BAG, 1).patternLine("LCL").patternLine("LLL").key('L', Items.LEATHER).key('C', ModItems.CHEW_STICK).addCriterion("has_leather", this.hasItem(Items.LEATHER)).build(consumer);
-        
+
         ShapedRecipeBuilder.shapedRecipe(ModItems.CAPE, 1).patternLine("S S").patternLine("LWL").patternLine("WLW").key('L', Items.LEATHER).key('S', Items.STRING).key('W', ItemTags.WOOL).addCriterion("has_leather", this.hasItem(Items.LEATHER)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.CAPE_COLOURED, 1).patternLine("S S").patternLine("LLL").patternLine("LLL").key('L', Items.LEATHER).key('S', Items.STRING).addCriterion("has_leather", this.hasItem(Items.LEATHER)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.LEATHER_JACKET, 1).patternLine("L L").patternLine("LWL").patternLine("LWL").key('L', Items.LEATHER).key('W', ItemTags.WOOL).addCriterion("has_leather", this.hasItem(Items.LEATHER)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.SPOTTED_COLLAR, 1).patternLine("BWB").patternLine("WCW").patternLine("BSB").key('C', ModItems.WOOL_COLLAR).key('B', Items.BLACK_DYE).key('W', Items.WHITE_DYE).key('S', Items.STRING).addCriterion("has_wool_collar", this.hasItem(ModItems.WOOL_COLLAR)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.SPOTTED_COLLAR, 1).patternLine("WBW").patternLine("BCB").patternLine("WSW").key('C', ModItems.WOOL_COLLAR).key('B', Items.BLACK_DYE).key('W', Items.WHITE_DYE).key('S', Items.STRING).addCriterion("has_wool_collar", this.hasItem(ModItems.WOOL_COLLAR)).build(consumer, new ResourceLocation(Reference.MOD_ID, "spotted_collar_alt"));
         ShapelessRecipeBuilder.shapelessRecipe(ModItems.MULTICOLOURED_COLLAR, 1).addIngredient(ModItems.WOOL_COLLAR).addIngredient(Items.STRING).addIngredient(Items.BLUE_DYE).addIngredient(Items.LIME_DYE).addIngredient(Items.YELLOW_DYE).addIngredient(Items.ORANGE_DYE).addIngredient(Items.RED_DYE).addIngredient(Items.PURPLE_DYE).addCriterion("has_wool_collar", this.hasItem(ModItems.WOOL_COLLAR)).build(consumer);
-       
+
         ShapedRecipeBuilder.shapedRecipe(ModItems.SUNGLASSES, 1).patternLine("S S").patternLine("GSG").key('S', Items.STICK).key('G', Blocks.GLASS_PANE).addCriterion("has_stick", this.hasItem(Items.STICK)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.TINY_BONE, 1).patternLine("BI").patternLine("IB").key('B', Items.BONE).key('I', Items.IRON_INGOT).addCriterion("has_iron_ingot", this.hasItem(Items.IRON_INGOT)).build(consumer);
         ShapedRecipeBuilder.shapedRecipe(ModItems.BIG_BONE, 1).patternLine("BI").patternLine("IB").patternLine("BI").key('B', Items.BONE).key('I', Items.IRON_INGOT).addCriterion("has_iron_ingot", this.hasItem(Items.IRON_INGOT)).build(consumer);
-        
+
         ShapedRecipeBuilder.shapedRecipe(ModItems.RADIO_COLLAR, 1).patternLine("XX").patternLine("YX").key('X', Items.IRON_INGOT).key('Y', Items.REDSTONE).addCriterion("has_redstone", this.hasItem(Items.REDSTONE)).build(consumer);
         ShapelessRecipeBuilder.shapelessRecipe(ModItems.RADAR, 1).addIngredient(Items.MAP, 1).addIngredient(Items.REDSTONE, 1).addIngredient(ModItems.RADIO_COLLAR, 1).addCriterion("has_redstone", this.hasItem(Items.REDSTONE)).build(consumer);
-		
-		CustomRecipeBuilder.func_218656_a(ModRecipes.CAPE_COLOURING).build(consumer, Reference.MOD_ID + ":cape_colouring");
-		CustomRecipeBuilder.func_218656_a(ModRecipes.COLLAR_COLOURING).build(consumer, Reference.MOD_ID + ":collar_colouring");
-		CustomRecipeBuilder.func_218656_a(ModRecipes.DOG_BED).build(consumer, Reference.MOD_ID + ":dog_bed");
+
+		CustomRecipeBuilder.customRecipe(ModRecipes.CAPE_COLOURING).build(consumer, Reference.MOD_ID + ":cape_colouring");
+		CustomRecipeBuilder.customRecipe(ModRecipes.COLLAR_COLOURING).build(consumer, Reference.MOD_ID + ":collar_colouring");
+		CustomRecipeBuilder.customRecipe(ModRecipes.DOG_BED).build(consumer, Reference.MOD_ID + ":dog_bed");
     }
 
     @Override

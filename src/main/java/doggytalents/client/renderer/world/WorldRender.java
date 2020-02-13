@@ -33,7 +33,7 @@ public class WorldRender {
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
                         IRenderTypeBuffer bufferIn = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-                        drawSelectionBox(event.getMatrixStack(), bufferIn.getBuffer(RenderType.lines()), player, event.getPartialTicks(), boundingBox);
+                        drawSelectionBox(event.getMatrixStack(), bufferIn.getBuffer(RenderType.getLines()), player, event.getPartialTicks(), boundingBox);
                     }
                 }
             }

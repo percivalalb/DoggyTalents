@@ -21,7 +21,7 @@ public class RenderUtil {
        stack.translate(0.0D, f, 0.0D);
        stack.rotate(renderer.getRenderManager().getCameraOrientation());
        stack.scale(-scale, -scale, scale);
-       Matrix4f matrix4f = stack.getLast().getPositionMatrix();
+       Matrix4f matrix4f = stack.getLast().getMatrix();
        float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
        int j = (int)(f1 * 255.0F) << 24;
        FontRenderer fontrenderer = renderer.getFontRendererFromRenderManager();

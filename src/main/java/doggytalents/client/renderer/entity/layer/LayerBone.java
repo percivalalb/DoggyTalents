@@ -1,7 +1,6 @@
 package doggytalents.client.renderer.entity.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.model.entity.ModelDog;
@@ -9,9 +8,10 @@ import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.entity.EntityDog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -23,29 +23,29 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack matrixStack, IRenderTypeBuffer bufferSource, int packedLight, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.hasBone()) {
 
-            RenderSystem.pushMatrix();
-            RenderSystem.enableLighting();
-            if(this.getEntityModel().isChild) { //isChild
-                float f = 0.5F;
-                RenderSystem.translatef(0.0F, 0.75F, -0.25F);
-                RenderSystem.scalef(0.5F, 0.5F, 0.5F);
+            matrixStack.push();
+            ModelDog model = this.getEntityModel();
+            if(model.isChild) {
+                // derived from AgeableModel head offset
+                matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }
 
-            if(dog.isShiftKeyDown())
-                RenderSystem.translatef(0.0F, 0.2F, 0.0F);
+            ModelRenderer head = model.head;
+            matrixStack.translate(head.rotationPointX / 16.0F, head.rotationPointY / 16.0F, head.rotationPointZ / 16.0F);
+            matrixStack.rotate(Vector3f.ZP.rotation(head.rotateAngleZ));
+            matrixStack.rotate(Vector3f.YP.rotation(head.rotateAngleY));
+            matrixStack.rotate(Vector3f.XP.rotation(head.rotateAngleX));
 
-            //this.getEntityModel().head.postRender(0.0625F);
-            RenderSystem.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
-            RenderSystem.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            RenderSystem.rotatef(45.0F, 0.0F, 0.0F, 1.0F);
+            matrixStack.translate(-0.025F, 0.125F, -0.32F);
+            matrixStack.rotate(Vector3f.YP.rotationDegrees(45.0F));
+            matrixStack.rotate(Vector3f.XP.rotationDegrees(90.0F));
 
-            RenderSystem.translated(0.20, -0.10, -0.10);
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE, 15728880, OverlayTexture.DEFAULT_LIGHT, p_225628_1_, p_225628_2_);
-            RenderSystem.popMatrix();
+            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
+            matrixStack.pop();
         }
     }
 }

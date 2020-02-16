@@ -1,7 +1,6 @@
 package doggytalents.client.renderer.entity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.ModTalents;
 import doggytalents.client.model.entity.ModelChest;
@@ -101,7 +100,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     protected void preRenderCallback(EntityDog entitylivingbaseIn, MatrixStack matrixStack, float partialTickTime) {
         EntityDog dog = entitylivingbaseIn;
         float size = dog.getDogSize() * 0.3F + 0.1F;
-        RenderSystem.scalef(size, size, size);
+        matrixStack.scale(size, size, size);
         this.shadowSize = size * 0.5F;
     }
 }

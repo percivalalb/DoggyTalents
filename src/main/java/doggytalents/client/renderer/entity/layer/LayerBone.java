@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -33,11 +32,7 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }
 
-            ModelRenderer head = model.head;
-            matrixStack.translate(head.rotationPointX / 16.0F, head.rotationPointY / 16.0F, head.rotationPointZ / 16.0F);
-            matrixStack.rotate(Vector3f.ZP.rotation(head.rotateAngleZ));
-            matrixStack.rotate(Vector3f.YP.rotation(head.rotateAngleY));
-            matrixStack.rotate(Vector3f.XP.rotation(head.rotateAngleX));
+            model.head.translateRotate(matrixStack);
 
             matrixStack.translate(-0.025F, 0.125F, -0.32F);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(45.0F));

@@ -37,7 +37,9 @@ public class PacketDogMode {
                     return;
                 
                 EntityDog dog = (EntityDog)target;
-                
+                if(!dog.canInteract(ctx.get().getSender()))
+                    return;
+
                 dog.setMode(message.mode);
             });
 

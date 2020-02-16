@@ -37,6 +37,8 @@ public class PacketFriendlyFire {
                     return;
                 
                 EntityDog dog = (EntityDog)target;
+                if(!dog.canInteract(ctx.get().getSender()))
+                    return;
                 
                 dog.setCanPlayersAttack(message.friendlyFire);
             });

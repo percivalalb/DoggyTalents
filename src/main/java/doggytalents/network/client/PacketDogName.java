@@ -39,7 +39,9 @@ public class PacketDogName {
                     return;
                 
                 EntityDog dog = (EntityDog)target;
-                
+                if(!dog.canInteract(ctx.get().getSender()))
+                    return;
+
                 if(message.name.isEmpty())
                     dog.setCustomName(null);
                 else

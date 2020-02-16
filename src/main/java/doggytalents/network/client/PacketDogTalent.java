@@ -41,6 +41,8 @@ public class PacketDogTalent {
                     return;
 
                 EntityDog dog = (EntityDog)target;
+                if(!dog.canInteract(ctx.get().getSender()))
+                    return;
                 Talent talent = DoggyTalentsAPI.TALENTS.getValue(msg.talentId);
                 int level = dog.TALENTS.getLevel(talent);
                 

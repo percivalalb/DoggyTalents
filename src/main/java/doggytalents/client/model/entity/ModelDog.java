@@ -187,7 +187,7 @@ public class ModelDog extends TintedAgeableModel<EntityDog> {
     }
 
     @Override
-    public void render(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) { // 1.14 setRotationAngles
+    public void setRotationAngles(EntityDog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
         this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
         this.tail.rotateAngleX = ageInTicks;

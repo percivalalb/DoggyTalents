@@ -37,11 +37,11 @@ public class LayerModel extends LayerRenderer<EntityDog, ModelDog> {
     }
 
     @Override
-    public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(this.condition.test(dog) && !dog.isInvisible()) {
-            this.model.setModelAttributes(this.getEntityModel());
+            this.getEntityModel().copyModelAttributesTo(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
-            renderCutoutModel(this.model, this.resource, p_225628_1_, p_225628_2_, p_225628_3_, dog, 1.0f, 1.0f, 1.0f);
+            renderCutoutModel(this.model, this.resource, matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
         }
     }
 }

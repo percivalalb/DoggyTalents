@@ -59,13 +59,13 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     //}
 
     @Override
-    public void render(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int p_225623_6_) {
+    public void render(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (dogIn.isDogWet()) {
            float f = dogIn.getBrightness() * dogIn.getShadingWhileWet(partialTicks);
            this.entityModel.func_228253_a_(f, f, f);
         }
 
-        super.render(dogIn, entityYaw, partialTicks, stack, buffer, p_225623_6_);
+        super.render(dogIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         if (this.canRenderName(dogIn)) {
 
             double d0 = this.renderManager.squareDistanceTo(dogIn);
@@ -76,11 +76,11 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
                         dogIn.getDogHunger(),
                         dogIn.GENDER.getGenderTip().getFormattedText());
 
-                RenderUtil.renderLabelWithScale(dogIn, this, label, stack, buffer, p_225623_6_, 0.01F, -12);
+                RenderUtil.renderLabelWithScale(dogIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, -12);
 
                 if(d0 <= 5 * 5) {
                     if(this.renderManager.info.getRenderViewEntity().isShiftKeyDown()) {
-                        RenderUtil.renderLabelWithScale(dogIn, this, dogIn.getOwnersName().getFormattedText(), stack, buffer, p_225623_6_, 0.01F, 24);
+                        RenderUtil.renderLabelWithScale(dogIn, this, dogIn.getOwnersName().getFormattedText(), matrixStackIn, bufferIn, packedLightIn, 0.01F, 24);
                     }
                 }
             }

@@ -32,7 +32,6 @@ public class WorldRender {
                     int level = dog.TALENTS.getLevel(ModTalents.BED_FINDER);
                     double distance = (level * 200D) - Math.sqrt(dog.COORDS.getBedPos().distanceSq(dog.getPosition()));
                     if(level == 5 || distance >= 0.0D) {
-
                         MatrixStack stack = event.getMatrixStack();
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(dog.COORDS.getBedPos()).grow(0.5D);
@@ -50,7 +49,6 @@ public class WorldRender {
         RenderSystem.disableDepthTest(); //Make the line see thought blocks
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(1.0F, 0.0F, 0.0F, 0.7F);
         //TODO Used when drawing outline of bounding box
         RenderSystem.lineWidth(2.0F);
 

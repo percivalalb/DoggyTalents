@@ -1,11 +1,8 @@
 package doggytalents.handler;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.network.PacketHandler;
-import doggytalents.network.client.PacketJump;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.InputUpdateEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public class InputUpdate {
 
@@ -17,7 +14,6 @@ public class InputUpdate {
                 
                 if(dog.canJump()) {
                     dog.setJumpPower(100);
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PacketJump(dog.getEntityId()));
                 }
             }
         }

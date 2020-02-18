@@ -7,7 +7,6 @@ import doggytalents.network.client.PacketDogObey;
 import doggytalents.network.client.PacketDogTalent;
 import doggytalents.network.client.PacketDogTexture;
 import doggytalents.network.client.PacketFriendlyFire;
-import doggytalents.network.client.PacketJump;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public final class PacketHandler
@@ -22,7 +21,6 @@ public final class PacketHandler
         DoggyTalentsMod.HANDLER.registerMessage(disc++, PacketDogTalent.class, PacketDogTalent::encode, PacketDogTalent::decode, PacketDogTalent.Handler::handle);
         DoggyTalentsMod.HANDLER.registerMessage(disc++, PacketDogTexture.class, PacketDogTexture::encode, PacketDogTexture::decode, PacketDogTexture.Handler::handle);
         DoggyTalentsMod.HANDLER.registerMessage(disc++, PacketFriendlyFire.class, PacketFriendlyFire::encode, PacketFriendlyFire::decode, PacketFriendlyFire.Handler::handle);
-        DoggyTalentsMod.HANDLER.registerMessage(disc++, PacketJump.class, PacketJump::encode, PacketJump::decode, PacketJump.Handler::handle);
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {

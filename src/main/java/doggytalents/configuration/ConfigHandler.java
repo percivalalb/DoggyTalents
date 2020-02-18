@@ -81,6 +81,7 @@ public class ConfigHandler {
         ConfigValues.DOG_GENDER = SERVER.DOG_GENDER.get();
         ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
         ConfigValues.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
+        ConfigValues.EAT_FOOD_ON_FLOOR = SERVER.EAT_FOOD_ON_FLOOR.get();
         ResourceLocation reviveResource = ResourceLocation.tryCreate(SERVER.REVIVE_ITEM.get());
         ConfigValues.REVIVE_ITEM = ForgeRegistries.ITEMS.containsKey(reviveResource) ? ForgeRegistries.ITEMS.getValue(reviveResource) : Items.CAKE;
     }
@@ -160,6 +161,7 @@ public class ConfigHandler {
         public ForgeConfigSpec.BooleanValue DOG_GENDER;
         public ForgeConfigSpec.BooleanValue DOG_WHINE_WHEN_HUNGER_LOW;
         public ForgeConfigSpec.BooleanValue PUPS_GET_PARENT_LEVELS;
+        public ForgeConfigSpec.BooleanValue EAT_FOOD_ON_FLOOR;
         public ConfigValue<String> REVIVE_ITEM;
 
         public Map<String, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
@@ -202,6 +204,10 @@ public class ConfigHandler {
                     .comment("When enabled, puppies get some levels from parents. When disabled, puppies start at 0 points.")
                     .translation("doggytalents.config.enable_pup_get_parent_levels")
                     .define("enable_pup_get_parent_levels", false);
+            EAT_FOOD_ON_FLOOR = builder
+                    .comment("When enabled dogs will path and eat editable items in the world.")
+                    .translation("doggytalents.config.eat_food_on_floor")
+                    .define("eat_food_on_floor", true);
             REVIVE_ITEM = builder
                     .comment("The item resource path that can be used to revive an incapacitated dog. If item is not valid defaults to minecraft:cake")
                     .translation("doggytalents.config.revive_item")

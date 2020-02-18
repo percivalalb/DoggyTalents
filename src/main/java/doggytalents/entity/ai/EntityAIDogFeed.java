@@ -5,6 +5,7 @@ import java.util.Random;
 import doggytalents.ModItems;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
+import doggytalents.lib.ConfigValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvents;
 
@@ -19,12 +20,13 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 
     @Override
     public boolean shouldExecute() {
-        return !this.dog.isSitting() && super.shouldExecute();
+        // Still add the AI task this allows config option to be changed without restart
+        return ConfigValues.EAT_FOOD_ON_FLOOR && !this.dog.isSitting() && super.shouldExecute();
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return this.dog.getDogHunger() < this.dog.getHungerFeature().getMaxHunger()  && !this.dog.isSitting() && super.shouldContinueExecuting();
+        return ConfigValues.EAT_FOOD_ON_FLOOR &&  this.dog.getDogHunger() < this.dog.getHungerFeature().getMaxHunger() && !this.dog.isSitting() && super.shouldContinueExecuting();
     }
 
     @Override

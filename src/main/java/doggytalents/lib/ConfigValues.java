@@ -34,6 +34,7 @@ public class ConfigValues {
     public static boolean RENDER_CHEST;
     public static boolean RENDER_SADDLE;
     public static boolean USE_DT_TEXTURES;
+    public static boolean EAT_FOOD_ON_FLOOR;
     public static boolean RENDER_ARMOUR;
 
     static {

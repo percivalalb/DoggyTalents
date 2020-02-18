@@ -28,6 +28,7 @@ import doggytalents.api.feature.IModeFeature;
 import doggytalents.api.feature.IStatsFeature;
 import doggytalents.api.feature.ITalentFeature;
 import doggytalents.api.inferface.IDogEntity;
+import doggytalents.api.inferface.IDogFoodItem;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.inferface.Talent;
@@ -592,7 +593,7 @@ public class EntityDog extends IDogEntity implements IDog {
 
         if(this.isTamed()) {
             if(!stack.isEmpty()) {
-                int foodValue = this.foodValue(stack);
+                int foodValue = this.foodValue(stack, player);
 
                 if(foodValue != 0 && this.getDogHunger() < this.HUNGER.getMaxHunger() && this.canInteract(player) && !this.isIncapacicated()) {
                     if(this.isIncapacicated()) {
@@ -603,9 +604,11 @@ public class EntityDog extends IDogEntity implements IDog {
 
                         if(!this.world.isRemote) {
                             this.setDogHunger(this.getDogHunger() + foodValue);
-                            if(stack.getItem() == ModItems.CHEW_STICK)
-                                ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
 
+                            if (stack.getItem() instanceof IDogFoodItem) {
+                                IDogFoodItem dogFood = (IDogFoodItem)stack.getItem();
+                                dogFood.onItemConsumed(this, stack, player);
+                            }
                         }
                         this.playTameEffect(true);
                     }
@@ -1259,7 +1262,7 @@ public class EntityDog extends IDogEntity implements IDog {
         return this.isOwner(player) || this.willObeyOthers();
     }
 
-    public int foodValue(ItemStack stack) {
+    public int foodValue(ItemStack stack, @Nullable Entity entityIn) {
         if (stack.isEmpty())
             return 0;
 
@@ -1270,8 +1273,11 @@ public class EntityDog extends IDogEntity implements IDog {
         if (stack.getItem() != Items.ROTTEN_FLESH && item.isFood()) {
             if (item.getFood().isMeat())
                 foodValue = 40;
-        } else if (stack.getItem() == ModItems.CHEW_STICK) {
-            return 10;
+        } else if (stack.getItem() instanceof IDogFoodItem) {
+            IDogFoodItem dogFood = (IDogFoodItem)stack.getItem();
+            int temp = dogFood.getFoodValue(this, stack, entityIn);
+            if (temp > 0)
+                foodValue = temp;
         }
 
         foodValue = TalentHelper.changeFoodValue(this, stack, foodValue);

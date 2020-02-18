@@ -1,10 +1,10 @@
 package doggytalents.entity.ai;
 
 import java.util.Random;
+import java.util.function.BiPredicate;
 
-import doggytalents.ModItems;
+import doggytalents.api.inferface.IDogFoodItem;
 import doggytalents.entity.EntityDog;
-import doggytalents.item.ItemChewStick;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvents;
@@ -12,9 +12,15 @@ import net.minecraft.util.SoundEvents;
 public class EntityAIDogFeed extends EntityAIClosestItem {
 
     private Random rand;
+    private static final BiPredicate<EntityDog, ItemStack> DOG_CONDITIONS = (dog, stack) -> {
+        int foodValue = dog.foodValue(stack, null);
+        if (foodValue <= 0) return false;
+        return (dog.getHungerFeature().getMaxHunger() - dog.getDogHunger()) * 3 >= foodValue * 2 
+                || dog.getDogHunger() / (float)dog.getHungerFeature().getMaxHunger() <= 0.5F;
+    };
 
     public EntityAIDogFeed(EntityDog dogIn, double speedIn, float range) {
-        super(dogIn, speedIn, range, stack -> dogIn.foodValue(stack) > 0);
+        super(dogIn, speedIn, range, stack -> DOG_CONDITIONS.test(dogIn, stack));
         this.rand = dogIn.world.rand;
     }
 
@@ -26,7 +32,7 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return ConfigValues.EAT_FOOD_ON_FLOOR &&  this.dog.getDogHunger() < this.dog.getHungerFeature().getMaxHunger() && !this.dog.isSitting() && super.shouldContinueExecuting();
+        return ConfigValues.EAT_FOOD_ON_FLOOR && !this.dog.isSitting() && super.shouldContinueExecuting() && DOG_CONDITIONS.test(this.dog, this.target.getItem());
     }
 
     @Override
@@ -40,11 +46,14 @@ public class EntityAIDogFeed extends EntityAIClosestItem {
 
                 //Eat
                 this.dog.playSound(SoundEvents.ENTITY_PLAYER_BURP, this.dog.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-                int foodValue = this.dog.foodValue(this.target.getItem());
+                
+                ItemStack stack = this.target.getItem();
+                int foodValue = this.dog.foodValue(stack, null);
                 this.dog.setDogHunger(this.dog.getDogHunger() + foodValue);
-                ItemStack stack = target.getItem();
-                if(stack.getItem() == ModItems.CHEW_STICK) {
-                    ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this.dog);
+  
+                if (stack.getItem() instanceof IDogFoodItem) {
+                    IDogFoodItem dogFood = (IDogFoodItem)stack.getItem();
+                    dogFood.onItemConsumed(this.dog, stack, null);
                 }
 
                 this.target.getItem().shrink(1);

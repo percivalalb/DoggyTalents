@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.function.Predicate;
 
 import doggytalents.ModItems;
+import doggytalents.api.inferface.IDogFoodItem;
 import doggytalents.entity.EntityDog;
 import doggytalents.item.ItemChewStick;
 import net.minecraft.block.BlockState;
@@ -58,14 +59,15 @@ public class DogUtil {
         for(int i = 0; i < source.getSlots(); i++) {
             ItemStack stack = source.extractItem(i, 1, true);
             int foodValue = 0;
-            if((foodValue = dogIn.foodValue(stack)) > 0) {
+            if((foodValue = dogIn.foodValue(stack, null)) > 0) {
                 stack = source.extractItem(i, 1, false);
                 dogIn.setDogHunger(dogIn.getDogHunger() + foodValue);
-                
-                if(stack.getItem() == ModItems.CHEW_STICK) { //TODO add player paramater
-                    ((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(dogIn);
-                }
 
+                if (stack.getItem() instanceof IDogFoodItem) {
+                    IDogFoodItem dogFood = (IDogFoodItem)stack.getItem();
+                    dogFood.onItemConsumed(dogIn, stack, null);
+                }
+                
                 return true;
             }
         }

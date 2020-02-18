@@ -70,7 +70,7 @@ public class EntityAIBegDog extends Goal {
             if(itemstack.getItem().isIn(this.dog.isTamed() ? ModTags.BEG_ITEMS_TAMED : ModTags.BEG_ITEMS_UNTAMED))
                 return true;
 
-            if(this.dog.foodValue(itemstack) > 0)
+            if(this.dog.foodValue(itemstack, player) > 0)
                 return true;
             
             if(this.dog.isBreedingItem(itemstack))

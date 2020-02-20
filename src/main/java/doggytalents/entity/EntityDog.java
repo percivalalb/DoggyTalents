@@ -58,9 +58,7 @@ import doggytalents.entity.features.TalentFeature;
 import doggytalents.helper.CapabilityHelper;
 import doggytalents.helper.DogUtil;
 import doggytalents.helper.TalentHelper;
-import doggytalents.item.ItemChewStick;
 import doggytalents.item.ItemFancyCollar;
-import doggytalents.item.ItemTreatBag;
 import doggytalents.lib.ConfigValues;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
@@ -122,7 +120,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class EntityDog extends IDogEntity implements IDog {
 
@@ -823,7 +822,7 @@ public class EntityDog extends IDogEntity implements IDog {
 
                     return true;
                 } else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < ConfigValues.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
-                    ItemStackHandler treatBag = CapabilityHelper.getOrThrow(stack, ItemTreatBag.TREAT_BAG_CAPABILITY);
+                    IItemHandler treatBag = CapabilityHelper.getOrThrow(stack, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                     DogUtil.feedDogFrom(this, treatBag);
                     return true;
                 }

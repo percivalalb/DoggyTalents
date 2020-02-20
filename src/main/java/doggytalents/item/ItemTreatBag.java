@@ -6,7 +6,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import doggytalents.helper.CapabilityHelper;
 import doggytalents.inventory.TreatBagItemHandler;
 import doggytalents.inventory.container.ContainerTreatBag;
 import net.minecraft.client.util.ITooltipFlag;
@@ -28,19 +27,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
 
 public class ItemTreatBag extends Item {
 
-    @CapabilityInject(ItemStackHandler.class)
-    public static Capability<ItemStackHandler> TREAT_BAG_CAPABILITY = null;
-    
     public ItemTreatBag(Properties properties) {
         super(properties);
     }
@@ -81,8 +77,8 @@ public class ItemTreatBag extends Item {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        
-        ItemStackHandler bagInventory = CapabilityHelper.getOrThrow(stack, TREAT_BAG_CAPABILITY);
+
+        IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         List<ItemStack> condensedContents = this.getContentOverview(bagInventory);
         
         condensedContents.forEach(food -> {
@@ -90,7 +86,7 @@ public class ItemTreatBag extends Item {
         });
     }
     
-    public List<ItemStack> getContentOverview(ItemStackHandler bagInventory) {
+    public List<ItemStack> getContentOverview(IItemHandler bagInventory) {
         List<ItemStack> items = new ArrayList<>();
         
         for(int i = 0; i < bagInventory.getSlots(); ++i) {
@@ -117,17 +113,18 @@ public class ItemTreatBag extends Item {
     
     @Override
     public ICapabilityProvider initCapabilities(final ItemStack stack, CompoundNBT nbt) {
-        return new ICapabilityProvider() {
-            final IItemHandler itemHandler = new TreatBagItemHandler(stack);
+        // https://github.com/MinecraftForge/MinecraftForge/issues/5989
+        if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == null) {
+            return null;
+        }
 
-            final LazyOptional<IItemHandler> itemHandlerInstance = LazyOptional.of(() -> itemHandler);
+        return new ICapabilityProvider() {
+            final LazyOptional<IItemHandler> itemHandlerInstance = LazyOptional.of(() -> new TreatBagItemHandler(stack));
 
             @Override
             @Nonnull
             public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, final @Nullable Direction side) {
-                if (cap == ItemTreatBag.TREAT_BAG_CAPABILITY)
-                    return this.itemHandlerInstance.cast();
-                return LazyOptional.empty();
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, this.itemHandlerInstance);
             }
         };
     }

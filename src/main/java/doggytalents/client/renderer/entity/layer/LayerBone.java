@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
-    
+
     public LayerBone(RenderDog dogRendererIn) {
         super(dogRendererIn);
     }
@@ -22,30 +22,26 @@ public class LayerBone extends LayerRenderer<EntityDog, ModelDog> {
     @Override
     public void render(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.hasBone()) {
-            
+
             GlStateManager.pushMatrix();
-    
-            if(this.getEntityModel().isChild) { //isChild
-                float f = 0.5F;
-                GlStateManager.translatef(0.0F, 0.75F, -0.25F);
-                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
+
+            if(this.getEntityModel().isChild) {
+                // derived from AgeableModel head offset
+                GlStateManager.translatef(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }
 
-            if(dog.isSneaking())
-                GlStateManager.translatef(0.0F, 0.2F, 0.0F);
-
             this.getEntityModel().head.postRender(0.0625F);
-            GlStateManager.rotatef(90.0F, 0.0F, 1.0F, 0.0F);
-            GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GlStateManager.rotatef(45.0F, 0.0F, 0.0F, 1.0F);
 
-            GlStateManager.translated(0.20, -0.10, -0.10);
+            GlStateManager.translated(-0.025F, 0.125F, -0.32F);
+            GlStateManager.rotatef(45.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotatef(90.0F, 1.0F, 0.0F, 0.0F);
+
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemRenderer().renderItem(throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.NONE);
+            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, false);
             GlStateManager.popMatrix();
         }
     }
-    
+
     @Override
     public boolean shouldCombineTextures() {
         return false;

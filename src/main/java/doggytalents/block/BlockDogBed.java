@@ -51,73 +51,73 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * @author ProPercivalalb
  */
 public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
-    
+
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
     protected static final VoxelShape SHAPE_COLLISION = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
-    
+
     public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
-    
+
     public BlockDogBed() {
         super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
         this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.valueOf(false)));
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
-        
+
         CompoundNBT tag = stack.getChildTag("doggytalents");
         if(tag != null) {
             IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
             IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
             tooltip.add(casingId.getTooltip());
-            tooltip.add(beddingId.getTooltip());    
+            tooltip.add(beddingId.getTooltip());
         }
     }
-    
+
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
         for(IBedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys())
             for(IBedMaterial casingId : DogBedRegistry.CASINGS.getKeys())
                 items.add(DogBedRegistry.createItemStack(casingId, beddingId));
     }
-    
+
     @Override
     public TileEntity createNewTileEntity(IBlockReader world) {
         return new TileEntityDogBed();
     }
-    
+
     @Override
     public VoxelShape getShape(BlockState p_220053_1_, IBlockReader p_220053_2_, BlockPos p_220053_3_, ISelectionContext p_220053_4_) {
         return SHAPE;
     }
-    
+
     @Override
     public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext selectionContext) {
         return SHAPE_COLLISION;
     }
-    
+
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
-    
+
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         IFluidState ifluidstate = context.getWorld().getFluidState(context.getPos());
         return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, Boolean.valueOf(ifluidstate.getFluid() == Fluids.WATER));
     }
-    
+
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         state = state.with(FACING, placer.getHorizontalFacing().getOpposite());
         if(stack != null && stack.hasTag() && stack.getTag().contains("doggytalents")) {
             CompoundNBT tag = stack.getTag().getCompound("doggytalents");
-            
+
             TileEntity tile = worldIn.getTileEntity(pos);
-            
+
             if(tile instanceof TileEntityDogBed) {
                 TileEntityDogBed dogBed = (TileEntityDogBed)tile;
                 dogBed.setBeddingId(DogBedRegistry.BEDDINGS.get(tag.getString("beddingId")));
@@ -131,32 +131,32 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
-    
+
     @Override
     public boolean isSolid(BlockState state) {
         return false;
     }
-    
+
     @Override
     @OnlyIn(Dist.CLIENT)
     public BlockRenderLayer getRenderLayer() {
         return BlockRenderLayer.SOLID;
     }
-    
+
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-        
+
         TileEntity tile = world.getTileEntity(pos);
         if(tile instanceof TileEntityDogBed) {
             IBedMaterial casing = ((TileEntityDogBed)tile).getCasingId();
             IBedMaterial bedding = ((TileEntityDogBed)tile).getBeddingId();
             return DogBedRegistry.createItemStack(casing, bedding);
         }
-        
+
         DoggyTalentsMod.LOGGER.debug("Unable to get data from TileEntityDogBed. This should never happen.");
         return ItemStack.EMPTY;
     }
-    
+
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
         if(stateIn.get(WATERLOGGED)) {
@@ -164,17 +164,17 @@ public class BlockDogBed extends ContainerBlock implements IWaterLoggable {
         }
         return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
-    
+
     @Override
     public IFluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
-    
+
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return func_220055_a(worldIn, pos.down(), Direction.UP);
+        return Block.hasEnoughSolidSide(worldIn, pos.down(), Direction.UP);
     }
-    
+
     @Override
     public BlockState rotate(BlockState state, Rotation rot) {
         return state.with(FACING, rot.rotate(state.get(FACING)));

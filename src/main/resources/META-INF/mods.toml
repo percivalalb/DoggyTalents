@@ -6,7 +6,7 @@ logoFile="dt_logo.png"
 [[mods]] #mandatory
     modId="doggytalents"
     version="${file.jarVersion}"
-    updateJSONURL="https://raw.githubusercontent.com/percivalalb/DoggyTalents/master/version.json"
+    updateJSONURL="https://raw.githubusercontent.com/percivalalb/DoggyTalents/1.14.x/version.json"
     displayName="Doggy Talents"
     credits="percivalalb,RaustBlackDragon,NovaViper"
     authors="percivalalb"

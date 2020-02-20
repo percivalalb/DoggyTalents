@@ -11,16 +11,25 @@ Update List Key
 MC 1.15.2
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1.15.2.3 | 20th February 2020
++ Added config option to disable dogs eating food on the ground
++ Added Korean translations (thanks to MilkissWhite from github)
+# Improved German translations (thanks to sigy4444 from curseforge)
+# Dogs will now be smarter when they eat food on the ground (only when less than 50% health or is missing at least 2/3rds of the value of the food item)
+* Fixed treat bags sometimes loosing it's items (thanks to pau101 from github)
+/ Added safe guards to stop a malicious user being able to exploit the packets to change any dog regardless of ownership (pau101)
+/ Added API hook to make items dog food and callback when the food is eaten
+Built on Forge-1.15.2-31.1.0
+
+1.15.2.2 | 16th February 2020
+* Fixed bone fetch item render & bed finder outline render (thanks to pau101 from github)
+
 1.15.2.1 | 1st February 2020
 * Fixed crash on server when feeding or giving treats to dogs (#213)
 
 1.15.2.0 | 28th January 2020
 Requires forge 30.0.0 or higher
 Initial release, parent version 1.14.4-1.15.2.0
-
-Known bugs:
-Throw bone/stick renders incorrectly on dog
-Treat bag sometimes loses its items
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 MC 1.14.4

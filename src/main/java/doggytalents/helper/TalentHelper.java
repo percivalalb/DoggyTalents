@@ -158,16 +158,20 @@ public class TalentHelper {
     }
 
     public static boolean canAttack(EntityDog dog, EntityType<?> entityType) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
-            if(talent.canAttack(dog, entityType))
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            if(talent.canAttack(dog, entityType)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public static boolean canAttackEntity(EntityDog dog, Entity entity) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
-            if(talent.canAttackEntity(dog, entity))
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            if(talent.canAttackEntity(dog, entity)) {
                 return true;
+            }
+        }
         return false;
     }
 

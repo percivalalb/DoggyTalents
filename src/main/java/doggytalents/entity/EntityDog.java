@@ -1044,13 +1044,11 @@ public class EntityDog extends IDogEntity implements IDog {
             if (target instanceof EntityDog) {
                 EntityDog entitydog = (EntityDog) target;
 
-                if ((entitydog.isTamed() && entitydog.getOwner() == owner) || !entitydog.isTamed())
-                    return false;
+                return !entitydog.isTamed() || entitydog.getOwner() != owner;
             } else if (target instanceof WolfEntity) {
                 WolfEntity entitywolf = (WolfEntity) target;
 
-                if(entitywolf.isTamed() && entitywolf.getOwner() == owner)
-                    return false;
+                return !entitywolf.isTamed() || entitywolf.getOwner() != owner;
             }
 
             if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {

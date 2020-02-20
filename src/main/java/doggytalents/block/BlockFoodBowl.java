@@ -5,7 +5,6 @@ import javax.annotation.Nullable;
 import doggytalents.ModItems;
 import doggytalents.helper.CapabilityHelper;
 import doggytalents.helper.DogUtil;
-import doggytalents.item.ItemTreatBag;
 import doggytalents.tileentity.TileEntityFoodBowl;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -48,7 +47,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
 
@@ -147,9 +146,9 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
                 ItemStack stack = playerIn.getHeldItem(handIn);
                 
                 if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
-                    ItemStackHandler bagInventory = CapabilityHelper.getOrThrow(stack, ItemTreatBag.TREAT_BAG_CAPABILITY);
+                    IItemHandler bagInventory = CapabilityHelper.getOrThrow(stack, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                     IItemHandler bowlInventory = CapabilityHelper.getOrThrow(foodBowl, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-                    DogUtil.transferStacks(bagInventory, bowlInventory);
+                    DogUtil.transferStacks((IItemHandlerModifiable) bagInventory, bowlInventory);
                 } else if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity entityPlayerMP = (ServerPlayerEntity)playerIn;
                     NetworkHooks.openGui(entityPlayerMP, foodBowl, posIn);

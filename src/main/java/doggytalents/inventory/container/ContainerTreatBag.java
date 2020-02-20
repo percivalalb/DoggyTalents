@@ -3,26 +3,26 @@ package doggytalents.inventory.container;
 import doggytalents.ModContainerTypes;
 import doggytalents.ModItems;
 import doggytalents.helper.CapabilityHelper;
-import doggytalents.item.ItemTreatBag;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerTreatBag extends Container {
 
     public int slot;
     public ItemStack itemstack;
-    public ItemStackHandler bagInventory;
+    public IItemHandler bagInventory;
     
     public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
         super(ModContainerTypes.TREAT_BAG, windowId);
         this.slot = slotIn;
         this.itemstack = itemstackIn;
-        this.bagInventory = CapabilityHelper.getOrThrow(itemstackIn, ItemTreatBag.TREAT_BAG_CAPABILITY);
+        this.bagInventory = CapabilityHelper.getOrThrow(itemstackIn, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 
         assertInventorySize(playerInventory, 3 * 5);
 

@@ -9,7 +9,7 @@ import doggytalents.api.inferface.IBedMaterial;
 import doggytalents.client.model.block.IStateParticleModel;
 import doggytalents.client.renderer.particle.ParticleCustomDigging;
 import doggytalents.network.PacketDispatcher;
-import doggytalents.network.packet.client.CustomParticleMessage;
+import doggytalents.network.client.CustomParticleMessage;
 import doggytalents.tileentity.TileEntityDogBed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;

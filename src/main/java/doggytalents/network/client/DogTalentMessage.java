@@ -1,4 +1,4 @@
-package doggytalents.network.packet.client;
+package doggytalents.network.client;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
@@ -41,6 +41,10 @@ public class DogTalentMessage extends AbstractServerMessage {
             return;
         
         EntityDog dog = (EntityDog)target;
+        
+        if(!dog.canInteract(player))
+            return;
+        
         Talent talent = DoggyTalentsAPI.TALENTS.getValue(this.talentId);
         int level = dog.TALENTS.getLevel(talent);
         

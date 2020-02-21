@@ -1,45 +1,46 @@
-package doggytalents.network.packet.client;
+package doggytalents.network.client;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class DogNameMessage extends AbstractServerMessage {
+public class DogObeyMessage extends AbstractServerMessage {
     
     public int entityId;
-    public String name;
+    public boolean obey;
     
-    public DogNameMessage() {}
-    public DogNameMessage(int entityId, String name) {
+    public DogObeyMessage() {}
+    public DogObeyMessage(int entityId, boolean obey) {
         this.entityId = entityId;
-        this.name = name;
+        this.obey = obey;
     }
     
     @Override
     public void read(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
-        this.name = ByteBufUtils.readUTF8String(buffer);
+        this.obey = buffer.readBoolean();
     }
 
     @Override
     public void write(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
-        ByteBufUtils.writeUTF8String(buffer, this.name);
+        buffer.writeBoolean(this.obey);
     }
     
     @Override
     public void process(EntityPlayer player, Side side) {
         Entity target = player.world.getEntityByID(this.entityId);
-        
         if(!(target instanceof EntityDog))
             return;
         
         EntityDog dog = (EntityDog)target;
         
-        dog.setCustomNameTag(this.name);
+        if(!dog.canInteract(player))
+            return;
+        
+        dog.setWillObeyOthers(this.obey);
     }
 }

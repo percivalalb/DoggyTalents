@@ -23,6 +23,6 @@ public class PillowPawTalent extends Talent {
 
     @Override
     public ActionResult<Integer> fallProtection(IDogEntity dog) {
-        return ActionResult.func_226248_a_(dog.getTalentFeature().getLevel(this) * 3);
+        return ActionResult.resultSuccess(dog.getTalentFeature().getLevel(this) * 3);
     }
 }

@@ -56,7 +56,7 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> {
      * PASS and FAIL will have no effect
      */
     public ActionResult<Integer> fallProtection(IDogEntity dog) {
-        return ActionResult.func_226250_c_(0);
+        return ActionResult.resultPass(0);
     }
     public boolean attackEntityFrom(IDogEntity dog, DamageSource damageSource, float damage) { return true; }
     public boolean shouldDamageMob(IDogEntity dog, Entity entity) { return true; }

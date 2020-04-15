@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import doggytalents.api.DoggyTalentsAPI;
 import io.netty.handler.codec.http2.Http2FrameLogger.Direction;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,7 +58,7 @@ public abstract class Talent extends net.minecraftforge.registries.IForgeRegistr
     }
     public boolean attackEntityFrom(IDogEntity dog, DamageSource damageSource, float damage) { return true; }
     public boolean shouldDamageMob(IDogEntity dog, Entity entity) { return true; }
-    public boolean canAttackClass(IDogEntity dog, Class entityType) { return false; }
+    public boolean canAttackClass(IDogEntity dog, Class<? extends EntityLivingBase> entityType) { return false; }
     public boolean canAttackEntity(IDogEntity dog, Entity entity) { return false; }
     public boolean setFire(IDogEntity dog, int amount) { return true; }
     public EnumActionResult canBeRiddenInWater(IDogEntity dog, Entity rider) { return EnumActionResult.PASS; }

@@ -6,6 +6,7 @@ import java.util.Random;
 import doggytalents.api.inferface.IDogEntity;
 import doggytalents.api.inferface.Talent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.init.SoundEvents;
 
@@ -46,7 +47,7 @@ public class CreeperSweeperTalent extends Talent {
     }
 
     @Override
-    public boolean canAttackClass(IDogEntity dog, Class entityClass) {
+    public boolean canAttackClass(IDogEntity dog, Class<? extends EntityLivingBase> entityClass) {
         return EntityCreeper.class == entityClass && dog.getTalentFeature().getLevel(this) == 5;
     }
 

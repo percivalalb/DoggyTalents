@@ -1635,8 +1635,8 @@ public class EntityDog extends IDogEntity {
     public boolean shouldDismountInWater(Entity rider) {
         switch (TalentHelper.canBeRiddenInWater(this, rider)) {
         case SUCCESS: return false;
-        case FAIL: return false;
-        default: return false;
+        case FAIL: return true;
+        default: return true;
     }
     }
 

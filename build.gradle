@@ -1,14 +1,18 @@
 buildscript {
     repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
         jcenter()
-        maven { url = "https://files.minecraftforge.net/maven" }
+        mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+
+apply plugin: 'net.minecraftforge.gradle'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -22,43 +26,58 @@ repositories {
 }
 
 sourceSets {
-	api
-	main {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-	}
-	test {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-	}
+    api
+    main {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
+    test {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
 }
 
 configurations {
-	apiCompile.extendsFrom(compile)
+    apiCompile.extendsFrom(compile)
 }
 
 minecraft {
-    version = project.forge_version
-    runDir = "run"
+    mappings channel: 'snapshot', version: project.mcp_mappings
 
-    mappings = project.mcp_mappings
+    runs {
+        client {
+            workingDirectory project.file('run')
+            
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+
+        server {
+            workingDirectory project.file('run-server')
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+        }
+    }
 }
 
 dependencies {
-    deobfProvided "mezz.jei:jei_${jei_version}:api"
-    runtime "mezz.jei:jei_${jei_version}" 
+    minecraft "net.minecraftforge:forge:${project.forge_version}"
+
+    compileOnly fg.deobf("mezz.jei:jei_${project.jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei_${project.jei_version}")
 }
 
 task sourcesJar(type: Jar) {
-	classifier = "sources"
-	from sourceSets.main.allJava
-	from sourceSets.api.allJava
+    classifier = "sources"
+    from sourceSets.main.allJava
+    from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-	classifier = "api"
-	from sourceSets.api.output
-	from sourceSets.api.allJava
+    classifier = "api"
+    from sourceSets.api.output
+    from sourceSets.api.allJava
 }
 
 artifacts {
@@ -66,21 +85,22 @@ artifacts {
     archives apiJar
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+// Example for how to get properties into the manifest for reading by the runtime..
+jar {
+    from sourceSets.main.output.classesDirs
+    from sourceSets.api.output.classesDirs
+    from sourceSets.main.output.resourcesDir
+    from sourceSets.api.output.resourcesDir
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    manifest {
+        attributes([
+            "Specification-Title": "doggytalents",
+            "Specification-Vendor": "percivalalb",
+            "Specification-Version": "1", // We are version 1 of ourselves
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"percivalalb",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
     }
 }

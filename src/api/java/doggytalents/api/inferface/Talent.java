@@ -106,4 +106,13 @@ public abstract class Talent extends net.minecraftforge.registries.IForgeRegistr
         }
         return this.translationInfoKey;
     }
+
+    /**
+     * Gets the level of this talent for the given dog
+     * @param dog The dog
+     * @return The level of this talent
+     */
+    public int getLevel(IDogEntity dog) {
+        return dog.getTalentFeature().getLevel(this);
+    }
 }

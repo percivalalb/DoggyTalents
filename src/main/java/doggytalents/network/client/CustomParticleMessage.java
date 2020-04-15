@@ -1,4 +1,4 @@
-package doggytalents.network.packet.client;
+package doggytalents.network.client;
 
 import doggytalents.DoggyTalents;
 import doggytalents.network.AbstractMessage.AbstractClientMessage;

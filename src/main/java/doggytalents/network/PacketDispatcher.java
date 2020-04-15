@@ -1,14 +1,14 @@
 package doggytalents.network;
 
 import doggytalents.lib.Reference;
-import doggytalents.network.packet.client.CustomParticleMessage;
-import doggytalents.network.packet.client.DogFriendlyFireMessage;
-import doggytalents.network.packet.client.DogJumpMessage;
-import doggytalents.network.packet.client.DogModeMessage;
-import doggytalents.network.packet.client.DogNameMessage;
-import doggytalents.network.packet.client.DogObeyMessage;
-import doggytalents.network.packet.client.DogTalentMessage;
-import doggytalents.network.packet.client.DogTextureMessage;
+import doggytalents.network.client.CustomParticleMessage;
+import doggytalents.network.client.DogFriendlyFireMessage;
+import doggytalents.network.client.DogJumpMessage;
+import doggytalents.network.client.DogModeMessage;
+import doggytalents.network.client.DogNameMessage;
+import doggytalents.network.client.DogObeyMessage;
+import doggytalents.network.client.DogTalentMessage;
+import doggytalents.network.client.DogTextureMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;

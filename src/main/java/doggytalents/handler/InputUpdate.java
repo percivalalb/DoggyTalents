@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
 import doggytalents.entity.EntityDog;
-import doggytalents.network.packet.client.DogJumpMessage;
+import doggytalents.network.client.DogJumpMessage;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

@@ -1,4 +1,4 @@
-package doggytalents.network.packet.client;
+package doggytalents.network.client;
 
 import doggytalents.entity.EntityDog;
 import doggytalents.network.AbstractMessage.AbstractServerMessage;
@@ -7,26 +7,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class DogTextureMessage extends AbstractServerMessage {
+public class DogJumpMessage extends AbstractServerMessage {
     
-    public int entityId, doggyTexture;
+    public int entityId;
     
-    public DogTextureMessage() {}
-    public DogTextureMessage(int entityId, int doggyTexture) {
+    public DogJumpMessage() {}
+    public DogJumpMessage(int entityId) {
         this.entityId = entityId;
-        this.doggyTexture = doggyTexture;
     }
     
     @Override
     public void read(PacketBuffer buffer) {
         this.entityId = buffer.readInt();
-        this.doggyTexture = buffer.readInt();
     }
 
     @Override
     public void write(PacketBuffer buffer) {
         buffer.writeInt(this.entityId);
-        buffer.writeInt(this.doggyTexture);
     }
     
     @Override
@@ -37,6 +34,5 @@ public class DogTextureMessage extends AbstractServerMessage {
         
         EntityDog dog = (EntityDog)target;
         
-        dog.setTameSkin(this.doggyTexture);
     }
 }

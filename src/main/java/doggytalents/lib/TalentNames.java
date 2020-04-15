@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
+
 public class TalentNames {
 
     public static final String BED_FINDER = Reference.MOD_ID + ":bed_finder";

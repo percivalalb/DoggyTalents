@@ -1,8 +1,8 @@
 package doggytalents;
 
+import doggytalents.api.lib.Reference;
 import doggytalents.entity.EntityDog;
 import doggytalents.entity.EntityDoggyBeam;
-import doggytalents.lib.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;

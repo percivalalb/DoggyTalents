@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import doggytalents.lib.SoundNames;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.event.RegistryEvent;

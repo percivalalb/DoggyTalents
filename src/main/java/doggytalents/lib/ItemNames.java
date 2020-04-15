@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
+
 public class ItemNames {
 
     public static final String THROW_BONE = Reference.MOD_ID + ":throw_bone";

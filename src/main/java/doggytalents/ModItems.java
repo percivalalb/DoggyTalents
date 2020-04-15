@@ -1,5 +1,6 @@
 package doggytalents;
 
+import doggytalents.api.lib.Reference;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
@@ -20,7 +21,6 @@ import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
 import doggytalents.lib.ItemNames;
-import doggytalents.lib.Reference;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;

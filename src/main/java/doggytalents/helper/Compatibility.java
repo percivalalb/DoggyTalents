@@ -7,7 +7,7 @@ import doggytalents.DoggyTalents;
 import doggytalents.ModItems;
 import doggytalents.ModTalents;
 import doggytalents.api.inferface.Talent;
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;

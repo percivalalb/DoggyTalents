@@ -1,8 +1,8 @@
 package doggytalents;
 
 import doggytalents.api.inferface.Talent;
+import doggytalents.api.lib.Reference;
 import doggytalents.lib.ConfigValues;
-import doggytalents.lib.Reference;
 import doggytalents.lib.TalentNames;
 import doggytalents.talent.BedFinderTalent;
 import doggytalents.talent.BlackPeltTalent;

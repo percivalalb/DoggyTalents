@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
+
 public class RecipeNames {
 
     public static final String DOG_BED = Reference.MOD_ID + ":dogbed";

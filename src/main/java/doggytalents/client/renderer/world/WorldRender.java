@@ -2,8 +2,8 @@ package doggytalents.client.renderer.world;
 
 import doggytalents.DoggyTalents;
 import doggytalents.ModTalents;
+import doggytalents.api.lib.Reference;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.entity.Entity;

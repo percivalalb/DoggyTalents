@@ -3,7 +3,7 @@ package doggytalents.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.common.config.ConfigElement;

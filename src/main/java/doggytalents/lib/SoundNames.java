@@ -1,5 +1,6 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 
 public class SoundNames {

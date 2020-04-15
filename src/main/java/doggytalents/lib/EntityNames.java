@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
+
 public class EntityNames {
 
     public static final String DOG = Reference.MOD_ID + ":dog";

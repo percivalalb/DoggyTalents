@@ -1,7 +1,7 @@
 package doggytalents.handler;
 
+import doggytalents.api.lib.Reference;
 import doggytalents.configuration.ConfigurationHandler;
-import doggytalents.lib.Reference;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 

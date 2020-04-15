@@ -2,7 +2,7 @@ package doggytalents;
 
 import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.api.inferface.IDogBedRegistry;
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;

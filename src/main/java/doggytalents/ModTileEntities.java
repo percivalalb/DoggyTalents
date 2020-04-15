@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import doggytalents.lib.ResourceLib;
 import doggytalents.tileentity.TileEntityDogBed;
 import doggytalents.tileentity.TileEntityFoodBowl;

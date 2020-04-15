@@ -1,6 +1,6 @@
 package doggytalents.network;
 
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import doggytalents.network.client.CustomParticleMessage;
 import doggytalents.network.client.DogFriendlyFireMessage;
 import doggytalents.network.client.DogJumpMessage;

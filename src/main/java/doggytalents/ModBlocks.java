@@ -1,11 +1,11 @@
 package doggytalents;
 
+import doggytalents.api.lib.Reference;
 import doggytalents.block.BlockDogBath;
 import doggytalents.block.BlockDogBed;
 import doggytalents.block.BlockFoodBowl;
 import doggytalents.client.model.ModelHelper;
 import doggytalents.lib.BlockNames;
-import doggytalents.lib.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;

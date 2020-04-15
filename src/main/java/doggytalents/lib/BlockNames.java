@@ -1,5 +1,7 @@
 package doggytalents.lib;
 
+import doggytalents.api.lib.Reference;
+
 public class BlockNames {
 
     public static final String DOG_BED = Reference.MOD_ID + ":dog_bed";

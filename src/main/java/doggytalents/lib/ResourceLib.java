@@ -2,6 +2,7 @@ package doggytalents.lib;
 
 import java.util.HashMap;
 
+import doggytalents.api.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 
 /**

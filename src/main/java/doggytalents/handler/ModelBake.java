@@ -1,8 +1,8 @@
 package doggytalents.handler;
 
 import doggytalents.DoggyTalents;
+import doggytalents.api.lib.Reference;
 import doggytalents.client.model.block.DogBedModel;
-import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;

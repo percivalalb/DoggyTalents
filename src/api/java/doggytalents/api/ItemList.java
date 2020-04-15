@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import doggytalents.DoggyTalents;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import doggytalents.api.lib.Reference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -14,21 +17,21 @@ import net.minecraftforge.oredict.OreDictionary;
  */
 public class ItemList {
 
+    public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_NAME);
     private List<List<Object>> itemlist = new ArrayList<List<Object>>();
-    
-    
+
     public void registerItem(Item... items) { for(Item item : items) registerItem(item); }
     public void registerItem(Item item) { this.registerItem(item, OreDictionary.WILDCARD_VALUE); }
     public void registerItem(Item item, int meta) {
         List<Object> array = Arrays.asList(new Object[] {item, meta});
         if(this.itemlist.contains(array))
-            DoggyTalents.LOGGER.warn("The item {} meta {} is already registered in this item list", item.getRegistryName(), meta);
+            LOGGER.warn("The item {} meta {} is already registered in this item list", item.getRegistryName(), meta);
         else {
             this.itemlist.add(array);
-            DoggyTalents.LOGGER.debug("The item {} meta {} was register to an item list", item.getRegistryName(), meta);
+            LOGGER.debug("The item {} meta {} was register to an item list", item.getRegistryName(), meta);
         }
     }
-    
+
     public boolean containsItem(Item item) { return this.containsItem(item, OreDictionary.WILDCARD_VALUE); }
     public boolean containsItem(ItemStack stack) { return this.containsItem(stack.getItem(), stack.getItemDamage()); }
     public boolean containsItem(Item item, int meta) {

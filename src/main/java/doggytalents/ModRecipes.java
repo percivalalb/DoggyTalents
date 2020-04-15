@@ -1,9 +1,9 @@
 package doggytalents;
 
+import doggytalents.api.lib.Reference;
 import doggytalents.inventory.recipe.RecipeDogBed;
 import doggytalents.inventory.recipe.RecipeDogCape;
 import doggytalents.inventory.recipe.RecipeDogCollar;
-import doggytalents.lib.Reference;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;

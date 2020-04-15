@@ -5,7 +5,7 @@ import java.util.Map;
 import com.google.common.base.Optional;
 
 import doggytalents.api.inferface.Talent;
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import doggytalents.serializers.OptionalTextComponentSerializer;
 import doggytalents.serializers.TalentListSerializer;
 import net.minecraft.network.datasync.DataSerializer;

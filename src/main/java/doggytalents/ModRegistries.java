@@ -2,7 +2,7 @@ package doggytalents;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
-import doggytalents.lib.Reference;
+import doggytalents.api.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -979,13 +979,13 @@ public class EntityDog extends IDogEntity {
 
     @Override
     public boolean isPotionApplicable(PotionEffect potionEffect) {
-        if (this.isIncapacicated())
-            return false;
+        switch (TalentHelper.isPostionApplicable(this, potionEffect)) {
+            case SUCCESS: return true;
+            case FAIL: return false;
+            case PASS: break;
+        }
 
-        if (!TalentHelper.isPostionApplicable(this, potionEffect))
-            return false;
-
-        return true;
+        return !this.isIncapacicated();
     }
 
     @Override

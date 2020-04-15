@@ -43,7 +43,7 @@ public abstract class Talent extends net.minecraftforge.registries.IForgeRegistr
     public int onRegenerationTick(IDogEntity dog, int totalInTick) { return totalInTick; }
     public int attackEntityAsMob(IDogEntity dog, Entity entity, int damage) { return damage; }
     public int changeFoodValue(IDogEntity dog, ItemStack stack, int foodValue) { return foodValue; }
-    public boolean isPostionApplicable(IDogEntity dog, PotionEffect potionEffect) { return true; }
+    public EnumActionResult isPostionApplicable(IDogEntity dog, PotionEffect potionEffect) { return EnumActionResult.PASS; }
     public double addToMoveSpeed(IDogEntity dog) { return 0.0D; }
     public boolean canBreatheUnderwater(IDogEntity dog) { return false; }
     public boolean canTriggerWalking(IDogEntity dog) { return true; }

@@ -38,12 +38,14 @@ public class PoisonFangTalent extends Talent {
     }
 
     @Override
-    public boolean isPostionApplicable(IDogEntity dog, PotionEffect potionEffect) {
-        if(dog.getTalentFeature().getLevel(this) >= 3)
-            if(potionEffect.getPotion() == MobEffects.POISON)
-                return false;
+    public EnumActionResult isPostionApplicable(IDogEntity dog, PotionEffect potionEffect) {
+        if(this.getLevel(dog) >= 3) {
+            if(potionEffect.getPotion() == MobEffects.POISON) {
+                return EnumActionResult.FAIL;
+            }
+        }
 
-        return true;
+        return EnumActionResult.PASS;
     }
 
     @Override

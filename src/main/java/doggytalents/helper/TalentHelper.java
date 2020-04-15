@@ -1,5 +1,7 @@
 package doggytalents.helper;
 
+import java.util.function.Function;
+
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.Talent;
 import doggytalents.entity.EntityDog;
@@ -35,16 +37,7 @@ public class TalentHelper {
     }
 
     public static EnumActionResult interactWithPlayer(EntityDog dog, EntityPlayer player, EnumHand hand) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
-            EnumActionResult result = talent.onInteract(dog, player, hand);
-
-            switch(result) {
-                case PASS: continue;
-                default: return result;
-            }
-        }
-
-        return EnumActionResult.PASS;
+        return getAction(talent -> talent.onInteract(dog, player, hand));
     }
 
     public static void tick(EntityDog  dog) {
@@ -92,11 +85,8 @@ public class TalentHelper {
         return total;
     }
 
-    public static boolean isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues())
-            if(!talent.isPostionApplicable(dog, potionEffect))
-                return false;
-        return true;
+    public static EnumActionResult isPostionApplicable(EntityDog dog, PotionEffect potionEffect) {
+        return getAction(talent -> talent.isPostionApplicable(dog, potionEffect));
     }
 
     public static double addToMoveSpeed(EntityDog dog) {
@@ -179,16 +169,7 @@ public class TalentHelper {
     }
 
     public static EnumActionResult canBeRiddenInWater(EntityDog dog, Entity rider) {
-        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
-            EnumActionResult result = talent.canBeRiddenInWater(dog, rider);
-
-            switch(result) {
-                case PASS: continue;
-                default: return result;
-            }
-        }
-
-        return EnumActionResult.PASS;
+        return getAction(talent -> talent.canBeRiddenInWater(dog, rider));
     }
 
     public static void onFinishShaking(EntityDog dogIn, boolean gotWetInWater) {
@@ -203,5 +184,27 @@ public class TalentHelper {
             if(!talent.shouldDecreaseAir(dogIn, air))
                 return false;
         return true;
+    }
+
+    /**
+     * Applies the given function for every talent, if the function returns
+     * {@link net.minecraft.util.EnumActionResult#SUCCESS} or
+     * {@link net.minecraft.util.EnumActionResult#FAIL} then this
+     * returns immediately with the same result.
+     *
+     * @param action The talents action
+     * @return The action result
+     */
+    private static EnumActionResult getAction(Function<Talent, EnumActionResult> action) {
+        for(Talent talent : DoggyTalentsAPI.TALENTS.getValues()) {
+            EnumActionResult result = action.apply(talent);
+
+            switch(result) {
+                case PASS: continue;
+                default: return result;
+            }
+        }
+
+        return EnumActionResult.PASS;
     }
 }

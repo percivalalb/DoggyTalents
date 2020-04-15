@@ -68,6 +68,22 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei_${project.jei_version}")
 }
 
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.mc_version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version': project.output_version, 'mcversion': project.mc_version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
 task sourcesJar(type: Jar) {
     classifier = "sources"
     from sourceSets.main.allJava

@@ -46,6 +46,7 @@ minecraft {
 
     runs {
         client {
+		    taskName 'doggytalents_client'
             workingDirectory project.file('run')
             
             // Recommended logging level for the console
@@ -53,6 +54,7 @@ minecraft {
         }
 
         server {
+		    taskName 'doggytalents_server'
             workingDirectory project.file('run-server')
 
             // Recommended logging level for the console

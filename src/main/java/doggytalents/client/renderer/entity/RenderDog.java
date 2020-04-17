@@ -62,7 +62,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
     public void render(EntityDog dogIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (dogIn.isDogWet()) {
            float f = dogIn.getBrightness() * dogIn.getShadingWhileWet(partialTicks);
-           this.entityModel.func_228253_a_(f, f, f);
+           this.entityModel.setTint(f, f, f);
         }
 
         super.render(dogIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
@@ -87,7 +87,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
         }
 
         if (dogIn.isDogWet()) {
-           this.entityModel.func_228253_a_(1.0F, 1.0F, 1.0F);
+           this.entityModel.setTint(1.0F, 1.0F, 1.0F);
         }
     }
 

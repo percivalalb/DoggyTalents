@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -117,7 +117,7 @@ jar {
 
     manifest {
         attributes([
-            "Specification-Title": "doggytalents",
+            "Specification-Title": "Doggy Talents",
             "Specification-Vendor": "percivalalb",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,

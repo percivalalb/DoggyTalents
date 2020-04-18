@@ -45,6 +45,7 @@ minecraft {
 	
     runs {
         client {
+            taskName 'doggytalents_client'
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -56,6 +57,7 @@ minecraft {
         }
 
         server {
+            taskName 'doggytalents_server'
             workingDirectory project.file('run-server')
             property 'forge.logging.console.level', 'debug'
             mods {
@@ -67,6 +69,7 @@ minecraft {
         }
 
         data {
+            taskName 'doggytalents_data'
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'lasermod', '--all', '--output', file('src/generated/resources/')

@@ -13,15 +13,16 @@ public class DTItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    public void registerTags() {
-        getBuilder(ModTags.BEG_ITEMS_TAMED).add(ModItems.TRAINING_TREAT, ModItems.SUPER_TREAT, ModItems.MASTER_TREAT, ModItems.DIRE_TREAT, ModItems.BREEDING_BONE, ModItems.THROW_STICK, ModItems.THROW_BONE, Items.BONE);
-        getBuilder(ModTags.BEG_ITEMS_UNTAMED).add(ModItems.TRAINING_TREAT, Items.BONE);
-        getBuilder(ModTags.BREEDING_ITEMS).add(ModItems.BREEDING_BONE);
-        getBuilder(ModTags.PACK_PUPPY_BLACKLIST).add(ModItems.THROW_BONE, ModItems.THROW_BONE_WET, ModItems.THROW_STICK, ModItems.THROW_STICK_WET);
+    public String getName() {
+        return "DoggyTalents Item Tags";
     }
 
     @Override
-    public String getName() {
-        return "DoggyTalents Item Tags";
+    public void registerTags() {
+        getBuilder(ModTags.BEG_ITEMS_TAMED).add(ModItems.BREEDING_BONE, ModItems.THROW_STICK, ModItems.THROW_BONE, Items.BONE).add(ModTags.TREATS);
+        getBuilder(ModTags.BEG_ITEMS_UNTAMED).add(ModItems.TRAINING_TREAT, Items.BONE);
+        getBuilder(ModTags.BREEDING_ITEMS).add(ModItems.BREEDING_BONE);
+        getBuilder(ModTags.PACK_PUPPY_BLACKLIST).add(ModItems.THROW_BONE, ModItems.THROW_BONE_WET, ModItems.THROW_STICK, ModItems.THROW_STICK_WET);
+        getBuilder(ModTags.TREATS).add(ModItems.TRAINING_TREAT, ModItems.SUPER_TREAT, ModItems.MASTER_TREAT, ModItems.DIRE_TREAT);
     }
 }

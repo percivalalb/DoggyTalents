@@ -28,6 +28,11 @@ public class DTRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
+	public String getName() {
+	    return "DoggyTalents Recipes";
+	}
+
+	@Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.THROW_BONE).patternLine(" X ").patternLine("XYX").patternLine(" X ").key('X', Items.BONE).key('Y', Items.SLIME_BALL).addCriterion("has_bone", this.hasItem(Items.BONE)).build(consumer);
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.THROW_BONE).addIngredient(ModItems.THROW_BONE_WET, 1).addCriterion("has_throw_bone", this.hasItem(ModItems.THROW_BONE)).build(consumer, new ResourceLocation(Reference.MOD_ID, "throw_bone_wet"));

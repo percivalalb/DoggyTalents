@@ -29,6 +29,7 @@ sourceSets {
 	main {
 		compileClasspath += sourceSets.api.output
 		runtimeClasspath += sourceSets.api.output
+		resources.srcDirs += 'src/generated/resources'
 	}
 	test {
 		compileClasspath += sourceSets.api.output
@@ -72,7 +73,7 @@ minecraft {
             taskName 'doggytalents_data'
             workingDirectory project.file('run')
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'lasermod', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'doggytalents', '--all', '--output', '"' + file('src/generated/resources/') + '"', '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"'
             mods {
                 doggytalents {
                     source sourceSets.main

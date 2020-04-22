@@ -31,7 +31,7 @@ public class ModelBake {
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
             BlockModel model = (BlockModel)event.getModelLoader().getUnbakedModel(unbakedModelLoc);
-            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bakeModel(event.getModelLoader(), ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc));
+            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bakeModel(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
             ModBlocks.DOG_BED.getStateContainer().getValidStates().forEach(state -> {

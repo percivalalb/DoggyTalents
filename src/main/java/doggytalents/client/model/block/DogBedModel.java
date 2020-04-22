@@ -31,6 +31,7 @@ import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
@@ -129,7 +130,7 @@ public class DogBedModel implements IBakedModel {
         newModel.textures.put("casing", findTexture(ResourceLocation.tryCreate(casingResource)));
         newModel.textures.put("particle", findTexture(ResourceLocation.tryCreate(casingResource)));
 
-        return newModel.bakeModel(this.modelLoader, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing));
+        return newModel.bakeModel(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
     private ResourceLocation createResourceVariant(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
@@ -137,7 +138,7 @@ public class DogBedModel implements IBakedModel {
     }
 
     private Either<Material, String> findTexture(ResourceLocation resource) {
-        return Either.left(new Material(AtlasTexture.LOCATION_BLOCKS_TEXTURE, resource));
+        return Either.left(new Material(PlayerContainer.LOCATION_BLOCKS_TEXTURE, resource));
     }
 
     private ModelRotation getModelRotation(Direction dir) {

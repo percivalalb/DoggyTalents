@@ -1,0 +1,44 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "particle": "doggytalents:block/food_bowl_bottom",
+    "bottom": "doggytalents:block/food_bowl_bottom",
+    "top": "doggytalents:block/food_bowl_top",
+    "side": "doggytalents:block/food_bowl_side"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        8,
+        15
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

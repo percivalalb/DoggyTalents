@@ -14,7 +14,10 @@ import doggytalents.client.renderer.entity.RenderDog;
 import doggytalents.client.renderer.entity.RenderDogBeam;
 import doggytalents.client.renderer.world.WorldRender;
 import doggytalents.configuration.ConfigHandler;
+import doggytalents.data.DTBlockstateProvider;
+import doggytalents.data.DTItemModelProvider;
 import doggytalents.data.DTItemTagsProvider;
+import doggytalents.data.DTLootTableProvider;
 import doggytalents.data.DTRecipeProvider;
 import doggytalents.handler.EntityInteract;
 import doggytalents.handler.EntitySpawn;
@@ -132,12 +135,20 @@ public class DoggyTalentsMod {
         AddonManager.runRegisteredAddons();
     }
 
-    public void gatherData(GatherDataEvent event) {
+    private void gatherData(final GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
 
+        if (event.includeClient()) {
+            DTBlockstateProvider blockstates = new DTBlockstateProvider(gen, event.getExistingFileHelper());
+            gen.addProvider(blockstates);
+            gen.addProvider(new DTItemModelProvider(gen, blockstates.getExistingHelper()));
+        }
+
         if (event.includeServer()) {
+            // gen.addProvider(new DTBlockTagsProvider(gen));
             gen.addProvider(new DTItemTagsProvider(gen));
             gen.addProvider(new DTRecipeProvider(gen));
+            gen.addProvider(new DTLootTableProvider(gen));
         }
     }
 }

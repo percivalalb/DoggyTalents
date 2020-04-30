@@ -111,7 +111,7 @@ public class DogUtil {
                 return ItemStack.EMPTY;
             }
 
-            if(ItemStack.areItemsEqual(itemstack1, itemstack)) {
+            if(ItemStack.areItemStacksEqual(itemstack1, itemstack)) {
                 int j = Math.min(inventory.getInventoryStackLimit(), itemstack1.getMaxStackSize());
                 int k = Math.min(itemstack.getCount(), j - itemstack1.getCount());
 

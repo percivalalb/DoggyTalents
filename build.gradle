@@ -41,6 +41,12 @@ configurations {
     apiCompile.extendsFrom(compile)
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209'
+    }
+}
+
 minecraft {
     mappings channel: 'snapshot', version: project.mcp_mappings
 

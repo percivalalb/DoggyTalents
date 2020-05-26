@@ -52,7 +52,7 @@ public class DogBedRegistry implements IDogBedRegistry {
     }
     
     public IBedMaterial get(String saveId) {
-        if(saveId.equals("missing"))
+        if(saveId == null || saveId.equals("missing"))
             return IBedMaterial.NULL;
         
         

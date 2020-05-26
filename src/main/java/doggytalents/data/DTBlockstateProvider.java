@@ -40,9 +40,9 @@ public class DTBlockstateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        dogBath(ModBlocks.DOG_BATH.delegate);
-        dogBed(ModBlocks.DOG_BED.delegate);
-        createFromShape(ModBlocks.FOOD_BOWL.delegate, new AxisAlignedBB(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D));
+        dogBath(ModBlocks.DOG_BATH);
+        dogBed(ModBlocks.DOG_BED);
+        createFromShape(ModBlocks.FOOD_BOWL, new AxisAlignedBB(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D));
     }
 
     // Applies texture to all faces and for the input face culls that direction

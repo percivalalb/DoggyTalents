@@ -73,7 +73,7 @@ public class ItemWhistle extends Item {
                         successful = true;
                     }
 
-                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
+                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.come"));
@@ -86,7 +86,7 @@ public class ItemWhistle extends Item {
                         }
                     }
 
-                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
+                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
@@ -101,7 +101,7 @@ public class ItemWhistle extends Item {
                         successful = true;
                     }
 
-                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
+                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
@@ -121,13 +121,13 @@ public class ItemWhistle extends Item {
                         successful = true;
                     }
 
-                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
+                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
 
                     if(successful)
                         player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
                 }
                 else if(mode == 4) {
-                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
+                    world.playSound(null, player.getPosition(), ModSounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
                     //player.sendMessage(new TranslationTextComponent("dogcommand.shepherd"));
                 } else if(mode == 5) {
                     world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));

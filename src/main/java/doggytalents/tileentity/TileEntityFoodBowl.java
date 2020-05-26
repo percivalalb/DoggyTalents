@@ -38,11 +38,11 @@ public class TileEntityFoodBowl extends TileEntity implements INamedContainerPro
 
 
     public int timeoutCounter;
-    
+
     public TileEntityFoodBowl() {
-        super(ModTileEntities.FOOD_BOWL);
+        super(ModTileEntities.FOOD_BOWL.get());
     }
-    
+
     @Override
     public void read(CompoundNBT compound) {
         super.read(compound);
@@ -58,28 +58,28 @@ public class TileEntityFoodBowl extends TileEntity implements INamedContainerPro
 
     @Override
     public void tick() {
-        
+
         //Only run update code every 5 ticks (0.25s)
         if(++this.timeoutCounter < 5) { return; }
-        
+
         List<EntityDog> dogList = this.world.getEntitiesWithinAABB(EntityDog.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
         IItemHandler inventory = CapabilityHelper.getOrThrow(this, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-        
-        
+
+
         for(EntityDog dog : dogList) {
             //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
             if(!dog.COORDS.hasBowlPos()) {
                 dog.COORDS.setBowlPos(this.pos);
             }
-                
+
             if(dog.getDogHunger() < 60) {
                 DogUtil.feedDogFrom(dog, inventory);
             }
         }
-        
+
         this.timeoutCounter = 0;
     }
-    
+
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {

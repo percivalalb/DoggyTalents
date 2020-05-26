@@ -27,11 +27,11 @@ import net.minecraft.world.World;
  * @author ProPercivalalb
  **/
 public class ItemDoggyCharm extends Item {
-    
+
     public ItemDoggyCharm(Properties properties) {
         super(properties);
     }
-    
+
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
@@ -51,8 +51,8 @@ public class ItemDoggyCharm extends Item {
                    blockpos1 = blockpos.offset(enumfacing);
                }
 
-               
-               Entity entity = ModEntities.DOG.spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
+
+               Entity entity = ModEntities.DOG.get().spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
                if(entity instanceof EntityDog) {
                    EntityDog dog = (EntityDog)entity;
                    if(player != null) {
@@ -61,11 +61,11 @@ public class ItemDoggyCharm extends Item {
                    }
                    itemstack.shrink(1);
                }
-              
+
                return ActionResultType.SUCCESS;
         }
     }
-    
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
@@ -78,7 +78,7 @@ public class ItemDoggyCharm extends Item {
                 if(!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
                     return new ActionResult<>(ActionResultType.PASS, itemstack);
                 } else if(worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, ((BlockRayTraceResult)raytraceresult).getFace(), itemstack)) {
-                    Entity entity = ModEntities.DOG.spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+                    Entity entity = ModEntities.DOG.get().spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
                     if(entity instanceof EntityDog) {
                            EntityDog dog = (EntityDog)entity;
                            dog.setTamed(true);
@@ -97,5 +97,5 @@ public class ItemDoggyCharm extends Item {
                 return new ActionResult<>(ActionResultType.PASS, itemstack);
             }
         }
-    } 
+    }
 }

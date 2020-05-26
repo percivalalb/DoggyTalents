@@ -132,7 +132,7 @@ public class BlockFoodBowl extends ContainerBlock implements IWaterLoggable {
             if(foodBowl != null) {
                 ItemStack stack = playerIn.getHeldItem(handIn);
 
-                if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG) {
+                if(!stack.isEmpty() && stack.getItem() == ModItems.TREAT_BAG.get()) {
                     IItemHandler bagInventory = CapabilityHelper.getOrThrow(stack, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                     IItemHandler bowlInventory = CapabilityHelper.getOrThrow(foodBowl, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
                     DogUtil.transferStacks((IItemHandlerModifiable) bagInventory, bowlInventory);

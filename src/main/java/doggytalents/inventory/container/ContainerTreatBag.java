@@ -17,9 +17,9 @@ public class ContainerTreatBag extends Container {
     public int slot;
     public ItemStack itemstack;
     public IItemHandler bagInventory;
-    
+
     public ContainerTreatBag(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
-        super(ModContainerTypes.TREAT_BAG, windowId);
+        super(ModContainerTypes.TREAT_BAG.get(), windowId);
         this.slot = slotIn;
         this.itemstack = itemstackIn;
         this.bagInventory = CapabilityHelper.getOrThrow(itemstackIn, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
@@ -49,7 +49,7 @@ public class ContainerTreatBag extends Container {
     @Override
     public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.inventorySlots.get(index);
+        Slot slot = this.inventorySlots.get(index);
 
         if(slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -68,7 +68,7 @@ public class ContainerTreatBag extends Container {
                 slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
-            
+
            // if(itemstack1.getCount() == itemstack.getCount())
            //     return ItemStack.EMPTY;
         }
@@ -78,6 +78,6 @@ public class ContainerTreatBag extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity playerIn) {
-        return playerIn.inventory.getStackInSlot(this.slot).getItem() == ModItems.TREAT_BAG;
+        return playerIn.inventory.getStackInSlot(this.slot).getItem() == ModItems.TREAT_BAG.get();
     }
 }

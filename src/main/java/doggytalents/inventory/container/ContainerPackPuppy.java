@@ -24,7 +24,7 @@ public class ContainerPackPuppy extends Container {
     private int level;
 
     public ContainerPackPuppy(int windowId, PlayerInventory playerInventory, EntityDog dogIn) {
-        super(ModContainerTypes.PACK_PUPPY, windowId);
+        super(ModContainerTypes.PACK_PUPPY.get(), windowId);
         this.dog = dogIn;
         this.level = MathHelper.clamp(dogIn.TALENTS.getLevel(ModTalents.PACK_PUPPY), 0, 5);
         this.packInventory = CapabilityHelper.getOrThrow(this.dog, PackPuppyTalent.PACK_PUPPY_CAPABILITY);

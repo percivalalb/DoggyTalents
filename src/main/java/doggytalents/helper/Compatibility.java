@@ -8,24 +8,23 @@ import doggytalents.api.inferface.Talent;
 import doggytalents.lib.Reference;
 import net.minecraft.util.ResourceLocation;
 
-//@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class Compatibility {
 
     public static final ResourceLocation DOGGY_BEAM = new ResourceLocation(Reference.MOD_ID, "attackbeam");
     public static final ResourceLocation COMMAND_EMBLEM = new ResourceLocation(Reference.MOD_ID, "command_emblem");
-    
-    private static HashMap<String, String> OLD_NEW_BED = new HashMap<String, String>();
-    private static HashMap<String, Supplier<Talent>> OLD_NEW_TALENT = new HashMap<String, Supplier<Talent>>();
-    
+
+    private static HashMap<String, String> OLD_NEW_BED = new HashMap<>();
+    private static HashMap<String, Supplier<? extends Talent>> OLD_NEW_TALENT = new HashMap<>();
+
     public static String getBedOldNamingScheme(String name) {
         return OLD_NEW_BED.containsKey(name) ? OLD_NEW_BED.get(name) : name;
     }
-    
+
     public static Talent getTalentOldNamingScheme(String name) {
         return OLD_NEW_TALENT.containsKey(name) ? OLD_NEW_TALENT.get(name).get() : null;
     }
-    
-    static {
+
+    public static void init() {
         // Update to 1.13
         OLD_NEW_BED.put("minecraft:wool.0", "minecraft:white_wool");
         OLD_NEW_BED.put("minecraft:wool.1", "minecraft:orange_wool");
@@ -49,7 +48,7 @@ public class Compatibility {
         OLD_NEW_BED.put("minecraft:planks.3", "minecraft:jungle_planks");
         OLD_NEW_BED.put("minecraft:planks.4", "minecraft:acacia_planks");
         OLD_NEW_BED.put("minecraft:planks.5", "minecraft:dark_oak_planks");
-        
+
         // Update to 1.14
         OLD_NEW_BED.put("minecraft_white_wool", "minecraft:white_wool");
         OLD_NEW_BED.put("minecraft_orange_wool", "minecraft:orange_wool");
@@ -73,28 +72,28 @@ public class Compatibility {
         OLD_NEW_BED.put("minecraft_jungle_planks", "minecraft:jungle_planks");
         OLD_NEW_BED.put("minecraft_acacia_planks", "minecraft:acacia_planks");
         OLD_NEW_BED.put("minecraft_dark_oak_planks", "minecraft:dark_oak_planks");
-        
-        OLD_NEW_TALENT.put("bedfinder", ()->ModTalents.BED_FINDER);
-        OLD_NEW_TALENT.put("blackpelt", ()->ModTalents.BLACK_PELT);
-        OLD_NEW_TALENT.put("creepersweeper", ()->ModTalents.CREEPER_SWEEPER);
-        OLD_NEW_TALENT.put("doggydash", ()->ModTalents.DOGGY_DASH);
-        OLD_NEW_TALENT.put("fisherdog", ()->ModTalents.FISHER_DOG);
-        OLD_NEW_TALENT.put("guarddog", ()->ModTalents.GUARD_DOG);
-        OLD_NEW_TALENT.put("happyeater", ()->ModTalents.HAPPY_EATER);
-        OLD_NEW_TALENT.put("hellhound", ()->ModTalents.HELL_HOUND);
-        OLD_NEW_TALENT.put("hunterdog", ()->ModTalents.HUNTER_DOG);
-        OLD_NEW_TALENT.put("packpuppy", ()->ModTalents.PACK_PUPPY);
-        OLD_NEW_TALENT.put("pestfighter", ()->ModTalents.PEST_FIGHTER);
-        OLD_NEW_TALENT.put("pillowpaw", ()->ModTalents.PILLOW_PAW);
-        OLD_NEW_TALENT.put("poisonfang", ()->ModTalents.POISON_FANG);
-        OLD_NEW_TALENT.put("puppyeyes", ()->ModTalents.PUPPY_EYES);
-        OLD_NEW_TALENT.put("quickhealer", ()->ModTalents.QUICK_HEALER);
-        //OLD_NEW_TALENT.put("rangedattacker", ()->ModTalents.RANGED_ATTACKER);
-        OLD_NEW_TALENT.put("rescuedog", ()->ModTalents.RESCUE_DOG);
-        OLD_NEW_TALENT.put("roaringgale", ()->ModTalents.ROARING_GALE);
-        OLD_NEW_TALENT.put("shepherddog", ()->ModTalents.SHEPHERD_DOG);
-        OLD_NEW_TALENT.put("swimmerdog", ()->ModTalents.SWIMMER_DOG);
-        OLD_NEW_TALENT.put("wolfmount", ()->ModTalents.WOLF_MOUNT);
+
+        OLD_NEW_TALENT.put("bedfinder", ModTalents.BED_FINDER.delegate);
+        OLD_NEW_TALENT.put("blackpelt", ModTalents.BLACK_PELT.delegate);
+        OLD_NEW_TALENT.put("creepersweeper", ModTalents.CREEPER_SWEEPER.delegate);
+        OLD_NEW_TALENT.put("doggydash", ModTalents.DOGGY_DASH.delegate);
+        OLD_NEW_TALENT.put("fisherdog", ModTalents.FISHER_DOG.delegate);
+        OLD_NEW_TALENT.put("guarddog", ModTalents.GUARD_DOG.delegate);
+        OLD_NEW_TALENT.put("happyeater", ModTalents.HAPPY_EATER.delegate);
+        OLD_NEW_TALENT.put("hellhound", ModTalents.HELL_HOUND.delegate);
+        OLD_NEW_TALENT.put("hunterdog", ModTalents.HUNTER_DOG.delegate);
+        OLD_NEW_TALENT.put("packpuppy", ModTalents.PACK_PUPPY.delegate);
+        OLD_NEW_TALENT.put("pestfighter", ModTalents.PEST_FIGHTER.delegate);
+        OLD_NEW_TALENT.put("pillowpaw", ModTalents.PILLOW_PAW.delegate);
+        OLD_NEW_TALENT.put("poisonfang", ModTalents.POISON_FANG.delegate);
+        OLD_NEW_TALENT.put("puppyeyes", ModTalents.PUPPY_EYES.delegate);
+        OLD_NEW_TALENT.put("quickhealer", ModTalents.QUICK_HEALER.delegate);
+        //OLD_NEW_TALENT.put("rangedattacker", ModTalents.RANGED_ATTACKER.delegate);
+        OLD_NEW_TALENT.put("rescuedog", ModTalents.RESCUE_DOG.delegate);
+        OLD_NEW_TALENT.put("roaringgale", ModTalents.ROARING_GALE.delegate);
+        OLD_NEW_TALENT.put("shepherddog", ModTalents.SHEPHERD_DOG.delegate);
+        OLD_NEW_TALENT.put("swimmerdog", ModTalents.SWIMMER_DOG.delegate);
+        OLD_NEW_TALENT.put("wolfmount", ModTalents.WOLF_MOUNT.delegate);
 
     }
 }

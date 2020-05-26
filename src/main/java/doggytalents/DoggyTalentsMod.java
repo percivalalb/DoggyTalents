@@ -26,19 +26,14 @@ import doggytalents.handler.InputUpdate;
 import doggytalents.handler.LivingDrops;
 import doggytalents.handler.MissingMappings;
 import doggytalents.handler.PlayerConnection;
+import doggytalents.helper.Compatibility;
 import doggytalents.lib.Reference;
 import doggytalents.network.PacketHandler;
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -51,7 +46,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-import net.minecraftforge.registries.DataSerializerEntry;
 
 /**
  * @author ProPercivalalb
@@ -75,16 +69,16 @@ public class DoggyTalentsMod {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        modEventBus.addGenericListener(Item.class, ModItems::registerItems);
-        modEventBus.addGenericListener(Block.class, ModBlocks::registerBlocks);
-        modEventBus.addGenericListener(Item.class, ModBlocks::registerItemBlocks);
-        modEventBus.addGenericListener(EntityType.class, ModEntities::registerEntities);
-        modEventBus.addGenericListener(ContainerType.class, ModContainerTypes::registerContainers);
-        modEventBus.addGenericListener(DataSerializerEntry.class, ModSerializers::registerSerializers);
-        modEventBus.addGenericListener(SoundEvent.class, ModSounds::registerSoundEvents);
-        modEventBus.addGenericListener(IRecipeSerializer.class, ModRecipes::registerRecipes);
-        modEventBus.addGenericListener(TileEntityType.class, ModTileEntities::registerTileEntities);
-        modEventBus.addGenericListener(Talent.class, ModTalents::registerTalents);
+        ModBlocks.BLOCKS.register(modEventBus);
+        ModTileEntities.TILE_ENTITIES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
+        ModContainerTypes.CONTAINERS.register(modEventBus);
+        ModSerializers.SERIALIZERS.register(modEventBus);
+        ModSounds.SOUNDS.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+        modEventBus.addGenericListener(Talent.class, ModTalents::registerTalents); // ModTalents.TALENTS.register(modEventBus);
+
         modEventBus.addListener(ModRegistries::newRegistry);
         modEventBus.addListener(ModBeddings::registerBeddingMaterial);
 
@@ -121,16 +115,18 @@ public class DoggyTalentsMod {
         ConfigHandler.initTalentConfig();
     }
 
+    @OnlyIn(Dist.CLIENT)
     public void clientSetup(FMLClientSetupEvent event) {
-        ScreenManager.registerFactory(ModContainerTypes.FOOD_BOWL, GuiFoodBowl::new);
-        ScreenManager.registerFactory(ModContainerTypes.PACK_PUPPY, GuiPackPuppy::new);
-        ScreenManager.registerFactory(ModContainerTypes.TREAT_BAG, GuiTreatBag::new);
+        ScreenManager.registerFactory(ModContainerTypes.FOOD_BOWL.get(), GuiFoodBowl::new);
+        ScreenManager.registerFactory(ModContainerTypes.PACK_PUPPY.get(), GuiPackPuppy::new);
+        ScreenManager.registerFactory(ModContainerTypes.TREAT_BAG.get(), GuiTreatBag::new);
 
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG, RenderDog::new);
-        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG_BEAM, RenderDogBeam::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG.get(), RenderDog::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntities.DOG_BEAM.get(), RenderDogBeam::new);
     }
 
     protected void interModProcess(InterModProcessEvent event) {
+        Compatibility.init();
         FMLJavaModLoadingContext.get().getModEventBus().post(new BeddingRegistryEvent(DogBedRegistry.CASINGS, DogBedRegistry.BEDDINGS));
         AddonManager.runRegisteredAddons();
     }

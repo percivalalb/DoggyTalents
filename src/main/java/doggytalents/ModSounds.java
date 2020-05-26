@@ -1,24 +1,31 @@
 package doggytalents;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import doggytalents.lib.Reference;
-import doggytalents.lib.SoundNames;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModSounds {
-    
-    public static final SoundEvent WHISTLE_SHORT = null;
-    public static final SoundEvent WHISTLE_LONG = null;
 
-    public static void registerSoundEvents(final RegistryEvent.Register<SoundEvent> event) {
-        IForgeRegistry<SoundEvent> soundRegistry = event.getRegistry();
-        
-        DoggyTalentsMod.LOGGER.debug("Registering Sounds");
-        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_SHORT).setRegistryName(SoundNames.WHISTLE_SHORT));
-        soundRegistry.register(new SoundEvent(SoundNames.WHISTLE_LONG).setRegistryName(SoundNames.WHISTLE_LONG));
-        DoggyTalentsMod.LOGGER.debug("Finished Registering Sounds");
+    public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, Reference.MOD_ID);
+
+    public static final RegistryObject<SoundEvent> WHISTLE_SHORT = register("whistle_short");
+    public static final RegistryObject<SoundEvent> WHISTLE_LONG = register("whistle_long");
+
+    private static RegistryObject<SoundEvent> register(final String name) {
+        return register(name, SoundEvent::new);
+    }
+
+    private static <T extends SoundEvent> RegistryObject<T> register(final String name, final Function<ResourceLocation, T> factory) {
+        return register(name, () -> factory.apply(new ResourceLocation(Reference.MOD_ID, name)));
+    }
+
+    private static <T extends SoundEvent> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return SOUNDS.register(name, sup);
     }
 }

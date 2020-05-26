@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IWorldReader;
 
 public class EntityAISitOnBed extends MoveToBlockGoal {
-    
+
     private final EntityDog dog;
 
     public EntityAISitOnBed(EntityDog dogIn, double speedIn) {
@@ -53,7 +53,7 @@ public class EntityAISitOnBed extends MoveToBlockGoal {
             BlockState blockstate = worldIn.getBlockState(pos);
             Block block = blockstate.getBlock();
 
-            return block == ModBlocks.DOG_BED;
+            return block == ModBlocks.DOG_BED.get();
         }
     }
 }

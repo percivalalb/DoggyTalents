@@ -16,10 +16,10 @@ public class ModelChest extends SegmentedModel<EntityDog> {
 
     public ModelChest(float scaleFactor) {
         this.chest1 = new ModelRenderer(this, 52, 0);
-        this.chest1.addBox(2.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
+        this.chest1.addBox(2.0F, -1F, 0F, 2, 7, 4, scaleFactor);
         this.chest1.setRotationPoint(0.0F, 14.0F, 2.0F);
         this.chest2 = new ModelRenderer(this, 52, 0);
-        this.chest2.addBox(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor); // 1.14 addBox
+        this.chest2.addBox(-4.0F, -1F, 0F, 2, 7, 4, scaleFactor);
         this.chest2.setRotationPoint(0.0F, 14.0F, 2.0F);
     }
 

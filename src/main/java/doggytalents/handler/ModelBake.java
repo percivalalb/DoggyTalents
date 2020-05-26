@@ -27,14 +27,14 @@ public class ModelBake {
         Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 
         try {
-            ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(ModBlocks.DOG_BED);
+            ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(ModBlocks.DOG_BED.get());
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
             BlockModel model = (BlockModel)event.getModelLoader().getUnbakedModel(unbakedModelLoc);
             IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bakeModel(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
-            ModBlocks.DOG_BED.getStateContainer().getValidStates().forEach(state -> {
+            ModBlocks.DOG_BED.get().getStateContainer().getValidStates().forEach(state -> {
                 modelRegistry.put(BlockModelShapes.getModelLocation(state), customModel);
             });
 

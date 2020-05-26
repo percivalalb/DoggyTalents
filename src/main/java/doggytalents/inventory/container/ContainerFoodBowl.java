@@ -20,12 +20,12 @@ import net.minecraftforge.items.SlotItemHandler;
  * @author ProPercivalalb
  */
 public class ContainerFoodBowl extends Container {
-    
+
     private TileEntity tileEntity;
-    
+
     //Server method
     public ContainerFoodBowl(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
-        super(ModContainerTypes.FOOD_BOWL, windowId);
+        super(ModContainerTypes.FOOD_BOWL.get(), windowId);
         this.tileEntity = world.getTileEntity(pos);
         IItemHandler inventory = CapabilityHelper.getOrThrow(this.tileEntity, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 
@@ -48,13 +48,13 @@ public class ContainerFoodBowl extends Container {
 
     @Override
     public boolean canInteractWith(PlayerEntity player) {
-        return isWithinUsableDistance(IWorldPosCallable.of(this.tileEntity.getWorld(), this.tileEntity.getPos()), player, ModBlocks.FOOD_BOWL);
+        return isWithinUsableDistance(IWorldPosCallable.of(this.tileEntity.getWorld(), this.tileEntity.getPos()), player, ModBlocks.FOOD_BOWL.get());
     }
 
     @Override
     public ItemStack transferStackInSlot(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = (Slot)this.inventorySlots.get(i);
+        Slot slot = this.inventorySlots.get(i);
 
         if(slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
@@ -73,7 +73,7 @@ public class ContainerFoodBowl extends Container {
                 slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
-            
+
             if(itemstack1.getCount() == itemstack.getCount())
                 return ItemStack.EMPTY;
         }

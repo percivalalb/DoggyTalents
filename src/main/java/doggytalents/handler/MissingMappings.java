@@ -19,24 +19,24 @@ public class MissingMappings {
      @SubscribeEvent
      public void remapMissingEntities(final RegistryEvent.MissingMappings<EntityType<?>> event) {
          if(event.getAllMappings() == null) return; // Prevent crash
-         
+
          ImmutableList<Mapping<EntityType<?>>> mappings = event.getAllMappings();
          mappings.forEach(mapping -> {
              if(Objects.equals(mapping.key, Compatibility.DOGGY_BEAM)) {
-                 mapping.remap(ModEntities.DOG_BEAM);
+                 mapping.remap(ModEntities.DOG_BEAM.get());
                  DoggyTalentsMod.LOGGER.debug("Remapped Dog Beam id");
              }
          });
      }
-     
+
      @SubscribeEvent
      public void remapMissingItems(final RegistryEvent.MissingMappings<Item> event) {
          if(event.getAllMappings() == null) return;  // Prevent crash
-         
+
          ImmutableList<Mapping<Item>> mappings = event.getAllMappings();
          mappings.forEach(mapping -> {
              if(Objects.equals(mapping.key, Compatibility.COMMAND_EMBLEM)) {
-                 mapping.remap(ModItems.WHISTLE);
+                 mapping.remap(ModItems.WHISTLE.get());
                  DoggyTalentsMod.LOGGER.debug("Remapped Command Emblem to Whistle");
              }
          });

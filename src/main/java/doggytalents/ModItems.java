@@ -1,9 +1,13 @@
 package doggytalents;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
 import doggytalents.item.ItemBigBone;
 import doggytalents.item.ItemCapeColoured;
 import doggytalents.item.ItemChewStick;
-import doggytalents.item.ItemCreativeCollar;
 import doggytalents.item.ItemCreativeOwnerChange;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
@@ -17,94 +21,109 @@ import doggytalents.item.ItemTreat;
 import doggytalents.item.ItemTreatBag;
 import doggytalents.item.ItemWhistle;
 import doggytalents.item.ItemWoolCollar;
-import doggytalents.lib.ItemNames;
 import doggytalents.lib.Reference;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModItems {
 
-    public static final Item THROW_BONE = null;
-    public static final Item THROW_BONE_WET = null;
-    public static final Item THROW_STICK = null;
-    public static final Item THROW_STICK_WET = null;
-    public static final Item TRAINING_TREAT = null;
-    public static final Item SUPER_TREAT = null;
-    public static final Item MASTER_TREAT = null;
-    public static final Item DIRE_TREAT = null;
-    public static final Item BREEDING_BONE = null;
-    public static final Item COLLAR_SHEARS = null;
-    public static final Item DOGGY_CHARM = null;
-    public static final Item RADIO_COLLAR = null;
-    public static final Item WOOL_COLLAR = null;
-    public static final Item CREATIVE_COLLAR = null;
-    public static final Item SPOTTED_COLLAR = null;
-    public static final Item MULTICOLOURED_COLLAR = null;
-    public static final Item RADAR = null;
-    public static final Item CREATIVE_RADAR = null;
-    public static final Item WHISTLE = null;
-    public static final Item TREAT_BAG = null;
-    public static final Item CHEW_STICK = null;
-    public static final Item CAPE = null;
-    public static final Item CAPE_COLOURED = null;
-    public static final Item SUNGLASSES = null;
-    public static final Item LEATHER_JACKET = null;
-    public static final Item TINY_BONE = null;
-    public static final Item BIG_BONE = null;
-    public static final Item OWNER_CHANGE = null;
-    
-    public static void registerItems(final RegistryEvent.Register<Item> event) {
-        IForgeRegistry<Item> itemRegistry = event.getRegistry();
-        DoggyTalentsMod.LOGGER.debug("Registering Items");
-        itemRegistry.register(new ItemThrowBone(()->THROW_BONE_WET, ()->Items.BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(2)).setRegistryName(ItemNames.THROW_BONE));
-        itemRegistry.register(new ItemDroolBone(()->THROW_BONE, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_BONE_WET));
-        itemRegistry.register(new ItemThrowBone(()->THROW_STICK_WET, ()->ModItems.THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(8)).setRegistryName(ItemNames.THROW_STICK));
-        itemRegistry.register(new ItemDroolBone(()->THROW_STICK, new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.THROW_STICK_WET));
-        itemRegistry.register(new ItemTreat(20, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TRAINING_TREAT));
-        itemRegistry.register(new ItemTreat(40, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUPER_TREAT));
-        itemRegistry.register(new ItemTreat(60, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MASTER_TREAT));
-        itemRegistry.register(new ItemDireTreat(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.DIRE_TREAT));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BREEDING_BONE));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.COLLAR_SHEARS));
-        itemRegistry.register(new ItemDoggyCharm(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.DOGGY_CHARM));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.RADIO_COLLAR));
-        itemRegistry.register(new ItemWoolCollar(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.WOOL_COLLAR));
-        itemRegistry.register(new ItemCreativeCollar(ItemFancyCollar.Type.CREATIVE, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CREATIVE_COLLAR));
-        itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.SPOTTED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SPOTTED_COLLAR));
-        itemRegistry.register(new ItemFancyCollar(ItemFancyCollar.Type.MULTI_COLOURED, new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.MULTICOLOURED_COLLAR));
-        itemRegistry.register(new ItemRadarCreative(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.CREATIVE_RADAR));
-        itemRegistry.register(new ItemRadar(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.RADAR));
-        itemRegistry.register(new ItemWhistle(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.WHISTLE));
-        itemRegistry.register(new ItemTreatBag(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.TREAT_BAG));
-        itemRegistry.register(new ItemChewStick(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CHEW_STICK));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE));
-        itemRegistry.register(new ItemCapeColoured(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.CAPE_COLOURED));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.SUNGLASSES));
-        itemRegistry.register(new Item(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.LEATHER_JACKET));
-        itemRegistry.register(new ItemTinyBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.TINY_BONE));
-        itemRegistry.register(new ItemBigBone(new Item.Properties().group(ModCreativeTabs.GENERAL)).setRegistryName(ItemNames.BIG_BONE));
-        itemRegistry.register(new ItemCreativeOwnerChange(new Item.Properties().group(ModCreativeTabs.GENERAL).maxStackSize(1)).setRegistryName(ItemNames.OWNER_CHANGE));
-        DoggyTalentsMod.LOGGER.debug("Finished Registering Items");
+    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Reference.MOD_ID);
+
+    public static final RegistryObject<ItemThrowBone> THROW_BONE = registerDryBone("throw_bone");
+    public static final RegistryObject<ItemDroolBone> THROW_BONE_WET = registerDrool("throw_bone_wet", THROW_BONE, (prop) -> prop.maxStackSize(1));
+    public static final RegistryObject<ItemThrowBone> THROW_STICK = registerDryStick("throw_stick");
+    public static final RegistryObject<ItemDroolBone> THROW_STICK_WET = registerDrool("throw_stick_wet", THROW_STICK, (prop) -> prop.maxStackSize(1));
+    public static final RegistryObject<Item> TRAINING_TREAT = registerTreat("training_treat", 20);
+    public static final RegistryObject<Item> SUPER_TREAT = registerTreat("super_treat", 40);
+    public static final RegistryObject<Item> MASTER_TREAT = registerTreat("master_treat", 60);
+    public static final RegistryObject<Item> DIRE_TREAT = register("dire_treat", ItemDireTreat::new);
+    public static final RegistryObject<Item> BREEDING_BONE = register("breeding_bone");
+    public static final RegistryObject<Item> COLLAR_SHEARS = registerWith("collar_shears", (prop) -> prop.maxStackSize(1));
+    public static final RegistryObject<Item> DOGGY_CHARM = registerWith("doggy_charm", ItemDoggyCharm::new, 1);
+    public static final RegistryObject<Item> RADIO_COLLAR = register("radio_collar");
+    public static final RegistryObject<Item> WOOL_COLLAR = register("wool_collar", ItemWoolCollar::new);
+    public static final RegistryObject<Item> CREATIVE_COLLAR = registerFancyCollar("creative_collar", ItemFancyCollar.Type.CREATIVE);
+    public static final RegistryObject<Item> SPOTTED_COLLAR = registerFancyCollar("spotted_collar", ItemFancyCollar.Type.SPOTTED);
+    public static final RegistryObject<Item> MULTICOLOURED_COLLAR = registerFancyCollar("multicoloured_collar", ItemFancyCollar.Type.MULTI_COLOURED);
+    public static final RegistryObject<Item> RADAR = registerWith("radar", ItemRadar::new, 1);
+    public static final RegistryObject<Item> CREATIVE_RADAR = registerWith("creative_radar", ItemRadarCreative::new, 1);
+    public static final RegistryObject<Item> WHISTLE = registerWith("whistle", ItemWhistle::new, 1);
+    public static final RegistryObject<Item> TREAT_BAG = registerWith("treat_bag", ItemTreatBag::new, 1);
+    public static final RegistryObject<Item> CHEW_STICK = register("chew_stick", ItemChewStick::new);
+    public static final RegistryObject<Item> CAPE = register("cape");
+    public static final RegistryObject<Item> CAPE_COLOURED = register("cape_coloured", ItemCapeColoured::new);
+    public static final RegistryObject<Item> SUNGLASSES = register("sunglasses");
+    public static final RegistryObject<Item> LEATHER_JACKET = register("leather_jacket");
+    public static final RegistryObject<Item> TINY_BONE = register("tiny_bone", ItemTinyBone::new);
+    public static final RegistryObject<Item> BIG_BONE = register("big_bone", ItemBigBone::new);
+    public static final RegistryObject<Item> OWNER_CHANGE = registerWith("owner_change", ItemCreativeOwnerChange::new, 1);
+
+    private static Item.Properties createInitialProp() {
+        return new Item.Properties().group(ModCreativeTabs.GENERAL);
     }
-    
+
+    private static RegistryObject<ItemThrowBone> registerDryBone(final String name) {
+        return register(name, () -> new ItemThrowBone(THROW_BONE_WET, Items.BONE.delegate, createInitialProp().maxStackSize(2)));
+    }
+
+    private static RegistryObject<ItemThrowBone> registerDryStick(final String name) {
+        return register(name, () -> new ItemThrowBone(THROW_STICK_WET, THROW_STICK, createInitialProp().maxStackSize(8)));
+    }
+
+    private static RegistryObject<ItemDroolBone> registerDrool(final String name, RegistryObject<? extends Item> dryBone, Function<Item.Properties, Item.Properties> itemConstructor) {
+        return register(name, () -> new ItemDroolBone(dryBone, itemConstructor.apply(createInitialProp())));
+    }
+
+    private static RegistryObject<Item> registerTreat(final String name, int maxLevel) {
+        return register(name, () -> new ItemTreat(maxLevel, createInitialProp()));
+    }
+
+    private static RegistryObject<Item> registerFancyCollar(final String name, ItemFancyCollar.Type type) {
+        return register(name, () -> new ItemFancyCollar(type, createInitialProp()));
+    }
+
+    private static <T extends Item> RegistryObject<Item> registerWith(final String name, Function<Item.Properties, T> itemConstructor, int maxStackSize) {
+        return register(name, () -> itemConstructor.apply(createInitialProp().maxStackSize(maxStackSize)));
+    }
+
+    private static <T extends Item> RegistryObject<Item> register(final String name, Function<Item.Properties, T> itemConstructor) {
+        return register(name, () -> itemConstructor.apply(createInitialProp()));
+    }
+
+    private static RegistryObject<Item> register(final String name) {
+        return registerWith(name, (Function<Item.Properties, Item.Properties>) null);
+    }
+
+    private static RegistryObject<Item> registerWith(final String name, @Nullable Function<Item.Properties, Item.Properties> extraPropFunc) {
+        Item.Properties prop = createInitialProp();
+        return register(name, () -> new Item(extraPropFunc != null ? extraPropFunc.apply(prop) : prop));
+    }
+
+    private static <T extends Item> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return ITEMS.register(name, sup);
+    }
+
     public static void registerItemColours(final ColorHandlerEvent.Item event) {
         ItemColors itemColors = event.getItemColors();
         itemColors.register((stack, tintIndex) -> {
             return stack.hasTag() && stack.getTag().contains("collar_colour") ? stack.getTag().getInt("collar_colour") : -1;
-          }, ModItems.WOOL_COLLAR);
-        
+          }, ModItems.WOOL_COLLAR.get());
+
         itemColors.register((stack, tintIndex) -> {
             return stack.hasTag() && stack.getTag().contains("cape_colour") ? stack.getTag().getInt("cape_colour") : -1;
-          }, ModItems.CAPE_COLOURED);
-        
+          }, ModItems.CAPE_COLOURED.get());
+
         itemColors.register((stack, tintIndex) -> {
              return 4159204;
-          }, ModBlocks.DOG_BATH);
+          }, ModBlocks.DOG_BATH.get());
+    }
+
+    public static void tryRegisterColor() {
+
     }
 }

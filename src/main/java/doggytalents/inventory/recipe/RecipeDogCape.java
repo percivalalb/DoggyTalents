@@ -22,7 +22,7 @@ public class RecipeDogCape extends SpecialRecipe {
     public RecipeDogCape(ResourceLocation resource) {
         super(resource);
     }
-    
+
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
         ItemStack itemstack = ItemStack.EMPTY;
@@ -73,13 +73,13 @@ public class RecipeDogCape extends SpecialRecipe {
 
                     if(itemstack1.hasTag() && itemstack1.getTag().contains("cape_colour")) {
                         int l = itemstack1.getTag().getInt("cape_colour");
-                        float f = (float)(l >> 16 & 255) / 255.0F;
-                        float f1 = (float)(l >> 8 & 255) / 255.0F;
-                        float f2 = (float)(l & 255) / 255.0F;
-                        i = (int)((float)i + Math.max(f, Math.max(f1, f2)) * 255.0F);
-                        aint[0] = (int)((float)aint[0] + f * 255.0F);
-                        aint[1] = (int)((float)aint[1] + f1 * 255.0F);
-                        aint[2] = (int)((float)aint[2] + f2 * 255.0F);
+                        float f = (l >> 16 & 255) / 255.0F;
+                        float f1 = (l >> 8 & 255) / 255.0F;
+                        float f2 = (l & 255) / 255.0F;
+                        i = (int)(i + Math.max(f, Math.max(f1, f2)) * 255.0F);
+                        aint[0] = (int)(aint[0] + f * 255.0F);
+                        aint[1] = (int)(aint[1] + f1 * 255.0F);
+                        aint[2] = (int)(aint[2] + f2 * 255.0F);
                         ++count;
                     }
                 }
@@ -108,17 +108,17 @@ public class RecipeDogCape extends SpecialRecipe {
             int j1 = aint[1] / count;
             int k1 = aint[2] / count;
             float f3 = (float)i / (float)count;
-            float f4 = (float)Math.max(i1, Math.max(j1, k1));
-            i1 = (int)((float)i1 * f3 / f4);
-            j1 = (int)((float)j1 * f3 / f4);
-            k1 = (int)((float)k1 * f3 / f4);
+            float f4 = Math.max(i1, Math.max(j1, k1));
+            i1 = (int)(i1 * f3 / f4);
+            j1 = (int)(j1 * f3 / f4);
+            k1 = (int)(k1 * f3 / f4);
             int k2 = (i1 << 8) + j1;
             k2 = (k2 << 8) + k1;
             itemWoolCollar.setColor(itemstack, k2);
             return itemstack;
         }
     }
-    
+
     //Is on a 3x3 grid or bigger
     @Override
     public boolean canFit(int width, int height) {
@@ -127,6 +127,6 @@ public class RecipeDogCape extends SpecialRecipe {
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.CAPE_COLOURING;
+        return ModRecipes.CAPE_COLOURING.get();
     }
 }

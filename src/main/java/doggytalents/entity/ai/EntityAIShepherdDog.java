@@ -29,10 +29,10 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityAIShepherdDog extends Goal {
-    
+
     protected final EntityDog dog;
     private World world;
-    
+
     private LivingEntity owner;
     private final Predicate<AnimalEntity> predicate;
     private final Comparator<Entity> sorter;
@@ -58,7 +58,7 @@ public class EntityAIShepherdDog extends Goal {
             else if (targetSelector != null && !targetSelector.test(entity)) {
                 return false;
             } else {
-                return (double)entity.getDistance(this.dog) > d0 ? false : entity.canEntityBeSeen(this.dog);
+                return entity.getDistance(this.dog) > d0 ? false : entity.canEntityBeSeen(this.dog);
             }
         };
         this.sorter = new DogUtil.Sorter(dogIn);
@@ -81,14 +81,14 @@ public class EntityAIShepherdDog extends Goal {
                return false;
             } else if(entitylivingbase instanceof PlayerEntity && ((PlayerEntity)entitylivingbase).isSpectator()) {
                 return false;
-            } else if(!DogUtil.isHolding(entitylivingbase, ModItems.WHISTLE, nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
+            } else if(!DogUtil.isHolding(entitylivingbase, ModItems.WHISTLE.get(), nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
                 return false;
             } else {
                 List<AnimalEntity> list = this.world.getEntitiesWithinAABB(AnimalEntity.class, this.dog.getBoundingBox().grow(12D, 4.0D, 12D), this.predicate);
                 Collections.sort(list, this.sorter);
                 if(list.isEmpty()) {
                     return false;
-                } 
+                }
                 else {
                     this.MAX_FOLLOW = ModTalents.SHEPHERD_DOG.getMaxFollowers(this.dog);
                     this.targets = list.subList(0, Math.min(MAX_FOLLOW, list.size()));
@@ -105,7 +105,7 @@ public class EntityAIShepherdDog extends Goal {
             return false;
         } else if(this.dog.TALENTS.getLevel(ModTalents.SHEPHERD_DOG) <= 0) {
             return false;
-        } else if(!DogUtil.isHolding(this.owner, ModItems.WHISTLE, nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
+        } else if(!DogUtil.isHolding(this.owner, ModItems.WHISTLE.get(), nbt -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
             return false;
         } else if(this.targets.isEmpty()) {
             return false;
@@ -126,7 +126,7 @@ public class EntityAIShepherdDog extends Goal {
     @Override
     public void tick() {
         if(!this.dog.isSitting()) {
-            
+
             if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
@@ -138,13 +138,13 @@ public class EntityAIShepherdDog extends Goal {
 
                     this.targets.addAll(list.subList(0, Math.min(MAX_FOLLOW - this.targets.size(), list.size())));
                 }
-                
+
                 Collections.sort(this.targets, this.sorter);
                 boolean teleport = this.owner.getDistance(this.targets.get(0)) > 16;
-                
+
                 for(AnimalEntity target : this.targets) {
                     double distanceAway = target.getDistance(this.owner);
-                    target.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)target.getVerticalFaceSpeed());
+                    target.getLookController().setLookPositionWithEntity(this.owner, 10.0F, target.getVerticalFaceSpeed());
                     if(teleport) {
                         if(!target.getLeashed() && !target.isPassenger())
                             DogUtil.teleportDogToOwner(this.owner, target, this.world, target.getNavigator(), 4);
@@ -157,42 +157,42 @@ public class EntityAIShepherdDog extends Goal {
                     else
                         target.getNavigator().clearPath();
                 }
-                
+
                 Vec3d vec = Vec3d.ZERO;
-                
+
                 // Calculate average pos of targets
                 for(AnimalEntity target : this.targets) {
                     vec = vec.add(target.getPositionVector());
                 }
-                
+
                 vec = vec.scale(1D / this.targets.size());
-                
+
                 double dPosX = vec.x - this.owner.getPosX();
                 double dPosZ = vec.z - this.owner.getPosZ();
                 double size = Math.sqrt(dPosX * dPosX + dPosZ * dPosZ);
                 double j3 = vec.x + dPosX / size * (2 + this.targets.size() / 16);
                   double k3 = vec.z + dPosZ / size * (2 + this.targets.size() / 16);
-                
-                  
+
+
                 if(teleport) {
                     DogUtil.teleportDogToPos(j3, this.dog.getPosY(), k3, this.dog, this.world, this.dogPathfinder, 1);
                 }
-                  
-                this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, (float)this.dog.getVerticalFaceSpeed());
+
+                this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, this.dog.getVerticalFaceSpeed());
                 if(!this.dogPathfinder.tryMoveToXYZ(j3, this.owner.getBoundingBox().minY, k3, this.followSpeed)) {
                     if(this.dog.getDistanceSq(j3, this.owner.getBoundingBox().minY, k3) > 144D) {
                         if(!this.dog.getLeashed() && !this.dog.isPassenger())
                             DogUtil.teleportDogToPos(j3, this.dog.getPosY(), k3, this.dog, this.world, this.dogPathfinder, 4);
                     }
                 }
-                
+
                 if(this.dog.getDistance(this.owner) > 40)
                     DogUtil.teleportDogToOwner(this.owner, this.dog, this.world, this.dogPathfinder, 2);
                 // Play woof sound
                 if(this.dog.getRNG().nextFloat() < 0.15F)
                     this.dog.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, this.dog.getSoundVolume() + 1.0F, (this.dog.getRNG().nextFloat() - this.dog.getRNG().nextFloat()) * 0.1F + 0.9F);
-                
-                
+
+
                 // Remove dead or faraway entities
                 List<AnimalEntity> toRemove = Lists.newArrayList();
                 for(AnimalEntity target : this.targets) {
@@ -203,7 +203,7 @@ public class EntityAIShepherdDog extends Goal {
             }
         }
     }
-    
+
     @Override
     public void resetTask() {
         this.owner = null;
@@ -213,7 +213,7 @@ public class EntityAIShepherdDog extends Goal {
         this.dogPathfinder.clearPath();
         this.waterMovement.resetTask();
     }
-    
+
     protected double getFollowRange() {
         IAttributeInstance iattributeinstance = this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
         return iattributeinstance == null ? 16.0D : iattributeinstance.getValue();

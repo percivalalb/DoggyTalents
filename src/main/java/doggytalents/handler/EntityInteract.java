@@ -25,7 +25,7 @@ public class EntityInteract {
 
          if(!world.isRemote) {
 
-            if(target instanceof WolfEntity && !stack.isEmpty() && stack.getItem() == ModItems.TRAINING_TREAT) {
+            if(target instanceof WolfEntity && !stack.isEmpty() && stack.getItem() == ModItems.TRAINING_TREAT.get()) {
                 WolfEntity wolf = (WolfEntity)target;
 
                 if(wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
@@ -33,7 +33,7 @@ public class EntityInteract {
                     if(!player.abilities.isCreativeMode)
                         stack.shrink(1);
 
-                     EntityDog dog = ModEntities.DOG.create(world);
+                     EntityDog dog = ModEntities.DOG.get().create(world);
                      dog.setTamedBy(player);
                      dog.setHealth(dog.getMaxHealth());
                      dog.getAISit().setSitting(false);

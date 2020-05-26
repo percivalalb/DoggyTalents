@@ -25,7 +25,7 @@ public class HunterDogTalent extends Talent {
                 for(ItemEntity entityItem : drops)
                     living.entityDropItem(entityItem.getItem().copy(), 0.0F);
             }
-                
+
         }
     }
 }

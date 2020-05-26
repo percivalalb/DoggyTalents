@@ -12,7 +12,7 @@ import net.minecraftforge.items.ItemStackHandler;
 public class TreatBagItemHandler extends ItemStackHandler {
 
     private ItemStack bag;
-    
+
     public TreatBagItemHandler(ItemStack bag) {
         super(5);
         this.bag = bag;
@@ -22,14 +22,14 @@ public class TreatBagItemHandler extends ItemStackHandler {
             this.deserializeNBT(inventoryNBT);
         }
     }
-    
+
     @Override
     protected void onContentsChanged(int slot) {
         this.bag.getOrCreateChildTag("inventory").merge(this.serializeNBT());
     }
-    
+
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return stack.getItem() instanceof IDogItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat()); 
+        return stack.getItem() instanceof IDogItem || stack.getItem() == ModItems.CHEW_STICK.get() || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat());
     }
 }

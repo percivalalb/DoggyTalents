@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.FMLPlayMessages.SpawnEntity;
 import net.minecraftforge.fml.network.NetworkHooks;
 
+//TODO Remove
 @OnlyIn(
     value = Dist.CLIENT,
     _interface = IRendersAsItem.class
@@ -34,7 +35,7 @@ public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem, 
     private ItemStack renderItem;
 
     public EntityDoggyBeam(SpawnEntity packet, World worldIn) {
-        this(ModEntities.DOG_BEAM, worldIn);
+        this(ModEntities.DOG_BEAM.get(), worldIn);
     }
 
     public EntityDoggyBeam(EntityType<EntityDoggyBeam> type, World worldIn) {
@@ -42,7 +43,7 @@ public class EntityDoggyBeam extends ThrowableEntity implements IRendersAsItem, 
     }
 
     public EntityDoggyBeam(World worldIn, LivingEntity throwerIn) {
-        super(ModEntities.DOG_BEAM, throwerIn, worldIn);
+        super(ModEntities.DOG_BEAM.get(), throwerIn, worldIn);
     }
 
     @Override

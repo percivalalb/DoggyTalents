@@ -1,27 +1,26 @@
 package doggytalents;
 
-import java.util.Map;
+import java.util.function.Supplier;
 
-import doggytalents.api.inferface.Talent;
 import doggytalents.lib.Reference;
 import doggytalents.serializer.TalentListSerializer;
 import net.minecraft.network.datasync.IDataSerializer;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModSerializers {
-    
-    public static final DataSerializerEntry TALENT_LEVEL_LIST = null;
-    
-    public static IDataSerializer<Map<Talent, Integer>> TALENT_LEVEL_SERIALIZER = new TalentListSerializer();
-    
-    public static void registerSerializers(final RegistryEvent.Register<DataSerializerEntry> event) {
-        IForgeRegistry<DataSerializerEntry> serializerRegistry = event.getRegistry();
-        DoggyTalentsMod.LOGGER.debug("Registering Serializers");
-        serializerRegistry.register(new DataSerializerEntry(TALENT_LEVEL_SERIALIZER).setRegistryName(Reference.MOD_ID, "talent_level_list"));
-        DoggyTalentsMod.LOGGER.debug("Finished Registering Serializers");
+
+    public static final DeferredRegister<DataSerializerEntry> SERIALIZERS = new DeferredRegister<>(ForgeRegistries.DATA_SERIALIZERS, Reference.MOD_ID);
+
+    public static final RegistryObject<DataSerializerEntry> TALENT_LEVEL_SERIALIZER = register2("talent_level_list", TalentListSerializer::new);
+
+    private static <X extends IDataSerializer<?>> RegistryObject<DataSerializerEntry> register2(final String name, final Supplier<X> factory) {
+        return register(name, () -> new DataSerializerEntry(factory.get()));
+    }
+
+    private static RegistryObject<DataSerializerEntry> register(final String name, final Supplier<DataSerializerEntry> sup) {
+        return SERIALIZERS.register(name, sup);
     }
 }

@@ -11,19 +11,19 @@ public class PlayerConnection {
 
     public static void playerLoggedIn(final PlayerLoggedInEvent event) {
         PlayerEntity player = event.getPlayer();
-        
+
         CompoundNBT tag = player.getPersistentData();
 
         if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG))
             tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
-        
+
         CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
-        
+
         if(ConfigValues.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
             persistTag.putBoolean("gotDTStartingItems", true);
 
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM));
-            player.inventory.addItemStackToInventory(new ItemStack(ModItems.WHISTLE));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.DOGGY_CHARM.get()));
+            player.inventory.addItemStackToInventory(new ItemStack(ModItems.WHISTLE.get()));
         }
     }
 }

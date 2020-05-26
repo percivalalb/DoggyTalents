@@ -30,41 +30,41 @@ public class DTItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        handheld(ModItems.TINY_BONE.delegate);
-        handheld(ModItems.BIG_BONE.delegate);
+        handheld(ModItems.TINY_BONE);
+        handheld(ModItems.BIG_BONE);
 
-        handheld(ModItems.TRAINING_TREAT.delegate);
-        handheld(ModItems.SUPER_TREAT.delegate);
-        handheld(ModItems.MASTER_TREAT.delegate);
-        handheld(ModItems.DIRE_TREAT.delegate);
-        handheld(ModItems.BREEDING_BONE.delegate);
-        handheld(ModItems.CHEW_STICK.delegate);
+        handheld(ModItems.TRAINING_TREAT);
+        handheld(ModItems.SUPER_TREAT);
+        handheld(ModItems.MASTER_TREAT);
+        handheld(ModItems.DIRE_TREAT);
+        handheld(ModItems.BREEDING_BONE);
+        handheld(ModItems.CHEW_STICK);
 
-        radar(ModItems.CREATIVE_RADAR.delegate);
-        radar(ModItems.RADAR.delegate);
+        radar(ModItems.CREATIVE_RADAR);
+        radar(ModItems.RADAR);
 
-        generated(ModItems.CAPE.delegate);
-        generated(ModItems.CAPE_COLOURED.delegate);
-        generated(ModItems.COLLAR_SHEARS.delegate);
-        generated(ModItems.CREATIVE_COLLAR.delegate);
-        generated(ModItems.DOGGY_CHARM.delegate);
-        generated(ModItems.LEATHER_JACKET.delegate);
-        generated(ModItems.MULTICOLOURED_COLLAR.delegate);
-        generated(ModItems.OWNER_CHANGE.delegate);
-        generated(ModItems.RADIO_COLLAR.delegate);
-        generated(ModItems.SPOTTED_COLLAR.delegate);
-        generated(ModItems.SUNGLASSES.delegate);
-        generated(ModItems.THROW_BONE.delegate);
-        generated(ModItems.THROW_BONE_WET.delegate);
-        generated(ModItems.THROW_STICK.delegate);
-        generated(ModItems.THROW_STICK_WET.delegate);
-        generated(ModItems.TREAT_BAG.delegate);
-        generated(ModItems.WHISTLE.delegate);
-        generated(ModItems.WOOL_COLLAR.delegate);
+        generated(ModItems.CAPE);
+        generated(ModItems.CAPE_COLOURED);
+        generated(ModItems.COLLAR_SHEARS);
+        generated(ModItems.CREATIVE_COLLAR);
+        generated(ModItems.DOGGY_CHARM);
+        generated(ModItems.LEATHER_JACKET);
+        generated(ModItems.MULTICOLOURED_COLLAR);
+        generated(ModItems.OWNER_CHANGE);
+        generated(ModItems.RADIO_COLLAR);
+        generated(ModItems.SPOTTED_COLLAR);
+        generated(ModItems.SUNGLASSES);
+        generated(ModItems.THROW_BONE);
+        generated(ModItems.THROW_BONE_WET);
+        generated(ModItems.THROW_STICK);
+        generated(ModItems.THROW_STICK_WET);
+        generated(ModItems.TREAT_BAG);
+        generated(ModItems.WHISTLE);
+        generated(ModItems.WOOL_COLLAR);
 
-        blockItem(ModBlocks.DOG_BATH.delegate);
-        blockItem(ModBlocks.DOG_BED.delegate);
-        blockItem(ModBlocks.FOOD_BOWL.delegate);
+        blockItem(ModBlocks.DOG_BATH);
+        blockItem(ModBlocks.DOG_BED);
+        blockItem(ModBlocks.FOOD_BOWL);
     }
 
     private ResourceLocation itemTexture(Supplier<? extends IItemProvider> item) {

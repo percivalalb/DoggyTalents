@@ -24,7 +24,7 @@ public class TileEntityDogBed extends TileEntity {
     public static ModelProperty<Direction> FACING = new ModelProperty<>();
 
     public TileEntityDogBed() {
-        super(ModTileEntities.DOG_BED);
+        super(ModTileEntities.DOG_BED.get());
     }
 
     @Override

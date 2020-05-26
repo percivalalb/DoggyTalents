@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -55,11 +56,10 @@ public class DTLootTableProvider extends LootTableProvider {
 
         @Override
         protected void addTables() {
-            dropsSelf(ModBlocks.DOG_BATH.delegate);
-            dropDogBed(ModBlocks.DOG_BED.delegate);
-            dropsSelf(ModBlocks.FOOD_BOWL.delegate); // Drop with the name of the dog bowl
+            dropsSelf(ModBlocks.DOG_BATH);
+            dropDogBed(ModBlocks.DOG_BED);
+            dropsSelf(ModBlocks.FOOD_BOWL); // Drop with the name of the dog bowl
         }
-
 
         private void dropDogBed(Supplier<? extends Block> block) {
             LootTable.Builder lootTableBuilder = LootTable.builder().addLootPool(withSurvivesExplosion(block.get(),
@@ -81,8 +81,7 @@ public class DTLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<Block> getKnownBlocks() {
-            // return DoggyBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
-            return Arrays.asList(ModBlocks.DOG_BATH, ModBlocks.DOG_BED, ModBlocks.FOOD_BOWL);
+            return ModBlocks.BLOCKS.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
         }
     }
 
@@ -90,9 +89,8 @@ public class DTLootTableProvider extends LootTableProvider {
 
         @Override
         protected void addTables() {
-            this.registerNoLoot(ModEntities.DOG.delegate);
+            this.registerNoLoot(ModEntities.DOG);
         }
-
 
         protected void registerNoLoot(Supplier<? extends EntityType<?>> type) {
            this.registerLootTable(type.get(), LootTable.builder());
@@ -100,8 +98,7 @@ public class DTLootTableProvider extends LootTableProvider {
 
         @Override
         protected Iterable<EntityType<?>> getKnownEntities() {
-            //return DoggyEntityTypes.ENTITIES.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
-            return Arrays.asList(ModEntities.DOG);
+            return ModEntities.ENTITIES.getEntries().stream().map(Supplier::get).collect(Collectors.toList());
         }
     }
 }

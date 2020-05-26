@@ -1,31 +1,34 @@
 package doggytalents;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import doggytalents.inventory.recipe.RecipeDogBed;
 import doggytalents.inventory.recipe.RecipeDogCape;
 import doggytalents.inventory.recipe.RecipeDogCollar;
-import doggytalents.lib.BlockNames;
 import doggytalents.lib.Reference;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.SpecialRecipeSerializer;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@ObjectHolder(Reference.MOD_ID)
 public class ModRecipes {
-    
-    public static final SpecialRecipeSerializer<RecipeDogBed> DOG_BED = null;
-    public static final SpecialRecipeSerializer<RecipeDogCollar> COLLAR_COLOURING = null;
-    public static final SpecialRecipeSerializer<RecipeDogCape> CAPE_COLOURING = null;
 
-    public static void registerRecipes(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
-        IForgeRegistry<IRecipeSerializer<?>> recipeRegistry = event.getRegistry();
-        
-        DoggyTalentsMod.LOGGER.debug("Registering Recipes");
-        recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogBed::new).setRegistryName(BlockNames.DOG_BED));
-        recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogCollar::new).setRegistryName(Reference.MOD_ID, "collar_colouring"));
-        recipeRegistry.register(new SpecialRecipeSerializer<>(RecipeDogCape::new).setRegistryName(Reference.MOD_ID, "cape_colouring"));
-        DoggyTalentsMod.LOGGER.debug("Finished Registering Recipes");
+    public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = new DeferredRegister<>(ForgeRegistries.RECIPE_SERIALIZERS, Reference.MOD_ID);
+
+    public static final RegistryObject<SpecialRecipeSerializer<RecipeDogBed>> DOG_BED = register("dog_bed", RecipeDogBed::new);
+    public static final RegistryObject<SpecialRecipeSerializer<RecipeDogCollar>> COLLAR_COLOURING = register("collar_colouring", RecipeDogCollar::new);
+    public static final RegistryObject<SpecialRecipeSerializer<RecipeDogCape>> CAPE_COLOURING = register("cape_colouring", RecipeDogCape::new);
+
+    private static <R extends IRecipe<?>, T extends IRecipeSerializer<R>> RegistryObject<SpecialRecipeSerializer<R>> register(final String name, Function<ResourceLocation, R> factory) {
+        return register(name, () -> new SpecialRecipeSerializer<>(factory));
+    }
+
+    private static <T extends IRecipeSerializer<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return RECIPE_SERIALIZERS.register(name, sup);
     }
 }
 

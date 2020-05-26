@@ -30,13 +30,13 @@ public class ItemStackInventory implements IItemHandler, IItemHandlerModifiable 
         }
         return this.itemStack.getTag();
     }
-    
+
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
         validateSlotIndex(slot);
         DoggyTalentsMod.LOGGER.info("" + stack);
         CompoundNBT itemTag = null;
-        
+
         boolean hasStack = !stack.isEmpty();
         if (hasStack) {
             itemTag = new CompoundNBT();
@@ -61,12 +61,12 @@ public class ItemStackInventory implements IItemHandler, IItemHandlerModifiable 
         if (hasStack && !foundSlot) {
             tagList.add(itemTag);
         }
-            
+
         this.getTag().put("Items", tagList);
-        
+
         onContentsChanged(slot);
     }
-    
+
     @Override
     public int getSlots() {
         return this.size;
@@ -94,7 +94,7 @@ public class ItemStackInventory implements IItemHandler, IItemHandlerModifiable 
         DoggyTalentsMod.LOGGER.info("DA: " + stack);
         if (stack.isEmpty())
             return ItemStack.EMPTY;
-            
+
         if (!isItemValid(slot, stack))
             return stack;
 
@@ -172,7 +172,7 @@ public class ItemStackInventory implements IItemHandler, IItemHandlerModifiable 
             return ItemHandlerHelper.copyStackWithSize(existing, toExtract);
         }
     }
-    
+
     @Override
     public int getSlotLimit(int slot) {
         return 64;
@@ -185,15 +185,15 @@ public class ItemStackInventory implements IItemHandler, IItemHandlerModifiable 
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return stack.getItem() instanceof IDogItem || stack.getItem() == ModItems.CHEW_STICK || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat());
+        return stack.getItem() instanceof IDogItem || stack.getItem() == ModItems.CHEW_STICK.get() || stack.getItem() == Items.ROTTEN_FLESH || (stack.getItem().isFood() && stack.getItem().getFood().isMeat());
     }
-    
+
     protected void validateSlotIndex(int slot) {
         if (slot < 0 || slot >= this.size)
             throw new RuntimeException("Slot " + slot + " not in valid range - [0," + this.size + ")");
     }
-    
+
     protected void onContentsChanged(int slot) {
-        
+
     }
 }

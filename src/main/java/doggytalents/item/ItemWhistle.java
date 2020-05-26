@@ -42,7 +42,7 @@ public class ItemWhistle extends Item {
         } else {
             ItemStack stack = player.getHeldItem(hand);
 
-            if(player.isShiftKeyDown()) {
+            if(player.isSneaking()) {
                 if(!stack.hasTag()) {
                     stack.setTag(new CompoundNBT());
                     stack.getTag().putByte("mode", (byte)0);

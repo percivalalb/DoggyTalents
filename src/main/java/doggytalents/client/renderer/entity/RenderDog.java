@@ -79,7 +79,7 @@ public class RenderDog extends MobRenderer<EntityDog, ModelDog> {
                 RenderUtil.renderLabelWithScale(dogIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, -12);
 
                 if(d0 <= 5 * 5) {
-                    if(this.renderManager.info.getRenderViewEntity().isShiftKeyDown()) {
+                    if(this.renderManager.info.getRenderViewEntity().isSneaking()) {
                         RenderUtil.renderLabelWithScale(dogIn, this, dogIn.getOwnersName().getFormattedText(), matrixStackIn, bufferIn, packedLightIn, 0.01F, 24);
                     }
                 }

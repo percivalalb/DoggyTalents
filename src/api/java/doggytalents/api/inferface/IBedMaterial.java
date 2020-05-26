@@ -1,5 +1,7 @@
 package doggytalents.api.inferface;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -51,7 +53,7 @@ public interface IBedMaterial {
         public String getSaveId() { return "missing"; }
     };
 
-    public static IBedMaterial getHolder(String id) {
+    public static IBedMaterial getHolder(@Nonnull String id) {
         return new IBedMaterial() {
             @Override
             public String getTexture() { return "doggytalents:missing_dog_bed"; }

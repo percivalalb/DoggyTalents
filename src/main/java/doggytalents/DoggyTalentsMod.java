@@ -84,7 +84,6 @@ public class DoggyTalentsMod {
 
         modEventBus.addListener(this::gatherData);
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::clientSetup);
         modEventBus.addListener(this::interModProcess);
 
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -96,6 +95,8 @@ public class DoggyTalentsMod {
 
         // Client Events
         DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> {
+            modEventBus.addListener(this::clientSetup);
+
             modEventBus.addListener(ModBlocks::registerBlockColours);
             modEventBus.addListener(ModItems::registerItemColours);
             forgeEventBus.addListener(GameOverlay::onPreRenderGameOverlay);

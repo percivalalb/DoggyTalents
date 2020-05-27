@@ -14,7 +14,7 @@ import net.minecraft.util.IItemProvider;
 
 public class DTItemTagsProvider extends ItemTagsProvider {
 
-	public DTItemTagsProvider(DataGenerator generatorIn) {
+    public DTItemTagsProvider(DataGenerator generatorIn) {
         super(generatorIn);
     }
 

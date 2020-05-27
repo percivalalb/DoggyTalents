@@ -7,6 +7,6 @@ import net.minecraftforge.registries.IForgeRegistry;
  * @author ProPercivalalb
  */
 public class DoggyTalentsAPI {
-    
+
     public static IForgeRegistry<Talent> TALENTS;
 }

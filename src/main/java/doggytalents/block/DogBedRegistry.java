@@ -24,7 +24,7 @@ public class DogBedRegistry implements IDogBedRegistry {
     public final static DogBedRegistry CASINGS = new DogBedRegistry("casing");
     public final static DogBedRegistry BEDDINGS = new DogBedRegistry("bedding");
 
-    private final List<IBedMaterial> REGISTRY = new ArrayList<IBedMaterial>();
+    private final List<IBedMaterial> REGISTRY = new ArrayList<>();
     private final String key;
 
     public DogBedRegistry(String key) {
@@ -54,8 +54,9 @@ public class DogBedRegistry implements IDogBedRegistry {
     }
 
     public IBedMaterial get(String saveId) {
-        if(saveId == null || saveId.equals("missing"))
+        if(saveId == null || saveId.equals("missing")) {
             return IBedMaterial.NULL;
+        }
 
         // Keep things when updating from 1.12
         saveId = Compatibility.getBedOldNamingScheme(saveId);
@@ -73,8 +74,9 @@ public class DogBedRegistry implements IDogBedRegistry {
 
     public IBedMaterial getFromStack(ItemStack stack) {
         for(IBedMaterial m : this.REGISTRY) {
-            if(m.getIngredient().test(stack))
+            if(m.getIngredient().test(stack)) {
                 return m;
+            }
         }
         return IBedMaterial.NULL;
     }

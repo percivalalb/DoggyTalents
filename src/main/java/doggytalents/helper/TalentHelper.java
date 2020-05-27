@@ -196,7 +196,7 @@ public class TalentHelper {
     }
 
     public static void onFinishShaking(EntityDog dogIn, boolean gotWetInWater) {
-        DoggyTalentsAPI.TALENTS.getValues().forEach(talent -> {
+        DoggyTalentsAPI.TALENTS.forEach(talent -> {
             talent.onFinishShaking(dogIn, gotWetInWater);
         });
 

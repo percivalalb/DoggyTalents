@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -1262,13 +1263,15 @@ public class EntityDog extends IDogEntity implements IDog {
         Item item = stack.getItem();
 
         if (stack.getItem() != Items.ROTTEN_FLESH && item.isFood()) {
-            if (item.getFood().isMeat())
+            if (item.getFood().isMeat()) {
                 foodValue = 40;
+            }
         } else if (stack.getItem() instanceof IDogFoodItem) {
             IDogFoodItem dogFood = (IDogFoodItem)stack.getItem();
             int temp = dogFood.getFoodValue(this, stack, entityIn);
-            if (temp > 0)
+            if (temp > 0) {
                 foodValue = temp;
+            }
         }
 
         foodValue = TalentHelper.changeFoodValue(this, stack, foodValue);

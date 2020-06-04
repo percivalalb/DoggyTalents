@@ -7,7 +7,7 @@ logoFile="dt_logo.png"
     modId="doggytalents"
     version="${file.jarVersion}"
     updateJSONURL="https://raw.githubusercontent.com/percivalalb/DoggyTalents/1.15.x/version.json"
-    displayName="Doggy Talents"
+    displayName="Doggy Talents 2"
     credits="percivalalb,RaustBlackDragon,NovaViper"
     authors="percivalalb"
     description='''
@@ -16,6 +16,6 @@ logoFile="dt_logo.png"
 [[dependencies.doggytalents]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[31.1.0,)" #mandatory
+    versionRange="[31.2.0,)" #mandatory
     ordering="NONE"
     side="BOTH"

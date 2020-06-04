@@ -20,6 +20,26 @@
                   "source": "beddingId",
                   "target": "doggytalents.beddingId",
                   "op": "replace"
+                },
+                {
+                  "source": "ownerIdMost",
+                  "target": "doggytalents.ownerIdMost",
+                  "op": "replace"
+                },
+                {
+                  "source": "ownerIdLeast",
+                  "target": "doggytalents.ownerIdLeast",
+                  "op": "replace"
+                },
+                {
+                  "source": "name",
+                  "target": "doggytalents.name",
+                  "op": "replace"
+                },
+                {
+                  "source": "ownerName",
+                  "target": "doggytalents.ownerName",
+                  "op": "replace"
                 }
               ]
             }

@@ -1,0 +1,35 @@
+{
+  "parent": "doggytalents:default/level_talent",
+  "display": {
+    "icon": {
+      "item": "doggytalents:cape"
+    },
+    "title": {
+      "translate": "advancements.dog.upgrade_tools.title"
+    },
+    "description": {
+      "translate": "advancements.dog.upgrade_tools.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "accessorise": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:stone_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "accessorise"
+    ]
+  ]
+}

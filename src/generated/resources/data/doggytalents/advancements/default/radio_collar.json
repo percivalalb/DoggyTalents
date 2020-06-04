@@ -1,0 +1,35 @@
+{
+  "parent": "doggytalents:default/accessorise",
+  "display": {
+    "icon": {
+      "item": "doggytalents:radio_collar"
+    },
+    "title": {
+      "translate": "advancements.dog.smelt_iron.title"
+    },
+    "description": {
+      "translate": "advancements.dog.smelt_iron.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:iron_ingot"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "iron"
+    ]
+  ]
+}

@@ -14,7 +14,13 @@ public interface IDogBedRegistry {
      * @return The created IBedMaterial instance
      */
     public IBedMaterial registerMaterial(@Nonnull Block block, ResourceLocation textureLocation);
-    
+
+    default IBedMaterial registerMaterial(@Nonnull Block block) {
+        ResourceLocation brl = block.getRegistryName();
+        ResourceLocation textureLocation = new ResourceLocation(brl.getNamespace(), "block/" + brl.getPath());
+        return registerMaterial(block, textureLocation);
+    }
+
     /**
      * Registers an IBedMaterial instance
      */

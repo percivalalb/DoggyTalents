@@ -1,0 +1,76 @@
+package doggytalents.common.util;
+
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
+import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.inferface.IDogFoodHandler;
+import doggytalents.common.entity.DogEntity;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+
+public class InventoryUtil {
+
+    public static boolean feedDogFrom(DogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
+
+        for(int i = 0; i < source.getSlots(); i++) {
+
+            ItemStack stack = source.getStackInSlot(i).copy();
+            Optional<IDogFoodHandler> foodHandler = FoodHandler.getMatch(dogIn, stack, entity);
+
+            if (foodHandler.isPresent()) {
+                boolean response = foodHandler.get().consume(dogIn, stack, entity);
+                source.setStackInSlot(i, stack);
+                return response;
+            }
+        }
+
+        return false;
+    }
+
+    public static void transferStacks(IItemHandlerModifiable source, IItemHandler target) {
+        for (int i = 0; i < source.getSlots(); i++) {
+            ItemStack stack = source.getStackInSlot(i);
+            source.setStackInSlot(i, addItem(target, stack));
+        }
+    }
+
+    public static ItemStack addItem(IItemHandler target, ItemStack remaining) {
+        // Try to insert item into all slots
+        for (int i = 0; i < target.getSlots(); i++) {
+            if (target.isItemValid(i, remaining)) {
+                remaining = target.insertItem(i, remaining, false);
+            }
+
+            if (remaining.isEmpty()) {
+                break;
+            }
+        }
+        return remaining;
+    }
+
+    // Same as net.minecraft.inventory.container.Container.calcRedstoneFromInventory but for IItemHandler
+    public static int calcRedstoneFromInventory(@Nullable IItemHandler inv) {
+        if (inv == null) {
+           return 0;
+        } else {
+           int i = 0;
+           float f = 0.0F;
+
+           for(int j = 0; j < inv.getSlots(); ++j) {
+              ItemStack itemstack = inv.getStackInSlot(j);
+              if (!itemstack.isEmpty()) {
+                 f += itemstack.getCount() / (float)Math.min(inv.getSlotLimit(j), itemstack.getMaxStackSize());
+                 ++i;
+              }
+           }
+
+           f = f / inv.getSlots();
+           return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+        }
+     }
+}

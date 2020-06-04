@@ -15,6 +15,7 @@ public enum EnumMode {
     //PATROL(5, "patrol");
 
     private int index;
+    private String saveName;
     private String unlocalisedTip;
     private String unlocalisedName;
     private String unlocalisedInfo;
@@ -24,11 +25,12 @@ public enum EnumMode {
     });
 
     private EnumMode(int index, String name) {
-        this(index, "dog.mode." + name, "dog.mode." + name + ".indicator", "dog.mode." + name + ".description");
+        this(index, name, "dog.mode." + name, "dog.mode." + name + ".indicator", "dog.mode." + name + ".description");
     }
 
-    private EnumMode(int index, String unlocalisedName, String tip, String info) {
+    private EnumMode(int index, String mode, String unlocalisedName, String tip, String info) {
         this.index = index;
+        this.saveName = mode;
         this.unlocalisedName = unlocalisedName;
         this.unlocalisedTip = tip;
         this.unlocalisedInfo = info;
@@ -36,6 +38,10 @@ public enum EnumMode {
 
     public int getIndex() {
         return this.index;
+    }
+
+    public String getSaveName() {
+        return this.saveName;
     }
 
     public String getTip() {
@@ -81,5 +87,15 @@ public enum EnumMode {
             i = EnumMode.DOCILE.getIndex();
         }
         return VALUES[i];
+    }
+
+    public static EnumMode bySaveName(String saveName) {
+        for(EnumMode gender : EnumMode.values()) {
+            if(gender.saveName.equals(saveName)) {
+                return gender;
+            }
+        }
+
+        return DOCILE;
     }
 }

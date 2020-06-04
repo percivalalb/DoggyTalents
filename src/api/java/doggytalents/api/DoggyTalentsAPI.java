@@ -1,5 +1,7 @@
 package doggytalents.api;
 
+import doggytalents.api.inferface.Accessory;
+import doggytalents.api.inferface.AccessoryType;
 import doggytalents.api.inferface.Talent;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -9,4 +11,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 public class DoggyTalentsAPI {
 
     public static IForgeRegistry<Talent> TALENTS;
+    public static IForgeRegistry<Accessory> ACCESSORIES;
+    public static IForgeRegistry<AccessoryType> ACCESSORY_TYPE;
 }

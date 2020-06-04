@@ -6,8 +6,9 @@ import javax.annotation.Nullable;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.DoggyTileEntityTypes;
-import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.common.block.DogBedRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
@@ -21,12 +22,12 @@ import net.minecraftforge.client.model.data.ModelProperty;
 
 public class DogBedTileEntity extends PlacedTileEntity {
 
-    private IBedMaterial casingType = IBedMaterial.NULL;
-    private IBedMaterial beddingType = IBedMaterial.NULL;
+    private CasingMaterial casingType = null;
+    private BeddingMaterial beddingType = null;
 
 
-    public static ModelProperty<IBedMaterial> CASING = new ModelProperty<>();
-    public static ModelProperty<IBedMaterial> BEDDING = new ModelProperty<>();
+    public static ModelProperty<CasingMaterial> CASING = new ModelProperty<>();
+    public static ModelProperty<BeddingMaterial> BEDDING = new ModelProperty<>();
     public static ModelProperty<Direction> FACING = new ModelProperty<>();
 
     private @Deprecated @Nullable DogEntity dog;
@@ -43,8 +44,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public void read(CompoundNBT compound) {
         super.read(compound);
 
-        this.casingType = DogBedRegistry.CASINGS.get(compound.getString("casingId"));
-        this.beddingType = DogBedRegistry.BEDDINGS.get(compound.getString("beddingId"));
+        this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
+        this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
 
         this.dogUUID = NBTUtil.getUniqueId(compound, "ownerId");
         this.name = NBTUtil.getTextComponent(compound, "name");
@@ -55,8 +56,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
 
-        compound.putString("casingId", this.casingType != null ? this.casingType.getSaveId() : "missing");
-        compound.putString("beddingId", this.beddingType != null ? this.beddingType.getSaveId() : "missing");
+        NBTUtil.putRegistryValue(compound, "casingId", this.casingType);
+        NBTUtil.putRegistryValue(compound, "beddingId", this.beddingType);
 
         NBTUtil.putUniqueId(compound, "ownerId", this.dogUUID);
         NBTUtil.putTextComponent(compound, "name", this.name);
@@ -65,31 +66,31 @@ public class DogBedTileEntity extends PlacedTileEntity {
         return compound;
     }
 
-    public void setCasing(IBedMaterial casingType) {
+    public void setCasing(CasingMaterial casingType) {
         this.casingType = casingType;
         this.markDirty();
         this.requestModelDataUpdate();
     }
 
-    public void setBedding(IBedMaterial beddingType) {
+    public void setBedding(BeddingMaterial beddingType) {
         this.beddingType = beddingType;
         this.markDirty();
         this.requestModelDataUpdate();
     }
 
-    public IBedMaterial getCasing() {
+    public CasingMaterial getCasing() {
         return this.casingType;
     }
 
-    public IBedMaterial getBedding() {
+    public BeddingMaterial getBedding() {
         return this.beddingType;
     }
 
     @Override
     public IModelData getModelData() {
         return new ModelDataMap.Builder()
-                .withProperty(CASING)
-                .withProperty(BEDDING)
+                .withInitial(CASING, this.casingType)
+                .withInitial(BEDDING, this.beddingType)
                 .withInitial(FACING, Direction.NORTH)
                 .build();
     }

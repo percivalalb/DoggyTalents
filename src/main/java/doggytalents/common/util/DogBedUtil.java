@@ -1,56 +1,84 @@
 package doggytalents.common.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;
-import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.common.block.DogBedRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class DogBedUtil {
 
     private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     public static void setBedVariant(DogBedTileEntity dogBedTileEntity, ItemStack stack) {
-        Pair<IBedMaterial, IBedMaterial> materials = DogBedUtil.getMaterials(stack);
+        Pair<CasingMaterial, BeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
         dogBedTileEntity.setCasing(materials.getLeft());
         dogBedTileEntity.setBedding(materials.getRight());
     }
 
     public static ItemStack createRandomBed() {
-        IBedMaterial casing = pickRandom(DogBedRegistry.CASINGS.getKeys());
-        IBedMaterial bedding = pickRandom(DogBedRegistry.BEDDINGS.getKeys());
+        CasingMaterial casing = pickRandom(DoggyTalentsAPI.CASING_MATERIAL);
+        BeddingMaterial bedding = pickRandom(DoggyTalentsAPI.BEDDING_MATERIAL);
         return DogBedUtil.createItemStack(casing, bedding);
     }
 
-    public static Pair<IBedMaterial, IBedMaterial> getMaterials(ItemStack stack) {
+    public static Pair<CasingMaterial, BeddingMaterial> getMaterials(ItemStack stack) {
         CompoundNBT tag = stack.getChildTag("doggytalents");
         if (tag != null) {
-            IBedMaterial casingId = DogBedRegistry.CASINGS.get(tag.getString("casingId"));
-            IBedMaterial beddingId = DogBedRegistry.BEDDINGS.get(tag.getString("beddingId"));
+            CasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
+            BeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
 
             return Pair.of(casingId, beddingId);
         }
 
-        return Pair.of(IBedMaterial.NULL, IBedMaterial.NULL);
+        return Pair.of(null, null);
     }
 
-    public static ItemStack createItemStack(IBedMaterial casingId, IBedMaterial beddingId) {
+    public static ItemStack createItemStack(CasingMaterial casingId, BeddingMaterial beddingId) {
         ItemStack stack = new ItemStack(DoggyBlocks.DOG_BED.get(), 1);
 
         CompoundNBT tag = stack.getOrCreateChildTag("doggytalents");
-        tag.putString("casingId", casingId.getSaveId());
-        tag.putString("beddingId", beddingId.getSaveId());
+        NBTUtil.putRegistryValue(tag, "casingId", casingId);
+        NBTUtil.putRegistryValue(tag, "beddingId", beddingId);
+
         return stack;
     }
 
-    public static IBedMaterial pickRandom(List<IBedMaterial> strs) {
-        return strs.get(RANDOM.nextInt(strs.size()));
+    public static CasingMaterial getCasingFromStack(IForgeRegistry<CasingMaterial> registry, ItemStack stack) {
+        for(CasingMaterial m : registry.getValues()) {
+            if(m.getIngredient().test(stack)) {
+                return m;
+            }
+        }
+
+        return null;
+    }
+
+    public static BeddingMaterial getBeddingFromStack(IForgeRegistry<BeddingMaterial> registry, ItemStack stack) {
+        for(BeddingMaterial m : registry.getValues()) {
+            if(m.getIngredient().test(stack)) {
+                return m;
+            }
+        }
+
+        return null;
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> T pickRandom(IForgeRegistry<T> registry) {
+        Collection<T> values = registry.getValues();
+        List<T> list = values instanceof List ? (List<T>) values : new ArrayList<>(values);
+        return list.get(RANDOM.nextInt(list.size()));
     }
 }

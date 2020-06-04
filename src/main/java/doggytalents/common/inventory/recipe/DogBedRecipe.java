@@ -1,8 +1,10 @@
 package doggytalents.common.inventory.recipe;
 
 import doggytalents.DoggyRecipeSerializers;
-import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.common.block.DogBedRegistry;
+import doggytalents.DoggyTalents2;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -21,26 +23,36 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
 
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
-        IBedMaterial beddingId = IBedMaterial.NULL;
-        IBedMaterial casingId = IBedMaterial.NULL;
+        BeddingMaterial beddingId = null;
+        CasingMaterial casingId = null;
 
-        for(int col = 0; col < 3; ++col) {
-            for(int row = 0; row < 3; ++row) {
-                if(col == 1 && row < 2) {
-                    IBedMaterial id = DogBedRegistry.BEDDINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
-                    if(id == IBedMaterial.NULL || (beddingId != IBedMaterial.NULL && id != beddingId)) {
+        for (int col = 0; col < 3; col++) {
+            for (int row = 0; row < 3; row++) {
+                if (col == 1 && row < 2) {
+                    BeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+
+                    if (id == null) {
                         return false;
                     }
 
-                    beddingId = id;
+                    if (beddingId == null) {
+                        beddingId = id;
+                    } else if (beddingId != id) {
+                        return false;
+                    }
                 }
                 else {
-                    IBedMaterial id = DogBedRegistry.CASINGS.getFromStack(inv.getStackInSlot(col + row * inv.getWidth()));
-                    if(id == IBedMaterial.NULL || (beddingId != IBedMaterial.NULL && id != casingId)) {
+                    CasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+
+                    if (id == null) {
                         return false;
                     }
 
-                    casingId = id;
+                    if (casingId == null) {
+                        casingId = id;
+                    } else if (casingId != id) {
+                        return false;
+                    }
                 }
             }
         }
@@ -50,8 +62,8 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
 
     @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-        IBedMaterial beddingId = DogBedRegistry.BEDDINGS.getFromStack(inv.getStackInSlot(1));
-        IBedMaterial casingId = DogBedRegistry.CASINGS.getFromStack(inv.getStackInSlot(0));
+        BeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(1));
+        CasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(0));
 
         return DogBedUtil.createItemStack(casingId, beddingId);
     }
@@ -60,7 +72,7 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
         NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
-        for(int i = 0; i < nonnulllist.size(); ++i) {
+        for (int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = inv.getStackInSlot(i);
             nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
         }

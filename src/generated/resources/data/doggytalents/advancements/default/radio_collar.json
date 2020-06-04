@@ -5,10 +5,10 @@
       "item": "doggytalents:radio_collar"
     },
     "title": {
-      "translate": "advancements.dog.smelt_iron.title"
+      "translate": "advancements.dog.radio_collar.title"
     },
     "description": {
-      "translate": "advancements.dog.smelt_iron.description"
+      "translate": "advancements.dog.radio_collar.description"
     },
     "frame": "task",
     "show_toast": true,

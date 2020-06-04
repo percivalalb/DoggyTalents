@@ -5,6 +5,9 @@ import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
 
+import doggytalents.DoggyRecipeSerializers;
+import doggytalents.common.util.Util;
+import net.minecraft.data.CustomRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IFinishedRecipe;
@@ -57,7 +60,7 @@ public class DTRecipeProvider extends RecipeProvider {
 //
 //        CustomRecipeBuilder.customRecipe(ModRecipes.CAPE_COLOURING.get()).build(consumer, Reference.MOD_ID + ":cape_colouring");
 //        CustomRecipeBuilder.customRecipe(ModRecipes.COLLAR_COLOURING.get()).build(consumer, Reference.MOD_ID + ":collar_colouring");
-//        CustomRecipeBuilder.customRecipe(ModRecipes.DOG_BED.get()).build(consumer, Reference.MOD_ID + ":dog_bed");
+          CustomRecipeBuilder.customRecipe(DoggyRecipeSerializers.DOG_BED.get()).build(consumer, Util.getResourcePath("dog_bed"));
     }
 
     @Override

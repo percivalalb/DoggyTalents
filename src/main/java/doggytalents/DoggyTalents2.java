@@ -3,16 +3,16 @@ package doggytalents;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import doggytalents.api.BeddingRegistryEvent;
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.inferface.Accessory;
 import doggytalents.api.inferface.AccessoryType;
 import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.event.ClientEventHandler;
-import doggytalents.common.block.DogBedRegistry;
 import doggytalents.common.command.DogRespawnCommand;
 import doggytalents.common.data.DTAdvancementProvider;
 import doggytalents.common.data.DTItemTagsProvider;
@@ -74,9 +74,11 @@ public class DoggyTalents2 {
         modEventBus.addGenericListener(Talent.class, DoggyTalents::registerTalents); // ModTalents.TALENTS.register(modEventBus);
         modEventBus.addGenericListener(Accessory.class, DoggyAccessories::registerAccessories);
         modEventBus.addGenericListener(AccessoryType.class, DoggyAccessoryTypes::registerAccessoryTypes);
+        modEventBus.addGenericListener(BeddingMaterial.class, DoggyBedMaterials::registerBeddings);
+        modEventBus.addGenericListener(CasingMaterial.class, DoggyBedMaterials::registerCasings);
+
 
         modEventBus.addListener(DoggyRegistries::newRegistry);
-        modEventBus.addListener(DoggyBedMaterials::registerBeddingMaterial);
 
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.addListener(this::serverStarting);
@@ -89,6 +91,7 @@ public class DoggyTalents2 {
             modEventBus.addListener(this::clientSetup);
             modEventBus.addListener(DoggyBlocks::registerBlockColours);
             modEventBus.addListener(DoggyItems::registerItemColours);
+            modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
             forgeEventBus.register(new ClientEventHandler());
         });
 
@@ -120,8 +123,6 @@ public class DoggyTalents2 {
     protected void interModProcess(final InterModProcessEvent event) {
         //Compatibility.init();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        modEventBus.post(new BeddingRegistryEvent(DogBedRegistry.CASINGS, DogBedRegistry.BEDDINGS));
         //AddonManager.runRegisteredAddons();
     }
 

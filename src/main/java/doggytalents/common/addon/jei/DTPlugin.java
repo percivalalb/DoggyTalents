@@ -3,7 +3,8 @@ package doggytalents.common.addon.jei;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;
-import doggytalents.api.inferface.IBedMaterial;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -24,9 +25,9 @@ public class DTPlugin implements IModPlugin {
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
         registration.registerSubtypeInterpreter(DoggyBlocks.DOG_BED.get().asItem(), stack -> {
-            Pair<IBedMaterial, IBedMaterial> materials = DogBedUtil.getMaterials(stack);
+            Pair<CasingMaterial, BeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
-            return materials.getLeft().getSaveId() + "+" + materials.getRight().getSaveId();
+            return materials.getLeft().getRegistryName() + "+" + materials.getRight().getRegistryName();
         });
     }
 

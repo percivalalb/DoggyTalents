@@ -29,8 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientEventHandler {
 
-    @SubscribeEvent
-    public void onModelBakeEvent(final ModelBakeEvent event) {
+    public static void onModelBakeEvent(final ModelBakeEvent event) {
         Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
 
         try {

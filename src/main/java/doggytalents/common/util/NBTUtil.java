@@ -8,14 +8,17 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
+import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class NBTUtil {
 
@@ -114,13 +117,26 @@ public class NBTUtil {
             for(Entry<Talent, Integer> entry : talentMap.entrySet()) {
                 CompoundNBT talentCompound = new CompoundNBT();
 
-                talentCompound.putString("talent", DoggyTalentsAPI.TALENTS.getKey(entry.getKey()).toString());
+                NBTUtil.putRegistryValue(talentCompound, "talent", entry.getKey());
                 talentCompound.putInt("level", entry.getValue());
 
                 list.add(talentCompound);
             }
 
             compound.put(key, list);
+        }
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> T getRegistryValue(CompoundNBT compound, String key, IForgeRegistry<T> registry) {
+        //TODO Checks
+        return registry.getValue(NBTUtil.getResourceLocation(compound, key));
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> void putRegistryValue(CompoundNBT compound, String key, T value) {
+        //TODO Checks
+        if (value != null) {
+            DoggyTalents2.LOGGER.info("{}", value.getRegistryName());
+            NBTUtil.putResourceLocation(compound, key, value.getRegistryName());
         }
     }
 }

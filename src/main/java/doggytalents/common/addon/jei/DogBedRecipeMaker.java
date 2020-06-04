@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import doggytalents.api.inferface.IBedMaterial;
-import doggytalents.common.block.DogBedRegistry;
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import doggytalents.common.util.Util;
 import net.minecraft.inventory.IInventory;
@@ -21,8 +22,8 @@ public final class DogBedRecipeMaker {
     public static List<IShapedRecipe<? extends IInventory>> createDogBedRecipes() {
         List<IShapedRecipe<? extends IInventory>> recipes = Lists.newArrayList();
         String group = "doggytalents.dogbed";
-        for(IBedMaterial beddingId : DogBedRegistry.BEDDINGS.getKeys()) {
-            for(IBedMaterial casingId : DogBedRegistry.CASINGS.getKeys()) {
+        for(BeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
+            for(CasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
 
                 Ingredient beddingIngredient = beddingId.getIngredient();
                 Ingredient casingIngredient = casingId.getIngredient();
@@ -33,7 +34,7 @@ public final class DogBedRecipeMaker {
                 );
                 ItemStack output = DogBedUtil.createItemStack(casingId, beddingId);
 
-                ResourceLocation id = Util.getResource("dogbed" + output.getTranslationKey());
+                ResourceLocation id = Util.getResource("" + output.getTranslationKey()); //TODO update resource location
                 ShapedRecipe recipe = new ShapedRecipe(id, group, 3, 3, inputs, output);
                 recipes.add(recipe);
             }

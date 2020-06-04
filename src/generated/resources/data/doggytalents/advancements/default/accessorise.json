@@ -5,10 +5,10 @@
       "item": "doggytalents:cape"
     },
     "title": {
-      "translate": "advancements.dog.upgrade_tools.title"
+      "translate": "advancements.dog.accessorise.title"
     },
     "description": {
-      "translate": "advancements.dog.upgrade_tools.description"
+      "translate": "advancements.dog.accessorise.description"
     },
     "frame": "task",
     "show_toast": true,

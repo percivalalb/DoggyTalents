@@ -16,7 +16,8 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.util.Either;
 
 import doggytalents.DoggyBedMaterials;
-import doggytalents.api.inferface.IBedMaterial;
+import doggytalents.api.registry.BeddingMaterial;
+import doggytalents.api.registry.CasingMaterial;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.lib.Constants;
@@ -28,6 +29,7 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.model.Material;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.model.ModelRotation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -39,6 +41,7 @@ import net.minecraft.world.ILightReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 
 @OnlyIn(Dist.CLIENT)
@@ -50,7 +53,7 @@ public class DogBedModel implements IBakedModel {
     private BlockModel model;
     private IBakedModel bakedModel;
 
-    private final Map<Triple<String, String, Direction>, IBakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<CasingMaterial, BeddingMaterial, Direction>, IBakedModel> cache = Maps.newHashMap();
 
     public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel) {
         this.modelLoader = modelLoader;
@@ -58,49 +61,43 @@ public class DogBedModel implements IBakedModel {
         this.bakedModel = bakedModel;
     }
 
-    public IBakedModel getModelVariant(IBedMaterial casing, IBedMaterial bedding, Direction facing) {
-        // Hotfix for possible optifine bug
-        if (casing == null) { casing = DoggyBedMaterials.OAK; }
-        if (bedding == null) { bedding = DoggyBedMaterials.WHITE; }
+    public IBakedModel getModelVariant(@Nonnull IModelData data) {
+        return this.getModelVariant(data.getData(DogBedTileEntity.CASING), data.getData(DogBedTileEntity.BEDDING), data.getData(DogBedTileEntity.FACING));
+    }
+
+    public IBakedModel getModelVariant(CasingMaterial casing, BeddingMaterial bedding, Direction facing) {
+        if (casing == null) { casing = DoggyBedMaterials.OAK_PLANKS; }
+        if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL; }
         if (facing == null) { facing = Direction.NORTH; }
 
-        String casingTex = casing.getTexture();
-        String beddingTex = bedding.getTexture();
-        Triple<String, String, Direction> key = ImmutableTriple.of(casingTex, beddingTex, facing);
-        return this.cache.computeIfAbsent(key, k -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
+        return this.cache.computeIfAbsent(ImmutableTriple.of(casing, bedding, facing), (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
     }
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-        return this.getModelVariant(DoggyBedMaterials.OAK, DoggyBedMaterials.WHITE, Direction.NORTH).getQuads(state, side, rand);
+        return this.getModelVariant(DoggyBedMaterials.OAK_PLANKS, DoggyBedMaterials.WHITE_WOOL, Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
     }
 
     @Override
     public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData data) {
-        IBedMaterial casing = data.getData(DogBedTileEntity.CASING);
-        IBedMaterial bedding = data.getData(DogBedTileEntity.BEDDING);
-        Direction facing = data.getData(DogBedTileEntity.FACING);
-        return this.getModelVariant(casing, bedding, facing).getQuads(state, side, rand);
+        return this.getModelVariant(data).getQuads(state, side, rand, data);
     }
 
     @Override
     public TextureAtlasSprite getParticleTexture(@Nonnull IModelData data) {
-        IBedMaterial casing = data.getData(DogBedTileEntity.CASING);
-        IBedMaterial bedding = data.getData(DogBedTileEntity.BEDDING);
-        Direction facing = data.getData(DogBedTileEntity.FACING);
-        return this.getModelVariant(casing, bedding, facing).getParticleTexture();
+        return this.getModelVariant(data).getParticleTexture(data);
     }
 
     @Override
     public IModelData getModelData(@Nonnull ILightReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
-        IBedMaterial casing = DoggyBedMaterials.OAK;
-        IBedMaterial bedding = DoggyBedMaterials.WHITE;
-        Direction facing = Direction.NORTH;
+        CasingMaterial casing = null;
+        BeddingMaterial bedding = null;
+        Direction facing = null;
 
         TileEntity tile = world.getTileEntity(pos);
         if(tile instanceof DogBedTileEntity) {
-            casing = ((DogBedTileEntity)tile).getCasing();
-            bedding = ((DogBedTileEntity)tile).getBedding();
+            casing = ((DogBedTileEntity) tile).getCasing();
+            bedding = ((DogBedTileEntity) tile).getBedding();
         }
 
         if(state.has(DogBedBlock.FACING)) {
@@ -110,10 +107,11 @@ public class DogBedModel implements IBakedModel {
         tileData.setData(DogBedTileEntity.CASING, casing);
         tileData.setData(DogBedTileEntity.BEDDING, bedding);
         tileData.setData(DogBedTileEntity.FACING, facing);
+
         return tileData;
     }
 
-    public IBakedModel bakeModelVariant(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
+    public IBakedModel bakeModelVariant(@Nonnull CasingMaterial casingResource, @Nonnull BeddingMaterial beddingResource, @Nonnull Direction facing) {
         List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
         for (BlockPart part : this.model.getElements()) {
             elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
@@ -125,15 +123,17 @@ public class DogBedModel implements IBakedModel {
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
 
-        newModel.textures.put("bedding", findTexture(ResourceLocation.tryCreate(beddingResource)));
-        newModel.textures.put("casing", findTexture(ResourceLocation.tryCreate(casingResource)));
-        newModel.textures.put("particle", findTexture(ResourceLocation.tryCreate(casingResource)));
+
+        Either<Material, String> casingTexture = findTexture(casingResource.getTexture());
+        newModel.textures.put("bedding", findTexture(beddingResource.getTexture()));
+        newModel.textures.put("casing", casingTexture);
+        newModel.textures.put("particle", casingTexture);
 
         return newModel.bakeModel(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
-    private ResourceLocation createResourceVariant(@Nonnull String casingResource, @Nonnull String beddingResource, @Nonnull Direction facing) {
-        return new ResourceLocation(Constants.MOD_ID, "block/dog_bed"); // #bedding=" + beddingResource + ",casing=" + casingResource + ",facing=" + facing.getName()
+    private ResourceLocation createResourceVariant(@Nonnull CasingMaterial casingResource, @Nonnull BeddingMaterial beddingResource, @Nonnull Direction facing) {
+        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.getRegistryName().toString().replace(':', '.') + ",casing=" + casingResource.getRegistryName().toString().replace(':', '.') + ",facing=" + facing.getName());
     }
 
     private Either<Material, String> findTexture(ResourceLocation resource) {

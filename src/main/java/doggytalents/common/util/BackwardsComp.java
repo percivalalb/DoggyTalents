@@ -12,7 +12,7 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.DoggyTalents2;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.CompoundNBT;

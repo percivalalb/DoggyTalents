@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.talent.BedFinderTalent;
 import doggytalents.common.talent.BlackPeltTalent;

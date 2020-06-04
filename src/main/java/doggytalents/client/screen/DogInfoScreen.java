@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.client.DogTextureLoaderClient;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;

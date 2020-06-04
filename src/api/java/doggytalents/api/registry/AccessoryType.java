@@ -1,4 +1,4 @@
-package doggytalents.api.inferface;
+package doggytalents.api.registry;
 
 import javax.annotation.Nullable;
 

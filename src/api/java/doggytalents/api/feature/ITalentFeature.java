@@ -3,7 +3,7 @@ package doggytalents.api.feature;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 
 public interface ITalentFeature {
 

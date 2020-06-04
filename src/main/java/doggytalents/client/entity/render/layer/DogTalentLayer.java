@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.CollarRenderManager;
 import doggytalents.common.entity.DogEntity;

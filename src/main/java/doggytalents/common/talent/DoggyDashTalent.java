@@ -2,7 +2,7 @@ package doggytalents.common.talent;
 
 import java.util.UUID;
 
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;

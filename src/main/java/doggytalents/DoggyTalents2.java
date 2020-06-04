@@ -4,11 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryType;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.BeddingMaterial;
 import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.Talent;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;

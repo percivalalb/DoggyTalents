@@ -1,10 +1,10 @@
 package doggytalents.api;
 
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryType;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.BeddingMaterial;
 import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.Talent;
 import net.minecraftforge.registries.IForgeRegistry;
 
 /**

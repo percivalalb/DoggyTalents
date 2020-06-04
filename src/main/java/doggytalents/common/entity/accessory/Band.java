@@ -3,8 +3,8 @@ package doggytalents.common.entity.accessory;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyAccessoryTypes;
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryInstance;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryInstance;
 import net.minecraft.util.IItemProvider;
 
 public class Band extends Accessory {

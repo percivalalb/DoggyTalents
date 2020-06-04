@@ -3,10 +3,10 @@ package doggytalents.common.entity.accessory;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryInstance;
-import doggytalents.api.inferface.AccessoryType;
 import doggytalents.api.inferface.IDogAlteration;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryInstance;
+import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.Util;
 import net.minecraft.entity.player.PlayerEntity;

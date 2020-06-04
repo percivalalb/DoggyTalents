@@ -3,7 +3,7 @@ package doggytalents.common.network.packet;
 import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.PacketBuffer;

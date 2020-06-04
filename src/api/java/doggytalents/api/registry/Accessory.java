@@ -1,4 +1,4 @@
-package doggytalents.api.inferface;
+package doggytalents.api.registry;
 
 import java.util.function.Supplier;
 

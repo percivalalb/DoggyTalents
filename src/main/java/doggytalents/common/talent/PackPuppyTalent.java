@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import doggytalents.DoggyTags;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.Screens;
 import doggytalents.common.entity.DataKey;
 import doggytalents.common.entity.DogEntity;

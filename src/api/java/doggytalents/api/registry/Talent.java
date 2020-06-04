@@ -1,8 +1,9 @@
-package doggytalents.api.inferface;
+package doggytalents.api.registry;
 
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;

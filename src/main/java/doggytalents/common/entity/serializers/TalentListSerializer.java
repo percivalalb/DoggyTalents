@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import com.google.common.collect.Maps;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.IDataSerializer;

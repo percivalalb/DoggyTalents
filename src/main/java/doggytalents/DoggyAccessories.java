@@ -1,12 +1,12 @@
 package doggytalents;
 
-import doggytalents.api.inferface.Accessory;
-import doggytalents.common.entity.accessory.Helmet;
+import doggytalents.api.registry.Accessory;
 import doggytalents.common.entity.accessory.Band;
 import doggytalents.common.entity.accessory.Clothing;
 import doggytalents.common.entity.accessory.Collar;
 import doggytalents.common.entity.accessory.DyeableAccessory;
 import doggytalents.common.entity.accessory.Glasses;
+import doggytalents.common.entity.accessory.Helmet;
 import doggytalents.common.entity.accessory.LeatherHelmet;
 import doggytalents.common.lib.Constants;
 import net.minecraft.item.Item;

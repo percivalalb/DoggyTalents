@@ -1,7 +1,7 @@
 package doggytalents.common.talent;
 
 import doggytalents.api.inferface.IDogFoodHandler;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;

@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
-import doggytalents.api.inferface.AccessoryInstance;
 import doggytalents.api.inferface.IDogFoodHandler;
+import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;

@@ -2,7 +2,7 @@ package doggytalents.client.entity.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import doggytalents.api.inferface.AccessoryInstance;
+import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;

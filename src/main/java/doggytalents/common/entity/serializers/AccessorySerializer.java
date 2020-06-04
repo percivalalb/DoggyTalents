@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryInstance;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryInstance;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.IDataSerializer;
 

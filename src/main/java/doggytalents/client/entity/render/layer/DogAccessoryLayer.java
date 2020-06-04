@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import doggytalents.api.inferface.AccessoryInstance;
+import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.CollarRenderManager;
 import doggytalents.common.entity.DogEntity;

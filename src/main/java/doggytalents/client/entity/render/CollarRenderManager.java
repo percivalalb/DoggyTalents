@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.Talent;
 import doggytalents.client.entity.render.layer.IAccessoryRenderer;
 import doggytalents.client.entity.render.layer.ITalentRenderer;
 

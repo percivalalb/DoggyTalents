@@ -2,9 +2,9 @@ package doggytalents.common.item;
 
 import java.util.function.Supplier;
 
-import doggytalents.api.inferface.Accessory;
-import doggytalents.api.inferface.AccessoryInstance;
 import doggytalents.api.inferface.IDogItem;
+import doggytalents.api.registry.Accessory;
+import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.Talent;
+import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DataKey;
 
 public class RoaringGaleTalent extends Talent {

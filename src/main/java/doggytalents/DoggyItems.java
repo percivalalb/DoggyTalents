@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import doggytalents.api.inferface.Accessory;
+import doggytalents.api.registry.Accessory;
 import doggytalents.common.entity.DogLevel;
 import doggytalents.common.entity.accessory.DyeableAccessory;
 import doggytalents.common.item.AccessoryItem;

@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.api.inferface.AccessoryType;
+import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.lib.Constants;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;

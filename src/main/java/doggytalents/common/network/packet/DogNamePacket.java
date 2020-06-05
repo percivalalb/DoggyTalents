@@ -3,56 +3,37 @@ package doggytalents.common.network.packet;
 import java.util.function.Supplier;
 
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.Entity;
+import doggytalents.common.network.packet.data.DogNameData;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkEvent.Context;
 
-public class DogNamePacket {
+public class DogNamePacket extends DogPacket<DogNameData> {
 
-    private final int entityId;
-    private final String name;
-
-    public DogNamePacket(int entityId, String name) {
-        this.entityId = entityId;
-        this.name = name;
+    @Override
+    public void encode(DogNameData data, PacketBuffer buf) {
+        super.encode(data, buf);
+        buf.writeString(data.name, 64);
     }
 
-    public static void encode(DogNamePacket msg, PacketBuffer buf) {
-        buf.writeInt(msg.entityId);
-        buf.writeString(msg.name, 64);
-    }
-
-    public static DogNamePacket decode(PacketBuffer buf) {
+    @Override
+    public DogNameData decode(PacketBuffer buf) {
         int entityId = buf.readInt();
         String name = buf.readString(64);
-        return new DogNamePacket(entityId, name);
+        return new DogNameData(entityId, name);
     }
 
+    @Override
+    public void handleDog(DogEntity dogIn, DogNameData data, Supplier<Context> ctx) {
+        if(!dogIn.canInteract(ctx.get().getSender())) {
+            return;
+        }
 
-    public static class Handler {
-        public static void handle(final DogNamePacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                Entity target = ctx.get().getSender().world.getEntityByID(message.entityId);
-
-                if(!(target instanceof DogEntity)) {
-                    return;
-                }
-
-                DogEntity dog = (DogEntity)target;
-//                if(!dog.canInteract(ctx.get().getSender())) {
-//                    return;
-//                }
-
-                if(message.name.isEmpty()) {
-                    dog.setCustomName(null);
-                }
-                else {
-                    dog.setCustomName(new StringTextComponent(message.name));
-                }
-            });
-
-            ctx.get().setPacketHandled(true);
+        if(data.name.isEmpty()) {
+            dogIn.setCustomName(null);
+        }
+        else {
+            dogIn.setCustomName(new StringTextComponent(data.name));
         }
     }
 }

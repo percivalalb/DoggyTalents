@@ -4,48 +4,31 @@ import java.util.function.Supplier;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.Entity;
+import doggytalents.common.network.packet.data.DogModeData;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkEvent.Context;
 
-public class DogModePacket {
+public class DogModePacket extends DogPacket<DogModeData> {
 
-    public int entityId;
-    public EnumMode mode;
-
-    public DogModePacket(int entityId, EnumMode modeIn) {
-        this.entityId = entityId;
-        this.mode = modeIn;
+    @Override
+    public void encode(DogModeData data, PacketBuffer buf) {
+        super.encode(data, buf);
+        buf.writeInt(data.mode.getIndex());
     }
 
-    public static void encode(DogModePacket msg, PacketBuffer buf) {
-        buf.writeInt(msg.entityId);
-        buf.writeInt(msg.mode.getIndex());
-    }
-
-    public static DogModePacket decode(PacketBuffer buf) {
+    @Override
+    public DogModeData decode(PacketBuffer buf) {
         int entityId = buf.readInt();
         int modeIndex = buf.readInt();
-        return new DogModePacket(entityId, EnumMode.byIndex(modeIndex));
+        return new DogModeData(entityId, EnumMode.byIndex(modeIndex));
     }
 
-    public static class Handler {
-        public static void handle(final DogModePacket message, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                Entity target = ctx.get().getSender().world.getEntityByID(message.entityId);
-                if(!(target instanceof DogEntity)) {
-                    return;
-                }
-
-                DogEntity dog = (DogEntity)target;
-                if(!dog.canInteract(ctx.get().getSender())) {
-                    return;
-                }
-
-                dog.setMode(message.mode);
-            });
-
-            ctx.get().setPacketHandled(true);
+    @Override
+    public void handleDog(DogEntity dogIn, DogModeData data, Supplier<Context> ctx) {
+        if(!dogIn.canInteract(ctx.get().getSender())) {
+            return;
         }
+
+        dogIn.setMode(data.mode);
     }
 }

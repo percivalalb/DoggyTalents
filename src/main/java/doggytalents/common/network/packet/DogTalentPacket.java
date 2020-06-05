@@ -5,55 +5,35 @@ import java.util.function.Supplier;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.Entity;
+import doggytalents.common.network.packet.data.DogTalentData;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.NetworkEvent.Context;
 
-public class DogTalentPacket {
+public class DogTalentPacket extends DogPacket<DogTalentData> {
 
-    public int entityId;
-    public ResourceLocation talentId;
-
-    public DogTalentPacket(int entityId, ResourceLocation talentId) {
-        this.entityId = entityId;
-        this.talentId = talentId;
+    @Override
+    public void encode(DogTalentData data, PacketBuffer buf) {
+        super.encode(data, buf);
+        buf.writeRegistryIdUnsafe(DoggyTalentsAPI.TALENTS, data.talent);
     }
 
-    public static void encode(DogTalentPacket msg, PacketBuffer buf) {
-        buf.writeInt(msg.entityId);
-        buf.writeResourceLocation(msg.talentId);
-    }
-
-    public static DogTalentPacket decode(PacketBuffer buf) {
+    @Override
+    public DogTalentData decode(PacketBuffer buf) {
         int entityId = buf.readInt();
-        ResourceLocation talentId = buf.readResourceLocation();
-        return new DogTalentPacket(entityId, talentId);
+        Talent talent = buf.readRegistryIdUnsafe(DoggyTalentsAPI.TALENTS);
+        return new DogTalentData(entityId, talent);
     }
 
+    @Override
+    public void handleDog(DogEntity dogIn, DogTalentData data, Supplier<Context> ctx) {
+        if(!dogIn.canInteract(ctx.get().getSender())) {
+            return;
+        }
 
-    public static class Handler {
-        public static void handle(final DogTalentPacket msg, Supplier<NetworkEvent.Context> ctx) {
-            ctx.get().enqueueWork(() -> {
-                Entity target = ctx.get().getSender().world.getEntityByID(msg.entityId);
+        int level = dogIn.getLevel(data.talent);
 
-                if(!(target instanceof DogEntity)) {
-                    return;
-                }
-
-                DogEntity dog = (DogEntity)target;
-//                if(!dog.canInteract(ctx.get().getSender())) {
-//                    return;
-//                }
-                Talent talent = DoggyTalentsAPI.TALENTS.getValue(msg.talentId);
-                int level = dog.getLevel(talent);
-
-                if(level < talent.getMaxLevel() && dog.getSpendablePoints() >= talent.getLevelCost(level + 1)) {
-                    dog.setTalentLevel(talent, level + 1);
-                }
-            });
-
-            ctx.get().setPacketHandled(true);
+        if(level < data.talent.getMaxLevel() && dogIn.getSpendablePoints() >= data.talent.getLevelCost(level + 1)) {
+            dogIn.setTalentLevel(data.talent, level + 1);
         }
     }
 }

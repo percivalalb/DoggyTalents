@@ -21,7 +21,7 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.texture.DogTextureLoader;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
-import doggytalents.common.network.packet.RequestSkinPacket;
+import doggytalents.common.network.packet.data.RequestSkinData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
@@ -112,7 +112,7 @@ public class DogTextureLoaderClient extends DogTextureLoader {
             //if (ConfigValues.DISPLAY_OTHER_DOG_SKINS && SKIN_REQUEST_MAP.getOrDefault(hash, SkinRequest.UNREQUESTED) != SkinRequest.REQUESTED) {
                 DoggyTalents2.LOGGER.debug("Request2");
                 SKIN_REQUEST_MAP.put(hash, SkinRequest.REQUESTED);
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestSkinPacket(hash));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestSkinData(hash));
             //}
         }
 

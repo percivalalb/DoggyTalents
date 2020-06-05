@@ -17,12 +17,12 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DogLevel.Type;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
-import doggytalents.common.network.packet.DogModePacket;
-import doggytalents.common.network.packet.DogNamePacket;
-import doggytalents.common.network.packet.DogObeyPacket;
-import doggytalents.common.network.packet.DogTalentPacket;
-import doggytalents.common.network.packet.FriendlyFirePacket;
-import doggytalents.common.network.packet.SendSkinPacket;
+import doggytalents.common.network.packet.data.DogModeData;
+import doggytalents.common.network.packet.data.DogNameData;
+import doggytalents.common.network.packet.data.DogObeyData;
+import doggytalents.common.network.packet.data.DogTalentData;
+import doggytalents.common.network.packet.data.FriendlyFireData;
+import doggytalents.common.network.packet.data.SendSkinData;
 import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -85,7 +85,7 @@ public class DogInfoScreen extends Screen {
 
         TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20, "");
         nameTextField.setResponder(text ->  {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogNamePacket(DogInfoScreen.this.dog.getEntityId(), text));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogNameData(DogInfoScreen.this.dog.getEntityId(), text));
         });
         nameTextField.setFocused2(false);
         nameTextField.setMaxStringLength(32);
@@ -101,7 +101,7 @@ public class DogInfoScreen extends Screen {
         if(this.dog.isOwner(this.player)) {
             Button obeyBtn = new Button(this.width - 64, topY + 77, 42, 20, String.valueOf(this.dog.willObeyOthers()), (btn) -> {
                 btn.setMessage(String.valueOf(!this.dog.willObeyOthers()));
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyPacket(this.dog.getEntityId(), !this.dog.willObeyOthers()));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyData(this.dog.getEntityId(), !this.dog.willObeyOthers()));
             });
 
             this.addButton(obeyBtn);
@@ -109,7 +109,7 @@ public class DogInfoScreen extends Screen {
 
         Button attackPlayerBtn = new Button(this.width - 64, topY - 5, 42, 20, String.valueOf(this.dog.canPlayersAttack()), button -> {
             button.setMessage(String.valueOf(!this.dog.canPlayersAttack()));
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFirePacket(this.dog.getEntityId(), !this.dog.canPlayersAttack()));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFireData(this.dog.getEntityId(), !this.dog.canPlayersAttack()));
         });
 
         this.addButton(attackPlayerBtn);
@@ -118,12 +118,12 @@ public class DogInfoScreen extends Screen {
             Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, "+", (btn) -> {
                 this.textureIndex += 1;
                 this.textureIndex %= this.customSkinList.size() ;
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinPacket(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
             });
             Button lessBtn = new Button(this.width - 64, topY + 30, 20, 20, "-", (btn) -> {
                 this.textureIndex += this.customSkinList.size() - 1;
                 this.textureIndex %= this.customSkinList.size();
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinPacket(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
             });
 
             this.addButton(addBtn);
@@ -140,7 +140,7 @@ public class DogInfoScreen extends Screen {
                 button.setMessage(I18n.format(mode.getUnlocalisedName()));
             }
 
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogModePacket(DogInfoScreen.this.dog.getEntityId(), mode));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogModeData(DogInfoScreen.this.dog.getEntityId(), mode));
         }) {
             @Override
             public void renderToolTip(int mouseX, int mouseY) {
@@ -224,7 +224,7 @@ public class DogInfoScreen extends Screen {
             Button button = new TalentButton(25, 10 + i * 21, 20, 20, "+", talent, (btn) -> {
                 int level = DogInfoScreen.this.dog.getLevel(talent);
                 if(level < talent.getMaxLevel() && DogInfoScreen.this.dog.getSpendablePoints() >= talent.getLevelCost(level + 1)) {
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentPacket(DogInfoScreen.this.dog.getEntityId(), talent.getRegistryName()));
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getEntityId(), talent));
                 }
 
             }) {

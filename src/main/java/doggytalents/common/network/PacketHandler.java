@@ -8,24 +8,35 @@ import doggytalents.common.network.packet.DogTalentPacket;
 import doggytalents.common.network.packet.FriendlyFirePacket;
 import doggytalents.common.network.packet.RequestSkinPacket;
 import doggytalents.common.network.packet.SendSkinPacket;
+import doggytalents.common.network.packet.data.DogModeData;
+import doggytalents.common.network.packet.data.DogNameData;
+import doggytalents.common.network.packet.data.DogObeyData;
+import doggytalents.common.network.packet.data.DogTalentData;
+import doggytalents.common.network.packet.data.FriendlyFireData;
+import doggytalents.common.network.packet.data.RequestSkinData;
+import doggytalents.common.network.packet.data.SendSkinData;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public final class PacketHandler {
 
-    public static void init() {
-        int disc = 0;
+    private static int disc = 0;
 
-        DoggyTalents2.HANDLER.registerMessage(disc++, DogModePacket.class, DogModePacket::encode, DogModePacket::decode, DogModePacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, DogNamePacket.class, DogNamePacket::encode, DogNamePacket::decode, DogNamePacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, DogObeyPacket.class, DogObeyPacket::encode, DogObeyPacket::decode, DogObeyPacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, DogTalentPacket.class, DogTalentPacket::encode, DogTalentPacket::decode, DogTalentPacket.Handler::handle);
-//        DoggyTalents2.HANDLER.registerMessage(disc++, DogTexturePacket.class, DogTexturePacket::encode, DogTexturePacket::decode, DogTexturePacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, FriendlyFirePacket.class, FriendlyFirePacket::encode, FriendlyFirePacket::decode, FriendlyFirePacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, SendSkinPacket.class, SendSkinPacket::encode, SendSkinPacket::decode, SendSkinPacket.Handler::handle);
-        DoggyTalents2.HANDLER.registerMessage(disc++, RequestSkinPacket.class, RequestSkinPacket::encode, RequestSkinPacket::decode, RequestSkinPacket.Handler::handle);
+    public static void init() {
+        registerPacket(new DogModePacket(), DogModeData.class);
+        registerPacket(new DogNamePacket(), DogNameData.class);
+        registerPacket(new DogObeyPacket(), DogObeyData.class);
+        registerPacket(new DogTalentPacket(), DogTalentData.class);
+        //registerPacket(new DogTexturePacket(), DogTextureData.class);
+        registerPacket(new FriendlyFirePacket(), FriendlyFireData.class);
+        registerPacket(new SendSkinPacket(), SendSkinData.class);
+        registerPacket(new RequestSkinPacket(), RequestSkinData.class);
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {
         DoggyTalents2.HANDLER.send(target, message);
+    }
+
+    public static <D> void registerPacket(IPacket<D> packet, Class<D> dataClass) {
+        DoggyTalents2.HANDLER.registerMessage(PacketHandler.disc++, dataClass, packet::encode, packet::decode, packet::handle);
     }
 }

@@ -15,7 +15,6 @@ import doggytalents.client.DogTextureLoaderClient;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DogLevel.Type;
-import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogModeData;
 import doggytalents.common.network.packet.data.DogNameData;
@@ -64,11 +63,7 @@ public class DogInfoScreen extends Screen {
                 .sorted(Comparator.comparing((t) -> I18n.format(t.getTranslationKey())))
                 .collect(Collectors.toList());
 
-        this.customSkinList = Lists.newArrayList(DogTextureLoaderClient.getClient());
-        byte[] stream = DogTextureLoaderClient.getResourceBytes(Resources.DIAMOND_HELMET);
-        if (stream != null) {
-            DogTextureLoaderClient.saveTextureAndLoad(DogTextureLoaderClient.getClientFolder(), stream);
-        }
+        this.customSkinList = Lists.newArrayList(DogTextureLoaderClient.getCustomSkins());
     }
 
     public static void open(DogEntity dog) {
@@ -146,7 +141,7 @@ public class DogInfoScreen extends Screen {
             public void renderToolTip(int mouseX, int mouseY) {
                 List<String> list = new ArrayList<String>();
                 String str = I18n.format(dog.getMode().getUnlocalisedInfo());
-                //list.addAll(splitInto(str, 150, DogInfoScreen.this.font));
+                list.addAll(ScreenUtil.splitInto(str, 150, DogInfoScreen.this.font));
                 if(DogInfoScreen.this.dog.getMode() == EnumMode.WANDERING) {
 
 
@@ -230,17 +225,21 @@ public class DogInfoScreen extends Screen {
             }) {
                 @Override
                 public void renderToolTip(int mouseX, int mouseY) {
-                    List<String> list = new ArrayList<String>();
+                    List<String> list = new ArrayList<>();
 
                     list.add(TextFormatting.GREEN + I18n.format(talent.getTranslationKey()));
-                    list.add("Level: " + DogInfoScreen.this.dog.getLevel(talent));
-                    list.add(TextFormatting.GRAY + "--------------------------------");
-                    //list.addAll(DogInfoScreen.this.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
+                    if (this.active) {
+                        list.add("Level: " + DogInfoScreen.this.dog.getLevel(talent));
+                        list.add(TextFormatting.GRAY + "--------------------------------");
+                        list.addAll(ScreenUtil.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
+                    } else {
+                        list.add(TextFormatting.RED + "Talent disabled");
+                    }
 
                     DogInfoScreen.this.renderTooltip(list, mouseX, mouseY, DogInfoScreen.this.font);
                 }
             };
-            button.active = true; //TODO De-active if talent disabled
+            button.active = !ConfigValues.DISABLED_TALENTS.contains(talent);
 
             this.talentWidgets.add(button);
             this.addButton(button);
@@ -273,11 +272,11 @@ public class DogInfoScreen extends Screen {
         }
 
         //this.font.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
-        this.font.drawString(I18n.format("doggui.speed") + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
-        this.font.drawString(I18n.format("doggui.owner") + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
-        this.font.drawString(I18n.format("doggui.age") + ageString, this.width - 160, topY - 80, 0xFFFFFF);
+        this.font.drawString(I18n.format("doggui.speed") + " " + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
+        this.font.drawString(I18n.format("doggui.owner") + " " + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
+        this.font.drawString(I18n.format("doggui.age") + " " + ageString, this.width - 160, topY - 80, 0xFFFFFF);
         if(ConfigValues.DOG_GENDER) {
-            this.font.drawString(I18n.format("doggui.gender") + I18n.format(this.dog.getGender().getUnlocalisedTitle()), this.width - 160, topY - 70, 0xFFFFFF);
+            this.font.drawString(I18n.format("doggui.gender") + " "+ I18n.format(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 70, 0xFFFFFF);
         }
 
         this.font.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);

@@ -2,9 +2,9 @@ package doggytalents.client.entity.render.layer.accessory;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.entity.model.DogModel;
-import doggytalents.client.entity.render.layer.IAccessoryRenderer;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.accessory.DyeableAccessory.DyeableAccessoryInstance;
 import doggytalents.common.util.Util;
@@ -19,12 +19,12 @@ public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer {
     private ResourceLocation texture;
 
     public LeatherArmorAccessoryRenderer(ResourceLocation textureIn) {
-        this.model = new DogModel<>(0.4F);
+        this.model = new DogModel(0.4F);
         this.texture = textureIn;
     }
 
     @Override
-    public void render(LayerRenderer<DogEntity, DogModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(LayerRenderer<DogEntity, DogModel> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.isTamed() && !dog.isInvisible()) {
             DyeableAccessoryInstance armorInstance = data.cast(DyeableAccessoryInstance.class);
             float[] color = Util.rgbIntToFloatArray(armorInstance.getColor());

@@ -2,6 +2,7 @@ package doggytalents.client.entity.render.layer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import doggytalents.api.client.render.ITalentRenderer;
 import doggytalents.client.entity.model.DogBackpackModel;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
@@ -19,7 +20,7 @@ public class PackPuppyRenderer implements ITalentRenderer {
     }
 
     @Override
-    public void render(LayerRenderer<DogEntity, DogModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, int level, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(LayerRenderer<DogEntity, DogModel> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, int level, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(!dog.isInvisible()) {
             layer.getEntityModel().copyModelAttributesTo(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);

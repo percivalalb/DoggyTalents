@@ -1,4 +1,4 @@
-package doggytalents.client.entity.render.layer;
+package doggytalents.api.client.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 
 public interface IAccessoryRenderer {
 
-    default void render(LayerRenderer<DogEntity, DogModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    default void render(LayerRenderer<DogEntity, DogModel> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

@@ -3,6 +3,8 @@ package doggytalents.common.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import doggytalents.api.registry.Talent;
+
 public class ConfigValues {
 
     public static final boolean DOG_GENDER = true;

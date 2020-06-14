@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
+import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.CollarRenderManager;
@@ -12,9 +13,9 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 
-public class DogAccessoryLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
+public class DogAccessoryLayer extends LayerRenderer<DogEntity, DogModel> {
 
-    public DogAccessoryLayer(IEntityRenderer<DogEntity, DogModel<DogEntity>> rendererIn) {
+    public DogAccessoryLayer(IEntityRenderer<DogEntity, DogModel> rendererIn) {
         super(rendererIn);
     }
 

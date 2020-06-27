@@ -35,12 +35,10 @@ public class DogLevel {
 
     protected void setLevel(Type type, int level) {
         if (type == Type.DIRE) {
-
             this.direLevel = level;
         } else {
             this.level = level;
         }
-
     }
 
     protected void incrementLevel(Type type) {
@@ -49,6 +47,16 @@ public class DogLevel {
 
     public DogLevel copy() {
         return new DogLevel(this.level, this.direLevel);
+    }
+
+    /**
+     * Combines parents levels together
+     */
+    public DogLevel combine(DogLevel levelIn) {
+        int combinedLevel = this.getLevel(Type.NORMAL) + levelIn.getLevel(Type.NORMAL);
+        combinedLevel /= 2;
+        combinedLevel = Math.min(combinedLevel, 20);
+        return new DogLevel(combinedLevel, 0);
     }
 
 }

@@ -4,15 +4,19 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.talent.HunterDogTalent;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -24,18 +28,19 @@ public class EventHandler {
 
         World world = event.getWorld();
 
-        if(!world.isRemote) {
+        ItemStack stack = event.getItemStack();
+        Entity target = event.getTarget();
 
-            ItemStack stack = event.getItemStack();
-            Entity target = event.getTarget();
+        if(target.getType() == EntityType.WOLF && target instanceof TameableEntity && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
+            event.setCanceled(true);
 
-            if(target instanceof WolfEntity && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
-                WolfEntity wolf = (WolfEntity) target;
+            TameableEntity wolf = (TameableEntity) target;
 
-                PlayerEntity player = event.getPlayer();
+            PlayerEntity player = event.getPlayer();
 
-                if(wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
+            if(wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
 
+                if(!world.isRemote) {
                     if(!player.abilities.isCreativeMode) {
                         stack.shrink(1);
                     }
@@ -51,6 +56,10 @@ public class EventHandler {
 
                     wolf.remove();
                 }
+
+                event.setCancellationResult(ActionResultType.SUCCESS);
+            } else {
+                event.setCancellationResult(ActionResultType.FAIL);
             }
         }
     }
@@ -66,24 +75,30 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public  void playerLoggedIn(final PlayerLoggedInEvent event) {
-        PlayerEntity player = event.getPlayer();
+    public void playerLoggedIn(final PlayerLoggedInEvent event) {
+        if (ConfigValues.STARTING_ITEMS) {
 
-        CompoundNBT tag = player.getPersistentData();
+            PlayerEntity player = event.getPlayer();
 
-        if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-            tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
-        }
+            CompoundNBT tag = player.getPersistentData();
 
-        CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+            if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
+                tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
+            }
 
-        if(ConfigValues.STARTING_ITEMS && !persistTag.getBoolean("gotDTStartingItems")) {
-            persistTag.putBoolean("gotDTStartingItems", true);
+            CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
 
-            player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
-            player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.WHISTLE.get()));
+            if(!persistTag.getBoolean("gotDTStartingItems")) {
+                persistTag.putBoolean("gotDTStartingItems", true);
+
+                player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
+                player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.WHISTLE.get()));
+            }
         }
     }
 
-
+    @SubscribeEvent
+    public void onLootDrop(final LootingLevelEvent event) {
+        HunterDogTalent.onLootDrop(event);
+    }
 }

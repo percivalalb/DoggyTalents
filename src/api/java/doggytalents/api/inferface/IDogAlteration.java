@@ -1,5 +1,6 @@
 package doggytalents.api.inferface;
 
+import doggytalents.api.enu.WetSource;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.block.BlockState;
@@ -8,6 +9,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
@@ -42,6 +44,14 @@ public interface IDogAlteration {
 
     }
 
+    default ActionResult<Integer> hungerTick(DogEntity dogIn, int hungerTick) {
+        return ActionResult.resultPass(hungerTick);
+    }
+
+    default ActionResult<Integer> healingTick(DogEntity dogIn, int healingTick) {
+        return ActionResult.resultPass(healingTick);
+    }
+
     default ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         return ActionResultType.PASS;
     }
@@ -63,6 +73,10 @@ public interface IDogAlteration {
     }
 
     default ActionResultType canAttack(DogEntity dogIn, EntityType<?> entityType) {
+        return ActionResultType.PASS;
+    }
+
+    default ActionResultType shouldAttackEntity(DogEntity dog, LivingEntity target, LivingEntity owner) {
         return ActionResultType.PASS;
     }
 
@@ -103,7 +117,7 @@ public interface IDogAlteration {
         return ActionResult.resultPass(distance);
     }
 
-    default ActionResult<Integer> shouldDecreaseAir(DogEntity dogIn, int air) {
+    default ActionResult<Integer> decreaseAirSupply(DogEntity dogIn, int air) {
         return ActionResult.resultPass(air);
     }
 
@@ -141,5 +155,18 @@ public interface IDogAlteration {
 
     default ActionResult<Float> setDogHunger(DogEntity dogIn, float hunger, float diff) {
         return ActionResult.resultPass(hunger);
+    }
+
+    default ActionResultType isPotionApplicable(DogEntity dogIn, EffectInstance effectIn) {
+        return ActionResultType.PASS;
+    }
+
+    /**
+     * Only called serverside
+     * @param dogIn The dog
+     * @param source How the dog initially got wet
+     */
+    default void onShakingDry(DogEntity dogIn, WetSource source) {
+
     }
 }

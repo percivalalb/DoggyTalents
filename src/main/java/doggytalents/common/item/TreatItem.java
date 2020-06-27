@@ -24,6 +24,10 @@ public class TreatItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+        if (!dogIn.isTamed() || !dogIn.canInteract(playerIn)) {
+            return ActionResultType.FAIL;
+        }
+
         DogLevel dogLevel = dogIn.getLevel();
 
         if (dogIn.getGrowingAge() < 0) {
@@ -33,7 +37,7 @@ public class TreatItem extends Item implements IDogItem {
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"));
             }
 
-            return ActionResultType.FAIL;
+            return ActionResultType.CONSUME;
         } else if (!dogLevel.canIncrease(this.type)) {
 
             if(!worldIn.isRemote) {
@@ -41,7 +45,7 @@ public class TreatItem extends Item implements IDogItem {
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"));
             }
 
-            return ActionResultType.FAIL;
+            return ActionResultType.CONSUME;
         }
         else if(dogLevel.getLevel(this.type) < this.maxLevel) {
 
@@ -66,7 +70,7 @@ public class TreatItem extends Item implements IDogItem {
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"));
             }
 
-            return ActionResultType.FAIL;
+            return ActionResultType.CONSUME;
         }
     }
 }

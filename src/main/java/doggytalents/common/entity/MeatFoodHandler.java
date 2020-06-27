@@ -22,10 +22,8 @@ public class MeatFoodHandler implements IDogFoodHandler {
 
         if (dogIn.getDogHunger() < dogIn.getMaxHunger()) {
             if (!dogIn.world.isRemote) {
-
                 int heal = stackIn.getItem().getFood().getHealing() * 5;
 
-                //dogIn.setHealth(dogIn.getHealth() + heal);
                 dogIn.setDogHunger(dogIn.getDogHunger() + heal);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
             }

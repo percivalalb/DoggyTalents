@@ -12,7 +12,6 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.datafixers.util.Either;
 
 import doggytalents.DoggyBedMaterials;
@@ -182,10 +181,5 @@ public class DogBedModel implements IBakedModel {
     @Override
     public ItemOverrideList getOverrides() {
         return ITEM_OVERIDE;
-    }
-
-    @Override
-    public IBakedModel handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, MatrixStack mat) {
-        return this;
     }
 }

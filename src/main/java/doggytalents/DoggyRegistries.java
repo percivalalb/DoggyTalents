@@ -7,14 +7,7 @@ import doggytalents.api.registry.BeddingMaterial;
 import doggytalents.api.registry.CasingMaterial;
 import doggytalents.api.registry.Talent;
 import doggytalents.common.util.Util;
-import net.minecraft.client.renderer.texture.MissingTextureSprite;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryBuilder;
 

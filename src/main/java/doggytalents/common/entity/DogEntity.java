@@ -1,5 +1,6 @@
 package doggytalents.common.entity;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,16 +17,19 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import doggytalents.DoggyAccessories;
+import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggySerializers;
 import doggytalents.DoggyTags;
 import doggytalents.DoggyTalents2;
+import doggytalents.api.enu.WetSource;
 import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IDogItem;
+import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
@@ -33,17 +37,52 @@ import doggytalents.api.registry.Talent;
 import doggytalents.client.screen.DogInfoScreen;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogLevel.Type;
+import doggytalents.common.entity.ai.BerserkerGoal;
+import doggytalents.common.entity.ai.DogBegGoal;
+import doggytalents.common.entity.ai.DogFollowOwnerGoal;
+import doggytalents.common.entity.ai.FetchGoal;
+import doggytalents.common.entity.ai.FindWaterGoal2;
+import doggytalents.common.entity.ai.PatrolAreaGoal;
+import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.BackwardsComp;
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.ai.goal.BreedGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
+import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
+import net.minecraft.entity.ai.goal.SitGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.monster.GhastEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,24 +93,31 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 
-public class DogEntity extends WolfEntity {
+public class DogEntity extends TameableEntity {
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
     private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
@@ -85,12 +131,181 @@ public class DogEntity extends WolfEntity {
     private static final DataParameter<String> CUSTOM_SKIN = EntityDataManager.createKey(DogEntity.class, DataSerializers.STRING);
     private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
     private static final DataParameter<Byte> SIZE = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.createKey(DogEntity.class, DataSerializers.ITEMSTACK);
+    public static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute)null, "generic.jumpStrength", 0.0D, 0.0D, 8.0D)).setShouldWatch(true);
 
-    public final Map<Integer, Object> objects = Maps.newHashMap();
+    // Cached values
+    private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
     private final List<IDogAlteration> alterations = Lists.newArrayList();
+
+
+    public List<BlockPos> patrolPos = Collections.emptyList();
+
+    public final StatsTracker statsTracker = new StatsTracker();
+    public final Map<Integer, Object> objects = Maps.newHashMap();
+
+    private int hungerTick;
+    private int prevHungerTick;
+    private int healingTick;
+    private int prevHealingTick;
+
+    private float headRotationCourse;
+    private float headRotationCourseOld;
+    private WetSource wetSource;
+    private boolean isShaking;
+    private float timeWolfIsShaking;
+    private float prevTimeWolfIsShaking;
+
+
+    protected boolean dogJumping;
+    protected float jumpPower;
 
     public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
         super(type, worldIn);
+        this.setTamed(false);
+        this.setGender(EnumGender.random(this.getRNG()));
+    }
+
+    @Override
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(ACCESSORIES.get(), Lists.newArrayList());
+        this.dataManager.register(TALENTS.get(), Maps.newHashMap());
+        this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());
+        this.dataManager.register(DOG_FLAGS, (byte) 0);
+        this.dataManager.register(GENDER.get(), EnumGender.UNISEX);
+        this.dataManager.register(MODE.get(), EnumMode.DOCILE);
+        this.dataManager.register(BOWL_POS, Optional.empty());
+        this.dataManager.register(HUNGER_INT, 60F);
+        this.dataManager.register(CUSTOM_SKIN, "");
+        this.dataManager.register(DOG_LEVEL.get(), new DogLevel(0, 0));
+        this.dataManager.register(SIZE, (byte) 3);
+        this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.sitGoal = new SitGoal(this);
+        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new FindWaterGoal2(this));
+        this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
+        this.goalSelector.addGoal(2, this.sitGoal);
+        //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
+        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(6, new FetchGoal(this, 1.0D, 32.0F));
+        this.goalSelector.addGoal(6, new DogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
+        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new DogBegGoal(this, 8.0F));
+        this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
+        //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
+        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
+        this.targetSelector.addGoal(6, new BerserkerGoal<>(this, MonsterEntity.class, false));
+    }
+
+    @Override
+    protected void registerAttributes() {
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3F);
+        if (this.isTamed()) {
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        } else {
+            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        }
+
+        this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
+        this.getAttributes().registerAttribute(JUMP_STRENGTH).setBaseValue(0.42F);
+    }
+
+    @Override
+    public void playStepSound(BlockPos pos, BlockState blockIn) {
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        if (this.rand.nextInt(3) == 0) {
+            return this.isTamed() && this.getHealth() < 10.0F ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
+        } else {
+            return SoundEvents.ENTITY_WOLF_AMBIENT;
+        }
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_WOLF_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_WOLF_DEATH;
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return 0.4F;
+    }
+
+    public boolean isDogWet() {
+        return this.wetSource != null;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public float getShadingWhileWet(float partialTicks) {
+        return 0.75F + MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.25F;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public float getShakeAngle(float partialTicks, float p_70923_2_) {
+        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + p_70923_2_) / 1.8F;
+        if (f < 0.0F) {
+            f = 0.0F;
+        } else if (f > 1.0F) {
+            f = 1.0F;
+        }
+
+        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public float getInterestedAngle(float partialTicks) {
+        return MathHelper.lerp(partialTicks, this.headRotationCourseOld, this.headRotationCourse) * 0.15F * (float)Math.PI;
+    }
+
+    @Override
+    public void handleStatusUpdate(byte id) {
+        if (id == doggytalents.common.lib.Constants.EntityState.WOLF_STOP_SHAKING) {
+           this.isShaking = true;
+           this.timeWolfIsShaking = 0.0F;
+           this.prevTimeWolfIsShaking = 0.0F;
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    public float getTailRotation() {
+        return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+        return sizeIn.height * 0.8F;
+    }
+
+    @Override
+    public int getVerticalFaceSpeed() {
+        return this.isSitting() ? 20 : super.getVerticalFaceSpeed();
+    }
+
+    @Override
+    public double getYOffset() {
+        return this.getRidingEntity() instanceof PlayerEntity ? 0.5D : 0.0D;
     }
 
     @Override
@@ -98,6 +313,60 @@ public class DogEntity extends WolfEntity {
         super.tick();
 
         if (this.isAlive()) {
+
+            this.headRotationCourseOld = this.headRotationCourse;
+            if (this.isBegging()) {
+                this.headRotationCourse += (1.0F - this.headRotationCourse) * 0.4F;
+            } else {
+                this.headRotationCourse += (0.0F - this.headRotationCourse) * 0.4F;
+            }
+
+            boolean inWater = this.isInWater() ;
+            boolean inRain = this.isInRain();
+            boolean inBubbleColumn = this.isInBubbleColumn();
+
+            if (inWater || inRain || inBubbleColumn) {
+                this.isShaking = false;
+                this.timeWolfIsShaking = 0.0F;
+                this.prevTimeWolfIsShaking = 0.0F;
+
+                if (this.wetSource == null) {
+                    this.wetSource = WetSource.of(inWater, inBubbleColumn, inRain);
+                }
+            } else if ((this.wetSource != null || this.isShaking) && this.isShaking) {
+                if (this.timeWolfIsShaking == 0.0F) {
+                    this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                }
+
+                this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
+                this.timeWolfIsShaking += 0.05F;
+                if (this.prevTimeWolfIsShaking >= 2.0F) {
+
+                    //TODO check if only called server side
+                    if (this.wetSource != null) {
+                        for (IDogAlteration alter : this.alterations) {
+                            alter.onShakingDry(this, this.wetSource);
+                        }
+                    }
+
+                    this.wetSource = null;
+                    this.isShaking = false;
+                    this.prevTimeWolfIsShaking = 0.0F;
+                    this.timeWolfIsShaking = 0.0F;
+                }
+
+                if (this.timeWolfIsShaking > 0.4F) {
+                    float f = (float)this.getPosY();
+                    int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
+                    Vec3d vec3d = this.getMotion();
+
+                    for(int j = 0; j < i; ++j) {
+                        float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
+                        float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
+                        this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + f1, f + 0.8F, this.getPosZ() + f2, vec3d.x, vec3d.y, vec3d.z);
+                    }
+                }
+            }
 
             // On server side
             if (!this.world.isRemote) {
@@ -119,24 +388,61 @@ public class DogEntity extends WolfEntity {
     @Override
     public void livingTick() {
         super.livingTick();
+        if (!this.world.isRemote && this.wetSource != null && !this.isShaking && !this.hasPath() && this.onGround) {
+            this.isShaking = true;
+            this.timeWolfIsShaking = 0.0F;
+            this.prevTimeWolfIsShaking = 0.0F;
+            this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_STOP_SHAKING);
+        }
+
+        if (!this.world.isRemote) {
+            if(!ConfigValues.DISABLE_HUNGER) {
+                this.prevHungerTick = this.hungerTick;
+
+                if (!this.isBeingRidden() && !this.isSitting()) {
+                    this.hungerTick += 1;
+                }
+
+                for (IDogAlteration alter : this.alterations) {
+                    ActionResult<Integer> result = alter.hungerTick(this, this.hungerTick - this.prevHungerTick);
+
+                    if (result.getType().isSuccess()) {
+                        this.hungerTick = result.getResult() + this.prevHungerTick;
+                    }
+                }
+
+                if (this.hungerTick > 400) {
+                    this.setDogHunger(this.getDogHunger() - 1);
+                    this.hungerTick -= 400;
+                }
+            }
+
+            this.prevHealingTick = this.healingTick;
+            this.healingTick += 8;
+
+            if (this.isSitting()) {
+                this.healingTick += 4;
+            }
+
+            for (IDogAlteration alter : this.alterations) {
+                ActionResult<Integer> result = alter.healingTick(this, this.healingTick - this.prevHealingTick);
+
+                if (result.getType().isSuccess()) {
+                    this.healingTick = result.getResult() + this.prevHealingTick;
+                }
+            }
+
+            if (this.healingTick >= 6000) {
+                if (this.getHealth() < this.getMaxHealth()) {
+                    DoggyTalents2.LOGGER.debug("Heal:");
+                    this.heal(1);
+                }
+
+                this.healingTick = 0;
+            }
+        }
 
         this.alterations.forEach((alter) -> alter.livingTick(this));
-    }
-
-    @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ACCESSORIES.get(), Lists.newArrayList());
-        this.dataManager.register(TALENTS.get(), Maps.newHashMap());
-        this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());
-        this.dataManager.register(DOG_FLAGS, (byte) 0);
-        this.dataManager.register(GENDER.get(), EnumGender.UNISEX);
-        this.dataManager.register(MODE.get(), EnumMode.DOCILE);
-        this.dataManager.register(BOWL_POS, Optional.empty());
-        this.dataManager.register(HUNGER_INT, 60F);
-        this.dataManager.register(CUSTOM_SKIN, "");
-        this.dataManager.register(DOG_LEVEL.get(), new DogLevel(0, 0));
-        this.dataManager.register(SIZE, (byte) 3);
     }
 
     private static final Item[] HELMETS = new Item[] {Items.IRON_HELMET, Items.DIAMOND_HELMET, Items.GOLDEN_HELMET, Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET};
@@ -147,29 +453,51 @@ public class DogEntity extends WolfEntity {
 
         ItemStack stack = player.getHeldItem(hand);
 
-        if(stack.getItem() == Items.STICK && this.canInteract(player)) {
+        if (this.isTamed()) {
+            if(stack.getItem() == Items.STICK && this.canInteract(player)) {
 
-            if(this.world.isRemote) {
-                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> DogInfoScreen.open(this));
+                if(this.world.isRemote) {
+                    DogInfoScreen.open(this);
+                }
+
+                return true;
             }
 
-            return true;
-        }
-
-        if (!stack.isEmpty()) {
-            for (int i = 0; i < HELMETS.length; i++) {
-                if (stack.getItem().equals(HELMETS[i])) {
-                    AccessoryInstance inst;
-                    if (HELMETS[i] == Items.LEATHER_HELMET) {
-                        inst = DoggyAccessories.LEATHER_HELMET.create(((IDyeableArmorItem) Items.LEATHER_HELMET).getColor(stack));
-                    } else {
-                        inst = HELMET_ACCESSORIES.get(i).get().getDefault();
-                    }
-                    if (this.addAccessory(inst)) {
-                        this.consumeItemFromStack(player, stack);
-                        return true;
+            if (!stack.isEmpty()) {
+                for (int i = 0; i < HELMETS.length; i++) {
+                    if (stack.getItem().equals(HELMETS[i])) {
+                        AccessoryInstance inst;
+                        if (HELMETS[i] == Items.LEATHER_HELMET) {
+                            inst = DoggyAccessories.LEATHER_HELMET.create(((IDyeableArmorItem) Items.LEATHER_HELMET).getColor(stack));
+                        } else {
+                            inst = HELMET_ACCESSORIES.get(i).get().getDefault();
+                        }
+                        if (this.addAccessory(inst)) {
+                            this.consumeItemFromStack(player, stack);
+                            return true;
+                        }
                     }
                 }
+            }
+        } else { // Not tamed
+            if(stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
+
+                if(!this.world.isRemote) {
+                    this.consumeItemFromStack(player, stack);
+
+                    if(stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.rand.nextInt(3) == 0) {
+                        this.setTamedBy(player);
+                        this.navigator.clearPath();
+                        this.setAttackTarget((LivingEntity) null);
+                        this.sitGoal.setSitting(true);
+                        this.setHealth(20.0F);
+                        this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_HEARTS);
+                    } else {
+                        this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_SMOKE);
+                    }
+                }
+
+                return true;
             }
         }
 
@@ -198,11 +526,16 @@ public class DogEntity extends WolfEntity {
             }
         }
 
-        if (super.processInteract(player, hand)) {
+        boolean flag = super.processInteract(player, hand);
+        if (!flag || this.isChild()) {
+            if (!this.world.isRemote) {
+                this.sitGoal.setSitting(!this.isSitting());
+
+            }
             return true;
         }
 
-        return false;
+        return flag;
     }
 
     @Override
@@ -251,6 +584,34 @@ public class DogEntity extends WolfEntity {
     }
 
     @Override
+    protected int decreaseAirSupply(int air) {
+        for (IDogAlteration alter : this.alterations) {
+            ActionResult<Integer> result = alter.decreaseAirSupply(this, air);
+
+            if (result.getType().isSuccess()) {
+                return result.getResult();
+            }
+        }
+
+        return super.decreaseAirSupply(air);
+    }
+
+    @Override
+    protected int determineNextAir(int currentAir) {
+        currentAir += 4;
+        for (IDogAlteration alter : this.alterations) {
+            ActionResult<Integer> result = alter.determineNextAir(this, currentAir);
+
+            if (result.getType().isSuccess()) {
+                currentAir = result.getResult();
+                break;
+            }
+        }
+
+        return Math.min(currentAir, this.getMaxAir());
+    }
+
+    @Override
     public boolean canAttack(LivingEntity target) {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canAttack(this, target);
@@ -281,19 +642,70 @@ public class DogEntity extends WolfEntity {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float damage) {
+    public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+        //TODO make wolves not able to attack dogs
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Float> result = alter.attackEntityFrom(this, source, damage);
+            ActionResultType result = alter.shouldAttackEntity(this, target, owner);
+
+            if (result.isSuccess()) {
+                return true;
+            } else if (result == ActionResultType.FAIL) {
+                return false;
+            }
+        }
+
+        if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
+            if (target instanceof WolfEntity) {
+                WolfEntity wolfentity = (WolfEntity)target;
+                return !wolfentity.isTamed() || wolfentity.getOwner() != owner;
+            } else if (target instanceof DogEntity) {
+                DogEntity dogEntity = (DogEntity)target;
+                return !dogEntity.isTamed() || dogEntity.getOwner() != owner;
+             } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+                 return false;
+            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+                return false;
+            } else {
+                return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+            }
+         } else {
+             return false;
+         }
+    }
+
+    // TODO
+    //@Override
+//    public boolean canAttack(LivingEntity livingentityIn, EntityPredicate predicateIn) {
+//        return predicateIn.canTarget(this, livingentityIn);
+//     }
+
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        for (IDogAlteration alter : this.alterations) {
+            ActionResult<Float> result = alter.attackEntityFrom(this, source, amount);
 
             // TODO
             if (result.getType() == ActionResultType.FAIL) {
                 return false;
             } else {
-                damage = result.getResult();
+                amount = result.getResult();
             }
         }
 
-        return super.attackEntityFrom(source, damage);
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else {
+            Entity entity = source.getTrueSource();
+            if (this.sitGoal != null) {
+               this.sitGoal.setSitting(false);
+            }
+
+            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+                amount = (amount + 1.0F) / 2.0F;
+            }
+
+            return super.attackEntityFrom(source, amount);
+        }
     }
 
     @Override
@@ -308,7 +720,20 @@ public class DogEntity extends WolfEntity {
             }
         }
 
-        return super.attackEntityAsMob(target);
+        int damage = ((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
+        boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        if (flag) {
+            this.applyEnchantments(this, target);
+            this.statsTracker.increaseDamageDealt(damage);
+        }
+
+        return flag;
+    }
+
+    @Override
+    public void onKillEntity(LivingEntity entityLivingIn) {
+        super.onKillEntity(entityLivingIn);
+        this.statsTracker.incrementKillCount(entityLivingIn);
     }
 
     @Override
@@ -385,6 +810,21 @@ public class DogEntity extends WolfEntity {
     }
 
     @Override
+    public boolean isPotionApplicable(EffectInstance effectIn) {
+        for (IDogAlteration alter : this.alterations) {
+            ActionResultType result = alter.isPotionApplicable(this, effectIn);
+
+            if (result.isSuccess()) {
+                return true;
+            } else if (result == ActionResultType.FAIL) {
+                return false;
+            }
+        }
+
+        return super.isPotionApplicable(effectIn);
+    }
+
+    @Override
     public void setUniqueId(UUID uniqueIdIn) {
 
         // If the UUID is changed remove old one and add new one
@@ -408,6 +848,19 @@ public class DogEntity extends WolfEntity {
         // When tamed by player cache their display name
         this.setOwnersName(player.getName());
     }
+
+    @Override
+    public void setTamed(boolean tamed) {
+        super.setTamed(tamed);
+        if (tamed) {
+           this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+           this.setHealth(20.0F);
+        } else {
+           this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
+        }
+
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
+     }
 
     @Override
     public void setOwnerId(@Nullable UUID uuid) {
@@ -445,6 +898,45 @@ public class DogEntity extends WolfEntity {
     @Override
     public boolean isBreedingItem(ItemStack stack) {
         return stack.getItem().isIn(DoggyTags.BREEDING_ITEMS);
+    }
+
+    @Override
+    public boolean canMateWith(AnimalEntity otherAnimal) {
+        if (otherAnimal == this) {
+            return false;
+        } else if (!this.isTamed()) {
+            return false;
+        } else if (!(otherAnimal instanceof DogEntity)) {
+            return false;
+        } else {
+            DogEntity entitydog = (DogEntity) otherAnimal;
+            if (!entitydog.isTamed()) {
+                return false;
+            } else if(entitydog.isSitting()) {
+                return false;
+            } else if(ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
+                return false;
+            } else {
+                return this.isInLove() && entitydog.isInLove();
+            }
+        }
+    }
+
+    @Override
+    public AgeableEntity createChild(AgeableEntity ageable) {
+        DogEntity entitydog = DoggyEntityTypes.DOG.get().create(this.world);
+        UUID uuid = this.getOwnerId();
+
+        if(uuid != null) {
+            entitydog.setOwnerId(uuid);
+            entitydog.setTamed(true);
+        }
+
+        if(ageable instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
+            entitydog.setLevel(this.getLevel().combine(((DogEntity) ageable).getLevel()));
+        }
+
+        return entitydog;
     }
 
     @Override
@@ -534,7 +1026,12 @@ public class DogEntity extends WolfEntity {
 
     @Override
     public void onDeath(DamageSource cause) {
-        super.onDeath(cause);
+
+        this.wetSource = null;
+        this.isShaking = false;
+        this.prevTimeWolfIsShaking = 0.0F;
+        this.timeWolfIsShaking = 0.0F;
+
         if (this.world != null && !this.world.isRemote) {
             DogRespawnStorage.get(this.world).putData(this);
             DoggyTalents2.LOGGER.debug("Saved dog as they died {}", this);
@@ -544,6 +1041,7 @@ public class DogEntity extends WolfEntity {
         }
 
         this.alterations.forEach((alter) -> alter.onDeath(this, cause));
+        super.onDeath(cause);
     }
 
     @Override
@@ -598,8 +1096,8 @@ public class DogEntity extends WolfEntity {
         this.alterations.forEach((alter) -> alter.write(this, compound));
 
         compound.putString("mode", this.getMode().getSaveName());
-        compound.putString("gender", this.getGender().getSaveName());
-        compound.putFloat("hunger", this.getDogHunger());
+        compound.putString("dogGender", this.getGender().getSaveName());
+        compound.putFloat("dogHunger", this.getDogHunger());
         this.getOwnersName().ifPresent((comp) -> {
             NBTUtil.putTextComponent(compound, "lastKnownOwnerName", comp);
         });
@@ -610,6 +1108,9 @@ public class DogEntity extends WolfEntity {
         compound.putInt("dogSize", this.getDogSize());
         compound.putInt("level_normal", this.getLevel().getLevel(Type.NORMAL));
         compound.putInt("level_dire", this.getLevel().getLevel(Type.DIRE));
+        NBTUtil.writeItemStack(compound, "fetchItem", this.getBoneVariant());
+
+        this.statsTracker.writeAdditional(compound);
     }
 
 
@@ -642,29 +1143,43 @@ public class DogEntity extends WolfEntity {
 
         // Does what notifyDataManagerChange would have done but this way only does it once
         this.recalculateAlterationsCache();
+        this.spendablePoints.markForRefresh();
         for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
             entry.getKey().init(this);
         }
 
         this.alterations.forEach((alter) -> alter.read(this, compound));
 
-        this.setGender(EnumGender.bySaveName(compound.getString("gender")));
-        this.setMode(EnumMode.bySaveName(compound.getString("mode")));
-        this.setHungerDirectly(compound.getFloat("hunger"));
+        this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
+
+        if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
+            this.setMode(EnumMode.bySaveName(compound.getString("mode")));
+        } else {
+            // Read old mode id
+            BackwardsComp.readMode(compound, this::setMode);
+        }
+        this.setHungerDirectly(compound.getFloat("dogHunger"));
         this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
         this.setSkinHash(compound.getString("customSkinHash"));
         this.setWillObeyOthers(compound.getBoolean("willObey"));
         this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
-        if(compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
+        if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
             this.setDogSize(compound.getInt("dogSize"));
         }
 
-        if(compound.contains("level_normal")) {
+        if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
             this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
+            this.markDataParameterDirty(DOG_LEVEL.get());
         }
-        if(compound.contains("level_dire")) {
+
+        if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
             this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
+            this.markDataParameterDirty(DOG_LEVEL.get());
         }
+
+        this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
+
+        this.statsTracker.readAdditional(compound);
     }
 
     @Override
@@ -678,6 +1193,12 @@ public class DogEntity extends WolfEntity {
             for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
                 entry.getKey().init(this);
             }
+
+            this.spendablePoints.markForRefresh();
+        }
+
+        if (DOG_LEVEL.get().equals(key)) {
+            this.spendablePoints.markForRefresh();
         }
 
         if (ACCESSORIES.get().equals(key)) {
@@ -715,7 +1236,7 @@ public class DogEntity extends WolfEntity {
      * @param livingEntity The entity
      */
     public boolean canInteract(LivingEntity livingEntity) {
-        return this.isOwner(livingEntity) || this.willObeyOthers();
+        return this.willObeyOthers() || this.isOwner(livingEntity);
     }
 
     public List<AccessoryInstance> getAccessories() {
@@ -893,6 +1414,28 @@ public class DogEntity extends WolfEntity {
         return this.dataManager.get(SIZE);
     }
 
+    public void setBoneVariant(ItemStack stack) {
+        this.dataManager.set(BONE_VARIANT, stack);
+    }
+
+    public ItemStack getBoneVariant() {
+        return this.dataManager.get(BONE_VARIANT);
+    }
+
+    @Nullable
+    public IThrowableItem getThrowableItem() {
+        Item item = this.dataManager.get(BONE_VARIANT).getItem();
+        if(item instanceof IThrowableItem) {
+            return (IThrowableItem) item;
+        } else {
+            return null;
+        }
+    }
+
+    public boolean hasBone() {
+        return !this.getBoneVariant().isEmpty();
+    }
+
     private boolean getDogFlag(int bit) {
         return (this.dataManager.get(DOG_FLAGS) & bit) != 0;
     }
@@ -902,12 +1445,10 @@ public class DogEntity extends WolfEntity {
         this.dataManager.set(DOG_FLAGS, (byte)(flag ? c | bits : c & ~bits));
     }
 
-    @Override
     public void setBegging(boolean begging) {
         this.setDogFlag(1, begging);
     }
 
-    @Override
     public boolean isBegging() {
         return this.getDogFlag(1);
     }
@@ -973,11 +1514,11 @@ public class DogEntity extends WolfEntity {
         boolean existed = map.containsKey(talent);
         if (level > 0) {
             map.put(talent, level);
-
+            talent.set(this, level);
             if (!existed) {
                 talent.init(this);
             }
-            talent.set(this, level);
+
         } else {
             int preLevel = map.getOrDefault(talent, 0);
             map.remove(talent);
@@ -1035,14 +1576,14 @@ public class DogEntity extends WolfEntity {
     }
 
     public <T> T getDataOrDefault(DataKey<T> key, Supplier<T> other) {
-        if (!this.hasData(key)) {
+        if (this.hasData(key)) {
             return this.getData(key);
         }
         return other.get();
     }
 
     public <T> T getDataOrDefault(DataKey<T> key, T other) {
-        if (!this.hasData(key)) {
+        if (this.hasData(key)) {
             return this.getData(key);
         }
         return other;
@@ -1068,12 +1609,205 @@ public class DogEntity extends WolfEntity {
         DoggyTalents2.LOGGER.debug("Untamed dog");
     }
 
-    // TODO currently calculates points every time, make it cache value
-    public int getSpendablePoints() {
+    public boolean canSpendPoints(int amount) {
+        return this.getSpendablePoints() >= amount || this.getAccessory(DoggyAccessories.GOLDEN_COLLAR).isPresent();
+    }
+
+    // When this method is changed the cache may need to be updated at certain points
+    private final int getSpendablePointsInternal() {
         int totalPoints = 15 + this.getLevel().getLevel(Type.NORMAL) + this.getLevel().getLevel(Type.DIRE);
         for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
             totalPoints -= entry.getKey().getCummulativeCost(entry.getValue());
         }
         return totalPoints;
+    }
+
+    public int getSpendablePoints() {
+        return this.spendablePoints.get();
+    }
+
+    @Override
+    public boolean canRiderInteract() {
+        return true;
+    }
+
+    @Override
+    public Entity getControllingPassenger() {
+        // Gets the first passenger which is the controlling passenger
+        return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
+    }
+
+    @Override
+    public boolean canBeSteered() {
+        return this.getControllingPassenger() instanceof LivingEntity;
+    }
+
+    //TODO
+    @Override
+    public boolean canBeCollidedWith() {
+        return super.canBeCollidedWith();
+    }
+
+    @Override
+    public boolean canBePushed() {
+        return !this.isBeingRidden() && super.canBePushed();
+    }
+
+    @Override
+    public boolean canPassengerSteer() {
+        // Super calls canBeSteered so controlling passenger can be guaranteed to be LivingEntity
+        return super.canPassengerSteer() && this.canInteract((LivingEntity) this.getControllingPassenger());
+    }
+
+    public boolean isDogJumping() {
+        return this.dogJumping;
+    }
+
+    public void setDogJumping(boolean jumping) {
+        this.dogJumping = jumping;
+    }
+
+//    public double getDogJumpStrength() {
+//        float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
+//        if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
+//        return verticalVelocity;
+//    }
+
+    // 0 - 100 input
+    public void setJumpPower(int jumpPowerIn) {
+       // if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
+            this.jumpPower = 1.0F;
+       // }
+    }
+
+    public boolean canJump() {
+        return true;
+        //TODO return this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0;
+    }
+
+    @Override
+    public void travel(Vec3d positionIn) {
+        if(this.isAlive()) {
+            if(this.isBeingRidden() && this.canBeSteered()) {
+                LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
+
+                // Face the dog in the direction of the controlling passenger
+                this.rotationYaw = livingentity.rotationYaw;
+                this.prevRotationYaw = this.rotationYaw;
+                this.rotationPitch = livingentity.rotationPitch * 0.5F;
+                this.setRotation(this.rotationYaw, this.rotationPitch);
+                this.renderYawOffset = this.rotationYaw;
+                this.rotationYawHead = this.renderYawOffset;
+
+                this.stepHeight = 1.0F;
+
+                float straf = livingentity.moveStrafing * 0.7F;
+                float foward = livingentity.moveForward;
+
+                // If moving backwards half the speed
+                if (foward <= 0.0F) {
+                   foward *= 0.5F;
+                }
+
+                if (this.jumpPower > 0.0F && !this.isDogJumping() && this.onGround) {
+
+                    // Calculate jump value based of jump strength, power this jump and jump boosts
+                    double jumpValue = this.getAttribute(JUMP_STRENGTH).getValue() * this.getJumpFactor() * this.jumpPower; //TODO do we want getJumpFactor?
+                    if (this.isPotionActive(Effects.JUMP_BOOST)) {
+                        jumpValue += (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
+                    }
+
+                    // Apply jump
+                    Vec3d vec3d = this.getMotion();
+                    this.setMotion(vec3d.x, jumpValue, vec3d.z);
+                    this.setDogJumping(true);
+                    this.isAirBorne = true;
+
+                    // If moving forward, propel further in the direction
+                    if (foward > 0.0F) {
+                        final float amount = 0.4F; // TODO Allow people to change this value
+                        float compX = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
+                        float compZ = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
+                        this.setMotion(this.getMotion().add(-amount * compX * this.jumpPower, 0.0D, amount * compZ * this.jumpPower));
+                        //this.playJumpSound();
+                    }
+
+                    // Mark as unable jump until reset
+                    this.jumpPower = 0.0F;
+                }
+
+                this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
+                if (this.canPassengerSteer()) {
+                    // Set the move speed and move the dog in the direction of the controlling entity
+                    this.setAIMoveSpeed((float)this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getValue() * 0.5F);
+                    super.travel(new Vec3d(straf, positionIn.y, foward));
+                    this.newPosRotationIncrements = 0;
+                } else if (livingentity instanceof PlayerEntity) {
+                    // A player is riding and can not control then
+                    this.setMotion(Vec3d.ZERO);
+                }
+
+                // Once the entity reaches the ground again allow it to jump again
+                if(this.onGround) {
+                    this.jumpPower = 0.0F;
+                    this.setDogJumping(false);
+                }
+
+                //
+                this.prevLimbSwingAmount = this.limbSwingAmount;
+                double changeX = this.getPosX() - this.prevPosX;
+                double changeY = this.getPosZ() - this.prevPosZ;
+                float f4 = MathHelper.sqrt(changeX * changeX + changeY * changeY) * 4.0F;
+
+                if (f4 > 1.0F) {
+                   f4 = 1.0F;
+                }
+
+                this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
+                this.limbSwing += this.limbSwingAmount;
+             } else {
+                 this.stepHeight = 0.5F; // Default
+                 this.jumpMovementFactor = 0.02F; // Default
+                 super.travel(positionIn);
+             }
+
+            this.addMovementStat(this.getPosX() - this.prevPosX, this.getPosY() - this.prevPosY, this.getPosZ() - this.prevPosZ);
+        }
+    }
+
+    public void addMovementStat(double xD, double yD, double zD) {
+        if(this.isBeingRidden()) {
+            int j = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+            this.statsTracker.increaseDistanceRidden(j);
+        }
+        if(!this.isPassenger()) {
+            if(this.areEyesInFluid(FluidTags.WATER, true)) {
+                int j = Math.round(MathHelper.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
+                if (j > 0) {
+                    this.statsTracker.increaseDistanceOnWater(j);
+                }
+            } else if(this.isInWater()) {
+                int k = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                if (k > 0) {
+                    this.statsTracker.increaseDistanceInWater(k);
+                }
+            } else if(this.onGround) {
+                int l = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                if(l > 0) {
+                    if (this.isSprinting()) {
+                        this.statsTracker.increaseDistanceSprint(l);
+                    } else if(this.isCrouching()) {
+                        this.statsTracker.increaseDistanceSneaking(l);
+                    } else {
+                        this.statsTracker.increaseDistanceWalk(l);
+                    }
+                }
+            } else { // Time in air
+                int j1 = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                //this.STATS.increaseDistanceInWater(k);
+            }
+
+
+        }
     }
 }

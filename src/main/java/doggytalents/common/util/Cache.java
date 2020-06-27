@@ -21,6 +21,14 @@ public class Cache<T> implements Supplier<T> {
         return this.value.orElse(null);
     }
 
+//    public <U> Cache<U> map(Function<? super T, ? extends U> mapper) {
+//        return new Cache(() -> );
+//    }
+
+    public void markForRefresh() {
+        this.value = null;
+    }
+
     public static <T> Cache<T> make(Supplier<T> getterIn) {
         return new Cache<>(getterIn);
     }

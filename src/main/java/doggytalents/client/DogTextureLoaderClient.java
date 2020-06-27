@@ -84,7 +84,7 @@ public class DogTextureLoaderClient extends DogTextureLoader {
     }
 
 
-    public static Collection<ResourceLocation> getClient() {
+    public static Collection<ResourceLocation> getCustomSkins() {
         IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
         Collection<ResourceLocation> resources = resourceManager.getAllResourceLocations("textures/entity/dog/custom", (fileName) -> {

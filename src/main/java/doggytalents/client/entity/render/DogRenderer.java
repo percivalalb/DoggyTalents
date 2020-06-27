@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import doggytalents.client.DogTextureLoaderClient;
 import doggytalents.client.entity.model.DogModel;
+import doggytalents.client.entity.render.layer.BoneLayer;
 import doggytalents.client.entity.render.layer.DogAccessoryLayer;
 import doggytalents.client.entity.render.layer.DogTalentLayer;
 import doggytalents.common.config.ConfigValues;
@@ -22,6 +23,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel> {
         super(renderManagerIn, new DogModel(), 0.5F);
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
+        this.addLayer(new BoneLayer(this));
 
     }
 
@@ -32,7 +34,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel> {
 
     @Override
     public void render(DogEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        if (entityIn.isWolfWet()) {
+        if (entityIn.isDogWet()) {
             float f = entityIn.getBrightness() * entityIn.getShadingWhileWet(partialTicks);
             this.entityModel.setTint(f, f, f);
         }
@@ -58,7 +60,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel> {
         }
 
 
-        if (entityIn.isWolfWet()) {
+        if (entityIn.isDogWet()) {
             this.entityModel.setTint(1.0F, 1.0F, 1.0F);
         }
     }

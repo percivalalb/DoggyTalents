@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.google.common.collect.Lists;
 
 import doggytalents.DoggyEntityTypes;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,7 +24,7 @@ public class DogRespawnData {
     private static final List<String> TAGS_TO_REMOVE = Lists.newArrayList(
             "Pos", "Health", "Motion", "Rotation", "FallDistance", "Fire", "Air", "OnGround",
             "Dimension", "PortalCooldown", "Passengers", "Leash", "InLove", "Leash", "HurtTime",
-            "HurtByTimestamp", "DeathTime", "AbsorptionAmount", "FallFlying", "Brain", "Sitting");
+            "HurtByTimestamp", "DeathTime", "AbsorptionAmount", "FallFlying", "Brain", "Sitting"); // Remove dog mode
 
     protected DogRespawnData(DogRespawnStorage storageIn, UUID uuid) {
         this.storage = storageIn;
@@ -56,6 +57,7 @@ public class DogRespawnData {
         dog.setUniqueId(uuid);
         dog.read(compoundnbt);
 
+        dog.setMode(EnumMode.DOCILE);
         dog.getAISit().setSitting(false);
 
         return dog;

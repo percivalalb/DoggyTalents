@@ -13,6 +13,7 @@ import doggytalents.client.entity.render.layer.accessory.ArmorAccessoryRenderer;
 import doggytalents.client.entity.render.layer.accessory.DefaultAccessoryRenderer;
 import doggytalents.client.entity.render.layer.accessory.DyeableAccessoryRenderer;
 import doggytalents.client.entity.render.layer.accessory.LeatherArmorAccessoryRenderer;
+import doggytalents.client.screen.DogInventoriesScreen;
 import doggytalents.client.screen.FoodBowlScreen;
 import doggytalents.client.screen.PackPuppyScreen;
 import doggytalents.client.screen.TreatBagScreen;
@@ -29,6 +30,7 @@ public class ClientSetup {
         ScreenManager.registerFactory(DoggyContainerTypes.FOOD_BOWL.get(), FoodBowlScreen::new);
         ScreenManager.registerFactory(DoggyContainerTypes.PACK_PUPPY.get(), PackPuppyScreen::new);
         ScreenManager.registerFactory(DoggyContainerTypes.TREAT_BAG.get(), TreatBagScreen::new);
+        ScreenManager.registerFactory(DoggyContainerTypes.DOG_INVENTORIES.get(), DogInventoriesScreen::new);
     }
 
     public static void setupEntityRenderers(final FMLClientSetupEvent event) {

@@ -2,6 +2,7 @@ package doggytalents.api.feature;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 public enum EnumGender {
 
@@ -59,6 +60,11 @@ public enum EnumGender {
         return this.unlocalisedTitle;
     }
 
+    public boolean canMateWith(EnumGender gender) {
+        boolean equalGenders = this == gender;
+        return (equalGenders && this == EnumGender.UNISEX) || !equalGenders;
+    }
+
     public static EnumGender byIndex(int i) {
         if(i < 0 | i >= VALUES.length) {
             i = EnumGender.UNISEX.getIndex();
@@ -75,4 +81,9 @@ public enum EnumGender {
 
         return UNISEX;
     }
+
+    public static EnumGender random(Random rng) {
+        return rng.nextBoolean() ? MALE : FEMALE;
+    }
+
 }

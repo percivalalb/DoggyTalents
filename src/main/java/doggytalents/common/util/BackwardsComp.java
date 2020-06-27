@@ -3,6 +3,7 @@ package doggytalents.common.util;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableList;
@@ -12,6 +13,7 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.DoggyTalents2;
+import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -67,6 +69,10 @@ public class BackwardsComp {
                 }
             }
         }
+    }
+
+    public static void readMode(CompoundNBT compound, Consumer<EnumMode> consumer) {
+        consumer.accept(EnumMode.byIndex(compound.getInt("mode")));
     }
 
     @SubscribeEvent

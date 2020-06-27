@@ -14,6 +14,7 @@ import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.event.ClientEventHandler;
 import doggytalents.common.command.DogRespawnCommand;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.data.DTAdvancementProvider;
 import doggytalents.common.data.DTItemTagsProvider;
 import doggytalents.common.data.DTLootTableProvider;
@@ -95,7 +96,7 @@ public class DoggyTalents2 {
             forgeEventBus.register(new ClientEventHandler());
         });
 
-        //ConfigHandler.init();
+        ConfigHandler.init(modEventBus);
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
@@ -103,7 +104,7 @@ public class DoggyTalents2 {
         //TODO CriteriaTriggers.register(criterion)
         FoodHandler.registerHandler(new HappyEaterTalent());
         FoodHandler.registerHandler(new MeatFoodHandler());
-        //ConfigHandler.initTalentConfig();
+        ConfigHandler.initTalentConfig();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {
@@ -121,7 +122,7 @@ public class DoggyTalents2 {
     }
 
     protected void interModProcess(final InterModProcessEvent event) {
-        //Compatibility.init();
+        BackwardsComp.init();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         //AddonManager.runRegisteredAddons();
     }

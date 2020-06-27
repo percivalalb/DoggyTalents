@@ -1,16 +1,24 @@
 package doggytalents.client.event;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL11;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.DoggyBlocks;
+import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents2;
 import doggytalents.client.block.model.DogBedModel;
 import doggytalents.client.screen.widget.DogInventoryButton;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
+import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
@@ -19,21 +27,34 @@ import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BlockModelShapes;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -67,14 +88,18 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onInputEvent(final InputUpdateEvent event) {
-        if(event.getMovementInput().jump) {
+        if (event.getMovementInput().jump) {
             Entity entity = event.getPlayer().getRidingEntity();
-            if(event.getPlayer().isPassenger() && entity instanceof DogEntity) {
-                DogEntity dog = (DogEntity)entity;
-//TODO
-//                if(dog.canJump()) {
-//                    dog.setJumpPower(100);
-//                }
+            if (event.getPlayer().isPassenger() && entity instanceof DogEntity) {
+                DogEntity dog = (DogEntity) entity;
+
+                if (dog.canJump()) {
+                    dog.setJumpPower(100);
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onScreenInit(final GuiScreenEvent.InitGuiEvent.Post event) {
         Screen screen = event.getGui();
@@ -135,9 +160,64 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
+    public void onWorldRenderLast(RenderWorldLastEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerEntity player = mc.player;
+
+        if (player == null || player.getHeldItem(Hand.MAIN_HAND).getItem() != DoggyItems.PATROl.get()) {
+            return;
+        }
+
+        ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+
+        RenderSystem.pushMatrix();
+
+        if (stack.hasTag() && stack.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
+            ListNBT list = stack.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+            List<BlockPos> poses = new ArrayList<>(list.size());
+            for (int i = 0; i < list.size(); i++) {
+                poses.add(NBTUtil.getBlockPos(list.getCompound(i)));
+            }
+
+            for (BlockPos pos : poses) {
+                this.drawSelectionBox(event.getMatrixStack(), player, event.getPartialTicks(), new AxisAlignedBB(pos));
+            }
+        }
+
+
+        RenderSystem.popMatrix();
+    }
+
+    public void drawSelectionBox(MatrixStack matrixStackIn, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
+        RenderSystem.disableAlphaTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.7F);
+        //TODO Used when drawing outline of bounding box
+        RenderSystem.lineWidth(2.0F);
+
+
+        RenderSystem.disableTexture();
+        Vec3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
+        double d0 = vec3d.getX();
+        double d1 = vec3d.getY();
+        double d2 = vec3d.getZ();
+
+        BufferBuilder buf = Tessellator.getInstance().getBuffer();
+        buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+        WorldRenderer.drawBoundingBox(matrixStackIn, buf, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
+        Tessellator.getInstance().draw();
+        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
+        RenderSystem.depthMask(true);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+        RenderSystem.enableAlphaTest();
+    }
+
+    @SubscribeEvent
     public void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
-        label:
-        if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+        label: if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
             Minecraft mc = Minecraft.getInstance();
 
             if (mc.player == null || !(mc.player.getRidingEntity() instanceof DogEntity)) {
@@ -145,8 +225,8 @@ public class ClientEventHandler {
             }
 
             DogEntity dog = (DogEntity) mc.player.getRidingEntity();
-            int width = Minecraft.getInstance().getMainWindow().getScaledWidth();
-            int height = Minecraft.getInstance().getMainWindow().getScaledHeight();
+            int width = mc.getMainWindow().getScaledWidth();
+            int height = mc.getMainWindow().getScaledHeight();
             RenderSystem.pushMatrix();
             mc.getTextureManager().bindTexture(Screen.GUI_ICONS_LOCATION);
 
@@ -154,7 +234,7 @@ public class ClientEventHandler {
             int left = width / 2 + 91;
             int top = height - ForgeIngameGui.right_height;
             ForgeIngameGui.right_height += 10;
-            int level = MathHelper.ceil(((double)dog.getDogHunger() / (double) dog.getMaxHunger()) * 20.0D);
+            int level = MathHelper.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
 
             for (int i = 0; i < 10; ++i) {
                 int idx = i * 2 + 1;

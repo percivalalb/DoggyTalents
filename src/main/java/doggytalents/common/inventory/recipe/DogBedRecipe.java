@@ -1,7 +1,6 @@
 package doggytalents.common.inventory.recipe;
 
 import doggytalents.DoggyRecipeSerializers;
-import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.BeddingMaterial;
 import doggytalents.api.registry.CasingMaterial;

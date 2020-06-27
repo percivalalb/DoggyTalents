@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
@@ -11,9 +12,11 @@ import com.google.common.collect.Maps;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.Constants;
@@ -96,13 +99,13 @@ public class NBTUtil {
         Map<Talent, Integer> talentMap = Maps.newHashMap();
 
         ListNBT list = compound.getList(key, Constants.NBT.TAG_COMPOUND);
-        for(int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++) {
             CompoundNBT talentCompound = list.getCompound(i);
-            ResourceLocation talentId = NBTUtil.getResourceLocation(talentCompound, "talent");
+            Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS);
 
-            if(DoggyTalentsAPI.TALENTS.containsKey(talentId)) { // Only load if talent exists
+            if (talent != null) { // Only load if talent exists
                 int level = talentCompound.getInt("level");
-                talentMap.put(DoggyTalentsAPI.TALENTS.getValue(talentId), level);
+                talentMap.put(talent, level);
             }
         }
 
@@ -127,16 +130,58 @@ public class NBTUtil {
         }
     }
 
+    @Nullable
     public static <T extends IForgeRegistryEntry<T>> T getRegistryValue(CompoundNBT compound, String key, IForgeRegistry<T> registry) {
-        //TODO Checks
-        return registry.getValue(NBTUtil.getResourceLocation(compound, key));
+        ResourceLocation rl = NBTUtil.getResourceLocation(compound, key);
+        if (rl != null) {
+            if (registry.containsKey(rl)) {
+                return registry.getValue(rl);
+            } else {
+                DoggyTalents2.LOGGER.warn("Unable to load registry value in registry {} with resource location {}", registry.getRegistryName(), rl);
+            }
+        } else {
+            DoggyTalents2.LOGGER.warn("Unable to load resource location in NBT:{}, for {} registry", key, registry.getRegistryName());
+        }
+
+        return null;
     }
 
     public static <T extends IForgeRegistryEntry<T>> void putRegistryValue(CompoundNBT compound, String key, T value) {
-        //TODO Checks
         if (value != null) {
-            DoggyTalents2.LOGGER.info("{}", value.getRegistryName());
             NBTUtil.putResourceLocation(compound, key, value.getRegistryName());
         }
+    }
+
+    @Nullable
+    public static void putBlockPos(CompoundNBT compound, @Nullable BlockPos vec3d) {
+        if (vec3d != null) {
+            compound.putInt("x", vec3d.getX());
+            compound.putInt("y", vec3d.getY());
+            compound.putInt("z", vec3d.getZ());
+        }
+    }
+
+    @Nullable
+    public static BlockPos getBlockPos(CompoundNBT compound) {
+        if (compound.contains("x", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("y", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("z", Constants.NBT.TAG_ANY_NUMERIC)) {
+            return new BlockPos(compound.getInt("x"), compound.getInt("y"), compound.getInt("z"));
+        }
+
+        return null;
+    }
+
+    public static void writeItemStack(CompoundNBT compound, String key, ItemStack stackIn) {
+        if (!stackIn.isEmpty()) {
+            compound.put(key, stackIn.write(new CompoundNBT()));
+        }
+    }
+
+    @Nonnull
+    public static ItemStack readItemStack(CompoundNBT compound, String key) {
+        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+            return ItemStack.read(compound.getCompound(key));
+        }
+
+        return ItemStack.EMPTY;
     }
 }

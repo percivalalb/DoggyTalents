@@ -2,6 +2,7 @@ package doggytalents.common.talent;
 
 import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
@@ -26,6 +27,19 @@ public class HellHoundTalent extends Talent {
             int level = dogIn.getLevel(this);
             return level >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
         }
+
+        return ActionResultType.PASS;
+    }
+
+    @Override
+    public ActionResultType attackEntityAsMob(DogEntity dogIn, Entity entity) {
+        int level = dogIn.getLevel(this);
+
+        if (level > 0) {
+            entity.setFire(level);
+            return ActionResultType.PASS;
+        }
+
 
         return ActionResultType.PASS;
     }

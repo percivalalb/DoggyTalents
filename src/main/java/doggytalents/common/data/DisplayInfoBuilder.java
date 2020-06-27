@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
 /**
- * Defaults are to show toast, don't annonnce to chat and not to hide
+ * Defaults are to show toast, announce to chat and not to be hidden
  */
 public class DisplayInfoBuilder {
 

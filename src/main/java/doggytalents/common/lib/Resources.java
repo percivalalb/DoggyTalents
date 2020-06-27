@@ -8,8 +8,10 @@ public class Resources {
     public static final ResourceLocation GUI_FOOD_BOWL = getGui("food_bowl");
     public static final ResourceLocation GUI_PACK_PUPPY = getGui("pack_puppy");
     public static final ResourceLocation GUI_TREAT_BAG = getGui("treat_bag");
+    public static final ResourceLocation GUI_RADAR = getGui("radar");
 
     public static final ResourceLocation DOG_INVENTORY = getGui("dog_inventory");
+    public static final ResourceLocation INVENTORY_BUTTON = getGui("dog_button");
     public static final ResourceLocation SMALL_WIDGETS = getGui("small_widgets");
 
     // Vanilla wolf
@@ -24,6 +26,7 @@ public class Resources {
     public static final ResourceLocation COLLAR_MULTICOLORED = getEntity("dog", "doggy_collar_2");
     public static final ResourceLocation CLOTHING_LEATHER_JACKET = getEntity("dog", "doggy_leather_jacket");
     public static final ResourceLocation GLASSES_SUNGLASSES = getEntity("dog", "doggy_sunglasses");
+    public static final ResourceLocation BOW_TIE = getEntity("dog", "doggy_bowtie");
     public static final ResourceLocation CAPE = getEntity("dog", "doggy_cape");
     public static final ResourceLocation DYEABLE_CAPE = getEntity("dog", "doggy_cape1");
     public static final ResourceLocation RADIO_BAND = getEntity("dog", "doggy_radio_collar");

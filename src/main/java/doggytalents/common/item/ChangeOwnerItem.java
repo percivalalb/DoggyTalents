@@ -29,6 +29,6 @@ public class ChangeOwnerItem extends Item implements IDogItem {
             return ActionResultType.SUCCESS;
         }
 
-        return ActionResultType.FAIL;
+        return ActionResultType.CONSUME;
     }
 }

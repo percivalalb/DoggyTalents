@@ -19,6 +19,16 @@ public class DoggyDashTalent extends Talent {
     }
 
     @Override
+    public void removed(DogEntity dogIn, int preLevel) {
+        IAttributeInstance speedInstance = dogIn.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+        AttributeModifier speedModifier = speedInstance.getModifier(DASH_BOOST_ID);
+
+        if (speedModifier != null) {
+            speedInstance.removeModifier(speedModifier);
+        }
+    }
+
+    @Override
     public void set(DogEntity dogIn, int level) {
         this.updateSpeed(dogIn, this.calculateSpeed(level));
     }
@@ -36,16 +46,12 @@ public class DoggyDashTalent extends Talent {
     public void updateSpeed(DogEntity dogIn, double speed) {
         IAttributeInstance speedInstance = dogIn.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
-        AttributeModifier speedModifier = this.createSpeedModifier(speed);
+        AttributeModifier speedModifier = new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
 
         if(speedInstance.getModifier(DASH_BOOST_ID) != null) {
             speedInstance.removeModifier(speedModifier);
         }
 
         speedInstance.applyModifier(speedModifier);
-    }
-
-    public AttributeModifier createSpeedModifier(double speed) {
-        return new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
     }
 }

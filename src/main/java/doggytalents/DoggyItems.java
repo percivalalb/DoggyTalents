@@ -14,8 +14,10 @@ import doggytalents.common.item.ChewStickItem;
 import doggytalents.common.item.DogShearsItem;
 import doggytalents.common.item.DoggyCharmItem;
 import doggytalents.common.item.DyeableAccessoryItem;
+import doggytalents.common.item.PatrolItem;
 import doggytalents.common.item.RadarItem;
 import doggytalents.common.item.SizeBoneItem;
+import doggytalents.common.item.ThrowableItem;
 import doggytalents.common.item.TreatBagItem;
 import doggytalents.common.item.TreatItem;
 import doggytalents.common.item.WhistleItem;
@@ -24,6 +26,7 @@ import doggytalents.common.util.Util;
 import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,7 +36,7 @@ public class DoggyItems {
 
     public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MOD_ID);
 
-    public static final RegistryObject<Item> THROW_BONE = register("throw_bone");
+    public static final RegistryObject<Item> THROW_BONE = register("throw_bone", () -> new ThrowableItem(Items.BONE.delegate, Items.BONE.delegate, createInitialProp()));
     public static final RegistryObject<Item> THROW_BONE_WET = register("throw_bone_wet");//, THROW_BONE, (prop) -> prop.maxStackSize(1));
     public static final RegistryObject<Item> THROW_STICK = register("throw_stick");
     public static final RegistryObject<Item> THROW_STICK_WET = register("throw_stick_wet");//, THROW_STICK, (prop) -> prop.maxStackSize(1));
@@ -61,6 +64,7 @@ public class DoggyItems {
     public static final RegistryObject<Item> TINY_BONE = registerSizeBone("tiny_bone", SizeBoneItem.Type.TINY);
     public static final RegistryObject<Item> BIG_BONE = registerSizeBone("big_bone", SizeBoneItem.Type.BIG);
     public static final RegistryObject<Item> OWNER_CHANGE = registerWith("owner_change", ChangeOwnerItem::new, 1);
+    public static final RegistryObject<Item> PATROl = registerWith("patrol_item", PatrolItem::new, 1);
 
     private static Item.Properties createInitialProp() {
         return new Item.Properties().group(DoggyItemGroups.GENERAL);

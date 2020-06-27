@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
+import doggytalents.DoggyAccessories;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
@@ -218,7 +219,7 @@ public class DogInfoScreen extends Screen {
 
             Button button = new TalentButton(25, 10 + i * 21, 20, 20, "+", talent, (btn) -> {
                 int level = DogInfoScreen.this.dog.getLevel(talent);
-                if(level < talent.getMaxLevel() && DogInfoScreen.this.dog.getSpendablePoints() >= talent.getLevelCost(level + 1)) {
+                if(level < talent.getMaxLevel() && DogInfoScreen.this.dog.canSpendPoints(talent.getLevelCost(level + 1))) {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getEntityId(), talent));
                 }
 
@@ -282,8 +283,11 @@ public class DogInfoScreen extends Screen {
         this.font.drawString(I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
         this.font.drawString(I18n.format("doggui.level") + " " + this.dog.getLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
         this.font.drawString(I18n.format("doggui.leveldire") + " " + this.dog.getLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
-        this.font.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
-
+        if (this.dog.getAccessory(DoggyAccessories.GOLDEN_COLLAR).isPresent()) {
+            this.font.drawString(TextFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
+        } else {
+            this.font.drawString(I18n.format("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+        }
        // if(ConfigValues.USE_DT_TEXTURES) {
             this.font.drawString(I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
             this.font.drawString(this.dog.getSkinHash().substring(0, Math.min(this.dog.getSkinHash().length(), 10)), this.width - 73, topY + 54, 0xFFFFFF);

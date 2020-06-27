@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
 
 public class HappyEaterTalent extends Talent implements IDogFoodHandler {
@@ -21,20 +22,24 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
     @Override
     public boolean isFood(ItemStack stackIn) {
         Item item = stackIn.getItem();
-        return item == Items.COD || item == Items.COOKED_COD || item == Items.SALMON || item == Items.COOKED_SALMON || item == Items.TROPICAL_FISH || item == Items.ROTTEN_FLESH;
+        return item == Items.ROTTEN_FLESH || (item.isFood() && item.isIn(ItemTags.FISHES));
     }
 
     @Override
     public boolean canConsume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        Item item = stackIn.getItem();
-
         int level = dogIn.getLevel(this);
-        if ((item == Items.COD || item == Items.COOKED_COD || item == Items.SALMON || item == Items.COOKED_SALMON || item == Items.TROPICAL_FISH) && level >= 5) {
-            return true;
-        }
 
-        if (item == Items.ROTTEN_FLESH && level >= 3) {
-            return true;
+        if (level >= 3) {
+
+            Item item = stackIn.getItem();
+
+            if (item == Items.ROTTEN_FLESH) {
+                return true;
+            }
+
+            if (level >= 5 && item.isIn(ItemTags.FISHES)) {
+                return true;
+            }
         }
 
         return false;
@@ -42,20 +47,23 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
 
     @Override
     public boolean consume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        Item item = stackIn.getItem();
         int level = dogIn.getLevel(this);
-        if (dogIn.getDogHunger() < dogIn.getMaxHunger()) {
-            if ((item == Items.COD || item == Items.COOKED_COD || item == Items.SALMON || item == Items.COOKED_SALMON || item == Items.TROPICAL_FISH) && level >= 5) {
+
+        if (level >= 3) {
+
+            Item item = stackIn.getItem();
+
+            if (item == Items.ROTTEN_FLESH) {
                 dogIn.addHunger(30);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
+                return true;
             }
 
-            if (item == Items.ROTTEN_FLESH && level >= 3) {
-                dogIn.addHunger(30);
+            if (level >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
+                dogIn.addHunger(item.getFood().getHealing() * 5);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
+                return true;
             }
-
-            return true;
         }
 
         return false;

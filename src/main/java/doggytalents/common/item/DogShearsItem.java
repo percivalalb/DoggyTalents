@@ -26,13 +26,14 @@ public class DogShearsItem extends Item implements IDogItem {
         List<AccessoryInstance> accessories = dogIn.getAccessories();
         if (accessories.isEmpty()) {
             if (!dogIn.isTamed()) {
-                return ActionResultType.FAIL;
+                return ActionResultType.CONSUME;
             }
 
             if(!worldIn.isRemote) {
                 int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
                 if (cooldownLeft <= 0) {
+                    worldIn.setEntityState(dogIn, doggytalents.common.lib.Constants.EntityState.WOLF_SMOKE);
                     dogIn.untame();
                 }
             }

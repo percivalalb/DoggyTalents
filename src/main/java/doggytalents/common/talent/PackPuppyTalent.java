@@ -76,15 +76,17 @@ public class PackPuppyTalent extends Talent {
         if(dogIn.isTamed() && level > 0) { // Dog requirements
             if(playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
 
-                if(!playerIn.world.isRemote && dogIn.canInteract(playerIn)) {
+                if(dogIn.canInteract(playerIn)) {
 
-                    if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
-                        ServerPlayerEntity serverPlayer = (ServerPlayerEntity)playerIn;
+                    if (!playerIn.world.isRemote) {
+                        if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+                            ServerPlayerEntity serverPlayer = (ServerPlayerEntity)playerIn;
 
-                        Screens.openPackPuppyScreen(serverPlayer, dogIn);
+                            Screens.openPackPuppyScreen(serverPlayer, dogIn);
+                        }
+
+                        dogIn.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dogIn.world.rand.nextFloat() * 0.1F + 0.9F);
                     }
-
-                    dogIn.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dogIn.world.rand.nextFloat() * 0.1F + 0.9F);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -103,6 +105,7 @@ public class PackPuppyTalent extends Talent {
 
     @Override
     public void dropInventory(DogEntity dogIn) {
+        //TODO either drop inventory or save to respawn data, currently does both
         // No need to drop anything if dog didn't have pack puppy
         PackPuppyItemHandler inventory = dogIn.getData(PACK_PUPPY_HANDLER);
         for(int i = 0; i < inventory.getSlots(); ++i) {

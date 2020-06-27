@@ -31,6 +31,10 @@ public class Util {
         return Util.dfShortDouble.format(value);
     }
 
+    public static boolean isPointInRegion(int x, int y, int width, int height, double mouseX, double mouseY) {
+        return mouseX >= x - 1 && mouseX < x + width + 1 && mouseY >= y - 1 && mouseY < y + height + 1;
+    }
+
     public static float[] rgbIntToFloatArray(int rgbInt) {
         int r = (rgbInt >> 16) & 255;
         int g = (rgbInt >> 8) & 255;

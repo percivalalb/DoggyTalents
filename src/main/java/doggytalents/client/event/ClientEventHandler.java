@@ -7,9 +7,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyTalents2;
 import doggytalents.client.block.model.DogBedModel;
+import doggytalents.client.screen.widget.DogInventoryButton;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.network.PacketHandler;
+import doggytalents.common.network.packet.data.OpenDogScreenData;
+import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.CreativeScreen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.model.BlockModel;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -19,12 +27,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.client.event.GuiContainerEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientEventHandler {
@@ -64,6 +75,61 @@ public class ClientEventHandler {
 //                if(dog.canJump()) {
 //                    dog.setJumpPower(100);
 //                }
+    @SubscribeEvent
+    public void onScreenInit(final GuiScreenEvent.InitGuiEvent.Post event) {
+        Screen screen = event.getGui();
+        if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) {
+            boolean creative = screen instanceof CreativeScreen;
+            Minecraft mc = Minecraft.getInstance();
+            int width = mc.getMainWindow().getScaledWidth();
+            int height = mc.getMainWindow().getScaledHeight();
+            int sizeX = creative ? 195 : 176;
+            int sizeY = creative ? 136 : 166;
+            int guiLeft = (width - sizeX) / 2;
+            int guiTop = (height - sizeY) / 2;
+
+            int x = guiLeft + (creative ? 36 : sizeX / 2 - 10);
+            int y = guiTop + (creative ? 7 : 48);
+
+            event.addWidget(new DogInventoryButton(x, y, screen, (btn) -> {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new OpenDogScreenData());
+                btn.active = false;
+            }));
+        }
+    }
+
+    @SubscribeEvent
+    public void onScreenDrawForeground(final GuiContainerEvent.DrawForeground event) {
+        Screen screen = event.getGuiContainer();
+        if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) {
+            boolean creative = screen instanceof CreativeScreen;
+            DogInventoryButton btn = null;
+
+            //TODO just create a static variable in this class
+            for (Widget widget : screen.buttons) {
+                if (widget instanceof DogInventoryButton) {
+                    btn = (DogInventoryButton) widget;
+                    break;
+                }
+            }
+
+            if (btn.visible && Util.isPointInRegion(btn.x, btn.y, btn.getWidth(), btn.getHeight(), event.getMouseX(), event.getMouseY())) {
+                Minecraft mc = Minecraft.getInstance();
+                int width = mc.getMainWindow().getScaledWidth();
+                int height = mc.getMainWindow().getScaledHeight();
+                int sizeX = creative ? 195 : 176;
+                int sizeY = creative ? 136 : 166;
+                int guiLeft = (width - sizeX) / 2;
+                int guiTop = (height - sizeY) / 2;
+                if (!creative) {
+                    RecipeBookGui recipeBook = ((InventoryScreen) screen).getRecipeGui();
+                    if (recipeBook.isVisible()) {
+                        guiLeft += 76;
+                    }
+                }
+                RenderSystem.translated(-guiLeft, -guiTop, 0);
+                btn.renderToolTip(event.getMouseX(), event.getMouseY());
+                RenderSystem.translated(guiLeft, guiTop, 0);
             }
         }
     }

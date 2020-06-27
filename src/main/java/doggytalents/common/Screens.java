@@ -1,8 +1,11 @@
 package doggytalents.common;
 
+import java.util.List;
+
 import doggytalents.DoggyItems;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.inventory.container.TreatBagContainer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,6 +14,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkHooks;
@@ -33,6 +37,30 @@ public class Screens {
         @Override
         public ITextComponent getDisplayName() {
             return new TranslationTextComponent("container.doggytalents.pack_puppy");
+        }
+    }
+
+    public static class DogInventoriesContainerProvider implements INamedContainerProvider {
+
+        private List<DogEntity> dogs;
+
+        public DogInventoriesContainerProvider(List<DogEntity> dogIn) {
+            this.dogs = dogIn;
+        }
+
+        @Override
+        public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
+            IntArray array = new IntArray(this.dogs.size());
+            int i = 0;
+            for (DogEntity dog : this.dogs) {
+                array.set(i++, dog.getEntityId());
+            }
+            return new DogInventoriesContainer(windowId, inventory, array);
+        }
+
+        @Override
+        public ITextComponent getDisplayName() {
+            return new TranslationTextComponent("container.doggytalents.dog_inventories");
         }
     }
 
@@ -61,6 +89,17 @@ public class Screens {
         if (dogIn.isAlive()) {
             NetworkHooks.openGui(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.getEntityId());
+            });
+        }
+    }
+
+    public static void openDogInventoriesScreen(ServerPlayerEntity player, List<DogEntity> dogIn) {
+        if (!dogIn.isEmpty()) {
+            NetworkHooks.openGui(player, new DogInventoriesContainerProvider(dogIn), (buf) -> {
+                buf.writeInt(dogIn.size());
+                for (DogEntity dog : dogIn) {
+                    buf.writeInt(dog.getEntityId());
+                }
             });
         }
     }

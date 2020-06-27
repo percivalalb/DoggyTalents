@@ -9,6 +9,9 @@ public class Resources {
     public static final ResourceLocation GUI_PACK_PUPPY = getGui("pack_puppy");
     public static final ResourceLocation GUI_TREAT_BAG = getGui("treat_bag");
 
+    public static final ResourceLocation DOG_INVENTORY = getGui("dog_inventory");
+    public static final ResourceLocation SMALL_WIDGETS = getGui("small_widgets");
+
     // Vanilla wolf
     public static final ResourceLocation ENTITY_WOLF = Util.getResource(Constants.VANILLA_ID, "textures/entity/wolf/wolf_tame.png");
     public static final ResourceLocation ENTITY_WOLF_WILD = Util.getResource(Constants.VANILLA_ID, "textures/entity/wolf/wolf.png");

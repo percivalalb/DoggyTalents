@@ -4,9 +4,12 @@ import java.util.UUID;
 
 import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.BlockPos;
 
 public class PillowPawTalent extends Talent {
 
@@ -35,6 +38,12 @@ public class PillowPawTalent extends Talent {
         if (level >= 5) {
             speedInstance.applyModifier(gravityModifier);
         }
+    }
+
+    @Override
+    public ActionResultType canTrample(DogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
+        int level = dogIn.getLevel(this);
+        return level >= 5 ? ActionResultType.FAIL : ActionResultType.PASS;
     }
 
     //TODO

@@ -5,9 +5,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.common.Screens;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.TreatBagItemHandler;
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.InventoryUtil;
@@ -51,7 +51,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         if(worldIn.isRemote) {
-            return new ActionResult<ItemStack>(ActionResultType.PASS, stack);
+            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
         }
         else {
             if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
@@ -60,7 +60,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
                 Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.currentItem);
             }
 
-            return new ActionResult<ItemStack>(ActionResultType.PASS, stack);
+            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
         }
     }
 
@@ -109,12 +109,12 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public boolean canConsume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         return entityIn instanceof LivingEntity ? dogIn.canInteract((LivingEntity) entityIn) : false;
     }
 
     @Override
-    public boolean consume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         IItemHandlerModifiable treatBag = (IItemHandlerModifiable) stackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         return InventoryUtil.feedDogFrom(dogIn, entityIn, treatBag);
     }

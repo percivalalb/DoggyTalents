@@ -5,8 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -21,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 public class PatrolItem extends Item implements IDogItem  {
+
+    public static DataKey<List<BlockPos>> POS = DataKey.make();
 
     public PatrolItem(Properties properties) {
         super(properties);
@@ -55,10 +58,10 @@ public class PatrolItem extends Item implements IDogItem  {
     }
 
     @Override
-    public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         List<BlockPos> pos = getPos(playerIn.getHeldItem(handIn));
         DoggyTalents2.LOGGER.debug("{}", pos);
-        dogIn.patrolPos = pos;
+        dogIn.setData(POS, pos);
         return ActionResultType.SUCCESS;
     }
 }

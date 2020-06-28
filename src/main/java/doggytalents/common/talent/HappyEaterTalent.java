@@ -1,8 +1,8 @@
 package doggytalents.common.talent;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ import net.minecraft.util.ActionResult;
 public class HappyEaterTalent extends Talent implements IDogFoodHandler {
 
     @Override
-    public ActionResult<Float> setDogHunger(DogEntity dogIn, float hunger, float diff) {
+    public ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
         int level = dogIn.getLevel(this);
         hunger += diff / 10 * level;
         return ActionResult.resultSuccess(hunger);
@@ -26,7 +26,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
     }
 
     @Override
-    public boolean canConsume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         int level = dogIn.getLevel(this);
 
         if (level >= 3) {
@@ -46,7 +46,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
     }
 
     @Override
-    public boolean consume(DogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         int level = dogIn.getLevel(this);
 
         if (level >= 3) {

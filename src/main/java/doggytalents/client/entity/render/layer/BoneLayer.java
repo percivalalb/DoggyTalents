@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 
-public class BoneLayer extends LayerRenderer<DogEntity, DogModel> {
+public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
 
     public BoneLayer(DogRenderer dogRendererIn) {
         super(dogRendererIn);
@@ -29,7 +29,7 @@ public class BoneLayer extends LayerRenderer<DogEntity, DogModel> {
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }
 
-            model.headChild.translateRotate(matrixStack);
+            model.head.translateRotate(matrixStack);
 
             matrixStack.translate(-0.025F, 0.125F, -0.32F);
             matrixStack.rotate(Vector3f.YP.rotationDegrees(45.0F));

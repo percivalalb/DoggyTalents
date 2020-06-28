@@ -48,18 +48,14 @@ public class DogLocationStorage extends WorldSavedData {
     public Stream<DogLocationData> getDogs(LivingEntity owner) {
         UUID ownerId = owner.getUniqueID();
 
-        return this.locationDataMap
-                .values()
-                .stream()
+        return this.locationDataMap.values().stream()
                 .filter(data -> ownerId.equals(data.getOwnerId()));
     }
 
     public Stream<DogLocationData> getDogs(LivingEntity owner, DimensionType type) {
         UUID ownerId = owner.getUniqueID();
 
-        return this.locationDataMap
-                .values()
-                .stream()
+        return this.locationDataMap.values().stream()
                 .filter(data -> ownerId.equals(data.getOwnerId()))
                 .filter(data -> type.equals(data.getDimension()));
     }

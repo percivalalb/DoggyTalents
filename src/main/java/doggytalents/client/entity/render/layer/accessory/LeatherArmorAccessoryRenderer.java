@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 
-public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer {
+public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
 
     private final EntityModel<DogEntity> model;
     private ResourceLocation texture;
@@ -24,7 +24,7 @@ public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer {
     }
 
     @Override
-    public void render(LayerRenderer<DogEntity, DogModel> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.isTamed() && !dog.isInvisible()) {
             DyeableAccessoryInstance armorInstance = data.cast(DyeableAccessoryInstance.class);
             float[] color = Util.rgbIntToFloatArray(armorInstance.getColor());

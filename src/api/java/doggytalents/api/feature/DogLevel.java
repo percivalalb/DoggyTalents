@@ -1,4 +1,4 @@
-package doggytalents.common.entity;
+package doggytalents.api.feature;
 
 public class DogLevel {
 
@@ -33,7 +33,8 @@ public class DogLevel {
         return type == Type.DIRE ? this.level >= 60 : true;
     }
 
-    protected void setLevel(Type type, int level) {
+    @Deprecated
+    public void setLevel(Type type, int level) {
         if (type == Type.DIRE) {
             this.direLevel = level;
         } else {
@@ -41,7 +42,8 @@ public class DogLevel {
         }
     }
 
-    protected void incrementLevel(Type type) {
+    @Deprecated
+    public void incrementLevel(Type type) {
         this.setLevel(type, this.getLevel(type) + 1);
     }
 

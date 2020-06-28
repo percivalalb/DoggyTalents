@@ -10,12 +10,12 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyAccessories;
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.feature.DogLevel.Type;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.DogTextureLoaderClient;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
-import doggytalents.common.entity.DogLevel.Type;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogModeData;
 import doggytalents.common.network.packet.data.DogNameData;

@@ -3,6 +3,7 @@ package doggytalents.common;
 import java.util.List;
 
 import doggytalents.DoggyItems;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.container.DogInventoriesContainer;
@@ -23,9 +24,9 @@ public class Screens {
 
     public static class PackPuppyContainerProvider implements INamedContainerProvider {
 
-        private DogEntity dog;
+        private AbstractDogEntity dog;
 
-        public PackPuppyContainerProvider(DogEntity dogIn) {
+        public PackPuppyContainerProvider(AbstractDogEntity dogIn) {
             this.dog = dogIn;
         }
 
@@ -85,7 +86,7 @@ public class Screens {
         }
     }
 
-    public static void openPackPuppyScreen(ServerPlayerEntity player, DogEntity dogIn) {
+    public static void openPackPuppyScreen(ServerPlayerEntity player, AbstractDogEntity dogIn) {
         if (dogIn.isAlive()) {
             NetworkHooks.openGui(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.getEntityId());

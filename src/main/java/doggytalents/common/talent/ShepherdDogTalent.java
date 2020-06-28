@@ -12,10 +12,10 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
+import doggytalents.api.feature.DataKey;
 import doggytalents.api.feature.EnumMode;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DataKey;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,15 +33,14 @@ import net.minecraft.world.World;
 
 public class ShepherdDogTalent extends Talent {
 
-    private static DataKey<Boolean> ADDED_AI = DataKey.make();
+    private static DataKey<EntityAIShepherdDog> SHEPHERD_AI = DataKey.make();
 
     @Override
-    public void init(DogEntity dogIn) {
-        dogIn.setDataIfEmpty(ADDED_AI, false);
-
-        if (!dogIn.getData(ADDED_AI)) {
-            dogIn.goalSelector.addGoal(7, new EntityAIShepherdDog(dogIn, 1.0D, 8F, entity -> !(entity instanceof TameableEntity)));
-            dogIn.setData(ADDED_AI, true);
+    public void init(AbstractDogEntity dogIn) {
+        if (!dogIn.hasData(SHEPHERD_AI)) {
+            EntityAIShepherdDog shepherdAI = new EntityAIShepherdDog(dogIn, 1.0D, 8F, entity -> !(entity instanceof TameableEntity));
+            dogIn.goalSelector.addGoal(7, shepherdAI);
+            dogIn.setData(SHEPHERD_AI, shepherdAI);
         }
     }
 
@@ -64,7 +63,7 @@ public class ShepherdDogTalent extends Talent {
 
     public static class EntityAIShepherdDog extends Goal {
 
-        protected final DogEntity dog;
+        protected final AbstractDogEntity dog;
         private final World world;
         private final double followSpeed;
         private final float maxDist;
@@ -81,7 +80,7 @@ public class ShepherdDogTalent extends Talent {
 
         private int MAX_FOLLOW = 5;
 
-        public EntityAIShepherdDog(DogEntity dogIn, double speedIn, float range, @Nullable Predicate<AnimalEntity> targetSelector) {
+        public EntityAIShepherdDog(AbstractDogEntity dogIn, double speedIn, float range, @Nullable Predicate<AnimalEntity> targetSelector) {
             this.dog = dogIn;
             this.world = dogIn.world;
             this.dogPathfinder = dogIn.getNavigator();

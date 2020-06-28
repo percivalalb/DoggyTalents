@@ -7,9 +7,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
-import doggytalents.api.registry.AccessoryInstance;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
@@ -37,7 +36,7 @@ public class FoodHandler {
         return Optional.empty();
     }
 
-    public static Optional<IDogFoodHandler> getMatch(@Nullable DogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn) {
+    public static Optional<IDogFoodHandler> getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn) {
         if (stackIn.getItem() instanceof IDogFoodHandler) {
             if (((IDogFoodHandler) stackIn.getItem()).canConsume(dogIn, stackIn, entityIn)) {
                 return Optional.of((IDogFoodHandler) stackIn.getItem());

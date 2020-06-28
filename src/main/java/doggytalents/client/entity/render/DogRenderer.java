@@ -17,7 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class DogRenderer extends MobRenderer<DogEntity, DogModel> {
+public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
     public DogRenderer(EntityRendererManager renderManagerIn) {
         super(renderManagerIn, new DogModel(), 0.5F);

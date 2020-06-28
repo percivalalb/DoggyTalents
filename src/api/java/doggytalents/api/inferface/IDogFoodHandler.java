@@ -2,7 +2,6 @@ package doggytalents.api.inferface;
 
 import javax.annotation.Nullable;
 
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
@@ -25,7 +24,7 @@ public interface IDogFoodHandler {
      * @param entityIn The entity who fed the dog, usually the player. Can be null probably meaning the dog ate on its own
      * @return If the dog can eat the stack, {@link #consume} is called to eat the stack
      */
-    public boolean canConsume(@Nullable DogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
+    public boolean canConsume(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
 
     /**
      * Actually eat the stack,
@@ -34,5 +33,5 @@ public interface IDogFoodHandler {
      * @param entityIn The entity who fed the dog, usually the player. Can be null probably meaning the dog ate on its own
      * @return
      */
-    public boolean consume(DogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
+    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
 }

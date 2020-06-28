@@ -2,8 +2,8 @@ package doggytalents.common.talent;
 
 import java.util.UUID;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -20,14 +20,14 @@ public class WolfMountTalent extends Talent {
     private static final UUID WOLF_MOUNT_JUMP = UUID.fromString("7f338124-f223-4630-8515-70ee0bfbc653");
 
     @Override
-    public void init(DogEntity dogIn) {
+    public void init(AbstractDogEntity dogIn) {
         int level = dogIn.getLevel(this);
         this.updateSpeed(dogIn, this.calculateJumpBoost(level));
     }
 
     @Override
-    public void removed(DogEntity dogIn, int preLevel) {
-        IAttributeInstance jumpInstance = dogIn.getAttribute(DogEntity.JUMP_STRENGTH);
+    public void removed(AbstractDogEntity dogIn, int preLevel) {
+        IAttributeInstance jumpInstance = dogIn.getAttribute(AbstractDogEntity.JUMP_STRENGTH);
         AttributeModifier jumpModifier = jumpInstance.getModifier(WOLF_MOUNT_JUMP);
 
         if (jumpModifier != null) {
@@ -36,7 +36,7 @@ public class WolfMountTalent extends Talent {
     }
 
     @Override
-    public void set(DogEntity dogIn, int level) {
+    public void set(AbstractDogEntity dogIn, int level) {
         this.updateSpeed(dogIn, this.calculateJumpBoost(level));
     }
 
@@ -50,8 +50,8 @@ public class WolfMountTalent extends Talent {
         return speed;
     }
 
-    public void updateSpeed(DogEntity dogIn, double jumpBoost) {
-        IAttributeInstance speedInstance = dogIn.getAttribute(DogEntity.JUMP_STRENGTH);
+    public void updateSpeed(AbstractDogEntity dogIn, double jumpBoost) {
+        IAttributeInstance speedInstance = dogIn.getAttribute(AbstractDogEntity.JUMP_STRENGTH);
 
         AttributeModifier speedModifier = new AttributeModifier(WOLF_MOUNT_JUMP, "Wolf Mount", jumpBoost, AttributeModifier.Operation.ADDITION).setSaved(false);
 
@@ -63,7 +63,7 @@ public class WolfMountTalent extends Talent {
     }
 
     @Override
-    public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         if (stack.isEmpty()) { // Held item
@@ -84,7 +84,7 @@ public class WolfMountTalent extends Talent {
     }
 
     @Override
-    public void livingTick(DogEntity dog) {
+    public void livingTick(AbstractDogEntity dog) {
         if(dog.isBeingRidden() && dog.getDogHunger() < 1) {
             dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()));
 
@@ -93,7 +93,7 @@ public class WolfMountTalent extends Talent {
     }
 
     @Override
-    public ActionResult<Integer> hungerTick(DogEntity dogIn, int hungerTick) {
+    public ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
         if (dogIn.canPassengerSteer()) {
             hungerTick += dogIn.getLevel(this) < 5 ? 3 : 1;
             return ActionResult.resultSuccess(hungerTick);
@@ -104,7 +104,7 @@ public class WolfMountTalent extends Talent {
 
     //TODO
 //    @Override
-//    public ActionResult<Integer> fallProtection(DogEntity dog) {
+//    public ActionResult<Integer> fallProtection(AbstractDogEntity dog) {
 //        if(dog.getLevel(this) >= 5) {
 //            return ActionResult.resultSuccess(1);
 //        }
@@ -113,7 +113,7 @@ public class WolfMountTalent extends Talent {
 //    }
 
     @Override
-    public ActionResultType hitByEntity(DogEntity dogIn, Entity entity) {
+    public ActionResultType hitByEntity(AbstractDogEntity dogIn, Entity entity) {
         // If the attacking entity is riding block
         return dogIn.isRidingOrBeingRiddenBy(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }

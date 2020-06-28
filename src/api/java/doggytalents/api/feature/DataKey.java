@@ -1,4 +1,4 @@
-package doggytalents.common.entity;
+package doggytalents.api.feature;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

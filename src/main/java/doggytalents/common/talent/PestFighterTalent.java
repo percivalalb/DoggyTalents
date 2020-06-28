@@ -3,8 +3,8 @@ package doggytalents.common.talent;
 import java.util.Iterator;
 import java.util.List;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.monster.SilverfishEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityPredicates;
@@ -13,7 +13,7 @@ public class PestFighterTalent extends Talent {
 
 
     @Override
-    public void livingTick(DogEntity dogIn) {
+    public void livingTick(AbstractDogEntity dogIn) {
         if (dogIn.world.isRemote || dogIn.ticksExisted % 2 == 0) {
             return;
         }

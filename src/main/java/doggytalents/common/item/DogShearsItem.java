@@ -2,10 +2,10 @@ package doggytalents.common.item;
 
 import java.util.List;
 
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.AccessoryInstance;
-import doggytalents.common.entity.DataKey;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ public class DogShearsItem extends Item implements IDogItem {
     }
 
     @Override
-    public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         List<AccessoryInstance> accessories = dogIn.getAccessories();
         if (accessories.isEmpty()) {
             if (!dogIn.isTamed()) {

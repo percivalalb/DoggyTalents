@@ -1,10 +1,12 @@
 package doggytalents.common.entity.ai;
 
 import java.util.EnumSet;
+import java.util.List;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.item.PatrolItem;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
@@ -25,12 +27,12 @@ public class PatrolAreaGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.patrolPos.isEmpty();
+        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.patrolPos.isEmpty();
+        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
     }
 
     @Override
@@ -50,14 +52,16 @@ public class PatrolAreaGoal extends Goal {
             if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                this.index = MathHelper.clamp(this.index, 0, this.dog.patrolPos.size() - 1);
-                BlockPos pos = this.dog.patrolPos.get(this.index);
+                List<BlockPos> patrolPos = this.dog.getData(PatrolItem.POS);
+
+                this.index = MathHelper.clamp(this.index, 0, patrolPos.size() - 1);
+                BlockPos pos = patrolPos.get(this.index);
 
                 DoggyTalents2.LOGGER.info("Update" + this.index);
 
                 if (new BlockPos(this.dog).withinDistance(pos, 2D) || !this.navigator.tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
                     ++this.index;
-                    this.index %= this.dog.patrolPos.size();
+                    this.index %= patrolPos.size();
                 }
             }
         }

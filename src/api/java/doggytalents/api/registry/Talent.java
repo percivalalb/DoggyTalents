@@ -3,23 +3,9 @@ package doggytalents.api.registry;
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
-import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
-import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
@@ -33,15 +19,15 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> implements IDogA
     /**
      * Called when the talent is added to the dog and anytime the talent map is updated
      */
-    public void init(DogEntity dog) {
+    public void init(AbstractDogEntity dog) {
 
     }
 
-    public void set(DogEntity dog, int level) {
+    public void set(AbstractDogEntity dog, int level) {
 
     }
 
-    public void removed(DogEntity dog, int preLevel) {
+    public void removed(AbstractDogEntity dog, int preLevel) {
 
     }
 

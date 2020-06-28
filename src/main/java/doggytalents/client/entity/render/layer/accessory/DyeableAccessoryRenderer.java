@@ -4,15 +4,15 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.registry.AccessoryInstance;
-import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.accessory.DyeableAccessory.DyeableAccessoryInstance;
 import doggytalents.common.util.Util;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.util.ResourceLocation;
 
-public class DyeableAccessoryRenderer implements IAccessoryRenderer {
+public class DyeableAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
 
     private ResourceLocation texture;
 
@@ -21,7 +21,7 @@ public class DyeableAccessoryRenderer implements IAccessoryRenderer {
     }
 
     @Override
-    public void render(LayerRenderer<DogEntity, DogModel> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(dog.isTamed() && !dog.isInvisible()) {
             float[] color = Util.rgbIntToFloatArray(data.cast(DyeableAccessoryInstance.class).getColor());
 

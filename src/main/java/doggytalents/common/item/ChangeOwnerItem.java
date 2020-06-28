@@ -1,7 +1,7 @@
 package doggytalents.common.item;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -16,7 +16,7 @@ public class ChangeOwnerItem extends Item implements IDogItem {
     }
 
     @Override
-    public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         if(!dogIn.isOwner(playerIn)) {
             if(!worldIn.isRemote) {
                 dogIn.setTamedBy(playerIn);

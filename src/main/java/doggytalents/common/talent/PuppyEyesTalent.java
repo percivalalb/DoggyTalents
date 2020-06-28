@@ -3,9 +3,9 @@ package doggytalents.common.talent;
 import java.util.Collections;
 import java.util.List;
 
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DataKey;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
@@ -19,23 +19,23 @@ public class PuppyEyesTalent extends Talent {
     private static DataKey<Integer> COOLDOWN = DataKey.make();
 
     @Override
-    public void init(DogEntity dogIn) {
+    public void init(AbstractDogEntity dogIn) {
         dogIn.setDataIfEmpty(COOLDOWN, dogIn.ticksExisted);
     }
 
     @Override
-    public void write(DogEntity dogIn, CompoundNBT compound) {
+    public void write(AbstractDogEntity dogIn, CompoundNBT compound) {
         int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
         compound.putInt("charmercharge", timeLeft);
     }
 
     @Override
-    public void read(DogEntity dogIn, CompoundNBT compound) {
+    public void read(AbstractDogEntity dogIn, CompoundNBT compound) {
         dogIn.setData(COOLDOWN, dogIn.ticksExisted + compound.getInt("charmercharge"));
     }
 
     @Override
-    public void livingTick(DogEntity dogIn) {
+    public void livingTick(AbstractDogEntity dogIn) {
         if (dogIn.ticksExisted % 40 != 0) {
             return;
         }
@@ -103,7 +103,7 @@ public class PuppyEyesTalent extends Talent {
     }
 
     @SuppressWarnings("unchecked")
-    public LivingEntity getClosestVisibleVillager(DogEntity dogIn, double radiusIn) {
+    public LivingEntity getClosestVisibleVillager(AbstractDogEntity dogIn, double radiusIn) {
         List<AbstractVillagerEntity> list = dogIn.world.getEntitiesWithinAABB(AbstractVillagerEntity.class, dogIn.getBoundingBox().grow(radiusIn, radiusIn, radiusIn), village -> village.canEntityBeSeen(dogIn));
         Collections.sort(list, new EntityUtil.Sorter(dogIn));
 

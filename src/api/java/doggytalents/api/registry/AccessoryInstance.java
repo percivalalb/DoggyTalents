@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.common.util.NBTUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
@@ -40,12 +39,16 @@ public class AccessoryInstance {
     }
 
     public final void writeInstance(CompoundNBT compound) {
-        NBTUtil.putResourceLocation(compound, "type", this.getAccessory().getRegistryName());
+        ResourceLocation rl = this.getAccessory().getRegistryName();
+        if (rl != null) {
+            compound.putString("type", rl.toString());
+        }
+
         this.getAccessory().write(this, compound);
     }
 
     public static Optional<AccessoryInstance> readInstance(CompoundNBT compound) {
-        ResourceLocation rl = NBTUtil.getResourceLocation(compound, "type");
+        ResourceLocation rl = ResourceLocation.tryCreate(compound.getString("type"));
         if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
             Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
             return Optional.of(type.read(compound));

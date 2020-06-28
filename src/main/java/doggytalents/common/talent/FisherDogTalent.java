@@ -2,14 +2,14 @@ package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents;
 import doggytalents.api.enu.WetSource;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.item.Items;
 
 public class FisherDogTalent extends Talent {
 
     @Override
-    public void onShakingDry(DogEntity dogIn, WetSource source) {
+    public void onShakingDry(AbstractDogEntity dogIn, WetSource source) {
         if (dogIn.world.isRemote) { // On client do nothing
             return;
         }

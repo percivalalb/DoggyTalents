@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
@@ -57,18 +56,6 @@ public class DogTextureLoader {
         }
 
         return null;
-    }
-
-    @Deprecated
-    public static String getHash(@Nonnull InputStream stream) {
-        try {
-            byte[] targetArray = IOUtils.toByteArray(stream);
-            return getHash(targetArray);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return "";
     }
 
     public static String getHash(byte[] targetArray) {

@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 
-public class DogTalentLayer extends LayerRenderer<DogEntity, DogModel> {
+public class DogTalentLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
 
-    public DogTalentLayer(IEntityRenderer<DogEntity, DogModel> rendererIn) {
+    public DogTalentLayer(IEntityRenderer<DogEntity, DogModel<DogEntity>> rendererIn) {
         super(rendererIn);
     }
 

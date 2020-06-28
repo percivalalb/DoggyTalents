@@ -1,7 +1,7 @@
 package doggytalents.common.entity.serializers;
 
-import doggytalents.common.entity.DogLevel;
-import doggytalents.common.entity.DogLevel.Type;
+import doggytalents.api.feature.DogLevel;
+import doggytalents.api.feature.DogLevel.Type;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.IDataSerializer;
 

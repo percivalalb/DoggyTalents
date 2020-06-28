@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 
 public interface Addon {
 

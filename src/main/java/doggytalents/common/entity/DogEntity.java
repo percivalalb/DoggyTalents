@@ -1,6 +1,5 @@
 package doggytalents.common.entity;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,9 +22,13 @@ import doggytalents.DoggySerializers;
 import doggytalents.DoggyTags;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.enu.WetSource;
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.feature.DogLevel;
+import doggytalents.api.feature.DogLevel.Type;
 import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IDogItem;
@@ -36,7 +39,6 @@ import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.screen.DogInfoScreen;
 import doggytalents.common.config.ConfigValues;
-import doggytalents.common.entity.DogLevel.Type;
 import doggytalents.common.entity.ai.BerserkerGoal;
 import doggytalents.common.entity.ai.DogBegGoal;
 import doggytalents.common.entity.ai.DogFollowOwnerGoal;
@@ -57,8 +59,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.ai.goal.BreedGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
@@ -117,7 +117,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 
-public class DogEntity extends TameableEntity {
+public class DogEntity extends AbstractDogEntity {
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
     private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
@@ -132,14 +132,10 @@ public class DogEntity extends TameableEntity {
     private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
     private static final DataParameter<Byte> SIZE = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
     private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.createKey(DogEntity.class, DataSerializers.ITEMSTACK);
-    public static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute)null, "generic.jumpStrength", 0.0D, 0.0D, 8.0D)).setShouldWatch(true);
 
     // Cached values
     private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
     private final List<IDogAlteration> alterations = Lists.newArrayList();
-
-
-    public List<BlockPos> patrolPos = Collections.emptyList();
 
     public final StatsTracker statsTracker = new StatsTracker();
     public final Map<Integer, Object> objects = Maps.newHashMap();
@@ -291,6 +287,10 @@ public class DogEntity extends TameableEntity {
 
     public float getTailRotation() {
         return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
+    }
+
+    public float getWagAngle(float limbSwing, float limbSwingAmount, float partialTickTime) {
+        return MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 
     @Override
@@ -953,14 +953,6 @@ public class DogEntity extends TameableEntity {
         }
     }
 
-    public void consumeItemFromStack(@Nullable Entity entity, ItemStack stack) {
-        if (entity instanceof PlayerEntity) {
-            super.consumeItemFromStack((PlayerEntity) entity, stack);
-        } else {
-            stack.shrink(1);
-        }
-    }
-
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
@@ -1235,14 +1227,17 @@ public class DogEntity extends TameableEntity {
      * If the entity can make changes to the dog
      * @param livingEntity The entity
      */
+    @Override
     public boolean canInteract(LivingEntity livingEntity) {
         return this.willObeyOthers() || this.isOwner(livingEntity);
     }
 
+    @Override
     public List<AccessoryInstance> getAccessories() {
         return this.dataManager.get(ACCESSORIES.get());
     }
 
+    @Override
     public boolean addAccessory(@Nonnull AccessoryInstance collar) {
         List<AccessoryInstance> accessories = this.getAccessories();
         AccessoryType type = collar.getAccessory().getType();
@@ -1268,9 +1263,12 @@ public class DogEntity extends TameableEntity {
         return true;
     }
 
-    public void removeAccessories() {
+    @Override
+    public List<AccessoryInstance> removeAccessories() {
+        List<AccessoryInstance> removed = Lists.newArrayList(this.getAccessories());
         this.getAccessories().clear();
         this.markDataParameterDirty(ACCESSORIES.get());
+        return removed;
     }
 
     public Optional<AccessoryInstance> getAccessory(AccessoryType typeIn) {
@@ -1337,6 +1335,7 @@ public class DogEntity extends TameableEntity {
         this.dataManager.set(BOWL_POS, collar);
     }
 
+    @Override
     public float getMaxHunger() {
         float maxHunger = ConfigValues.DEFAULT_MAX_HUNGER;
 
@@ -1351,14 +1350,17 @@ public class DogEntity extends TameableEntity {
         return maxHunger;
     }
 
+    @Override
     public float getDogHunger() {
         return this.dataManager.get(HUNGER_INT);
     }
 
+    @Override
     public void addHunger(float add) {
         this.setDogHunger(this.getDogHunger() + add);
     }
 
+    @Override
     public void setDogHunger(float hunger) {
         float diff = hunger - this.getDogHunger();
 
@@ -1393,6 +1395,7 @@ public class DogEntity extends TameableEntity {
         this.dataManager.set(CUSTOM_SKIN, hash);
     }
 
+    @Override
     public DogLevel getLevel() {
         return this.dataManager.get(DOG_LEVEL.get());
     }
@@ -1401,15 +1404,18 @@ public class DogEntity extends TameableEntity {
         this.dataManager.set(DOG_LEVEL.get(), level);
     }
 
+    @Override
     public void increaseLevel(DogLevel.Type typeIn) {
         this.getLevel().incrementLevel(typeIn);
         this.markDataParameterDirty(DOG_LEVEL.get());
     }
 
+    @Override
     public void setDogSize(int value) {
         this.dataManager.set(SIZE, (byte)Math.min(5, Math.max(1, value)));
     }
 
+    @Override
     public int getDogSize() {
         return this.dataManager.get(SIZE);
     }
@@ -1549,11 +1555,13 @@ public class DogEntity extends TameableEntity {
         this.markDataParameterDirty(ACCESSORIES.get());
     }
 
+    @Override
     public int getLevel(Talent talentIn) {
         Map<Talent, Integer> map = this.getTalentMap();
         return map.getOrDefault(talentIn, 0);
     }
 
+    @Override
     public <T> void setData(DataKey<T> key, T value) {
         if (key.isFinal() && this.hasData(key)) {
             throw new RuntimeException("Key is final but was tried to be set again.");
@@ -1564,17 +1572,20 @@ public class DogEntity extends TameableEntity {
     /**
      * Tries to put the object in the map, does nothing if the key already exists
      */
+    @Override
     public <T> void setDataIfEmpty(DataKey<T> key, T value) {
         if (!this.hasData(key)) {
             this.objects.put(key.getIndex(), value);
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T getData(DataKey<T> key) {
         return (T) this.objects.get(key.getIndex());
     }
 
+    @Override
     public <T> T getDataOrGet(DataKey<T> key, Supplier<T> other) {
         if (this.hasData(key)) {
             return this.getData(key);
@@ -1582,6 +1593,7 @@ public class DogEntity extends TameableEntity {
         return other.get();
     }
 
+    @Override
     public <T> T getDataOrDefault(DataKey<T> key, T other) {
         if (this.hasData(key)) {
             return this.getData(key);
@@ -1589,10 +1601,12 @@ public class DogEntity extends TameableEntity {
         return other;
     }
 
+    @Override
     public <T> boolean hasData(DataKey<T> key) {
         return this.objects.containsKey(key.getIndex());
     }
 
+    @Override
     public void untame() {
         this.setTamed(false);
         this.navigator.clearPath();

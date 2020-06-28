@@ -2,8 +2,8 @@ package doggytalents.common.item;
 
 import java.util.function.Supplier;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.AccessoryInstance;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.accessory.DyeableAccessory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
@@ -20,7 +20,7 @@ public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmor
     }
 
     @Override
-    public AccessoryInstance createInstance(DogEntity dogIn, ItemStack stack, PlayerEntity playerIn) {
+    public AccessoryInstance createInstance(AbstractDogEntity dogIn, ItemStack stack, PlayerEntity playerIn) {
         return this.accessory.get().create(this.getColor(stack));
     }
 

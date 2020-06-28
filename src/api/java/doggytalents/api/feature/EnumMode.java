@@ -3,7 +3,7 @@ package doggytalents.api.feature;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import doggytalents.api.inferface.IDogEntity;
+import doggytalents.api.inferface.AbstractDogEntity;
 
 public enum EnumMode {
 
@@ -56,7 +56,7 @@ public enum EnumMode {
         return this.unlocalisedInfo;
     }
 
-    public void onModeSet(IDogEntity dog, EnumMode prev) {
+    public void onModeSet(AbstractDogEntity dog, EnumMode prev) {
         switch(prev) {
         default:
             dog.getNavigator().clearPath();

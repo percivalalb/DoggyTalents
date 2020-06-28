@@ -1,8 +1,8 @@
 package doggytalents.common.talent;
 
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DataKey;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -13,12 +13,12 @@ public class CreeperSweeperTalent extends Talent {
     private static DataKey<Integer> COOLDOWN = DataKey.make();
 
     @Override
-    public void init(DogEntity dogIn) {
+    public void init(AbstractDogEntity dogIn) {
         dogIn.setDataIfEmpty(COOLDOWN, dogIn.ticksExisted);
     }
 
     @Override
-    public void tick(DogEntity dogIn) {
+    public void tick(AbstractDogEntity dogIn) {
 //        int level = dogIn.getLevel(this);
 //
 //        if(dogIn.getAttackTarget() == null && dogIn.isTamed() && level > 0) {
@@ -42,17 +42,17 @@ public class CreeperSweeperTalent extends Talent {
     }
 
     @Override
-    public ActionResultType canAttack(DogEntity dog, EntityType<?> entityType) {
+    public ActionResultType canAttack(AbstractDogEntity dog, EntityType<?> entityType) {
         return entityType == EntityType.CREEPER && dog.getLevel(this) >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     @Override
-    public ActionResultType canAttack(DogEntity dog, LivingEntity entity) {
+    public ActionResultType canAttack(AbstractDogEntity dog, LivingEntity entity) {
         return entity instanceof CreeperEntity && dog.getLevel(this) >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     @Override
-    public ActionResultType shouldAttackEntity(DogEntity dog, LivingEntity target, LivingEntity owner) {
+    public ActionResultType shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
         return target instanceof CreeperEntity && dog.getLevel(this) >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
      }
 }

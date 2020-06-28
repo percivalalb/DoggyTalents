@@ -5,8 +5,8 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -15,7 +15,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class InventoryUtil {
 
-    public static boolean feedDogFrom(DogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
+    public static boolean feedDogFrom(AbstractDogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
 
         for(int i = 0; i < source.getSlots(); i++) {
 

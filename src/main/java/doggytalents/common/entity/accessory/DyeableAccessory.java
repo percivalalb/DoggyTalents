@@ -3,11 +3,11 @@ package doggytalents.common.entity.accessory;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
-import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
@@ -95,7 +95,7 @@ public class DyeableAccessory extends Accessory {
         }
 
         @Override
-        public ActionResultType processInteract(DogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+        public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
             ItemStack stack = playerIn.getHeldItem(handIn);
 
             DyeColor dyeColor = DyeColor.getColor(stack);

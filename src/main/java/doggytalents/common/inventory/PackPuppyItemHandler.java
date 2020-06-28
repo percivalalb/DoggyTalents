@@ -1,6 +1,6 @@
 package doggytalents.common.inventory;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.api.inferface.AbstractDogEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -9,9 +9,9 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class PackPuppyItemHandler extends ItemStackHandler {
 
-    private DogEntity dog;
+    private AbstractDogEntity dog;
 
-    public PackPuppyItemHandler(DogEntity dogIn) {
+    public PackPuppyItemHandler(AbstractDogEntity dogIn) {
         super(15);
         this.dog = dogIn;
     }

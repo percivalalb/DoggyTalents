@@ -1,6 +1,6 @@
 package doggytalents.api.feature;
 
-import doggytalents.api.inferface.IDogEntity;
+import doggytalents.api.inferface.AbstractDogEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public interface IGenderFeature {
@@ -29,7 +29,7 @@ public interface IGenderFeature {
      * @param other The other dog
      * @return If breeding can take place
      */
-    public boolean canMateWith(IDogEntity other);
+    public boolean canMateWith(AbstractDogEntity other);
 
     /**
      * @return The title used when referring the the dog

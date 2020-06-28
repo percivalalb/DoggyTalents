@@ -1,9 +1,9 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.api.feature.DataKey;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DataKey;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
@@ -15,23 +15,23 @@ public class GuardDogTalent extends Talent {
     private static DataKey<Integer> COOLDOWN = DataKey.make();
 
     @Override
-    public void init(DogEntity dogIn) {
+    public void init(AbstractDogEntity dogIn) {
         dogIn.setDataIfEmpty(COOLDOWN, dogIn.ticksExisted);
     }
 
     @Override
-    public void write(DogEntity dogIn, CompoundNBT compound) {
+    public void write(AbstractDogEntity dogIn, CompoundNBT compound) {
         int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
         compound.putInt("guardtime", timeLeft);
     }
 
     @Override
-    public void read(DogEntity dogIn, CompoundNBT compound) {
+    public void read(AbstractDogEntity dogIn, CompoundNBT compound) {
         dogIn.setData(COOLDOWN, dogIn.ticksExisted + compound.getInt("guardtime"));
     }
 
     @Override
-    public ActionResult<Float> attackEntityFrom(DogEntity dogIn, DamageSource damageSource, float damage) {
+    public ActionResult<Float> attackEntityFrom(AbstractDogEntity dogIn, DamageSource damageSource, float damage) {
         if (dogIn.world.isRemote) {
             return ActionResult.resultPass(damage);
         }

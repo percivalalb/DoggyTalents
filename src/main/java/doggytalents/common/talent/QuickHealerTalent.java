@@ -1,14 +1,14 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.util.ActionResult;
 
 public class QuickHealerTalent extends Talent {
 
     @Override
-    public ActionResult<Integer> healingTick(DogEntity dogIn, int healingTick) {
+    public ActionResult<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
         int level = dogIn.getLevel(this);
 
         if (level > 0) {

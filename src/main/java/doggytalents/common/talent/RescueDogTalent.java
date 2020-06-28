@@ -1,14 +1,14 @@
 package doggytalents.common.talent;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.MathHelper;
 
 public class RescueDogTalent extends Talent {
 
     @Override
-    public void livingTick(DogEntity dogIn) {
+    public void livingTick(AbstractDogEntity dogIn) {
         if (dogIn.world.isRemote) {
             return;
         }

@@ -25,6 +25,11 @@ public class CasingMaterial extends ICasingMaterial {
         this.block = blockIn;
     }
 
+    public CasingMaterial(Supplier<Block> blockIn, ResourceLocation texture) {
+        this.block = blockIn;
+        this.texture = texture;
+    }
+
     /**
      * Texture location that for material, eg 'minecraft:block/oak_planks'
      */

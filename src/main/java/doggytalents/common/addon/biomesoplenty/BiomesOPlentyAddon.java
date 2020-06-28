@@ -26,6 +26,7 @@ public class BiomesOPlentyAddon implements Addon {
             "willow_planks", "hellbark_planks", "jacaranda_planks", "mahogany_planks"};
 
     public final void registerCasings(final RegistryEvent.Register<ICasingMaterial> event) {
+        if (!this.shouldLoad()) { return; }
         IForgeRegistry<ICasingMaterial> casingRegistry = event.getRegistry();
 
         for (String block : BLOCKS) {

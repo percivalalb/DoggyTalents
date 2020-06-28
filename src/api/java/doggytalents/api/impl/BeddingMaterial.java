@@ -25,6 +25,11 @@ public class BeddingMaterial extends IBeddingMaterial {
         this.block = blockIn;
     }
 
+    public BeddingMaterial(Supplier<Block> blockIn, ResourceLocation texture) {
+        this.block = blockIn;
+        this.texture = texture;
+    }
+
     /**
      * Texture location that for material, eg 'minecraft:block/white_wool'
      */

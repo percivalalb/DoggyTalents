@@ -22,8 +22,8 @@ public class AddonManager {
     private static final List<Addon> RUN = Lists.newArrayList(ADDONS);
 
     public static void init() {
-        // inits the addon if it should be run and if it errors remove from the addons to run later
-        doWork(ADDONS, Addon::shouldLoad, Addon::init, (addon, e) -> RUN.remove(addon));
+        // inits the addon if it errors remove from the addons to run later
+        doWork(ADDONS, (addon) -> true, Addon::init, (addon, e) -> RUN.remove(addon));
     }
 
     public static void exec() {

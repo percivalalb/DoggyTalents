@@ -1575,7 +1575,7 @@ public class DogEntity extends TameableEntity {
         return (T) this.objects.get(key.getIndex());
     }
 
-    public <T> T getDataOrDefault(DataKey<T> key, Supplier<T> other) {
+    public <T> T getDataOrGet(DataKey<T> key, Supplier<T> other) {
         if (this.hasData(key)) {
             return this.getData(key);
         }

@@ -21,7 +21,7 @@ public class GuardDogTalent extends Talent {
 
     @Override
     public void write(DogEntity dogIn, CompoundNBT compound) {
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, () -> dogIn.ticksExisted) - dogIn.ticksExisted;
+        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
         compound.putInt("guardtime", timeLeft);
     }
 
@@ -39,7 +39,7 @@ public class GuardDogTalent extends Talent {
         Entity entity = damageSource.getTrueSource();
 
         if (entity != null) {
-            int timeLeft = dogIn.getDataOrDefault(COOLDOWN, () -> dogIn.ticksExisted) - dogIn.ticksExisted;
+            int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
             if (timeLeft <= 0) {
                 int level = dogIn.getLevel(this);
                 int blockChance = level + (level >= 5 ? 1 : 0);

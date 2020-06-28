@@ -150,7 +150,7 @@ public class WhistleItem extends Item {
                         } else {
                             for(DogEntity dog : dogsList) {
                                 int level = dog.getLevel(DoggyTalents.ROARING_GALE);
-                                int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, () -> 0);
+                                int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0);
 
                                 roarCooldown = level == 5 ? 60 : 100;
 

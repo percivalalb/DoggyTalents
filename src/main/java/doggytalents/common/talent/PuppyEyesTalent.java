@@ -25,7 +25,7 @@ public class PuppyEyesTalent extends Talent {
 
     @Override
     public void write(DogEntity dogIn, CompoundNBT compound) {
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, () -> dogIn.ticksExisted) - dogIn.ticksExisted;
+        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
         compound.putInt("charmercharge", timeLeft);
     }
 
@@ -48,7 +48,7 @@ public class PuppyEyesTalent extends Talent {
         if (level <= 0) {
             return;
         }
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, () -> dogIn.ticksExisted) - dogIn.ticksExisted;
+        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
         if(timeLeft <= 0) {
             LivingEntity owner = dogIn.getOwner();

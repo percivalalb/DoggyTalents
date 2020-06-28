@@ -10,8 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.storage.DogRespawnData;
@@ -205,7 +205,7 @@ public class DogBedBlock extends Block {
     public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         super.addInformation(stack, worldIn, tooltip, flagIn);
 
-        Pair<CasingMaterial, BeddingMaterial> materials = DogBedUtil.getMaterials(stack);
+        Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
         tooltip.add(materials.getLeft().getTooltip());
         tooltip.add(materials.getRight().getTooltip());
@@ -233,8 +233,8 @@ public class DogBedBlock extends Block {
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        for(BeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
-            for(CasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
+        for(IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
+            for(ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
                 items.add(DogBedUtil.createItemStack(casingId, beddingId));
             }
         }

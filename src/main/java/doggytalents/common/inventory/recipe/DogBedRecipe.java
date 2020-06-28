@@ -2,8 +2,8 @@ package doggytalents.common.inventory.recipe;
 
 import doggytalents.DoggyRecipeSerializers;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -22,13 +22,13 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
 
     @Override
     public boolean matches(CraftingInventory inv, World worldIn) {
-        BeddingMaterial beddingId = null;
-        CasingMaterial casingId = null;
+        IBeddingMaterial beddingId = null;
+        ICasingMaterial casingId = null;
 
         for (int col = 0; col < 3; col++) {
             for (int row = 0; row < 3; row++) {
                 if (col == 1 && row < 2) {
-                    BeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+                    IBeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -41,7 +41,7 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
                     }
                 }
                 else {
-                    CasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+                    ICasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -61,8 +61,8 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
 
     @Override
     public ItemStack getCraftingResult(CraftingInventory inv) {
-        BeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(1));
-        CasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(0));
+        IBeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(1));
+        ICasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(0));
 
         return DogBedUtil.createItemStack(casingId, beddingId);
     }

@@ -1,22 +1,22 @@
-package doggytalents.api.registry;
+package doggytalents.api.impl;
 
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.registry.ICasingMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class CasingMaterial extends ForgeRegistryEntry<CasingMaterial> {
+public class CasingMaterial extends ICasingMaterial {
 
     private final Supplier<Block> block;
-    private ResourceLocation texture;
+    protected ResourceLocation texture;
 
     @Nullable
     private String translationKey;
@@ -26,8 +26,9 @@ public class CasingMaterial extends ForgeRegistryEntry<CasingMaterial> {
     }
 
     /**
-     * Texture location that for material, eg 'minecraft:block/white_wool'
+     * Texture location that for material, eg 'minecraft:block/oak_planks'
      */
+    @Override
     public ResourceLocation getTexture() {
         if (this.texture == null) {
             ResourceLocation loc = this.block.get().getRegistryName();
@@ -40,6 +41,7 @@ public class CasingMaterial extends ForgeRegistryEntry<CasingMaterial> {
     /**
      * The translation key using for the tooltip
      */
+    @Override
     public ITextComponent getTooltip() {
         if (this.translationKey == null) {
             this.translationKey = Util.makeTranslationKey("dogbed.casing", DoggyTalentsAPI.CASING_MATERIAL.getKey(this));
@@ -51,6 +53,7 @@ public class CasingMaterial extends ForgeRegistryEntry<CasingMaterial> {
     /**
      * The ingredient used in the crafting recipe of the bed
      */
+    @Override
     public Ingredient getIngredient() {
         return Ingredient.fromItems(this.block.get());
     }

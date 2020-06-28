@@ -9,8 +9,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -22,23 +22,23 @@ public class DogBedUtil {
     private static final Random RANDOM = new Random(System.currentTimeMillis());
 
     public static void setBedVariant(DogBedTileEntity dogBedTileEntity, ItemStack stack) {
-        Pair<CasingMaterial, BeddingMaterial> materials = DogBedUtil.getMaterials(stack);
+        Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
         dogBedTileEntity.setCasing(materials.getLeft());
         dogBedTileEntity.setBedding(materials.getRight());
     }
 
     public static ItemStack createRandomBed() {
-        CasingMaterial casing = pickRandom(DoggyTalentsAPI.CASING_MATERIAL);
-        BeddingMaterial bedding = pickRandom(DoggyTalentsAPI.BEDDING_MATERIAL);
+        ICasingMaterial casing = pickRandom(DoggyTalentsAPI.CASING_MATERIAL);
+        IBeddingMaterial bedding = pickRandom(DoggyTalentsAPI.BEDDING_MATERIAL);
         return DogBedUtil.createItemStack(casing, bedding);
     }
 
-    public static Pair<CasingMaterial, BeddingMaterial> getMaterials(ItemStack stack) {
+    public static Pair<ICasingMaterial, IBeddingMaterial> getMaterials(ItemStack stack) {
         CompoundNBT tag = stack.getChildTag("doggytalents");
         if (tag != null) {
-            CasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
-            BeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
+            ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
+            IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
 
             return Pair.of(casingId, beddingId);
         }
@@ -46,7 +46,7 @@ public class DogBedUtil {
         return Pair.of(null, null);
     }
 
-    public static ItemStack createItemStack(CasingMaterial casingId, BeddingMaterial beddingId) {
+    public static ItemStack createItemStack(ICasingMaterial casingId, IBeddingMaterial beddingId) {
         ItemStack stack = new ItemStack(DoggyBlocks.DOG_BED.get(), 1);
 
         CompoundNBT tag = stack.getOrCreateChildTag("doggytalents");
@@ -56,8 +56,8 @@ public class DogBedUtil {
         return stack;
     }
 
-    public static CasingMaterial getCasingFromStack(IForgeRegistry<CasingMaterial> registry, ItemStack stack) {
-        for(CasingMaterial m : registry.getValues()) {
+    public static ICasingMaterial getCasingFromStack(IForgeRegistry<ICasingMaterial> registry, ItemStack stack) {
+        for(ICasingMaterial m : registry.getValues()) {
             if(m.getIngredient().test(stack)) {
                 return m;
             }
@@ -66,8 +66,8 @@ public class DogBedUtil {
         return null;
     }
 
-    public static BeddingMaterial getBeddingFromStack(IForgeRegistry<BeddingMaterial> registry, ItemStack stack) {
-        for(BeddingMaterial m : registry.getValues()) {
+    public static IBeddingMaterial getBeddingFromStack(IForgeRegistry<IBeddingMaterial> registry, ItemStack stack) {
+        for(IBeddingMaterial m : registry.getValues()) {
             if(m.getIngredient().test(stack)) {
                 return m;
             }

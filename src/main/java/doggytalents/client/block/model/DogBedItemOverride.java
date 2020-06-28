@@ -2,8 +2,8 @@ package doggytalents.client.block.model;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemOverrideList;
@@ -20,7 +20,7 @@ public class DogBedItemOverride extends ItemOverrideList {
     @Override
     public IBakedModel getModelWithOverrides(IBakedModel modelOriginal, ItemStack stack, World world, LivingEntity entity) {
         if(modelOriginal instanceof DogBedModel) {
-            Pair<CasingMaterial, BeddingMaterial> materials = DogBedUtil.getMaterials(stack);
+            Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
             return ((DogBedModel) modelOriginal).getModelVariant(materials.getLeft(), materials.getRight(), Direction.NORTH);
         }
 

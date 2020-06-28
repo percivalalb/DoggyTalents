@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 import doggytalents.DoggyTalents2;
 import doggytalents.DoggyTileEntityTypes;
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
@@ -22,12 +22,12 @@ import net.minecraftforge.client.model.data.ModelProperty;
 
 public class DogBedTileEntity extends PlacedTileEntity {
 
-    private CasingMaterial casingType = null;
-    private BeddingMaterial beddingType = null;
+    private ICasingMaterial casingType = null;
+    private IBeddingMaterial beddingType = null;
 
 
-    public static ModelProperty<CasingMaterial> CASING = new ModelProperty<>();
-    public static ModelProperty<BeddingMaterial> BEDDING = new ModelProperty<>();
+    public static ModelProperty<ICasingMaterial> CASING = new ModelProperty<>();
+    public static ModelProperty<IBeddingMaterial> BEDDING = new ModelProperty<>();
     public static ModelProperty<Direction> FACING = new ModelProperty<>();
 
     private @Deprecated @Nullable DogEntity dog;
@@ -66,23 +66,23 @@ public class DogBedTileEntity extends PlacedTileEntity {
         return compound;
     }
 
-    public void setCasing(CasingMaterial casingType) {
+    public void setCasing(ICasingMaterial casingType) {
         this.casingType = casingType;
         this.markDirty();
         this.requestModelDataUpdate();
     }
 
-    public void setBedding(BeddingMaterial beddingType) {
+    public void setBedding(IBeddingMaterial beddingType) {
         this.beddingType = beddingType;
         this.markDirty();
         this.requestModelDataUpdate();
     }
 
-    public CasingMaterial getCasing() {
+    public ICasingMaterial getCasing() {
         return this.casingType;
     }
 
-    public BeddingMaterial getBedding() {
+    public IBeddingMaterial getBedding() {
         return this.beddingType;
     }
 

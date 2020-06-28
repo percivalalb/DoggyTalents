@@ -15,8 +15,8 @@ import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
 
 import doggytalents.DoggyBedMaterials;
-import doggytalents.api.registry.BeddingMaterial;
-import doggytalents.api.registry.CasingMaterial;
+import doggytalents.api.registry.IBeddingMaterial;
+import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.lib.Constants;
@@ -52,7 +52,7 @@ public class DogBedModel implements IBakedModel {
     private BlockModel model;
     private IBakedModel bakedModel;
 
-    private final Map<Triple<CasingMaterial, BeddingMaterial, Direction>, IBakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<ICasingMaterial, IBeddingMaterial, Direction>, IBakedModel> cache = Maps.newHashMap();
 
     public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel) {
         this.modelLoader = modelLoader;
@@ -64,7 +64,7 @@ public class DogBedModel implements IBakedModel {
         return this.getModelVariant(data.getData(DogBedTileEntity.CASING), data.getData(DogBedTileEntity.BEDDING), data.getData(DogBedTileEntity.FACING));
     }
 
-    public IBakedModel getModelVariant(CasingMaterial casing, BeddingMaterial bedding, Direction facing) {
+    public IBakedModel getModelVariant(ICasingMaterial casing, IBeddingMaterial bedding, Direction facing) {
         if (casing == null) { casing = DoggyBedMaterials.OAK_PLANKS; }
         if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL; }
         if (facing == null) { facing = Direction.NORTH; }
@@ -89,8 +89,8 @@ public class DogBedModel implements IBakedModel {
 
     @Override
     public IModelData getModelData(@Nonnull ILightReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
-        CasingMaterial casing = null;
-        BeddingMaterial bedding = null;
+        ICasingMaterial casing = null;
+        IBeddingMaterial bedding = null;
         Direction facing = null;
 
         TileEntity tile = world.getTileEntity(pos);
@@ -110,7 +110,7 @@ public class DogBedModel implements IBakedModel {
         return tileData;
     }
 
-    public IBakedModel bakeModelVariant(@Nonnull CasingMaterial casingResource, @Nonnull BeddingMaterial beddingResource, @Nonnull Direction facing) {
+    public IBakedModel bakeModelVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
         List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
         for (BlockPart part : this.model.getElements()) {
             elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
@@ -131,7 +131,7 @@ public class DogBedModel implements IBakedModel {
         return newModel.bakeModel(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
-    private ResourceLocation createResourceVariant(@Nonnull CasingMaterial casingResource, @Nonnull BeddingMaterial beddingResource, @Nonnull Direction facing) {
+    private ResourceLocation createResourceVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
         return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.getRegistryName().toString().replace(':', '.') + ",casing=" + casingResource.getRegistryName().toString().replace(':', '.') + ",facing=" + facing.getName());
     }
 

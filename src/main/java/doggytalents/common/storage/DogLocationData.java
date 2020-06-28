@@ -68,7 +68,7 @@ public class DogLocationData {
 
         this.name = dogIn.getName();
         this.gender = dogIn.getGender();
-        this.hasRadarCollar = dogIn.getAccessory(DoggyAccessories.RADIO_BAND).isPresent();
+        this.hasRadarCollar = dogIn.getAccessory(DoggyAccessories.RADIO_BAND.get()).isPresent();
 
         this.dog = dogIn;
         this.storage.markDirty();

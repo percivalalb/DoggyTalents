@@ -10,7 +10,7 @@ import net.minecraft.util.IItemProvider;
 public class Band extends Accessory {
 
     public Band(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.BAND, itemIn);
+        super(DoggyAccessoryTypes.BAND, itemIn);
     }
 
     @Override

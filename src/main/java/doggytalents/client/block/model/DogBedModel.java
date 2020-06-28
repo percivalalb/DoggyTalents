@@ -65,8 +65,8 @@ public class DogBedModel implements IBakedModel {
     }
 
     public IBakedModel getModelVariant(ICasingMaterial casing, IBeddingMaterial bedding, Direction facing) {
-        if (casing == null) { casing = DoggyBedMaterials.OAK_PLANKS; }
-        if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL; }
+        if (casing == null) { casing = DoggyBedMaterials.OAK_PLANKS.get(); }
+        if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL.get(); }
         if (facing == null) { facing = Direction.NORTH; }
 
         return this.cache.computeIfAbsent(ImmutableTriple.of(casing, bedding, facing), (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
@@ -74,7 +74,7 @@ public class DogBedModel implements IBakedModel {
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-        return this.getModelVariant(DoggyBedMaterials.OAK_PLANKS, DoggyBedMaterials.WHITE_WOOL, Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
+        return this.getModelVariant(DoggyBedMaterials.OAK_PLANKS.get(), DoggyBedMaterials.WHITE_WOOL.get(), Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
     }
 
     @Override

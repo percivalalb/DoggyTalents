@@ -9,7 +9,7 @@ import net.minecraft.util.IItemProvider;
 public class LeatherHelmet extends DyeableAccessory {
 
     public LeatherHelmet(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.HEAD, itemIn);
+        super(DoggyAccessoryTypes.HEAD, itemIn);
     }
 
 

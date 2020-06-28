@@ -13,7 +13,7 @@ public class HunterDogTalent extends Talent {
         Entity trueSource = event.getDamageSource().getTrueSource();
         if(trueSource instanceof DogEntity) {
             DogEntity dog = (DogEntity) trueSource;
-            int level = dog.getLevel(DoggyTalents.HUNTER_DOG);
+            int level = dog.getLevel(DoggyTalents.HUNTER_DOG.get());
 
             if(dog.getRNG().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
                 DoggyTalents2.LOGGER.debug("Looting: {}", event.getLootingLevel() + level / 2);

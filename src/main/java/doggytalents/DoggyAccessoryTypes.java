@@ -1,27 +1,27 @@
 package doggytalents;
 
+import java.util.function.Supplier;
+
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.lib.Constants;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 
-@ObjectHolder(Constants.MOD_ID)
 public class DoggyAccessoryTypes {
 
-    public static final AccessoryType COLLAR = null;
-    public static final AccessoryType CLOTHING = null;
-    public static final AccessoryType GLASSES = null;
-    public static final AccessoryType BAND = null;
-    public static final AccessoryType HEAD = null;
+    public static final DeferredRegister<AccessoryType> ACCESSORY_TYPES = DeferredRegister.create(AccessoryType.class, Constants.MOD_ID);
 
-    public static final void registerAccessoryTypes(final RegistryEvent.Register<AccessoryType> event) {
-        IForgeRegistry<AccessoryType> accessoryTypeRegistry = event.getRegistry();
+    public static final RegistryObject<AccessoryType> COLLAR = register("collar");
+    public static final RegistryObject<AccessoryType> CLOTHING = register("clothing");
+    public static final RegistryObject<AccessoryType> GLASSES = register("glasses");
+    public static final RegistryObject<AccessoryType> BAND = register("band");
+    public static final RegistryObject<AccessoryType> HEAD = register("head");
 
-        accessoryTypeRegistry.register(new AccessoryType().setRegistryName("collar"));
-        accessoryTypeRegistry.register(new AccessoryType().setRegistryName("clothing"));
-        accessoryTypeRegistry.register(new AccessoryType().setRegistryName("glasses"));
-        accessoryTypeRegistry.register(new AccessoryType().setRegistryName("band"));
-        accessoryTypeRegistry.register(new AccessoryType().setRegistryName("head"));
+    private static RegistryObject<AccessoryType> register(final String name) {
+        return register(name, () -> new AccessoryType());
+    }
+
+    private static <T extends AccessoryType> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return ACCESSORY_TYPES.register(name, sup);
     }
 }

@@ -116,6 +116,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.RegistryObject;
 
 public class DogEntity extends AbstractDogEntity {
 
@@ -449,7 +450,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     private static final Item[] HELMETS = new Item[] {Items.IRON_HELMET, Items.DIAMOND_HELMET, Items.GOLDEN_HELMET, Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET};
-    private static final List<Supplier<Accessory>> HELMET_ACCESSORIES = Lists.newArrayList(() -> DoggyAccessories.IRON_HELMET, () -> DoggyAccessories.DIAMOND_HELMET, () -> DoggyAccessories.GOLDEN_HELMET, () -> DoggyAccessories.LEATHER_HELMET, () -> DoggyAccessories.CHAINMAIL_HELMET, () -> DoggyAccessories.TURTLE_HELMET);
+    private static final List<RegistryObject<? extends Accessory>> HELMET_ACCESSORIES = Lists.newArrayList(DoggyAccessories.IRON_HELMET, DoggyAccessories.DIAMOND_HELMET, DoggyAccessories.GOLDEN_HELMET, DoggyAccessories.LEATHER_HELMET, DoggyAccessories.CHAINMAIL_HELMET, DoggyAccessories.TURTLE_HELMET);
 
     @Override
     public boolean processInteract(PlayerEntity player, Hand hand) {
@@ -471,7 +472,7 @@ public class DogEntity extends AbstractDogEntity {
                     if (stack.getItem().equals(HELMETS[i])) {
                         AccessoryInstance inst;
                         if (HELMETS[i] == Items.LEATHER_HELMET) {
-                            inst = DoggyAccessories.LEATHER_HELMET.create(((IDyeableArmorItem) Items.LEATHER_HELMET).getColor(stack));
+                            inst = DoggyAccessories.LEATHER_HELMET.get().create(((IDyeableArmorItem) Items.LEATHER_HELMET).getColor(stack));
                         } else {
                             inst = HELMET_ACCESSORIES.get(i).get().getDefault();
                         }
@@ -1629,7 +1630,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public boolean canSpendPoints(int amount) {
-        return this.getSpendablePoints() >= amount || this.getAccessory(DoggyAccessories.GOLDEN_COLLAR).isPresent();
+        return this.getSpendablePoints() >= amount || this.getAccessory(DoggyAccessories.GOLDEN_COLLAR.get()).isPresent();
     }
 
     // When this method is changed the cache may need to be updated at certain points

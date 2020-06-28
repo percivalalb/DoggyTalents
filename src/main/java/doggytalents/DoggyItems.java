@@ -34,7 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DoggyItems {
 
-    public static final DeferredRegister<Item> ITEMS = new DeferredRegister<>(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
 
     public static final RegistryObject<Item> THROW_BONE = register("throw_bone", () -> new ThrowableItem(Items.BONE.delegate, Items.BONE.delegate, createInitialProp()));
     public static final RegistryObject<Item> THROW_BONE_WET = register("throw_bone_wet");//, THROW_BONE, (prop) -> prop.maxStackSize(1));
@@ -47,20 +47,20 @@ public class DoggyItems {
     public static final RegistryObject<Item> BREEDING_BONE = register("breeding_bone");
     public static final RegistryObject<Item> COLLAR_SHEARS = registerWith("collar_shears", DogShearsItem::new, 1);
     public static final RegistryObject<Item> DOGGY_CHARM = registerWith("doggy_charm", DoggyCharmItem::new, 1);
-    public static final RegistryObject<AccessoryItem> RADIO_COLLAR = registerAccessory("radio_collar", () -> DoggyAccessories.RADIO_BAND);
-    public static final RegistryObject<DyeableAccessoryItem> WOOL_COLLAR = registerAccessoryDyed("wool_collar", () -> DoggyAccessories.DYEABLE_COLLAR);
-    public static final RegistryObject<AccessoryItem> CREATIVE_COLLAR = registerAccessory("creative_collar", () -> DoggyAccessories.GOLDEN_COLLAR);
-    public static final RegistryObject<AccessoryItem> SPOTTED_COLLAR = registerAccessory("spotted_collar", () -> DoggyAccessories.SPOTTED_COLLAR);
-    public static final RegistryObject<AccessoryItem> MULTICOLOURED_COLLAR = registerAccessory("multicoloured_collar", () -> DoggyAccessories.MULTICOLORED_COLLAR);
+    public static final RegistryObject<AccessoryItem> RADIO_COLLAR = registerAccessory("radio_collar", DoggyAccessories.RADIO_BAND);
+    public static final RegistryObject<DyeableAccessoryItem> WOOL_COLLAR = registerAccessoryDyed("wool_collar", DoggyAccessories.DYEABLE_COLLAR);
+    public static final RegistryObject<AccessoryItem> CREATIVE_COLLAR = registerAccessory("creative_collar", DoggyAccessories.GOLDEN_COLLAR);
+    public static final RegistryObject<AccessoryItem> SPOTTED_COLLAR = registerAccessory("spotted_collar", DoggyAccessories.SPOTTED_COLLAR);
+    public static final RegistryObject<AccessoryItem> MULTICOLOURED_COLLAR = registerAccessory("multicoloured_collar", DoggyAccessories.MULTICOLORED_COLLAR);
     public static final RegistryObject<Item> RADAR = registerWith("radar", RadarItem::new, 1);
     public static final RegistryObject<Item> CREATIVE_RADAR = registerWith("creative_radar", RadarItem::new, 1);
     public static final RegistryObject<Item> WHISTLE = registerWith("whistle", WhistleItem::new, 1);
     public static final RegistryObject<Item> TREAT_BAG = registerWith("treat_bag", TreatBagItem::new, 1);
     public static final RegistryObject<Item> CHEW_STICK = register("chew_stick", ChewStickItem::new);
-    public static final RegistryObject<AccessoryItem> CAPE = registerAccessory("cape", () -> DoggyAccessories.CAPE);
-    public static final RegistryObject<DyeableAccessoryItem> CAPE_COLOURED = registerAccessoryDyed("cape_coloured", () -> DoggyAccessories.DYEABLE_CAPE);
-    public static final RegistryObject<AccessoryItem> SUNGLASSES = registerAccessory("sunglasses", () -> DoggyAccessories.SUNGLASSES);
-    public static final RegistryObject<AccessoryItem> LEATHER_JACKET = registerAccessory("leather_jacket", () -> DoggyAccessories.LEATHER_JACKET_CLOTHING);
+    public static final RegistryObject<AccessoryItem> CAPE = registerAccessory("cape", DoggyAccessories.CAPE);
+    public static final RegistryObject<DyeableAccessoryItem> CAPE_COLOURED = registerAccessoryDyed("cape_coloured", DoggyAccessories.DYEABLE_CAPE);
+    public static final RegistryObject<AccessoryItem> SUNGLASSES = registerAccessory("sunglasses", DoggyAccessories.SUNGLASSES);
+    public static final RegistryObject<AccessoryItem> LEATHER_JACKET = registerAccessory("leather_jacket", DoggyAccessories.LEATHER_JACKET_CLOTHING);
     public static final RegistryObject<Item> TINY_BONE = registerSizeBone("tiny_bone", SizeBoneItem.Type.TINY);
     public static final RegistryObject<Item> BIG_BONE = registerSizeBone("big_bone", SizeBoneItem.Type.BIG);
     public static final RegistryObject<Item> OWNER_CHANGE = registerWith("owner_change", ChangeOwnerItem::new, 1);

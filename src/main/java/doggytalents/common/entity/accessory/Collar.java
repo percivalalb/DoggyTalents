@@ -10,7 +10,7 @@ import net.minecraft.util.IItemProvider;
 public class Collar extends Accessory {
 
     public Collar(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.COLLAR, itemIn);
+        super(DoggyAccessoryTypes.COLLAR, itemIn);
     }
 
     @Override

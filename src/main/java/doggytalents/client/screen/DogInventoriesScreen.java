@@ -93,7 +93,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
                 continue;
             }
 
-            Optional<AccessoryInstance> inst = slot.getDog().getAccessory(DoggyAccessories.DYEABLE_COLLAR);
+            Optional<AccessoryInstance> inst = slot.getDog().getAccessory(DoggyAccessories.DYEABLE_COLLAR.get());
             if (inst.isPresent()) {
                 DyeableAccessoryInstance colorInst = inst.get().cast(DyeableAccessoryInstance.class);
                 float[] color = Util.rgbIntToFloatArray(colorInst.getColor());

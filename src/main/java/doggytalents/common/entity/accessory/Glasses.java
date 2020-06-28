@@ -10,7 +10,7 @@ import net.minecraft.util.IItemProvider;
 public class Glasses extends Accessory {
 
     public Glasses(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.GLASSES, itemIn);
+        super(DoggyAccessoryTypes.GLASSES, itemIn);
     }
 
     @Override

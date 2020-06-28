@@ -13,7 +13,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DoggySounds {
 
-    public static final DeferredRegister<SoundEvent> SOUNDS = new DeferredRegister<>(ForgeRegistries.SOUND_EVENTS, Constants.MOD_ID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Constants.MOD_ID);
 
     public static final RegistryObject<SoundEvent> WHISTLE_SHORT = register("whistle_short");
     public static final RegistryObject<SoundEvent> WHISTLE_LONG = register("whistle_long");

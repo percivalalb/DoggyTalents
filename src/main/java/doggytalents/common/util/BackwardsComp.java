@@ -158,26 +158,26 @@ public class BackwardsComp {
         OLD_NEW_BED.put("minecraft_dark_oak_planks", "minecraft:dark_oak_planks");
 
         //TODO
-        OLD_NEW_TALENT.put("bedfinder", DoggyTalents.BED_FINDER.delegate);
-        OLD_NEW_TALENT.put("blackpelt", DoggyTalents.BLACK_PELT.delegate);
-        OLD_NEW_TALENT.put("creepersweeper", DoggyTalents.CREEPER_SWEEPER.delegate);
-        OLD_NEW_TALENT.put("doggydash", DoggyTalents.DOGGY_DASH.delegate);
-        OLD_NEW_TALENT.put("fisherdog", DoggyTalents.FISHER_DOG.delegate);
-        OLD_NEW_TALENT.put("guarddog", DoggyTalents.GUARD_DOG.delegate);
-        OLD_NEW_TALENT.put("happyeater", DoggyTalents.HAPPY_EATER.delegate);
-        OLD_NEW_TALENT.put("hellhound", DoggyTalents.HELL_HOUND.delegate);
-        OLD_NEW_TALENT.put("hunterdog", DoggyTalents.HUNTER_DOG.delegate);
-        OLD_NEW_TALENT.put("packpuppy", DoggyTalents.PACK_PUPPY.delegate);
-        OLD_NEW_TALENT.put("pestfighter", DoggyTalents.PEST_FIGHTER.delegate);
-        OLD_NEW_TALENT.put("pillowpaw", DoggyTalents.PILLOW_PAW.delegate);
-        OLD_NEW_TALENT.put("poisonfang", DoggyTalents.POISON_FANG.delegate);
-        OLD_NEW_TALENT.put("puppyeyes", DoggyTalents.PUPPY_EYES.delegate);
-        OLD_NEW_TALENT.put("quickhealer", DoggyTalents.QUICK_HEALER.delegate);
-        //OLD_NEW_TALENT.put("rangedattacker", DoggyTalents.RANGED_ATTACKER.delegate);
-        OLD_NEW_TALENT.put("rescuedog", DoggyTalents.RESCUE_DOG.delegate);
-        OLD_NEW_TALENT.put("roaringgale", DoggyTalents.ROARING_GALE.delegate);
-        OLD_NEW_TALENT.put("shepherddog", DoggyTalents.SHEPHERD_DOG.delegate);
-        OLD_NEW_TALENT.put("swimmerdog", DoggyTalents.SWIMMER_DOG.delegate);
-        OLD_NEW_TALENT.put("wolfmount", DoggyTalents.WOLF_MOUNT.delegate);
+        OLD_NEW_TALENT.put("bedfinder", DoggyTalents.BED_FINDER);
+        OLD_NEW_TALENT.put("blackpelt", DoggyTalents.BLACK_PELT);
+        OLD_NEW_TALENT.put("creepersweeper", DoggyTalents.CREEPER_SWEEPER);
+        OLD_NEW_TALENT.put("doggydash", DoggyTalents.DOGGY_DASH);
+        OLD_NEW_TALENT.put("fisherdog", DoggyTalents.FISHER_DOG);
+        OLD_NEW_TALENT.put("guarddog", DoggyTalents.GUARD_DOG);
+        OLD_NEW_TALENT.put("happyeater", DoggyTalents.HAPPY_EATER);
+        OLD_NEW_TALENT.put("hellhound", DoggyTalents.HELL_HOUND);
+        OLD_NEW_TALENT.put("hunterdog", DoggyTalents.HUNTER_DOG);
+        OLD_NEW_TALENT.put("packpuppy", DoggyTalents.PACK_PUPPY);
+        OLD_NEW_TALENT.put("pestfighter", DoggyTalents.PEST_FIGHTER);
+        OLD_NEW_TALENT.put("pillowpaw", DoggyTalents.PILLOW_PAW);
+        OLD_NEW_TALENT.put("poisonfang", DoggyTalents.POISON_FANG);
+        OLD_NEW_TALENT.put("puppyeyes", DoggyTalents.PUPPY_EYES);
+        OLD_NEW_TALENT.put("quickhealer", DoggyTalents.QUICK_HEALER);
+        //OLD_NEW_TALENT.put("rangedattacker", DoggyTalents.RANGED_ATTACKER);
+        OLD_NEW_TALENT.put("rescuedog", DoggyTalents.RESCUE_DOG);
+        OLD_NEW_TALENT.put("roaringgale", DoggyTalents.ROARING_GALE);
+        OLD_NEW_TALENT.put("shepherddog", DoggyTalents.SHEPHERD_DOG);
+        OLD_NEW_TALENT.put("swimmerdog", DoggyTalents.SWIMMER_DOG);
+        OLD_NEW_TALENT.put("wolfmount", DoggyTalents.WOLF_MOUNT);
     }
 }

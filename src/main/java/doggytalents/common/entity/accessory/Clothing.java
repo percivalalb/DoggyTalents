@@ -9,7 +9,7 @@ import net.minecraft.util.IItemProvider;
 public class Clothing extends Accessory {
 
     public Clothing(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.CLOTHING, itemIn);
+        super(DoggyAccessoryTypes.CLOTHING, itemIn);
     }
 
 }

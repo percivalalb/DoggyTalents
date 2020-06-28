@@ -18,7 +18,7 @@ public class FisherDogTalent extends Talent {
             int lvlFisherDog = dogIn.getLevel(this);
 
             if(dogIn.getRNG().nextInt(15) < lvlFisherDog * 2) {
-                int lvlHellHound = dogIn.getLevel(DoggyTalents.HELL_HOUND);
+                int lvlHellHound = dogIn.getLevel(DoggyTalents.HELL_HOUND.get());
                 dogIn.entityDropItem(dogIn.getRNG().nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
             }
         }

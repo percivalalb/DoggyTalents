@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DoggyEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = new DeferredRegister<>(ForgeRegistries.ENTITIES, Constants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Constants.MOD_ID);
 
     public static final RegistryObject<EntityType<DogEntity>> DOG = register("dog", DogEntity::new, EntityClassification.CREATURE, (b) -> b
             .size(0.6F, 0.85F)

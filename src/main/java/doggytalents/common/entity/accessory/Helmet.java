@@ -9,7 +9,7 @@ import net.minecraft.util.IItemProvider;
 public class Helmet extends Accessory {
 
     public Helmet(Supplier<? extends IItemProvider> itemIn) {
-        super(() -> DoggyAccessoryTypes.HEAD, itemIn);
+        super(DoggyAccessoryTypes.HEAD, itemIn);
     }
 
 }

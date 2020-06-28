@@ -4,11 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
-import doggytalents.api.registry.Accessory;
-import doggytalents.api.registry.AccessoryType;
-import doggytalents.api.registry.IBeddingMaterial;
-import doggytalents.api.registry.ICasingMaterial;
-import doggytalents.api.registry.Talent;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
@@ -73,11 +68,11 @@ public class DoggyTalents2 {
         DoggySerializers.SERIALIZERS.register(modEventBus);
         DoggySounds.SOUNDS.register(modEventBus);
         DoggyRecipeSerializers.RECIPE_SERIALIZERS.register(modEventBus);
-        modEventBus.addGenericListener(Talent.class, DoggyTalents::registerTalents); // ModTalents.TALENTS.register(modEventBus);
-        modEventBus.addGenericListener(Accessory.class, DoggyAccessories::registerAccessories);
-        modEventBus.addGenericListener(AccessoryType.class, DoggyAccessoryTypes::registerAccessoryTypes);
-        modEventBus.addGenericListener(IBeddingMaterial.class, DoggyBedMaterials::registerBeddings);
-        modEventBus.addGenericListener(ICasingMaterial.class, DoggyBedMaterials::registerCasings);
+        DoggyTalents.TALENTS.register(modEventBus);
+        DoggyAccessories.ACCESSORIES.register(modEventBus);
+        DoggyAccessoryTypes.ACCESSORY_TYPES.register(modEventBus);
+        DoggyBedMaterials.BEDDINGS.register(modEventBus);
+        DoggyBedMaterials.CASINGS.register(modEventBus);
 
 
         modEventBus.addListener(DoggyRegistries::newRegistry);

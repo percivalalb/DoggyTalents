@@ -13,6 +13,7 @@ import doggytalents.client.ClientSetup;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.event.ClientEventHandler;
+import doggytalents.common.addon.AddonManager;
 import doggytalents.common.command.DogRespawnCommand;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.data.DTAdvancementProvider;
@@ -97,6 +98,8 @@ public class DoggyTalents2 {
         });
 
         ConfigHandler.init(modEventBus);
+
+        AddonManager.init();
     }
 
     public void commonSetup(final FMLCommonSetupEvent event) {
@@ -124,7 +127,8 @@ public class DoggyTalents2 {
     protected void interModProcess(final InterModProcessEvent event) {
         BackwardsComp.init();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        //AddonManager.runRegisteredAddons();
+
+        AddonManager.init();
     }
 
     private void gatherData(final GatherDataEvent event) {

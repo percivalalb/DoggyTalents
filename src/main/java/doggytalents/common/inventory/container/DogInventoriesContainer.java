@@ -8,6 +8,7 @@ import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
 import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.talent.PackPuppyTalent;
 import net.minecraft.entity.Entity;
@@ -22,7 +23,7 @@ import net.minecraft.util.IntReferenceHolder;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * @author ProPercivalalb
@@ -71,7 +72,14 @@ public class DogInventoriesContainer extends Container implements IContainerList
             Entity entity = this.world.getEntityByID(entityId);
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
-                ItemStackHandler packInventory = entity.getCapability(PackPuppyTalent.PACK_PUPPY_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
+
+                LazyOptional<PackPuppyItemHandler> packInventoryLazy = entity.getCapability(PackPuppyTalent.PACK_PUPPY_CAPABILITY);
+
+                if (!packInventoryLazy.isPresent()) {
+                    continue;
+                }
+
+                PackPuppyItemHandler packInventory = packInventoryLazy.orElse(null);
 
                 int level = MathHelper.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY.get()), 0, 5); // Number of rows for this dog
                 int numCols = MathHelper.clamp(level, 0, Math.max(0, TOTAL_COLUMNS)); // Number of rows to draw

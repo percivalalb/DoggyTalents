@@ -257,6 +257,7 @@ public class DogEntity extends AbstractDogEntity {
         return 0.75F + MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.25F;
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public float getShakeAngle(float partialTicks, float p_70923_2_) {
         float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + p_70923_2_) / 1.8F;
@@ -269,6 +270,7 @@ public class DogEntity extends AbstractDogEntity {
         return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
     }
 
+    @Override
     @OnlyIn(Dist.CLIENT)
     public float getInterestedAngle(float partialTicks) {
         return MathHelper.lerp(partialTicks, this.headRotationCourseOld, this.headRotationCourse) * 0.15F * (float)Math.PI;
@@ -289,6 +291,7 @@ public class DogEntity extends AbstractDogEntity {
         return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
     }
 
+    @Override
     public float getWagAngle(float limbSwing, float limbSwingAmount, float partialTickTime) {
         return MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
@@ -1315,6 +1318,7 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.set(GENDER.get(), collar);
     }
 
+    @Override
     public EnumMode getMode() {
         return this.dataManager.get(MODE.get());
     }
@@ -1551,6 +1555,7 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.dirty = true;
     }
 
+    @Override
     public void markAccessoriesDirty() {
         this.markDataParameterDirty(ACCESSORIES.get());
     }

@@ -9,12 +9,16 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.common.addon.biomesoplenty.BiomesOPlentyAddon;
+import doggytalents.common.addon.botania.BotaniaAddon;
 import doggytalents.common.addon.itemphysic.ItemPhysicsAddon;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
 
 public class AddonManager {
 
-    private static final List<Addon> ADDONS = Collections.unmodifiableList(Lists.newArrayList(new ItemPhysicsAddon(), new BiomesOPlentyAddon()));
+    private static final List<Addon> ADDONS = Collections.unmodifiableList(Lists.newArrayList(
+            new ItemPhysicsAddon(),
+            new BiomesOPlentyAddon(),
+            new BotaniaAddon()));
     private static final List<Addon> RUN = Lists.newArrayList(ADDONS);
 
     public static void init() {

@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import doggytalents.DoggySounds;
 import doggytalents.DoggyTalents;
 import doggytalents.api.feature.EnumMode;
+import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.IMob;
@@ -36,12 +38,10 @@ public class WhistleItem extends Item {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        if(world.isRemote) {
-            //world.playSound(player, player.getPosition(), player.isShiftKeyDown() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
-        } else {
-            ItemStack stack = player.getHeldItem(hand);
+        ItemStack stack = player.getHeldItem(hand);
 
-            if(player.isSneaking()) {
+        if(player.isSneaking()) {
+            if (!world.isRemote) {
                 if(!stack.hasTag()) {
                     stack.setTag(new CompoundNBT());
                     stack.getTag().putByte("mode", (byte)0);
@@ -49,20 +49,22 @@ public class WhistleItem extends Item {
 
                 int mode = stack.getTag().getInt("mode");
                 stack.getTag().putInt("mode", (mode + 1) % 7);
-
-                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
             }
-            else {
-                byte mode = 0;
 
-                if (stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
-                    mode = stack.getTag().getByte("mode");
-                }
+            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+        }
+        else {
+            byte mode = 0;
 
-                List<DogEntity> dogsList = world.getEntitiesWithinAABB(DogEntity.class, player.getBoundingBox().grow(100D, 50D, 100D), dog -> dog.isOwner(player));
-                boolean successful = false;
+            if (stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
+                mode = stack.getTag().getByte("mode");
+            }
 
-                if (mode == 0) { // Stand
+            List<DogEntity> dogsList = world.getEntitiesWithinAABB(DogEntity.class, player.getBoundingBox().grow(100D, 50D, 100D), dog -> dog.isOwner(player));
+            boolean successful = false;
+
+            if (mode == 0) { // Stand
+                if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
                         dog.getAISit().setSitting(false);
                         dog.getNavigator().clearPath();
@@ -73,13 +75,18 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
+                    if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if(successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.come"));
                     }
                 }
-                else if (mode == 1) { // Heel
+
+                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            }
+            else if (mode == 1) { // Heel
+                if (!world.isRemote) {
                     for(DogEntity dog : dogsList) {
                         if(!dog.isSitting() && dog.getMode() != EnumMode.WANDERING) {
                             //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
@@ -87,12 +94,18 @@ public class WhistleItem extends Item {
                         }
                     }
 
+                    if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful)
+                    if(successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
+                    }
                 }
-                else if (mode == 2) { // Stay
+
+                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            }
+            else if (mode == 2) { // Stay
+                if (!world.isRemote) {
                     for(DogEntity dog : dogsList) {
                         dog.getAISit().setSitting(true);
                         dog.getNavigator().clearPath();
@@ -103,12 +116,18 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
+                    if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful)
+                    if(successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
+                    }
                 }
-                else if (mode == 3) { // Ok
+
+                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            }
+            else if (mode == 3) { // Ok
+                if (!world.isRemote) {
                     for(DogEntity dog : dogsList) {
                         if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
                             dog.getAISit().setSitting(true);
@@ -123,28 +142,43 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
+                    if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful)
+                    if(successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
-                }
-                else if (mode == 4) {
-                    world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
-                    //player.sendMessage(new TranslationTextComponent("dogcommand.shepherd"));
-                } else if (mode == 5) {
-                    world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
-                    if(!world.isRemote) {
-                        // TODO
-//                        DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
-//                        doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
-//                        world.addEntity(doggyBeam);
                     }
-                } else if (mode == 6) {
+
+                    return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+                }
+            }
+            else if (mode == 4) {
+                if (!world.isRemote) {
+                    if (ConfigValues.WHISTLE_SOUNDS)
+                    world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
+
+                    //player.sendMessage(new TranslationTextComponent("dogcommand.shepherd"));
+                }
+
+                return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            } else if (mode == 5) {
+                if (!world.isRemote) {
+                    if (ConfigValues.WHISTLE_SOUNDS)
+                    world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+
+                    DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
+                    doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
+                    world.addEntity(doggyBeam);
+                }
+
+                return new ActionResult<>(ActionResultType.CONSUME, player.getHeldItem(hand));
+            } else if (mode == 6) {
+                if(!world.isRemote) {
                     List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE.get()) > 0).collect(Collectors.toList());
                     if(roarDogs.isEmpty()) {
                         player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
-                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> (int)dog.objects.get("roarcooldown") == 0).collect(Collectors.toList());
+                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0) == 0).collect(Collectors.toList());
                         if(cdDogs.isEmpty()) {
                             player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
@@ -156,11 +190,11 @@ public class WhistleItem extends Item {
 
                                 byte damage = (byte)(level > 4 ? level * 2 : level);
 
-                                /**
+                                /*
                                  * If level = 1, set duration to  20 ticks (1 second); level = 2, set duration to 24 ticks (1.2 seconds)
                                  * If level = 3, set duration to 36 ticks (1.8 seconds); If level = 4, set duration to 48 ticks (2.4 seconds)
                                  * If level = max (5), set duration to 70 ticks (3.5 seconds);
-                                 * */
+                                 */
                                 byte effectDuration = (byte)(level > 4 ? level * 14 : level * (level == 1 ? 20 : 12));
                                 byte knockback = (byte)level;
 
@@ -189,21 +223,21 @@ public class WhistleItem extends Item {
                     }
                 }
 
-
-                //world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.8F, 0.8F + world.rand.nextFloat() * 0.2F);
-                //world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.8F, 0.6F + world.rand.nextFloat() * 0.2F);
-
+                return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
             }
+
+            //world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG, SoundCategory.PLAYERS, 0.8F, 0.8F + world.rand.nextFloat() * 0.2F);
+            //world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT, SoundCategory.PLAYERS, 0.8F, 0.6F + world.rand.nextFloat() * 0.2F);
         }
 
-        return new ActionResult<>(ActionResultType.SUCCESS, player.getHeldItem(hand));
+        return new ActionResult<>(ActionResultType.FAIL, player.getHeldItem(hand));
     }
 
     @Override
     public String getTranslationKey(ItemStack stack) {
         byte mode = 0;
 
-        if(stack.hasTag() && stack.getTag().contains("mode", 99)) {
+        if(stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
             mode = stack.getTag().getByte("mode");
         }
         return this.getTranslationKey() + "." + mode;

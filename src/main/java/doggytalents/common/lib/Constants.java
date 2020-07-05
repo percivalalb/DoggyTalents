@@ -21,9 +21,12 @@ public class Constants {
 
     public static class EntityState {
 
+        public static final byte DEATH = 3;
         public static final byte WOLF_SMOKE = 6;
         public static final byte WOLF_HEARTS = 7;
         public static final byte WOLF_STOP_SHAKING = 8;
+        public static final byte GUARDIAN_SOUND = 21;
+        public static final byte TOTEM_OF_UNDYING = 35;
         public static final byte SLIDING_DOWN_HONEY = 53;
     }
 }

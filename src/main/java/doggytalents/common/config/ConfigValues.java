@@ -9,6 +9,7 @@ public class ConfigValues {
 
     public static final boolean DISABLE_HUNGER = false;
     public static final boolean PUPS_GET_PARENT_LEVELS = true;
+    public static final boolean WHISTLE_SOUNDS = true;
     public static boolean DOG_GENDER = true;
     public static boolean ALWAYS_SHOW_DOG_NAME = true;
     public static boolean DISPLAY_OTHER_DOG_SKINS = false; // Requests skins that it does not have from the server

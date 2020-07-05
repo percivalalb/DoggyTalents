@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -17,11 +16,10 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.texture.DogTextureLoader;
 import doggytalents.common.lib.Resources;
-import doggytalents.common.network.PacketHandler;
-import doggytalents.common.network.packet.data.RequestSkinData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
@@ -32,7 +30,6 @@ import net.minecraft.client.resources.SkinManager;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DogTextureLoaderClient extends DogTextureLoader {
 
@@ -51,6 +48,10 @@ public class DogTextureLoaderClient extends DogTextureLoader {
         return new File(skinManager.skinCacheDir.getParentFile(), "skins_dog");
     }
 
+    public static String getResourceHash(ResourceLocation loc) {
+        return getHash(getResourceBytes(loc));
+    }
+
     @Nullable
     public static byte[] getResourceBytes(ResourceLocation loc) {
         InputStream stream = getResourceStream(loc);
@@ -59,11 +60,7 @@ public class DogTextureLoaderClient extends DogTextureLoader {
         } catch (IOException e) {
             e.printStackTrace();
         } finally  {
-            if (stream != null) {
-                try {
-                    stream.close();
-                } catch (IOException e) {}
-            }
+            IOUtils.closeQuietly(stream);
         }
         return null;
     }
@@ -83,41 +80,39 @@ public class DogTextureLoaderClient extends DogTextureLoader {
         return null;
     }
 
-
-    public static Collection<ResourceLocation> getCustomSkins() {
-        IResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
-
-        Collection<ResourceLocation> resources = resourceManager.getAllResourceLocations("textures/entity/dog/custom", (fileName) -> {
-            return fileName.endsWith(".png");
-        });
-        DoggyTalents2.LOGGER.debug("{} dog skins found", resources.size());
-        return resources;
-    }
-
     public static ResourceLocation getLoc(DogEntity dog) {
         if (dog.hasCustomSkin()) {
             String hash = dog.getSkinHash();
-            ResourceLocation loc = getResourceLocation(hash);
-            Minecraft mc = Minecraft.getInstance();
-
-            IResourceManager resourceManager = mc.getResourceManager();
-            Texture texture = getOrLoadTexture(getClientFolder(), hash);
-            if (texture != null) {
-                return loc;
-            }
-
-
-
-            DoggyTalents2.LOGGER.debug("Request");
-            //if (ConfigValues.DISPLAY_OTHER_DOG_SKINS && SKIN_REQUEST_MAP.getOrDefault(hash, SkinRequest.UNREQUESTED) != SkinRequest.REQUESTED) {
-                DoggyTalents2.LOGGER.debug("Request2");
-                SKIN_REQUEST_MAP.put(hash, SkinRequest.REQUESTED);
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestSkinData(hash));
-            //}
+            return DefaultDogTextures.TEXTURE.getLocFromHashOrGet(hash, DogTextureLoaderClient::getCached);
         }
 
 
         return Resources.ENTITY_WOLF;
+    }
+
+    public static ResourceLocation getCached(String hash) {
+        if (!ConfigValues.DISPLAY_OTHER_DOG_SKINS) {
+            return Resources.ENTITY_WOLF;
+        }
+
+        ResourceLocation loc = getResourceLocation(hash);
+        Minecraft mc = Minecraft.getInstance();
+
+        Texture texture = getOrLoadTexture(getClientFolder(), hash);
+        if (texture != null) {
+            return loc;
+        }
+
+        return Resources.ENTITY_WOLF;
+//
+//
+//
+//        DoggyTalents2.LOGGER.debug("Request");
+//        //if (ConfigValues.DISPLAY_OTHER_DOG_SKINS && SKIN_REQUEST_MAP.getOrDefault(hash, SkinRequest.UNREQUESTED) != SkinRequest.REQUESTED) {
+//            DoggyTalents2.LOGGER.debug("Request2");
+//            SKIN_REQUEST_MAP.put(hash, SkinRequest.REQUESTED);
+//            PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestSkinData(hash));
+//        //}
     }
 
 

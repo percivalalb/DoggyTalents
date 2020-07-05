@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.client.ClientSetup;
+import doggytalents.client.DefaultDogTextures;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.event.ClientEventHandler;
@@ -21,7 +22,9 @@ import doggytalents.common.lib.Constants;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.talent.HappyEaterTalent;
 import doggytalents.common.util.BackwardsComp;
+import net.minecraft.client.Minecraft;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -90,6 +93,10 @@ public class DoggyTalents2 {
             modEventBus.addListener(DoggyItems::registerItemColours);
             modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
             forgeEventBus.register(new ClientEventHandler());
+
+            Minecraft mc = Minecraft.getInstance();
+
+            ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DefaultDogTextures.TEXTURE);
         });
 
         ConfigHandler.init(modEventBus);

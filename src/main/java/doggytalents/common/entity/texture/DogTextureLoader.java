@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import com.google.common.hash.Hashing;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.common.util.Util;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -70,7 +71,7 @@ public class DogTextureLoader {
 
 
     public static ResourceLocation getResourceLocation(String name) {
-        return new ResourceLocation("doggytalents", "dogskins/" + name);
+        return Util.getResource("dogskins/" + name);
     }
 
     /**

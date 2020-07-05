@@ -13,6 +13,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.DogLevel.Type;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
+import doggytalents.client.DefaultDogTextures;
 import doggytalents.client.DogTextureLoaderClient;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
@@ -21,6 +22,7 @@ import doggytalents.common.network.packet.data.DogModeData;
 import doggytalents.common.network.packet.data.DogNameData;
 import doggytalents.common.network.packet.data.DogObeyData;
 import doggytalents.common.network.packet.data.DogTalentData;
+import doggytalents.common.network.packet.data.DogTextureData;
 import doggytalents.common.network.packet.data.FriendlyFireData;
 import doggytalents.common.network.packet.data.SendSkinData;
 import doggytalents.common.util.Util;
@@ -64,7 +66,7 @@ public class DogInfoScreen extends Screen {
                 .sorted(Comparator.comparing((t) -> I18n.format(t.getTranslationKey())))
                 .collect(Collectors.toList());
 
-        this.customSkinList = Lists.newArrayList(DogTextureLoaderClient.getCustomSkins());
+        this.customSkinList = DefaultDogTextures.TEXTURE.getAll();
     }
 
     public static void open(DogEntity dog) {
@@ -113,13 +115,23 @@ public class DogInfoScreen extends Screen {
         //if(ConfigValues.USE_DT_TEXTURES) {
             Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, "+", (btn) -> {
                 this.textureIndex += 1;
-                this.textureIndex %= this.customSkinList.size() ;
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
+                this.textureIndex %= this.customSkinList.size();
+                ResourceLocation rl = this.customSkinList.get(this.textureIndex);
+                if (ConfigValues.SEND_SKIN) {
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(rl)));
+                } else {
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTextureData(this.dog.getEntityId(), DefaultDogTextures.TEXTURE.getTextureHash(rl)));
+                }
             });
             Button lessBtn = new Button(this.width - 64, topY + 30, 20, 20, "-", (btn) -> {
                 this.textureIndex += this.customSkinList.size() - 1;
                 this.textureIndex %= this.customSkinList.size();
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(this.customSkinList.get(this.textureIndex))));
+                ResourceLocation rl = this.customSkinList.get(this.textureIndex);
+                if (ConfigValues.SEND_SKIN) {
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), DogTextureLoaderClient.getResourceBytes(rl)));
+                } else {
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTextureData(this.dog.getEntityId(), DefaultDogTextures.TEXTURE.getTextureHash(rl)));
+                }
             });
 
             this.addButton(addBtn);

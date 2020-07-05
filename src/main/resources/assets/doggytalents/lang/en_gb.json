@@ -202,6 +202,12 @@
    "modgui.config.talents": "Talents",
    "modgui.config.talents.tooltip": "Enable and disable talents",
    
+   "argument.doggytalents.uuid.format.invalid": "%s is of the wrong format should contain 4 dashes",
+   "argument.doggytalents.uuid.section.invalid": "%s contains one or more invalid characters",
+   "commands.dogrespawn.uuid.success": "Summoned %s from the dead",
+   "commands.dogrespawn.uuid.failure": "Failed to rise %s from the dead",
+   "command.dogrespawn.imprecise": "Too many dogs (%d) for this owner under this name, use `byuuid` for %s",
+   
    "dogbed.bedding.null": "Null",
    "dogbed.casing.null": "Null",
    "dogbed.bedding.missing": "Missing: %s",

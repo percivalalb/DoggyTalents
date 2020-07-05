@@ -2,11 +2,14 @@ package doggytalents.common.storage;
 
 import static net.minecraftforge.common.util.Constants.NBT.*;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
@@ -40,6 +43,16 @@ public class DogRespawnStorage extends WorldSavedData {
 
         DimensionSavedDataManager storage = overworld.getSavedData();
         return storage.getOrCreate(DogRespawnStorage::new, Constants.STORAGE_DOG_RESPAWN);
+    }
+
+    public Stream<DogRespawnData> getDogs(@Nonnull UUID ownerId) {
+        return this.respawnDataMap.values().stream()
+                .filter(data -> ownerId.equals(data.getOwnerId()));
+    }
+
+    public Stream<DogRespawnData> getDogs(@Nonnull String ownerName) {
+        return this.respawnDataMap.values().stream()
+                .filter(data -> ownerName.equals(data.getOwnerName()));
     }
 
     @Nullable
@@ -79,6 +92,10 @@ public class DogRespawnStorage extends WorldSavedData {
 
     public Set<UUID> getAllUUID() {
         return Collections.unmodifiableSet(this.respawnDataMap.keySet());
+    }
+
+    public Collection<DogRespawnData> getAll() {
+        return Collections.unmodifiableCollection(this.respawnDataMap.values());
     }
 
     @Override

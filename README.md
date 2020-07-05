@@ -1,7 +1,7 @@
 Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/full_doggy-talents_downloads.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/For%20MC_doggy-talents_all.svg)](https://minecraft.curseforge.com/projects/doggy-talents)
 ===========
 
-**Doggy Talents** is a **Minecraft mod**
+**Doggy Talents** is a **Minecraft mod** made for **Minecraft Forge**
 
 * Special talents for your dogs
 * Improved AI making dogs smarter than wolves
@@ -14,16 +14,9 @@ Thanks to everyone that has contributed. This includes but is not limited to...
  * NovaViper for coding help and mantaining order
  * SimonMeskens for some of the textures
 
+Want to know more about the mod? Take a gander at the [wiki](https://github.com/ProPercivalalb/DoggyTalents/wiki)!
+
 -----------------
-
-### Licenses
-DoggyTalents API
- - 2017 - 2020
- - [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
-
-DoggyTalents
- - 2013 - 2020
- - [![License](https://img.shields.io/badge/License-GNU-blue.svg?style=flat-square)](https://opensource.org/licenses/GPL-3.0)
 
 ### Installation Instructions
 
@@ -38,7 +31,19 @@ DoggyTalents
 
 -----------------
 
-Want to know more about the mod? Take a gander at the [wiki](https://github.com/ProPercivalalb/DoggyTalents/wiki)!
-
 FAQ
- - 
+ - Q: Will there be a fabric version?  
+   A: I will not be creating one, if someone wants to take up this task please contact me.
+ - Q: Which Minecraft versions are supported?  
+   A: It is normally be the last two major releases, current `1.14.x` and `1.15.x`.
+
+-----------------
+
+### Licenses
+DoggyTalents API
+ - 2017 - 2020
+ - [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
+
+DoggyTalents
+ - 2013 - 2020
+ - [![License](https://img.shields.io/badge/License-GNU-blue.svg?style=flat-square)](https://opensource.org/licenses/GPL-3.0)

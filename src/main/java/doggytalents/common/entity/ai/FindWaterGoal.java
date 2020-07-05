@@ -4,90 +4,185 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import doggytalents.common.util.EntityUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.CreatureEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class FindWaterGoal extends Goal {
 
-    protected final CreatureEntity creature;
-    private final double speed;
+    private final CreatureEntity creature;
+    private final PathNavigator navigator;
     private final World world;
-    private final int searchLength;
 
-    private double waterX;
-    private double waterY;
-    private double waterZ;
+    private final int waterSearchRange = 12;
+    private final int safeSearchRange = 6;
 
-    public FindWaterGoal(CreatureEntity creatureIn, double speedIn) {
+    @Nullable
+    private BlockPos waterPos;
+    private int timeToRecalcPath;
+
+
+    public FindWaterGoal(CreatureEntity creatureIn) {
         this.creature = creatureIn;
-        this.speed = speedIn;
+        this.navigator = creatureIn.getNavigator();
         this.world = creatureIn.world;
-        this.searchLength = 14;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
     public boolean shouldExecute() {
-        if (!this.creature.isBurning()) {
+        if (!this.creature.onGround || (this.creature.ticksExisted % 5) != 0) {
             return false;
-        } else {
-            Vec3d vec3d = this.findPossibleWater();
-            if (vec3d == null) {
-                return false;
-            } else {
-                this.waterX = vec3d.x;
-                this.waterY = vec3d.y;
-                this.waterZ = vec3d.z;
-                return true;
+        }
+
+        boolean isInFire = this.isInDangerSpot(this.creature);
+        boolean isOnFire = this.creature.isBurning();
+
+        if (!isInFire && !isOnFire) {
+            return false;
+        }
+
+        BlockPos entityPos = new BlockPos(this.creature);
+
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(entityPos.add(-this.waterSearchRange, -4, -this.waterSearchRange), entityPos.add(this.waterSearchRange, 4, this.waterSearchRange))) {
+            if (this.getBlockType(pos) == BlockType.WATER) {
+                this.waterPos = pos;
+                break;
             }
         }
+        boolean waterBlockNearBy = this.waterPos != null;
+
+        return waterBlockNearBy || isInFire;
+
     }
 
     @Override
     public boolean shouldContinueExecuting() {
-        return !this.creature.getNavigator().noPath();
-    }
+        // If there is some water nearby
+        if (this.waterPos != null) {
+            // Check it is still a water block
+            BlockType safety = this.getBlockType(this.waterPos);
+            if (safety != BlockType.WATER) {
+                return false;
+            }
 
-    @Override
-    public void startExecuting() {
-        this.creature.getNavigator().tryMoveToXYZ(this.waterX, this.waterY, this.waterZ, this.speed);
-    }
-
-    @Nullable
-    protected Vec3d findPossibleWater() {
-        BlockPos blockpos = new BlockPos(this.creature);
-
-        for (int y = 0; y <= 5; y = y > 0 ? -y : 1 - y) {
-            for(int s = 0; s < this.searchLength; ++s) {
-                for(int x = 0; x <= s; x = x > 0 ? -x : 1 - x) {
-                    for(int z = x < s && x > -s ? s : 0; z <= s; z = z > 0 ? -z : 1 - z) {
-                        BlockPos blockpos1 = blockpos.add(x, y - 1, z);
-
-                        if(this.shouldMoveTo(this.creature.world, blockpos1)) {
-                            return new Vec3d(blockpos1);
-                        }
-                    }
-                }
+            // If entity is burning continue
+            if (this.creature.isBurning()) {
+                return true;
             }
         }
 
-        return null;
+        //
+        return this.isInDangerSpot(this.creature);
     }
 
 
-    protected boolean shouldMoveTo(World worldIn, BlockPos pos) {
-        if(worldIn.isRainingAt(pos)) {
-            return true;
-        } else {
-            return this.isWaterDestination(worldIn, pos);
+    @Override
+    public void startExecuting() {
+        this.timeToRecalcPath = 0;
+    }
+
+    @Override
+    public void tick() {
+        if (--this.timeToRecalcPath <= 0) {
+            this.timeToRecalcPath = 10;
+            BlockPos targetPos = null;
+
+            if (this.waterPos != null) {
+                targetPos = this.waterPos;
+            } else if (!this.creature.hasPath()) {
+                BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+                for(int i = 0; i < 10; ++i) {
+                    int j = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
+                    int k = EntityUtil.getRandomNumber(this.creature, -4, 4);
+                    int l = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
+
+                    mutablePos.setPos(this.creature.getPosX() + j, this.creature.getPosY() + k, this.creature.getPosZ() + l);
+                    boolean flag = this.getBlockType(mutablePos).isSafe();
+                    if (flag) {
+                        targetPos = mutablePos;
+                        break;
+                    }
+                }
+            }
+
+            if (targetPos != null) {
+                this.navigator.tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.2D);
+            }
         }
     }
 
-    protected boolean isWaterDestination(World world, BlockPos pos) {
-        return world.getBlockState(pos).getMaterial() == Material.WATER;
+    @Override
+    public void resetTask() {
+        this.navigator.clearPath();
+        this.waterPos = null;
+    }
+
+    /**
+     * Returning {@link BlockType#FIRE} indicates the entity is actively in danger
+     * Returning {@link BlockType#WATER} indicates the entity is on fire but not in source
+     * Returning {@link BlockType#SAFE} indicates the entity is fine
+     *
+     * @param bb
+     * @return
+     */
+    public boolean isInDangerSpot(Entity entityIn) {
+        AxisAlignedBB bb = entityIn.getBoundingBox();
+        int minX = MathHelper.floor(bb.minX);
+        int minY = MathHelper.floor(bb.minY);
+        int minZ = MathHelper.floor(bb.minZ);
+
+        int maxX = MathHelper.ceil(bb.maxX);
+        int maxY = MathHelper.ceil(bb.maxY);
+        int maxZ = MathHelper.ceil(bb.maxZ);
+
+        for (BlockPos pos : BlockPos.getAllInBoxMutable(minX, minY, minZ, maxX, maxY, maxZ)) {
+            BlockType safety = getBlockType(pos);
+
+            if (safety == BlockType.FIRE) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public BlockType getBlockType(BlockPos posIn) {
+        // If the block is fire or lava
+        Material material = this.world.getBlockState(posIn).getMaterial();
+        if (material == Material.FIRE || material == Material.LAVA) {
+            return BlockType.FIRE;
+        }
+
+        // If it is water
+        if (this.world.getFluidState(posIn).isTagged(FluidTags.WATER)) {
+            return BlockType.WATER;
+        }
+
+        // If it is raining and is not fire or lava
+        if (this.world.isRainingAt(posIn)) {
+            return BlockType.WATER;
+        }
+
+        // Otherwise the block is ok to go to
+        return BlockType.SAFE;
+    }
+
+    public static enum BlockType {
+        SAFE,
+        FIRE,
+        WATER;
+
+        public boolean isSafe() {
+            return this == SAFE || this == WATER;
+        }
     }
 }

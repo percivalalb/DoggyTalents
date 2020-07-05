@@ -39,11 +39,12 @@ import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.screen.DogInfoScreen;
 import doggytalents.common.config.ConfigValues;
-import doggytalents.common.entity.ai.BerserkerGoal;
+import doggytalents.common.entity.ai.BerserkerModeGoal;
 import doggytalents.common.entity.ai.DogBegGoal;
 import doggytalents.common.entity.ai.DogFollowOwnerGoal;
 import doggytalents.common.entity.ai.FetchGoal;
-import doggytalents.common.entity.ai.FindWaterGoal2;
+import doggytalents.common.entity.ai.FindWaterGoal;
+import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.PatrolAreaGoal;
 import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
@@ -66,8 +67,6 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.NonTamedTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal;
 import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
@@ -78,7 +77,6 @@ import net.minecraft.entity.monster.GhastEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.TurtleEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -153,7 +151,6 @@ public class DogEntity extends AbstractDogEntity {
     private float timeWolfIsShaking;
     private float prevTimeWolfIsShaking;
 
-
     protected boolean dogJumping;
     protected float jumpPower;
 
@@ -184,7 +181,7 @@ public class DogEntity extends AbstractDogEntity {
     protected void registerGoals() {
         this.sitGoal = new SitGoal(this);
         this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new FindWaterGoal2(this));
+        this.goalSelector.addGoal(1, new FindWaterGoal(this));
         this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
         this.goalSelector.addGoal(2, this.sitGoal);
         //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
@@ -201,9 +198,9 @@ public class DogEntity extends AbstractDogEntity {
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
-        this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
+        //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
-        this.targetSelector.addGoal(6, new BerserkerGoal<>(this, MonsterEntity.class, false));
+        this.targetSelector.addGoal(6, new BerserkerModeGoal<>(this, MonsterEntity.class, false));
     }
 
     @Override
@@ -617,6 +614,10 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean canAttack(LivingEntity target) {
+        if (!this.isMode(EnumMode.DOCILE)) {
+            return false;
+        }
+
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canAttack(this, target);
 
@@ -632,6 +633,10 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean canAttack(EntityType<?> entityType) {
+        if (!this.isMode(EnumMode.DOCILE)) {
+            return false;
+        }
+
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canAttack(this, entityType);
 
@@ -647,6 +652,10 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+        if (!this.isMode(EnumMode.DOCILE)) {
+            return false;
+        }
+
         //TODO make wolves not able to attack dogs
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.shouldAttackEntity(this, target, owner);
@@ -1322,6 +1331,17 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public EnumMode getMode() {
         return this.dataManager.get(MODE.get());
+    }
+
+    public boolean isMode(EnumMode... modes) {
+        EnumMode mode = this.getMode();
+        for (EnumMode test : modes) {
+            if (mode == test) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void setMode(EnumMode collar) {

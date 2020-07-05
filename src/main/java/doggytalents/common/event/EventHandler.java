@@ -70,7 +70,7 @@ public class EventHandler {
 
         if(entity instanceof AbstractSkeletonEntity) {
             AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity) entity;
-            skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, DogEntity.class, 6.0F, 1.0D, 1.2D));
+            skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, DogEntity.class, 6.0F, 1.0D, 1.2D)); // Same goal as in AbstractSkeletonEntity
         }
     }
 

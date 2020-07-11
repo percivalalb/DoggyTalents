@@ -18,17 +18,19 @@ import doggytalents.common.util.Util;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
-public class DogTextureLoader {
+public class DogTextureServer {
+
+    public static final DogTextureServer INSTANCE = new DogTextureServer();
 
     /**
      * Get the dedicated servers cache location
      */
-    public static File getServerFolder() {
+    public File getServerFolder() {
         return new File(ServerLifecycleHooks.getCurrentServer().getDataDirectory(), "dog_skins");
     }
 
     @Nullable
-    public static byte[] getCachedBytes(File baseFolder, String hash) {
+    public byte[] getCachedBytes(File baseFolder, String hash) {
         InputStream stream = getCachedStream(baseFolder, hash);
         try {
             return stream != null ? IOUtils.toByteArray(stream) : null;
@@ -42,7 +44,7 @@ public class DogTextureLoader {
     }
 
     @Nullable
-    public static InputStream getCachedStream(File baseFolder, String hash) {
+    public InputStream getCachedStream(File baseFolder, String hash) {
         File cacheFile = getCacheFile(baseFolder, hash);
 
         if (cacheFile.isFile() && cacheFile.exists()) {
@@ -59,25 +61,25 @@ public class DogTextureLoader {
         return null;
     }
 
-    public static String getHash(byte[] targetArray) {
+    public String getHash(byte[] targetArray) {
         return Hashing.sha1().hashBytes(targetArray).toString();
     }
 
-    public static File getCacheFile(File baseFolder, String name) {
+    public File getCacheFile(File baseFolder, String name) {
         File subFolder = new File(baseFolder, name.length() > 2 ? name.substring(0, 2) : "xx");
         File cacheFile = new File(subFolder, name);
         return cacheFile;
     }
 
 
-    public static ResourceLocation getResourceLocation(String name) {
+    public ResourceLocation getResourceLocation(String name) {
         return Util.getResource("dogskins/" + name);
     }
 
     /**
      * Normally used to save server side
      */
-    public static boolean saveTexture(File baseFolder, byte[] stream) throws IOException {
+    public boolean saveTexture(File baseFolder, byte[] stream) throws IOException {
         String hash = getHash(stream);
         File cacheFile = getCacheFile(baseFolder, hash);
 

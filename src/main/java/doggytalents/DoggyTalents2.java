@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.client.ClientSetup;
-import doggytalents.client.DefaultDogTextures;
+import doggytalents.client.DogTextureManager;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.event.ClientEventHandler;
@@ -96,7 +96,7 @@ public class DoggyTalents2 {
 
             Minecraft mc = Minecraft.getInstance();
 
-            ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DefaultDogTextures.TEXTURE);
+            ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DogTextureManager.INSTANCE);
         });
 
         ConfigHandler.init(modEventBus);

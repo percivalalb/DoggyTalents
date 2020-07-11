@@ -3,7 +3,7 @@ package doggytalents.common.network.packet;
 import java.util.function.Supplier;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.common.entity.texture.DogTextureLoader;
+import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.RequestSkinData;
 import doggytalents.common.network.packet.data.SendSkinData;
@@ -29,7 +29,7 @@ public class RequestSkinPacket implements IPacket<RequestSkinData> {
             LogicalSide side = ctx.get().getDirection().getReceptionSide();
 
             if (side.isServer()) {
-                byte[] stream = DogTextureLoader.getCachedBytes(DogTextureLoader.getServerFolder(), data.hash);
+                byte[] stream = DogTextureServer.INSTANCE.getCachedBytes(DogTextureServer.INSTANCE.getServerFolder(), data.hash);
                 if (stream != null) {
                     DoggyTalents2.HANDLER.reply(new SendSkinData(0, stream), ctx.get());
 

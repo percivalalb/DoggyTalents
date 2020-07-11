@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.IOUtils;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.client.DogTextureLoaderClient;
+import doggytalents.client.DogTextureManager;
 import doggytalents.common.entity.DogEntity;
-import doggytalents.common.entity.texture.DogTextureLoader;
+import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.SendSkinData;
 import net.minecraft.entity.Entity;
@@ -43,8 +43,15 @@ public class SendSkinPacket implements IPacket<SendSkinData> {
             LogicalSide side = ctx.get().getDirection().getReceptionSide();
             if (side.isClient()) {
                 DoggyTalents2.LOGGER.debug("Client: Received dog texture to save and load");
-                String hash = DogTextureLoaderClient.saveTextureAndLoad(DogTextureLoaderClient.getClientFolder(), data.image);
-                DogTextureLoaderClient.SKIN_REQUEST_MAP.put(hash, DogTextureLoaderClient.SkinRequest.RECEIVED);
+                String hash = "";
+                try {
+                    hash = DogTextureManager.INSTANCE.saveTextureAndLoad(DogTextureManager.INSTANCE.getClientFolder(), data.image);
+
+                    DogTextureManager.INSTANCE.setRequestHandled(hash);
+                } catch (IOException e) {
+                    DoggyTalents2.LOGGER.error("Dog skin failed to load");
+                    DogTextureManager.INSTANCE.setRequestFailed(hash);
+                }
             } else if (side.isServer()) {
                 Entity target = ctx.get().getSender().world.getEntityByID(data.entityId);
                 if(!(target instanceof DogEntity)) {
@@ -64,13 +71,13 @@ public class SendSkinPacket implements IPacket<SendSkinData> {
                         BufferedImage bImage2 = ImageIO.read(bis);
 
 
-                        DogTextureLoader.saveTexture(DogTextureLoader.getServerFolder(), IOUtils.toByteArray(bis));
+                        DogTextureServer.INSTANCE.saveTexture(DogTextureServer.INSTANCE.getServerFolder(), IOUtils.toByteArray(bis));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                String hash = DogTextureLoader.getHash(data.image);
+                String hash = DogTextureServer.INSTANCE.getHash(data.image);
                 dog.setSkinHash(hash);
             }
         });

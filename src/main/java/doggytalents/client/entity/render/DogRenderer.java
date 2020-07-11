@@ -2,7 +2,7 @@ package doggytalents.client.entity.render;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import doggytalents.client.DogTextureLoaderClient;
+import doggytalents.client.DogTextureManager;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.layer.BoneLayer;
 import doggytalents.client.entity.render.layer.DogAccessoryLayer;
@@ -71,14 +71,8 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     }
 
     @Override
-    public ResourceLocation getEntityTexture(DogEntity entity) {
-        return DogTextureLoaderClient.getLoc(entity);
-
-//        if (entity.isTamed()) {
-//            return Resources.ENTITY_WOLF;
-//        } else {
-//            return entity.isAngry() ? Resources.ENTITY_WOLF_ANGRY : Resources.ENTITY_WOLF;
-//        }
+    public ResourceLocation getEntityTexture(DogEntity dogIn) {
+        return DogTextureManager.INSTANCE.getTexture(dogIn);
     }
 
     @Override

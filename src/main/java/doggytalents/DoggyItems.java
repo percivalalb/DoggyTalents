@@ -13,6 +13,7 @@ import doggytalents.common.item.ChangeOwnerItem;
 import doggytalents.common.item.ChewStickItem;
 import doggytalents.common.item.DogShearsItem;
 import doggytalents.common.item.DoggyCharmItem;
+import doggytalents.common.item.DroolBoneItem;
 import doggytalents.common.item.DyeableAccessoryItem;
 import doggytalents.common.item.PatrolItem;
 import doggytalents.common.item.RadarItem;
@@ -36,10 +37,10 @@ public class DoggyItems {
 
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
 
-    public static final RegistryObject<Item> THROW_BONE = register("throw_bone", () -> new ThrowableItem(Items.BONE.delegate, Items.BONE.delegate, createInitialProp()));
-    public static final RegistryObject<Item> THROW_BONE_WET = register("throw_bone_wet");//, THROW_BONE, (prop) -> prop.maxStackSize(1));
-    public static final RegistryObject<Item> THROW_STICK = register("throw_stick");
-    public static final RegistryObject<Item> THROW_STICK_WET = register("throw_stick_wet");//, THROW_STICK, (prop) -> prop.maxStackSize(1));
+    public static final RegistryObject<Item> THROW_BONE = registerThrowBone("throw_bone");
+    public static final RegistryObject<Item> THROW_BONE_WET = registerThrowBoneWet("throw_bone_wet");
+    public static final RegistryObject<Item> THROW_STICK = registerThrowStick("throw_stick");
+    public static final RegistryObject<Item> THROW_STICK_WET = registerThrowStickWet("throw_stick_wet");
     public static final RegistryObject<Item> TRAINING_TREAT = registerTreat("training_treat", DogLevel.Type.NORMAL, 20);
     public static final RegistryObject<Item> SUPER_TREAT = registerTreat("super_treat", DogLevel.Type.NORMAL, 40);
     public static final RegistryObject<Item> MASTER_TREAT = registerTreat("master_treat", DogLevel.Type.NORMAL, 60);
@@ -68,6 +69,22 @@ public class DoggyItems {
 
     private static Item.Properties createInitialProp() {
         return new Item.Properties().group(DoggyItemGroups.GENERAL);
+    }
+
+    private static RegistryObject<Item> registerThrowBone(final String name) {
+        return register(name, () -> new ThrowableItem(THROW_BONE_WET, Items.BONE.delegate, createInitialProp().maxStackSize(2)));
+    }
+
+    private static RegistryObject<Item> registerThrowStick(final String name) {
+        return register(name, () -> new ThrowableItem(THROW_STICK_WET, THROW_STICK, createInitialProp().maxStackSize(8)));
+    }
+
+    private static RegistryObject<Item> registerThrowBoneWet(final String name) {
+        return register(name, () -> new DroolBoneItem(THROW_BONE, createInitialProp().maxStackSize(1)));
+    }
+
+    private static RegistryObject<Item> registerThrowStickWet(final String name) {
+        return register(name, () -> new DroolBoneItem(THROW_STICK, createInitialProp().maxStackSize(1)));
     }
 
     private static RegistryObject<Item> registerSizeBone(final String name, final SizeBoneItem.Type typeIn) {

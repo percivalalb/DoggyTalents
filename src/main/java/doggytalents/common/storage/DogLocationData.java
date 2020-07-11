@@ -23,7 +23,7 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
-public class DogLocationData {
+public class DogLocationData implements IDogData {
 
     private final DogLocationStorage storage;
     private final UUID uuid;
@@ -35,6 +35,7 @@ public class DogLocationData {
 
     // Other saved data
     private @Nullable ITextComponent name;
+    private @Nullable ITextComponent ownerName;
     private @Nullable EnumGender gender;
     private boolean hasRadarCollar;
 
@@ -48,13 +49,25 @@ public class DogLocationData {
         this.uuid = uuid;
     }
 
-    public UUID getId() {
+    @Override
+    public UUID getDogId() {
         return this.uuid;
     }
 
+    @Override
     @Nullable
     public UUID getOwnerId() {
         return this.ownerId;
+    }
+
+    @Override
+    public String getDogName() {
+        return this.name == null ? "" : this.name.getString();
+    }
+
+    @Override
+    public String getOwnerName() {
+        return this.ownerName == null ? "" : this.ownerName.getString();
     }
 
     public void populate(DogEntity dogIn) {
@@ -67,6 +80,7 @@ public class DogLocationData {
         this.dimension = dogIn.world.getDimension().getType().getRegistryName();
 
         this.name = dogIn.getName();
+        this.ownerName = dogIn.getOwnersName().orElseGet(null);
         this.gender = dogIn.getGender();
         this.hasRadarCollar = dogIn.getAccessory(DoggyAccessories.RADIO_BAND.get()).isPresent();
 

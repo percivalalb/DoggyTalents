@@ -18,7 +18,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 
-public class DogRespawnData {
+public class DogRespawnData implements IDogData {
 
     private final DogRespawnStorage storage;
     private final UUID uuid;
@@ -35,23 +35,27 @@ public class DogRespawnData {
         this.uuid = uuid;
     }
 
-    public UUID getId() {
+    @Override
+    public UUID getDogId() {
         return this.uuid;
     }
 
-    public String getName() {
+    @Override
+    public String getDogName() {
         ITextComponent name = NBTUtil.getTextComponent(this.data, "CustomName");
         return name == null ? "" : name.getString();
     }
 
+    @Override
     public UUID getOwnerId() {
         String str = data.getString("OwnerUUID");
         return "".equals(str) ? null : UUID.fromString(str);
     }
 
+    @Override
     public String getOwnerName() {
         ITextComponent name = NBTUtil.getTextComponent(this.data, "lastKnownOwnerName");
-        return name == null ? null : name.getString();
+        return name == null ? "" : name.getString();
     }
 
     public void populate(DogEntity dogIn) {

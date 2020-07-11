@@ -2,6 +2,7 @@ package doggytalents.common.storage;
 
 import static net.minecraftforge.common.util.Constants.NBT.*;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -116,6 +117,10 @@ public class DogLocationStorage extends WorldSavedData {
 
     public Set<UUID> getAllUUID() {
         return Collections.unmodifiableSet(this.locationDataMap.keySet());
+    }
+
+    public Collection<DogLocationData> getAll() {
+        return Collections.unmodifiableCollection(this.locationDataMap.values());
     }
 
     @Override

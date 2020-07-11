@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public class ChangeOwnerItem extends Item implements IDogItem {
@@ -25,12 +26,15 @@ public class ChangeOwnerItem extends Item implements IDogItem {
                 dogIn.getNavigator().clearPath();
                 dogIn.setAttackTarget((LivingEntity) null);
                 dogIn.getAISit().setSitting(true);
-                dogIn.world.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
+                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
+
+                //TODO playerIn.sendMessage(new TranslationTextComponent(""));
             }
 
             return ActionResultType.SUCCESS;
         }
 
-        return ActionResultType.CONSUME;
+        //TODO playerIn.sendMessage(new TranslationTextComponent(""));
+        return ActionResultType.FAIL;
     }
 }

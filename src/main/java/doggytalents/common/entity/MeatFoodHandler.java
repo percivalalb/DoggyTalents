@@ -15,7 +15,7 @@ public class MeatFoodHandler implements IDogFoodHandler {
 
     @Override
     public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        return stackIn.isFood() && stackIn.getItem().getFood().isMeat() && stackIn.getItem() != Items.ROTTEN_FLESH;
+        return this.isFood(stackIn);
     }
 
     @Override

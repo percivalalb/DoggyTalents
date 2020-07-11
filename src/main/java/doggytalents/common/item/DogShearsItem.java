@@ -6,6 +6,7 @@ import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.AccessoryInstance;
+import doggytalents.common.lib.Constants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,7 @@ public class DogShearsItem extends Item implements IDogItem {
                 int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
                 if (cooldownLeft <= 0) {
-                    worldIn.setEntityState(dogIn, doggytalents.common.lib.Constants.EntityState.WOLF_SMOKE);
+                    worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
                     dogIn.untame();
                 }
             }

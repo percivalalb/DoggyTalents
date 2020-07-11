@@ -35,9 +35,9 @@ public class RadarItem extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if(worldIn.isRemote) {
-            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> RadarScreen.open(playerIn));
-        }
+//        if(worldIn.isRemote) {
+//            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> RadarScreen.open(playerIn));
+//        }
 
         if(!worldIn.isRemote) {
             if (playerIn.isSneaking()) {

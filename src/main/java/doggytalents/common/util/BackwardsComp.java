@@ -108,54 +108,36 @@ public class BackwardsComp {
         });
     }
 
-    public static void init() {
-        // Update to 1.13
-        OLD_NEW_BED.put("minecraft:wool.0", "minecraft:white_wool");
-        OLD_NEW_BED.put("minecraft:wool.1", "minecraft:orange_wool");
-        OLD_NEW_BED.put("minecraft:wool.2", "minecraft:magenta_wool");
-        OLD_NEW_BED.put("minecraft:wool.3", "minecraft:light_blue_wool");
-        OLD_NEW_BED.put("minecraft:wool.4", "minecraft:yellow_wool");
-        OLD_NEW_BED.put("minecraft:wool.5", "minecraft:lime_wool");
-        OLD_NEW_BED.put("minecraft:wool.6", "minecraft:pink_wool");
-        OLD_NEW_BED.put("minecraft:wool.7", "minecraft:gray_wool");
-        OLD_NEW_BED.put("minecraft:wool.8", "minecraft:light_gray_wool");
-        OLD_NEW_BED.put("minecraft:wool.9", "minecraft:cyan_wool");
-        OLD_NEW_BED.put("minecraft:wool.10", "minecraft:purple_wool");
-        OLD_NEW_BED.put("minecraft:wool.11", "minecraft:blue_wool");
-        OLD_NEW_BED.put("minecraft:wool.12", "minecraft:brown_wool");
-        OLD_NEW_BED.put("minecraft:wool.13", "minecraft:green_wool");
-        OLD_NEW_BED.put("minecraft:wool.14", "minecraft:red_wool");
-        OLD_NEW_BED.put("minecraft:wool.15", "minecraft:black_wool");
-        OLD_NEW_BED.put("minecraft:planks.0", "minecraft:oak_planks");
-        OLD_NEW_BED.put("minecraft:planks.1", "minecraft:spruce_planks");
-        OLD_NEW_BED.put("minecraft:planks.2", "minecraft:birch_planks");
-        OLD_NEW_BED.put("minecraft:planks.3", "minecraft:jungle_planks");
-        OLD_NEW_BED.put("minecraft:planks.4", "minecraft:acacia_planks");
-        OLD_NEW_BED.put("minecraft:planks.5", "minecraft:dark_oak_planks");
+    public static void putBeddingMapping(String current, String... previous) {
+        for (String old : previous) {
+            OLD_NEW_BED.put(old, current);
+        }
+    }
 
-        // Update to 1.14
-        OLD_NEW_BED.put("minecraft_white_wool", "minecraft:white_wool");
-        OLD_NEW_BED.put("minecraft_orange_wool", "minecraft:orange_wool");
-        OLD_NEW_BED.put("minecraft_magenta_wool", "minecraft:magenta_wool");
-        OLD_NEW_BED.put("minecraft_light_blue_wool", "minecraft:light_blue_wool");
-        OLD_NEW_BED.put("minecraft_yellow_wool", "minecraft:yellow_wool");
-        OLD_NEW_BED.put("minecraft_lime_wool", "minecraft:lime_wool");
-        OLD_NEW_BED.put("minecraft_pink_wool", "minecraft:pink_wool");
-        OLD_NEW_BED.put("minecraft_gray_wool", "minecraft:gray_wool");
-        OLD_NEW_BED.put("minecraft_light_gray_wool", "minecraft:light_gray_wool");
-        OLD_NEW_BED.put("minecraft_cyan_wool", "minecraft:cyan_wool");
-        OLD_NEW_BED.put("minecraft_purple_wool", "minecraft:purple_wool");
-        OLD_NEW_BED.put("minecraft_blue_wool", "minecraft:blue_wool");
-        OLD_NEW_BED.put("minecraft_brown_wool", "minecraft:brown_wool");
-        OLD_NEW_BED.put("minecraft_green_wool", "minecraft:green_wool");
-        OLD_NEW_BED.put("minecraft_red_wool", "minecraft:red_wool");
-        OLD_NEW_BED.put("minecraft_black_wool", "minecraft:black_wool");
-        OLD_NEW_BED.put("minecraft_oak_planks", "minecraft:oak_planks");
-        OLD_NEW_BED.put("minecraft_spruce_planks", "minecraft:spruce_planks");
-        OLD_NEW_BED.put("minecraft_birch_planks", "minecraft:birch_planks");
-        OLD_NEW_BED.put("minecraft_jungle_planks", "minecraft:jungle_planks");
-        OLD_NEW_BED.put("minecraft_acacia_planks", "minecraft:acacia_planks");
-        OLD_NEW_BED.put("minecraft_dark_oak_planks", "minecraft:dark_oak_planks");
+    public static void init() {
+        // Update to 1.13 and then 1.14
+        putBeddingMapping("minecraft:white_wool", "minecraft:wool.0", "minecraft_white_wool");
+        putBeddingMapping("minecraft:orange_wool", "minecraft:wool.1", "minecraft_orange_wool");
+        putBeddingMapping("minecraft:magenta_wool", "minecraft:wool.2", "minecraft_magenta_wool");
+        putBeddingMapping("minecraft:light_blue_wool", "minecraft:wool.3", "minecraft_light_blue_wool");
+        putBeddingMapping("minecraft:yellow_wool", "minecraft:wool.4", "minecraft_yellow_wool");
+        putBeddingMapping("minecraft:lime_wool", "minecraft:wool.5", "minecraft_lime_wool");
+        putBeddingMapping("minecraft:pink_wool", "minecraft:wool.6", "minecraft_pink_wool");
+        putBeddingMapping("minecraft:gray_wool", "minecraft:wool.7", "minecraft_gray_wool");
+        putBeddingMapping("minecraft:light_gray_wool", "minecraft:wool.8", "minecraft_light_gray_wool");
+        putBeddingMapping("minecraft:cyan_wool", "minecraft:wool.9", "minecraft_cyan_wool");
+        putBeddingMapping("minecraft:purple_wool", "minecraft:wool.10", "minecraft_purple_wool");
+        putBeddingMapping("minecraft:blue_wool", "minecraft:wool.11", "minecraft_blue_wool");
+        putBeddingMapping("minecraft:brown_wool", "minecraft:wool.12", "minecraft_brown_wool");
+        putBeddingMapping("minecraft:green_wool", "minecraft:wool.13", "minecraft_green_wool");
+        putBeddingMapping("minecraft:red_wool", "minecraft:wool.14", "minecraft_red_wool");
+        putBeddingMapping("minecraft:black_wool", "minecraft:wool.15", "minecraft_black_wool");
+        putBeddingMapping("minecraft:oak_planks", "minecraft:planks.0", "minecraft_oak_planks");
+        putBeddingMapping("minecraft:spruce_planks", "minecraft:planks.1", "minecraft_spruce_planks");
+        putBeddingMapping("minecraft:birch_planks", "minecraft:planks.2", "minecraft_birch_planks");
+        putBeddingMapping("minecraft:jungle_planks", "minecraft:planks.3", "minecraft_jungle_planks");
+        putBeddingMapping("minecraft:acacia_planks", "minecraft:planks.4", "minecraft_acacia_planks");
+        putBeddingMapping("minecraft:dark_oak_planks", "minecraft:planks.5", "minecraft_dark_oak_planks");
 
         //TODO
         OLD_NEW_TALENT.put("bedfinder", DoggyTalents.BED_FINDER);

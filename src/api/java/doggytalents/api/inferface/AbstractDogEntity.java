@@ -2,6 +2,9 @@ package doggytalents.api.inferface;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
+
+import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.IDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,6 +13,7 @@ import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public abstract class AbstractDogEntity extends TameableEntity implements IDog {
@@ -42,5 +46,27 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
         } else {
             stack.shrink(1);
         }
+    }
+
+    public abstract TranslationTextComponent getTranslationKey(Function<EnumGender, String> function);
+
+    public TranslationTextComponent getGenderPronoun() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedPronoun);
+    }
+
+    public TranslationTextComponent getGenderSubject() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedSubject);
+    }
+
+    public TranslationTextComponent getGenderTitle() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedTitle);
+    }
+
+    public TranslationTextComponent getGenderTip() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedTip);
+    }
+
+    public TranslationTextComponent getGenderName() {
+        return this.getTranslationKey(EnumGender::getUnlocalisedName);
     }
 }

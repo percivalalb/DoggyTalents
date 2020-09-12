@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -46,12 +47,14 @@ import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.PatrolAreaGoal;
+import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.BackwardsComp;
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
+import doggytalents.common.util.WorldUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
@@ -100,13 +103,16 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -115,6 +121,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
 
@@ -131,6 +138,7 @@ public class DogEntity extends AbstractDogEntity {
     private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
     private static final DataParameter<Byte> SIZE = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
     private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.createKey(DogEntity.class, DataSerializers.ITEMSTACK);
+    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
 
     // Cached values
     private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
@@ -175,6 +183,7 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.register(DOG_LEVEL.get(), new DogLevel(0, 0));
         this.dataManager.register(SIZE, (byte) 3);
         this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
+        this.dataManager.register(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
     }
 
     @Override
@@ -314,7 +323,6 @@ public class DogEntity extends AbstractDogEntity {
         super.tick();
 
         if (this.isAlive()) {
-
             this.headRotationCourseOld = this.headRotationCourse;
             if (this.isBegging()) {
                 this.headRotationCourse += (1.0F - this.headRotationCourse) * 0.4F;
@@ -1115,6 +1123,21 @@ public class DogEntity extends AbstractDogEntity {
         compound.putInt("level_dire", this.getLevel().getLevel(Type.DIRE));
         NBTUtil.writeItemStack(compound, "fetchItem", this.getBoneVariant());
 
+        DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get());
+
+        if (!bedsData.isEmpty()) {
+            ListNBT bedsList = new ListNBT();
+
+            for (Entry<DimensionType, Optional<BlockPos>> entry : bedsData.entrySet()) {
+                CompoundNBT bedNBT = new CompoundNBT();
+                NBTUtil.putResourceLocation(bedNBT, "dim", entry.getKey().getRegistryName());
+                NBTUtil.putBlockPos(bedNBT, "pos", entry.getValue());
+                bedsList.add(bedNBT);
+            }
+
+            compound.put("beds", bedsList);
+        }
+
         this.statsTracker.writeAdditional(compound);
     }
 
@@ -1183,6 +1206,27 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
+
+        DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get()).copyEmpty();
+
+        if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
+            ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < bedsList.size(); i++) {
+                CompoundNBT bedNBT = bedsList.getCompound(i);
+                ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
+                Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
+                if (type.isPresent()) {
+                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
+                    bedsData.put(type.get(), pos);
+                } else {
+                    DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                }
+            }
+
+        }
+
+        this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);
 
         this.statsTracker.readAdditional(compound);
     }
@@ -1348,12 +1392,24 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.set(MODE.get(), collar);
     }
 
+    public Optional<BlockPos> getBedPos(DimensionType dim) {
+        return this.dataManager.get(DOG_BED_LOCATION.get()).getOrDefault(dim, Optional.empty());
+    }
+
+    public void setBedPos(DimensionType dim, @Nullable BlockPos pos) {
+        this.setBedPos(dim, WorldUtil.toImmutable(pos));
+    }
+
+    public void setBedPos(DimensionType dim, Optional<BlockPos> pos) {
+        this.dataManager.set(DOG_BED_LOCATION.get(), this.dataManager.get(DOG_BED_LOCATION.get()).copy().set(dim, pos));
+    }
+
     public Optional<BlockPos> getBowlPos() {
         return this.dataManager.get(BOWL_POS);
     }
 
     public void setBowlPos(@Nullable BlockPos comp) {
-        this.setBowlPos(Optional.ofNullable(comp));
+        this.setBowlPos(WorldUtil.toImmutable(comp));
     }
 
     public void setBowlPos(Optional<BlockPos> collar) {
@@ -1456,11 +1512,7 @@ public class DogEntity extends AbstractDogEntity {
     @Nullable
     public IThrowableItem getThrowableItem() {
         Item item = this.dataManager.get(BONE_VARIANT).getItem();
-        if(item instanceof IThrowableItem) {
-            return (IThrowableItem) item;
-        } else {
-            return null;
-        }
+        return item instanceof IThrowableItem ? (IThrowableItem) item : null;
     }
 
     public boolean hasBone() {
@@ -1849,5 +1901,10 @@ public class DogEntity extends AbstractDogEntity {
 
 
         }
+    }
+
+    @Override
+    public TranslationTextComponent getTranslationKey(Function<EnumGender, String> function) {
+        return new TranslationTextComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
     }
 }

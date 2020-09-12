@@ -178,6 +178,7 @@ public class DogBedBlock extends Block {
                     List<DogEntity> dogs = worldIn.getEntitiesWithinAABB(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).grow(10D), EntityPredicates.IS_ALIVE);
                     if (!dogs.isEmpty()) {
                         dogBedTileEntity.setOwner(dogs.get(0));
+                        dogs.get(0).setBedPos(dogs.get(0).dimension, pos);
                         worldIn.setEntityState(dogs.get(0), (byte)7);
                     }
                 } else if (dogBedTileEntity.getOwnerUUID() != null) {
@@ -187,7 +188,7 @@ public class DogBedBlock extends Block {
                         DogEntity dog = storage.respawn(worldIn, player, pos.up());
 
                         dogBedTileEntity.setOwner(dog);
-
+                        dog.setBedPos(dog.dimension, pos);
                         return ActionResultType.SUCCESS;
                     } else {
                         return ActionResultType.FAIL;

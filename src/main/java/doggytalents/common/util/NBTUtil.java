@@ -2,6 +2,7 @@ package doggytalents.common.util;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
@@ -18,7 +19,9 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -152,7 +155,6 @@ public class NBTUtil {
         }
     }
 
-    @Nullable
     public static void putBlockPos(CompoundNBT compound, @Nullable BlockPos vec3d) {
         if (vec3d != null) {
             compound.putInt("x", vec3d.getX());
@@ -170,6 +172,40 @@ public class NBTUtil {
         return null;
     }
 
+
+    public static void putBlockPos(CompoundNBT compound, String key, Optional<BlockPos> vec3d) {
+        if (vec3d.isPresent()) {
+            CompoundNBT posNBT = new CompoundNBT();
+            putBlockPos(posNBT, vec3d.get());
+            compound.put(key, posNBT);
+        }
+    }
+
+    public static Optional<BlockPos> getBlockPos(CompoundNBT compound, String key) {
+        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+            return Optional.of(getBlockPos(compound.getCompound(key)));
+        }
+
+        return Optional.empty();
+    }
+
+    public static void putBlockPos(CompoundNBT compound, String key, @Nullable BlockPos vec3d) {
+        if (vec3d != null) {
+            CompoundNBT posNBT = new CompoundNBT();
+            putBlockPos(posNBT, vec3d);
+            compound.put(key, posNBT);
+        }
+    }
+
+//    @Nullable
+//    public static BlockPos getBlockPos(CompoundNBT compound, String key) {
+//        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+//            return getBlockPos(compound.getCompound(key));
+//        }
+//
+//        return null;
+//    }
+
     public static void writeItemStack(CompoundNBT compound, String key, ItemStack stackIn) {
         if (!stackIn.isEmpty()) {
             compound.put(key, stackIn.write(new CompoundNBT()));
@@ -183,5 +219,10 @@ public class NBTUtil {
         }
 
         return ItemStack.EMPTY;
+    }
+
+    public static Optional<DimensionType> readDimensionType(CompoundNBT compound, String key) {
+        ResourceLocation loc = NBTUtil.getResourceLocation(compound, key);
+        return Registry.DIMENSION_TYPE.getValue(loc);
     }
 }

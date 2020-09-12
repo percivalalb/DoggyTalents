@@ -3,6 +3,7 @@ package doggytalents;
 import java.util.function.Supplier;
 
 import doggytalents.common.entity.serializers.AccessorySerializer;
+import doggytalents.common.entity.serializers.BedLocationsSerializer;
 import doggytalents.common.entity.serializers.CollarSerializer;
 import doggytalents.common.entity.serializers.DogLevelSerializer;
 import doggytalents.common.entity.serializers.GenderSerializer;
@@ -25,6 +26,7 @@ public class DoggySerializers {
     public static final RegistryObject<DataSerializerEntry> GENDER_SERIALIZER = register2("gender", GenderSerializer::new);
     public static final RegistryObject<DataSerializerEntry> MODE_SERIALIZER = register2("mode", ModeSerializer::new);
     public static final RegistryObject<DataSerializerEntry> DOG_LEVEL_SERIALIZER = register2("dog_level", DogLevelSerializer::new);
+    public static final RegistryObject<DataSerializerEntry> BED_LOC_SERIALIZER = register2("dog_bed_location", BedLocationsSerializer::new);
 
     private static <X extends IDataSerializer<?>> RegistryObject<DataSerializerEntry> register2(final String name, final Supplier<X> factory) {
         return register(name, () -> new DataSerializerEntry(factory.get()));

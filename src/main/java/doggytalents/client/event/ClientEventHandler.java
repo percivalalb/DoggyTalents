@@ -159,34 +159,35 @@ public class ClientEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onWorldRenderLast(RenderWorldLastEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        PlayerEntity player = mc.player;
-
-        if (player == null || player.getHeldItem(Hand.MAIN_HAND).getItem() != DoggyItems.PATROl.get()) {
-            return;
-        }
-
-        ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
-
-        RenderSystem.pushMatrix();
-
-        if (stack.hasTag() && stack.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
-            ListNBT list = stack.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
-            List<BlockPos> poses = new ArrayList<>(list.size());
-            for (int i = 0; i < list.size(); i++) {
-                poses.add(NBTUtil.getBlockPos(list.getCompound(i)));
-            }
-
-            for (BlockPos pos : poses) {
-                this.drawSelectionBox(event.getMatrixStack(), player, event.getPartialTicks(), new AxisAlignedBB(pos));
-            }
-        }
-
-
-        RenderSystem.popMatrix();
-    }
+// TODO Implement patrol item
+//    @SubscribeEvent
+//    public void onWorldRenderLast(RenderWorldLastEvent event) {
+//        Minecraft mc = Minecraft.getInstance();
+//        PlayerEntity player = mc.player;
+//
+//        if (player == null || player.getHeldItem(Hand.MAIN_HAND).getItem() != DoggyItems.PATROL.get()) {
+//            return;
+//        }
+//
+//        ItemStack stack = player.getHeldItem(Hand.MAIN_HAND);
+//
+//        RenderSystem.pushMatrix();
+//
+//        if (stack.hasTag() && stack.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
+//            ListNBT list = stack.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+//            List<BlockPos> poses = new ArrayList<>(list.size());
+//            for (int i = 0; i < list.size(); i++) {
+//                poses.add(NBTUtil.getBlockPos(list.getCompound(i)));
+//            }
+//
+//            for (BlockPos pos : poses) {
+//                this.drawSelectionBox(event.getMatrixStack(), player, event.getPartialTicks(), new AxisAlignedBB(pos));
+//            }
+//        }
+//
+//
+//        RenderSystem.popMatrix();
+//    }
 
     public void drawSelectionBox(MatrixStack matrixStackIn, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
         RenderSystem.disableAlphaTest();

@@ -95,6 +95,7 @@ public class DoggyTalents2 {
             modEventBus.addListener(DoggyItems::registerItemColours);
             modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
             forgeEventBus.register(new ClientEventHandler());
+            forgeEventBus.addListener(BedFinderRenderer::onWorldRenderLast);
 
             Minecraft mc = Minecraft.getInstance();
 

@@ -1,5 +1,6 @@
 package doggytalents.common.util;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -53,5 +54,13 @@ public class WorldUtil {
         }
 
         return cached;
+    }
+
+    public static Optional<BlockPos> toImmutable(BlockPos pos) {
+        return pos != null ? Optional.of(pos.toImmutable()) : Optional.empty();
+    }
+
+    public static Optional<BlockPos> toImmutable(Optional<BlockPos> pos) {
+        return pos.map(BlockPos::toImmutable);
     }
 }

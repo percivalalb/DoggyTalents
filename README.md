@@ -20,7 +20,7 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 
 ### Installation Instructions
 
-#### Client
+##### Client
 - Download Minecraft Forge from the [offical site](https://files.minecraftforge.net/).
 - Run the Installer jar and select the 'Install client' option and click OK. Minecraft Forge should now be installed!
 - Now open up the launcher and in the profile selector select 'Forge', login and run Minecraft (This may take a while).
@@ -31,11 +31,11 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 
 -----------------
 
-FAQ
- - Q: Will there be a fabric version?  
-   A: I will not be creating one, if someone wants to take up this task please contact me.
- - Q: Which Minecraft versions are supported?  
-   A: It is normally be the last two major releases, current `1.14.x` and `1.15.x`.
+### FAQ
+ - **Q:** Will there be a Fabric version?  
+   **A:** I will not be creating one, if someone wants to take up this task please contact me.
+ - **Q:** Which Minecraft versions are supported?  
+   **A:** It is normally be the last two major releases, currently `1.14.x` and `1.15.x`.
 
 -----------------
 

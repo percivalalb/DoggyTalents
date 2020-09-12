@@ -80,7 +80,7 @@ public class DogLocationData implements IDogData {
         this.dimension = dogIn.world.getDimension().getType().getRegistryName();
 
         this.name = dogIn.getName();
-        this.ownerName = dogIn.getOwnersName().orElseGet(null);
+        this.ownerName = dogIn.getOwnersName().orElse(null);
         this.gender = dogIn.getGender();
         this.hasRadarCollar = dogIn.getAccessory(DoggyAccessories.RADIO_BAND.get()).isPresent();
 

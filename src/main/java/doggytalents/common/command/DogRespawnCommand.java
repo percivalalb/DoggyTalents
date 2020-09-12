@@ -79,7 +79,9 @@ public class DogRespawnCommand {
                          .then(Commands.argument("dog_name", StringArgumentType.string()).suggests(DogRespawnCommand.getDogNameSuggestionsRevive())
                          .executes(c -> respawn2(c))))))
         );
+    }
 
+    public static void registerSerilizers() {
         ArgumentTypes.register(Util.getResourcePath("uuid"), UUIDArgument.class, new ArgumentSerializer<>(UUIDArgument::uuid));
     }
 

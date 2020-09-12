@@ -8,6 +8,7 @@ import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
+import doggytalents.client.entity.render.world.BedFinderRenderer;
 import doggytalents.client.event.ClientEventHandler;
 import doggytalents.common.addon.AddonManager;
 import doggytalents.common.command.DogRespawnCommand;
@@ -77,6 +78,7 @@ public class DoggyTalents2 {
         DoggyBedMaterials.BEDDINGS.register(modEventBus);
         DoggyBedMaterials.CASINGS.register(modEventBus);
 
+        DogRespawnCommand.registerSerilizers();
 
         modEventBus.addListener(DoggyRegistries::newRegistry);
 

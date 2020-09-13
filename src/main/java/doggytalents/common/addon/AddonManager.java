@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import com.google.common.collect.Lists;
 
 import doggytalents.DoggyTalents2;
+import doggytalents.common.addon.autumnity.AutumnityAddon;
 import doggytalents.common.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.common.addon.botania.BotaniaAddon;
 import doggytalents.common.addon.itemphysic.ItemPhysicsAddon;
@@ -18,7 +19,8 @@ public class AddonManager {
     private static final List<Addon> ADDONS = Collections.unmodifiableList(Lists.newArrayList(
             new ItemPhysicsAddon(),
             new BiomesOPlentyAddon(),
-            new BotaniaAddon()));
+            new BotaniaAddon(),
+            new AutumnityAddon()));
     private static final List<Addon> RUN = Lists.newArrayList(ADDONS);
 
     public static void init() {

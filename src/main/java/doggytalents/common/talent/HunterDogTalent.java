@@ -16,7 +16,6 @@ public class HunterDogTalent extends Talent {
             int level = dog.getLevel(DoggyTalents.HUNTER_DOG.get());
 
             if(dog.getRNG().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
-                DoggyTalents2.LOGGER.debug("Looting: {}", event.getLootingLevel() + level / 2);
                 event.setLootingLevel(event.getLootingLevel() + level / 2);
             }
 

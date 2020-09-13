@@ -1597,10 +1597,12 @@ public class DogEntity extends AbstractDogEntity {
         boolean existed = map.containsKey(talent);
         if (level > 0) {
             map.put(talent, level);
-            talent.set(this, level);
+
             if (!existed) {
                 talent.init(this);
             }
+
+            talent.set(this, level);
 
         } else {
             int preLevel = map.getOrDefault(talent, 0);

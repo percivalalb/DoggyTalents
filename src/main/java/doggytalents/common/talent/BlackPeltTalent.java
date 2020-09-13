@@ -55,7 +55,7 @@ public class BlackPeltTalent extends Talent {
     public void updateAttackDamage(AbstractDogEntity dogIn, double speed) {
         IAttributeInstance damageInstance = dogIn.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
 
-        AttributeModifier speedModifier = this.createSpeedModifier(speed);
+        AttributeModifier speedModifier = this.createPeltModifier(speed);
 
         if(damageInstance.getModifier(BLACK_PELT_DAMAGE_ID) != null) {
             damageInstance.removeModifier(speedModifier);
@@ -64,7 +64,7 @@ public class BlackPeltTalent extends Talent {
         damageInstance.applyModifier(speedModifier);
     }
 
-    public AttributeModifier createSpeedModifier(double speed) {
+    public AttributeModifier createPeltModifier(double speed) {
         return new AttributeModifier(BLACK_PELT_DAMAGE_ID, "Black Pelt", speed, AttributeModifier.Operation.ADDITION);
     }
 }

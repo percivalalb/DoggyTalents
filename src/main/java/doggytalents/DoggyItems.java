@@ -65,7 +65,7 @@ public class DoggyItems {
     public static final RegistryObject<Item> TINY_BONE = registerSizeBone("tiny_bone", SizeBoneItem.Type.TINY);
     public static final RegistryObject<Item> BIG_BONE = registerSizeBone("big_bone", SizeBoneItem.Type.BIG);
     public static final RegistryObject<Item> OWNER_CHANGE = registerWith("owner_change", ChangeOwnerItem::new, 1);
-    public static final RegistryObject<Item> PATROl = registerWith("patrol_item", PatrolItem::new, 1);
+    //public static final RegistryObject<Item> PATROL = registerWith("patrol_item", PatrolItem::new, 1);
 
     private static Item.Properties createInitialProp() {
         return new Item.Properties().group(DoggyItemGroups.GENERAL);

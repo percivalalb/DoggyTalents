@@ -46,12 +46,13 @@ public class DoggyDashTalent extends Talent {
     public void updateSpeed(AbstractDogEntity dogIn, double speed) {
         IAttributeInstance speedInstance = dogIn.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
 
-        AttributeModifier speedModifier = new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
-
         if(speedInstance.getModifier(DASH_BOOST_ID) != null) {
-            speedInstance.removeModifier(speedModifier);
+            speedInstance.removeModifier(DASH_BOOST_ID);
         }
 
-        speedInstance.applyModifier(speedModifier);
+        if (speed != 0) {
+            AttributeModifier speedModifier = new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
+            speedInstance.applyModifier(speedModifier);
+        }
     }
 }

@@ -58,8 +58,6 @@ public class DTRecipeProvider extends RecipeProvider {
 //        ShapedRecipeBuilder.shapedRecipe(ModItems.RADIO_COLLAR.get(), 1).patternLine("XX").patternLine("YX").key('X', Items.IRON_INGOT).key('Y', Items.REDSTONE).addCriterion("has_redstone", this.hasItem(Items.REDSTONE)).build(consumer);
 //        ShapelessRecipeBuilder.shapelessRecipe(ModItems.RADAR.get(), 1).addIngredient(Items.MAP, 1).addIngredient(Items.REDSTONE, 1).addIngredient(ModItems.RADIO_COLLAR.get(), 1).addCriterion("has_redstone", this.hasItem(Items.REDSTONE)).build(consumer);
 //
-//        CustomRecipeBuilder.customRecipe(ModRecipes.CAPE_COLOURING.get()).build(consumer, Reference.MOD_ID + ":cape_colouring");
-//        CustomRecipeBuilder.customRecipe(ModRecipes.COLLAR_COLOURING.get()).build(consumer, Reference.MOD_ID + ":collar_colouring");
           CustomRecipeBuilder.customRecipe(DoggyRecipeSerializers.DOG_BED.get()).build(consumer, Util.getResourcePath("dog_bed"));
     }
 

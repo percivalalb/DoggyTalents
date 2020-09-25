@@ -6,7 +6,6 @@ import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -21,45 +20,33 @@ public class WolfMountTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        int level = dogIn.getLevel(this);
-        this.updateSpeed(dogIn, this.calculateJumpBoost(level));
-    }
-
-    @Override
-    public void removed(AbstractDogEntity dogIn, int preLevel) {
-        IAttributeInstance jumpInstance = dogIn.getAttribute(AbstractDogEntity.JUMP_STRENGTH);
-        AttributeModifier jumpModifier = jumpInstance.getModifier(WOLF_MOUNT_JUMP);
-
-        if (jumpModifier != null) {
-            jumpInstance.removeModifier(jumpModifier);
-        }
+        dogIn.setAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        this.updateSpeed(dogIn, this.calculateJumpBoost(level));
+        dogIn.setAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
-    public double calculateJumpBoost(int level) {
-        double speed = 0.06D * level;
-
-        if (level >= 5) {
-            speed += 0.04D;
-        }
-
-        return speed;
+    @Override
+    public void removed(AbstractDogEntity dogIn, int preLevel) {
+        dogIn.removeAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP);
     }
 
-    public void updateSpeed(AbstractDogEntity dogIn, double jumpBoost) {
-        IAttributeInstance speedInstance = dogIn.getAttribute(AbstractDogEntity.JUMP_STRENGTH);
+    public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+        int level = dogIn.getLevel(this);
 
-        AttributeModifier speedModifier = new AttributeModifier(WOLF_MOUNT_JUMP, "Wolf Mount", jumpBoost, AttributeModifier.Operation.ADDITION).setSaved(false);
+        if (level > 0) {
+            double speed = 0.06D * level;
 
-        if(speedInstance.getModifier(WOLF_MOUNT_JUMP) != null) {
-            speedInstance.removeModifier(speedModifier);
+            if (level >= 5) {
+                speed += 0.04D;
+            }
+
+            return new AttributeModifier(uuidIn, "Wolf Mount", speed, AttributeModifier.Operation.ADDITION).setSaved(false);
         }
 
-        speedInstance.applyModifier(speedModifier);
+        return null;
     }
 
     @Override

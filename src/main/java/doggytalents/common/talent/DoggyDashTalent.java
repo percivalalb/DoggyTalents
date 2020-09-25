@@ -6,7 +6,6 @@ import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 
 public class DoggyDashTalent extends Talent {
 
@@ -14,45 +13,32 @@ public class DoggyDashTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        int level = dogIn.getLevel(this);
-        this.updateSpeed(dogIn, this.calculateSpeed(level));
-    }
-
-    @Override
-    public void removed(AbstractDogEntity dogIn, int preLevel) {
-        IAttributeInstance speedInstance = dogIn.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
-        AttributeModifier speedModifier = speedInstance.getModifier(DASH_BOOST_ID);
-
-        if (speedModifier != null) {
-            speedInstance.removeModifier(speedModifier);
-        }
+        dogIn.setAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        this.updateSpeed(dogIn, this.calculateSpeed(level));
+        dogIn.setAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
-    public double calculateSpeed(int level) {
-        double speed = 0.03D * level;
-
-        if (level >= 5) {
-            speed += 0.04D;
-        }
-
-        return speed;
+    @Override
+    public void removed(AbstractDogEntity dogIn, int preLevel) {
+        dogIn.removeAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID);
     }
 
-    public void updateSpeed(AbstractDogEntity dogIn, double speed) {
-        IAttributeInstance speedInstance = dogIn.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
+    public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+        int level = dogIn.getLevel(this);
 
-        if(speedInstance.getModifier(DASH_BOOST_ID) != null) {
-            speedInstance.removeModifier(DASH_BOOST_ID);
+        if (level > 0) {
+            double speed = 0.03D * level;
+
+            if (level >= 5) {
+                speed += 0.04D;
+            }
+
+            return new AttributeModifier(uuidIn, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION).setSaved(false);
         }
 
-        if (speed != 0) {
-            AttributeModifier speedModifier = new AttributeModifier(DASH_BOOST_ID, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
-            speedInstance.applyModifier(speedModifier);
-        }
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.PatrolAreaGoal;
+import doggytalents.common.entity.ai.OwnerHurtTargetGoal;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
@@ -56,6 +58,7 @@ import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -63,6 +66,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.ai.goal.BreedGoal;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
@@ -70,7 +75,6 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.OwnerHurtTargetGoal;
 import net.minecraft.entity.ai.goal.SitGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
@@ -120,8 +124,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
 
@@ -216,14 +220,12 @@ public class DogEntity extends AbstractDogEntity {
     protected void registerAttributes() {
         super.registerAttributes();
         this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3F);
-        if (this.isTamed()) {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
-        } else {
-            this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
-        }
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isTamed() ? 20.0D : 8.0D);
 
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
         this.getAttributes().registerAttribute(JUMP_STRENGTH).setBaseValue(0.42F);
+        this.getAttributes().registerAttribute(CRIT_CHANCE).setBaseValue(0.42F);
+        this.getAttributes().registerAttribute(CRIT_BONUS).setBaseValue(1F);
     }
 
     @Override
@@ -780,11 +782,29 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        int damage = ((int)this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
+        IAttributeInstance attackDamageInst = this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+
+        Set<AttributeModifier> critModifiers = null;
+
+        if (this.getAttribute(CRIT_CHANCE).getValue() > this.getRNG().nextDouble()) {
+            critModifiers = this.getAttribute(CRIT_BONUS).func_225505_c_();
+            critModifiers.forEach(attackDamageInst::applyModifier);
+        }
+
+        int damage = ((int) attackDamageInst.getValue());
+        if (critModifiers != null) {
+            critModifiers.forEach(attackDamageInst::removeModifier);
+        }
+
         boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         if (flag) {
             this.applyEnchantments(this, target);
             this.statsTracker.increaseDamageDealt(damage);
+
+            if (critModifiers != null) {
+                // TODO Might want to make into a packet
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particles.addParticleEmitter(this, ParticleTypes.CRIT));
+            }
         }
 
         return flag;

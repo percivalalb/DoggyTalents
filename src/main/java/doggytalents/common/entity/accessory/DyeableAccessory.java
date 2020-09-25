@@ -8,6 +8,7 @@ import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
+import doggytalents.common.util.ColourCache;
 import doggytalents.common.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
@@ -73,15 +74,23 @@ public class DyeableAccessory extends Accessory {
 
     public class DyeableAccessoryInstance extends AccessoryInstance implements IDogAlteration {
 
-        private int color;
+        private ColourCache color;
 
         public DyeableAccessoryInstance(int colorIn) {
+            this(ColourCache.make(colorIn));
+        }
+
+        public DyeableAccessoryInstance(ColourCache colorIn) {
             super(null);
             this.color = colorIn;
         }
 
         public int getColor() {
-            return this.color;
+            return this.color.get();
+        }
+
+        public float[] getFloatArray() {
+            return this.color.getFloatArray();
         }
 
         @Override
@@ -100,14 +109,14 @@ public class DyeableAccessory extends Accessory {
 
             DyeColor dyeColor = DyeColor.getColor(stack);
             if(dyeColor != null) {
-                int colorNew = Util.colorDye(this.color, dyeColor);
+                int colorNew = Util.colorDye(this.color.get(), dyeColor);
 
                 // No change
-                if (colorNew == this.color) {
+                if (this.color.is(colorNew)) {
                     return ActionResultType.FAIL;
                 }
 
-                this.color = colorNew;
+                this.color = ColourCache.make(colorNew);
                 dogIn.consumeItemFromStack(playerIn, stack);
                 // Make sure to sync change with client
                 dogIn.markAccessoriesDirty();

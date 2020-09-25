@@ -13,7 +13,6 @@ import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogInventoryPageData;
-import doggytalents.common.util.Util;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
@@ -95,8 +94,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
 
             Optional<AccessoryInstance> inst = slot.getDog().getAccessory(DoggyAccessories.DYEABLE_COLLAR.get());
             if (inst.isPresent()) {
-                DyeableAccessoryInstance colorInst = inst.get().cast(DyeableAccessoryInstance.class);
-                float[] color = Util.rgbIntToFloatArray(colorInst.getColor());
+                float[] color = inst.get().cast(DyeableAccessoryInstance.class).getFloatArray();
                 RenderSystem.color3f(color[0], color[1], color[2]);
             } else {
                 RenderSystem.color3f(1, 1, 1);

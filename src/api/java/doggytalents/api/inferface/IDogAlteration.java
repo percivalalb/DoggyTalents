@@ -62,6 +62,10 @@ public interface IDogAlteration {
         return ActionResultType.PASS;
     }
 
+    default ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+        return ActionResult.resultPass(0F);
+    }
+
     default ActionResultType canBreatheUnderwater(AbstractDogEntity dogIn) {
         return ActionResultType.PASS;
     }
@@ -136,6 +140,10 @@ public interface IDogAlteration {
     }
 
     default ActionResultType isInvulnerable(AbstractDogEntity dogIn) {
+        return ActionResultType.PASS;
+    }
+
+    default ActionResultType onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
         return ActionResultType.PASS;
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 
@@ -46,14 +47,19 @@ public class PillowPawTalent extends Talent {
         return level >= 5 ? ActionResultType.FAIL : ActionResultType.PASS;
     }
 
-    //TODO
-//    @Override
-//    public boolean isImmuneToFalls(AbstractDogEntity dog) {
-//        return dog.getLevel(this) >= 5;
-//    }
-//
-//    @Override
-//    public ActionResult<Integer> fallProtection(AbstractDogEntity dog) {
-//        return ActionResult.resultSuccess(dog.getLevel(this) * 3);
-//    }
+    @Override
+    public ActionResultType onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
+        int level = dogIn.getLevel(this);
+        return level >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    }
+
+    @Override
+    public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+        int level = dogIn.getLevel(this);
+        if (level > 0) {
+            return ActionResult.resultSuccess(distance - level * 3);
+        }
+
+        return ActionResult.resultPass(0F);
+    }
 }

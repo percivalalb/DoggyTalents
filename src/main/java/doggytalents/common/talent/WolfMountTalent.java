@@ -102,15 +102,14 @@ public class WolfMountTalent extends Talent {
         return ActionResult.resultPass(hungerTick);
     }
 
-    //TODO
-//    @Override
-//    public ActionResult<Integer> fallProtection(AbstractDogEntity dog) {
-//        if(dog.getLevel(this) >= 5) {
-//            return ActionResult.resultSuccess(1);
-//        }
-//
-//        return ActionResult.resultPass(0);
-//    }
+    @Override
+    public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+        if (dogIn.getLevel(this) >= 5) {
+            return ActionResult.resultSuccess(distance - 1F);
+        }
+
+        return ActionResult.resultPass(0F);
+    }
 
     @Override
     public ActionResultType hitByEntity(AbstractDogEntity dogIn, Entity entity) {

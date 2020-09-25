@@ -578,6 +578,45 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
+    public boolean onLivingFall(float distance, float damageMultiplier) {
+        for (IDogAlteration alter : this.alterations) {
+            ActionResultType result = alter.onLivingFall(this, distance, damageMultiplier);
+
+            if (result.isSuccess()) {
+                return true;
+            } else if (result == ActionResultType.FAIL) {
+                return false;
+            }
+        }
+
+        return super.onLivingFall(distance, damageMultiplier);
+    }
+
+    // TODO
+    @Override
+    public int getMaxFallHeight() {
+        return super.getMaxFallHeight();
+    }
+
+    @Override
+    protected int calculateFallDamage(float distance, float damageMultiplier) {
+        EffectInstance effectInst = this.getActivePotionEffect(Effects.JUMP_BOOST);
+        float f = effectInst == null ? 0.0F : effectInst.getAmplifier() + 1;
+        distance -= f;
+
+        for (IDogAlteration alter : this.alterations) {
+            ActionResult<Float> result = alter.calculateFallDistance(this, distance);
+
+            if (result.getType().isSuccess()) {
+                distance = result.getResult();
+                break;
+            }
+        }
+
+        return MathHelper.ceil((distance - 3.0F - f) * damageMultiplier);
+    }
+
+    @Override
     public boolean canBreatheUnderwater() {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canBreatheUnderwater(this);

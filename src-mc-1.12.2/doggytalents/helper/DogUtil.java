@@ -6,7 +6,9 @@ import doggytalents.item.ItemChewStick;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.EnumFacing;
@@ -75,6 +77,15 @@ public class DogUtil {
         return false;
     }
     
+    public static boolean doesInventoryContainTorch(EntityDog dog, IInventory inventory) {
+        for(int i = 0; i < inventory.getSizeInventory(); i++) {
+            if(inventory.getStackInSlot(i) == new ItemStack(Item.getItemFromBlock(Blocks.TORCH)))
+            	return true;
+        }
+
+        return false;
+    }
+    
     public static int getFirstSlotWithFood(EntityDog dog, IInventory inventory) {
     	 for(int i = 0; i < inventory.getSizeInventory(); i++) {
              if(dog.foodValue(inventory.getStackInSlot(i)) > 0)
@@ -111,6 +122,30 @@ public class DogUtil {
                         return ItemStack.EMPTY;
                     }
                 }
+            }
+        }
+
+        if(itemstack.getCount() != stack.getCount())
+        	inventory.markDirty();
+
+        return itemstack;
+    }
+    
+    public static ItemStack delItem(IInventory inventory, ItemStack stack) {
+    	if(stack.isEmpty()) return ItemStack.EMPTY;
+    	
+        ItemStack itemstack = stack.copy();
+
+        for(int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack itemstack1 = inventory.getStackInSlot(i);
+
+            if(itemstack1.isEmpty()) {
+            	inventory.setInventorySlotContents(i, itemstack);
+            	inventory.markDirty();
+                return ItemStack.EMPTY;
+            }
+            else {
+            	itemstack.shrink(1);
             }
         }
 

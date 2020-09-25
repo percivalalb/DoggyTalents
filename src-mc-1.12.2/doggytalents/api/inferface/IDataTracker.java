@@ -13,6 +13,9 @@ public interface IDataTracker {
     public void setWillObeyOthers(boolean flag);
     public boolean willObeyOthers();
     
+    public void setDwarf(boolean flag);
+    public boolean isDwarf();
+    
     public void setFriendlyFire(boolean flag);
     public boolean canFriendlyFire();
     
@@ -32,6 +35,9 @@ public interface IDataTracker {
     
     public void setCollarColour(int value);
     public int getCollarColour();
+    
+    public void setArmorData(int value);
+    public int getArmorData();
     
     public void setCapeData(int value);
     public int getCapeData();

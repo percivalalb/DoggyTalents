@@ -1,11 +1,14 @@
 package doggytalents.handler;
 
 import doggytalents.configuration.ConfigurationHandler;
+import doggytalents.entity.EntityDog;
 import doggytalents.lib.Reference;
 import doggytalents.talent.HunterDog;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

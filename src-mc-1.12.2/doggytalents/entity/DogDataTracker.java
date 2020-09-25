@@ -23,7 +23,9 @@ public class DogDataTracker implements IDataTracker {
 	public static final DataParameter<Integer> BONE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> FRIENDLY_FIRE = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> OBEY_OTHERS = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
+	public static final DataParameter<Boolean> DWARF = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Integer> CAPE = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
+	public static final DataParameter<Integer> ARMOR = EntityDataManager.<Integer>createKey(EntityDog.class, DataSerializers.VARINT);
 	public static final DataParameter<Boolean> SUNGLASSES = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Boolean> RADAR_COLLAR = EntityDataManager.<Boolean>createKey(EntityDog.class, DataSerializers.BOOLEAN);
 	public static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.<Optional<BlockPos>>createKey(EntityDog.class, DataSerializers.OPTIONAL_BLOCK_POS);
@@ -59,6 +61,7 @@ public class DogDataTracker implements IDataTracker {
         this.getDataManager().register(TALENTS, "");
         this.getDataManager().register(HUNGER, Integer.valueOf(60));
         this.getDataManager().register(OBEY_OTHERS, Boolean.valueOf(false));
+        this.getDataManager().register(DWARF, Boolean.valueOf(false));
         this.getDataManager().register(FRIENDLY_FIRE, Boolean.valueOf(false));
         this.getDataManager().register(BONE, -1);
         this.getDataManager().register(RADAR_COLLAR, Boolean.valueOf(false));
@@ -68,6 +71,7 @@ public class DogDataTracker implements IDataTracker {
         this.getDataManager().register(BOWL_POS, Optional.absent());
         this.getDataManager().register(BED_POS, Optional.absent());
         this.getDataManager().register(CAPE, -2);
+        this.getDataManager().register(ARMOR, -2);
         this.getDataManager().register(SUNGLASSES, false);
         this.getDataManager().register(SIZE, Integer.valueOf(3));
         this.getDataManager().register(GENDER, "");
@@ -87,10 +91,20 @@ public class DogDataTracker implements IDataTracker {
     public void setWillObeyOthers(boolean flag) {
     	this.getDataManager().set(OBEY_OTHERS, flag);
     }
+	
+	@Override
+    public void setDwarf(boolean flag) {
+    	this.getDataManager().set(DWARF, flag);
+    }
     
 	@Override
     public boolean willObeyOthers() {
     	return this.getDataManager().get(OBEY_OTHERS);
+    }
+	
+	@Override
+    public boolean isDwarf() {
+    	return this.getDataManager().get(DWARF);
     }
     
 	@Override
@@ -110,7 +124,7 @@ public class DogDataTracker implements IDataTracker {
     
     @Override
     public void setDogHunger(int par1) {
-    	this.getDataManager().set(HUNGER, Math.min(Constants.HUNGER_POINTS, Math.max(0, par1)));
+    	this.getDataManager().set(HUNGER, Math.min(Constants.hungerPoints, Math.max(0, par1)));
     }
     
     @Override
@@ -166,6 +180,16 @@ public class DogDataTracker implements IDataTracker {
     @Override
     public int getCapeData() {
     	return this.getDataManager().get(CAPE);
+    }
+    
+    @Override
+    public void setArmorData(int value) {
+    	this.getDataManager().set(ARMOR, value);
+    }
+    
+    @Override
+    public int getArmorData() {
+    	return this.getDataManager().get(ARMOR);
     }
     
     @Override

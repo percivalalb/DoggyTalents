@@ -26,10 +26,10 @@ public class LayerSunglasses implements LayerRenderer<EntityDog> {
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         if(dog.hasSunglasses()) {
-        	if(dog.world.getWorldTime() >= 12000)
-        		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES_NIGHT);
-        	else
+        	if(dog.world.getWorldTime() < 12000)
         		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES);
+        	else
+        		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_SUNGLASSES_NIGHT);
         	GlStateManager.color(1.0F, 1.0F, 1.0F);
         	this.sunglassesModel.setModelAttributes(this.dogRenderer.getMainModel());
         	this.sunglassesModel.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);

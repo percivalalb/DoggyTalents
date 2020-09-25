@@ -41,10 +41,9 @@ public class RoaringGale extends ITalent {
 	@Override
 	public void onLivingUpdate(EntityDog dog) {
 		int level = dog.talents.getLevel(this);
-		int masterOrder = dog.masterOrder();
 		int roarCooldown = (Integer)dog.objects.get("roarcooldown");
 
-		if (dog.isClient() || masterOrder != 4 || dog.getHealth() <= Constants.LOW_HEATH_LEVEL || dog.isChild() || level < 1) {
+		if (dog.isClient() || dog.getHealth() <= Constants.lowHealthLevel || dog.isChild() || level < 1) {
 			return;
 		}
 
@@ -74,7 +73,7 @@ public class RoaringGale extends ITalent {
 		
 		List<EntityLiving> list = dog.world.<EntityLiving>getEntitiesWithinAABB(EntityLiving.class, dog.getEntityBoundingBox().grow(level * 4, 4D, level * 4).expand(0.0D, (double) dog.world.getHeight(), 0.0D));
 		for (EntityLiving mob : list) {
-			if(mob instanceof IMob) {
+			if(mob instanceof IMob && dog.getAttackTarget() != null) {
 				dog.playSound(SoundEvents.ENTITY_WOLF_GROWL, 1f, 1f);
 				mob.attackEntityFrom(DamageSource.GENERIC, damage);
 				mob.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, effectDuration, 127, false, false));

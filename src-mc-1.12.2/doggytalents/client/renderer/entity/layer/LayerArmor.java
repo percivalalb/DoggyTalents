@@ -25,14 +25,25 @@ public class LayerArmor implements LayerRenderer<EntityDog> {
 
     @Override
     public void doRenderLayer(EntityDog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        if(dog.talents.getLevel("guarddog") > 0) {
-        	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_ARMOR);
-        	GlStateManager.color(1.0F, 1.0F, 1.0F);
+    	if(dog.hasArmor()) {
+    		if(dog.hasArmorColoured()) {
+    			if(dog.getArmorData() == dog.BONE_ARMOR) {
+    				this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_BONE_ARMOR);
+    			}
+    			else if(dog.getArmorData() == dog.WOODEN_ARMOR) {
+    				this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_WOODEN_ARMOR);
+    			} 
+    			else {
+    				this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_ARMOR);
 
+    				float[] afloat = dog.getArmorColour();
+    				GlStateManager.color(afloat[0], afloat[1], afloat[2]);
+    			}
+    		} 
         	this.armorModel.setModelAttributes(this.dogRenderer.getMainModel());
         	this.armorModel.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
         	this.armorModel.render(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        }
+        } 
     }
 
     @Override

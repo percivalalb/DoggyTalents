@@ -1,11 +1,15 @@
 package doggytalents.entity.ai;
 
+import java.util.List;
+
 import doggytalents.api.inferface.IWaterMovement;
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil.EnumMode;
 import doggytalents.helper.DogUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -61,9 +65,15 @@ public class EntityAIFollowOwner extends EntityAIBase
       		if(distanceAway >= 16D && distanceAway <= 100D)
       			return false;
       	} else {
-	      	if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist)) {
-	            return false;
-	      	}
+      		if(this.dog.mode.isMode(EnumMode.GUARD)) {
+      			if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(2.0D * 2.0D)) {
+      				return false;
+      			}
+      		} else {
+		      	if(!this.dog.hasBone() && this.dog.getDistanceSq(entitylivingbase) < (double)(this.minDist * this.minDist)) {
+		            return false;
+		      	}
+      		}
       	}
         //Execute
         this.owner = entitylivingbase;
@@ -92,8 +102,7 @@ public class EntityAIFollowOwner extends EntityAIBase
     }
 
     @Override
-    public void updateTask() {
-
+    public void updateTask() {    	
         if(!this.dog.isSitting()) {
             if(--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;

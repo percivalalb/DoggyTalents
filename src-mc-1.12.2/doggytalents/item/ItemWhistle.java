@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import doggytalents.entity.EntityDog;
+import doggytalents.entity.ModeUtil;
 import doggytalents.entity.ai.EntityAIFollowOwner;
 import doggytalents.helper.DogUtil;
 
@@ -27,8 +28,7 @@ import doggytalents.helper.DogUtil;
  */
 public class ItemWhistle extends ItemDT {
 
-	//Still needs work here, have to figure out a way to save the dog data in case they do despawn/get too far away
-	/*@Override
+	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		if (world.isRemote) {
 			//world.playSound(player, player.getPosition(), player.isSneaking() ? SWSound.WHISTLE_LONG : SWSound.WHISTLE_SHORT, SoundCategory.PLAYERS, 1, 1);
@@ -41,7 +41,7 @@ public class ItemWhistle extends ItemDT {
 				int zPos = MathHelper.floor(player.posZ);
 				int yPos = MathHelper.floor(player.getEntityBoundingBox().minY);
 				
-				if (dog.isTamed() && dog.isOwner(player) && (!dog.isSitting() || player.isSneaking())) {
+				if (dog.isTamed() && dog.isOwner(player) && (!dog.isSitting() || player.isSneaking()) && (dog.mode.getMode() != ModeUtil.EnumMode.WANDERING)) {
 					for (int x = -2; x <= 2; x++) {
 						for (int z = -2; z <= 2; z++) {
 							if(DogUtil.isTeleportFriendlyBlock(dog, world, xPos, zPos, yPos, x, z)) {
@@ -50,6 +50,7 @@ public class ItemWhistle extends ItemDT {
 								dog.setLocationAndAngles(xPos + x + 0.5, yPos, zPos + z + 0.5, dog.rotationYaw, dog.rotationPitch);
 								dog.getNavigator().clearPath();
 								dog.setAttackTarget(null);
+								dog.mode.setMode(ModeUtil.EnumMode.DOCILE);
 							}
 						}
 					}
@@ -57,5 +58,5 @@ public class ItemWhistle extends ItemDT {
 			}
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-	}*/
+	}
 }

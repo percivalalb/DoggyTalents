@@ -2,15 +2,17 @@ package doggytalents.client.renderer.entity;
 
 import doggytalents.client.model.entity.ModelDog;
 import doggytalents.client.renderer.RenderUtil;
+import doggytalents.client.renderer.entity.layer.LayerArmor;
+import doggytalents.client.renderer.entity.layer.LayerArmorOverlay;
 import doggytalents.client.renderer.entity.layer.LayerBone;
+import doggytalents.client.renderer.entity.layer.LayerBreedingItem;
 import doggytalents.client.renderer.entity.layer.LayerCape;
 import doggytalents.client.renderer.entity.layer.LayerDogCollar;
 import doggytalents.client.renderer.entity.layer.LayerDogHurt;
 import doggytalents.client.renderer.entity.layer.LayerRadioCollar;
 import doggytalents.client.renderer.entity.layer.LayerSunglasses;
-import doggytalents.client.renderer.entity.layer.LayerWings;
+import doggytalents.client.renderer.entity.layer.LayerTalentAccesories;
 import doggytalents.entity.EntityDog;
-import doggytalents.lib.Constants;
 import doggytalents.lib.ResourceLib;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -34,9 +36,10 @@ public class RenderDog extends RenderLiving<EntityDog> {
         this.addLayer(new LayerDogHurt(this));
         this.addLayer(new LayerBone(this));
         this.addLayer(new LayerSunglasses(this));
-        //this.addLayer(new LayerSaddle(this));
-        //this.addLayer(new LayerArmor(this));
-        this.addLayer(new LayerWings(this));
+        this.addLayer(new LayerTalentAccesories(this));
+        this.addLayer(new LayerArmor(this));
+        this.addLayer(new LayerArmorOverlay(this));
+        this.addLayer(new LayerBreedingItem(this));
     }
 
     @Override

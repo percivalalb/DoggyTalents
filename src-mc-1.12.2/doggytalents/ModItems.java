@@ -8,7 +8,9 @@ import doggytalents.item.ItemCommandEmblem;
 import doggytalents.item.ItemDT;
 import doggytalents.item.ItemDireTreat;
 import doggytalents.item.ItemDoggyCharm;
+import doggytalents.item.ItemDwarfsizer;
 import doggytalents.item.ItemFancyCollar;
+import doggytalents.item.ItemNormalizer;
 import doggytalents.item.ItemRadar;
 import doggytalents.item.ItemThrowBone;
 import doggytalents.item.ItemTinyBone;
@@ -51,8 +53,11 @@ public class ModItems {
     public static Item CAPE_COLOURED;
 	public static Item SUNGLASSES;
 	public static Item LEATHER_JACKET;
+	public static Item GUARD_SUIT;
 	public static Item TINY_BONE;
 	public static Item BIG_BONE;
+	public static Item DWARFSIZER;
+	public static Item NORMALIZER;
 	
 	@SubscribeEvent
 	public static void onRegister(RegistryEvent.Register<Item> registry) {
@@ -77,9 +82,12 @@ public class ModItems {
 	    CAPE_COLOURED = new ItemCapeColoured().setUnlocalizedName("doggytalents.capecoloured").setRegistryName(Reference.MOD_ID + ":cape_coloured");
 	    SUNGLASSES = new ItemDT().setUnlocalizedName("doggytalents.sunglasses").setRegistryName(Reference.MOD_ID + ":sunglasses");
 	 	LEATHER_JACKET = new ItemDT().setUnlocalizedName("doggytalents.leatherjacket").setRegistryName(Reference.MOD_ID + ":leather_jacket");
+	 	GUARD_SUIT = new ItemDT().setUnlocalizedName("doggytalents.guardsuit").setRegistryName(Reference.MOD_ID + ":guard_suit");
 	 	TINY_BONE = new ItemTinyBone().setUnlocalizedName("doggytalents.tinybone").setRegistryName(Reference.MOD_ID + ":tiny_bone");
 		BIG_BONE = new ItemBigBone().setUnlocalizedName("doggytalents.bigbone").setRegistryName(Reference.MOD_ID + ":big_bone");
-	 	
+		DWARFSIZER = new ItemDwarfsizer().setUnlocalizedName("doggytalents.dwarfsizer").setRegistryName(Reference.MOD_ID + ":dwarfsizer");
+		NORMALIZER = new ItemNormalizer().setUnlocalizedName("doggytalents.normalizer").setRegistryName(Reference.MOD_ID + ":normalizer");
+
 		registry.getRegistry().register(THROW_BONE);
 	    registry.getRegistry().register(TRAINING_TREAT);
 	    registry.getRegistry().register(SUPER_TREAT);
@@ -101,7 +109,10 @@ public class ModItems {
 	    registry.getRegistry().register(CAPE_COLOURED);
 	    registry.getRegistry().register(LEATHER_JACKET);
 	    registry.getRegistry().register(TINY_BONE);
+	    registry.getRegistry().register(GUARD_SUIT);
 	    registry.getRegistry().register(BIG_BONE);
+	    registry.getRegistry().register(DWARFSIZER);
+	    registry.getRegistry().register(NORMALIZER);
 	}
 	
 	
@@ -133,6 +144,9 @@ public class ModItems {
 		ModelHelper.setModel(SUNGLASSES, 0, "doggytalents:sunglasses");
 		ModelHelper.setModel(LEATHER_JACKET, 0, "doggytalents:leather_jacket");
 		ModelHelper.setModel(TINY_BONE, 0, "doggytalents:tiny_bone");
+		ModelHelper.setModel(GUARD_SUIT, 0, "doggytalents:guard_suit");
 		ModelHelper.setModel(BIG_BONE, 0, "doggytalents:big_bone");
+		ModelHelper.setModel(DWARFSIZER, 0, "doggytalents:dwarfsizer");
+		ModelHelper.setModel(NORMALIZER, 0, "doggytalents:normalizer");
 	}
 }

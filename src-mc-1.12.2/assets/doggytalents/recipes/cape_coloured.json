@@ -2,15 +2,16 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "S S",
-    "LLL",
-    "LLL"
+    " W ",
+    " W "
   ],
   "key": {
     "S": {
       "item": "minecraft:string"
     },
-    "L": {
-      "item": "minecraft:leather"
+    "W": {
+      "item": "minecraft:wool",
+      "data": 0
     }
   },
   "result": {

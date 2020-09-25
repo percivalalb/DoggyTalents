@@ -57,7 +57,7 @@ public class DoggyTalents {
 	public void postInit(FMLPostInitializationEvent event) {
 		DoggyTalentsAPI.PACKPUPPY_BLACKLIST.registerItem(ModItems.THROW_BONE);
 		DoggyTalentsAPI.BREED_WHITELIST.registerItem(ModItems.BREEDING_BONE);
-		DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
+		//DoggyTalentsAPI.BEG_WHITELIST.registerItem(Items.BONE);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.THROW_BONE);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.TRAINING_TREAT);
 		DoggyTalentsAPI.BEG_WHITELIST.registerItem(ModItems.MASTER_TREAT);
@@ -109,6 +109,9 @@ public class DoggyTalents {
 		TalentRegistry.registerTalent(new ShepherdDog());
 		TalentRegistry.registerTalent(new SwimmerDog());
 		TalentRegistry.registerTalent(new WolfMount());
+		TalentRegistry.registerTalent(new DoggyTorch());
+		TalentRegistry.registerTalent(new FarmerDog());
+		TalentRegistry.registerTalent(new BreederDog());
 		
 		AddonManager.registerAddons();
 		AddonManager.runRegisteredAddons(ConfigurationHandler.CONFIG);

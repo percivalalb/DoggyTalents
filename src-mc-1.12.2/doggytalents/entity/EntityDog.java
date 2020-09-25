@@ -30,7 +30,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -46,6 +45,7 @@ import net.minecraft.entity.monster.EntityGhast;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntityWolf;
@@ -53,12 +53,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
@@ -92,8 +93,19 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     public ModeUtil mode;
     public CoordUtil coords;
     public Map<String, Object> objects;
-    
-	public int prevSize;
+	
+	public int WOODEN_ARMOR = 0;
+	public int BONE_ARMOR = 1;
+    public int LEATHER_ARMOR = 2;
+	public int GOLD_ARMOR = 3;
+	public int IRON_ARMOR = 4;
+	public int DIAMOND_ARMOR = 5;
+	public int TIN_ARMOR = 6;
+	public int COPPER_ARMOR = 7;
+	public int BRONZE_ARMOR = 8;
+	public int STEEL_ARMOR = 9;
+	public int MITHRIL_ARMOR = 10;
+	public int ADAMANTIUM_ARMOR = 11;
     
     //Timers
     private int hungerTick;
@@ -136,7 +148,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIModeAttackTarget(this));
         this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit)));
+        this.targetTasks.addTask(5, new EntityAITargetNonTamed(this, EntityAnimal.class, false, entity -> (entity instanceof EntitySheep || entity instanceof EntityRabbit || entity instanceof EntityOcelot)));
         this.targetTasks.addTask(6, new EntityAIShepherdDog(this, EntityAnimal.class, 0, false));
     }
 	
@@ -152,7 +164,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
     @Override
     protected SoundEvent getAmbientSound() {
-    	if(this.getDogHunger() <= Constants.LOW_HUNGER) {
+    	if(this.getDogHunger() <= Constants.lowHunger) {
     		return SoundEvents.ENTITY_WOLF_WHINE;
     	}
     	if (this.rand.nextInt(3) == 0)
@@ -196,8 +208,16 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(this.isTamed() ? 20.0D : 8.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
+       
+        this.updateEntityAttributes();
+    }
+    
+    public void updateEntityAttributes() {
+    	if(this.isTamed())
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
+        else
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(8.0D);
     }
     
     @Override
@@ -212,7 +232,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         //Allow for the global searching of dogs with the whistle item
         //this.enablePersistence();
         
-        // This method is called from the constructor early
         this.talents = new TalentUtil(this);
         this.levels = new LevelUtil(this);
         this.mode = new ModeUtil(this);
@@ -242,9 +261,11 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         tagCompound.setBoolean("friendlyFire", this.canFriendlyFire());
         tagCompound.setBoolean("radioCollar", this.hasRadarCollar());
         tagCompound.setBoolean("sunglasses", this.hasSunglasses());
+        tagCompound.setBoolean("isDwarf", this.isDwarf());
         tagCompound.setInteger("capeData", this.getCapeData());
         tagCompound.setInteger("dogSize", this.getDogSize());
         tagCompound.setString("dogGender", this.getGender());
+        tagCompound.setInteger("armorData", this.getArmorData());
         
         this.talents.writeTalentsToNBT(tagCompound);
         this.levels.writeTalentsToNBT(tagCompound);
@@ -265,12 +286,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         if(tagCompound.hasKey("collarColour", 99)) this.setCollarData(tagCompound.getInteger("collarColour"));
         this.setDogHunger(tagCompound.getInteger("dogHunger"));
         this.setWillObeyOthers(tagCompound.getBoolean("willObey"));
+        this.setDwarf(tagCompound.getBoolean("isDwarf"));
         this.setFriendlyFire(tagCompound.getBoolean("friendlyFire"));
         this.hasRadarCollar(tagCompound.getBoolean("radioCollar"));
         this.setHasSunglasses(tagCompound.getBoolean("sunglasses"));
         if(tagCompound.hasKey("capeData", 99)) this.setCapeData(tagCompound.getInteger("capeData"));
         if(tagCompound.hasKey("dogSize", 99)) this.setDogSize(tagCompound.getInteger("dogSize"));
         this.setGender(tagCompound.getString("dogGender"));
+        if(tagCompound.hasKey("armorData", 99)) this.setArmorData(tagCompound.getInteger("armorData"));
         
         this.talents.readTalentsFromNBT(tagCompound);
         this.levels.readTalentsFromNBT(tagCompound);
@@ -330,7 +353,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	        }
     	}
         
-        if(this.getHealth() != Constants.LOW_HEATH_LEVEL) {
+        if(this.getHealth() != Constants.lowHealthLevel) {
 	        this.prevHealingTick = this.healingTick;
 	        this.healingTick += this.nourishment();
 	        
@@ -347,7 +370,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             this.setHealth(1);
         }
         
-        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > Constants.LOW_HEATH_LEVEL) {
+        if(this.getDogHunger() <= 0 && this.world.getWorldInfo().getWorldTime() % 100L == 0L && this.getHealth() > Constants.lowHealthLevel) {
             this.attackEntityFrom(DamageSource.GENERIC, 1);
             //this.fleeingTick = 0;
         }
@@ -375,6 +398,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         	this.foodBowlCheck = 0;
         }
         
+        if(this.world.isRemote) {
+        	if(this.talents.getLevel("hellhound") == 5) {
+        		if(this.rand.nextInt(11) == 0) {
+                    this.world.spawnParticle(EnumParticleTypes.FLAME, this.posX + (this.rand.nextDouble() - 0.5D) * (double)this.width, this.posY + this.rand.nextDouble() * (double)this.height, this.posZ + (this.rand.nextDouble() - 0.5D) * (double)this.width, 0.0D, 0.0D, 0.0D);
+                }	
+        	}            
+        }
+        
         this.updateBoundingBox();
 
         //this.locationManager.addOrUpdateLocation(this);
@@ -385,6 +416,16 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	@Override
     public void onUpdate() {
         super.onUpdate();
+        
+        //testing teleport when lost
+        if(this.getOwner() != null && this.hasRadarCollar() && (this.getOwner().getHeldItemMainhand().getItem() == ModItems.RADAR || this.getOwner().getHeldItemOffhand().getItem() == ModItems.RADAR)) {
+        	double distanceAway = this.getDistanceSq(this.getOwner());
+        	if(distanceAway > 100D) {
+        		if(this.aiSit != null) {
+            		this.aiSit.setSitting(false);
+            	} 
+        	}        	           	
+    	}
         
         if(this.rand.nextInt(200) == 0)
         	this.hiyaMaster = true;
@@ -432,9 +473,40 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     		}
     	}
         
+        //SLEEP IN BED
+    	if(this.isSitting()) {
+    		boolean flag1 = this.isSitting();
+            boolean flag2 = this.getOwner() != null && this.getOwner().isPlayerSleeping();
+            boolean flag3 = this.world.getBlockState(this.getPosition().down()).getBlock() == ModBlocks.DOG_BED || this.world.getBlockState(this.getPosition().down()).getBlock() == Blocks.BED;
+            
+    		if(flag1 && (flag2 || flag3)) {
+    			this.renderYawOffset = this.prevRenderYawOffset;	
+    		}
+        }
+        
+        //ARMOR
+        if(this.hasArmor()) {
+        	//VANILLA
+        	if(this.getArmorData() == LEATHER_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3);
+        	if(this.getArmorData() == GOLD_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5);	
+    		if(this.getArmorData() == IRON_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6);
+			if(this.getArmorData() == DIAMOND_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8);
+			//SMELTING
+			if(this.getArmorData() == WOODEN_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3);
+			if(this.getArmorData() == BONE_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(3);
+			if(this.getArmorData() == TIN_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5);
+			if(this.getArmorData() == COPPER_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(5);
+			if(this.getArmorData() == BRONZE_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6);
+			if(this.getArmorData() == STEEL_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7);
+			if(this.getArmorData() == MITHRIL_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(7);
+			if(this.getArmorData() == ADAMANTIUM_ARMOR) this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8);
+    	}
+    	else 
+    		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0);
+        
         TalentHelper.onUpdate(this);
     }
-    
+
     public boolean isControllingPassengerPlayer() {
         return this.getControllingPassenger() instanceof EntityPlayer;
     }
@@ -513,14 +585,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             if(!stack.isEmpty()) {
             	int foodValue = this.foodValue(stack);
             	
-            	if(foodValue != 0 && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player) && !this.isIncapacicated()) {
+            	if(foodValue != 0 && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player) && !this.isIncapacicated()) {
             		if(!player.capabilities.isCreativeMode)
             			stack.shrink(1);
             		
                     this.setDogHunger(this.getDogHunger() + foodValue);
-                    if(stack.getItem() == ModItems.CHEW_STICK)
+                    if(stack.getItem() == ModItems.CHEW_STICK) {
                     	((ItemChewStick)ModItems.CHEW_STICK).addChewStickEffects(this);
-                    
+                    }
                     return true;
                 }
             	/*else if(stack.getItem() == Items.BONE && this.canInteract(player)) {
@@ -579,6 +651,12 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 		stack.shrink(1);
                  	return true;
                 }
+                else if(stack.getItem() == ModItems.GUARD_SUIT && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
+                	this.setGuardSuit();
+                	if(!player.capabilities.isCreativeMode)
+                		stack.shrink(1);
+                 	return true;
+                }
                 else if(stack.getItem() == ModItems.CAPE_COLOURED && this.canInteract(player) && !this.hasCape() && !this.isIncapacicated()) { 
                 	int colour = -1;
                 	
@@ -603,10 +681,144 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                  	treat.giveTreat(type, player, stack, this);
                  	return true;
                 }
+                else if(stack.getItem() instanceof ItemArmor && this.canInteract(player) && !this.hasArmor() && !this.isIncapacicated()) { 
+                	if(stack.getItem() == Items.LEATHER_CHESTPLATE) {
+                		int data = this.LEATHER_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Items.GOLDEN_CHESTPLATE) {
+                		int data = this.GOLD_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Items.IRON_CHESTPLATE) {
+                		int data = this.IRON_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Items.DIAMOND_CHESTPLATE) {
+                		int data = this.DIAMOND_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:wooden_chest")) {
+                		int data = this.WOODEN_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:bone_chest")) {
+                		int data = this.BONE_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:tin_chest")) {
+                		int data = this.TIN_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:copper_chest")) {
+                		int data = this.COPPER_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:bronze_chest")) {
+                		int data = this.BRONZE_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:steel_chest")) {
+                		int data = this.STEEL_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:mithril_chest")) {
+                		int data = this.MITHRIL_ARMOR;
+                		this.setArmorData(data);
+                	}
+                	if(stack.getItem() == Item.getByNameOrId("smelting:adamantium_chest")) {
+                		int data = this.ADAMANTIUM_ARMOR;
+                		this.setArmorData(data);
+                	}
+                 	if(isServer()) {
+	                 	if(this.hasCape()) {
+	                 		this.reversionTime = 40;
+	                 		if(this.hasFancyCape()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.CAPE, 1, 0), 1);
+	                	     	this.setNoCape();
+	            			}
+	            			
+	            			if(this.hasCapeColoured()) {
+	            				ItemStack capeDrop = new ItemStack(ModItems.CAPE_COLOURED, 1, 0);
+	            				if(this.isCapeColoured()) {
+		                			capeDrop.setTagCompound(new NBTTagCompound());
+		                			capeDrop.getTagCompound().setInteger("cape_colour", this.getCapeData());
+	            				}
+	                	     	this.entityDropItem(capeDrop, 1);
+	                	     	this.setNoCape();
+	            			}
+	            			
+	            			if(this.hasLeatherJacket()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.LEATHER_JACKET, 1, 0), 1);
+	                	     	this.setNoCape();
+	            			}
+	            			
+	            			if(this.hasGuardSuit()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.GUARD_SUIT, 1, 0), 1);
+	                	     	this.setNoCape();
+	            			}
+	                 	}
+                 	}
+                 	
+                   	if(!player.capabilities.isCreativeMode)
+                   		stack.shrink(1);
+                 	return true;
+                }
                 else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.canInteract(player)) {
-                	if(this.isServer()) {
-                		if(this.hasCollar() || this.hasSunglasses() || this.hasCape()) {
+                	if(isServer()) {
+                		if(this.hasCollar() || this.hasSunglasses() || this.hasCape() || this.hasArmor()) {
                 			this.reversionTime = 40;
+                			if(this.hasArmorColoured()) {
+                				if(this.getArmorData() == LEATHER_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Items.LEATHER_CHESTPLATE, 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == GOLD_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Items.GOLDEN_CHESTPLATE, 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == IRON_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Items.IRON_CHESTPLATE, 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == DIAMOND_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Items.DIAMOND_CHESTPLATE, 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.WOODEN_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:wooden_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.BONE_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:bone_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.TIN_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:tin_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.COPPER_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:copper_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.BRONZE_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:bronze_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.STEEL_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:steel_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.MITHRIL_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:mithril_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}
+                				if(this.getArmorData() == this.ADAMANTIUM_ARMOR) {
+                					ItemStack armorDrop = new ItemStack(Item.getByNameOrId("smelting:adamantium_chest"), 1, 0);
+    	                	     	this.entityDropItem(armorDrop, 1);
+                				}                				
+	                	     	this.setNoArmor();
+                			}
                 			if(this.hasCollarColoured()) {
 	                			ItemStack collarDrop = new ItemStack(ModItems.WOOL_COLLAR, 1, 0);
 	                			if(this.isCollarColoured()) {
@@ -642,6 +854,11 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	                	     	this.setNoCape();
                 			}
                 			
+                			if(this.hasGuardSuit()) {
+	                	     	this.entityDropItem(new ItemStack(ModItems.GUARD_SUIT, 1, 0), 1);
+	                	     	this.setNoCape();
+	            			}
+                			
                 			if(this.hasSunglasses()) {
 	                	     	this.entityDropItem(new ItemStack(ModItems.SUNGLASSES, 1, 0), 1);
 	                	     	this.setHasSunglasses(false);
@@ -661,7 +878,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	                        this.hasRadarCollar(false);
 	                        this.reversionTime = 40;
                 		}
-                    }
+                     }
 
                 	return true;
                 }
@@ -672,7 +889,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     if(isServer()) {
                         this.aiSit.setSitting(true);
                         this.setHealth(this.getMaxHealth());
-                        this.setDogHunger(Constants.HUNGER_POINTS);
+                        this.setDogHunger(Constants.hungerPoints);
                         this.regenerationTick = 0;
                         this.setAttackTarget((EntityLivingBase)null);
                         this.playTameEffect(true);
@@ -684,6 +901,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 else if(stack.getItem() == Items.DYE && this.canInteract(player)) { //TODO Add Plants compatibility
                     if(!this.hasCollarColoured())
                     	return true;
+                    
                     
                     if(!this.isCollarColoured()) {
                         int colour = EnumDyeColor.byDyeDamage(stack.getMetadata()).getColorValue();
@@ -727,7 +945,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                     }
                     return true;
                 }
-                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.HUNGER_POINTS && this.canInteract(player)) {
+                else if(stack.getItem() == ModItems.TREAT_BAG && this.getDogHunger() < Constants.hungerPoints && this.canInteract(player)) {
                 	
                 	InventoryTreatBag treatBag = new InventoryTreatBag(player, player.inventory.currentItem, stack);
             		treatBag.openInventory(player);
@@ -741,26 +959,22 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
                 }
             }
 
-            if(!this.isBreedingItem(stack) && this.canInteract(player)) {
-            	if(this.isServer()) {
-	                this.aiSit.setSitting(!this.isSitting());
-	                this.isJumping = false;
-	                this.navigator.clearPath();
-	                this.setAttackTarget((EntityLivingBase)null);
-            	}
+            if(isServer() && !this.isBreedingItem(stack) && this.canInteract(player)) {
+                this.aiSit.setSitting(!this.isSitting());
+                this.isJumping = false;
+                this.navigator.clearPath();
+                this.setAttackTarget((EntityLivingBase)null);
                 return true;
             }
         }
-        else if(stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1) {
-        	if(this.isServer()) {
-	            this.setDead();
-	            EntityWolf wolf = new EntityWolf(this.world);
-	            wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-	            this.world.spawnEntity(wolf);
-        	}
+        else if(stack != null && stack.getItem() == ModItems.COLLAR_SHEARS && this.reversionTime < 1 && isServer()) {
+            this.setDead();
+            EntityWolf wolf = new EntityWolf(this.world);
+            wolf.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+            this.world.spawnEntity(wolf);
             return true;
         }
-        else if(stack.getItem() == Items.BONE) {
+        else if(stack != null && stack.getItem() == Items.BONE) {
         	if(!player.capabilities.isCreativeMode)
         		stack.shrink(1);
 
@@ -787,9 +1001,10 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
         return super.processInteract(player, hand);
     }
     
-    @Override
-    public void travel(float strafe, float vertical, float forward) {
-    	 if (this.isBeingRidden() && this.canBeSteered()) {
+    public void travel(float strafe, float vertical, float forward)
+    {
+        if (this.isControllingPassengerPlayer())
+        {
 			EntityLivingBase entitylivingbase = (EntityLivingBase)this.getControllingPassenger();
             this.rotationYaw = entitylivingbase.rotationYaw;
             this.prevRotationYaw = this.rotationYaw;
@@ -888,6 +1103,9 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             if (itemfood.isWolfsFavoriteMeat())
             	foodValue = 40;
         }
+        else if(stack.getItem() == Items.FISH || stack.getItem() == Items.COOKED_FISH) {
+        	foodValue = 30;
+    	}
         else if(stack.getItem() == ModItems.CHEW_STICK) {
         	return 10;
         }
@@ -916,8 +1134,11 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
             if((mainhand != null || offhand != null) && (mainhand == Items.WHEAT || offhand == Items.WHEAT)) //Round up Talent
                 order = 3;
             
-            if((mainhand != null || offhand != null) && (mainhand == Items.BONE || offhand == Items.BONE)) //Roar Talent
+            if((mainhand != null || offhand != null) && (mainhand instanceof ItemSeeds || offhand instanceof ItemSeeds)) //Farm Talent
             	order = 4;
+            
+            if((mainhand != null || offhand != null) && (mainhand == Items.CARROT_ON_A_STICK || offhand == Items.CARROT_ON_A_STICK)) //LiveStock Carer Talent
+            	order = 5;
         }
 
         return order;
@@ -991,6 +1212,14 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     
     public boolean willObeyOthers() {
     	return this.dataTracker.willObeyOthers();
+    }
+    
+    public void setDwarf(boolean flag) {
+    	this.dataTracker.setDwarf(flag);
+    }
+    
+    public boolean isDwarf() {
+    	return this.dataTracker.isDwarf();
     }
     
     public void setFriendlyFire(boolean flag) {
@@ -1082,6 +1311,9 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     
     @Override
 	public boolean shouldAttackEntity(EntityLivingBase target, EntityLivingBase owner) {
+    	if(this.isIncapacicated())
+    		return false;
+    	
         if(TalentHelper.canAttackEntity(this, target))
     		return true;
     	
@@ -1119,7 +1351,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
     }
     
     public boolean isIncapacicated() {
-    	return this.isImmortal() && this.getHealth() <= Constants.LOW_HEATH_LEVEL;
+    	return this.isImmortal() && this.getHealth() <= Constants.lowHealthLevel;
     }
     
     @Override
@@ -1181,6 +1413,111 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
 	}
 	
+	//Armor related functions
+	public int getArmorData() {
+    	return this.dataTracker.getArmorData();
+    }
+    
+    public void setArmorData(int value) {
+    	this.dataTracker.setArmorData(value);
+    }
+    
+    public boolean hasArmor() {
+		return this.getArmorData() != -2;
+	}
+    
+	public boolean hasArmorColoured() {
+		return this.getArmorData() >= -1;
+	}
+	
+	public boolean isArmorColoured() {
+		return this.getArmorData() > -1;
+	}
+	
+	public void setArmorColoured() {
+		this.setArmorData(-1);
+	}
+	
+    public void setNoArmor() {
+    	this.setArmorData(-2);
+	}
+	
+	public float[] getArmorColour() {
+		if(this.getArmorData() == this.LEATHER_ARMOR) {
+			int r = 150;
+			int g = 90;
+			int b = 45;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.GOLD_ARMOR) {
+			int r = 220;
+			int g = 205;
+			int b = 50;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.IRON_ARMOR) {
+			int r = 255;
+			int g = 255;
+			int b = 255;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.DIAMOND_ARMOR) {
+			int r = 60;
+			int g = 255;
+			int b = 255;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.WOODEN_ARMOR) {
+			int r = 255;
+			int g = 255;
+			int b = 255;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.BONE_ARMOR) {
+			int r = 255;
+			int g = 255;
+			int b = 255;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.TIN_ARMOR) {
+			int r = 215;
+			int g = 255;
+			int b = 255;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.COPPER_ARMOR) {
+			int r = 255;
+			int g = 130;
+			int b = 0;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.BRONZE_ARMOR) {
+			int r = 255;
+			int g = 190;
+			int b = 0;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.STEEL_ARMOR) {
+			int r = 85;
+			int g = 85;
+			int b = 85;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.MITHRIL_ARMOR) {
+			int r = 110;
+			int g = 0;
+			int b = 145;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		if(this.getArmorData() == this.ADAMANTIUM_ARMOR) {
+			int r = 30;
+			int g = 80;
+			int b = 40;			
+			return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
+		}
+		return new float[] {0, 0, 0};		
+	}
+	
 	//Cape related functions
     public int getCapeData() {
     	return this.dataTracker.getCapeData();
@@ -1206,6 +1543,10 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		return this.getCapeData() == -4;
 	}
 	
+	public boolean hasGuardSuit() {
+		return this.getCapeData() == -5;
+	}
+	
 	public boolean isCapeColoured() {
 		return this.getCapeData() > -1;
 	}
@@ -1216,6 +1557,10 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 	
 	public void setLeatherJacket() {
 		this.setCapeData(-4);
+	}
+	
+	public void setGuardSuit() {
+		this.setCapeData(-5);
 	}
 	
 	public void setCapeColoured() {
@@ -1236,7 +1581,15 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		return new float[] {(float)r / 255F, (float)g / 255F, (float)b / 255F};
 	}
 	
-	//Gender related functions
+	///
+	public int getDogSize() {
+		return this.dataTracker.getDogSize();
+	}
+   
+	public void setDogSize(int value) {
+		this.dataTracker.setDogSize(value);
+	}
+	
 	public String getGender() {
 		return this.dataTracker.getGender();
 	}
@@ -1245,20 +1598,7 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 		this.dataTracker.setGender(value);
 	}
 	
-	//Dog Size related functions
-	public int getDogSize() {
-		return this.dataTracker.getDogSize();
-	}
-   
-	public void setDogSize(int value) {
-		this.dataTracker.setDogSize(value);
-	}
-
 	public void updateBoundingBox() {
-		if(this.prevSize == this.getDogSize()) return;
-		
-		
-		
 		switch(this.getDogSize()) {
 		case 1:
 			this.setScale(0.5F);
@@ -1276,8 +1616,6 @@ public class EntityDog extends EntityAbstractDog /*implements IRangedAttackMob*/
 			this.setScale(1.6F);
 			break;
 		}
-		
-		this.prevSize = this.getDogSize();
 	}
 	
 	@Override

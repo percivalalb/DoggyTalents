@@ -34,8 +34,17 @@ public class LayerCape implements LayerRenderer<EntityDog> {
                 this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_CAPE);
                 GlStateManager.color(1.0F, 1.0F, 1.0F);
         	}
-        	else if(dog.hasLeatherJacket()) {
-                this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+        	else if(dog.hasLeatherJacket()) {                
+	            if(dog.getName().equals("Boni") || dog.getName().equals("Bonifacio")) {
+	            	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET_BONI);
+	                GlStateManager.color(1.0F, 1.0F, 1.0F);
+	            } else {
+	            	this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_LEATHER_JACKET);
+	                GlStateManager.color(1.0F, 1.0F, 1.0F);
+	            }
+        	}
+        	else if(dog.hasGuardSuit()) {
+        		this.dogRenderer.bindTexture(ResourceLib.MOB_LAYER_GUARD_SUIT);
                 GlStateManager.color(1.0F, 1.0F, 1.0F);
         	}
 

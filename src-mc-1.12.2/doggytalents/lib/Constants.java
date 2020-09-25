@@ -3,6 +3,8 @@ package doggytalents.lib;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.util.text.TextComponentTranslation;
+
 /**
  * @author ProPercivalalb
  */
@@ -17,9 +19,10 @@ public class Constants {
 	public static boolean DOGGY_WINGS = true;
 	public static boolean DOG_GENDER = false;
 	
-	public static int LOW_HEATH_LEVEL = 1;
-	public static int HUNGER_POINTS = 120;
-	public static int LOW_HUNGER = 20;
+	public static int lowHealthLevel = 1;
+	public static int hungerPoints = 100;
+	public static int lowHunger = 10;
 	
-	public static List<String> DISABLED_TALENTS = new ArrayList<>();
+	public static List<String> DISABLED_TALENTS = new ArrayList<String>();
+
 }

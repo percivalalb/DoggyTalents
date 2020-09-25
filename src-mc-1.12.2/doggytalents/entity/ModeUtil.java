@@ -55,7 +55,9 @@ public class ModeUtil {
 		WANDERING("wandering", false),
 		AGGRESIVE("aggressive"),
 		BERSERKER("berserker"),
-		TACTICAL("tactical");
+		HUNT_ALL("hunt_all"),
+		TACTICAL("tactical"),
+		GUARD("guard");
 		//PATROL("patrol", false);
 		
 		private String unlocalisedTip;

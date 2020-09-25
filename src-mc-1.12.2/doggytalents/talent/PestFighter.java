@@ -23,8 +23,8 @@ public class PestFighter extends ITalent {
             if (level == 5)
                 damage = 2;
 
-            List<EntitySilverfish> list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, dog.getEntityBoundingBox().grow(level * 3, 4D, level * 3));
-            Iterator<EntitySilverfish> iterator = list.iterator();
+            List list = dog.world.getEntitiesWithinAABB(EntitySilverfish.class, dog.getEntityBoundingBox().grow(level * 3, 4D, level * 3));
+            Iterator iterator = list.iterator();
             
             while(iterator.hasNext()) {
             	EntitySilverfish entitySilverfish = (EntitySilverfish)iterator.next();

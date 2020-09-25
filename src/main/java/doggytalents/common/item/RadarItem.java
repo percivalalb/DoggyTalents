@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Lists;
 
 import doggytalents.DoggyItems;
-import doggytalents.client.screen.RadarScreen;
 import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import net.minecraft.entity.Entity;
@@ -23,8 +22,6 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 
 public class RadarItem extends Item {
 

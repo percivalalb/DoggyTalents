@@ -9,14 +9,12 @@ import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.dimension.DimensionType;
-import net.minecraftforge.registries.DataSerializerEntry;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements IDataSerializer<DimensionDependantArg<D>> {
 
     @Override
     public void write(PacketBuffer buf, DimensionDependantArg<D> value) {
-        IDataSerializer ser = value.getSerializer();
+        IDataSerializer<D> ser = value.getSerializer();
         buf.writeInt(DataSerializers.getSerializerId(ser));
         buf.writeInt(value.size());
         value.entrySet().forEach((entry) -> {

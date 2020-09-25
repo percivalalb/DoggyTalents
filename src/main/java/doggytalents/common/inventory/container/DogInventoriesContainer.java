@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
-import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
@@ -66,7 +65,7 @@ public class DogInventoriesContainer extends Container implements IContainerList
 
         int page = this.position.get();
         int drawingColumn = 0;
-        DoggyTalents2.LOGGER.debug("Add slots");
+
         for (int i = 0; i < this.trackableArray.size(); i++) {
             int entityId = this.trackableArray.get(i);
             Entity entity = this.world.getEntityByID(entityId);

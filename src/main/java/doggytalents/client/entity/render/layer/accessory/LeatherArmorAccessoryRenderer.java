@@ -18,7 +18,7 @@ public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer<DogEnti
     private ResourceLocation texture;
 
     public LeatherArmorAccessoryRenderer(ResourceLocation textureIn) {
-        this.model = new DogModel(0.4F);
+        this.model = new DogModel<>(0.4F);
         this.texture = textureIn;
     }
 

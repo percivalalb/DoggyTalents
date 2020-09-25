@@ -24,7 +24,7 @@ public class CreeperSweeperTalent extends Talent {
     public void tick(AbstractDogEntity dogIn) {
         int level = dogIn.getLevel(this);
 
-        int timeLeft = dogIn.getDataOrGet(COOLDOWN, () -> dogIn.ticksExisted) - dogIn.ticksExisted;
+        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
         if(timeLeft <= 0 && !dogIn.isSitting()) {
             List<CreeperEntity> list = dogIn.world.getEntitiesWithinAABB(CreeperEntity.class, dogIn.getBoundingBox().grow(level * 5, level * 2, level * 5));

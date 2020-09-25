@@ -18,7 +18,7 @@ public class ArmorAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
     private ResourceLocation texture;
 
     public ArmorAccessoryRenderer(ResourceLocation textureIn) {
-        this.model = new DogModel(0.4F);
+        this.model = new DogModel<>(0.4F);
         this.texture = textureIn;
     }
 

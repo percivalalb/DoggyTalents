@@ -15,7 +15,6 @@ import doggytalents.common.item.DogShearsItem;
 import doggytalents.common.item.DoggyCharmItem;
 import doggytalents.common.item.DroolBoneItem;
 import doggytalents.common.item.DyeableAccessoryItem;
-import doggytalents.common.item.PatrolItem;
 import doggytalents.common.item.RadarItem;
 import doggytalents.common.item.SizeBoneItem;
 import doggytalents.common.item.ThrowableItem;

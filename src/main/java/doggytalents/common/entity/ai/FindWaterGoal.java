@@ -127,11 +127,8 @@ public class FindWaterGoal extends Goal {
     }
 
     /**
-     * Returning {@link BlockType#FIRE} indicates the entity is actively in danger
-     * Returning {@link BlockType#WATER} indicates the entity is on fire but not in source
-     * Returning {@link BlockType#SAFE} indicates the entity is fine
      *
-     * @param bb
+     * @param entityIn The entity
      * @return
      */
     public boolean isInDangerSpot(Entity entityIn) {
@@ -145,7 +142,7 @@ public class FindWaterGoal extends Goal {
         int maxZ = MathHelper.ceil(bb.maxZ);
 
         for (BlockPos pos : BlockPos.getAllInBoxMutable(minX, minY, minZ, maxX, maxY, maxZ)) {
-            BlockType safety = getBlockType(pos);
+            BlockType safety = this.getBlockType(pos);
 
             if (safety == BlockType.FIRE) {
                 return true;
@@ -155,6 +152,14 @@ public class FindWaterGoal extends Goal {
         return false;
     }
 
+    /**
+     * Returning {@link BlockType#FIRE} indicates the entity is actively in danger
+     * Returning {@link BlockType#WATER} indicates the entity is on fire but not in source
+     * Returning {@link BlockType#SAFE} indicates the entity is fine
+     *
+     * @param posIn
+     * @return
+     */
     public BlockType getBlockType(BlockPos posIn) {
         // If the block is fire or lava
         Material material = this.world.getBlockState(posIn).getMaterial();

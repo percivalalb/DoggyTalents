@@ -1,7 +1,6 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents;
-import doggytalents.DoggyTalents2;
 import doggytalents.api.registry.Talent;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.Entity;

@@ -47,7 +47,6 @@ import doggytalents.common.entity.ai.DogFollowOwnerGoal;
 import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
-import doggytalents.common.entity.ai.PatrolAreaGoal;
 import doggytalents.common.entity.ai.OwnerHurtTargetGoal;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
@@ -195,7 +194,7 @@ public class DogEntity extends AbstractDogEntity {
         this.sitGoal = new SitGoal(this);
         this.goalSelector.addGoal(1, new SwimGoal(this));
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
-        this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
+        //this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
         this.goalSelector.addGoal(2, this.sitGoal);
         //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));

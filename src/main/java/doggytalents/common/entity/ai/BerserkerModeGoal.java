@@ -16,6 +16,6 @@ public class BerserkerModeGoal<T extends LivingEntity> extends NearestAttackable
 
     @Override
     public boolean shouldExecute() {
-        return this.dog.isMode(EnumMode.BERSERKER) && this.shouldExecute();
+        return this.dog.isMode(EnumMode.BERSERKER) && super.shouldExecute();
     }
 }

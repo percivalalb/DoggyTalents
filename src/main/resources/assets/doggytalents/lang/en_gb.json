@@ -357,5 +357,6 @@
    "dogbed.casing.natura:overworld_planks.8": "Redwood Plank Casing",
    "dogbed.casing.autumnity.maple_planks": "Maple Plank Casing",
    "container.doggytalents.dog_inventories.link" : "Dog Inventories",
-   "container.doggytalents.dog_inventories" : "Dog Inventories"
+   "container.doggytalents.dog_inventories" : "Dog Inventories",
+   "item.doggytalents.guard_suit" : "Guard Suit"
 }

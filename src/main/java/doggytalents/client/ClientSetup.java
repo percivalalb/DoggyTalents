@@ -51,6 +51,7 @@ public class ClientSetup {
         CollarRenderManager.registerRenderer(DoggyAccessories.CAPE.get(), new DefaultAccessoryRenderer(Resources.CAPE));
         CollarRenderManager.registerRenderer(DoggyAccessories.DYEABLE_CAPE.get(), new DyeableAccessoryRenderer(Resources.DYEABLE_CAPE));
         CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_JACKET_CLOTHING.get(), new DefaultAccessoryRenderer(Resources.CLOTHING_LEATHER_JACKET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.GUARD_SUIT.get(), new DefaultAccessoryRenderer(Resources.GUARD_SUIT));
 
         CollarRenderManager.registerRenderer(DoggyAccessories.SUNGLASSES.get(), new DefaultAccessoryRenderer(Resources.GLASSES_SUNGLASSES));
 

@@ -25,6 +25,7 @@ public class Resources {
     public static final ResourceLocation COLLAR_SPOTTED = getEntity("dog", "doggy_collar_1");
     public static final ResourceLocation COLLAR_MULTICOLORED = getEntity("dog", "doggy_collar_2");
     public static final ResourceLocation CLOTHING_LEATHER_JACKET = getEntity("dog", "doggy_leather_jacket");
+    public static final ResourceLocation GUARD_SUIT = getEntity("dog", "doggy_guard_suit");
     public static final ResourceLocation GLASSES_SUNGLASSES = getEntity("dog", "doggy_sunglasses");
     public static final ResourceLocation BOW_TIE = getEntity("dog", "doggy_bowtie");
     public static final ResourceLocation CAPE = getEntity("dog", "doggy_cape");

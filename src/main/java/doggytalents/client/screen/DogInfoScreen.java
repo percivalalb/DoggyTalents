@@ -68,6 +68,8 @@ public class DogInfoScreen extends Screen {
                 .collect(Collectors.toList());
 
         this.customSkinList = DogTextureManager.INSTANCE.getAll();
+        this.textureIndex = this.customSkinList.indexOf(DogTextureManager.INSTANCE.getTextureLoc(dog.getSkinHash()));
+        this.textureIndex = this.textureIndex >= 0 ? this.textureIndex : 0;
     }
 
     public static void open(DogEntity dog) {

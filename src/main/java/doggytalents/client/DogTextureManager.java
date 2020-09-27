@@ -86,6 +86,10 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         return this.locToSkinHash.getOrDefault(loc, "MISSING_MAPPING");
     }
 
+    public ResourceLocation getTextureLoc(String loc) {
+        return this.skinHashToLoc.getOrDefault(loc, null); // TODO return missing not null
+    }
+
 
     public File getClientFolder() {
         Minecraft mc = Minecraft.getInstance();

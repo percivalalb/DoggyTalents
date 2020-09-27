@@ -39,4 +39,9 @@ public class RescueDogTalent extends Talent {
 
         return cost;
     }
+
+    @Override
+    public boolean hasRenderer() {
+        return true;
+    }
 }

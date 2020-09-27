@@ -31,6 +31,7 @@ public class Resources {
     public static final ResourceLocation CAPE = getEntity("dog", "doggy_cape");
     public static final ResourceLocation DYEABLE_CAPE = getEntity("dog", "doggy_cape1");
     public static final ResourceLocation RADIO_BAND = getEntity("dog", "doggy_radio_collar");
+    public static final ResourceLocation TALENT_RESCUE = getEntity("dog/talents", "rescue");
     public static final ResourceLocation TALENT_CHEST = getEntity("dog", "doggy_chest");
     public static final ResourceLocation IRON_HELMET = getEntity("dog", "armor/iron_helmet");
     public static final ResourceLocation DIAMOND_HELMET = getEntity("dog", "armor/diamond_helmet");

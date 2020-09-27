@@ -9,6 +9,7 @@ import doggytalents.client.entity.render.CollarRenderManager;
 import doggytalents.client.entity.render.DogRenderer;
 import doggytalents.client.entity.render.DoggyBeamRenderer;
 import doggytalents.client.entity.render.layer.PackPuppyRenderer;
+import doggytalents.client.entity.render.layer.RescueDogRenderer;
 import doggytalents.client.entity.render.layer.accessory.ArmorAccessoryRenderer;
 import doggytalents.client.entity.render.layer.accessory.DefaultAccessoryRenderer;
 import doggytalents.client.entity.render.layer.accessory.DyeableAccessoryRenderer;
@@ -64,5 +65,6 @@ public class ClientSetup {
         CollarRenderManager.registerRenderer(DoggyAccessories.TURTLE_HELMET.get(), new ArmorAccessoryRenderer(Resources.TURTLE_HELMET));
 
         CollarRenderManager.registerRenderer(DoggyTalents.PACK_PUPPY.get(), new PackPuppyRenderer());
+        CollarRenderManager.registerRenderer(DoggyTalents.RESCUE_DOG.get(), new RescueDogRenderer());
     }
 }

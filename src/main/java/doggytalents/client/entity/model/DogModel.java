@@ -25,6 +25,10 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     public DogModel(float scaleFactor) {
         float f1 = 13.5F;
 
+        // COORDS
+        // x is left/right of the dog
+        // y is back and forward
+
         //Head
         this.head = new ModelRenderer(this, 0, 0);
         this.head.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
@@ -62,13 +66,16 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
         //Tail2
         this.tail.setTextureOffset(45, 0).addBox(0.0F, 0.0F, 0.0F, 2, 3, 1).setRotationPoint(90.0F, 0.0F, 0.0F);
 
+        //Tail3
+        this.tail.setTextureOffset(43, 19).addBox(-1.0F, 0F, -2F, 3, 10, 3).setRotationPoint(-1.0F, 12.0F, 8.0F);
+
         //HeadMain EarsNormal
         this.head.setTextureOffset(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
         this.head.setTextureOffset(16, 14).addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, scaleFactor);
 
         //HeadMain EarsBoni
-        this.head.setTextureOffset(42, 14).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
-        this.head.setTextureOffset(42, 14).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
+        this.head.setTextureOffset(52, 0).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
+        this.head.setTextureOffset(52, 0).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scaleFactor);
 
         //HeadMain EarsSmall
         this.head.setTextureOffset(18, 0).addBox(-2.8F, -3.5F, -1.0F, 2, 1, 2, scaleFactor);

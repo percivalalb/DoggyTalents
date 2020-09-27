@@ -8,6 +8,7 @@ import doggytalents.common.talent.BedFinderTalent;
 import doggytalents.common.talent.BlackPeltTalent;
 import doggytalents.common.talent.CreeperSweeperTalent;
 import doggytalents.common.talent.DoggyDashTalent;
+import doggytalents.common.talent.DoggyTorchTalent;
 import doggytalents.common.talent.FisherDogTalent;
 import doggytalents.common.talent.GuardDogTalent;
 import doggytalents.common.talent.HappyEaterTalent;
@@ -52,6 +53,7 @@ public class DoggyTalents {
     public static final RegistryObject<ShepherdDogTalent> SHEPHERD_DOG = register("shepherd_dog", ShepherdDogTalent::new);
     public static final RegistryObject<SwimmerDogTalent> SWIMMER_DOG = register("swimmer_dog", SwimmerDogTalent::new);
     public static final RegistryObject<WolfMountTalent> WOLF_MOUNT = register("wolf_mount", WolfMountTalent::new);
+    public static final RegistryObject<DoggyTorchTalent> DOGGY_TORCH = register("doggy_torch", DoggyTorchTalent::new);
 
     private static <T extends Talent> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return TALENTS.register(name, sup);

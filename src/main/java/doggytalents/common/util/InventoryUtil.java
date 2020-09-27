@@ -1,8 +1,11 @@
 package doggytalents.common.util;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.inferface.AbstractDogEntity;
@@ -30,6 +33,18 @@ public class InventoryUtil {
         }
 
         return false;
+    }
+
+    public static Pair<ItemStack, Integer> findStack(IItemHandler source, Predicate<ItemStack> searchCriteria) {
+        for(int i = 0; i < source.getSlots(); i++) {
+
+            ItemStack stack = source.getStackInSlot(i);
+            if (searchCriteria.test(stack)) {
+                return Pair.of(stack.copy(), i);
+            }
+        }
+
+        return null;
     }
 
     public static void transferStacks(IItemHandlerModifiable source, IItemHandler target) {

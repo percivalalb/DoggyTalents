@@ -32,8 +32,8 @@ public class PackPuppyTalent extends Talent {
     @CapabilityInject(PackPuppyItemHandler.class)
     public static Capability<PackPuppyItemHandler> PACK_PUPPY_CAPABILITY = null;
 
-    private static DataKey<PackPuppyItemHandler> PACK_PUPPY_HANDLER = DataKey.makeFinal();
-    private static DataKey<LazyOptional<?>> LAZY_PACK_PUPPY_HANDLER = DataKey.makeFinal();
+    public static DataKey<PackPuppyItemHandler> PACK_PUPPY_HANDLER = DataKey.makeFinal();
+    public static DataKey<LazyOptional<?>> LAZY_PACK_PUPPY_HANDLER = DataKey.makeFinal();
 
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
         return entity.isAlive() && !entity.cannotPickup() && !entity.getItem().getItem().isIn(DoggyTags.PACK_PUPPY_BLACKLIST);// && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());

@@ -41,6 +41,8 @@ public interface IDog {
     public float getShakeAngle(float partialTicks, float p_70923_2_);
     public float getInterestedAngle(float partialTicks);
 
+    public boolean isLying();
+
     public <T> void setData(DataKey<T> key, T value);
     /**
      * Tries to put the object in the map, does nothing if the key already exists

@@ -100,65 +100,83 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
         this.tail.rotateAngleY = dog.getWagAngle(limbSwing, limbSwingAmount, partialTickTime);
 
         if(dog.isSitting()) {
-            this.mane.setRotationPoint(-1.0F, 16.0F, -3.0F);
-            this.mane.rotateAngleX = ((float)Math.PI * 2F / 5F);
-            this.mane.rotateAngleY = 0.0F;
-            this.body.setRotationPoint(0.0F, 18.0F, 0.0F);
-            this.body.rotateAngleX = ((float)Math.PI / 4F);
-            this.tail.setRotationPoint(-0.5F, 21.0F, 6.0F);
-            this.legBackRight.setRotationPoint(-2.5F, 22.0F, 2.0F);
-            this.legBackRight.rotateAngleX = ((float)Math.PI * 3F / 2F);
-            this.legBackLeft.setRotationPoint(0.5F, 22.0F, 2.0F);
-            this.legBackLeft.rotateAngleX = ((float)Math.PI * 3F / 2F);
-            this.legFrontRight.rotateAngleX = 5.811947F;
-            this.legFrontRight.setRotationPoint(-2.49F, 17.0F, -4.0F);
-            this.legFrontLeft.rotateAngleX = 5.811947F;
-            this.legFrontLeft.setRotationPoint(0.51F, 17.0F, -4.0F);
+            if(dog.isLying()) {
+                this.head.setRotationPoint(-1, 19.5F, -7);
+                this.body.setRotationPoint(0, 20, 2);
+                this.body.rotateAngleX = (float)Math.PI / 2F;
+                this.mane.setRotationPoint(-1, 20, -2);
+                this.mane.rotateAngleX = this.body.rotateAngleX;
+                this.tail.setRotationPoint(-1, 18, 8);
+                this.legBackRight.setRotationPoint(-4.5F, 23, 7);
+                this.legBackRight.rotateAngleX = -(float)Math.PI / 2F;
+                this.legBackLeft.setRotationPoint(2.5F, 23, 7);
+                this.legBackLeft.rotateAngleX = -(float)Math.PI / 2F;
+                this.legFrontRight.setRotationPoint(-4.5F, 23, -4);
+                this.legFrontRight.rotateAngleX = -(float)Math.PI / 2F;
+                this.legFrontLeft.setRotationPoint(2.5F, 23, -4);
+                this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2F;
+
+//                this.body.setRotationPoint(0.0F, 14.0F, 0.0F);
+//                this.body.rotateAngleX = ((float)Math.PI / 2F);
+//                this.mane.setRotationPoint(-1.0F, 19.0F, -3.0F);
+//                this.mane.rotateAngleX = this.body.rotateAngleX;
+//                this.head.setRotationPoint(-1.0F, 17.0F, -7.0F);
+//
+//                this.tail.setRotationPoint(-0.5F, 17.0F, 8.0F); // +4.0D
+//                this.legBackRight.setRotationPoint(-4.5F, 20.0F, 7.0F);
+//                this.legBackLeft.setRotationPoint(2.5F, 20.0F, 7.0F);
+//                this.legFrontRight.setRotationPoint(-3.0F, 22.0F, -3.0F);
+//                this.legFrontLeft.setRotationPoint(1.0F, 22.0F, -3.0F);
+//
+//                this.legBackRight.rotateAngleX = -(float)Math.PI / 2.6F;
+//                this.legBackLeft.rotateAngleX = -(float)Math.PI / 2.6F;
+//
+//                this.legFrontRight.rotateAngleX = -(float)Math.PI / 2;
+//                this.legFrontRight.rotateAngleY = (float)Math.PI / 10;
+//                this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2;
+//                this.legFrontLeft.rotateAngleY = -(float)Math.PI / 10;
+            } else if(dog.isLying() && false) {
+                this.body.setRotationPoint(0.0F, 19.0F, 2.0F);
+                this.body.rotateAngleX = ((float)Math.PI / 2F);
+                this.mane.setRotationPoint(-1.0F, 19.0F, -3.0F);
+                this.mane.rotateAngleX = this.body.rotateAngleX;
+                this.head.setRotationPoint(-1.0F, 17.0F, -7.0F);
+
+                this.tail.setRotationPoint(-0.5F, 17.0F, 8.0F); // +4.0D
+                this.legBackRight.setRotationPoint(-4.5F, 20.0F, 7.0F);
+                this.legBackLeft.setRotationPoint(2.5F, 20.0F, 7.0F);
+                this.legFrontRight.setRotationPoint(-3.0F, 22.0F, -3.0F);
+                this.legFrontLeft.setRotationPoint(1.0F, 22.0F, -3.0F);
+
+                this.legBackRight.rotateAngleX = -(float)Math.PI / 2.6F;
+                this.legBackLeft.rotateAngleX = -(float)Math.PI / 2.6F;
+
+                this.legFrontRight.rotateAngleX = -(float)Math.PI / 2;
+                this.legFrontRight.rotateAngleY = (float)Math.PI / 10;
+                this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2;
+                this.legFrontLeft.rotateAngleY = -(float)Math.PI / 10;
+            } else {
+                this.head.setRotationPoint(-1.0F, 13.5F, -7.0F);
+                this.mane.setRotationPoint(-1.0F, 16.0F, -3.0F);
+                this.mane.rotateAngleX = ((float)Math.PI * 2F / 5F);
+                this.mane.rotateAngleY = 0.0F;
+                this.body.setRotationPoint(0.0F, 18.0F, 0.0F);
+                this.body.rotateAngleX = ((float)Math.PI / 4F);
+                this.tail.setRotationPoint(-0.5F, 21.0F, 6.0F);
+                this.legBackRight.setRotationPoint(-2.5F, 22.0F, 2.0F);
+                this.legBackRight.rotateAngleX = ((float)Math.PI * 3F / 2F);
+                this.legBackLeft.setRotationPoint(0.5F, 22.0F, 2.0F);
+                this.legBackLeft.rotateAngleX = ((float)Math.PI * 3F / 2F);
+                this.legFrontRight.rotateAngleX = 5.811947F;
+                this.legFrontRight.setRotationPoint(-2.49F, 17.0F, -4.0F);
+                this.legFrontLeft.rotateAngleX = 5.811947F;
+                this.legFrontLeft.setRotationPoint(0.51F, 17.0F, -4.0F);
 
 
-            this.head.setRotationPoint(-1.0F, 13.5F, -7.0F);
-            this.legFrontRight.rotateAngleY = 0;
-            this.legFrontLeft.rotateAngleY = 0;
-//        } else if(dog.isLyingDown()) {
-//            this.body.setRotationPoint(0.0F, 14.0F, 0.0F);
-//            this.body.rotateAngleX = ((float)Math.PI / 2F);
-//            this.mane.setRotationPoint(-1.0F, 19.0F, -3.0F);
-//            this.mane.rotateAngleX = this.body.rotateAngleX;
-//            this.head.setRotationPoint(-1.0F, 17.0F, -7.0F);
-//
-//            this.tail.setRotationPoint(-0.5F, 17.0F, 8.0F); // +4.0D
-//            this.legBackRight.setRotationPoint(-4.5F, 20.0F, 7.0F);
-//            this.legBackLeft.setRotationPoint(2.5F, 20.0F, 7.0F);
-//            this.legFrontRight.setRotationPoint(-3.0F, 22.0F, -3.0F);
-//            this.legFrontLeft.setRotationPoint(1.0F, 22.0F, -3.0F);
-//
-//            this.legBackRight.rotateAngleX = -(float)Math.PI / 2.6F;
-//            this.legBackLeft.rotateAngleX = -(float)Math.PI / 2.6F;
-//
-//            this.legFrontRight.rotateAngleX = -(float)Math.PI / 2;
-//            this.legFrontRight.rotateAngleY = (float)Math.PI / 10;
-//            this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2;
-//            this.legFrontLeft.rotateAngleY = -(float)Math.PI / 10;
-//        } else if(dog.isLyingDown() && false) {
-//            this.body.setRotationPoint(0.0F, 19.0F, 2.0F);
-//            this.body.rotateAngleX = ((float)Math.PI / 2F);
-//            this.mane.setRotationPoint(-1.0F, 19.0F, -3.0F);
-//            this.mane.rotateAngleX = this.body.rotateAngleX;
-//            this.head.setRotationPoint(-1.0F, 17.0F, -7.0F);
-//
-//            this.tail.setRotationPoint(-0.5F, 17.0F, 8.0F); // +4.0D
-//            this.legBackRight.setRotationPoint(-4.5F, 20.0F, 7.0F);
-//            this.legBackLeft.setRotationPoint(2.5F, 20.0F, 7.0F);
-//            this.legFrontRight.setRotationPoint(-3.0F, 22.0F, -3.0F);
-//            this.legFrontLeft.setRotationPoint(1.0F, 22.0F, -3.0F);
-//
-//            this.legBackRight.rotateAngleX = -(float)Math.PI / 2.6F;
-//            this.legBackLeft.rotateAngleX = -(float)Math.PI / 2.6F;
-//
-//            this.legFrontRight.rotateAngleX = -(float)Math.PI / 2;
-//            this.legFrontRight.rotateAngleY = (float)Math.PI / 10;
-//            this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2;
-//            this.legFrontLeft.rotateAngleY = -(float)Math.PI / 10;
+                this.head.setRotationPoint(-1.0F, 13.5F, -7.0F);
+                this.legFrontRight.rotateAngleY = 0;
+                this.legFrontLeft.rotateAngleY = 0;
+            }
         } else {
             this.body.setRotationPoint(0.0F, 14.0F, 2.0F);
             this.body.rotateAngleX = ((float)Math.PI / 2F);
@@ -188,7 +206,7 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     @Override
     public void setRotationAngles(T dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
-        this.head.rotateAngleY = netHeadYaw * ((float)Math.PI / 180F);
+        this.head.rotateAngleY = netHeadYaw * (dogIn.isSitting() && dogIn.isLying() ? 0.005F : (float)Math.PI / 180F);
         this.tail.rotateAngleX = ageInTicks;
     }
 }

@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import doggytalents.DoggyAccessories;
+import doggytalents.DoggyBlocks;
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggySerializers;
@@ -56,6 +57,7 @@ import doggytalents.common.util.BackwardsComp;
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
@@ -100,6 +102,7 @@ import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
@@ -1966,5 +1969,22 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public TranslationTextComponent getTranslationKey(Function<EnumGender, String> function) {
         return new TranslationTextComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
+    }
+
+    @Override
+    public boolean isLying() {
+        LivingEntity owner = this.getOwner();
+        boolean ownerSleeping = owner != null && owner.isSleeping();
+        if (ownerSleeping) {
+            return true;
+        }
+
+        Block blockBelow = this.world.getBlockState(this.getPosition().down()).getBlock();
+        boolean onBed = blockBelow == DoggyBlocks.DOG_BED.get() || BlockTags.BEDS.contains(blockBelow);
+        if (onBed) {
+            return true;
+        }
+
+        return false;
     }
 }

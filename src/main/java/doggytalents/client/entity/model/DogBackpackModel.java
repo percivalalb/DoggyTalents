@@ -28,10 +28,18 @@ public class DogBackpackModel extends SegmentedModel<DogEntity> {
     @Override
     public void setLivingAnimations(DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
         if(dogIn.isSitting()) {
-            this.rightChest.setRotationPoint(0.0F, 18.0F, 0.0F);
-            this.rightChest.rotateAngleX = ((float)Math.PI / 4F);
-            this.leftChest.setRotationPoint(0.0F, 18.0F, 0.0F);
-            this.leftChest.rotateAngleX = ((float)Math.PI / 4F);
+            if(dogIn.isLying()) {
+                this.rightChest.setRotationPoint(0.0F, 20.0F, 2.0F);
+                this.rightChest.rotateAngleX = ((float)Math.PI / 2F);
+                this.leftChest.setRotationPoint(0.0F, 20.0F, 2.0F);
+                this.leftChest.rotateAngleX = ((float)Math.PI / 2F);
+            } else {
+                this.rightChest.setRotationPoint(0.0F, 18.0F, 0.0F);
+                this.rightChest.rotateAngleX = ((float)Math.PI / 4F);
+                this.leftChest.setRotationPoint(0.0F, 18.0F, 0.0F);
+                this.leftChest.rotateAngleX = ((float)Math.PI / 4F);
+            }
+
         }
         else {
             this.rightChest.setRotationPoint(0.0F, 14.0F, 2.0F);

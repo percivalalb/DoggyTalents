@@ -26,8 +26,8 @@ public class PackPuppyScreen extends ContainerScreen<PackPuppyContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.font.drawString(this.title.getFormattedText(), this.xSize / 2 - 10, 14, 4210752);
-        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(this.title.getFormattedText(), this.xSize / 2 - 10, 10, 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, this.ySize - 96 - 2, 4210752);
     }
 
     @Override

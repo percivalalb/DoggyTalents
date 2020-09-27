@@ -1,6 +1,5 @@
 package doggytalents.common.data;
 
-import java.lang.ref.Reference;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
@@ -20,7 +19,6 @@ import net.minecraft.data.ShapedRecipeBuilder;
 import net.minecraft.data.ShapelessRecipeBuilder;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
 
 public class DTRecipeProvider extends RecipeProvider {
 

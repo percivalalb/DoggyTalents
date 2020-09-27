@@ -1,6 +1,7 @@
 package doggytalents.client.entity.render.layer;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -23,7 +24,7 @@ public class DogTalentLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         Map<Talent, Integer> collar = entitylivingbaseIn.getTalentMap();
 
-        collar.entrySet().forEach((entry) -> {
+        for (Entry<Talent, Integer> entry : collar.entrySet()) {
             if (entry.getValue() > 0 && entry.getKey().hasRenderer()) {
                 ITalentRenderer renderer = CollarRenderManager.getRendererFor(entry.getKey());
 
@@ -31,6 +32,6 @@ public class DogTalentLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>
                     renderer.render(this, matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, entry.getValue(), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
             }
-        });
+        };
     }
 }

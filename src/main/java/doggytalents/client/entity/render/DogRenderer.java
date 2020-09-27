@@ -20,7 +20,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
     public DogRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new DogModel(), 0.5F);
+        super(renderManagerIn, new DogModel<>(), 0.5F);
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
         this.addLayer(new BoneLayer(this));

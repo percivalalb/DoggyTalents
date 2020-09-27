@@ -21,14 +21,14 @@ public class DogAccessoryLayer extends LayerRenderer<DogEntity, DogModel<DogEnti
 
     @Override
     public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        List<AccessoryInstance> collar = entitylivingbaseIn.getAccessories();
+        List<AccessoryInstance> accessories = entitylivingbaseIn.getAccessories();
 
-        collar.forEach((inst) -> {
+        for (AccessoryInstance inst : accessories) {
             IAccessoryRenderer renderer = CollarRenderManager.getRendererFor(inst.getAccessory());
 
             if (renderer != null) {
                 renderer.render(this, matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, inst, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
             }
-        });
+        };
     }
 }

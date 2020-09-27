@@ -99,7 +99,10 @@ public class DoggyTalents2 {
 
             Minecraft mc = Minecraft.getInstance();
 
-            ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DogTextureManager.INSTANCE);
+            // If mc is null we are running data gen so no need to add listener
+            if (mc != null) {
+                ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DogTextureManager.INSTANCE);
+            }
         });
 
         ConfigHandler.init(modEventBus);

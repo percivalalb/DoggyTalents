@@ -128,7 +128,7 @@ public class ClientEventHandler {
                 }
             }
 
-            if (btn.visible && Util.isPointInRegion(btn.x, btn.y, btn.getWidth(), btn.getHeight(), event.getMouseX(), event.getMouseY())) {
+            if (btn.visible && btn.isHovered()) {
                 Minecraft mc = Minecraft.getInstance();
                 int width = mc.getMainWindow().getScaledWidth();
                 int height = mc.getMainWindow().getScaledHeight();

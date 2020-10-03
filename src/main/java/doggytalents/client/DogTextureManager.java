@@ -265,7 +265,6 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
                 IOUtils.closeQuietly(inputstream);
             }
         }
-
     }
 
     private synchronized void loadLocaleData(InputStream inputStreamIn) {
@@ -275,10 +274,16 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         for (Entry<String, JsonElement> entry : jsonobject.entrySet()) {
             String hash = entry.getKey();
             ResourceLocation texture = new ResourceLocation(JSONUtils.getString(entry.getValue(), hash));
-            this.skinHashToLoc.put(hash, texture);
-            this.customSkinLoc.remove(texture);
+            ResourceLocation previous = this.skinHashToLoc.put(hash, texture);
 
-            DoggyTalents2.LOGGER.warn("Loaded override for {} -> {}", hash, texture);
+            if (previous != null) {
+
+            } else {
+
+            }
+            //this.customSkinLoc.remove(texture);
+
+            DoggyTalents2.LOGGER.info("Loaded override for {} -> {}", hash, texture);
         }
     }
 

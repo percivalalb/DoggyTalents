@@ -45,6 +45,7 @@ import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.ai.BerserkerModeGoal;
 import doggytalents.common.entity.ai.DogBegGoal;
 import doggytalents.common.entity.ai.DogFollowOwnerGoal;
+import doggytalents.common.entity.ai.DogWanderGoal;
 import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
@@ -138,13 +139,14 @@ public class DogEntity extends AbstractDogEntity {
     private static final DataParameter<Byte> DOG_FLAGS = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
     private static final Cache<DataParameter<EnumGender>> GENDER = Cache.make(() -> (DataParameter<EnumGender>) EntityDataManager.createKey(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
     private static final Cache<DataParameter<EnumMode>> MODE = Cache.make(() -> (DataParameter<EnumMode>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
-    private static final DataParameter<Optional<BlockPos>> BOWL_POS = EntityDataManager.createKey(DogEntity.class, DataSerializers.OPTIONAL_BLOCK_POS);
     private static final DataParameter<Float> HUNGER_INT = EntityDataManager.createKey(DogEntity.class, DataSerializers.FLOAT);
     private static final DataParameter<String> CUSTOM_SKIN = EntityDataManager.createKey(DogEntity.class, DataSerializers.STRING);
     private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
     private static final DataParameter<Byte> SIZE = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
     private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.createKey(DogEntity.class, DataSerializers.ITEMSTACK);
     private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+
 
     // Cached values
     private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
@@ -183,13 +185,13 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.register(DOG_FLAGS, (byte) 0);
         this.dataManager.register(GENDER.get(), EnumGender.UNISEX);
         this.dataManager.register(MODE.get(), EnumMode.DOCILE);
-        this.dataManager.register(BOWL_POS, Optional.empty());
         this.dataManager.register(HUNGER_INT, 60F);
         this.dataManager.register(CUSTOM_SKIN, "");
         this.dataManager.register(DOG_LEVEL.get(), new DogLevel(0, 0));
         this.dataManager.register(SIZE, (byte) 3);
         this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
         this.dataManager.register(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
+        this.dataManager.register(DOG_BOWL_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
     }
 
     @Override
@@ -202,6 +204,7 @@ public class DogEntity extends AbstractDogEntity {
         //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new DogWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new FetchGoal(this, 1.0D, 32.0F));
         this.goalSelector.addGoal(6, new DogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
@@ -1199,6 +1202,21 @@ public class DogEntity extends AbstractDogEntity {
             compound.put("beds", bedsList);
         }
 
+        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get());
+
+        if (!bowlsData.isEmpty()) {
+            ListNBT bowlsList = new ListNBT();
+
+            for (Entry<DimensionType, Optional<BlockPos>> entry : bowlsData.entrySet()) {
+                CompoundNBT bowlsNBT = new CompoundNBT();
+                NBTUtil.putResourceLocation(bowlsNBT, "dim", entry.getKey().getRegistryName());
+                NBTUtil.putBlockPos(bowlsNBT, "pos", entry.getValue());
+                bowlsList.add(bowlsNBT);
+            }
+
+            compound.put("bowls", bowlsList);
+        }
+
         this.statsTracker.writeAdditional(compound);
     }
 
@@ -1306,6 +1324,28 @@ public class DogEntity extends AbstractDogEntity {
 
         this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);
 
+        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get()).copyEmpty();
+
+        if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
+            ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < bowlsList.size(); i++) {
+                CompoundNBT bowlsNBT = bowlsList.getCompound(i);
+                ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
+                Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
+                if (type.isPresent()) {
+                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
+                    bowlsData.put(type.get(), pos);
+                } else {
+                    DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                }
+            }
+        } else {
+            BackwardsComp.readBowlLocations(compound, bowlsData);
+        }
+
+        this.dataManager.set(DOG_BOWL_LOCATION.get(), bowlsData);
+
         this.statsTracker.readAdditional(compound);
     }
 
@@ -1373,9 +1413,9 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean addAccessory(@Nonnull AccessoryInstance collar) {
+    public boolean addAccessory(@Nonnull AccessoryInstance accessoryInst) {
         List<AccessoryInstance> accessories = this.getAccessories();
-        AccessoryType type = collar.getAccessory().getType();
+        AccessoryType type = accessoryInst.getAccessory().getType();
 
         // Gets accessories of the same type
         List<AccessoryInstance> filtered = accessories.stream().filter((inst) -> {
@@ -1391,7 +1431,7 @@ public class DogEntity extends AbstractDogEntity {
             return false;
         }
 
-        accessories.add(collar);
+        accessories.add(accessoryInst);
 
         this.markDataParameterDirty(ACCESSORIES.get());
 
@@ -1470,8 +1510,16 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.set(MODE.get(), collar);
     }
 
+    public Optional<BlockPos> getBedPos() {
+        return this.getBedPos(this.world.getDimension().getType());
+    }
+
     public Optional<BlockPos> getBedPos(DimensionType dim) {
         return this.dataManager.get(DOG_BED_LOCATION.get()).getOrDefault(dim, Optional.empty());
+    }
+
+    public void setBedPos(@Nullable BlockPos pos) {
+        this.setBedPos(this.world.getDimension().getType(), pos);
     }
 
     public void setBedPos(DimensionType dim, @Nullable BlockPos pos) {
@@ -1483,15 +1531,23 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public Optional<BlockPos> getBowlPos() {
-        return this.dataManager.get(BOWL_POS);
+        return this.getBowlPos(this.world.getDimension().getType());
     }
 
-    public void setBowlPos(@Nullable BlockPos comp) {
-        this.setBowlPos(WorldUtil.toImmutable(comp));
+    public Optional<BlockPos> getBowlPos(DimensionType dim) {
+        return this.dataManager.get(DOG_BOWL_LOCATION.get()).getOrDefault(dim, Optional.empty());
     }
 
-    public void setBowlPos(Optional<BlockPos> collar) {
-        this.dataManager.set(BOWL_POS, collar);
+    public void setBowlPos(@Nullable BlockPos pos) {
+        this.setBowlPos(this.world.getDimension().getType(), pos);
+    }
+
+    public void setBowlPos(DimensionType dim, @Nullable BlockPos pos) {
+        this.setBowlPos(dim, WorldUtil.toImmutable(pos));
+    }
+
+    public void setBowlPos(DimensionType dim, Optional<BlockPos> pos) {
+        this.dataManager.set(DOG_BOWL_LOCATION.get(), this.dataManager.get(DOG_BOWL_LOCATION.get()).copy().set(dim, pos));
     }
 
     @Override

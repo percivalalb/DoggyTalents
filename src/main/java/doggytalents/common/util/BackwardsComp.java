@@ -155,6 +155,12 @@ public class BackwardsComp {
         }
     }
 
+    public static void readBowlLocations(CompoundNBT compound, DimensionDependantArg<Optional<BlockPos>> bowlsData) {
+        if (compound.contains("bowlPosX", Constants.NBT.TAG_ANY_NUMERIC)) {
+            bowlsData.put(DimensionType.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bowlPosX"), compound.getInt("bowlPosY"), compound.getInt("bowlPosZ"))));
+        }
+    }
+
     public static void readBedLocations(CompoundNBT compound, DimensionDependantArg<Optional<BlockPos>> bedsData) {
         if (compound.contains("bedPosX", Constants.NBT.TAG_ANY_NUMERIC)) {
             bedsData.put(DimensionType.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bedPosX"), compound.getInt("bedPosY"), compound.getInt("bedPosZ"))));

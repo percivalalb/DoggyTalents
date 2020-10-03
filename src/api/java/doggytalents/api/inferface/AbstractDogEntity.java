@@ -52,8 +52,7 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
     }
 
     public void removeAttributeModifier(IAttribute attribute, UUID modifierUUID) {
-        IAttributeInstance attributeInst = this.getAttribute(attribute);
-        attributeInst.removeModifier(modifierUUID);
+        this.getAttribute(attribute).removeModifier(modifierUUID);
     }
 
     @Override

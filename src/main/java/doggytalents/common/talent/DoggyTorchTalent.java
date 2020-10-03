@@ -25,16 +25,19 @@ public class DoggyTorchTalent extends Talent {
                 int level = dogIn.getLevel(this);
                 PackPuppyItemHandler inventory = dogIn.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
 
-                Pair<ItemStack, Integer> foundDetails = InventoryUtil.findStack(inventory, (stack) -> stack.getItem() == Items.TORCH);
-                if (level >= 5) {
-                    dogIn.world.setBlockState(pos, torchState);
-                }
-                else {
-                    if (foundDetails != null && !foundDetails.getLeft().isEmpty()) {
-                        ItemStack torchStack = foundDetails.getLeft();
-                        dogIn.consumeItemFromStack(dogIn, torchStack);
-                        inventory.setStackInSlot(foundDetails.getRight(), torchStack);
+                // If null might be because no pack puppy
+                if (inventory != null) {
+                    Pair<ItemStack, Integer> foundDetails = InventoryUtil.findStack(inventory, (stack) -> stack.getItem() == Items.TORCH);
+                    if (level >= 5) {
                         dogIn.world.setBlockState(pos, torchState);
+                    }
+                    else {
+                        if (foundDetails != null && !foundDetails.getLeft().isEmpty()) {
+                            ItemStack torchStack = foundDetails.getLeft();
+                            dogIn.consumeItemFromStack(dogIn, torchStack);
+                            inventory.setStackInSlot(foundDetails.getRight(), torchStack);
+                            dogIn.world.setBlockState(pos, torchState);
+                        }
                     }
                 }
             }

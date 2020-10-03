@@ -20,6 +20,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -79,13 +80,7 @@ public class PackPuppyTalent extends Talent {
                 if(dogIn.canInteract(playerIn)) {
 
                     if (!playerIn.world.isRemote) {
-                        if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
-                            ServerPlayerEntity serverPlayer = (ServerPlayerEntity)playerIn;
-
-                            Screens.openPackPuppyScreen(serverPlayer, dogIn);
-                        }
-
-                        dogIn.playSound(SoundEvents.BLOCK_CHEST_OPEN, 0.5F, dogIn.world.rand.nextFloat() * 0.1F + 0.9F);
+                        playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.pack_puppy.version_migration"), false);
                     }
                     return ActionResultType.SUCCESS;
                 }

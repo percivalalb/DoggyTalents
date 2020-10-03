@@ -118,6 +118,7 @@
    "talent.doggytalents.puppy_eyes.msg.6.line.2": "AAAAAAAAAAAAAAAAAAAaaaaaaaaaa",
    "talent.doggytalents.puppy_eyes.msg.6.line.3": "aaaaaaaaaAAAAAAAAWWWWWWWWW!",
    "talent.doggytalents.bed_finder.dog_mount": "Click to make %s dismount",
+   "talent.doggytalents.pack_puppy.version_migration": "The dog inventory is no longer accessed this way. Open your inventory and click on the dog inventories button",
    "dog.mode.wandering": "Wandering",
    "dog.mode.tactical": "Tactical",
    "dog.mode.aggressive": "Aggressive",

@@ -16,12 +16,12 @@ public class DoggyTorchTalent extends Talent {
 
     @Override
     public void tick(AbstractDogEntity dogIn) {
-        if (dogIn.isTamed()) {
+        if (dogIn.ticksExisted % 10 == 0 && dogIn.isTamed()) {
 
             BlockPos pos = dogIn.getPosition();
             BlockState torchState = Blocks.TORCH.getDefaultState();
 
-            if (dogIn.world.getLight(dogIn.getPosition()) < 8 && torchState.isValidPosition(dogIn.world, pos.down())) {
+            if (dogIn.world.getLight(dogIn.getPosition()) < 8 && torchState.isValidPosition(dogIn.world, pos)) {
                 int level = dogIn.getLevel(this);
                 PackPuppyItemHandler inventory = dogIn.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
 

@@ -668,7 +668,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        if (!this.isMode(EnumMode.DOCILE)) {
+        if (this.isMode(EnumMode.DOCILE)) {
             return false;
         }
 
@@ -687,7 +687,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean canAttack(EntityType<?> entityType) {
-        if (!this.isMode(EnumMode.DOCILE)) {
+        if (this.isMode(EnumMode.DOCILE)) {
             return false;
         }
 
@@ -706,7 +706,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
-        if (!this.isMode(EnumMode.DOCILE)) {
+        if (this.isMode(EnumMode.DOCILE)) {
             return false;
         }
 

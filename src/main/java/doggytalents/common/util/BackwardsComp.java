@@ -1,5 +1,6 @@
 package doggytalents.common.util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,16 +10,22 @@ import java.util.function.Supplier;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 
+import doggytalents.DoggyAccessories;
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.EnumMode;
+import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
+import doggytalents.common.entity.serializers.DimensionDependantArg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
@@ -71,8 +78,87 @@ public class BackwardsComp {
         }
     }
 
+    public static void readAccessories(CompoundNBT compound, List<AccessoryInstance> accessories) {
+        if (compound.contains("radioCollar", Constants.NBT.TAG_BYTE) && compound.getBoolean("radioCollar")) {
+            accessories.add(DoggyAccessories.RADIO_BAND.get().getDefault());
+        }
+
+        if (compound.contains("sunglasses", Constants.NBT.TAG_BYTE) && compound.getBoolean("sunglasses")) {
+            accessories.add(DoggyAccessories.SUNGLASSES.get().getDefault());
+        }
+
+        if (compound.contains("capeData", Constants.NBT.TAG_ANY_NUMERIC)) {
+            int value = compound.getInt("capeData");
+
+            if (value >= 0) {
+                accessories.add(DoggyAccessories.DYEABLE_CAPE.get().create(value));
+            } else if (value >= -1) {
+                accessories.add(DoggyAccessories.DYEABLE_CAPE.get().getDefault());
+            } else if (value == -3) {
+                accessories.add(DoggyAccessories.CAPE.get().getDefault());
+            } else if (value == -4) {
+                accessories.add(DoggyAccessories.LEATHER_JACKET_CLOTHING.get().getDefault());
+            }
+
+            // -2 indicated no cape, -5 a below were not used
+        }
+
+        if (compound.contains("collarColour", Constants.NBT.TAG_ANY_NUMERIC)) {
+            int value = compound.getInt("collarColour");
+
+            if (value >= 0) {
+                accessories.add(DoggyAccessories.DYEABLE_COLLAR.get().create(value));
+            } else if (value >= -1) {
+                accessories.add(DoggyAccessories.DYEABLE_COLLAR.get().getDefault());
+            } else if (value == -3) {
+                accessories.add(DoggyAccessories.GOLDEN_COLLAR.get().getDefault());
+            } else if (value == -4) {
+                accessories.add(DoggyAccessories.SPOTTED_COLLAR.get().getDefault());
+            } else if (value == -5) {
+                accessories.add(DoggyAccessories.MULTICOLORED_COLLAR.get().getDefault());
+            }
+
+            // -2 indicated no cape, -6 a below were not used
+        }
+    }
+
     public static void readMode(CompoundNBT compound, Consumer<EnumMode> consumer) {
         consumer.accept(EnumMode.byIndex(compound.getInt("mode")));
+    }
+
+    public static void readDogTexture(CompoundNBT compound, Consumer<String> consumer) {
+        if (compound.contains("doggyTex", Constants.NBT.TAG_ANY_NUMERIC)) {
+            int value = compound.getInt("doggyTex");
+
+            String[] textures = {
+                "bad647ebc2ac822563eaedaa3cb64881d8d7fd24", "c22b2f6d7a902c13d2f9c377f360127b6ae2dd65", "bea8cace65c013ca9cdae76b0664f4176502e4fb",
+                "df167655cf5db4147e28d6920862636ce94c22cd", "b82d3e99a8ef342fbdc5f5a3f6c91b3940f80f55", "84426b389b050105b2cc8883a28e21ded8502d15",
+                "7281214e5b1c928e124de44af6040d34100ef11e", "7229d8e7b8e5a291d2d8edb7082e43974bc409f9", "40cde1ba3ab392860432d00042dde4ea5ae2accd",
+                "7a50feaf4e5d9a332946afa66731430282adaf06", "9846a3d8b29589e2ed125b5ce8b8fe398ee4b389", "62b05471528c8268c5de6ec514ba801eea812e99",
+                "9a6c7833aebe88d09e2c4807cf9ab7b2107ce23b", "b4b0b25d37c7790b886e5feafcc794e13d801d2f", "08bf1e51a9a64e1b82518360c05fddd711ba0071",
+            };
+
+            if (value >= 0 && value < textures.length) {
+                consumer.accept(textures[value]);
+            }
+        }
+    }
+
+    public static void readHasBone(CompoundNBT compound, Consumer<ItemStack> consumer) {
+        if (compound.contains("hasBone", Constants.NBT.TAG_BYTE) && compound.getBoolean("hasBone")) {
+            int variant = compound.getInt("boneVariant");
+            if (variant == 0) {
+                consumer.accept(new ItemStack(DoggyItems.THROW_BONE.get()));
+            } else if (variant == 1) {
+                consumer.accept(new ItemStack(DoggyItems.THROW_STICK.get()));
+            }
+        }
+    }
+
+    public static void readBedLocations(CompoundNBT compound, DimensionDependantArg<Optional<BlockPos>> bedsData) {
+        if (compound.contains("bedPosX", Constants.NBT.TAG_ANY_NUMERIC)) {
+            bedsData.put(DimensionType.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bedPosX"), compound.getInt("bedPosY"), compound.getInt("bedPosZ"))));
+        }
     }
 
     @SubscribeEvent

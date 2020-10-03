@@ -1210,7 +1210,7 @@ public class DogEntity extends AbstractDogEntity {
         Map<Talent, Integer> talentMap = this.getTalentMap();
         talentMap.clear();
 
-        if(compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
+        if (compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
             talentMap.putAll(NBTUtil.getTalentMap(compound, "talent_level_list"));
         } else {
             // Try to read old talent format if new one doesn't exist
@@ -1219,13 +1219,19 @@ public class DogEntity extends AbstractDogEntity {
 
         this.markDataParameterDirty(TALENTS.get(), false); // Mark dirty so data is synced to client
 
-        ListNBT accessoryList = compound.getList("accessories", Constants.NBT.TAG_COMPOUND);
         List<AccessoryInstance> accessories = this.getAccessories();
         accessories.clear();
 
-        for (int i = 0; i < accessoryList.size(); i++) {
-            // Add directly so that nothing is lost, if number allowed on changes
-            AccessoryInstance.readInstance(accessoryList.getCompound(i)).ifPresent(accessories::add);
+        if (compound.contains("accessories", Constants.NBT.TAG_LIST)) {
+            ListNBT accessoryList = compound.getList("accessories", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < accessoryList.size(); i++) {
+                // Add directly so that nothing is lost, if number allowed on changes
+                AccessoryInstance.readInstance(accessoryList.getCompound(i)).ifPresent(accessories::add);
+            }
+        } else {
+            // Try to read old accessories from their individual format
+            BackwardsComp.readAccessories(compound, accessories);
         }
 
         this.markDataParameterDirty(ACCESSORIES.get(), false); // Mark dirty so data is synced to client
@@ -1247,9 +1253,21 @@ public class DogEntity extends AbstractDogEntity {
             // Read old mode id
             BackwardsComp.readMode(compound, this::setMode);
         }
+
+        if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
+            this.setSkinHash(compound.getString("customSkinHash"));
+        } else {
+            BackwardsComp.readDogTexture(compound, this::setSkinHash);
+        }
+
+        if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
+            this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
+        } else {
+            BackwardsComp.readHasBone(compound, this::setBoneVariant);
+        }
+
         this.setHungerDirectly(compound.getFloat("dogHunger"));
         this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
-        this.setSkinHash(compound.getString("customSkinHash"));
         this.setWillObeyOthers(compound.getBoolean("willObey"));
         this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
         if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
@@ -1265,8 +1283,6 @@ public class DogEntity extends AbstractDogEntity {
             this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
             this.markDataParameterDirty(DOG_LEVEL.get());
         }
-
-        this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
 
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get()).copyEmpty();
 
@@ -1284,7 +1300,8 @@ public class DogEntity extends AbstractDogEntity {
                     DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
                 }
             }
-
+        } else {
+            BackwardsComp.readBedLocations(compound, bedsData);
         }
 
         this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);

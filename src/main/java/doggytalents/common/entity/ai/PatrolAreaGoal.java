@@ -48,7 +48,7 @@ public class PatrolAreaGoal extends Goal {
 
     @Override
     public void tick() {
-        if (!this.dog.isSitting()) {
+        if (!this.dog.isSleeping()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 

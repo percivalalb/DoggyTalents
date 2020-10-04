@@ -89,7 +89,7 @@ public class WhistleItem extends Item {
             else if (mode == 1) { // Heel
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
-                        if (!dog.isSitting() && dog.getMode() != EnumMode.WANDERING) {
+                        if (!dog.isSleeping() && dog.getMode() != EnumMode.WANDERING) {
                             //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
                             successful = true;
                         }

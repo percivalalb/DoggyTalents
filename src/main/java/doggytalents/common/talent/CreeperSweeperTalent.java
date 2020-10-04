@@ -27,7 +27,7 @@ public class CreeperSweeperTalent extends Talent {
         if (level > 0) {
             int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
-            if (timeLeft <= 0 && !dogIn.isSitting()) {
+            if (timeLeft <= 0 && !dogIn.isSleeping()) {
                 List<CreeperEntity> list = dogIn.world.getEntitiesWithinAABB(CreeperEntity.class, dogIn.getBoundingBox().grow(level * 5, level * 2, level * 5));
 
                 if (!list.isEmpty()) {

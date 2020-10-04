@@ -48,7 +48,7 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
                 LivingEntity livingEntity = (LivingEntity) entityHit;
 
                 this.world.getEntitiesWithinAABB(DogEntity.class, this.getBoundingBox().grow(64D, 16D, 64D)).stream()
-                    .filter(Predicates.not(DogEntity::isSitting))
+                    .filter(Predicates.not(DogEntity::isSleeping))
                     .filter(d -> d.isMode(EnumMode.AGGRESIVE, EnumMode.TACTICAL, EnumMode.BERSERKER))
                     .filter(d -> d.canInteract(livingThrower))
                     .filter(d -> d != livingEntity && d.shouldAttackEntity(livingEntity, d.getOwner()))

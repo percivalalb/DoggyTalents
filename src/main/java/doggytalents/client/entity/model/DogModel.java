@@ -99,7 +99,7 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     public void setLivingAnimations(T dog, float limbSwing, float limbSwingAmount, float partialTickTime) {
         this.tail.rotateAngleY = dog.getWagAngle(limbSwing, limbSwingAmount, partialTickTime);
 
-        if (dog.isSitting()) {
+        if (dog.isSleeping()) { // Mapping is wrong isSleeping should be isSitting
             if (dog.isLying()) {
                 this.head.setRotationPoint(-1, 19.5F, -7);
                 this.body.setRotationPoint(0, 20, 2);
@@ -206,7 +206,7 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     @Override
     public void setRotationAngles(T dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.head.rotateAngleX = headPitch * ((float)Math.PI / 180F);
-        this.head.rotateAngleY = netHeadYaw * (dogIn.isSitting() && dogIn.isLying() ? 0.005F : (float)Math.PI / 180F);
+        this.head.rotateAngleY = netHeadYaw * (dogIn.isSleeping() && dogIn.isLying() ? 0.005F : (float)Math.PI / 180F);
         this.tail.rotateAngleX = ageInTicks;
     }
 }

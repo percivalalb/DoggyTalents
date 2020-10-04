@@ -12,7 +12,7 @@ public class QuickHealerTalent extends Talent {
         int level = dogIn.getLevel(this);
 
         if (level > 0) {
-            if (dogIn.isSitting() && level >= 5) {
+            if (dogIn.isSleeping() && level >= 5) {
                 if (dogIn.getIdleTime() > 100) {
                     healingTick *= 15;
                 } else {

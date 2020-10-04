@@ -21,8 +21,8 @@ import doggytalents.common.util.NBTUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
@@ -40,7 +40,7 @@ public class DogLocationStorage extends WorldSavedData {
             throw new RuntimeException("Tried to access dog location data from the client. This should not happen...");
         }
 
-        ServerWorld overworld = world.getServer().getWorld(DimensionType.OVERWORLD);
+        ServerWorld overworld = world.getServer().getWorld(World.OVERWORLD);
 
         DimensionSavedDataManager storage = overworld.getSavedData();
         return storage.getOrCreate(DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
@@ -53,12 +53,12 @@ public class DogLocationStorage extends WorldSavedData {
                 .filter(data -> ownerId.equals(data.getOwnerId()));
     }
 
-    public Stream<DogLocationData> getDogs(LivingEntity owner, DimensionType type) {
+    public Stream<DogLocationData> getDogs(LivingEntity owner, RegistryKey<World> key) {
         UUID ownerId = owner.getUniqueID();
 
         return this.locationDataMap.values().stream()
                 .filter(data -> ownerId.equals(data.getOwnerId()))
-                .filter(data -> type.equals(data.getDimension()));
+                .filter(data -> key.equals(data.getDimension()));
     }
 
     @Nullable

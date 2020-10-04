@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Matrix4f;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,12 +14,13 @@ import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.text.ITextComponent;
 
 public class RenderUtil {
 
     public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, ITextComponent text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yChange) {
-        RenderUtil.renderLabelWithScale(entity, renderer, text.getFormattedText(), stack, buffer, packedLightIn, scale, yChange);
+        RenderUtil.renderLabelWithScale(entity, renderer, text.getString(), stack, buffer, packedLightIn, scale, yChange);
     }
 
     public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yChange) {
@@ -28,7 +28,7 @@ public class RenderUtil {
     }
 
     public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, ITextComponent text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {
-        renderLabelWithScale(flag, renderManager, text.getFormattedText(), stack, buffer, packedLightIn, scale, yOffset);
+        renderLabelWithScale(flag, renderManager, text.getString(), stack, buffer, packedLightIn, scale, yOffset);
     }
 
     public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {

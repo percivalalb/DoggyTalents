@@ -25,17 +25,17 @@ public class BedFinderTalent extends Talent {
 
                     if (dogIn.startRiding(playerIn)) {
                         if (!dogIn.world.isRemote) {
-                            dogIn.getAISit().setSitting(true);
+                            dogIn.func_233687_w_(true);
                         }
 
                         playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
+                        return ActionResultType.SUCCESS;
                     }
                 }
             } else {
                 dogIn.stopRiding();
+                return ActionResultType.SUCCESS;
             }
-
-            return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
     }

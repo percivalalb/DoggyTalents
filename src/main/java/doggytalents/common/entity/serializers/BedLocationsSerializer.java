@@ -1,14 +1,13 @@
 package doggytalents.common.entity.serializers;
 
-import java.util.Optional;
-
 import doggytalents.DoggyTalents2;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.IDataSerializer;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.World;
 
 public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements IDataSerializer<DimensionDependantArg<D>> {
 
@@ -18,7 +17,7 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
         buf.writeInt(DataSerializers.getSerializerId(ser));
         buf.writeInt(value.size());
         value.entrySet().forEach((entry) -> {
-            buf.writeResourceLocation(entry.getKey().getRegistryName());
+            // TODO buf.writeResourceLocation(entry.getKey().getRegistryName());
             ser.write(buf, entry.getValue());
         });
     }
@@ -31,13 +30,13 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
 
         for (int i = 0; i < size; i++) {
             ResourceLocation loc = buf.readResourceLocation();
-            Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
+            RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
             D subV = (D) ser.read(buf);
-            if (type.isPresent()) {
-                value.map.put(type.get(), subV);
-            } else {
-                DoggyTalents2.LOGGER.warn("Failed loading from PacketBuffer. Could not find dimension {}", loc);
-            }
+            //if (type.isPresent()) {
+            //    value.map.put(type, subV);
+            //} else {
+            //    DoggyTalents2.LOGGER.warn("Failed loading from PacketBuffer. Could not find dimension {}", loc);
+            //}
         }
         DoggyTalents2.LOGGER.debug("Loaded {}", value);
 

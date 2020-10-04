@@ -47,9 +47,9 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
                 String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
-                        new TranslationTextComponent(tip).getFormattedText(),
+                        new TranslationTextComponent(tip).getString(),
                         MathHelper.ceil(entityIn.getDogHunger()),
-                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getFormattedText());
+                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString());
 
                 RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 

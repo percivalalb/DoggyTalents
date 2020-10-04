@@ -34,7 +34,7 @@ public class TreatItem extends Item implements IDogItem {
 
             if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"));
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUniqueID());
             }
 
             return ActionResultType.CONSUME;
@@ -42,7 +42,7 @@ public class TreatItem extends Item implements IDogItem {
 
             if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"));
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"), dogIn.getUniqueID());
             }
 
             return ActionResultType.CONSUME;
@@ -56,9 +56,9 @@ public class TreatItem extends Item implements IDogItem {
 
                 dogIn.increaseLevel(this.type);
                 dogIn.setHealth(dogIn.getMaxHealth());
-                dogIn.getAISit().setSitting(true);
+                dogIn.func_233687_w_(true);
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".level_up"));
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".level_up"), dogIn.getUniqueID());
             }
 
             return ActionResultType.SUCCESS;
@@ -67,7 +67,7 @@ public class TreatItem extends Item implements IDogItem {
 
             if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"));
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"), dogIn.getUniqueID());
             }
 
             return ActionResultType.CONSUME;

@@ -11,6 +11,7 @@ import doggytalents.api.feature.FoodHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.container.FoodBowlContainer;
 import doggytalents.common.util.InventoryUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -51,8 +52,8 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
         this.inventory.deserializeNBT(compound);
     }
 

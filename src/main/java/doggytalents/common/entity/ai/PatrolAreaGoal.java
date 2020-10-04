@@ -59,7 +59,7 @@ public class PatrolAreaGoal extends Goal {
 
                 DoggyTalents2.LOGGER.info("Update" + this.index);
 
-                if (new BlockPos(this.dog).withinDistance(pos, 2D) || !this.navigator.tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
+                if (this.dog.getPosition().withinDistance(pos, 2D) || !this.navigator.tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
                     ++this.index;
                     this.index %= patrolPos.size();
                 }

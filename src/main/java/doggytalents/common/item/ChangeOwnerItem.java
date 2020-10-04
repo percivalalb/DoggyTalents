@@ -24,7 +24,7 @@ public class ChangeOwnerItem extends Item implements IDogItem {
                 dogIn.setTamedBy(playerIn);
                 dogIn.getNavigator().clearPath();
                 dogIn.setAttackTarget((LivingEntity) null);
-                dogIn.getAISit().setSitting(true);
+                dogIn.func_233687_w_(true);
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
 
                 //TODO playerIn.sendMessage(new TranslationTextComponent(""));

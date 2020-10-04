@@ -38,7 +38,6 @@ import net.minecraft.command.arguments.ArgumentTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 
 public class DogRespawnCommand {
@@ -303,13 +302,13 @@ public class DogRespawnCommand {
     private static int locate(DogLocationStorage respawnStorage, DogLocationData locationData, final CommandSource source) throws CommandSyntaxException {
         PlayerEntity player = source.asPlayer();
 
-        if (locationData.getDimension() == player.dimension) {
+        if (locationData.getDimension().equals(player.world.getDimensionKey())) {
             String translateStr = RadarItem.getDirectionTranslationKey(locationData, player);
-            int distance = MathHelper.ceil(locationData.getPos() != null ? locationData.getPos().distanceTo(player.getPositionVector()) : -1);
+            int distance = MathHelper.ceil(locationData.getPos() != null ? locationData.getPos().distanceTo(player.getPositionVec()) : -1);
 
             source.sendFeedback(new TranslationTextComponent(translateStr, locationData.getName(player.world), distance), false);
         } else {
-            source.sendFeedback(new TranslationTextComponent("dogradar.notindim", DimensionType.getKey(locationData.getDimension())), false); // TODO change message
+            source.sendFeedback(new TranslationTextComponent("dogradar.notindim", locationData.getDimension()), false); // TODO change message
         }
         return 1;
 

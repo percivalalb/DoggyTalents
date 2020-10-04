@@ -12,6 +12,7 @@ import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
@@ -41,8 +42,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
 
         this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
         this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);

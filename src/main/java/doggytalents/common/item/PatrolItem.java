@@ -31,7 +31,7 @@ public class PatrolItem extends Item implements IDogItem  {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        this.addPosToStack(playerIn.getHeldItem(handIn), new BlockPos(playerIn));
+        this.addPosToStack(playerIn.getHeldItem(handIn), playerIn.getPosition());
         return ActionResult.resultPass(playerIn.getHeldItem(handIn));
     }
 

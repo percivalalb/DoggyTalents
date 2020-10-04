@@ -16,7 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class DogRespawnData implements IDogData {
 
@@ -67,12 +67,12 @@ public class DogRespawnData implements IDogData {
             this.data.remove(tag);
         }
 
-        this.data.removeUniqueId("UUID");
-        this.data.removeUniqueId("LoveCause");
+        this.data.remove("UUID");
+        this.data.remove("LoveCause");
     }
 
     @Nullable
-    public DogEntity respawn(World worldIn, PlayerEntity playerIn, BlockPos pos) {
+    public DogEntity respawn(ServerWorld worldIn, PlayerEntity playerIn, BlockPos pos) {
         DogEntity dog = (DogEntity) DoggyEntityTypes.DOG.get().spawn(worldIn, null, playerIn, pos, SpawnReason.TRIGGERED, false, false);
 
         // Failed for some reason
@@ -87,7 +87,7 @@ public class DogRespawnData implements IDogData {
         dog.read(compoundnbt);
 
         dog.setMode(EnumMode.DOCILE);
-        dog.getAISit().setSitting(false);
+        dog.func_233687_w_(true);
 
         return dog;
     }

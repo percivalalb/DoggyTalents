@@ -5,11 +5,11 @@ import java.util.UUID;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeMod;
 
 public class PillowPawTalent extends Talent {
 
@@ -17,24 +17,24 @@ public class PillowPawTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        dogIn.setAttributeModifier(LivingEntity.ENTITY_GRAVITY, PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
+        dogIn.setAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        dogIn.setAttributeModifier(LivingEntity.ENTITY_GRAVITY, PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
+        dogIn.setAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
     public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(LivingEntity.ENTITY_GRAVITY, PILLOW_PAW_BOOST_ID);
+        dogIn.removeAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), PILLOW_PAW_BOOST_ID);
     }
 
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
         int level = dogIn.getLevel(this);
 
         if (level < 5) {
-            return new AttributeModifier(uuidIn, "Pillow Paw", -0.82D, AttributeModifier.Operation.ADDITION).setSaved(false);
+            return new AttributeModifier(uuidIn, "Pillow Paw", -0.82D, AttributeModifier.Operation.ADDITION);
         }
 
         return null;

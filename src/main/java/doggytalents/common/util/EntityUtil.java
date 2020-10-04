@@ -10,8 +10,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -23,12 +23,12 @@ import net.minecraft.util.math.BlockPos;
 public class EntityUtil {
 
     public static double getFollowRange(LivingEntity entityIn) {
-        IAttributeInstance rangeAttribute = entityIn.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE);
+        ModifiableAttributeInstance rangeAttribute = entityIn.getAttribute(Attributes.FOLLOW_RANGE);
         return rangeAttribute == null ? 16.0D : rangeAttribute.getValue();
     }
 
     public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, LivingEntity target, int radius) {
-        return tryToTeleportNearEntity(entityIn, navigator, new BlockPos(target), radius);
+        return tryToTeleportNearEntity(entityIn, navigator, target.getPosition(), radius);
     }
 
     public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, BlockPos targetPos, int radius) {
@@ -58,7 +58,7 @@ public class EntityUtil {
     }
 
     private static boolean isTeleportFriendlyBlock(LivingEntity entityIn, BlockPos pos, boolean teleportToLeaves) {
-        PathNodeType pathnodetype = WalkNodeProcessor.func_227480_b_(entityIn.world, pos.getX(), pos.getY(), pos.getZ());
+        PathNodeType pathnodetype = WalkNodeProcessor.func_237231_a_(entityIn.world, pos.toMutable());
         if (pathnodetype != PathNodeType.WALKABLE) {
             return false;
         } else {
@@ -66,7 +66,7 @@ public class EntityUtil {
             if (!teleportToLeaves && blockstate.getBlock() instanceof LeavesBlock) {
                 return false;
             } else {
-                BlockPos blockpos = pos.subtract(new BlockPos(entityIn));
+                BlockPos blockpos = pos.subtract(entityIn.getPosition());
                 return entityIn.world.hasNoCollisions(entityIn, entityIn.getBoundingBox().offset(blockpos));
             }
         }

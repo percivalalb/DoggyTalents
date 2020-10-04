@@ -19,7 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 public class BedFinderRenderer {
@@ -29,7 +29,7 @@ public class BedFinderRenderer {
         for (Entity passenger : player.getPassengers()) {
             if (passenger instanceof DogEntity) {
                 DogEntity dog = (DogEntity) passenger;
-                Optional<BlockPos> bedPosOpt = dog.getBedPos(player.dimension);
+                Optional<BlockPos> bedPosOpt = dog.getBedPos();
 
                 if (bedPosOpt.isPresent()) {
                     BlockPos bedPos = bedPosOpt.get();
@@ -57,7 +57,7 @@ public class BedFinderRenderer {
         RenderSystem.lineWidth(2.0F);
 
         RenderSystem.disableTexture();
-        Vec3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
+        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
         double d0 = vec3d.getX();
         double d1 = vec3d.getY();
         double d2 = vec3d.getZ();

@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 
 public class HappyEaterTalent extends Talent implements IDogFoodHandler {
 
@@ -46,7 +47,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
     }
 
     @Override
-    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         int level = dogIn.getLevel(this);
 
         if (level >= 3) {
@@ -56,16 +57,16 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
             if (item == Items.ROTTEN_FLESH) {
                 dogIn.addHunger(30);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
-                return true;
+                return ActionResultType.SUCCESS;
             }
 
             if (level >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
                 dogIn.addHunger(item.getFood().getHealing() * 5);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
-                return true;
+                return ActionResultType.SUCCESS;
             }
         }
 
-        return false;
+        return ActionResultType.FAIL;
     }
 }

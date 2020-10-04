@@ -11,7 +11,7 @@ import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 
 public class DogWanderGoal extends Goal {
 
@@ -56,12 +56,12 @@ public class DogWanderGoal extends Goal {
             return;
         }
 
-        Vec3d pos = this.getPosition();
+        Vector3d pos = this.getPosition();
         this.dog.getNavigator().tryMoveToXYZ(pos.x, pos.y, pos.z, this.speed);
     }
 
     @Nullable
-    protected Vec3d getPosition() {
+    protected Vector3d getPosition() {
         PathNavigator pathNavigate = this.dog.getNavigator();
         Random random = this.dog.getRNG();
 
@@ -89,6 +89,6 @@ public class DogWanderGoal extends Goal {
             }
         }
 
-        return new Vec3d(bestPos.getX(), bestPos.getY(), bestPos.getZ());
+        return new Vector3d(bestPos.getX(), bestPos.getY(), bestPos.getZ());
     }
 }

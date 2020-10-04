@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResultType;
 
 public interface IDogFoodHandler {
 
@@ -33,5 +34,5 @@ public interface IDogFoodHandler {
      * @param entityIn The entity who fed the dog, usually the player. Can be null probably meaning the dog ate on its own
      * @return
      */
-    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
+    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
 }

@@ -18,10 +18,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -65,7 +63,7 @@ public class NBTUtil {
     }
 
     @Nullable
-    public static void putVec3d(CompoundNBT compound, @Nullable Vec3d vec3d) {
+    public static void putVector3d(CompoundNBT compound, @Nullable Vector3d vec3d) {
         if (vec3d != null) {
             compound.putDouble("x", vec3d.getX());
             compound.putDouble("y", vec3d.getY());
@@ -74,9 +72,9 @@ public class NBTUtil {
     }
 
     @Nullable
-    public static Vec3d getVec3d(CompoundNBT compound) {
+    public static Vector3d getVector3d(CompoundNBT compound) {
         if (compound.contains("x", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("y", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("z", Constants.NBT.TAG_ANY_NUMERIC)) {
-            return new Vec3d(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
+            return new Vector3d(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
         }
 
         return null;
@@ -92,7 +90,7 @@ public class NBTUtil {
     @Nullable
     public static ITextComponent getTextComponent(CompoundNBT compound, String key) {
         if (compound.contains(key, Constants.NBT.TAG_STRING)) {
-            return ITextComponent.Serializer.fromJson(compound.getString(key));
+            return ITextComponent.Serializer.getComponentFromJson(compound.getString(key));
         }
 
         return null;
@@ -219,10 +217,5 @@ public class NBTUtil {
         }
 
         return ItemStack.EMPTY;
-    }
-
-    public static Optional<DimensionType> readDimensionType(CompoundNBT compound, String key) {
-        ResourceLocation loc = NBTUtil.getResourceLocation(compound, key);
-        return Registry.DIMENSION_TYPE.getValue(loc);
     }
 }

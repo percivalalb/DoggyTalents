@@ -7,6 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.ActionResultType;
 
 public class ChewStickItem extends Item implements IDogFoodHandler {
 
@@ -25,7 +26,7 @@ public class ChewStickItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         if (!dogIn.world.isRemote) {
             dogIn.addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 1, false, true));
             dogIn.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 6, false, true));
@@ -33,7 +34,7 @@ public class ChewStickItem extends Item implements IDogFoodHandler {
             dogIn.consumeItemFromStack(entityIn, stackIn);
         }
 
-        return true;
+        return ActionResultType.SUCCESS;
     }
 
 }

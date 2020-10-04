@@ -28,7 +28,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 public class ShepherdDogTalent extends Talent {
@@ -202,11 +202,11 @@ public class ShepherdDogTalent extends Talent {
                         }
                     }
 
-                    Vec3d vec = Vec3d.ZERO;
+                    Vector3d vec = Vector3d.ZERO;
 
                     // Calculate average pos of targets
                     for (AnimalEntity target : this.targets) {
-                        vec = vec.add(target.getPositionVector());
+                        vec = vec.add(target.getPositionVec());
                     }
 
                     vec = vec.scale(1D / this.targets.size());

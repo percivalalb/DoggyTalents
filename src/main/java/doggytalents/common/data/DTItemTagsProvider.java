@@ -5,17 +5,20 @@ import java.util.function.Supplier;
 
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTags;
+import doggytalents.common.lib.Constants;
+import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.ITag;
 import net.minecraft.util.IItemProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class DTItemTagsProvider extends ItemTagsProvider {
 
-    public DTItemTagsProvider(DataGenerator generatorIn) {
-        super(generatorIn);
+    public DTItemTagsProvider(DataGenerator generatorIn, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
+        super(generatorIn, blockTagProvider, Constants.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -34,12 +37,12 @@ public class DTItemTagsProvider extends ItemTagsProvider {
     }
 
     @SafeVarargs
-    private final void createTag(Tag<Item> tag, Supplier<? extends IItemProvider>... items) {
-        getBuilder(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
+    private final void createTag(ITag.INamedTag<Item> tag, Supplier<? extends IItemProvider>... items) {
+        getOrCreateBuilder(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
     }
 
     @SafeVarargs
-    private final void appendToTag(Tag<Item> tag, Tag<Item>... toAppend) {
-        getBuilder(tag).add(toAppend);
+    private final void appendToTag(ITag.INamedTag<Item> tag, ITag.INamedTag<Item>... toAppend) {
+        getOrCreateBuilder(tag).addTags(toAppend);
     }
 }

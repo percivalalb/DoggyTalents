@@ -5,6 +5,7 @@ import doggytalents.api.inferface.IDogFoodHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.ActionResultType;
 
 public class MeatFoodHandler implements IDogFoodHandler {
 
@@ -19,7 +20,7 @@ public class MeatFoodHandler implements IDogFoodHandler {
     }
 
     @Override
-    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
 
         if (dogIn.getDogHunger() < dogIn.getMaxHunger()) {
             if (!dogIn.world.isRemote) {
@@ -29,10 +30,10 @@ public class MeatFoodHandler implements IDogFoodHandler {
                 dogIn.consumeItemFromStack(entityIn, stackIn);
             }
 
-            return true;
+            return ActionResultType.SUCCESS;
         }
 
-        return false;
+        return ActionResultType.FAIL;
 
     }
 

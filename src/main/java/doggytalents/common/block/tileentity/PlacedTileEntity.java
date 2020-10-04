@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
@@ -23,8 +24,8 @@ public class PlacedTileEntity extends TileEntity {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
-        super.read(compound);
+    public void read(BlockState state, CompoundNBT compound) {
+        super.read(state, compound);
 
         this.placerUUID = NBTUtil.getUniqueId(compound, "placerId");
     }
@@ -67,6 +68,6 @@ public class PlacedTileEntity extends TileEntity {
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(pkt.getNbtCompound());
+        this.read(null, pkt.getNbtCompound());
     }
 }

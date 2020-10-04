@@ -39,7 +39,7 @@ public class FindWaterGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (!this.creature.onGround || (this.creature.ticksExisted % 5) != 0) {
+        if (!this.creature.isOnGround() || (this.creature.ticksExisted % 5) != 0) {
             return false;
         }
 
@@ -50,7 +50,7 @@ public class FindWaterGoal extends Goal {
             return false;
         }
 
-        BlockPos entityPos = new BlockPos(this.creature);
+        BlockPos entityPos = this.creature.getPosition();
 
         for (BlockPos pos : BlockPos.getAllInBoxMutable(entityPos.add(-this.waterSearchRange, -4, -this.waterSearchRange), entityPos.add(this.waterSearchRange, 4, this.waterSearchRange))) {
             if (this.getBlockType(pos) == BlockType.WATER) {

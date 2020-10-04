@@ -1,6 +1,7 @@
 package doggytalents.common.item;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -16,12 +17,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 public class RadarItem extends Item {
 
@@ -40,20 +42,20 @@ public class RadarItem extends Item {
             if (playerIn.isSneaking()) {
                 DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
                 for (UUID uuid : locationManager.getAllUUID()) {
-                    playerIn.sendMessage(new StringTextComponent(locationManager.getData(uuid).toString()));
+                    playerIn.sendMessage(new StringTextComponent(locationManager.getData(uuid).toString()), Util.DUMMY_UUID);
                 }
                 return new ActionResult<ItemStack>(ActionResultType.FAIL, playerIn.getHeldItem(handIn));
             }
 
-            DimensionType dimCurr = playerIn.dimension;
+            RegistryKey<World> dimCurr = playerIn.world.getDimensionKey();
 
-            playerIn.sendMessage(new StringTextComponent(""));
+            playerIn.sendMessage(new StringTextComponent(""), Util.DUMMY_UUID);
 
             DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
-            List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, worldIn.getDimension().getType()).collect(Collectors.toList());
+            List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, dimCurr).collect(Collectors.toList());
 
             if (ownDogs.isEmpty()) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", String.valueOf(DimensionType.getKey(dimCurr))));
+                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", dimCurr), Util.DUMMY_UUID);
             } else {
                 boolean flag = false;
 
@@ -62,33 +64,32 @@ public class RadarItem extends Item {
                         flag = true;
 
                         String translateStr = RadarItem.getDirectionTranslationKey(loc, playerIn);
-                        int distance = MathHelper.ceil(loc.getPos() != null ? loc.getPos().distanceTo(playerIn.getPositionVector()) : -1);
+                        int distance = MathHelper.ceil(loc.getPos() != null ? loc.getPos().distanceTo(playerIn.getPositionVec()) : -1);
 
-                        playerIn.sendMessage(new TranslationTextComponent(translateStr, loc.getName(worldIn), distance));
+                        playerIn.sendMessage(new TranslationTextComponent(translateStr, loc.getName(worldIn), distance), Util.DUMMY_UUID);
                     }
                 }
 
                 if (!flag) {
-                    playerIn.sendMessage(new TranslationTextComponent("dogradar.errornoradio"));
+                    playerIn.sendMessage(new TranslationTextComponent("dogradar.errornoradio"), Util.DUMMY_UUID);
                 }
             }
 
+            List<RegistryKey<World>> otherDogs = Lists.newArrayList();
+            List<RegistryKey<World>> noDogs = Lists.newArrayList();
+            for (RegistryKey<World> worldkey : worldIn.getServer().func_240770_D_()) {
+                if (worldkey.equals(worldIn.getDimensionKey()))  continue;
+                ownDogs = locationManager.getDogs(playerIn, worldkey).collect(Collectors.toList()); // Check if radio collar is on
 
-            List<DimensionType> otherDogs = Lists.newArrayList();
-            List<DimensionType> noDogs = Lists.newArrayList();
-            for (DimensionType dimType : DimensionType.getAll()) {
-                if (dimCurr == dimType) continue;
-                ownDogs = locationManager.getDogs(playerIn, dimType).collect(Collectors.toList()); // Check if radio collar is on
-
-                (ownDogs.size() > 0 ? otherDogs : noDogs).add(dimType);
+                (ownDogs.size() > 0 ? otherDogs : noDogs).add(worldkey);
             }
 
             if (otherDogs.size() > 0) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.notindim", otherDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
+                playerIn.sendMessage(new TranslationTextComponent("dogradar.notindim", otherDogs.stream().map(RegistryKey::getLocation).map(Objects::toString).collect(Collectors.joining(", "))), Util.DUMMY_UUID);
             }
 
             if (noDogs.size() > 0 && stack.getItem() == DoggyItems.CREATIVE_RADAR.get()) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", noDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
+                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", noDogs.stream().map(RegistryKey::getLocation).map(Objects::toString).collect(Collectors.joining(", "))), Util.DUMMY_UUID);
             }
         }
         return new ActionResult<ItemStack>(ActionResultType.FAIL, stack);
@@ -98,7 +99,7 @@ public class RadarItem extends Item {
         if (loc.getPos() == null) {
             return "dogradar.unknown";
         }
-        Vec3d diff = loc.getPos().add(entity.getPositionVector().inverse());
+        Vector3d diff = loc.getPos().add(entity.getPositionVec().inverse());
         double angle = MathHelper.atan2(diff.getX(), diff.getZ());
 
         if (angle < -Math.PI + Math.PI / 8) {

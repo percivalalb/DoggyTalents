@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.ItemStack;
@@ -86,8 +86,8 @@ public class MoveToClosestItemGoal extends Goal {
         this.timeToRecalcPath = 0;
         this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
         this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
-        this.oldRangeSense = this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue();
-        this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.maxDist);
+        this.oldRangeSense = this.dog.getAttribute(Attributes.FOLLOW_RANGE).getValue();
+        this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.maxDist);
     }
 
     @Override
@@ -108,6 +108,6 @@ public class MoveToClosestItemGoal extends Goal {
         this.target = null;
         this.dogNavigator.clearPath();
         this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
-        this.dog.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
+        this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 }

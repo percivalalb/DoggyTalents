@@ -64,33 +64,33 @@ public class PuppyEyesTalent extends Talent {
                 int rewardId = dogIn.getRNG().nextInt(level) + (level >= 5 ? 1 : 0);
 
                 if (rewardId == 0) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.1.line.1", dogIn.getGenderPronoun()));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.1.line.2", dogIn.getGenderSubject()));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.1.line.1", dogIn.getGenderPronoun()), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.1.line.2", dogIn.getGenderSubject()), villager.getUniqueID());
                     villager.entityDropItem(Items.PORKCHOP, 2);
                 } else if (rewardId == 1) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.1", dogIn.getGenderTitle()));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.2", dogIn.getGenderTitle()));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.3", dogIn.getGenderTitle()));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.1", dogIn.getGenderTitle()), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.2", dogIn.getGenderTitle()), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.2.line.3", dogIn.getGenderTitle()), villager.getUniqueID());
                     villager.entityDropItem(Items.PORKCHOP, 5);
                 } else if (rewardId == 2) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.1"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.2"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.3"));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.1"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.2"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.3.line.3"), villager.getUniqueID());
                     villager.entityDropItem(Items.IRON_INGOT, 3);
                 } else if (rewardId == 3) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.1"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.2"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.3"));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.1"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.2"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.4.line.3"), villager.getUniqueID());
                     villager.entityDropItem(Items.GOLD_INGOT, 2);
                 } else if (rewardId == 4) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.1"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.2"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.3"));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.1"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.2"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.5.line.3"), villager.getUniqueID());
                     villager.entityDropItem(Items.DIAMOND, 1);
                 } else if (rewardId == 5) {
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.1"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.2"));
-                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.3"));
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.1"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.2"), villager.getUniqueID());
+                    owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.6.line.3"), villager.getUniqueID());
                     villager.entityDropItem(Items.APPLE, 1);
                     villager.entityDropItem(Blocks.CAKE, 1);
                     villager.entityDropItem(Items.SLIME_BALL, 3);

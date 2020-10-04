@@ -1,5 +1,6 @@
 package doggytalents.client.screen;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.common.lib.Resources;
@@ -28,13 +29,13 @@ public class RadarScreen extends Screen {
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks) {
+    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(Resources.GUI_RADAR);
         int xSize = 210;
         int ySize = 210;
         int x = (this.width - xSize) / 2;
         int y = (this.height - ySize) / 2;
-        this.blit(x, y, 0, 0, xSize, ySize);
+        this.blit(stack, x, y, 0, 0, xSize, ySize);
     }
 }

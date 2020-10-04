@@ -10,6 +10,9 @@ import doggytalents.common.util.Util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -38,5 +41,19 @@ public class DoggyEntityTypes {
 
      private static <E extends Entity, T extends EntityType<E>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
          return ENTITIES.register(name, sup);
+     }
+
+     public static void addEntityAttributes() {
+         GlobalEntityTypeAttributes.put(DOG.get(),
+                 MobEntity.func_233666_p_()
+                 .createMutableAttribute(Attributes.MAX_HEALTH, 8.0D)
+                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3D)
+                 .createMutableAttribute(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
+                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 2.0D)
+                 .createMutableAttribute(DoggyAttributes.JUMP_POWER.get(), 0.42D)
+                 .createMutableAttribute(DoggyAttributes.CRIT_CHANCE.get(), 0.01D)
+                 .createMutableAttribute(DoggyAttributes.CRIT_BONUS.get(), 1D)
+                 .create()
+         );
      }
 }

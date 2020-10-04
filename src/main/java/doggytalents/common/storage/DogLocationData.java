@@ -14,12 +14,11 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Hand;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.util.Constants;
 
@@ -30,8 +29,8 @@ public class DogLocationData implements IDogData {
     private @Nullable UUID ownerId;
 
     // Location data
-    private @Nullable Vec3d position;
-    private @Nullable ResourceLocation dimension;
+    private @Nullable Vector3d position;
+    private @Nullable RegistryKey<World> dimension;
 
     // Other saved data
     private @Nullable ITextComponent name;
@@ -42,7 +41,6 @@ public class DogLocationData implements IDogData {
     // Cached objects
     private DogEntity dog;
     private LivingEntity owner;
-    private DimensionType dimensionType;
 
     protected DogLocationData(DogLocationStorage storageIn, UUID uuid) {
         this.storage = storageIn;
@@ -76,8 +74,8 @@ public class DogLocationData implements IDogData {
 
     public void update(DogEntity dogIn) {
         this.ownerId = dogIn.getOwnerId();
-        this.position = dogIn.getPositionVector();
-        this.dimension = dogIn.world.getDimension().getType().getRegistryName();
+        this.position = dogIn.getPositionVec();
+        this.dimension = dogIn.world.getDimensionKey();
 
         this.name = dogIn.getName();
         this.ownerName = dogIn.getOwnersName().orElse(null);
@@ -91,8 +89,8 @@ public class DogLocationData implements IDogData {
 
     public void read(CompoundNBT compound) {
         this.ownerId = NBTUtil.getUniqueId(compound, "ownerId");
-        this.position = NBTUtil.getVec3d(compound);
-        this.dimension = NBTUtil.getResourceLocation(compound, "dimension");
+        this.position = NBTUtil.getVector3d(compound);
+        this.dimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, NBTUtil.getResourceLocation(compound, "dimension"));
         this.name = NBTUtil.getTextComponent(compound, "name_text_component");
         if (compound.contains("gender", Constants.NBT.TAG_STRING)) {
             this.gender = EnumGender.bySaveName(compound.getString("gender"));
@@ -102,8 +100,8 @@ public class DogLocationData implements IDogData {
 
     public CompoundNBT write(CompoundNBT compound) {
         NBTUtil.putUniqueId(compound, "ownerId", this.ownerId);
-        NBTUtil.putVec3d(compound, this.position);
-        NBTUtil.putResourceLocation(compound, "dimension", this.dimension);
+        NBTUtil.putVector3d(compound, this.position);
+        NBTUtil.putResourceLocation(compound, "dimension", this.dimension.getLocation());
         NBTUtil.putTextComponent(compound, "name_text_component", this.name);
         if (this.gender != null) {
             compound.putString("gender", this.gender.getSaveName());
@@ -168,17 +166,13 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public Vec3d getPos() {
+    public Vector3d getPos() {
         return this.position;
     }
 
     @Nullable
-    public DimensionType getDimension() {
-        if (this.dimensionType == null || !this.dimensionType.getRegistryName().equals(this.dimension)) {
-            this.dimensionType = Registry.DIMENSION_TYPE.getValue(this.dimension).orElseGet(null);
-        }
-
-        return this.dimensionType;
+    public RegistryKey<World> getDimension() {
+        return this.dimension;
     }
 
     @Override

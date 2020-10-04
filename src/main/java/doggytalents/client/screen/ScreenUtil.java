@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 
 public class ScreenUtil {
 
-    public static List<String> splitInto(String text, int maxLength, FontRenderer font) {
-        List<String> list = new ArrayList<>();
+    public static List<ITextComponent> splitInto(String text, int maxLength, FontRenderer font) {
+        List<ITextComponent> list = new ArrayList<>();
 
         StringBuilder temp = new StringBuilder();
         String[] split = text.split(" ");
@@ -18,7 +20,7 @@ public class ScreenUtil {
             int length = font.getStringWidth(temp + str);
 
             if (length > maxLength) {
-                list.add(temp.toString());
+                list.add(new StringTextComponent(temp.toString()));
                 temp = new StringBuilder();
             }
 
@@ -26,7 +28,7 @@ public class ScreenUtil {
             temp.append(" ");
 
             if (i == split.length - 1) {
-                list.add(temp.toString());
+                list.add(new StringTextComponent(temp.toString()));
             }
         }
 

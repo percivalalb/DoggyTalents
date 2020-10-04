@@ -114,7 +114,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public boolean consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         IItemHandlerModifiable treatBag = (IItemHandlerModifiable) stackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         return InventoryUtil.feedDogFrom(dogIn, entityIn, treatBag);
     }

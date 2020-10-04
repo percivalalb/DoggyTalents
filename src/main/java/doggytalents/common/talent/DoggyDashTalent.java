@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 
 public class DoggyDashTalent extends Talent {
 
@@ -13,17 +13,17 @@ public class DoggyDashTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        dogIn.setAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
+        dogIn.setAttributeModifier(Attributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        dogIn.setAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
+        dogIn.setAttributeModifier(Attributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
     public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID);
+        dogIn.removeAttributeModifier(Attributes.MOVEMENT_SPEED, DASH_BOOST_ID);
     }
 
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
@@ -36,7 +36,7 @@ public class DoggyDashTalent extends Talent {
                 speed += 0.04D;
             }
 
-            return new AttributeModifier(uuidIn, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION).setSaved(false);
+            return new AttributeModifier(uuidIn, "Doggy Dash", speed, AttributeModifier.Operation.ADDITION);
         }
 
         return null;

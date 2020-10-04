@@ -2,6 +2,7 @@ package doggytalents.common.talent;
 
 import java.util.UUID;
 
+import doggytalents.DoggyAttributes;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.Entity;
@@ -20,17 +21,17 @@ public class WolfMountTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        dogIn.setAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP, this::createSpeedModifier);
+        dogIn.setAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        dogIn.setAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP, this::createSpeedModifier);
+        dogIn.setAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
     @Override
     public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(AbstractDogEntity.JUMP_STRENGTH, WOLF_MOUNT_JUMP);
+        dogIn.removeAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP);
     }
 
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
@@ -43,7 +44,7 @@ public class WolfMountTalent extends Talent {
                 speed += 0.04D;
             }
 
-            return new AttributeModifier(uuidIn, "Wolf Mount", speed, AttributeModifier.Operation.ADDITION).setSaved(false);
+            return new AttributeModifier(uuidIn, "Wolf Mount", speed, AttributeModifier.Operation.ADDITION);
         }
 
         return null;
@@ -55,9 +56,9 @@ public class WolfMountTalent extends Talent {
 
         if (stack.isEmpty()) { // Held item
             if (dogIn.canInteract(playerIn) && dogIn.getLevel(this) > 0) { // Dog
-                if (playerIn.getRidingEntity() == null && !playerIn.onGround) { // Player
+                if (playerIn.getRidingEntity() == null && !playerIn.isOnGround()) { // Player
                     if (!dogIn.world.isRemote) {
-                        dogIn.getAISit().setSitting(false);
+                        dogIn.func_233687_w_(false);
                         playerIn.rotationYaw = dogIn.rotationYaw;
                         playerIn.rotationPitch = dogIn.rotationPitch;
                         playerIn.startRiding(dogIn);
@@ -73,7 +74,7 @@ public class WolfMountTalent extends Talent {
     @Override
     public void livingTick(AbstractDogEntity dog) {
         if (dog.isBeingRidden() && dog.getDogHunger() < 1) {
-            dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()));
+            dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUniqueID());
 
             dog.removePassengers();
         }

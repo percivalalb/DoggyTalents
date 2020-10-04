@@ -2,10 +2,11 @@ package doggytalents.common.talent;
 
 import java.util.UUID;
 
+import doggytalents.DoggyAttributes;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 
 public class BlackPeltTalent extends Talent {
 
@@ -15,23 +16,23 @@ public class BlackPeltTalent extends Talent {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        dogIn.setAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
-        dogIn.setAttributeModifier(AbstractDogEntity.CRIT_CHANCE, BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
-        dogIn.setAttributeModifier(AbstractDogEntity.CRIT_BONUS, BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
+        dogIn.setAttributeModifier(Attributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
+        dogIn.setAttributeModifier(DoggyAttributes.CRIT_CHANCE.get(), BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
+        dogIn.setAttributeModifier(DoggyAttributes.CRIT_BONUS.get(), BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
     }
 
     @Override
     public void set(AbstractDogEntity dogIn, int level) {
-        dogIn.setAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
-        dogIn.setAttributeModifier(AbstractDogEntity.CRIT_CHANCE, BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
-        dogIn.setAttributeModifier(AbstractDogEntity.CRIT_BONUS, BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
+        dogIn.setAttributeModifier(Attributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
+        dogIn.setAttributeModifier(DoggyAttributes.CRIT_CHANCE.get(), BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
+        dogIn.setAttributeModifier(DoggyAttributes.CRIT_BONUS.get(), BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
     }
 
     @Override
     public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID);
-        dogIn.removeAttributeModifier(AbstractDogEntity.CRIT_CHANCE, BLACK_PELT_CRIT_CHANCE_ID);
-        dogIn.removeAttributeModifier(AbstractDogEntity.CRIT_BONUS, BLACK_PELT_CRIT_BONUS_ID);
+        dogIn.removeAttributeModifier(Attributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID);
+        dogIn.removeAttributeModifier(DoggyAttributes.CRIT_CHANCE.get(), BLACK_PELT_CRIT_CHANCE_ID);
+        dogIn.removeAttributeModifier(DoggyAttributes.CRIT_BONUS.get(), BLACK_PELT_CRIT_BONUS_ID);
     }
 
     public AttributeModifier createPeltModifier(AbstractDogEntity dogIn, UUID uuidIn) {
@@ -44,7 +45,7 @@ public class BlackPeltTalent extends Talent {
                 damageBonus += 2;
             }
 
-            return new AttributeModifier(uuidIn, "Black Pelt", damageBonus, AttributeModifier.Operation.ADDITION).setSaved(false);
+            return new AttributeModifier(uuidIn, "Black Pelt", damageBonus, AttributeModifier.Operation.ADDITION);
         }
 
         return null;
@@ -63,7 +64,7 @@ public class BlackPeltTalent extends Talent {
             damageBonus = 1D;
         }
 
-        return new AttributeModifier(uuidIn, "Black Pelt Crit Chance", damageBonus, AttributeModifier.Operation.ADDITION).setSaved(false);
+        return new AttributeModifier(uuidIn, "Black Pelt Crit Chance", damageBonus, AttributeModifier.Operation.ADDITION);
     }
 
     public AttributeModifier createPeltCritBonus(AbstractDogEntity dogIn, UUID uuidIn) {
@@ -73,6 +74,6 @@ public class BlackPeltTalent extends Talent {
             return null;
         }
 
-        return new AttributeModifier(uuidIn, "Black Pelt Crit Bonus", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL).setSaved(false);
+        return new AttributeModifier(uuidIn, "Black Pelt Crit Bonus", 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 }

@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 public class DoggyCharmItem extends Item {
 
@@ -32,41 +33,41 @@ public class DoggyCharmItem extends Item {
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         World world = context.getWorld();
-        if (world.isRemote) {
+        if (world.isRemote || !(world instanceof ServerWorld)) {
             return ActionResultType.SUCCESS;
         } else {
             PlayerEntity player = context.getPlayer();
             ItemStack itemstack = context.getItem();
             BlockPos blockpos = context.getPos();
-               Direction enumfacing = context.getFace();
-               BlockState iblockstate = world.getBlockState(blockpos);
+            Direction enumfacing = context.getFace();
+            BlockState iblockstate = world.getBlockState(blockpos);
 
-               BlockPos blockpos1;
-               if (iblockstate.getCollisionShape(world, blockpos).isEmpty()) {
-                   blockpos1 = blockpos;
-               } else {
-                   blockpos1 = blockpos.offset(enumfacing);
+            BlockPos blockpos1;
+            if (iblockstate.getCollisionShape(world, blockpos).isEmpty()) {
+                blockpos1 = blockpos;
+            } else {
+                blockpos1 = blockpos.offset(enumfacing);
+            }
+
+
+            Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerWorld) world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
+            if (entity instanceof DogEntity) {
+               DogEntity dog = (DogEntity)entity;
+               if (player != null) {
+                   dog.setTamed(true);
+                   dog.setOwnerId(player.getUniqueID());
                }
+               itemstack.shrink(1);
+           }
 
-
-               Entity entity = DoggyEntityTypes.DOG.get().spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
-               if (entity instanceof DogEntity) {
-                   DogEntity dog = (DogEntity)entity;
-                   if (player != null) {
-                       dog.setTamed(true);
-                       dog.setOwnerId(player.getUniqueID());
-                   }
-                   itemstack.shrink(1);
-               }
-
-               return ActionResultType.SUCCESS;
+           return ActionResultType.SUCCESS;
         }
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        if (worldIn.isRemote) {
+        if (worldIn.isRemote || !(worldIn instanceof ServerWorld)) {
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         } else {
             RayTraceResult raytraceresult = Item.rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
@@ -75,7 +76,7 @@ public class DoggyCharmItem extends Item {
                 if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
                     return new ActionResult<>(ActionResultType.PASS, itemstack);
                 } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, ((BlockRayTraceResult)raytraceresult).getFace(), itemstack)) {
-                    Entity entity = DoggyEntityTypes.DOG.get().spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+                    Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerWorld) worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
                     if (entity instanceof DogEntity) {
                         DogEntity dog = (DogEntity)entity;
                            dog.setTamed(true);

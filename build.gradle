@@ -15,37 +15,38 @@ apply plugin: 'maven-publish'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DoggyTalents-1.15.2'
+archivesBaseName = 'DoggyTalents-1.16.2'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "https://dvs1.progwml6.com/files/maven/" }
     maven { url "https://modmaven.k-4u.nl" }
+    maven { url 'https://maven.latmod.com/' }
 }
 
 sourceSets {
-	api
-	main {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-		resources.srcDirs += 'src/generated/resources'
-	}
-	test {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-	}
+    api
+    main {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+        resources.srcDirs += 'src/generated/resources'
+    }
+    test {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
 }
 
 configurations {
-	apiCompile.extendsFrom(compile)
+    apiCompile.extendsFrom(compile)
 }
 
 minecraft {
     mappings channel: 'snapshot', version: project.mcp_mappings
-	
-	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	
+    
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    
     runs {
         client {
             taskName 'doggytalents_client'
@@ -54,7 +55,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -66,7 +67,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -79,7 +80,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -89,20 +90,21 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-	compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    compileOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${ftb_gui_lib_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 task sourcesJar(type: Jar) {
-	classifier = "sources"
-	from sourceSets.main.allJava
-	from sourceSets.api.allJava
+    classifier = "sources"
+    from sourceSets.main.allJava
+    from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-	classifier = "api"
-	from sourceSets.api.output
-	from sourceSets.api.allJava
+    classifier = "api"
+    from sourceSets.api.output
+    from sourceSets.api.allJava
 }
 
 artifacts {

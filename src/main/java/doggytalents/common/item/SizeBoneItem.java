@@ -38,7 +38,7 @@ public class SizeBoneItem extends Item implements IDogItem {
         if (dogIn.getGrowingAge() < 0) {
 
             if (!playerIn.world.isRemote){
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"));
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUniqueID());
             }
 
             return ActionResultType.FAIL;

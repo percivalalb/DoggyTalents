@@ -41,15 +41,16 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entityHit = ((EntityRayTraceResult) result).getEntity();
 
-            LivingEntity thrower = this.getThrower();
+            Entity thrower = this.func_234616_v_();
 
-            if (thrower != null && entityHit instanceof LivingEntity) {
+            if (thrower instanceof LivingEntity && entityHit instanceof LivingEntity) {
+                LivingEntity livingThrower = (LivingEntity) thrower;
                 LivingEntity livingEntity = (LivingEntity) entityHit;
 
                 this.world.getEntitiesWithinAABB(DogEntity.class, this.getBoundingBox().grow(64D, 16D, 64D)).stream()
                     .filter(Predicates.not(DogEntity::isSitting))
                     .filter(d -> d.isMode(EnumMode.AGGRESIVE, EnumMode.TACTICAL, EnumMode.BERSERKER))
-                    .filter(d -> d.canInteract(thrower))
+                    .filter(d -> d.canInteract(livingThrower))
                     .filter(d -> d != livingEntity && d.shouldAttackEntity(livingEntity, d.getOwner()))
                     .filter(d -> d.getDistance(entityHit) < EntityUtil.getFollowRange(d))
                     .forEach(d -> d.setAttackTarget(livingEntity));
@@ -73,7 +74,7 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        UUID ownerId = this.ownerId;
+        UUID ownerId = this.entityUniqueID;
         buffer.writeBoolean(ownerId != null);
         if (ownerId != null) {
             buffer.writeUniqueId(ownerId);
@@ -84,7 +85,7 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
     public void readSpawnData(PacketBuffer buffer) {
         boolean hasThrower = buffer.readBoolean();
         if (hasThrower) {
-            this.ownerId = buffer.readUniqueId();
+            this.entityUniqueID = buffer.readUniqueId();
         }
     }
 

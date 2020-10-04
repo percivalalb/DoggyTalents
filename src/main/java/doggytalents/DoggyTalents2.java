@@ -14,6 +14,7 @@ import doggytalents.common.addon.AddonManager;
 import doggytalents.common.command.DogRespawnCommand;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.data.DTAdvancementProvider;
+import doggytalents.common.data.DTBlockTagsProvider;
 import doggytalents.common.data.DTItemTagsProvider;
 import doggytalents.common.data.DTLootTableProvider;
 import doggytalents.common.data.DTRecipeProvider;
@@ -77,6 +78,7 @@ public class DoggyTalents2 {
         DoggyAccessoryTypes.ACCESSORY_TYPES.register(modEventBus);
         DoggyBedMaterials.BEDDINGS.register(modEventBus);
         DoggyBedMaterials.CASINGS.register(modEventBus);
+        DoggyAttributes.ATTRIBUTES.register(modEventBus);
 
         DogRespawnCommand.registerSerilizers();
 
@@ -116,6 +118,7 @@ public class DoggyTalents2 {
         FoodHandler.registerHandler(new HappyEaterTalent());
         FoodHandler.registerHandler(new MeatFoodHandler());
         ConfigHandler.initTalentConfig();
+        DoggyEntityTypes.addEntityAttributes();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {
@@ -151,7 +154,9 @@ public class DoggyTalents2 {
         if (event.includeServer()) {
             // gen.addProvider(new DTBlockTagsProvider(gen));
             gen.addProvider(new DTAdvancementProvider(gen));
-            gen.addProvider(new DTItemTagsProvider(gen));
+            DTBlockTagsProvider blockTagProvider = new DTBlockTagsProvider(gen, event.getExistingFileHelper());
+            gen.addProvider(blockTagProvider);
+            gen.addProvider(new DTItemTagsProvider(gen, blockTagProvider, event.getExistingFileHelper()));
             gen.addProvider(new DTRecipeProvider(gen));
             gen.addProvider(new DTLootTableProvider(gen));
         }

@@ -11,10 +11,9 @@ import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.IDog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.ai.attributes.RangedAttribute;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -23,16 +22,12 @@ import net.minecraft.world.World;
 
 public abstract class AbstractDogEntity extends TameableEntity implements IDog {
 
-    public static final IAttribute JUMP_STRENGTH = (new RangedAttribute((IAttribute)null, "generic.jumpStrength", 0.0D, 0.0D, 8.0D)).setShouldWatch(true);
-    public static final IAttribute CRIT_CHANCE = (new RangedAttribute((IAttribute)null, "generic.critChance", 0.0D, 0.0D, 1.0D));
-    public static final IAttribute CRIT_BONUS = (new RangedAttribute((IAttribute)null, "generic.critBonus", 0.0D, 0.0D, 1.0D));
-
     protected AbstractDogEntity(EntityType<? extends TameableEntity> type, World worldIn) {
         super(type, worldIn);
     }
 
-    public void setAttributeModifier(IAttribute attribute, UUID modifierUUID, BiFunction<AbstractDogEntity, UUID, AttributeModifier> modifierGenerator) {
-        IAttributeInstance attributeInst = this.getAttribute(attribute);
+    public void setAttributeModifier(Attribute attribute, UUID modifierUUID, BiFunction<AbstractDogEntity, UUID, AttributeModifier> modifierGenerator) {
+        ModifiableAttributeInstance attributeInst = this.getAttribute(attribute);
 
         AttributeModifier currentModifier = attributeInst.getModifier(modifierUUID);
 
@@ -47,11 +42,11 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
         AttributeModifier newModifier = modifierGenerator.apply(this, modifierUUID);
 
         if (newModifier != null) {
-            attributeInst.applyModifier(newModifier);
+            attributeInst.applyNonPersistentModifier(newModifier);
         }
     }
 
-    public void removeAttributeModifier(IAttribute attribute, UUID modifierUUID) {
+    public void removeAttributeModifier(Attribute attribute, UUID modifierUUID) {
         this.getAttribute(attribute).removeModifier(modifierUUID);
     }
 

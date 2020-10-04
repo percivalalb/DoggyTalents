@@ -36,7 +36,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
@@ -142,7 +142,7 @@ public class ClientEventHandler {
                     }
                 }
                 RenderSystem.translated(-guiLeft, -guiTop, 0);
-                btn.renderToolTip(event.getMouseX(), event.getMouseY());
+                btn.renderToolTip(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
                 RenderSystem.translated(guiLeft, guiTop, 0);
             }
         }
@@ -189,7 +189,7 @@ public class ClientEventHandler {
 
 
         RenderSystem.disableTexture();
-        Vec3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
+        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
         double d0 = vec3d.getX();
         double d1 = vec3d.getY();
         double d2 = vec3d.getZ();
@@ -214,6 +214,8 @@ public class ClientEventHandler {
                 break label;
             }
 
+            MatrixStack stack = event.getMatrixStack();
+
             DogEntity dog = (DogEntity) mc.player.getRidingEntity();
             int width = mc.getMainWindow().getScaledWidth();
             int height = mc.getMainWindow().getScaledHeight();
@@ -233,13 +235,13 @@ public class ClientEventHandler {
                 int icon = 16;
                 byte backgound = 12;
 
-                mc.ingameGUI.blit(x, y, 16 + backgound * 9, 27, 9, 9);
+                mc.ingameGUI.blit(stack, x, y, 16 + backgound * 9, 27, 9, 9);
 
 
                 if (idx < level) {
-                    mc.ingameGUI.blit(x, y, icon + 36, 27, 9, 9);
+                    mc.ingameGUI.blit(stack, x, y, icon + 36, 27, 9, 9);
                 } else if (idx == level) {
-                    mc.ingameGUI.blit(x, y, icon + 45, 27, 9, 9);
+                    mc.ingameGUI.blit(stack, x, y, icon + 45, 27, 9, 9);
                 }
             }
             RenderSystem.disableBlend();
@@ -257,7 +259,7 @@ public class ClientEventHandler {
                 int partial = MathHelper.ceil(air * 10.0D / 300.0D) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
-                    mc.ingameGUI.blit(left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+                    mc.ingameGUI.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
                 }
                 ForgeIngameGui.right_height += 10;
             }

@@ -29,8 +29,8 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.fluid.IFluidState;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -60,6 +60,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
@@ -140,7 +141,7 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public IFluidState getFluidState(BlockState state) {
+    public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
     }
 
@@ -178,17 +179,17 @@ public class DogBedBlock extends Block {
                     List<DogEntity> dogs = worldIn.getEntitiesWithinAABB(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).grow(10D), EntityPredicates.IS_ALIVE);
                     if (!dogs.isEmpty()) {
                         dogBedTileEntity.setOwner(dogs.get(0));
-                        dogs.get(0).setBedPos(dogs.get(0).dimension, pos);
+                        dogs.get(0).setBedPos(worldIn.getDimensionKey(), pos);
                         worldIn.setEntityState(dogs.get(0), (byte)7);
                     }
                 } else if (dogBedTileEntity.getOwnerUUID() != null) {
                     DogRespawnData storage = DogRespawnStorage.get(worldIn).remove(dogBedTileEntity.getOwnerUUID());
 
                     if (storage != null) {
-                        DogEntity dog = storage.respawn(worldIn, player, pos.up());
+                        DogEntity dog = storage.respawn((ServerWorld) worldIn, player, pos.up());
 
                         dogBedTileEntity.setOwner(dog);
-                        dog.setBedPos(dog.dimension, pos);
+                        dog.setBedPos(dog.world.getDimensionKey(), pos);
                         return ActionResultType.SUCCESS;
                     } else {
                         return ActionResultType.FAIL;
@@ -218,16 +219,16 @@ public class DogBedBlock extends Block {
             ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
 
             if (name != null) {
-                tooltip.add(new StringTextComponent("Bed Name: ").applyTextStyle(TextFormatting.WHITE).appendSibling(name));
+                tooltip.add(new StringTextComponent("Bed Name: ").mergeStyle(TextFormatting.WHITE).append(name));
             }
 
             if (ownerName != null) {
-                tooltip.add(new StringTextComponent("Name: ").applyTextStyle(TextFormatting.DARK_AQUA).appendSibling(ownerName));
+                tooltip.add(new StringTextComponent("Name: ").mergeStyle(TextFormatting.DARK_AQUA).append(ownerName));
 
             }
 
             if (ownerId != null && (flagIn.isAdvanced() || Screen.hasShiftDown())) {
-                tooltip.add(new StringTextComponent("UUID: ").applyTextStyle(TextFormatting.AQUA).appendSibling(new StringTextComponent(ownerId.toString())));
+                tooltip.add(new StringTextComponent("UUID: ").mergeStyle(TextFormatting.AQUA).append(new StringTextComponent(ownerId.toString())));
             }
         }
     }

@@ -25,6 +25,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -66,7 +67,7 @@ public class WhistleItem extends Item {
             if (mode == 0) { // Stand
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
-                        dog.getAISit().setSitting(false);
+                        dog.func_233687_w_(false);
                         dog.getNavigator().clearPath();
                         dog.setAttackTarget(null);
                         if (dog.getMode() == EnumMode.WANDERING) {
@@ -79,7 +80,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslationTextComponent("dogcommand.come"));
+                        player.sendMessage(new TranslationTextComponent("dogcommand.come"), Util.DUMMY_UUID);
                     }
                 }
 
@@ -98,7 +99,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
+                        player.sendMessage(new TranslationTextComponent("dogcommand.heel"), Util.DUMMY_UUID);
                     }
                 }
 
@@ -107,7 +108,7 @@ public class WhistleItem extends Item {
             else if (mode == 2) { // Stay
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
-                        dog.getAISit().setSitting(true);
+                        dog.func_233687_w_(true);
                         dog.getNavigator().clearPath();
                         dog.setAttackTarget(null);
                         if (dog.getMode() == EnumMode.WANDERING) {
@@ -120,7 +121,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
+                        player.sendMessage(new TranslationTextComponent("dogcommand.stay"), Util.DUMMY_UUID);
                     }
                 }
 
@@ -130,12 +131,12 @@ public class WhistleItem extends Item {
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
                         if (dog.getMaxHealth() / 2 >= dog.getHealth()) {
-                            dog.getAISit().setSitting(true);
+                            dog.func_233687_w_(true);
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget(null);
                         }
                         else {
-                            dog.getAISit().setSitting(false);
+                            dog.func_233687_w_(false);
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget(null);
                         }
@@ -146,7 +147,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
+                        player.sendMessage(new TranslationTextComponent("dogcommand.ok"), Util.DUMMY_UUID);
                     }
 
                     return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
@@ -167,7 +168,7 @@ public class WhistleItem extends Item {
                     world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
                     DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
-                    doggyBeam.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
+                    doggyBeam.shoot(player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
                     world.addEntity(doggyBeam);
                 }
 

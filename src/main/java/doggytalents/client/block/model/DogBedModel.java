@@ -27,16 +27,16 @@ import net.minecraft.client.renderer.model.BlockPart;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.renderer.model.Material;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.model.ModelRotation;
+import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ILightReader;
+import net.minecraft.world.IBlockDisplayReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
@@ -88,7 +88,7 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public IModelData getModelData(@Nonnull ILightReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
+    public IModelData getModelData(@Nonnull IBlockDisplayReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
         ICasingMaterial casing = null;
         IBeddingMaterial bedding = null;
         Direction facing = null;
@@ -99,7 +99,7 @@ public class DogBedModel implements IBakedModel {
             bedding = ((DogBedTileEntity) tile).getBedding();
         }
 
-        if (state.has(DogBedBlock.FACING)) {
+        if (state.hasProperty(DogBedBlock.FACING)) {
             facing = state.get(DogBedBlock.FACING);
         }
 
@@ -117,13 +117,13 @@ public class DogBedModel implements IBakedModel {
         }
 
         BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
-            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.func_230176_c_(),
+            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.getGuiLight(),
             this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
 
 
-        Either<Material, String> casingTexture = findTexture(casingResource.getTexture());
+        Either<RenderMaterial, String> casingTexture = findTexture(casingResource.getTexture());
         newModel.textures.put("bedding", findTexture(beddingResource.getTexture()));
         newModel.textures.put("casing", casingTexture);
         newModel.textures.put("particle", casingTexture);
@@ -132,11 +132,11 @@ public class DogBedModel implements IBakedModel {
     }
 
     private ResourceLocation createResourceVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
-        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.getRegistryName().toString().replace(':', '.') + ",casing=" + casingResource.getRegistryName().toString().replace(':', '.') + ",facing=" + facing.getName());
+        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.getRegistryName().toString().replace(':', '.') + ",casing=" + casingResource.getRegistryName().toString().replace(':', '.') + ",facing=" + facing.getName2());
     }
 
-    private Either<Material, String> findTexture(ResourceLocation resource) {
-        return Either.left(new Material(PlayerContainer.LOCATION_BLOCKS_TEXTURE, resource));
+    private Either<RenderMaterial, String> findTexture(ResourceLocation resource) {
+        return Either.left(new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, resource));
     }
 
     private ModelRotation getModelRotation(Direction dir) {
@@ -159,8 +159,8 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public boolean func_230044_c_() {
-        return this.bakedModel.func_230044_c_();
+    public boolean isSideLit() {
+        return this.bakedModel.isSideLit();
     }
 
     @Override

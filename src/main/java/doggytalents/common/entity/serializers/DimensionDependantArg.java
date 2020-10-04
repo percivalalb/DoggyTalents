@@ -9,20 +9,21 @@ import java.util.Set;
 import java.util.function.Supplier;
 
 import net.minecraft.network.datasync.IDataSerializer;
-import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.util.RegistryKey;
+import net.minecraft.world.World;
 
-public class DimensionDependantArg<T> implements Map<DimensionType, T> {
+public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
 
     private Supplier<IDataSerializer<T>> serializer;
 
-    public Map<DimensionType, T> map = new HashMap<>();
+    public Map<RegistryKey<World>, T> map = new HashMap<>();
 
     public DimensionDependantArg(Supplier<IDataSerializer<T>> serializer) {
         this.serializer = serializer;
     }
 
     @Override
-    public T put(DimensionType dim, T obj) {
+    public T put(RegistryKey<World> dim, T obj) {
         return this.map.put(dim, obj);
     }
 
@@ -50,7 +51,7 @@ public class DimensionDependantArg<T> implements Map<DimensionType, T> {
         return new DimensionDependantArg<>(this.serializer);
     }
 
-    public DimensionDependantArg<T> set(DimensionType dim, T value) {
+    public DimensionDependantArg<T> set(RegistryKey<World> dim, T value) {
         this.put(dim, value);
         return this;
     }
@@ -103,12 +104,12 @@ public class DimensionDependantArg<T> implements Map<DimensionType, T> {
     }
 
     @Override
-    public void putAll(Map<? extends DimensionType, ? extends T> m) {
+    public void putAll(Map<? extends RegistryKey<World>, ? extends T> m) {
         this.map.putAll(m);
     }
 
     @Override
-    public Set<DimensionType> keySet() {
+    public Set<RegistryKey<World>> keySet() {
         return this.map.keySet();
     }
 
@@ -118,7 +119,7 @@ public class DimensionDependantArg<T> implements Map<DimensionType, T> {
     }
 
     @Override
-    public Set<Entry<DimensionType, T>> entrySet() {
+    public Set<Entry<RegistryKey<World>, T>> entrySet() {
         return Collections.unmodifiableSet(this.map.entrySet());
     }
 }

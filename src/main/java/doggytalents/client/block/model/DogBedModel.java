@@ -94,12 +94,12 @@ public class DogBedModel implements IBakedModel {
         Direction facing = null;
 
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof DogBedTileEntity) {
+        if (tile instanceof DogBedTileEntity) {
             casing = ((DogBedTileEntity) tile).getCasing();
             bedding = ((DogBedTileEntity) tile).getBedding();
         }
 
-        if(state.has(DogBedBlock.FACING)) {
+        if (state.has(DogBedBlock.FACING)) {
             facing = state.get(DogBedBlock.FACING);
         }
 

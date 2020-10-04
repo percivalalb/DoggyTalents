@@ -100,7 +100,7 @@ public class FindWaterGoal extends Goal {
                 targetPos = this.waterPos;
             } else if (!this.creature.hasPath()) {
                 BlockPos.Mutable mutablePos = new BlockPos.Mutable();
-                for(int i = 0; i < 10; ++i) {
+                for (int i = 0; i < 10; ++i) {
                     int j = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
                     int k = EntityUtil.getRandomNumber(this.creature, -4, 4);
                     int l = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);

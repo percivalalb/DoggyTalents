@@ -32,11 +32,11 @@ public class RadarItem extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-//        if(worldIn.isRemote) {
+//        if (worldIn.isRemote) {
 //            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> RadarScreen.open(playerIn));
 //        }
 
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             if (playerIn.isSneaking()) {
                 DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
                 for (UUID uuid : locationManager.getAllUUID()) {
@@ -52,13 +52,13 @@ public class RadarItem extends Item {
             DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
             List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, worldIn.getDimension().getType()).collect(Collectors.toList());
 
-            if(ownDogs.isEmpty()) {
+            if (ownDogs.isEmpty()) {
                 playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", String.valueOf(DimensionType.getKey(dimCurr))));
             } else {
                 boolean flag = false;
 
-                for(DogLocationData loc : ownDogs) {
-                    if(loc.shouldDisplay(worldIn, playerIn, handIn)) {
+                for (DogLocationData loc : ownDogs) {
+                    if (loc.shouldDisplay(worldIn, playerIn, handIn)) {
                         flag = true;
 
                         String translateStr = RadarItem.getDirectionTranslationKey(loc, playerIn);
@@ -68,7 +68,7 @@ public class RadarItem extends Item {
                     }
                 }
 
-                if(!flag) {
+                if (!flag) {
                     playerIn.sendMessage(new TranslationTextComponent("dogradar.errornoradio"));
                 }
             }
@@ -76,18 +76,18 @@ public class RadarItem extends Item {
 
             List<DimensionType> otherDogs = Lists.newArrayList();
             List<DimensionType> noDogs = Lists.newArrayList();
-            for(DimensionType dimType : DimensionType.getAll()) {
-                if(dimCurr == dimType) continue;
+            for (DimensionType dimType : DimensionType.getAll()) {
+                if (dimCurr == dimType) continue;
                 ownDogs = locationManager.getDogs(playerIn, dimType).collect(Collectors.toList()); // Check if radio collar is on
 
                 (ownDogs.size() > 0 ? otherDogs : noDogs).add(dimType);
             }
 
-            if(otherDogs.size() > 0) {
+            if (otherDogs.size() > 0) {
                 playerIn.sendMessage(new TranslationTextComponent("dogradar.notindim", otherDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
             }
 
-            if(noDogs.size() > 0 && stack.getItem() == DoggyItems.CREATIVE_RADAR.get()) {
+            if (noDogs.size() > 0 && stack.getItem() == DoggyItems.CREATIVE_RADAR.get()) {
                 playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", noDogs.stream().map(dim -> String.valueOf(DimensionType.getKey(dim))).collect(Collectors.joining(", "))));
             }
         }
@@ -101,21 +101,21 @@ public class RadarItem extends Item {
         Vec3d diff = loc.getPos().add(entity.getPositionVector().inverse());
         double angle = MathHelper.atan2(diff.getX(), diff.getZ());
 
-        if(angle < -Math.PI + Math.PI / 8) {
+        if (angle < -Math.PI + Math.PI / 8) {
             return "dogradar.north";
-        } else if(angle < -Math.PI + 3 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 3 * Math.PI / 8) {
             return "dogradar.north.west";
-        } else if(angle < -Math.PI + 5 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 5 * Math.PI / 8) {
             return "dogradar.west";
-        } else if(angle < -Math.PI + 7 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 7 * Math.PI / 8) {
             return "dogradar.south.west";
-        } else if(angle < -Math.PI + 9 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 9 * Math.PI / 8) {
             return "dogradar.south";
-        } else if(angle < -Math.PI + 11 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 11 * Math.PI / 8) {
             return "dogradar.south.east";
-        } else if(angle < -Math.PI + 13 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 13 * Math.PI / 8) {
             return "dogradar.east";
-        } else if(angle < -Math.PI + 15 * Math.PI / 8) {
+        } else if (angle < -Math.PI + 15 * Math.PI / 8) {
             return "dogradar.north.east";
         } else {
             return "dogradar.north";

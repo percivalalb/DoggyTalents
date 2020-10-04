@@ -25,17 +25,17 @@ public class TreatBagContainer extends Container {
 
         assertInventorySize(playerInventory, 3 * 5);
 
-        for(int l = 0; l < 5; l++) {
+        for (int l = 0; l < 5; l++) {
             this.addSlot(new SlotItemHandler(this.bagInventory, l, 44 + l * 18, 22));
         }
 
-        for(int j = 0; j < 3; j++) {
-            for(int i1 = 0; i1 < 9; i1++) {
+        for (int j = 0; j < 3; j++) {
+            for (int i1 = 0; i1 < 9; i1++) {
                 this.addSlot(new Slot(playerInventory, i1 + j * 9 + 9, 8 + i1 * 18, 45 + j * 18));
             }
         }
 
-        for(int k = 0; k < 9; k++) {
+        for (int k = 0; k < 9; k++) {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
                 @Override
                 public boolean canTakeStack(PlayerEntity playerIn) {
@@ -50,26 +50,26 @@ public class TreatBagContainer extends Container {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
-        if(slot != null && slot.getHasStack()) {
+        if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if(index < 5) {
-                if(!mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
+            if (index < 5) {
+                if (!mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
-            else if(!mergeItemStack(itemstack1, 0, 5, false)) {
+            else if (!mergeItemStack(itemstack1, 0, 5, false)) {
                 return ItemStack.EMPTY;
             }
 
-            if(itemstack1.isEmpty()) {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if(itemstack1.getCount() == itemstack.getCount()) {
+            if (itemstack1.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
         }

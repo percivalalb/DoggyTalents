@@ -42,16 +42,16 @@ public class PackPuppyTalent extends Talent {
 
     @Override
     public void tick(AbstractDogEntity dogIn) {
-        if(dogIn.isAlive() && !dogIn.world.isRemote && dogIn.getLevel(this) >= 5) {
+        if (dogIn.isAlive() && !dogIn.world.isRemote && dogIn.getLevel(this) >= 5) {
             List<ItemEntity> list = dogIn.world.getEntitiesWithinAABB(ItemEntity.class, dogIn.getBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
 
             if (!list.isEmpty()) {
                 IItemHandler inventory = dogIn.getData(PACK_PUPPY_HANDLER);
 
-                for(ItemEntity entityItem : list) {
+                for (ItemEntity entityItem : list) {
                     ItemStack remaining = InventoryUtil.addItem(inventory, entityItem.getItem());
 
-                    if(!remaining.isEmpty()) {
+                    if (!remaining.isEmpty()) {
                         entityItem.setItem(remaining);
                     } else {
                         entityItem.remove();
@@ -74,10 +74,10 @@ public class PackPuppyTalent extends Talent {
         ItemStack stack = playerIn.getHeldItem(handIn);
         int level = dogIn.getLevel(this);
 
-        if(dogIn.isTamed() && level > 0) { // Dog requirements
-            if(playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
+        if (dogIn.isTamed() && level > 0) { // Dog requirements
+            if (playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
 
-                if(dogIn.canInteract(playerIn)) {
+                if (dogIn.canInteract(playerIn)) {
 
                     if (!playerIn.world.isRemote) {
                         playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.pack_puppy.version_migration"), false);
@@ -93,7 +93,7 @@ public class PackPuppyTalent extends Talent {
     @Override
     public void removed(AbstractDogEntity dog, int preLevel) {
         // No need to drop anything if dog didn't have pack puppy
-        if(preLevel > 0) {
+        if (preLevel > 0) {
             this.dropInventory(dog);
         }
     }
@@ -103,7 +103,7 @@ public class PackPuppyTalent extends Talent {
         //TODO either drop inventory or save to respawn data, currently does both
         // No need to drop anything if dog didn't have pack puppy
         PackPuppyItemHandler inventory = dogIn.getData(PACK_PUPPY_HANDLER);
-        for(int i = 0; i < inventory.getSlots(); ++i) {
+        for (int i = 0; i < inventory.getSlots(); ++i) {
             InventoryHelper.spawnItemStack(dogIn.world, dogIn.getPosX(), dogIn.getPosY(), dogIn.getPosZ(), inventory.getStackInSlot(i));
             inventory.setStackInSlot(i, ItemStack.EMPTY);
         }

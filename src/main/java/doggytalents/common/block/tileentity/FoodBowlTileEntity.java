@@ -67,18 +67,18 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
     public void tick() {
 
         //Only run update code every 5 ticks (0.25s)
-        if(++this.timeoutCounter < 5) { return; }
+        if (++this.timeoutCounter < 5) { return; }
 
         List<DogEntity> dogList = this.world.getEntitiesWithinAABB(DogEntity.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
 
-        for(DogEntity dog : dogList) {
+        for (DogEntity dog : dogList) {
             //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
             UUID placerId = this.getPlacerId();
-            if(placerId != null && placerId.equals(dog.getOwnerId()) && !dog.getBowlPos().isPresent()) {
+            if (placerId != null && placerId.equals(dog.getOwnerId()) && !dog.getBowlPos().isPresent()) {
                 dog.setBowlPos(this.pos);
             }
 
-            if(dog.getDogHunger() < dog.getMaxHunger() / 2) {
+            if (dog.getDogHunger() < dog.getMaxHunger() / 2) {
                InventoryUtil.feedDogFrom(dog, null, this.inventory);
             }
         }

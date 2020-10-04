@@ -55,19 +55,19 @@ public class DogBathBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         ItemStack stack = player.getHeldItem(handIn);
 
-        if(stack.isEmpty()) {
+        if (stack.isEmpty()) {
             return ActionResultType.SUCCESS;
         } else {
-            if(stack.getItem() == Items.GLASS_BOTTLE) {
-                if(!worldIn.isRemote) {
-                    if(!player.abilities.isCreativeMode) {
+            if (stack.getItem() == Items.GLASS_BOTTLE) {
+                if (!worldIn.isRemote) {
+                    if (!player.abilities.isCreativeMode) {
                         ItemStack bottleStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
                         stack.shrink(1);
-                        if(stack.isEmpty()) {
+                        if (stack.isEmpty()) {
                             player.setHeldItem(handIn, bottleStack);
-                        } else if(!player.inventory.addItemStackToInventory(bottleStack)) {
+                        } else if (!player.inventory.addItemStackToInventory(bottleStack)) {
                             player.dropItem(bottleStack, false);
-                        } else if(player instanceof ServerPlayerEntity) {
+                        } else if (player instanceof ServerPlayerEntity) {
                             ((ServerPlayerEntity) player).sendContainerToPlayer(player.container);
                         }
                     }
@@ -89,7 +89,7 @@ public class DogBathBlock extends Block {
 
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if(stateIn.get(WATERLOGGED)) {
+        if (stateIn.get(WATERLOGGED)) {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
 

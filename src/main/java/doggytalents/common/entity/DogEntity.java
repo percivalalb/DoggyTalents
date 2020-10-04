@@ -378,7 +378,7 @@ public class DogEntity extends AbstractDogEntity {
                     int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
                     Vec3d vec3d = this.getMotion();
 
-                    for(int j = 0; j < i; ++j) {
+                    for (int j = 0; j < i; ++j) {
                         float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
                         float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
                         this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + f1, f + 0.8F, this.getPosZ() + f2, vec3d.x, vec3d.y, vec3d.z);
@@ -390,10 +390,10 @@ public class DogEntity extends AbstractDogEntity {
             if (!this.world.isRemote) {
 
                 // Every 2 seconds
-                if(this.ticksExisted % 40 == 0) {
+                if (this.ticksExisted % 40 == 0) {
                     DogLocationStorage.get(this.world).getOrCreateData(this).update(this);
 
-                    if(this.getOwner() != null) {
+                    if (this.getOwner() != null) {
                         this.setOwnersName(this.getOwner().getName());
                     }
                 }
@@ -414,7 +414,7 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         if (!this.world.isRemote) {
-            if(!ConfigValues.DISABLE_HUNGER) {
+            if (!ConfigValues.DISABLE_HUNGER) {
                 this.prevHungerTick = this.hungerTick;
 
                 if (!this.isBeingRidden() && !this.isSitting()) {
@@ -472,9 +472,9 @@ public class DogEntity extends AbstractDogEntity {
         ItemStack stack = player.getHeldItem(hand);
 
         if (this.isTamed()) {
-            if(stack.getItem() == Items.STICK && this.canInteract(player)) {
+            if (stack.getItem() == Items.STICK && this.canInteract(player)) {
 
-                if(this.world.isRemote) {
+                if (this.world.isRemote) {
                     DogInfoScreen.open(this);
                 }
 
@@ -498,12 +498,12 @@ public class DogEntity extends AbstractDogEntity {
                 }
             }
         } else { // Not tamed
-            if(stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
+            if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
 
-                if(!this.world.isRemote) {
+                if (!this.world.isRemote) {
                     this.consumeItemFromStack(player, stack);
 
-                    if(stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.rand.nextInt(3) == 0) {
+                    if (stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.rand.nextInt(3) == 0) {
                         this.setTamedBy(player);
                         this.navigator.clearPath();
                         this.setAttackTarget((LivingEntity) null);
@@ -999,9 +999,9 @@ public class DogEntity extends AbstractDogEntity {
             DogEntity entitydog = (DogEntity) otherAnimal;
             if (!entitydog.isTamed()) {
                 return false;
-            } else if(entitydog.isSitting()) {
+            } else if (entitydog.isSitting()) {
                 return false;
-            } else if(ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
+            } else if (ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
                 return false;
             } else {
                 return this.isInLove() && entitydog.isInLove();
@@ -1014,12 +1014,12 @@ public class DogEntity extends AbstractDogEntity {
         DogEntity entitydog = DoggyEntityTypes.DOG.get().create(this.world);
         UUID uuid = this.getOwnerId();
 
-        if(uuid != null) {
+        if (uuid != null) {
             entitydog.setOwnerId(uuid);
             entitydog.setTamed(true);
         }
 
-        if(ageable instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
+        if (ageable instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
             entitydog.setLevel(this.getLevel().combine(((DogEntity) ageable).getLevel()));
         }
 
@@ -1033,7 +1033,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public float getRenderScale() {
-        if(this.isChild()) {
+        if (this.isChild()) {
             return 0.5F;
         } else {
             return this.getDogSize() * 0.3F + 0.1F;
@@ -1379,7 +1379,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if(SIZE.equals(key)) {
+        if (SIZE.equals(key)) {
             this.recalculateSize();
         }
     }
@@ -1899,13 +1899,13 @@ public class DogEntity extends AbstractDogEntity {
 
 //    public double getDogJumpStrength() {
 //        float verticalVelocity = 0.42F + 0.06F * this.TALENTS.getLevel(ModTalents.WOLF_MOUNT);
-//        if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
+//        if (this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) == 5) verticalVelocity += 0.04F;
 //        return verticalVelocity;
 //    }
 
     // 0 - 100 input
     public void setJumpPower(int jumpPowerIn) {
-       // if(this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
+       // if (this.TALENTS.getLevel(ModTalents.WOLF_MOUNT) > 0) {
             this.jumpPower = 1.0F;
        // }
     }
@@ -1917,8 +1917,8 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void travel(Vec3d positionIn) {
-        if(this.isAlive()) {
-            if(this.isBeingRidden() && this.canBeSteered()) {
+        if (this.isAlive()) {
+            if (this.isBeingRidden() && this.canBeSteered()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
 
                 // Face the dog in the direction of the controlling passenger
@@ -1978,7 +1978,7 @@ public class DogEntity extends AbstractDogEntity {
                 }
 
                 // Once the entity reaches the ground again allow it to jump again
-                if(this.onGround) {
+                if (this.onGround) {
                     this.jumpPower = 0.0F;
                     this.setDogJumping(false);
                 }
@@ -2006,27 +2006,27 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public void addMovementStat(double xD, double yD, double zD) {
-        if(this.isBeingRidden()) {
+        if (this.isBeingRidden()) {
             int j = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
             this.statsTracker.increaseDistanceRidden(j);
         }
-        if(!this.isPassenger()) {
-            if(this.areEyesInFluid(FluidTags.WATER, true)) {
+        if (!this.isPassenger()) {
+            if (this.areEyesInFluid(FluidTags.WATER, true)) {
                 int j = Math.round(MathHelper.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
                 if (j > 0) {
                     this.statsTracker.increaseDistanceOnWater(j);
                 }
-            } else if(this.isInWater()) {
+            } else if (this.isInWater()) {
                 int k = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
                 if (k > 0) {
                     this.statsTracker.increaseDistanceInWater(k);
                 }
-            } else if(this.onGround) {
+            } else if (this.onGround) {
                 int l = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
-                if(l > 0) {
+                if (l > 0) {
                     if (this.isSprinting()) {
                         this.statsTracker.increaseDistanceSprint(l);
-                    } else if(this.isCrouching()) {
+                    } else if (this.isCrouching()) {
                         this.statsTracker.increaseDistanceSneaking(l);
                     } else {
                         this.statsTracker.increaseDistanceWalk(l);

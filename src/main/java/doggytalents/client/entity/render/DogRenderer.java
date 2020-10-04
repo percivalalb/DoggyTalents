@@ -44,7 +44,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
         if (this.canRenderName(entityIn)) {
 
             double d0 = this.renderManager.squareDistanceTo(entityIn);
-            if(d0 <= 64 * 64) {
+            if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
                 String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
                         new TranslationTextComponent(tip).getFormattedText(),
@@ -53,7 +53,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
                 RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 
-                if(d0 <= 5 * 5 && this.renderManager.info.getRenderViewEntity().isSneaking()) {
+                if (d0 <= 5 * 5 && this.renderManager.info.getRenderViewEntity().isSneaking()) {
                     RenderUtil.renderLabelWithScale(entityIn, this, entityIn.getOwnersName().orElseGet(() -> this.getNameUnknown(entityIn)), matrixStackIn, bufferIn, packedLightIn, 0.01F, -0.25F);
                 }
             }

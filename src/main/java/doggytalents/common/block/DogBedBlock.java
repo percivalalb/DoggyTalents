@@ -133,7 +133,7 @@ public class DogBedBlock extends Block {
 
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if(stateIn.get(WATERLOGGED)) {
+        if (stateIn.get(WATERLOGGED)) {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
         return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -157,7 +157,7 @@ public class DogBedBlock extends Block {
     @Override
     @Deprecated
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if(worldIn.isRemote) {
+        if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
         } else if (handIn == Hand.MAIN_HAND) {
             DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
@@ -234,8 +234,8 @@ public class DogBedBlock extends Block {
 
     @Override
     public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        for(IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
-            for(ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
+        for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
+            for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
                 items.add(DogBedUtil.createItemStack(casingId, beddingId));
             }
         }

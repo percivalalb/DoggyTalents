@@ -24,7 +24,7 @@ public class FriendlyFirePacket extends DogPacket<FriendlyFireData> {
 
     @Override
     public void handleDog(DogEntity dogIn, FriendlyFireData data, Supplier<Context> ctx) {
-        if(!dogIn.canInteract(ctx.get().getSender())) {
+        if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }
 

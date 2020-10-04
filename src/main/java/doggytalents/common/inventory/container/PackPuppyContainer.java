@@ -59,18 +59,18 @@ public class PackPuppyContainer extends Container {
             itemstack = itemstack1.copy();
 
             if (i < 3 * packpuppyLevel) {
-                if(!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
                     return ItemStack.EMPTY;
             }
-            else if(!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
+            else if (!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
                 return ItemStack.EMPTY;
 
-            if(itemstack1.isEmpty())
+            if (itemstack1.isEmpty())
                 slot.putStack(ItemStack.EMPTY);
             else
                 slot.onSlotChanged();
 
-            if(itemstack1.getCount() == itemstack.getCount())
+            if (itemstack1.getCount() == itemstack.getCount())
                 return ItemStack.EMPTY;
         }
 

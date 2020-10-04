@@ -28,7 +28,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
 
     @Override
     public void handleDog(DogEntity dogIn, DogTalentData data, Supplier<Context> ctx) {
-        if(!dogIn.canInteract(ctx.get().getSender())) {
+        if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }
 
@@ -41,7 +41,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
 
         int level = dogIn.getLevel(data.talent);
 
-        if(level < data.talent.getMaxLevel() && dogIn.canSpendPoints(data.talent.getLevelCost(level + 1))) {
+        if (level < data.talent.getMaxLevel() && dogIn.canSpendPoints(data.talent.getLevelCost(level + 1))) {
             dogIn.setTalentLevel(data.talent, level + 1);
         }
     }

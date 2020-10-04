@@ -20,7 +20,7 @@ public class InventoryUtil {
 
     public static boolean feedDogFrom(AbstractDogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
 
-        for(int i = 0; i < source.getSlots(); i++) {
+        for (int i = 0; i < source.getSlots(); i++) {
 
             ItemStack stack = source.getStackInSlot(i).copy();
             Optional<IDogFoodHandler> foodHandler = FoodHandler.getMatch(dogIn, stack, entity);
@@ -36,7 +36,7 @@ public class InventoryUtil {
     }
 
     public static Pair<ItemStack, Integer> findStack(IItemHandler source, Predicate<ItemStack> searchCriteria) {
-        for(int i = 0; i < source.getSlots(); i++) {
+        for (int i = 0; i < source.getSlots(); i++) {
 
             ItemStack stack = source.getStackInSlot(i);
             if (searchCriteria.test(stack)) {
@@ -76,7 +76,7 @@ public class InventoryUtil {
            int i = 0;
            float f = 0.0F;
 
-           for(int j = 0; j < inv.getSlots(); ++j) {
+           for (int j = 0; j < inv.getSlots(); ++j) {
               ItemStack itemstack = inv.getStackInSlot(j);
               if (!itemstack.isEmpty()) {
                  f += itemstack.getCount() / (float)Math.min(inv.getSlotLimit(j), itemstack.getMaxStackSize());

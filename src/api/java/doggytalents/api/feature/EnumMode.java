@@ -69,7 +69,7 @@ public enum EnumMode {
 
     public EnumMode previousMode() {
         int i = this.getIndex() - 1;
-        if(i < 0) {
+        if (i < 0) {
             i = VALUES.length - 1;
         }
         return VALUES[i];
@@ -77,22 +77,22 @@ public enum EnumMode {
 
     public EnumMode nextMode() {
         int i = this.getIndex() + 1;
-        if(i >= VALUES.length) {
+        if (i >= VALUES.length) {
             i = 0;
         }
         return VALUES[i];
     }
 
     public static EnumMode byIndex(int i) {
-        if(i < 0 || i >= VALUES.length) {
+        if (i < 0 || i >= VALUES.length) {
             i = EnumMode.DOCILE.getIndex();
         }
         return VALUES[i];
     }
 
     public static EnumMode bySaveName(String saveName) {
-        for(EnumMode gender : EnumMode.values()) {
-            if(gender.saveName.equals(saveName)) {
+        for (EnumMode gender : EnumMode.values()) {
+            if (gender.saveName.equals(saveName)) {
                 return gender;
             }
         }

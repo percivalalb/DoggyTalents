@@ -31,17 +31,17 @@ public class EventHandler {
         ItemStack stack = event.getItemStack();
         Entity target = event.getTarget();
 
-        if(target.getType() == EntityType.WOLF && target instanceof TameableEntity && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
+        if (target.getType() == EntityType.WOLF && target instanceof TameableEntity && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
             event.setCanceled(true);
 
             TameableEntity wolf = (TameableEntity) target;
 
             PlayerEntity player = event.getPlayer();
 
-            if(wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
+            if (wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
 
-                if(!world.isRemote) {
-                    if(!player.abilities.isCreativeMode) {
+                if (!world.isRemote) {
+                    if (!player.abilities.isCreativeMode) {
                         stack.shrink(1);
                     }
 
@@ -68,7 +68,7 @@ public class EventHandler {
     public void onEntitySpawn(final EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
 
-        if(entity instanceof AbstractSkeletonEntity) {
+        if (entity instanceof AbstractSkeletonEntity) {
             AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity) entity;
             skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, DogEntity.class, 6.0F, 1.0D, 1.2D)); // Same goal as in AbstractSkeletonEntity
         }
@@ -82,13 +82,13 @@ public class EventHandler {
 
             CompoundNBT tag = player.getPersistentData();
 
-            if(!tag.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
+            if (!tag.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
                 tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
             }
 
             CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
 
-            if(!persistTag.getBoolean("gotDTStartingItems")) {
+            if (!persistTag.getBoolean("gotDTStartingItems")) {
                 persistTag.putBoolean("gotDTStartingItems", true);
 
                 player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.DOGGY_CHARM.get()));

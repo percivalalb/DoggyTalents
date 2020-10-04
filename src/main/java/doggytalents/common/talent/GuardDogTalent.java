@@ -1,6 +1,5 @@
 package doggytalents.common.talent;
 
-import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
@@ -47,7 +46,6 @@ public class GuardDogTalent extends Talent {
                 if (dogIn.getRNG().nextInt(12) < blockChance) {
                     dogIn.setData(COOLDOWN, dogIn.ticksExisted + 10);
                     dogIn.playSound(SoundEvents.ENTITY_ITEM_BREAK, dogIn.getSoundVolume() / 2, (dogIn.getRNG().nextFloat() - dogIn.getRNG().nextFloat()) * 0.2F + 1.0F);
-                    DoggyTalents2.LOGGER.debug("Block attack");
                     return ActionResult.resultFail(0F);
                 }
             }

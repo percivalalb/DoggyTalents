@@ -23,10 +23,10 @@ public class DroolBoneItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemStackIn = playerIn.getHeldItem(handIn);
 
-        if(itemStackIn.getItem() == this) {
+        if (itemStackIn.getItem() == this) {
 
             ItemStack returnStack = new ItemStack(this.altBone.get());
-            if(itemStackIn.hasTag()) {
+            if (itemStackIn.hasTag()) {
                 returnStack.setTag(itemStackIn.getTag().copy());
             }
 

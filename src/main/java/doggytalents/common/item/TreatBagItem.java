@@ -50,11 +50,11 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
-        if(worldIn.isRemote) {
+        if (worldIn.isRemote) {
             return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
         }
         else {
-            if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+            if (playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerIn;
 
                 Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.currentItem);

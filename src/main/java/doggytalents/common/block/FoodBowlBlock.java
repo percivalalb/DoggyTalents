@@ -96,12 +96,12 @@ public class FoodBowlBlock extends Block {
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
         FoodBowlTileEntity foodBowl = WorldUtil.getTileEntity(worldIn, pos, FoodBowlTileEntity.class);
 
-        if(foodBowl != null && entityIn instanceof ItemEntity) {
+        if (foodBowl != null && entityIn instanceof ItemEntity) {
             ItemEntity entityItem = (ItemEntity) entityIn;
 
             IItemHandler bowlInventory = foodBowl.getInventory();
             ItemStack remaining = InventoryUtil.addItem(bowlInventory, entityItem.getItem());
-            if(!remaining.isEmpty()) {
+            if (!remaining.isEmpty()) {
                 entityItem.setItem(remaining);
             } else {
                 entityItem.remove();
@@ -112,11 +112,11 @@ public class FoodBowlBlock extends Block {
 
     @Override
     public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-        if(state.getBlock() != newState.getBlock()) {
+        if (state.getBlock() != newState.getBlock()) {
             FoodBowlTileEntity foodBowl = WorldUtil.getTileEntity(worldIn, pos, FoodBowlTileEntity.class);
-            if(foodBowl != null) {
+            if (foodBowl != null) {
                 IItemHandler bowlInventory = foodBowl.getInventory();
-                for(int i = 0; i < bowlInventory.getSlots(); ++i) {
+                for (int i = 0; i < bowlInventory.getSlots(); ++i) {
                     InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), bowlInventory.getStackInSlot(i));
                 }
                 worldIn.updateComparatorOutputLevel(pos, this);
@@ -145,21 +145,21 @@ public class FoodBowlBlock extends Block {
 
     @Override
     public ActionResultType onBlockActivated(BlockState blockStateIn, World worldIn, BlockPos posIn, PlayerEntity playerIn, Hand handIn, BlockRayTraceResult result) {
-        if(worldIn.isRemote) {
+        if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
         }
         else {
             FoodBowlTileEntity foodBowl = WorldUtil.getTileEntity(worldIn, posIn, FoodBowlTileEntity.class);
 
-            if(foodBowl != null) {
+            if (foodBowl != null) {
                 ItemStack stack = playerIn.getHeldItem(handIn);
 
-                if(!stack.isEmpty() && stack.getItem() == DoggyItems.TREAT_BAG.get()) {
+                if (!stack.isEmpty() && stack.getItem() == DoggyItems.TREAT_BAG.get()) {
                     IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
                     IItemHandler bowlInventory = foodBowl.getInventory();
 
                     InventoryUtil.transferStacks((IItemHandlerModifiable) bagInventory, bowlInventory);
-                } else if(playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
+                } else if (playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                     ServerPlayerEntity serverPlayer = (ServerPlayerEntity)playerIn;
 
                     Screens.openFoodBowlScreen(serverPlayer, foodBowl);
@@ -172,7 +172,7 @@ public class FoodBowlBlock extends Block {
 
     @Override
     public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if(stateIn.get(WATERLOGGED)) {
+        if (stateIn.get(WATERLOGGED)) {
             worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
         }
 

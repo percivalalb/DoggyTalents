@@ -19,12 +19,12 @@ public class BedFinderTalent extends Talent {
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         int level = dogIn.getLevel(this);
-        if(level > 0) {
+        if (level > 0) {
             if (!playerIn.isPassenger(dogIn)) {
                 if (playerIn.getHeldItem(handIn).getItem() == Items.BONE && dogIn.canInteract(playerIn)) {
 
                     if (dogIn.startRiding(playerIn)) {
-                        if(!dogIn.world.isRemote) {
+                        if (!dogIn.world.isRemote) {
                             dogIn.getAISit().setSitting(true);
                         }
 

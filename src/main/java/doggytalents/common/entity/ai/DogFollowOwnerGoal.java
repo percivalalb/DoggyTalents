@@ -46,7 +46,7 @@ public class DogFollowOwnerGoal extends Goal {
         LivingEntity owner = this.dog.getOwner();
         if (owner == null) {
             return false;
-        } else if(this.dog.getMode() == EnumMode.PATROL) {
+        } else if (this.dog.getMode() == EnumMode.PATROL) {
             return false;
         } else if (owner.isSpectator()) {
             return false;
@@ -80,7 +80,7 @@ public class DogFollowOwnerGoal extends Goal {
 
     @Override
     public void resetTask() {
-        if(this.dog.hasBone()) {
+        if (this.dog.hasBone()) {
             double distanceToOwner = this.owner.getDistanceSq(this.dog);
             if (distanceToOwner <= this.stopDist * this.stopDist) {
                 IThrowableItem throwableItem = this.dog.getThrowableItem();

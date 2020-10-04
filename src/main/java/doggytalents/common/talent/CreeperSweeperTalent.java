@@ -24,20 +24,22 @@ public class CreeperSweeperTalent extends Talent {
     public void tick(AbstractDogEntity dogIn) {
         int level = dogIn.getLevel(this);
 
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
+        if (level > 0) {
+            int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
-        if(timeLeft <= 0 && !dogIn.isSitting()) {
-            List<CreeperEntity> list = dogIn.world.getEntitiesWithinAABB(CreeperEntity.class, dogIn.getBoundingBox().grow(level * 5, level * 2, level * 5));
+            if (timeLeft <= 0 && !dogIn.isSitting()) {
+                List<CreeperEntity> list = dogIn.world.getEntitiesWithinAABB(CreeperEntity.class, dogIn.getBoundingBox().grow(level * 5, level * 2, level * 5));
 
-            if(!list.isEmpty()) {
-                dogIn.playSound(SoundEvents.ENTITY_WOLF_GROWL, dogIn.getSoundVolume(), (dogIn.getRNG().nextFloat() - dogIn.getRNG().nextFloat()) * 0.2F + 1.0F);
-                dogIn.setData(COOLDOWN, dogIn.ticksExisted + 60 + dogIn.getRNG().nextInt(40));
+                if (!list.isEmpty()) {
+                    dogIn.playSound(SoundEvents.ENTITY_WOLF_GROWL, dogIn.getSoundVolume(), (dogIn.getRNG().nextFloat() - dogIn.getRNG().nextFloat()) * 0.2F + 1.0F);
+                    dogIn.setData(COOLDOWN, dogIn.ticksExisted + 60 + dogIn.getRNG().nextInt(40));
+                }
             }
-        }
 
-        if(dogIn.getAttackTarget() instanceof CreeperEntity) {
-            CreeperEntity creeper = (CreeperEntity) dogIn.getAttackTarget();
-            creeper.setCreeperState(-1);
+            if (dogIn.getAttackTarget() instanceof CreeperEntity) {
+                CreeperEntity creeper = (CreeperEntity) dogIn.getAttackTarget();
+                creeper.setCreeperState(-1);
+            }
         }
     }
 

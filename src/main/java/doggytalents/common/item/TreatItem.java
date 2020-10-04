@@ -32,7 +32,7 @@ public class TreatItem extends Item implements IDogItem {
 
         if (dogIn.getGrowingAge() < 0) {
 
-            if(!worldIn.isRemote) {
+            if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"));
             }
@@ -40,17 +40,17 @@ public class TreatItem extends Item implements IDogItem {
             return ActionResultType.CONSUME;
         } else if (!dogLevel.canIncrease(this.type)) {
 
-            if(!worldIn.isRemote) {
+            if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"));
             }
 
             return ActionResultType.CONSUME;
         }
-        else if(dogLevel.getLevel(this.type) < this.maxLevel) {
+        else if (dogLevel.getLevel(this.type) < this.maxLevel) {
 
-            if(!playerIn.world.isRemote) {
-                if(!playerIn.abilities.isCreativeMode) {
+            if (!playerIn.world.isRemote) {
+                if (!playerIn.abilities.isCreativeMode) {
                     playerIn.getHeldItem(handIn).shrink(1);
                 }
 
@@ -65,7 +65,7 @@ public class TreatItem extends Item implements IDogItem {
         }
         else {
 
-            if(!worldIn.isRemote) {
+            if (!worldIn.isRemote) {
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"));
             }

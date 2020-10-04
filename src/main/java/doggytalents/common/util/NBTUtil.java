@@ -120,7 +120,7 @@ public class NBTUtil {
         if (!talentMap.isEmpty()) {
             ListNBT list = new ListNBT();
 
-            for(Entry<Talent, Integer> entry : talentMap.entrySet()) {
+            for (Entry<Talent, Integer> entry : talentMap.entrySet()) {
                 CompoundNBT talentCompound = new CompoundNBT();
 
                 NBTUtil.putRegistryValue(talentCompound, "talent", entry.getKey());

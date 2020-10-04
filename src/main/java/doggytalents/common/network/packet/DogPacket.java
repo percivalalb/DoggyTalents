@@ -24,7 +24,7 @@ public abstract class DogPacket<T extends DogData> implements IPacket<T> {
         ctx.get().enqueueWork(() -> {
             Entity target = ctx.get().getSender().world.getEntityByID(data.entityId);
 
-            if(!(target instanceof DogEntity)) {
+            if (!(target instanceof DogEntity)) {
                 return;
             }
 

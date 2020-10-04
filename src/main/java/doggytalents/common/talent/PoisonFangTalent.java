@@ -26,7 +26,7 @@ public class PoisonFangTalent extends Talent {
 
             ItemStack stack = playerIn.getHeldItem(handIn);
 
-            if(stack.getItem() == Items.SPIDER_EYE) {
+            if (stack.getItem() == Items.SPIDER_EYE) {
 
                 if (playerIn.getActivePotionEffect(Effects.POISON) == null || dogIn.getDogHunger() < 30) {
                     return ActionResultType.FAIL;
@@ -47,8 +47,8 @@ public class PoisonFangTalent extends Talent {
 
     @Override
     public ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {
-        if(dogIn.getLevel(this) >= 3) {
-            if(effectIn.getPotion() == Effects.POISON) {
+        if (dogIn.getLevel(this) >= 3) {
+            if (effectIn.getPotion() == Effects.POISON) {
                 return ActionResultType.FAIL;
             }
         }
@@ -58,7 +58,7 @@ public class PoisonFangTalent extends Talent {
 
     @Override
     public ActionResultType attackEntityAsMob(AbstractDogEntity dog, Entity entity) {
-        if(entity instanceof LivingEntity) {
+        if (entity instanceof LivingEntity) {
             int level = dog.getLevel(this);
 
             if (level > 0) {

@@ -21,7 +21,7 @@ public class DefaultAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
 
     @Override
     public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(dog.isTamed() && !dog.isInvisible()) {
+        if (dog.isTamed() && !dog.isInvisible()) {
             LayerRenderer.renderCutoutModel(layer.getEntityModel(), this.getTexture(dog, data), matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
         }
     }

@@ -48,8 +48,8 @@ public class PatrolAreaGoal extends Goal {
 
     @Override
     public void tick() {
-        if(!this.dog.isSitting()) {
-            if(--this.timeToRecalcPath <= 0) {
+        if (!this.dog.isSitting()) {
+            if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
                 List<BlockPos> patrolPos = this.dog.getData(PatrolItem.POS);

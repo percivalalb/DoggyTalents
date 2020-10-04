@@ -49,22 +49,22 @@ public class ConfigHandler {
 
     public static void loadConfig(final ModConfig.Loading event) {
         ModConfig config = event.getConfig();
-        if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
+        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
             ConfigHandler.refreshClient();
-        } else if(config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
+        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
             ConfigHandler.refreshServer();
-        } else if(config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
+        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
             ConfigHandler.refreshTalents();
         }
     }
 
     public static void reloadConfig(final ModConfig.Reloading event) {
         ModConfig config = event.getConfig();
-        if(config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
+        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
             ConfigHandler.refreshClient();
-        } else if(config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
+        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
             ConfigHandler.refreshServer();
-        } else if(config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
+        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
             ConfigHandler.refreshTalents();
         }
     }

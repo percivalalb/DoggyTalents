@@ -25,7 +25,7 @@ public class DogModePacket extends DogPacket<DogModeData> {
 
     @Override
     public void handleDog(DogEntity dogIn, DogModeData data, Supplier<Context> ctx) {
-        if(!dogIn.canInteract(ctx.get().getSender())) {
+        if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }
 

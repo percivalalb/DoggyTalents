@@ -72,7 +72,7 @@ public class Util {
         int[] temp = new int[3];
         int maxCompSum = 0;
 
-        for(int[] color : colors) {
+        for (int[] color : colors) {
             maxCompSum += Math.max(color[0], Math.max(color[1], color[2]));
             temp[0] += color[0];
             temp[1] += color[1];

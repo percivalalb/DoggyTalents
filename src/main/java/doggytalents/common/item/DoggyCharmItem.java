@@ -42,7 +42,7 @@ public class DoggyCharmItem extends Item {
                BlockState iblockstate = world.getBlockState(blockpos);
 
                BlockPos blockpos1;
-               if(iblockstate.getCollisionShape(world, blockpos).isEmpty()) {
+               if (iblockstate.getCollisionShape(world, blockpos).isEmpty()) {
                    blockpos1 = blockpos;
                } else {
                    blockpos1 = blockpos.offset(enumfacing);
@@ -50,9 +50,9 @@ public class DoggyCharmItem extends Item {
 
 
                Entity entity = DoggyEntityTypes.DOG.get().spawn(world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
-               if(entity instanceof DogEntity) {
+               if (entity instanceof DogEntity) {
                    DogEntity dog = (DogEntity)entity;
-                   if(player != null) {
+                   if (player != null) {
                        dog.setTamed(true);
                        dog.setOwnerId(player.getUniqueID());
                    }
@@ -66,17 +66,17 @@ public class DoggyCharmItem extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack itemstack = playerIn.getHeldItem(handIn);
-        if(worldIn.isRemote) {
+        if (worldIn.isRemote) {
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         } else {
             RayTraceResult raytraceresult = Item.rayTrace(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
-            if(raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
+            if (raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
                 BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getPos();
-                if(!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
+                if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
                     return new ActionResult<>(ActionResultType.PASS, itemstack);
-                } else if(worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, ((BlockRayTraceResult)raytraceresult).getFace(), itemstack)) {
+                } else if (worldIn.isBlockModifiable(playerIn, blockpos) && playerIn.canPlayerEdit(blockpos, ((BlockRayTraceResult)raytraceresult).getFace(), itemstack)) {
                     Entity entity = DoggyEntityTypes.DOG.get().spawn(worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
-                    if(entity instanceof DogEntity) {
+                    if (entity instanceof DogEntity) {
                         DogEntity dog = (DogEntity)entity;
                            dog.setTamed(true);
                            dog.setOwnerId(playerIn.getUniqueID());

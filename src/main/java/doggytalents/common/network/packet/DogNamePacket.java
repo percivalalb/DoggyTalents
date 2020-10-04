@@ -25,11 +25,11 @@ public class DogNamePacket extends DogPacket<DogNameData> {
 
     @Override
     public void handleDog(DogEntity dogIn, DogNameData data, Supplier<Context> ctx) {
-        if(!dogIn.canInteract(ctx.get().getSender())) {
+        if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }
 
-        if(data.name.isEmpty()) {
+        if (data.name.isEmpty()) {
             dogIn.setCustomName(null);
         }
         else {

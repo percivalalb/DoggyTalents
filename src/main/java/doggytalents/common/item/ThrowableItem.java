@@ -35,7 +35,7 @@ public class ThrowableItem extends Item implements IThrowableItem {
     @Override
     public ItemStack getReturnStack(ItemStack stack) {
         ItemStack returnStack = new ItemStack(this.altBone.get());
-        if(stack.hasTag()) {
+        if (stack.hasTag()) {
             returnStack.setTag(stack.getTag().copy());
         }
 
@@ -62,7 +62,7 @@ public class ThrowableItem extends Item implements IThrowableItem {
 
         worldIn.playSound((PlayerEntity)null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             ItemStack stack = itemStackIn.copy();
             stack.setCount(1);
             ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.getPosX(), (playerIn.getPosY() - 0.30000001192092896D) + playerIn.getEyeHeight(), playerIn.getPosZ(), stack);
@@ -71,7 +71,7 @@ public class ThrowableItem extends Item implements IThrowableItem {
             worldIn.addEntity(entityitem);
         }
 
-        if(!playerIn.abilities.isCreativeMode)
+        if (!playerIn.abilities.isCreativeMode)
             itemStackIn.shrink(1);
 
         playerIn.addStat(Stats.ITEM_USED.get(this));

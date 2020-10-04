@@ -20,11 +20,11 @@ public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
 
     @Override
     public void render(MatrixStack matrixStack, IRenderTypeBuffer bufferSource, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(dog.hasBone()) {
+        if (dog.hasBone()) {
 
             matrixStack.push();
             DogModel model = this.getEntityModel();
-            if(model.isChild) {
+            if (model.isChild) {
                 // derived from AgeableModel head offset
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }

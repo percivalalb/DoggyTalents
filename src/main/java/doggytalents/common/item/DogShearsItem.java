@@ -30,7 +30,7 @@ public class DogShearsItem extends Item implements IDogItem {
                 return ActionResultType.CONSUME;
             }
 
-            if(!worldIn.isRemote) {
+            if (!worldIn.isRemote) {
                 int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
 
                 if (cooldownLeft <= 0) {
@@ -42,7 +42,7 @@ public class DogShearsItem extends Item implements IDogItem {
             return ActionResultType.SUCCESS;
         }
 
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             for (AccessoryInstance inst : accessories) {
                 ItemStack returnItem = inst.getReturnItem();
                 dogIn.entityDropItem(returnItem, 1);

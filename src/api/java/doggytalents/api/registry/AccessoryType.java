@@ -16,7 +16,7 @@ public class AccessoryType extends ForgeRegistryEntry<AccessoryType> {
     }
 
     public String getTranslationKey() {
-        if(this.translationKey == null) {
+        if (this.translationKey == null) {
             this.translationKey = Util.makeTranslationKey("accessory_type", DoggyTalentsAPI.ACCESSORY_TYPE.getKey(this));
         }
         return this.translationKey;

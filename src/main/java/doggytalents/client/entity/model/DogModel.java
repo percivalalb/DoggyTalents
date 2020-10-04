@@ -99,8 +99,8 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     public void setLivingAnimations(T dog, float limbSwing, float limbSwingAmount, float partialTickTime) {
         this.tail.rotateAngleY = dog.getWagAngle(limbSwing, limbSwingAmount, partialTickTime);
 
-        if(dog.isSitting()) {
-            if(dog.isLying()) {
+        if (dog.isSitting()) {
+            if (dog.isLying()) {
                 this.head.setRotationPoint(-1, 19.5F, -7);
                 this.body.setRotationPoint(0, 20, 2);
                 this.body.rotateAngleX = (float)Math.PI / 2F;
@@ -135,7 +135,7 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
 //                this.legFrontRight.rotateAngleY = (float)Math.PI / 10;
 //                this.legFrontLeft.rotateAngleX = -(float)Math.PI / 2;
 //                this.legFrontLeft.rotateAngleY = -(float)Math.PI / 10;
-            } else if(dog.isLying() && false) {
+            } else if (dog.isLying() && false) {
                 this.body.setRotationPoint(0.0F, 19.0F, 2.0F);
                 this.body.rotateAngleX = ((float)Math.PI / 2F);
                 this.mane.setRotationPoint(-1.0F, 19.0F, -3.0F);

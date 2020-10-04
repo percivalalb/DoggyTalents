@@ -10,11 +10,11 @@ public class HunterDogTalent extends Talent {
 
     public static void onLootDrop(final LootingLevelEvent event) {
         Entity trueSource = event.getDamageSource().getTrueSource();
-        if(trueSource instanceof DogEntity) {
+        if (trueSource instanceof DogEntity) {
             DogEntity dog = (DogEntity) trueSource;
             int level = dog.getLevel(DoggyTalents.HUNTER_DOG.get());
 
-            if(dog.getRNG().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
+            if (dog.getRNG().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
                 event.setLootingLevel(event.getLootingLevel() + level / 2);
             }
 

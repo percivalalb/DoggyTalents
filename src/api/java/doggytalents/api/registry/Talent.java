@@ -44,14 +44,14 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> implements IDogA
     }
 
     public String getTranslationKey() {
-        if(this.translationKey == null) {
+        if (this.translationKey == null) {
             this.translationKey = Util.makeTranslationKey("talent", DoggyTalentsAPI.TALENTS.getKey(this));
         }
         return this.translationKey;
     }
 
     public String getInfoTranslationKey() {
-        if(this.translationInfoKey == null) {
+        if (this.translationInfoKey == null) {
             this.translationInfoKey = this.getTranslationKey() + ".description";
         }
         return this.translationInfoKey;

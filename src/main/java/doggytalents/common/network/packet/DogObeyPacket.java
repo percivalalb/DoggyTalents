@@ -24,7 +24,7 @@ public class DogObeyPacket extends DogPacket<DogObeyData> {
 
     @Override
     public void handleDog(DogEntity dogIn, DogObeyData data, Supplier<Context> ctx) {
-        if(!dogIn.canInteract(ctx.get().getSender())) {
+        if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }
 

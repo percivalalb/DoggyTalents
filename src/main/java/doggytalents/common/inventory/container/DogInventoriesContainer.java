@@ -131,7 +131,7 @@ public class DogInventoriesContainer extends Container implements IContainerList
 ////            for (Slot slot : this.dogSlots) {
 ////                ItemStack stack = slot.getStack().copy();
 ////                this.inventoryItemStacks.set(slot.slotNumber, stack);
-////                for(IContainerListener icontainerlistener : this.listeners) {
+////                for (IContainerListener icontainerlistener : this.listeners) {
 ////                    icontainerlistener.sendSlotContents(this, slot.slotNumber, stack);
 ////                 }
 ////            }
@@ -169,29 +169,29 @@ public class DogInventoriesContainer extends Container implements IContainerList
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(i);
 
-        if(slot != null && slot.getHasStack()) {
+        if (slot != null && slot.getHasStack()) {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
             int startIndex = this.inventorySlots.size() - this.dogSlots.size() + this.position.get() * 3;
             int endIndex = Math.min(startIndex + 9 * 3, this.inventorySlots.size());
 
-            if(i >= this.inventorySlots.size() - this.dogSlots.size() && i < this.inventorySlots.size()) {
-                if(!mergeItemStack(itemstack1, 0, this.inventorySlots.size() - this.dogSlots.size(), true)) {
+            if (i >= this.inventorySlots.size() - this.dogSlots.size() && i < this.inventorySlots.size()) {
+                if (!mergeItemStack(itemstack1, 0, this.inventorySlots.size() - this.dogSlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
-            else if(!mergeItemStack(itemstack1, this.inventorySlots.size() - this.dogSlots.size(), this.inventorySlots.size(), false)) {
+            else if (!mergeItemStack(itemstack1, this.inventorySlots.size() - this.dogSlots.size(), this.inventorySlots.size(), false)) {
                 return ItemStack.EMPTY;
             }
 
-            if(itemstack1.isEmpty()) {
+            if (itemstack1.isEmpty()) {
                 slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();
             }
 
-            if(itemstack1.getCount() == itemstack.getCount()) {
+            if (itemstack1.getCount() == itemstack.getCount()) {
                 return ItemStack.EMPTY;
             }
         }

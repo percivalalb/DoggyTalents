@@ -60,7 +60,7 @@ public class PuppyEyesTalent extends Talent {
 
             LivingEntity villager = this.getClosestVisibleVillager(dogIn, 5D);
 
-            if(villager != null) {
+            if (villager != null) {
                 int rewardId = dogIn.getRNG().nextInt(level) + (level >= 5 ? 1 : 0);
 
                 if (rewardId == 0) {

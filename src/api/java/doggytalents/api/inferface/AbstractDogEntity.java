@@ -37,7 +37,7 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
         AttributeModifier currentModifier = attributeInst.getModifier(modifierUUID);
 
         // Remove modifier if it exists
-        if(currentModifier != null) {
+        if (currentModifier != null) {
 
             // Use UUID version as it is more efficient since
             // getModifier would need to be called again

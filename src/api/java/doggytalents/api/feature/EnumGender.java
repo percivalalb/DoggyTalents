@@ -66,15 +66,15 @@ public enum EnumGender {
     }
 
     public static EnumGender byIndex(int i) {
-        if(i < 0 | i >= VALUES.length) {
+        if (i < 0 | i >= VALUES.length) {
             i = EnumGender.UNISEX.getIndex();
         }
         return VALUES[i];
     }
 
     public static EnumGender bySaveName(String saveName) {
-        for(EnumGender gender : EnumGender.values()) {
-            if(gender.getSaveName().equals(saveName)) {
+        for (EnumGender gender : EnumGender.values()) {
+            if (gender.getSaveName().equals(saveName)) {
                 return gender;
             }
         }

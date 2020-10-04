@@ -54,12 +54,12 @@ public class SendSkinPacket implements IPacket<SendSkinData> {
                 }
             } else if (side.isServer()) {
                 Entity target = ctx.get().getSender().world.getEntityByID(data.entityId);
-                if(!(target instanceof DogEntity)) {
+                if (!(target instanceof DogEntity)) {
                     return;
                 }
 
                 DogEntity dog = (DogEntity) target;
-                if(!dog.canInteract(ctx.get().getSender())) {
+                if (!dog.canInteract(ctx.get().getSender())) {
                     return;
                 }
 

@@ -13,11 +13,11 @@ public class ScreenUtil {
         StringBuilder temp = new StringBuilder();
         String[] split = text.split(" ");
 
-        for(int i = 0; i < split.length; ++i) {
+        for (int i = 0; i < split.length; ++i) {
             String str = split[i];
             int length = font.getStringWidth(temp + str);
 
-            if(length > maxLength) {
+            if (length > maxLength) {
                 list.add(temp.toString());
                 temp = new StringBuilder();
             }
@@ -25,7 +25,7 @@ public class ScreenUtil {
             temp.append(str);
             temp.append(" ");
 
-            if(i == split.length - 1) {
+            if (i == split.length - 1) {
                 list.add(temp.toString());
             }
         }

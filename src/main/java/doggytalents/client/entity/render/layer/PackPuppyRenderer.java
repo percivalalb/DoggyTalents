@@ -20,7 +20,7 @@ public class PackPuppyRenderer implements ITalentRenderer<DogEntity> {
 
     @Override
     public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, int level, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(!dog.isInvisible()) {
+        if (!dog.isInvisible()) {
             layer.getEntityModel().copyModelAttributesTo(this.model);
             this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
             this.model.setRotationAngles(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

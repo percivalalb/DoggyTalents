@@ -57,8 +57,8 @@ public class DogBedUtil {
     }
 
     public static ICasingMaterial getCasingFromStack(IForgeRegistry<ICasingMaterial> registry, ItemStack stack) {
-        for(ICasingMaterial m : registry.getValues()) {
-            if(m.getIngredient().test(stack)) {
+        for (ICasingMaterial m : registry.getValues()) {
+            if (m.getIngredient().test(stack)) {
                 return m;
             }
         }
@@ -67,8 +67,8 @@ public class DogBedUtil {
     }
 
     public static IBeddingMaterial getBeddingFromStack(IForgeRegistry<IBeddingMaterial> registry, ItemStack stack) {
-        for(IBeddingMaterial m : registry.getValues()) {
-            if(m.getIngredient().test(stack)) {
+        for (IBeddingMaterial m : registry.getValues()) {
+            if (m.getIngredient().test(stack)) {
                 return m;
             }
         }

@@ -108,7 +108,7 @@ public class DyeableAccessory extends Accessory {
             ItemStack stack = playerIn.getHeldItem(handIn);
 
             DyeColor dyeColor = DyeColor.getColor(stack);
-            if(dyeColor != null) {
+            if (dyeColor != null) {
                 int colorNew = Util.colorDye(this.color.get(), dyeColor);
 
                 // No change

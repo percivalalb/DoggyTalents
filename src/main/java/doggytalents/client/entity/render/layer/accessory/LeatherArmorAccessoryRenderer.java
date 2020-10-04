@@ -24,7 +24,7 @@ public class LeatherArmorAccessoryRenderer implements IAccessoryRenderer<DogEnti
 
     @Override
     public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(dog.isTamed() && !dog.isInvisible()) {
+        if (dog.isTamed() && !dog.isInvisible()) {
             float[] color = data.cast(DyeableAccessoryInstance.class).getFloatArray();
 
             layer.getEntityModel().copyModelAttributesTo(this.model);

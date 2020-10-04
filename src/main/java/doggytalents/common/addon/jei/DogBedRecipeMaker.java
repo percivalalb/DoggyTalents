@@ -22,8 +22,8 @@ public final class DogBedRecipeMaker {
     public static List<IShapedRecipe<? extends IInventory>> createDogBedRecipes() {
         List<IShapedRecipe<? extends IInventory>> recipes = Lists.newArrayList();
         String group = "doggytalents.dogbed";
-        for(IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
-            for(ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
+        for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
+            for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
 
                 Ingredient beddingIngredient = beddingId.getIngredient();
                 Ingredient casingIngredient = casingId.getIngredient();

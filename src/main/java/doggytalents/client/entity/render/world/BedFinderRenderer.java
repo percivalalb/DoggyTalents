@@ -26,8 +26,8 @@ public class BedFinderRenderer {
 
     public static void onWorldRenderLast(RenderWorldLastEvent event) {
         PlayerEntity player = Minecraft.getInstance().player;
-        for(Entity passenger : player.getPassengers()) {
-            if(passenger instanceof DogEntity) {
+        for (Entity passenger : player.getPassengers()) {
+            if (passenger instanceof DogEntity) {
                 DogEntity dog = (DogEntity) passenger;
                 Optional<BlockPos> bedPosOpt = dog.getBedPos(player.dimension);
 
@@ -35,7 +35,7 @@ public class BedFinderRenderer {
                     BlockPos bedPos = bedPosOpt.get();
                     int level = dog.getLevel(DoggyTalents.BED_FINDER.get());
                     double distance = (level * 200D) - Math.sqrt(bedPos.distanceSq(dog.getPosition()));
-                    if(level == 5 || distance >= 0.0D) {
+                    if (level == 5 || distance >= 0.0D) {
                         MatrixStack stack = event.getMatrixStack();
 
                         AxisAlignedBB boundingBox = new AxisAlignedBB(bedPos).grow(0.5D);

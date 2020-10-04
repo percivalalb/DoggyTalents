@@ -47,8 +47,8 @@ public class FetchGoal extends MoveToClosestItemGoal {
     @Override
     public void resetTask() {
         // Dog doesn't have bone and is close enough to target
-        if(!this.dog.hasBone() && this.dog.getDistance(this.target) < this.minDist * this.minDist) {
-            if(this.target.isAlive() && !this.target.cannotPickup()) {
+        if (!this.dog.hasBone() && this.dog.getDistance(this.target) < this.minDist * this.minDist) {
+            if (this.target.isAlive() && !this.target.cannotPickup()) {
 
                 this.dog.setBoneVariant(this.target.getItem());
 

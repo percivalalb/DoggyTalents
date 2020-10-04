@@ -40,9 +40,9 @@ public class WhistleItem extends Item {
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         ItemStack stack = player.getHeldItem(hand);
 
-        if(player.isSneaking()) {
+        if (player.isSneaking()) {
             if (!world.isRemote) {
-                if(!stack.hasTag()) {
+                if (!stack.hasTag()) {
                     stack.setTag(new CompoundNBT());
                     stack.getTag().putByte("mode", (byte)0);
                 }
@@ -78,7 +78,7 @@ public class WhistleItem extends Item {
                     if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful) {
+                    if (successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.come"));
                     }
                 }
@@ -87,8 +87,8 @@ public class WhistleItem extends Item {
             }
             else if (mode == 1) { // Heel
                 if (!world.isRemote) {
-                    for(DogEntity dog : dogsList) {
-                        if(!dog.isSitting() && dog.getMode() != EnumMode.WANDERING) {
+                    for (DogEntity dog : dogsList) {
+                        if (!dog.isSitting() && dog.getMode() != EnumMode.WANDERING) {
                             //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
                             successful = true;
                         }
@@ -97,7 +97,7 @@ public class WhistleItem extends Item {
                     if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful) {
+                    if (successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.heel"));
                     }
                 }
@@ -106,7 +106,7 @@ public class WhistleItem extends Item {
             }
             else if (mode == 2) { // Stay
                 if (!world.isRemote) {
-                    for(DogEntity dog : dogsList) {
+                    for (DogEntity dog : dogsList) {
                         dog.getAISit().setSitting(true);
                         dog.getNavigator().clearPath();
                         dog.setAttackTarget(null);
@@ -119,7 +119,7 @@ public class WhistleItem extends Item {
                     if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.8F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful) {
+                    if (successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.stay"));
                     }
                 }
@@ -128,8 +128,8 @@ public class WhistleItem extends Item {
             }
             else if (mode == 3) { // Ok
                 if (!world.isRemote) {
-                    for(DogEntity dog : dogsList) {
-                        if(dog.getMaxHealth() / 2 >= dog.getHealth()) {
+                    for (DogEntity dog : dogsList) {
+                        if (dog.getMaxHealth() / 2 >= dog.getHealth()) {
                             dog.getAISit().setSitting(true);
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget(null);
@@ -145,7 +145,7 @@ public class WhistleItem extends Item {
                     if (ConfigValues.WHISTLE_SOUNDS)
                     world.playSound(null, player.getPosition(), DoggySounds.WHISTLE_LONG.get(), SoundCategory.PLAYERS, 0.6F + world.rand.nextFloat() * 0.1F, 0.4F + world.rand.nextFloat() * 0.2F);
 
-                    if(successful) {
+                    if (successful) {
                         player.sendMessage(new TranslationTextComponent("dogcommand.ok"));
                     }
 
@@ -173,16 +173,16 @@ public class WhistleItem extends Item {
 
                 return new ActionResult<>(ActionResultType.CONSUME, player.getHeldItem(hand));
             } else if (mode == 6) {
-                if(!world.isRemote) {
+                if (!world.isRemote) {
                     List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE.get()) > 0).collect(Collectors.toList());
-                    if(roarDogs.isEmpty()) {
+                    if (roarDogs.isEmpty()) {
                         player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
                         List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0) == 0).collect(Collectors.toList());
-                        if(cdDogs.isEmpty()) {
+                        if (cdDogs.isEmpty()) {
                             player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
-                            for(DogEntity dog : dogsList) {
+                            for (DogEntity dog : dogsList) {
                                 int level = dog.getLevel(DoggyTalents.ROARING_GALE.get());
                                 int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0);
 
@@ -200,8 +200,8 @@ public class WhistleItem extends Item {
 
                                 boolean hit = false;
                                 List<LivingEntity> list = dog.world.<LivingEntity>getEntitiesWithinAABB(LivingEntity.class, dog.getBoundingBox().grow(level * 4, 4D, level * 4));
-                                for(LivingEntity mob : list) {
-                                    if(mob instanceof IMob) {
+                                for (LivingEntity mob : list) {
+                                    if (mob instanceof IMob) {
                                         hit = true;
                                         mob.attackEntityFrom(DamageSource.GENERIC, damage);
                                         mob.addPotionEffect(new EffectInstance(Effects.SLOWNESS, effectDuration, 127, false, false));
@@ -237,7 +237,7 @@ public class WhistleItem extends Item {
     public String getTranslationKey(ItemStack stack) {
         byte mode = 0;
 
-        if(stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
+        if (stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
             mode = stack.getTag().getByte("mode");
         }
         return this.getTranslationKey() + "." + mode;

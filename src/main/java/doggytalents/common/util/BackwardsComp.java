@@ -54,11 +54,11 @@ public class BackwardsComp {
     }
 
     public static void readTalentMapping(CompoundNBT compound, Map<Talent, Integer> talentMap) {
-        if(compound.contains("talents", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("talents", Constants.NBT.TAG_STRING)) {
 
             String[] split = compound.getString("talents").split(":");
-            if(split.length > 0 && split.length % 2 == 0) {
-                for(int i = 0; i < split.length; i += 2) {
+            if (split.length > 0 && split.length % 2 == 0) {
+                for (int i = 0; i < split.length; i += 2) {
                     final int levelIndex = i + 1;
 
                     BackwardsComp.getTalentMap(split[i]).ifPresent((talent) -> {
@@ -69,7 +69,7 @@ public class BackwardsComp {
                             return;
                         }
 
-                        if(talent != null) { // Only load if talent exists
+                        if (talent != null) { // Only load if talent exists
                             talentMap.put(talent.get(), level);
                         }
                     });
@@ -177,7 +177,7 @@ public class BackwardsComp {
         }
 
         mappings.forEach(mapping -> {
-            if(Objects.equals(mapping.key, BackwardsComp.DOGGY_BEAM)) {
+            if (Objects.equals(mapping.key, BackwardsComp.DOGGY_BEAM)) {
                 mapping.remap(DoggyEntityTypes.DOG_BEAM.get());
                 DoggyTalents2.LOGGER.debug("Remapped Dog Beam id");
             }
@@ -193,7 +193,7 @@ public class BackwardsComp {
         }
 
         mappings.forEach(mapping -> {
-            if(Objects.equals(mapping.key, BackwardsComp.COMMAND_EMBLEM)) {
+            if (Objects.equals(mapping.key, BackwardsComp.COMMAND_EMBLEM)) {
                 mapping.remap(DoggyItems.WHISTLE.get());
                 DoggyTalents2.LOGGER.debug("Remapped Command Emblem to Whistle");
             }

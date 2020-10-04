@@ -56,8 +56,8 @@ public class DogWanderGoal extends Goal {
             return;
         }
 
-        Vec3d vec3d = this.getPosition();
-        this.dog.getNavigator().tryMoveToXYZ(vec3d.x, vec3d.y, vec3d.z, this.speed);
+        Vec3d pos = this.getPosition();
+        this.dog.getNavigator().tryMoveToXYZ(pos.x, pos.y, pos.z, this.speed);
     }
 
     @Nullable
@@ -68,21 +68,21 @@ public class DogWanderGoal extends Goal {
         int xzRange = 5;
         int yRange = 3;
 
-        float bestWeight = -99999.0F;
+        float bestWeight = Float.MIN_VALUE;
         Optional<BlockPos> bowlPos = this.dog.getBowlPos();
         BlockPos bestPos = bowlPos.get();
 
-        for(int attempt = 0; attempt < 5; ++attempt) {
+        for (int attempt = 0; attempt < 5; ++attempt) {
             int l = random.nextInt(2 * xzRange + 1) - xzRange;
             int i1 = random.nextInt(2 * yRange + 1) - yRange;
             int j1 = random.nextInt(2 * xzRange + 1) - xzRange;
 
             BlockPos testPos = bowlPos.get().add(l, i1, j1);
 
-            if(pathNavigate.canEntityStandOnPos(testPos)) {
+            if (pathNavigate.canEntityStandOnPos(testPos)) {
                 float weight = this.dog.getBlockPathWeight(testPos);
 
-                if(weight > bestWeight) {
+                if (weight > bestWeight) {
                     bestWeight = weight;
                     bestPos = testPos;
                 }

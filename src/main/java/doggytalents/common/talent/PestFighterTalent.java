@@ -20,7 +20,7 @@ public class PestFighterTalent extends Talent {
 
         int level = dogIn.getLevel(this);
 
-        if(level >= 0) {
+        if (level >= 0) {
             byte damage = 1;
 
             if (level >= 5) {

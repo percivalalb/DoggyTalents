@@ -19,7 +19,7 @@ public class DogBedItemOverride extends ItemOverrideList {
 
     @Override
     public IBakedModel getModelWithOverrides(IBakedModel modelOriginal, ItemStack stack, World world, LivingEntity entity) {
-        if(modelOriginal instanceof DogBedModel) {
+        if (modelOriginal instanceof DogBedModel) {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
             return ((DogBedModel) modelOriginal).getModelVariant(materials.getLeft(), materials.getRight(), Direction.NORTH);
         }

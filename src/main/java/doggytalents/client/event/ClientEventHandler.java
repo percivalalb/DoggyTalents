@@ -207,7 +207,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
-        label: if(event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+        label: if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
             Minecraft mc = Minecraft.getInstance();
 
             if (mc.player == null || !(mc.player.getRidingEntity() instanceof DogEntity)) {
@@ -251,7 +251,7 @@ public class ClientEventHandler {
             int l6 = dog.getAir();
             int j7 = dog.getMaxAir();
 
-            if(dog.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
+            if (dog.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
                 int air = dog.getAir();
                 int full = MathHelper.ceil((air - 2) * 10.0D / 300.0D);
                 int partial = MathHelper.ceil(air * 10.0D / 300.0D) - full;

@@ -32,7 +32,7 @@ public class EntityUtil {
     }
 
     public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, BlockPos targetPos, int radius) {
-        for(int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             int j = getRandomNumber(entityIn, -radius, radius);
             int k = getRandomNumber(entityIn, -1, 1);
             int l = getRandomNumber(entityIn, -radius, radius);
@@ -85,14 +85,14 @@ public class EntityUtil {
     }
 
     public static boolean isHolding(@Nullable Entity entity, Predicate<ItemStack> matcher) {
-        if(entity == null) {
+        if (entity == null) {
             return false;
         }
 
         Iterator<ItemStack> heldItems = entity.getHeldEquipment().iterator();
-        while(heldItems.hasNext()) {
+        while (heldItems.hasNext()) {
             ItemStack stack = heldItems.next();
-            if(matcher.test(stack)) {
+            if (matcher.test(stack)) {
                 return true;
             }
         }

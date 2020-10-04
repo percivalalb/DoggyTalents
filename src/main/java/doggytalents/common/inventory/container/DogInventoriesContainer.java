@@ -80,7 +80,7 @@ public class DogInventoriesContainer extends Container implements IContainerList
 
                 PackPuppyItemHandler packInventory = packInventoryLazy.orElse(null);
 
-                int level = MathHelper.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY.get()), 0, 5); // Number of rows for this dog
+                int level = MathHelper.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY), 0, 5); // Number of rows for this dog
                 int numCols = MathHelper.clamp(level, 0, Math.max(0, TOTAL_COLUMNS)); // Number of rows to draw
 
                 for (int row = 0; row < 3; row++) {

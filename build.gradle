@@ -25,27 +25,20 @@ repositories {
 }
 
 sourceSets {
-	api
-	main {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-		resources.srcDirs += 'src/generated/resources'
-	}
-	test {
-		compileClasspath += sourceSets.api.output
-		runtimeClasspath += sourceSets.api.output
-	}
+    api
+    main
+    test
 }
 
 configurations {
-	apiCompile.extendsFrom(compile)
+    apiCompile.extendsFrom(compile)
 }
 
 minecraft {
     mappings channel: 'snapshot', version: project.mcp_mappings
-	
-	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	
+    
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    
     runs {
         client {
             taskName 'doggytalents_client'
@@ -54,7 +47,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -66,7 +59,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -79,7 +72,7 @@ minecraft {
             mods {
                 doggytalents {
                     source sourceSets.main
-					source sourceSets.api
+                    source sourceSets.api
                 }
             }
         }
@@ -89,20 +82,22 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-	compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
-	runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    implementation sourceSets.api.output
+
+    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 }
 
 task sourcesJar(type: Jar) {
-	classifier = "sources"
-	from sourceSets.main.allJava
-	from sourceSets.api.allJava
+    classifier = "sources"
+    from sourceSets.main.allJava
+    from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-	classifier = "api"
-	from sourceSets.api.output
-	from sourceSets.api.allJava
+    classifier = "api"
+    from sourceSets.api.output
+    from sourceSets.api.allJava
 }
 
 artifacts {

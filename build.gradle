@@ -28,14 +28,9 @@ repositories {
 sourceSets {
     api
     main {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-        resources.srcDirs += 'src/generated/resources'
-    }
-    test {
-        compileClasspath += sourceSets.api.output
-        runtimeClasspath += sourceSets.api.output
-    }
+	    resources.srcDirs += 'src/generated/resources'
+	}
+    test
 }
 
 configurations {
@@ -89,6 +84,8 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
+
+    implementation sourceSets.api.output
 
     compileOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${ftb_gui_lib_version}")
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")

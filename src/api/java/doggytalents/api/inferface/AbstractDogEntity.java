@@ -56,7 +56,7 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
     }
 
     @Override
-    public TameableEntity getDog() {
+    public AbstractDogEntity getDog() {
         return this;
     }
 

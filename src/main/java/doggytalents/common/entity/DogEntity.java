@@ -48,6 +48,7 @@ import doggytalents.common.entity.ai.DogFollowOwnerGoal;
 import doggytalents.common.entity.ai.DogWanderGoal;
 import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
+import doggytalents.common.entity.ai.GuardModeGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.OwnerHurtTargetGoal;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
@@ -219,6 +220,7 @@ public class DogEntity extends AbstractDogEntity {
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
         this.targetSelector.addGoal(6, new BerserkerModeGoal<>(this, MonsterEntity.class, false));
+        this.targetSelector.addGoal(6, new GuardModeGoal(this, false));
     }
 
     @Override
@@ -229,7 +231,7 @@ public class DogEntity extends AbstractDogEntity {
 
         this.getAttributes().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2.0D);
         this.getAttributes().registerAttribute(JUMP_STRENGTH).setBaseValue(0.42F);
-        this.getAttributes().registerAttribute(CRIT_CHANCE).setBaseValue(0.42F);
+        this.getAttributes().registerAttribute(CRIT_CHANCE).setBaseValue(0.01F);
         this.getAttributes().registerAttribute(CRIT_BONUS).setBaseValue(1F);
     }
 
@@ -721,23 +723,23 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if (!(target instanceof CreeperEntity) && !(target instanceof GhastEntity)) {
-            if (target instanceof WolfEntity) {
-                WolfEntity wolfentity = (WolfEntity)target;
-                return !wolfentity.isTamed() || wolfentity.getOwner() != owner;
-            } else if (target instanceof DogEntity) {
-                DogEntity dogEntity = (DogEntity)target;
-                return !dogEntity.isTamed() || dogEntity.getOwner() != owner;
-             } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
-                 return false;
-            } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
-                return false;
-            } else {
-                return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
-            }
-         } else {
+        if (target instanceof CreeperEntity || target instanceof GhastEntity) {
+            return false;
+        }
+
+        if (target instanceof WolfEntity) {
+            WolfEntity wolfentity = (WolfEntity)target;
+            return !wolfentity.isTamed() || wolfentity.getOwner() != owner;
+        } else if (target instanceof DogEntity) {
+            DogEntity dogEntity = (DogEntity)target;
+            return !dogEntity.isTamed() || dogEntity.getOwner() != owner;
+         } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
              return false;
-         }
+        } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+            return false;
+        } else {
+            return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+        }
     }
 
     // TODO
@@ -808,7 +810,7 @@ public class DogEntity extends AbstractDogEntity {
 
             if (critModifiers != null) {
                 // TODO Might want to make into a packet
-                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particles.addParticleEmitter(this, ParticleTypes.CRIT));
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particles.addParticleEmitter(target, ParticleTypes.CRIT));
             }
         }
 

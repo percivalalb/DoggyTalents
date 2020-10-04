@@ -12,7 +12,8 @@ public enum EnumMode {
     AGGRESIVE(2, "aggressive"),
     BERSERKER(3, "berserker"),
     TACTICAL(4, "tactical"),
-    PATROL(5, "patrol");
+    PATROL(5, "patrol"),
+    GUARD(6, "guard");
 
     private int index;
     private String saveName;

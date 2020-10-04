@@ -52,7 +52,7 @@ public class DogFollowOwnerGoal extends Goal {
             return false;
         } else if (this.dog.isSitting()) {
             return false;
-        } else if (!this.dog.hasBone() && this.dog.getDistanceSq(owner) < this.startDist * this.startDist) {
+        } else if (!this.dog.hasBone() && this.dog.getDistanceSq(owner) < this.getMinStartDistanceSq()) {
             return false;
         } else {
             this.owner = owner;
@@ -109,5 +109,13 @@ public class DogFollowOwnerGoal extends Goal {
                 }
             }
         }
+    }
+
+    public float getMinStartDistanceSq() {
+        if (this.dog.isMode(EnumMode.GUARD)) {
+            return 4F;
+        }
+
+        return this.startDist * this.startDist;
     }
 }

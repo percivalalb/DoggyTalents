@@ -30,12 +30,14 @@ public class BedFinderTalent extends Talent {
 
                         playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
                     }
+
+                    return ActionResultType.CONSUME;
                 }
             } else {
                 dogIn.stopRiding();
+                return ActionResultType.SUCCESS;
             }
 
-            return ActionResultType.SUCCESS;
         }
         return ActionResultType.PASS;
     }

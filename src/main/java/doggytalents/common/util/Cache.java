@@ -1,11 +1,14 @@
 package doggytalents.common.util;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import com.google.common.base.Function;
 
 public class Cache<T> implements Supplier<T> {
 
-    private Supplier<T> getter;
+    private final Supplier<T> getter;
     private Optional<T> value;
 
     private Cache(Supplier<T> getterIn) {
@@ -21,9 +24,9 @@ public class Cache<T> implements Supplier<T> {
         return this.value.orElse(null);
     }
 
-//    public <U> Cache<U> map(Function<? super T, ? extends U> mapper) {
-//        return new Cache(() -> );
-//    }
+    public boolean test(Predicate<T> pred) {
+        return pred.test(this.get());
+    }
 
     public void markForRefresh() {
         this.value = null;

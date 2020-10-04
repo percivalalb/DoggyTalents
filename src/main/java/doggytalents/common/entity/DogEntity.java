@@ -1056,11 +1056,8 @@ public class DogEntity extends AbstractDogEntity {
         return super.getCapability(cap, side);
     }
 
-    private boolean changingDimension = false;
-
     @Override
     public Entity changeDimension(DimensionType dimType) {
-        this.changingDimension = true;
         Entity transportedEntity = super.changeDimension(dimType);
         if (transportedEntity instanceof DogEntity) {
             DogLocationStorage.get(this.world).getOrCreateData(this).update((DogEntity) transportedEntity);
@@ -1070,7 +1067,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void onAddedToWorld() {
-        super.onAddedToWorld(); // When the entity is added to tracking list#
+        super.onAddedToWorld(); // When the entity is added to tracking list
         if (this.world != null && !this.world.isRemote) {
             //DogLocationData locationData = DogLocationStorage.get(this.world).getOrCreateData(this);
             //locationData.update(this);
@@ -1141,18 +1138,6 @@ public class DogEntity extends AbstractDogEntity {
 
         if (!keepData) {
             this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
-        }
-
-        if (this.world != null && !this.world.isRemote) {
-
-            // Dog did not die, just changed dimension
-            if (this.changingDimension) {
-//                DogRespawnStorage.get(this.world).putData(this);
-//                DoggyTalents.LOGGER.debug("Saved dog as they died {}", this);
-//
-//                DogLocationStorage.get(this.world).remove(this);
-//                DoggyTalents.LOGGER.debug("Removed dog location as they were removed from the world {}", this);
-            }
         }
     }
 
@@ -1775,8 +1760,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public int getLevel(Talent talentIn) {
-        Map<Talent, Integer> map = this.getTalentMap();
-        return map.getOrDefault(talentIn, 0);
+        return this.getTalentMap().getOrDefault(talentIn, 0);
     }
 
     @Override

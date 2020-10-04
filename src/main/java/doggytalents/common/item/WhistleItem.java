@@ -174,7 +174,7 @@ public class WhistleItem extends Item {
                 return new ActionResult<>(ActionResultType.CONSUME, player.getHeldItem(hand));
             } else if (mode == 6) {
                 if (!world.isRemote) {
-                    List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE.get()) > 0).collect(Collectors.toList());
+                    List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
                         player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
@@ -183,7 +183,7 @@ public class WhistleItem extends Item {
                             player.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
                             for (DogEntity dog : dogsList) {
-                                int level = dog.getLevel(DoggyTalents.ROARING_GALE.get());
+                                int level = dog.getLevel(DoggyTalents.ROARING_GALE);
                                 int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0);
 
                                 roarCooldown = level == 5 ? 60 : 100;

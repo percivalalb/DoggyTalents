@@ -33,7 +33,7 @@ public class BedFinderRenderer {
 
                 if (bedPosOpt.isPresent()) {
                     BlockPos bedPos = bedPosOpt.get();
-                    int level = dog.getLevel(DoggyTalents.BED_FINDER.get());
+                    int level = dog.getLevel(DoggyTalents.BED_FINDER);
                     double distance = (level * 200D) - Math.sqrt(bedPos.distanceSq(dog.getPosition()));
                     if (level == 5 || distance >= 0.0D) {
                         MatrixStack stack = event.getMatrixStack();

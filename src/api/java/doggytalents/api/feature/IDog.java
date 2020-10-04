@@ -22,6 +22,20 @@ public interface IDog {
     public DogLevel getLevel();
     public void increaseLevel(DogLevel.Type typeIn);
 
+    /**
+     * Convenience method to get the level of a talent
+     * @param talentGetter A getter function, typically a {@link RegistryObject<Talent>} would be provided
+     * @return The level of the talent
+     */
+    default int getLevel(Supplier<? extends Talent> talentGetter) {
+        return this.getLevel(talentGetter.get());
+    }
+
+    /**
+     * Returns the level of the given talent
+     * @param talentIn The {@link Talent}
+     * @return The level of the talent
+     */
     public int getLevel(Talent talentIn);
 
     public int getDogSize();

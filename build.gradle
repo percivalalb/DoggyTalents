@@ -20,7 +20,7 @@ archivesBaseName = 'DoggyTalents-1.15.2'
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 repositories {
-    maven { url "http://dvs1.progwml6.com/files/maven" }
+    maven { url "https://dvs1.progwml6.com/files/maven/" }
     maven { url "https://modmaven.k-4u.nl" }
 }
 

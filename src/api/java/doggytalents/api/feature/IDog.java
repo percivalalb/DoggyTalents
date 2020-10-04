@@ -3,15 +3,15 @@ package doggytalents.api.feature;
 import java.util.List;
 import java.util.function.Supplier;
 
+import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.TameableEntity;
 
 // TODO: Add javadoc
 public interface IDog {
 
-    public TameableEntity getDog();
+    public AbstractDogEntity getDog();
 
     public void untame();
 

@@ -506,7 +506,7 @@ public class DogEntity extends AbstractDogEntity {
                     if (stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.rand.nextInt(3) == 0) {
                         this.setTamedBy(player);
                         this.navigator.clearPath();
-                        this.setAttackTarget((LivingEntity) null);
+                        this.setAttackTarget(null);
                         this.sitGoal.setSitting(true);
                         this.setHealth(20.0F);
                         this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_HEARTS);
@@ -548,8 +548,10 @@ public class DogEntity extends AbstractDogEntity {
         if (!flag || this.isChild()) {
             if (!this.world.isRemote) {
                 this.sitGoal.setSitting(!this.isSitting());
-
             }
+            this.isJumping = false;
+            this.navigator.clearPath();
+            this.setAttackTarget(null);
             return true;
         }
 

@@ -64,7 +64,7 @@ public class BedFinderRenderer {
 
         BufferBuilder buf = Tessellator.getInstance().getBuffer();
         buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        WorldRenderer.drawBoundingBox(stack, buf, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F); // 1.14 drawSelectionBoundingBox
+        WorldRenderer.drawBoundingBox(stack, buf, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
         Tessellator.getInstance().draw();
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks

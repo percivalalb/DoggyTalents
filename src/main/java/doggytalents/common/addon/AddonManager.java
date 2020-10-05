@@ -12,6 +12,7 @@ import doggytalents.common.addon.autumnity.AutumnityAddon;
 import doggytalents.common.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.common.addon.botania.BotaniaAddon;
 import doggytalents.common.addon.itemphysic.ItemPhysicsAddon;
+import doggytalents.common.addon.lotr.LOTRAddon;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
 
 public class AddonManager {
@@ -20,7 +21,8 @@ public class AddonManager {
             new ItemPhysicsAddon(),
             new BiomesOPlentyAddon(),
             new BotaniaAddon(),
-            new AutumnityAddon()));
+            new AutumnityAddon(),
+            new LOTRAddon()));
     private static final List<Addon> RUN = Lists.newArrayList(ADDONS);
 
     public static void init() {

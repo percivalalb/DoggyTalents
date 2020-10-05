@@ -28,8 +28,8 @@ repositories {
 sourceSets {
     api
     main {
-	    resources.srcDirs += 'src/generated/resources'
-	}
+        resources.srcDirs += 'src/generated/resources'
+    }
     test
 }
 
@@ -87,11 +87,12 @@ dependencies {
 
     implementation sourceSets.api.output
 
+    // ftb gui lib required temporality https://github.com/mezz/JustEnoughItems/issues/2095
     compileOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${ftb_gui_lib_version}")
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
-	
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.0")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.0")
 }

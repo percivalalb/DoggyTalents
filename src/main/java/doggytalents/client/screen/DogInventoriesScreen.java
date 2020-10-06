@@ -43,27 +43,27 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     public void init() {
         super.init();
         this.left = new SmallButton(this.guiLeft + this.xSize - 29, this.guiTop + 4, new StringTextComponent("<"), (btn) -> {
-            int page = this.getContainer().position.get();
+            int page = this.getContainer().getPage();
 
             if (page > 0) {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogInventoryPageData(--page));
             }
 
             btn.active = page > 0;
-            this.right.active = page < this.getContainer().possibleSlots - 9;
+            this.right.active = page < this.getContainer().getTotalNumColumns() - 9;
         });
         this.right = new SmallButton(this.guiLeft + this.xSize - 26 + 9, this.guiTop + 4, new StringTextComponent(">"), (btn) -> {
-            int page = this.getContainer().position.get();
+            int page = this.getContainer().getPage();
 
-            if (page < this.getContainer().possibleSlots - 9) {
+            if (page < this.getContainer().getTotalNumColumns() - 9) {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogInventoryPageData(++page));
             }
 
-            btn.active = page < this.getContainer().possibleSlots - 9;
+            btn.active = page < this.getContainer().getTotalNumColumns() - 9;
             this.left.active = page > 0;
 
         });
-        if (this.getContainer().possibleSlots > 9) {
+        if (this.getContainer().getTotalNumColumns() > 9) {
             this.left.active = false;
             this.right.active = true;
         } else {
@@ -89,7 +89,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
         int i1 = (this.height - this.ySize) / 2;
         this.blit(stack, l, i1, 0, 0, this.xSize, this.ySize);
 
-        for (DogInventorySlot slot : this.getContainer().dogSlots) {
+        for (DogInventorySlot slot : this.getContainer().getSlots()) {
             if (!slot.isEnabled()) {
                 continue;
             }
@@ -104,11 +104,6 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
 
             this.blit(stack, l + slot.xPos - 1, i1 + slot.yPos - 1, 197, 2, 18, 18);
         }
-//        for (int row = 0; row < 3; row++) {
-//            for (int col = 0; col < MathHelper.clamp(this.getContainer().dogSlots.size() / 3D, 0, 9); col++) {
-//               this.blit(l + 8 - 1 + 18 * col, i1 + 9 + 18 * row + 15, 197, 2, 18, 18);
-//            }
-//        }
     }
 
     @Override
@@ -130,10 +125,10 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     protected void renderHoveredTooltip(MatrixStack stack, int mouseX, int mouseY) {
         if (this.minecraft.player.inventory.getItemStack().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getHasStack()) {
 //            if (this.hoveredSlot instanceof DogInventorySlot) {
-//                renderTooltip(Arrays.asList(TextFormatting.RED + "Test"), mouseX, mouseY);
+//                this.renderTooltip(Arrays.asList(new TranslationTextComponent("test").applyTextStyle(TextFormatting.RED).getFormattedText()), mouseX, mouseY);
 //            } else {
                 this.renderTooltip(stack, this.hoveredSlot.getStack(), mouseX, mouseY);
-            //}
+//            }
         }
 
     }

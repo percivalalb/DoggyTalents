@@ -1,6 +1,5 @@
 package doggytalents.client.screen.widget;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -9,13 +8,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Resources;
+import doggytalents.common.talent.PackPuppyTalent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.recipebook.RecipeBookGui;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.inventory.CreativeScreen;
 import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -53,13 +52,7 @@ public class DogInventoryButton extends Button {
 
         if (this.visible) {
             Minecraft mc = Minecraft.getInstance();
-            Iterable<Entity> entities = mc.world.getAllEntities();
-            List<DogEntity> dogs = new ArrayList<>();
-            for (Entity entity : entities) {
-                if (entity instanceof DogEntity && entity.isAlive() && entity.getPositionVec().squareDistanceTo(mc.player.getPositionVec()) < 144D) {
-                    dogs.add((DogEntity) entity);
-                }
-            }
+            List<DogEntity> dogs = mc.world.getEntitiesWithinAABB(DogEntity.class, mc.player.getBoundingBox().grow(12D, 12D, 12D), PackPuppyTalent::hasInventory);
             this.active = !dogs.isEmpty();
         }
 

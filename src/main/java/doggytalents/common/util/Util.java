@@ -3,8 +3,10 @@ package doggytalents.common.util;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -154,4 +156,25 @@ public class Util {
 
         return opt;
     }
+
+    public static <T> boolean allMatch(Iterable<T> input, Predicate<T> matcher) {
+        Objects.requireNonNull(matcher);
+        for (T e : input) {
+            if (!matcher.test(e)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static <T> boolean anyMatch(Iterable<T> input, Predicate<T> matcher) {
+        Objects.requireNonNull(matcher);
+        for (T e : input) {
+            if (matcher.test(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

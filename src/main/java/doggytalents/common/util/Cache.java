@@ -4,8 +4,6 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import com.google.common.base.Function;
-
 public class Cache<T> implements Supplier<T> {
 
     private final Supplier<T> getter;

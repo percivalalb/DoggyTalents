@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import doggytalents.DoggyTags;
+import doggytalents.DoggyTalents;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
@@ -134,5 +135,9 @@ public class PackPuppyTalent extends Talent {
     @Override
     public boolean hasRenderer() {
         return true;
+    }
+
+    public static boolean hasInventory(AbstractDogEntity dogIn) {
+        return dogIn.isAlive() && dogIn.getData(PackPuppyTalent.PACK_PUPPY_HANDLER) != null && dogIn.getLevel(DoggyTalents.PACK_PUPPY) > 0;
     }
 }

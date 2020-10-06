@@ -52,9 +52,8 @@ public class Screens {
         @Override
         public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
             IntArray array = new IntArray(this.dogs.size());
-            int i = 0;
-            for (DogEntity dog : this.dogs) {
-                array.set(i++, dog.getEntityId());
+            for (int i = 0; i < array.size(); i++) {
+                array.set(i, this.dogs.get(i).getEntityId());
             }
             return new DogInventoriesContainer(windowId, inventory, array);
         }

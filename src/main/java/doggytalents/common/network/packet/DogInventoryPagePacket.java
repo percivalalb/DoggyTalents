@@ -2,7 +2,6 @@ package doggytalents.common.network.packet;
 
 import java.util.function.Supplier;
 
-import doggytalents.DoggyTalents2;
 import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.DogInventoryPageData;
@@ -34,14 +33,10 @@ public class DogInventoryPagePacket implements IPacket<DogInventoryPageData>  {
                 Container container = player.openContainer;
                 if (container instanceof DogInventoriesContainer) {
                     DogInventoriesContainer inventories = (DogInventoriesContainer) container;
-                    int page = MathHelper.clamp(data.page, 0, Math.max(0, inventories.possibleSlots - 9));
+                    int page = MathHelper.clamp(data.page, 0, Math.max(0, inventories.getTotalNumColumns() - 9));
 
-                    inventories.position.set(page);
-
+                    inventories.setPage(page);
                     inventories.updateProgressBar(0, page);
-
-
-                    DoggyTalents2.LOGGER.debug("set {}", page);
                 }
             }
         });

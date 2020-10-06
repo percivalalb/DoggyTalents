@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
+import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
@@ -14,38 +15,34 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIntArray;
+import net.minecraft.util.IntArray;
 import net.minecraft.util.IntReferenceHolder;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * @author ProPercivalalb
  */
-public class DogInventoriesContainer extends Container implements IContainerListener {
+public class DogInventoriesContainer extends Container {
 
     private World world;
     private PlayerEntity player;
-    public IntReferenceHolder position;
-    private IIntArray trackableArray;
-    public final List<DogInventorySlot> dogSlots = Lists.newArrayList();
-    public int possibleSlots = 0;
+    private IntReferenceHolder position;
+    private IntArray trackableArray;
+    private final List<DogInventorySlot> dogSlots = Lists.newArrayList();
+    private int possibleSlots = 0;
 
     //Server method
-    public DogInventoriesContainer(int windowId, PlayerInventory playerInventory, IIntArray trackableArray) {
+    public DogInventoriesContainer(int windowId, PlayerInventory playerInventory, IntArray trackableArray) {
         super(DoggyContainerTypes.DOG_INVENTORIES.get(), windowId);
         this.world = playerInventory.player.world;
         this.player = playerInventory.player;
-        this.trackableArray = trackableArray;
         this.position = IntReferenceHolder.single();
         assertIntArraySize(trackableArray, 1);
         this.trackInt(this.position);
-        this.trackIntArray(trackableArray);
+        this.trackableArray = trackableArray;
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
@@ -57,7 +54,7 @@ public class DogInventoriesContainer extends Container implements IContainerList
             this.addSlot(new Slot(playerInventory, col, 8 + col * 18, 142));
         }
 
-        addDogSlots();
+        this.addDogSlots();
     }
 
     public void addDogSlots() {
@@ -69,29 +66,30 @@ public class DogInventoriesContainer extends Container implements IContainerList
         for (int i = 0; i < this.trackableArray.size(); i++) {
             int entityId = this.trackableArray.get(i);
             Entity entity = this.world.getEntityByID(entityId);
+
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
 
-                LazyOptional<PackPuppyItemHandler> packInventoryLazy = entity.getCapability(PackPuppyTalent.PACK_PUPPY_CAPABILITY);
-
-                if (!packInventoryLazy.isPresent()) {
+                PackPuppyItemHandler packInventory = dog.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
+                if (packInventory == null) {
                     continue;
                 }
-
-                PackPuppyItemHandler packInventory = packInventoryLazy.orElse(null);
 
                 int level = MathHelper.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY), 0, 5); // Number of rows for this dog
                 int numCols = MathHelper.clamp(level, 0, Math.max(0, TOTAL_COLUMNS)); // Number of rows to draw
 
                 for (int row = 0; row < 3; row++) {
                     for (int col = 0; col < numCols; col++) {
+                        DoggyTalents2.LOGGER.info("{} {}" , row, col);
                         DogInventorySlot slot = new DogInventorySlot(dog, this.player, packInventory, drawingColumn + col, row, col, col * 3 + row, 8 + 18 * (drawingColumn + col - page), 18 * row + 18);
                         this.addDogSlot(slot);
-                        if (slot.getOverallColumn() - page < 0 || slot.getOverallColumn() - page >= 9) {
+                        int adjustedColumn = slot.getOverallColumn() - page;
+                        if (adjustedColumn - page < 0 || adjustedColumn - page >= 9) {
                             slot.setEnabled(false);
                         }
                     }
                 }
+
                 this.possibleSlots += level;
                 drawingColumn += numCols;
             }
@@ -106,57 +104,41 @@ public class DogInventoriesContainer extends Container implements IContainerList
         if (id == 0) {
             for (int i = 0; i < this.dogSlots.size(); i++) {
                 DogInventorySlot slot = this.dogSlots.get(i);
-                int row = slot.getRow();
-                int col = slot.getColumn();
-                DogInventorySlot newSlot = new DogInventorySlot(slot.getDog(), slot.getPlayer(), slot.getItemHandler(), slot.getOverallColumn(), slot.getRow(), slot.getColumn(), slot.getSlotIndex(), 8 + 18 * (slot.getOverallColumn() - data), 18 * row + 18);
-                newSlot.slotNumber = slot.slotNumber;
-                this.dogSlots.set(i, newSlot);
-                this.inventorySlots.set(slot.slotNumber, newSlot);
-                if (slot.getOverallColumn() - data < 0 || slot.getOverallColumn() - data >= 9) {
+                DogInventorySlot newSlot = new DogInventorySlot(slot, 8 + 18 * (slot.getOverallColumn() - data));
+                this.replaceDogSlot(i, newSlot);
+                int adjustedColumn = slot.getOverallColumn() - data;
+                if (adjustedColumn < 0 || adjustedColumn >= 9) {
                     newSlot.setEnabled(false);
                 }
             }
-
-//            if (world.isRemote) {
-//
-//            DoggyTalents2.LOGGER.debug("Cleint!!!", data, this.world.isRemote);
-//                removeDogSlot();
-//                addDogSlots();
-//                return;
-//            }
-//            DoggyTalents2.LOGGER.debug("Change {}, Client {}", data, this.world.isRemote);
-//            removeDogSlot();
-//            addDogSlots();
-////            this.detectAndSendChanges();
-////            for (Slot slot : this.dogSlots) {
-////                ItemStack stack = slot.getStack().copy();
-////                this.inventoryItemStacks.set(slot.slotNumber, stack);
-////                for (IContainerListener icontainerlistener : this.listeners) {
-////                    icontainerlistener.sendSlotContents(this, slot.slotNumber, stack);
-////                 }
-////            }
-//
-//            //this.detectAndSendChanges();
         }
 
     }
 
-    public void addDogSlot(DogInventorySlot slotIn) {
+    private void addDogSlot(DogInventorySlot slotIn) {
         this.addSlot(slotIn);
         this.dogSlots.add(slotIn);
     }
 
-    public void removeDogSlot() {
-        for (Slot slot : this.dogSlots) {
-            int index = slot.slotNumber;
-            for (int i = index; i < this.inventorySlots.size(); i++) {
-                this.inventorySlots.get(i).slotNumber--;
-            }
-            this.inventorySlots.remove(index);
-            this.inventoryItemStacks.remove(index);
-        }
-        this.dogSlots.clear();
-        this.possibleSlots = 0;
+    private void replaceDogSlot(int i, DogInventorySlot slotIn) {
+        this.dogSlots.set(i, slotIn);
+        this.inventorySlots.set(slotIn.slotNumber, slotIn);
+    }
+
+    public int getTotalNumColumns() {
+        return this.possibleSlots;
+    }
+
+    public int getPage() {
+        return this.position.get();
+    }
+
+    public void setPage(int page) {
+        this.position.set(page);
+    }
+
+    public List<DogInventorySlot> getSlots() {
+        return this.dogSlots;
     }
 
     @Override
@@ -198,26 +180,4 @@ public class DogInventoriesContainer extends Container implements IContainerList
 
         return itemstack;
     }
-
-    @Override
-    public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
-
-    }
-
-//    @Override
-//    public void tick() {
-//
-//    }
 }

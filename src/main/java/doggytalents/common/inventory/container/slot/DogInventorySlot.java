@@ -22,6 +22,16 @@ public class DogInventorySlot extends SlotItemHandler {
         this.dog = dogIn;
     }
 
+    public DogInventorySlot(DogInventorySlot prev, int newX) {
+        super(prev.getItemHandler(), prev.getSlotIndex(), newX, prev.yPos);
+        this.player = prev.player;
+        this.overallColumn = prev.overallColumn;
+        this.row = prev.row;
+        this.col = prev.col;
+        this.dog = prev.dog;
+        this.slotNumber = prev.slotNumber;
+    }
+
     public void setEnabled(boolean flag) {
         this.enabled = flag;
     }
@@ -29,7 +39,7 @@ public class DogInventorySlot extends SlotItemHandler {
     // Don't accept items when disabled, this means disabled slots cannot be shift clicked into
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return this.enabled && super.isItemValid(stack);
+        return this.isEnabled() && super.isItemValid(stack);
     }
 
 //    @Override
@@ -39,7 +49,7 @@ public class DogInventorySlot extends SlotItemHandler {
 
     @Override
     public boolean isEnabled() {
-        return this.enabled && this.dog.isAlive() && this.dog.getDistanceSq(this.player) < 255F;
+        return this.enabled && this.dog.isAlive() && this.dog.getDistanceSq(this.player) < 400;
     }
 
     public DogEntity getDog() {

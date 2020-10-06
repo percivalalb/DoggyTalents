@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import doggytalents.DoggyTags;
+import doggytalents.DoggyTalents;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.Screens;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.util.InventoryUtil;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -24,7 +23,6 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
@@ -137,5 +135,9 @@ public class PackPuppyTalent extends Talent {
     @Override
     public boolean hasRenderer() {
         return true;
+    }
+
+    public static boolean hasInventory(AbstractDogEntity dogIn) {
+        return dogIn.isAlive() && dogIn.getData(PackPuppyTalent.PACK_PUPPY_HANDLER) != null && dogIn.getLevel(DoggyTalents.PACK_PUPPY) > 0;
     }
 }

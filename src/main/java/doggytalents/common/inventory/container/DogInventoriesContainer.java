@@ -80,7 +80,6 @@ public class DogInventoriesContainer extends Container {
 
                 for (int row = 0; row < 3; row++) {
                     for (int col = 0; col < numCols; col++) {
-                        DoggyTalents2.LOGGER.info("{} {}" , row, col);
                         DogInventorySlot slot = new DogInventorySlot(dog, this.player, packInventory, drawingColumn + col, row, col, col * 3 + row, 8 + 18 * (drawingColumn + col - page), 18 * row + 18);
                         this.addDogSlot(slot);
                         int adjustedColumn = slot.getOverallColumn() - page;

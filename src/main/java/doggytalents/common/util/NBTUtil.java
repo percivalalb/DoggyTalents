@@ -42,9 +42,19 @@ public class NBTUtil {
     public static UUID getUniqueId(CompoundNBT compound, String key) {
         if (compound.hasUniqueId(key)) {
             return compound.getUniqueId(key);
+        } else if (NBTUtil.hasOldUniqueId(compound, key)) {
+            return NBTUtil.getOldUniqueId(compound, key);
         }
 
         return null;
+    }
+
+    private static UUID getOldUniqueId(CompoundNBT compound, String key) {
+        return new UUID(compound.getLong(key + "Most"), compound.getLong(key + "Least"));
+    }
+
+    private static boolean hasOldUniqueId(CompoundNBT compound, String key) {
+        return compound.contains(key + "Most", 99) && compound.contains(key + "Least", 99);
     }
 
     public static void putResourceLocation(CompoundNBT compound, String key, @Nullable ResourceLocation rl) {

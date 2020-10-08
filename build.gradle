@@ -15,14 +15,13 @@ apply plugin: 'maven-publish'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DoggyTalents-1.16.2'
+archivesBaseName = 'DoggyTalents-1.16.3'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 repositories {
     maven { url "https://dvs1.progwml6.com/files/maven/" }
     maven { url "https://modmaven.k-4u.nl" }
-    maven { url 'https://maven.latmod.com/' }
 }
 
 sourceSets {
@@ -87,8 +86,6 @@ dependencies {
 
     implementation sourceSets.api.output
 
-    // ftb gui lib required temporality https://github.com/mezz/JustEnoughItems/issues/2095
-    compileOnly fg.deobf("com.feed_the_beast.mods:ftb-gui-library:${ftb_gui_lib_version}")
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 

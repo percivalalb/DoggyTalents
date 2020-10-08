@@ -1,6 +1,8 @@
 {
    "block.doggytalents.dog_bed": "Dog Bed",
    "block.doggytalents.food_bowl": "Food Bowl",
+   "block.doggytalents.dog_bed.set_owner_help": "Shift click with your dog nearby and they will come and make the bed their own. If the unimaginable happens and they do die right click the bed to revive them.",
+   "block.doggytalents.dog_bed.owner": "This bed is owned by %s.",
    "block.doggytalents.dog_bath": "Dog Bath",
    "item.doggytalents.throw_bone": "Throw Bone",
    "item.doggytalents.throw_bone_wet": "Drool Throw Bone",

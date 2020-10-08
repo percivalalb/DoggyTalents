@@ -49,6 +49,7 @@ import doggytalents.common.entity.ai.DogWanderGoal;
 import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
 import doggytalents.common.entity.ai.GuardModeGoal;
+import doggytalents.common.entity.ai.MoveToBlockGoal;
 import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.OwnerHurtTargetGoal;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
@@ -171,6 +172,8 @@ public class DogEntity extends AbstractDogEntity {
     protected boolean dogJumping;
     protected float jumpPower;
 
+    protected BlockPos targetBlock;
+
     public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
         super(type, worldIn);
         this.setTamed(false);
@@ -205,6 +208,7 @@ public class DogEntity extends AbstractDogEntity {
         //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(5, new MoveToBlockGoal(this));
         this.goalSelector.addGoal(5, new DogWanderGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new FetchGoal(this, 1.0D, 32.0F));
         this.goalSelector.addGoal(6, new DogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
@@ -2047,5 +2051,13 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         return false;
+    }
+
+    public void setTargetBlock(BlockPos pos) {
+        this.targetBlock = pos;
+    }
+
+    public BlockPos getTargetBlock() {
+        return this.targetBlock;
     }
 }

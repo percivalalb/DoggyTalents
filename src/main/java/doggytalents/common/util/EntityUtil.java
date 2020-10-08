@@ -19,6 +19,7 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.WalkNodeProcessor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityUtil {
 
@@ -102,16 +103,20 @@ public class EntityUtil {
 
     public static class Sorter implements Comparator<Entity> {
 
-        private final Entity entity;
+        private final Vec3d vec3d;
 
         public Sorter(Entity entityIn) {
-            this.entity = entityIn;
+            this.vec3d = entityIn.getPositionVec();
+        }
+
+        public Sorter(Vec3d vec3d) {
+            this.vec3d = vec3d;
         }
 
         @Override
         public int compare(Entity entity1, Entity entity2) {
-            double d0 = this.entity.getDistanceSq(entity1);
-            double d1 = this.entity.getDistanceSq(entity2);
+            double d0 = this.vec3d.squareDistanceTo(entity1.getPositionVec());
+            double d1 = this.vec3d.squareDistanceTo(entity2.getPositionVec());
 
             return Double.compare(d0, d1);
         }

@@ -1,5 +1,6 @@
 package doggytalents.common.block;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.storage.DogRespawnData;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.DogBedUtil;
+import doggytalents.common.util.EntityUtil;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.block.Block;
@@ -51,11 +53,13 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
@@ -74,7 +78,7 @@ public class DogBedBlock extends Block {
 
     public DogBedBlock() {
         super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, Boolean.valueOf(false)));
+        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
     }
 
     @Override
@@ -174,12 +178,27 @@ public class DogBedBlock extends Block {
 
                     worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT);
                     return ActionResultType.SUCCESS;
-                } else if (player.isSneaking()) {
-                    List<DogEntity> dogs = worldIn.getEntitiesWithinAABB(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).grow(10D), EntityPredicates.IS_ALIVE);
-                    if (!dogs.isEmpty()) {
-                        dogBedTileEntity.setOwner(dogs.get(0));
-                        dogs.get(0).setBedPos(dogs.get(0).dimension, pos);
-                        worldIn.setEntityState(dogs.get(0), (byte)7);
+                } else if (player.isSneaking() && dogBedTileEntity.getOwnerUUID() == null) {
+                    List<DogEntity> dogs = worldIn.getEntitiesWithinAABB(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).grow(10D), (dog) -> dog.isAlive() && dog.isOwner(player));
+                    Collections.sort(dogs, new EntityUtil.Sorter(new Vec3d(pos.getX(), pos.getY(), pos.getZ())));
+
+                    DogEntity closestStanding = null;
+                    DogEntity closestSitting = null;
+                    for (DogEntity dog : dogs) {
+                        if (closestSitting != null && closestSitting != null) {
+                            break;
+                        }
+
+                        if (closestSitting == null && dog.isSitting()) {
+                            closestSitting = dog;
+                        } else if (closestStanding == null && !dog.isSitting()) {
+                            closestStanding = dog;
+                        }
+                    }
+
+                    DogEntity closests = closestStanding != null ? closestStanding : closestSitting;
+                    if (closests != null) {
+                        closests.setTargetBlock(pos);
                     }
                 } else if (dogBedTileEntity.getOwnerUUID() != null) {
                     DogRespawnData storage = DogRespawnStorage.get(worldIn).remove(dogBedTileEntity.getOwnerUUID());
@@ -191,8 +210,13 @@ public class DogBedBlock extends Block {
                         dog.setBedPos(dog.dimension, pos);
                         return ActionResultType.SUCCESS;
                     } else {
+                        ITextComponent name = dogBedTileEntity.getOwnerName();
+                        player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"));
                         return ActionResultType.FAIL;
                     }
+                } else {
+                    player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.set_owner_help"));
+                    return ActionResultType.SUCCESS;
                 }
             }
             return ActionResultType.SUCCESS;

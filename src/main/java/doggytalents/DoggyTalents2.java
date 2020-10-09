@@ -30,6 +30,7 @@ import net.minecraft.resources.IReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -80,12 +81,11 @@ public class DoggyTalents2 {
         DoggyBedMaterials.CASINGS.register(modEventBus);
         DoggyAttributes.ATTRIBUTES.register(modEventBus);
 
-        DogRespawnCommand.registerSerilizers();
-
         modEventBus.addListener(DoggyRegistries::newRegistry);
 
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.addListener(this::serverStarting);
+        forgeEventBus.addListener(this::registerCommands);
 
         forgeEventBus.register(new EventHandler());
         forgeEventBus.register(new BackwardsComp());
@@ -119,10 +119,15 @@ public class DoggyTalents2 {
         FoodHandler.registerHandler(new MeatFoodHandler());
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();
+        DogRespawnCommand.registerSerilizers();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {
-        DogRespawnCommand.register(event.getServer().getCommandManager().getDispatcher());
+
+    }
+
+    public void registerCommands(final RegisterCommandsEvent event) {
+        DogRespawnCommand.register(event.getDispatcher());
     }
 
     @OnlyIn(Dist.CLIENT)

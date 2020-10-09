@@ -49,11 +49,11 @@ public class NBTUtil {
         return null;
     }
 
-    private static UUID getOldUniqueId(CompoundNBT compound, String key) {
+    public static UUID getOldUniqueId(CompoundNBT compound, String key) {
         return new UUID(compound.getLong(key + "Most"), compound.getLong(key + "Least"));
     }
 
-    private static boolean hasOldUniqueId(CompoundNBT compound, String key) {
+    public static boolean hasOldUniqueId(CompoundNBT compound, String key) {
         return compound.contains(key + "Most", 99) && compound.contains(key + "Least", 99);
     }
 

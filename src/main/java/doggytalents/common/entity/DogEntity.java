@@ -106,6 +106,7 @@ import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ActionResult;
@@ -1198,6 +1199,29 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
+
+        // UUID changed format from 1.15 to 1.16
+        if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
+            this.entityUniqueID = NBTUtil.getOldUniqueId(compound, "UUID");
+            this.cachedUniqueIdString = this.entityUniqueID.toString();
+        }
+
+        UUID uuid;
+        if (NBTUtil.hasOldUniqueId(compound, "Owner")) {
+            uuid = NBTUtil.getOldUniqueId(compound, "Owner");
+        } else {
+            String s = compound.getString("Owner");
+            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s);
+        }
+
+        if (uuid != null) {
+            try {
+                this.setOwnerId(uuid);
+                this.setTamed(true);
+            } catch (Throwable throwable) {
+                this.setTamed(false);
+            }
+        }
 
         Map<Talent, Integer> talentMap = this.getTalentMap();
         talentMap.clear();

@@ -333,8 +333,9 @@ public class DogEntity extends AbstractDogEntity {
                 this.headRotationCourse += (0.0F - this.headRotationCourse) * 0.4F;
             }
 
-            boolean inWater = this.isInWater() ;
-            boolean inRain = this.isInRain();
+            boolean inWater = this.isInWater();
+            // If inWater is false then isInRain is true in the or statement
+            boolean inRain = inWater ? false : this.isWet();
             boolean inBubbleColumn = this.isInBubbleColumn();
 
             if (inWater || inRain || inBubbleColumn) {

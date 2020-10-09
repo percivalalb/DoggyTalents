@@ -3,6 +3,7 @@ package doggytalents.api.registry;
 import java.util.Comparator;
 import java.util.Optional;
 
+import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -16,7 +17,7 @@ public class AccessoryInstance {
     public static final Comparator<AccessoryInstance> RENDER_SORTER = Comparator.comparing(AccessoryInstance::getRenderIndex);
 
     @Deprecated // Do not call directly use AccessoryInstance#getAccessory
-    private Accessory accessory;
+    private final Accessory accessory;
 
     public AccessoryInstance(Accessory typeIn) {
         this.accessory = typeIn;
@@ -53,6 +54,7 @@ public class AccessoryInstance {
             Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
             return Optional.of(type.read(compound));
         } else {
+            DoggyTalents2.LOGGER.warn("Failed to load accessory {}", rl);
             return Optional.empty();
         }
     }

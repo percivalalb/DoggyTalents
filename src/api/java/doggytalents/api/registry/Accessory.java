@@ -17,7 +17,7 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
     @Nullable
     private String translationKey;
     @Deprecated // Do not call directly use Accessory#getReturnItem
-    private Supplier<ItemStack> stack;
+    private final Supplier<ItemStack> stack;
 
     @Deprecated // Do not call directly use Accessory#getType
     private final Supplier<? extends AccessoryType> type;

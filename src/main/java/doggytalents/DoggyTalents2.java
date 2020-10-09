@@ -78,8 +78,6 @@ public class DoggyTalents2 {
         DoggyBedMaterials.BEDDINGS.register(modEventBus);
         DoggyBedMaterials.CASINGS.register(modEventBus);
 
-        DogRespawnCommand.registerSerilizers();
-
         modEventBus.addListener(DoggyRegistries::newRegistry);
 
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
@@ -116,6 +114,7 @@ public class DoggyTalents2 {
         FoodHandler.registerHandler(new HappyEaterTalent());
         FoodHandler.registerHandler(new MeatFoodHandler());
         ConfigHandler.initTalentConfig();
+        DogRespawnCommand.registerSerilizers();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {

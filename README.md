@@ -35,7 +35,7 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
  - **Q:** Will there be a Fabric version?  
    **A:** I will not be creating one, if someone wants to take up this task please contact me.
  - **Q:** Which Minecraft versions are supported?  
-   **A:** It is normally be the last two major releases, currently `1.14.x` and `1.15.x`.
+   **A:** It is normally be the last two major releases, currently `1.15.x` and `1.16.x`.
 
 -----------------
 

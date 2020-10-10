@@ -54,7 +54,12 @@ public class NBTUtil {
     }
 
     public static boolean hasOldUniqueId(CompoundNBT compound, String key) {
-        return compound.contains(key + "Most", 99) && compound.contains(key + "Least", 99);
+        return compound.contains(key + "Most", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains(key + "Least", Constants.NBT.TAG_ANY_NUMERIC);
+    }
+
+    public static void removeOldUniqueId(CompoundNBT compound, String key) {
+        compound.remove(key + "Most");
+        compound.remove(key + "Least");
     }
 
     public static void putResourceLocation(CompoundNBT compound, String key, @Nullable ResourceLocation rl) {

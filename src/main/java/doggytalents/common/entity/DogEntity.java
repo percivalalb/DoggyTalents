@@ -1196,33 +1196,80 @@ public class DogEntity extends AbstractDogEntity {
         this.statsTracker.writeAdditional(compound);
     }
 
+    @Override
+    public void read(CompoundNBT compound) {
+
+        // DataFix uuid entries and attribute ids
+        if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
+            UUID entityUUID = NBTUtil.getOldUniqueId(compound, "UUID");
+
+            compound.putUniqueId("UUID", entityUUID);
+            NBTUtil.removeOldUniqueId(compound, "UUID");
+        }
+
+        if (compound.contains("OwnerUUID", Constants.NBT.TAG_STRING)) {
+            UUID ownerUUID = UUID.fromString(compound.getString("OwnerUUID"));
+
+            compound.putUniqueId("Owner", ownerUUID);
+            compound.remove("OwnerUUID");
+        } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
+            UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), compound.getString("Owner"));
+
+            compound.putUniqueId("Owner", ownerUUID);
+        }
+
+        if (NBTUtil.hasOldUniqueId(compound, "LoveCause")) {
+            UUID entityUUID = NBTUtil.getOldUniqueId(compound, "LoveCause");
+
+            compound.putUniqueId("LoveCause", entityUUID);
+            NBTUtil.removeOldUniqueId(compound, "LoveCause");
+        }
+
+
+        if (compound.contains("Attributes", Constants.NBT.TAG_LIST)) {
+            ListNBT attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < attributeList.size(); i++) {
+                CompoundNBT attributeData = attributeList.getCompound(i);
+                String name = attributeData.getString("Name");
+
+                switch (name) {
+                case "forge.swimSpeed": name = "forge:swim_speed"; break;
+                case "forge.nameTagDistance": name = "forge:nametag_distance"; break;
+                case "forge.entity_gravity": name = "forge:entity_gravity"; break;
+                case "forge.reachDistance": name = "forge:reach_distance"; break;
+                case "generic.maxHealth": name = "minecraft:generic.max_health"; break;
+                case "generic.knockbackResistance": name = "minecraft:generic.knockback_resistance"; break;
+                case "generic.movementSpeed": name = "minecraft:generic.movement_speed"; break;
+                case "generic.armor": name = "minecraft:generic.armor"; break;
+                case "generic.armorToughness": name = "minecraft:generic.armor_toughness"; break;
+                case "generic.followRange": name = "minecraft:generic.follow_range"; break;
+                case "generic.attackKnockback": name = "minecraft:generic.attack_knockback"; break;
+                case "generic.attackDamage": name = "minecraft:generic.attack_damage"; break;
+                case "generic.jumpStrength": name = "doggytalents:generic.jump_power"; break;
+                case "generic.critChance": name = "doggytalents:generic.crit_chance"; break;
+                case "generic.critBonus": name = "doggytalents:generic.crit_bonus"; break;
+                }
+
+                attributeData.putString("Name", name);
+                ListNBT modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
+                for (int j = 0; j < modifierList.size(); j++) {
+                    CompoundNBT modifierData = modifierList.getCompound(j);
+                    if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
+                        UUID entityUUID = NBTUtil.getOldUniqueId(modifierData, "UUID");
+
+                        modifierData.putUniqueId("UUID", entityUUID);
+                        NBTUtil.removeOldUniqueId(modifierData, "UUID");
+                    }
+                }
+            }
+        }
+
+        super.read(compound);
+    }
 
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-
-        // UUID changed format from 1.15 to 1.16
-        if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
-            this.entityUniqueID = NBTUtil.getOldUniqueId(compound, "UUID");
-            this.cachedUniqueIdString = this.entityUniqueID.toString();
-        }
-
-        UUID uuid;
-        if (NBTUtil.hasOldUniqueId(compound, "Owner")) {
-            uuid = NBTUtil.getOldUniqueId(compound, "Owner");
-        } else {
-            String s = compound.getString("Owner");
-            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), s);
-        }
-
-        if (uuid != null) {
-            try {
-                this.setOwnerId(uuid);
-                this.setTamed(true);
-            } catch (Throwable throwable) {
-                this.setTamed(false);
-            }
-        }
 
         Map<Talent, Integer> talentMap = this.getTalentMap();
         talentMap.clear();

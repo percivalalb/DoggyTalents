@@ -63,6 +63,7 @@ public class ClientSetup {
         CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_HELMET.get(), new LeatherArmorAccessoryRenderer(Resources.LEATHER_HELMET));
         CollarRenderManager.registerRenderer(DoggyAccessories.CHAINMAIL_HELMET.get(), new ArmorAccessoryRenderer(Resources.CHAINMAIL_HELMET));
         CollarRenderManager.registerRenderer(DoggyAccessories.TURTLE_HELMET.get(), new ArmorAccessoryRenderer(Resources.TURTLE_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.NETHERITE_HELMET.get(), new ArmorAccessoryRenderer(Resources.NETHERITE_HELMET));
 
         CollarRenderManager.registerRenderer(DoggyTalents.PACK_PUPPY.get(), new PackPuppyRenderer());
         CollarRenderManager.registerRenderer(DoggyTalents.RESCUE_DOG.get(), new RescueDogRenderer());

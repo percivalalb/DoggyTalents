@@ -38,6 +38,7 @@ public class DoggyAccessories {
     public static final RegistryObject<Helmet> GOLDEN_HELMET = registerHelmet("golden_helmet", () -> Items.GOLDEN_HELMET);
     public static final RegistryObject<Helmet> CHAINMAIL_HELMET = registerHelmet("chainmail_helmet", () -> Items.CHAINMAIL_HELMET);
     public static final RegistryObject<Helmet> TURTLE_HELMET = registerHelmet("turtle_helmet", () -> Items.TURTLE_HELMET);
+    public static final RegistryObject<Helmet> NETHERITE_HELMET = registerHelmet("netherite_helmet", () -> Items.NETHERITE_HELMET);
 
     private static RegistryObject<Helmet> registerHelmet(final String name, final Supplier<? extends IItemProvider> itemIn) {
         return ACCESSORIES.register(name, () -> new Helmet(itemIn));

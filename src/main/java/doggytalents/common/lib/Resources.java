@@ -39,6 +39,7 @@ public class Resources {
     public static final ResourceLocation CHAINMAIL_HELMET = getEntity("dog", "armor/chainmail_helmet");
     public static final ResourceLocation LEATHER_HELMET = getEntity("dog", "armor/leather_helmet");
     public static final ResourceLocation TURTLE_HELMET = getEntity("dog", "armor/turtle_helmet");
+    public static final ResourceLocation NETHERITE_HELMET = getEntity("dog", "armor/netherite_helmet");
 
     public static ResourceLocation getEntity(String type, String textureFileName) {
         return Util.getResource("textures/entity/" + type + "/" + textureFileName + ".png");

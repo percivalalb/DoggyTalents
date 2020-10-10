@@ -458,8 +458,8 @@ public class DogEntity extends AbstractDogEntity {
         this.alterations.forEach((alter) -> alter.livingTick(this));
     }
 
-    private static final Item[] HELMETS = new Item[] {Items.IRON_HELMET, Items.DIAMOND_HELMET, Items.GOLDEN_HELMET, Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET};
-    private static final List<RegistryObject<? extends Accessory>> HELMET_ACCESSORIES = Lists.newArrayList(DoggyAccessories.IRON_HELMET, DoggyAccessories.DIAMOND_HELMET, DoggyAccessories.GOLDEN_HELMET, DoggyAccessories.LEATHER_HELMET, DoggyAccessories.CHAINMAIL_HELMET, DoggyAccessories.TURTLE_HELMET);
+    private static final Item[] HELMETS = new Item[] {Items.IRON_HELMET, Items.DIAMOND_HELMET, Items.GOLDEN_HELMET, Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET, Items.NETHERITE_HELMET};
+    private static final List<RegistryObject<? extends Accessory>> HELMET_ACCESSORIES = Lists.newArrayList(DoggyAccessories.IRON_HELMET, DoggyAccessories.DIAMOND_HELMET, DoggyAccessories.GOLDEN_HELMET, DoggyAccessories.LEATHER_HELMET, DoggyAccessories.CHAINMAIL_HELMET, DoggyAccessories.TURTLE_HELMET, DoggyAccessories.NETHERITE_HELMET);
 
     @Override
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {

@@ -4,6 +4,7 @@
    "block.doggytalents.dog_bed.owner": "This bed is owned by %s.",
    "block.doggytalents.food_bowl": "Food Bowl",
    "block.doggytalents.dog_bath": "Dog Bath",
+
    "item.doggytalents.throw_bone": "Throw Bone",
    "item.doggytalents.throw_bone_wet": "Drool Throw Bone",
    "item.doggytalents.throw_stick": "Throw Stick",
@@ -39,17 +40,24 @@
    "item.doggytalents.tiny_bone": "Tiny Bone",
    "item.doggytalents.big_bone": "Big Bone",
    "item.doggytalents.owner_change": "Change Dog Owner",
+   "item.doggytalents.guard_suit" : "Guard Suit",
+
    "item.doggytalents.cape_coloured.tooltip": "Colour: %s",
    "item.doggytalents.wool_collar.tooltip": "Colour: %s",
-   "item.doggytalents.creative_collar.tooltip": "Gives 1000 points to spend",
+   "item.doggytalents.creative_collar.tooltip": "Gives Unlimited points to spend",
    "item.doggytalents.creative_radar.tooltip": "Finds ANY owned dogs",
    "item.doggytalents.owner_change.tooltip": "Sets ANY dog to be yours",
    "item.doggytalents.treat_bag.contents": "%d %s",
+
    "container.doggytalents.pack_puppy": "Pack Puppy",
    "container.doggytalents.food_bowl": "Food Bowl",
    "container.doggytalents.treat_bag": "Treat Bag",
+   "container.doggytalents.dog_inventories.link" : "Dog Inventories",
+   "container.doggytalents.dog_inventories" : "Dog Inventories",
+
    "itemGroup.doggytalents": "Doggy Talents",
    "itemGroup.doggytalents.dogbed": "Dog Bed Variants",
+
    "treat.dire_treat.low_level": "Your dog can't possibly handle the awesome power contained in these treats.",
    "treat.dire_treat.level_up": "Level up!",
    "treat.dire_treat.too_young": "This dog's a bit too young to be learning skills just yet.",
@@ -59,6 +67,7 @@
    "treat.normal_treat.max_level": "Your dog is too high level to gain anything from these treats.",
    "treat.big_bone.too_young": "This dog's a bit too young for this bone.",
    "treat.tiny_bone.too_young": "This dog's a bit too young for this bone.",
+
    "talent.doggytalents.black_pelt": "Black Pelt",
    "talent.doggytalents.guard_dog": "Guard Dog",
    "talent.doggytalents.hunter_dog": "Hunter Dog",
@@ -80,6 +89,7 @@
    "talent.doggytalents.puppy_eyes": "Puppy Eyes",
    "talent.doggytalents.swimmer_dog": "Swimmer Dog",
    "talent.doggytalents.doggy_torch": "Doggy Torch",
+
    "talent.doggytalents.bed_finder.description": "While a dog with this skill is on your head, your bed will be highlighted in a black outline. To get the dog on you head, right click on them with a bone in hand. The range at which it can do this is equal to 200 blocks per level, but becomes infinite at level 5.",
    "talent.doggytalents.black_pelt.description": "Improves critical hit rate 1/2 a heart for every level plus an extra heart when you master it",
    "talent.doggytalents.guard_dog.description": "Increases the chance that your dog, will completely block a physical attack",
@@ -101,6 +111,7 @@
    "talent.doggytalents.puppy_eyes.description": "This skill will cause your dog to warm the heart of any villager, prompting the villager to give you presents! Higher levels in the skill increase the quality of the random gifts. This can only be done once every two Minecraft days. Mastering the skill allows you to do this once every Minecraft day.",
    "talent.doggytalents.swimmer_dog.description": "Allows you to ride your dog in water and it to breath longer underwater. Maxing it allows the rider to see easily underwater.",
    "talent.doggytalents.doggy_torch.description": "Allows your dog put torch when light level is down, at the cost of one torch of his inventory. To give it torches you can drop some nearby and it will pick it up. At level 5 he doesnt need torches in his inventory anymore.",
+
    "talent.doggytalents.roaring_gale.cooldown": "Roaring gale is on cooldown.",
    "talent.doggytalents.roaring_gale.level": "Put some points in roaring gale to use!",
    "talent.doggytalents.wolf_mount.exhausted": "%s: Woooff, woof, woof woofff (Food Please)",
@@ -123,6 +134,7 @@
    "talent.doggytalents.puppy_eyes.msg.6.line.3": "aaaaaaaaaAAAAAAAAWWWWWWWWW!",
    "talent.doggytalents.bed_finder.dog_mount": "Click to make %s dismount",
    "talent.doggytalents.pack_puppy.version_migration": "The dog inventory is no longer accessed this way. Open your inventory and click on the dog inventories button",
+
    "dog.mode.wandering": "Wandering",
    "dog.mode.tactical": "Tactical",
    "dog.mode.aggressive": "Aggressive",
@@ -130,6 +142,7 @@
    "dog.mode.docile": "Docile",
    "dog.mode.patrol": "Patrol",
    "dog.mode.guard": "Guard",
+
    "dog.mode.wandering.indicator": "(W)",
    "dog.mode.tactical.indicator": "(T)",
    "dog.mode.aggressive.indicator": "(A)",
@@ -138,6 +151,7 @@
    "dog.mode.patrol.indicator": "(P)",
    "dog.mode.guard.indicator": "(G)",
    "dog.mode.incapacitated.indicator": "(I)",
+
    "dog.mode.wandering.description": "In this mode your dog so stay near it's bowl and wait for your next command. To set you dog's bowl bring your dog within a few blocks of it.",
    "dog.mode.tactical.description": "In this mode your dog will follow you but will not attack anything unless you use the command beam",
    "dog.mode.aggressive.description": "In this mode your dog will follow you and attack anything that attacks you or that you attack",
@@ -145,10 +159,12 @@
    "dog.mode.docile.description": "In this mode your dog will follow you but not attack anything. They are ready for you to throw the bone",
    "dog.mode.patrol.description": "In this mode your dog will patrol between 2-4 points (set using a command emblem) and attack monsters that try come into view",
    "dog.mode.guard.description": "Dogs follow closely and attack any monsters that come close.",
+
    "dog.mode.incapacitated.help": "%s is incapacitated and requires a cake to revive %s.",
    "dog.mode.docile.nobowl": "No food bowl currently set.",
    "dog.mode.docile.bowl": "Bowl distance: %d",
    "dog.mode.docile.distance": "Bowl to far away: %d",
+
    "dog.gender.female": "Female",
    "dog.gender.female.indicator": "(F)",
    "dog.gender.female.pronoun": "her",
@@ -164,15 +180,19 @@
    "dog.gender.unisex.pronoun": "them",
    "dog.gender.unisex.subject": "they",
    "dog.gender.unisex.title": "unisex",
+
    "entity.doggytalents.dog": "Dog",
    "entity.doggytalents.dog.unknown_owner": "Owner Unknown",
    "entity.doggytalents.dog.untamed": "Untamed",
+
    "doggytalents.whistle.short": "Whistle Short",
    "doggytalents.whistle.long": "Whistle Long",
+
    "dogcommand.come": "Stand!",
    "dogcommand.stay": "Stay!",
    "dogcommand.ok": "Okay!",
    "dogcommand.heel": "Heel!",
+
    "doggui.prevpage": "Previous Page",
    "doggui.nextpage": "Next Page",
    "doggui.newname": "New name:",
@@ -190,6 +210,7 @@
    "doggui.owner.you": "You",
    "doggui.age.baby": "Puppy",
    "doggui.age.adult": "Adult",
+
    "dogradar.north": "**** %s is %d blocks north ****",
    "dogradar.north.east": "**** %s is %d blocks roughly north east ****",
    "dogradar.north.west": "**** %s is %d blocks roughly north west ****",
@@ -202,6 +223,7 @@
    "dogradar.errornoradio": "**** Remember to put radio collar on your dog ****",
    "dogradar.errornull": "**** No dogs found in %s! ****",
    "dogradar.errorown": "**** You do not own %s! Please ensure you have permission to interact with %d! ****",
+
    "title.doggytalents.config": "Doggy Talents Configurations",
    "modgui.config.doggysettings": "Dog Behavior Settings",
    "modgui.config.doggysettings.tooltip": "Change certain behaviors of dogs.",
@@ -209,13 +231,13 @@
    "modgui.config.general.tooltip": "General settings for the mod",
    "modgui.config.talents": "Talents",
    "modgui.config.talents.tooltip": "Enable and disable talents",
-   
+
    "argument.doggytalents.uuid.format.invalid": "%s is of the wrong format should contain 4 dashes",
    "argument.doggytalents.uuid.section.invalid": "%s contains one or more invalid characters",
    "commands.dogrespawn.uuid.success": "Summoned %s from the dead",
    "commands.dogrespawn.uuid.failure": "Failed to rise %s from the dead",
    "command.dogrespawn.imprecise": "Too many dogs (%d) for this owner under this name, use `byuuid` for %s",
-   
+
    "dogbed.bedding.null": "Null",
    "dogbed.casing.null": "Null",
    "dogbed.bedding.missing": "Missing: %s",
@@ -243,7 +265,9 @@
    "dogbed.casing.minecraft.jungle_planks": "Jungle Plank Casing",
    "dogbed.casing.minecraft.acacia_planks": "Acacia Plank Casing",
    "dogbed.casing.minecraft.dark_oak_planks": "Dark Oak Plank Casing",
-   
+
+   "dogbed.casing.autumnity.maple_planks": "Maple Plank Casing",
+
    "dogbed.casing.biomesoplenty.cherry_planks": "Cherry Plank Casing",
    "dogbed.casing.biomesoplenty.umbran_planks": "Umbran Plank Casing",
    "dogbed.casing.biomesoplenty.fir_planks": "Fir Plank Casing",
@@ -256,12 +280,13 @@
    "dogbed.casing.biomesoplenty.ebony_planks": "Ebony Plank Casing",
    "dogbed.casing.biomesoplenty.magic_planks": "Magic Plank Casing",
    "dogbed.casing.biomesoplenty.dead_planks": "Dead Plank Casing",
+
    "dogbed.casing.botania.shimmerwood_planks": "Shimmerwood Plank Casing",
    "dogbed.casing.botania.livingwood_planks": "Livingwood Plank Casing",
    "dogbed.casing.botania.mossy_livingwood_planks": "Mossy Livingwood Plank Casing",
    "dogbed.casing.botania.dreamwood_planks": "Dreamwood Plank Casing",
    "dogbed.casing.botania.mossy_dreamwood_planks": "Mossy Dreamwood Plank Casing",
-   
+
    "dogbed.casing.forestry:planks.0.0": "Larch Plank Casing",
    "dogbed.casing.forestry:planks.0.1": "Teak Plank Casing",
    "dogbed.casing.forestry:planks.0.2": "Desert Acacia Plank Casing",
@@ -362,9 +387,5 @@
    "dogbed.casing.natura:overworld_planks.5": "Eucalyptus Plank Casing",
    "dogbed.casing.natura:overworld_planks.6": "Hopspeed Plank Casing",
    "dogbed.casing.natura:overworld_planks.7": "Sakura Plank Casing",
-   "dogbed.casing.natura:overworld_planks.8": "Redwood Plank Casing",
-   "dogbed.casing.autumnity.maple_planks": "Maple Plank Casing",
-   "container.doggytalents.dog_inventories.link" : "Dog Inventories",
-   "container.doggytalents.dog_inventories" : "Dog Inventories",
-   "item.doggytalents.guard_suit" : "Guard Suit"
+   "dogbed.casing.natura:overworld_planks.8": "Redwood Plank Casing"
 }

@@ -34,7 +34,7 @@ public class WorldUtil {
     @Nullable
     public static <T extends TileEntity> T getTileEntity(IBlockReader worldIn, BlockPos posIn, Class<T> type) {
         TileEntity tileEntity = worldIn.getTileEntity(posIn);
-        if (tileEntity.getClass().isAssignableFrom(type)) {
+        if (tileEntity != null && tileEntity.getClass().isAssignableFrom(type)) {
             return (T) tileEntity;
         }
 

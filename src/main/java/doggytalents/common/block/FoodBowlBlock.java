@@ -94,18 +94,20 @@ public class FoodBowlBlock extends Block {
 
     @Override
     public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-        FoodBowlTileEntity foodBowl = WorldUtil.getTileEntity(worldIn, pos, FoodBowlTileEntity.class);
+        if (entityIn instanceof ItemEntity) {
+            FoodBowlTileEntity foodBowl = WorldUtil.getTileEntity(worldIn, pos, FoodBowlTileEntity.class);
 
-        if (foodBowl != null && entityIn instanceof ItemEntity) {
-            ItemEntity entityItem = (ItemEntity) entityIn;
+            if (foodBowl != null) {
+                ItemEntity entityItem = (ItemEntity) entityIn;
 
-            IItemHandler bowlInventory = foodBowl.getInventory();
-            ItemStack remaining = InventoryUtil.addItem(bowlInventory, entityItem.getItem());
-            if (!remaining.isEmpty()) {
-                entityItem.setItem(remaining);
-            } else {
-                entityItem.remove();
-                worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                IItemHandler bowlInventory = foodBowl.getInventory();
+                ItemStack remaining = InventoryUtil.addItem(bowlInventory, entityItem.getItem());
+                if (!remaining.isEmpty()) {
+                    entityItem.setItem(remaining);
+                } else {
+                    entityItem.remove();
+                    worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.NEUTRAL, 0.25F, ((worldIn.rand.nextFloat() - worldIn.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                }
             }
         }
     }

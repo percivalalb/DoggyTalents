@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "doggytalents:throw_stick_wet"
+    }
+  ],
+  "result": {
+    "item": "doggytalents:throw_stick"
+  }
+}

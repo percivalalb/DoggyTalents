@@ -1,11 +1,11 @@
 {
-  "parent": "block/block",
+  "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "block/iron_block",
-    "water": "block/water_still",
-    "side": "block/iron_block",
-    "bottom": "block/iron_block"
+    "particle": "minecraft:block/iron_block",
+    "water": "minecraft:block/water_still",
+    "side": "minecraft:block/iron_block",
+    "bottom": "minecraft:block/iron_block"
   },
   "elements": [
     {

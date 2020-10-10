@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LCL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "C": {
+      "item": "doggytalents:chew_stick"
+    }
+  },
+  "result": {
+    "item": "doggytalents:treat_bag"
+  }
+}

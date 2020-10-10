@@ -16,4 +16,8 @@ public class DTBlockTagsProvider extends BlockTagsProvider {
         return "DoggyTalents Block Tags";
     }
 
+    @Override
+    protected void registerTags() {
+
+    }
 }

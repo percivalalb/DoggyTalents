@@ -1,10 +1,10 @@
 {
-  "parent": "block/block",
+  "parent": "minecraft:block/block",
   "ambientocclusion": false,
   "textures": {
-    "particle": "block/oak_planks",
-    "bedding": "block/white_wool",
-    "casing": "block/oak_planks"
+    "particle": "minecraft:block/oak_planks",
+    "bedding": "minecraft:block/white_wool",
+    "casing": "minecraft:block/oak_planks"
   },
   "elements": [
     {

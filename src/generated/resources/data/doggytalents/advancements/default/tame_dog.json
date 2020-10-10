@@ -19,9 +19,15 @@
     "tame_dog": {
       "trigger": "minecraft:tame_animal",
       "conditions": {
-        "entity": {
-          "type": "doggytalents:dog"
-        }
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "predicate": {
+              "type": "doggytalents:dog"
+            },
+            "entity": "this"
+          }
+        ]
       }
     }
   },

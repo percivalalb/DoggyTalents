@@ -22,7 +22,6 @@ import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.network.PacketHandler;
-import doggytalents.common.talent.HappyEaterTalent;
 import doggytalents.common.util.BackwardsComp;
 import net.minecraft.client.Minecraft;
 import net.minecraft.data.DataGenerator;
@@ -115,7 +114,7 @@ public class DoggyTalents2 {
     public void commonSetup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         //TODO CriteriaTriggers.register(criterion)
-        FoodHandler.registerHandler(new HappyEaterTalent());
+        FoodHandler.registerHandler(DoggyTalents.HAPPY_EATER.get());
         FoodHandler.registerHandler(new MeatFoodHandler());
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();

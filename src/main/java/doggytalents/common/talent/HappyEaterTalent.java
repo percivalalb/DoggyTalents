@@ -38,7 +38,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
                 return true;
             }
 
-            if (level >= 5 && item.isIn(ItemTags.FISHES)) {
+            if (level >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
                 return true;
             }
         }

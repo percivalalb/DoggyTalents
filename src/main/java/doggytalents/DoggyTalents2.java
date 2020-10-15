@@ -18,6 +18,7 @@ import doggytalents.common.data.DTBlockTagsProvider;
 import doggytalents.common.data.DTItemTagsProvider;
 import doggytalents.common.data.DTLootTableProvider;
 import doggytalents.common.data.DTRecipeProvider;
+import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
 import doggytalents.common.lib.Constants;
@@ -119,6 +120,7 @@ public class DoggyTalents2 {
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();
         DogRespawnCommand.registerSerilizers();
+        DogEntity.initDataParameters();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {

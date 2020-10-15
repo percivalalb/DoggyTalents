@@ -33,8 +33,8 @@ public class PillowPawTalent extends Talent {
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
         int level = dogIn.getLevel(this);
 
-        if (level < 5) {
-            return new AttributeModifier(uuidIn, "Pillow Paw", -0.82D, AttributeModifier.Operation.ADDITION).setSaved(false);
+        if (level >= 5) {
+            return new AttributeModifier(uuidIn, "Pillow Paw", -0.065D, AttributeModifier.Operation.ADDITION).setSaved(false);
         }
 
         return null;

@@ -58,7 +58,7 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(map.size());
+        return this.map.hashCode();
     }
 
     @Override

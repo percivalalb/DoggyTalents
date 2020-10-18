@@ -1,6 +1,5 @@
 package doggytalents.common.entity.serializers;
 
-import doggytalents.DoggyTalents2;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.IDataSerializer;
@@ -17,28 +16,23 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
         buf.writeInt(DataSerializers.getSerializerId(ser));
         buf.writeInt(value.size());
         value.entrySet().forEach((entry) -> {
-            // TODO buf.writeResourceLocation(entry.getKey().getRegistryName());
+            buf.writeResourceLocation(entry.getKey().getLocation());
             ser.write(buf, entry.getValue());
         });
     }
 
     @Override
     public DimensionDependantArg<D> read(PacketBuffer buf) {
-        IDataSerializer ser = DataSerializers.getSerializer(buf.readInt());
+        IDataSerializer<D> ser = (IDataSerializer<D>) DataSerializers.getSerializer(buf.readInt());
         DimensionDependantArg<D> value = new DimensionDependantArg<>(() -> ser);
         int size = buf.readInt();
 
         for (int i = 0; i < size; i++) {
             ResourceLocation loc = buf.readResourceLocation();
             RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
-            D subV = (D) ser.read(buf);
-            //if (type.isPresent()) {
-            //    value.map.put(type, subV);
-            //} else {
-            //    DoggyTalents2.LOGGER.warn("Failed loading from PacketBuffer. Could not find dimension {}", loc);
-            //}
+            D subV = ser.read(buf);
+            value.map.put(type, subV);
         }
-        DoggyTalents2.LOGGER.debug("Loaded {}", value);
 
         return value;
     }

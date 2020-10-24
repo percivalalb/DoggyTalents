@@ -101,6 +101,25 @@ public class EntityUtil {
         return false;
     }
 
+    public static <T extends Entity> T getClosestTo(Entity center, Iterable<T> entities) {
+        return getClosestTo(center.getPositionVec(), entities);
+    }
+
+    public static <T extends Entity> T getClosestTo(Vector3d posVec, Iterable<T> entities) {
+        double smallestDist = Double.MAX_VALUE;
+        T closest = null;
+
+        for (T entity : entities) {
+            double distance = posVec.squareDistanceTo(entity.getPositionVec());
+            if (distance < smallestDist) {
+                closest = entity;
+                smallestDist = distance;
+            }
+        }
+
+        return closest;
+    }
+
     public static class Sorter implements Comparator<Entity> {
 
         private final Vector3d vec3d;

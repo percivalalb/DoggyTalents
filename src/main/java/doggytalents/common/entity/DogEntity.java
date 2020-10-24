@@ -300,10 +300,10 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void handleStatusUpdate(byte id) {
-        if (id == doggytalents.common.lib.Constants.EntityState.WOLF_STOP_SHAKING) {
-           this.isShaking = true;
-           this.timeWolfIsShaking = 0.0F;
-           this.prevTimeWolfIsShaking = 0.0F;
+        if (id == doggytalents.common.lib.Constants.EntityState.WOLF_START_SHAKING) {
+            this.startShaking();
+        } else if (id == doggytalents.common.lib.Constants.EntityState.WOLF_INTERUPT_SHAKING) {
+            this.finishShaking();
         } else {
             super.handleStatusUpdate(id);
         }
@@ -351,12 +351,12 @@ public class DogEntity extends AbstractDogEntity {
             boolean inBubbleColumn = this.isInBubbleColumn();
 
             if (inWater || inRain || inBubbleColumn) {
-                this.isShaking = false;
-                this.timeWolfIsShaking = 0.0F;
-                this.prevTimeWolfIsShaking = 0.0F;
-
                 if (this.wetSource == null) {
                     this.wetSource = WetSource.of(inWater, inBubbleColumn, inRain);
+                }
+                if (this.isShaking && !this.world.isRemote) {
+                    this.finishShaking();
+                    this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_INTERUPT_SHAKING);
                 }
             } else if ((this.wetSource != null || this.isShaking) && this.isShaking) {
                 if (this.timeWolfIsShaking == 0.0F) {
@@ -375,9 +375,7 @@ public class DogEntity extends AbstractDogEntity {
                     }
 
                     this.wetSource = null;
-                    this.isShaking = false;
-                    this.prevTimeWolfIsShaking = 0.0F;
-                    this.timeWolfIsShaking = 0.0F;
+                    this.finishShaking();
                 }
 
                 if (this.timeWolfIsShaking > 0.4F) {
@@ -414,10 +412,8 @@ public class DogEntity extends AbstractDogEntity {
     public void livingTick() {
         super.livingTick();
         if (!this.world.isRemote && this.wetSource != null && !this.isShaking && !this.hasPath() && this.isOnGround()) {
-            this.isShaking = true;
-            this.timeWolfIsShaking = 0.0F;
-            this.prevTimeWolfIsShaking = 0.0F;
-            this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_STOP_SHAKING);
+            this.startShaking();
+            this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_START_SHAKING);
         }
 
         if (!this.world.isRemote) {
@@ -1101,13 +1097,22 @@ public class DogEntity extends AbstractDogEntity {
         super.onDeathUpdate();
     }
 
+    private void startShaking() {
+        this.isShaking = true;
+        this.timeWolfIsShaking = 0.0F;
+        this.prevTimeWolfIsShaking = 0.0F;
+    }
+
+    private void finishShaking() {
+        this.isShaking = false;
+        this.timeWolfIsShaking = 0.0F;
+        this.prevTimeWolfIsShaking = 0.0F;
+    }
+
     @Override
     public void onDeath(DamageSource cause) {
-
         this.wetSource = null;
-        this.isShaking = false;
-        this.prevTimeWolfIsShaking = 0.0F;
-        this.timeWolfIsShaking = 0.0F;
+        this.finishShaking();
 
         if (this.world != null && !this.world.isRemote) {
             DogRespawnStorage.get(this.world).putData(this);

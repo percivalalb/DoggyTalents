@@ -324,6 +324,11 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
+    public Vector3d func_241205_ce_() {
+        return new Vector3d(0.0D, 0.6F * this.getEyeHeight(), this.getWidth() * 0.4F);
+    }
+
+    @Override
     public int getVerticalFaceSpeed() {
         return this.isSleeping() ? 20 : super.getVerticalFaceSpeed();
     }

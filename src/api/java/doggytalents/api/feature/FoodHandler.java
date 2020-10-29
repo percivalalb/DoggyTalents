@@ -37,6 +37,12 @@ public class FoodHandler {
     }
 
     public static Optional<IDogFoodHandler> getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn) {
+    	for (IDogFoodHandler handler : dogIn.getFoodHandlers()) {
+            if (handler.canConsume(dogIn, stackIn, entityIn)) {
+                return Optional.of(handler);
+            }
+    	}
+    	
         if (stackIn.getItem() instanceof IDogFoodHandler) {
             if (((IDogFoodHandler) stackIn.getItem()).canConsume(dogIn, stackIn, entityIn)) {
                 return Optional.of((IDogFoodHandler) stackIn.getItem());

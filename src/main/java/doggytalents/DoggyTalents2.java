@@ -115,7 +115,6 @@ public class DoggyTalents2 {
     public void commonSetup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         //TODO CriteriaTriggers.register(criterion)
-        FoodHandler.registerHandler(DoggyTalents.HAPPY_EATER.get());
         FoodHandler.registerHandler(new MeatFoodHandler());
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();

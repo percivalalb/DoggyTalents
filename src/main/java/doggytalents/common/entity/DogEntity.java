@@ -168,6 +168,7 @@ public class DogEntity extends AbstractDogEntity {
     // Cached values
     private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
     private final List<IDogAlteration> alterations = Lists.newArrayList();
+    private final List<IDogFoodHandler> foodHandlers = Lists.newArrayList();
 
     public final StatsTracker statsTracker = new StatsTracker();
     public final Map<Integer, Object> objects = Maps.newHashMap();
@@ -1444,15 +1445,23 @@ public class DogEntity extends AbstractDogEntity {
 
     public void recalculateAlterationsCache() {
         this.alterations.clear();
+        this.foodHandlers.clear();
 
-        this.getAccessories().forEach((inst) -> {
+        for (AccessoryInstance inst : this.getAccessories()) {
             if (inst instanceof IDogAlteration) {
                 this.alterations.add((IDogAlteration) inst);
             }
-        });
+            if (inst instanceof IDogFoodHandler) {
+                this.foodHandlers.add((IDogFoodHandler) inst);
+            }
+        };
 
         for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
             this.alterations.add(entry.getKey());
+
+            if (entry instanceof IDogFoodHandler) {
+                this.foodHandlers.add((IDogFoodHandler) entry);
+            }
         }
 
         DoggyTalents2.LOGGER.debug("Recalculate alterations, size {}", this.alterations.size());
@@ -2118,6 +2127,11 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         return false;
+    }
+
+    @Override
+    public List<IDogFoodHandler> getFoodHandlers() {
+        return this.foodHandlers;
     }
 
     public void setTargetBlock(BlockPos pos) {

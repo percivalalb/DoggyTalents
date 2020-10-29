@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.LivingEntity;
@@ -57,6 +58,9 @@ public interface IDog {
 
     public boolean isLying();
 
+    public List<IDogFoodHandler> getFoodHandlers();
+
+    @Deprecated
     public <T> void setData(DataKey<T> key, T value);
     /**
      * Tries to put the object in the map, does nothing if the key already exists

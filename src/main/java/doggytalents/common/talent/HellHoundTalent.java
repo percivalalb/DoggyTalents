@@ -2,30 +2,32 @@ package doggytalents.common.talent;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 
-public class HellHoundTalent extends Talent {
+public class HellHoundTalent extends TalentInstance {
+
+    public HellHoundTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public ActionResult<Integer> setFire(AbstractDogEntity dogIn, int second) {
-        int level = dogIn.getLevel(this);
-        return ActionResult.resultSuccess(level > 0 ? second / level : second);
+        return ActionResult.resultSuccess(this.level() > 0 ? second / this.level() : second);
     }
 
     @Override
     public ActionResultType isImmuneToFire(AbstractDogEntity dogIn) {
-        int level = dogIn.getLevel(this);
-        return level >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     @Override
     public ActionResultType isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
         if (source.isFireDamage()) {
-            int level = dogIn.getLevel(this);
-            return level >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+            return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
         }
 
         return ActionResultType.PASS;
@@ -33,13 +35,10 @@ public class HellHoundTalent extends Talent {
 
     @Override
     public ActionResultType attackEntityAsMob(AbstractDogEntity dogIn, Entity entity) {
-        int level = dogIn.getLevel(this);
-
-        if (level > 0) {
-            entity.setFire(level);
+        if (this.level() > 0) {
+            entity.setFire(this.level());
             return ActionResultType.PASS;
         }
-
 
         return ActionResultType.PASS;
     }

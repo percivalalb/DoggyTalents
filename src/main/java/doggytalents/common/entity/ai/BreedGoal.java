@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.world.World;

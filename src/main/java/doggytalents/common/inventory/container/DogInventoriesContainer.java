@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
+import doggytalents.DoggyTalents2;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
@@ -68,8 +70,12 @@ public class DogInventoriesContainer extends Container {
 
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
+                List<TalentInstance> activeTalents = dog.getTalentMap();
 
-                PackPuppyItemHandler packInventory = dog.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
+                DoggyTalents2.LOGGER.info("{}", activeTalents);
+
+                PackPuppyItemHandler packInventory = dog.getTalent(DoggyTalents.PACK_PUPPY)
+                        .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);
                 if (packInventory == null) {
                     continue;
                 }

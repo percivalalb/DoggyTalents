@@ -1,12 +1,11 @@
 package doggytalents.client.entity.render.layer;
 
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import doggytalents.api.client.render.ITalentRenderer;
-import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.CollarRenderManager;
 import doggytalents.common.entity.DogEntity;
@@ -21,15 +20,15 @@ public class DogTalentLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>
     }
 
     @Override
-    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        Map<Talent, Integer> collar = entitylivingbaseIn.getTalentMap();
+    public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        List<TalentInstance> talents = dogIn.getTalentMap();
 
-        for (Entry<Talent, Integer> entry : collar.entrySet()) {
-            if (entry.getValue() > 0 && entry.getKey().hasRenderer()) {
-                ITalentRenderer renderer = CollarRenderManager.getRendererFor(entry.getKey());
+        for (TalentInstance inst : talents) {
+            if (inst.level() > 0 && inst.hasRenderer()) {
+                ITalentRenderer renderer = CollarRenderManager.getRendererFor(inst.getTalent());
 
                 if (renderer != null) {
-                    renderer.render(this, matrixStackIn, bufferIn, packedLightIn, entitylivingbaseIn, entry.getValue(), limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
+                    renderer.render(this, matrixStackIn, bufferIn, packedLightIn, dogIn, inst, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
                 }
             }
         };

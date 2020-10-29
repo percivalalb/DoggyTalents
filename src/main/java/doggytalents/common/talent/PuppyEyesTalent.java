@@ -3,9 +3,9 @@ package doggytalents.common.talent;
 import java.util.Collections;
 import java.util.List;
 
-import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
@@ -14,24 +14,37 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public class PuppyEyesTalent extends Talent {
+public class PuppyEyesTalent extends TalentInstance {
 
-    private static DataKey<Integer> COOLDOWN = DataKey.make();
+    private int cooldown;
 
-    @Override
-    public void init(AbstractDogEntity dogIn) {
-        dogIn.setDataIfEmpty(COOLDOWN, dogIn.ticksExisted);
+    public PuppyEyesTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
     }
 
     @Override
-    public void write(AbstractDogEntity dogIn, CompoundNBT compound) {
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
+    public TalentInstance copy() {
+        PuppyEyesTalent inst = new PuppyEyesTalent(this.getTalent(), this.level);
+        inst.cooldown = this.cooldown;
+        return inst;
+    }
+
+    @Override
+    public void init(AbstractDogEntity dogIn) {
+        this.cooldown = dogIn.ticksExisted;
+    }
+
+    @Override
+    public void writeToNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+        super.writeToNBT(dogIn, compound);
+        int timeLeft = this.cooldown - dogIn.ticksExisted;
         compound.putInt("charmercharge", timeLeft);
     }
 
     @Override
-    public void read(AbstractDogEntity dogIn, CompoundNBT compound) {
-        dogIn.setData(COOLDOWN, dogIn.ticksExisted + compound.getInt("charmercharge"));
+    public void readFromNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+        super.readFromNBT(dogIn, compound);
+        this.cooldown = dogIn.ticksExisted + compound.getInt("charmercharge");
     }
 
     @Override
@@ -43,12 +56,11 @@ public class PuppyEyesTalent extends Talent {
         if (dogIn.world.isRemote || !dogIn.isTamed()) {
             return;
         }
-        int level = dogIn.getLevel(this);
 
-        if (level <= 0) {
+        if (this.level() <= 0) {
             return;
         }
-        int timeLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
+        int timeLeft = this.cooldown - dogIn.ticksExisted;
 
         if (timeLeft <= 0) {
             LivingEntity owner = dogIn.getOwner();
@@ -61,7 +73,7 @@ public class PuppyEyesTalent extends Talent {
             LivingEntity villager = this.getClosestVisibleVillager(dogIn, 5D);
 
             if (villager != null) {
-                int rewardId = dogIn.getRNG().nextInt(level) + (level >= 5 ? 1 : 0);
+                int rewardId = dogIn.getRNG().nextInt(this.level()) + (this.level() >= 5 ? 1 : 0);
 
                 if (rewardId == 0) {
                     owner.sendMessage(new TranslationTextComponent("talent.doggytalents.puppy_eyes.msg.1.line.1", dogIn.getGenderPronoun()), villager.getUniqueID());
@@ -97,7 +109,7 @@ public class PuppyEyesTalent extends Talent {
                     villager.entityDropItem(Items.PORKCHOP, 5);
                 }
 
-                dogIn.setData(COOLDOWN, dogIn.ticksExisted + (level >= 5 ? 24000 : 48000));
+                this.cooldown = dogIn.ticksExisted + (this.level() >= 5 ? 24000 : 48000);
             }
         }
     }

@@ -5,6 +5,7 @@ import java.util.UUID;
 import doggytalents.DoggyAttributes;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,9 +16,13 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
-public class WolfMountTalent extends Talent {
+public class WolfMountTalent extends TalentInstance {
 
     private static final UUID WOLF_MOUNT_JUMP = UUID.fromString("7f338124-f223-4630-8515-70ee0bfbc653");
+
+    public WolfMountTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public void init(AbstractDogEntity dogIn) {
@@ -29,18 +34,11 @@ public class WolfMountTalent extends Talent {
         dogIn.setAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
-    @Override
-    public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP);
-    }
-
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
-        int level = dogIn.getLevel(this);
+        if (this.level() > 0) {
+            double speed = 0.06D * this.level();
 
-        if (level > 0) {
-            double speed = 0.06D * level;
-
-            if (level >= 5) {
+            if (this.level() >= 5) {
                 speed += 0.04D;
             }
 
@@ -55,7 +53,7 @@ public class WolfMountTalent extends Talent {
         ItemStack stack = playerIn.getHeldItem(handIn);
 
         if (stack.isEmpty()) { // Held item
-            if (dogIn.canInteract(playerIn) && dogIn.getLevel(this) > 0) { // Dog
+            if (dogIn.canInteract(playerIn) && this.level() > 0) { // Dog
                 if (playerIn.getRidingEntity() == null && !playerIn.isOnGround()) { // Player
                     if (!dogIn.world.isRemote) {
                         dogIn.func_233687_w_(false);
@@ -83,7 +81,7 @@ public class WolfMountTalent extends Talent {
     @Override
     public ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
         if (dogIn.canPassengerSteer()) {
-            hungerTick += dogIn.getLevel(this) < 5 ? 3 : 1;
+            hungerTick += this.level() < 5 ? 3 : 1;
             return ActionResult.resultSuccess(hungerTick);
         }
 
@@ -92,7 +90,7 @@ public class WolfMountTalent extends Talent {
 
     @Override
     public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
-        if (dogIn.getLevel(this) >= 5) {
+        if (this.level() >= 5) {
             return ActionResult.resultSuccess(distance - 1F);
         }
 

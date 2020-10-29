@@ -42,12 +42,16 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
         return AccessoryInstance.RENDER_DEFAULT;
     }
 
+    public AccessoryInstance getDefault() {
+        return new AccessoryInstance(this);
+    }
+
     public AccessoryInstance createInstance(PacketBuffer buf) {
         return this.getDefault();
     }
 
-    public AccessoryInstance getDefault() {
-        return new AccessoryInstance(this);
+    public AccessoryInstance read(CompoundNBT compound) {
+        return this.getDefault();
     }
 
     public void write(AccessoryInstance instance, PacketBuffer buf) {
@@ -56,10 +60,6 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
 
     public void write(AccessoryInstance instance, CompoundNBT compound) {
 
-    }
-
-    public AccessoryInstance read(CompoundNBT compound) {
-        return this.getDefault();
     }
 
     public ItemStack getReturnItem(AccessoryInstance instance) {

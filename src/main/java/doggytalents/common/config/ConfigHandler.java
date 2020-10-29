@@ -71,27 +71,24 @@ public class ConfigHandler {
 
     public static void refreshServer() {
         DoggyTalents2.LOGGER.debug("Refresh Common Config");
-//        ConfigValues.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
-//        ConfigValues.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
-//        ConfigValues.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
+        //ConfigValues.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
+        ConfigValues.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
         ConfigValues.STARTING_ITEMS = SERVER.STARTING_ITEMS.get();
         ConfigValues.DOG_GENDER = SERVER.DOG_GENDER.get();
 //        ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
 //        ConfigValues.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
 //        ConfigValues.EAT_FOOD_ON_FLOOR = SERVER.EAT_FOOD_ON_FLOOR.get();
 //        ResourceLocation reviveResource = ResourceLocation.tryCreate(SERVER.REVIVE_ITEM.get());
-//        ConfigValues.REVIVE_ITEM = ForgeRegistries.ITEMS.containsKey(reviveResource) ? ForgeRegistries.ITEMS.getValue(reviveResource) : Items.CAKE;
     }
 
     public static void refreshClient() {
         DoggyTalents2.LOGGER.debug("Refresh Client Config");
-//        ConfigValues.DIRE_PARTICLES = CLIENT.DIRE_PARTICLES.get();
-//        //ConfigValues.RENDER_BLOOD = CLIENT.RENDER_BLOOD.get();
-//        //ConfigValues.RENDER_WINGS = CLIENT.RENDER_WINGS.get();
-//        ConfigValues.RENDER_CHEST = CLIENT.RENDER_CHEST.get();
-//        //ConfigValues.RENDER_ARMOUR = CLIENT.RENDER_ARMOUR.get();
-//        ConfigValues.RENDER_SADDLE = CLIENT.RENDER_SADDLE.get();
-//        ConfigValues.USE_DT_TEXTURES = CLIENT.USE_DT_TEXTURES.get();
+        ConfigValues.DIRE_PARTICLES = CLIENT.DIRE_PARTICLES.get();
+        //ConfigValues.RENDER_WINGS = CLIENT.RENDER_WINGS.get();
+       // ConfigValues.RENDER_CHEST = CLIENT.RENDER_CHEST.get();
+        //ConfigValues.RENDER_ARMOUR = CLIENT.RENDER_ARMOUR.get();
+        //ConfigValues.RENDER_SADDLE = CLIENT.RENDER_SADDLE.get();
+        //ConfigValues.USE_DT_TEXTURES = CLIENT.USE_DT_TEXTURES.get();
     }
 
     public static void refreshTalents() {

@@ -1,7 +1,7 @@
 package doggytalents.common.entity;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
@@ -15,7 +15,6 @@ import javax.annotation.Nullable;
 import com.google.common.base.Function;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import doggytalents.DoggyAccessories;
 import doggytalents.DoggyAttributes;
@@ -41,6 +40,7 @@ import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.client.screen.DogInfoScreen;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.ai.BerserkerModeGoal;
@@ -148,7 +148,7 @@ public class DogEntity extends AbstractDogEntity {
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
     private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<Map<Talent, Integer>>> TALENTS =  Cache.make(() -> (DataParameter<Map<Talent, Integer>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.TALENT_LEVEL_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<List<TalentInstance>>> TALENTS = Cache.make(() -> (DataParameter<List<TalentInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
     private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
     private static final Cache<DataParameter<EnumGender>> GENDER = Cache.make(() -> (DataParameter<EnumGender>) EntityDataManager.createKey(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
     private static final Cache<DataParameter<EnumMode>> MODE = Cache.make(() -> (DataParameter<EnumMode>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
@@ -167,10 +167,10 @@ public class DogEntity extends AbstractDogEntity {
 
     // Cached values
     private final Cache<Integer> spendablePoints = Cache.make(this::getSpendablePointsInternal);
-    private final List<IDogAlteration> alterations = Lists.newArrayList();
+    private final List<IDogAlteration> alterations = new ArrayList<>(4);
+    private final List<IDogFoodHandler> foodHandlers = new ArrayList<>(4);
 
     public final StatsTracker statsTracker = new StatsTracker();
-    public final Map<Integer, Object> objects = Maps.newHashMap();
 
     private int hungerTick;
     private int prevHungerTick;
@@ -198,8 +198,8 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     protected void registerData() {
         super.registerData();
-        this.dataManager.register(ACCESSORIES.get(), Lists.newArrayList());
-        this.dataManager.register(TALENTS.get(), Maps.newHashMap());
+        this.dataManager.register(ACCESSORIES.get(), new ArrayList<>(4));
+        this.dataManager.register(TALENTS.get(), new ArrayList<>(4));
         this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());
         this.dataManager.register(DOG_FLAGS, (byte) 0);
         this.dataManager.register(GENDER.get(), EnumGender.UNISEX);
@@ -341,6 +341,10 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void tick() {
         super.tick();
+
+        if(this.ticksExisted % 40 == 0) {
+            DoggyTalents2.LOGGER.info("{}", this.getTalentMap());
+        }
 
         if (this.isAlive()) {
             this.headRotationCourseOld = this.headRotationCourse;
@@ -1013,19 +1017,19 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public AgeableEntity func_241840_a(ServerWorld worldIn, AgeableEntity partner) {
-        DogEntity entitydog = DoggyEntityTypes.DOG.get().create(worldIn);
+        DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerId();
 
         if (uuid != null) {
-            entitydog.setOwnerId(uuid);
-            entitydog.setTamed(true);
+            child.setOwnerId(uuid);
+            child.setTamed(true);
         }
 
         if (partner instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
-            entitydog.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
+            child.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
         }
 
-        return entitydog;
+        return child;
     }
 
     @Override
@@ -1124,7 +1128,6 @@ public class DogEntity extends AbstractDogEntity {
             DoggyTalents2.LOGGER.debug("Saved dog as they died {}", this);
 
             DogLocationStorage.get(this.world).remove(this);
-            DoggyTalents2.LOGGER.debug("Removed dog location as they were removed from the world {}", this);
         }
 
         this.alterations.forEach((alter) -> alter.onDeath(this, cause));
@@ -1154,21 +1157,27 @@ public class DogEntity extends AbstractDogEntity {
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
 
-        NBTUtil.putTalentMap(compound, "talent_level_list", this.getTalentMap());
+        ListNBT talentList = new ListNBT();
+        List<TalentInstance> talents = this.getTalentMap();
+
+        for (int i = 0; i < talents.size(); i++) {
+            CompoundNBT talentTag = new CompoundNBT();
+            talents.get(i).writeInstance(this, talentTag);
+            talentList.add(talentTag);
+        }
+
+        compound.put("talents", talentList);
 
         ListNBT accessoryList = new ListNBT();
         List<AccessoryInstance> accessories = this.getAccessories();
 
         for (int i = 0; i < accessories.size(); i++) {
-
             CompoundNBT accessoryTag = new CompoundNBT();
             accessories.get(i).writeInstance(accessoryTag);
             accessoryList.add(accessoryTag);
         }
 
         compound.put("accessories", accessoryList);
-
-        this.alterations.forEach((alter) -> alter.write(this, compound));
 
         compound.putString("mode", this.getMode().getSaveName());
         compound.putString("dogGender", this.getGender().getSaveName());
@@ -1216,6 +1225,8 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         this.statsTracker.writeAdditional(compound);
+
+        this.alterations.forEach((alter) -> alter.onWrite(this, compound));
     }
 
     @Override
@@ -1293,14 +1304,21 @@ public class DogEntity extends AbstractDogEntity {
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
 
-        Map<Talent, Integer> talentMap = this.getTalentMap();
+        List<TalentInstance> talentMap = this.getTalentMap();
         talentMap.clear();
 
-        if (compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
-            talentMap.putAll(NBTUtil.getTalentMap(compound, "talent_level_list"));
+        if (compound.contains("talents", Constants.NBT.TAG_LIST)) {
+            ListNBT talentList = compound.getList("talents", Constants.NBT.TAG_COMPOUND);
+
+            for (int i = 0; i < talentList.size(); i++) {
+                // Add directly so that nothing is lost, if number allowed on changes
+                TalentInstance.readInstance(this, talentList.getCompound(i)).ifPresent(talentMap::add);
+            }
+        } else if (compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
+            //talentMap.putAll(NBTUtil.getTalentMap(compound, "talent_level_list"));
         } else {
             // Try to read old talent format if new one doesn't exist
-            BackwardsComp.readTalentMapping(compound, talentMap);
+            //BackwardsComp.readTalentMapping(compound, talentMap);
         }
 
         this.markDataParameterDirty(TALENTS.get(), false); // Mark dirty so data is synced to client
@@ -1325,11 +1343,9 @@ public class DogEntity extends AbstractDogEntity {
         // Does what notifyDataManagerChange would have done but this way only does it once
         this.recalculateAlterationsCache();
         this.spendablePoints.markForRefresh();
-        for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
-            entry.getKey().init(this);
+        for (TalentInstance entry : talentMap) {
+            entry.init(this);
         }
-
-        this.alterations.forEach((alter) -> alter.read(this, compound));
 
         this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
 
@@ -1407,6 +1423,9 @@ public class DogEntity extends AbstractDogEntity {
         this.dataManager.set(DOG_BOWL_LOCATION.get(), bowlsData);
 
         this.statsTracker.readAdditional(compound);
+
+        this.alterations.forEach((alter) -> alter.onRead(this, compound));
+
     }
 
     @Override
@@ -1417,10 +1436,6 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         if (TALENTS.get().equals(key)) {
-            for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
-                entry.getKey().init(this);
-            }
-
             this.spendablePoints.markForRefresh();
         }
 
@@ -1444,18 +1459,25 @@ public class DogEntity extends AbstractDogEntity {
 
     public void recalculateAlterationsCache() {
         this.alterations.clear();
+        this.foodHandlers.clear();
 
-        this.getAccessories().forEach((inst) -> {
+        for (AccessoryInstance inst : this.getAccessories()) {
             if (inst instanceof IDogAlteration) {
                 this.alterations.add((IDogAlteration) inst);
             }
-        });
 
-        for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
-            this.alterations.add(entry.getKey());
+            if (inst instanceof IDogFoodHandler) {
+                this.foodHandlers.add((IDogFoodHandler) inst);
+            }
+        };
+
+        List<TalentInstance> talents = this.getTalentMap();
+        this.alterations.addAll(talents);
+        for (TalentInstance inst : talents) {
+            if (inst instanceof IDogFoodHandler) {
+                this.foodHandlers.add((IDogFoodHandler) inst);
+            }
         }
-
-        DoggyTalents2.LOGGER.debug("Recalculate alterations, size {}", this.alterations.size());
     }
 
     /**
@@ -1778,34 +1800,55 @@ public class DogEntity extends AbstractDogEntity {
         return this.getDogFlag(64);
     }
 
-    public Map<Talent, Integer> getTalentMap() {
+    public List<TalentInstance> getTalentMap() {
         return this.dataManager.get(TALENTS.get());
     }
 
-    public void setTalentMap(Map<Talent, Integer> map) {
+    public void setTalentMap(List<TalentInstance> map) {
         this.dataManager.set(TALENTS.get(), map);
     }
 
-    public void setTalentLevel(Talent talent, int level) {
-        Map<Talent, Integer> map = this.getTalentMap();
-        boolean existed = map.containsKey(talent);
-        if (level > 0) {
-            map.put(talent, level);
+    public ActionResultType setTalentLevel(Talent talent, int level) {
+        if (0 > level || level > talent.getMaxLevel()) {
+            return ActionResultType.FAIL;
+        }
 
-            if (!existed) {
-                talent.init(this);
+        List<TalentInstance> activeTalents = this.getTalentMap();
+
+        TalentInstance inst = null;
+        for (TalentInstance activeInst : activeTalents) {
+            if (activeInst.of(talent)) {
+                inst = activeInst;
+                break;
+            }
+        }
+
+        if (inst == null) {
+            if (level == 0) {
+                return ActionResultType.PASS;
             }
 
-            talent.set(this, level);
-
+            inst = talent.getDefault(level);
+            activeTalents.add(inst);
+            inst.init(this);
         } else {
-            int preLevel = map.getOrDefault(talent, 0);
-            map.remove(talent);
-            talent.removed(this, preLevel);
+            int previousLevel = inst.level();
+            if (previousLevel == level) {
+                return ActionResultType.PASS;
+            }
+
+            inst.setLevel(level);
+            inst.set(this, previousLevel);
+
+            if (level == 0) {
+                activeTalents.remove(inst);
+            }
         }
 
         this.markDataParameterDirty(TALENTS.get());
+        //this.setTalentMap(new ArrayList<TalentInstance>(activeTalents));
         DoggyTalents2.LOGGER.debug("Set talent {} to level {}", talent.getRegistryName(), level);
+        return ActionResultType.SUCCESS;
     }
 
 
@@ -1822,6 +1865,7 @@ public class DogEntity extends AbstractDogEntity {
         DataEntry<T> dataentry = this.dataManager.getEntry(key);
         dataentry.setDirty(true);
         this.dataManager.dirty = true;
+        DoggyTalents2.LOGGER.debug("Marked as dirt {}", key);
     }
 
     @Override
@@ -1830,53 +1874,60 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public int getLevel(Talent talentIn) {
-        return this.getTalentMap().getOrDefault(talentIn, 0);
+    public Optional<TalentInstance> getTalent(Talent talentIn) {
+        List<TalentInstance> activeTalents = this.getTalentMap();
+
+        for (TalentInstance activeInst : activeTalents) {
+            if (activeInst.of(talentIn)) {
+                return Optional.of(activeInst);
+            }
+        }
+
+        return Optional.empty();
     }
 
     @Override
+    public int getLevel(Talent talentIn) {
+        return this.getTalent(talentIn).map(TalentInstance::level).orElse(0);
+    }
+
+    @Override
+    @Deprecated
     public <T> void setData(DataKey<T> key, T value) {
-        if (key.isFinal() && this.hasData(key)) {
-            throw new RuntimeException("Key is final but was tried to be set again.");
-        }
-        this.objects.put(key.getIndex(), value);
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Tries to put the object in the map, does nothing if the key already exists
      */
     @Override
+    @Deprecated
     public <T> void setDataIfEmpty(DataKey<T> key, T value) {
-        if (!this.hasData(key)) {
-            this.objects.put(key.getIndex(), value);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @Deprecated
     public <T> T getData(DataKey<T> key) {
-        return (T) this.objects.get(key.getIndex());
+        throw new UnsupportedOperationException();
     }
 
     @Override
+    @Deprecated
     public <T> T getDataOrGet(DataKey<T> key, Supplier<T> other) {
-        if (this.hasData(key)) {
-            return this.getData(key);
-        }
-        return other.get();
+        throw new UnsupportedOperationException();
     }
 
     @Override
+    @Deprecated
     public <T> T getDataOrDefault(DataKey<T> key, T other) {
-        if (this.hasData(key)) {
-            return this.getData(key);
-        }
-        return other;
+        throw new UnsupportedOperationException();
     }
 
     @Override
+    @Deprecated
     public <T> boolean hasData(DataKey<T> key) {
-        return this.objects.containsKey(key.getIndex());
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -1903,8 +1954,8 @@ public class DogEntity extends AbstractDogEntity {
     // When this method is changed the cache may need to be updated at certain points
     private final int getSpendablePointsInternal() {
         int totalPoints = 15 + this.getLevel().getLevel(Type.NORMAL) + this.getLevel().getLevel(Type.DIRE);
-        for (Entry<Talent, Integer> entry : this.getTalentMap().entrySet()) {
-            totalPoints -= entry.getKey().getCummulativeCost(entry.getValue());
+        for (TalentInstance entry : this.getTalentMap()) {
+            totalPoints -= entry.getTalent().getCummulativeCost(entry.level());
         }
         return totalPoints;
     }
@@ -2118,6 +2169,11 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         return false;
+    }
+
+    @Override
+    public List<IDogFoodHandler> getFoodHandlers() {
+        return this.foodHandlers;
     }
 
     public void setTargetBlock(BlockPos pos) {

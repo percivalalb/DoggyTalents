@@ -1,7 +1,6 @@
 package doggytalents.common.util;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -126,24 +125,6 @@ public class NBTUtil {
         }
 
         return talentMap;
-    }
-
-
-    public static void putTalentMap(CompoundNBT compound, String key, Map<Talent, Integer> talentMap) {
-        if (!talentMap.isEmpty()) {
-            ListNBT list = new ListNBT();
-
-            for (Entry<Talent, Integer> entry : talentMap.entrySet()) {
-                CompoundNBT talentCompound = new CompoundNBT();
-
-                NBTUtil.putRegistryValue(talentCompound, "talent", entry.getKey());
-                talentCompound.putInt("level", entry.getValue());
-
-                list.add(talentCompound);
-            }
-
-            compound.put(key, list);
-        }
     }
 
     @Nullable

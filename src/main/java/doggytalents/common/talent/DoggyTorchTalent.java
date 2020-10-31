@@ -27,23 +27,21 @@ public class DoggyTorchTalent extends TalentInstance {
             BlockPos pos = dogIn.getPosition();
             BlockState torchState = Blocks.TORCH.getDefaultState();
 
-            if (dogIn.world.getLight(dogIn.getPosition()) < 8 && torchState.isValidPosition(dogIn.world, pos)) {
+            if (dogIn.world.getLight(dogIn.getPosition()) < 8 && dogIn.world.isAirBlock(pos) && torchState.isValidPosition(dogIn.world, pos)) {
                 PackPuppyItemHandler inventory = dogIn.getTalent(DoggyTalents.PACK_PUPPY)
                     .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);
 
                 // If null might be because no pack puppy
-                if (inventory != null) {
+                if (this.level() >= 5) {
+                    dogIn.world.setBlockState(pos, torchState);
+                }
+                else if (inventory != null) { // If null might be because no pack puppy
                     Pair<ItemStack, Integer> foundDetails = InventoryUtil.findStack(inventory, (stack) -> stack.getItem() == Items.TORCH);
-                    if (this.level() >= 5) {
+                    if (foundDetails != null && !foundDetails.getLeft().isEmpty()) {
+                        ItemStack torchStack = foundDetails.getLeft();
+                        dogIn.consumeItemFromStack(dogIn, torchStack);
+                        inventory.setStackInSlot(foundDetails.getRight(), torchStack);
                         dogIn.world.setBlockState(pos, torchState);
-                    }
-                    else {
-                        if (foundDetails != null && !foundDetails.getLeft().isEmpty()) {
-                            ItemStack torchStack = foundDetails.getLeft();
-                            dogIn.consumeItemFromStack(dogIn, torchStack);
-                            inventory.setStackInSlot(foundDetails.getRight(), torchStack);
-                            dogIn.world.setBlockState(pos, torchState);
-                        }
                     }
                 }
             }

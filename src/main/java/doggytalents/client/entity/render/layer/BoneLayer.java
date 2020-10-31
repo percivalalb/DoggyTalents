@@ -23,7 +23,7 @@ public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
         if (dog.hasBone()) {
 
             matrixStack.push();
-            DogModel model = this.getEntityModel();
+            DogModel<DogEntity> model = this.getEntityModel();
             if (model.isChild) {
                 // derived from AgeableModel head offset
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);

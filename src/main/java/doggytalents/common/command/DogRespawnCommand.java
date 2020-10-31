@@ -83,15 +83,15 @@ public class DogRespawnCommand {
         ArgumentTypes.register(Util.getResourcePath("uuid"), UUIDArgument.class, new ArgumentSerializer<>(UUIDArgument::uuid));
     }
 
-    private static <S> SuggestionProvider<S> getOwnerIdSuggestionsLocate() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsLocate() {
         return (context, builder) -> getOwnerIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> SuggestionProvider<S> getOwnerIdSuggestionsRevive() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsRevive() {
         return (context, builder) -> getOwnerIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> CompletableFuture<Suggestions> getOwnerIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
+    private static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getOwnerIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
         if (context.getSource() instanceof CommandSource) {
 
             return ISuggestionProvider.suggest(possibilities.stream()
@@ -102,22 +102,21 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-            ISuggestionProvider isuggestionprovider = (ISuggestionProvider)context.getSource();
-            return isuggestionprovider.getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
+            return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
         } else {
             return Suggestions.empty();
         }
     }
 
-    private static <S> SuggestionProvider<S> getDogIdSuggestionsLocate() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogIdSuggestionsLocate() {
         return (context, builder) -> getDogIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> SuggestionProvider<S> getDogIdSuggestionsRevive() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogIdSuggestionsRevive() {
         return (context, builder) -> getDogIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> CompletableFuture<Suggestions> getDogIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
+    private static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getDogIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
         if (context.getSource() instanceof CommandSource) {
             UUID ownerId = context.getArgument("dog_owner", UUID.class);
             if (ownerId == null) {
@@ -131,23 +130,22 @@ public class DogRespawnCommand {
                      .collect(Collectors.toSet()),
                     builder);
         } else if (context.getSource() instanceof ISuggestionProvider) {
-             ISuggestionProvider isuggestionprovider = (ISuggestionProvider)context.getSource();
-             return isuggestionprovider.getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
+             return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
         } else {
              return Suggestions.empty();
         }
     }
 
 
-    private static <S> SuggestionProvider<S> getOwnerNameSuggestionsLocate() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerNameSuggestionsLocate() {
         return (context, builder) -> getOwnerNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> SuggestionProvider<S> getOwnerNameSuggestionsRevive() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerNameSuggestionsRevive() {
         return (context, builder) -> getOwnerNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    public static <S> CompletableFuture<Suggestions> getOwnerNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
+    public static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getOwnerNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
         if (context.getSource() instanceof CommandSource) {
             return ISuggestionProvider.suggest(possibilities.stream()
                     .map(IDogData::getOwnerName)
@@ -157,22 +155,21 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-            ISuggestionProvider isuggestionprovider = (ISuggestionProvider)context.getSource();
-            return isuggestionprovider.getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
+            return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
         } else {
             return Suggestions.empty();
         }
     }
 
-    private static <S> SuggestionProvider<S> getDogNameSuggestionsLocate() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogNameSuggestionsLocate() {
         return (context, builder) -> getDogNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    private static <S> SuggestionProvider<S> getDogNameSuggestionsRevive() {
+    private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogNameSuggestionsRevive() {
         return (context, builder) -> getDogNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
     }
 
-    public static <S> CompletableFuture<Suggestions> getDogNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
+    public static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getDogNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
         if (context.getSource() instanceof CommandSource) {
             String ownerName = context.getArgument("owner_name", String.class);
 
@@ -188,8 +185,7 @@ public class DogRespawnCommand {
                      builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-             ISuggestionProvider isuggestionprovider = (ISuggestionProvider)context.getSource();
-             return isuggestionprovider.getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
+             return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
         } else {
              return Suggestions.empty();
         }

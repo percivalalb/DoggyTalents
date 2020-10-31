@@ -9,8 +9,6 @@ import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.FlyingPathNavigator;
-import net.minecraft.pathfinding.GroundPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.world.World;
@@ -36,9 +34,6 @@ public class DogFollowOwnerGoal extends Goal {
         this.startDist = minDistIn;
         this.stopDist = maxDistIn;
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
-        if (!(dogIn.getNavigator() instanceof GroundPathNavigator) && !(dogIn.getNavigator() instanceof FlyingPathNavigator)) {
-            throw new IllegalArgumentException("Unsupported mob type for DogFollowOwnerGoal");
-        }
     }
 
     @Override

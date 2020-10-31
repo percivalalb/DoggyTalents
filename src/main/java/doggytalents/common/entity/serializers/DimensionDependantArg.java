@@ -73,7 +73,7 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
         } else if (!(obj instanceof DimensionDependantArg)) {
             return false;
         } else {
-            DimensionDependantArg other = (DimensionDependantArg) obj;
+            DimensionDependantArg<?> other = (DimensionDependantArg<?>) obj;
             return this.map.equals(other.map);
         }
     }

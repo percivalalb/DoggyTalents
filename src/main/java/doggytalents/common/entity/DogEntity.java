@@ -1016,19 +1016,19 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public AgeableEntity func_241840_a(ServerWorld worldIn, AgeableEntity partner) {
-        DogEntity entitydog = DoggyEntityTypes.DOG.get().create(worldIn);
+        DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerId();
 
         if (uuid != null) {
-            entitydog.setOwnerId(uuid);
-            entitydog.setTamed(true);
+            child.setOwnerId(uuid);
+            child.setTamed(true);
         }
 
         if (partner instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
-            entitydog.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
+            child.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
         }
 
-        return entitydog;
+        return child;
     }
 
     @Override
@@ -1127,7 +1127,6 @@ public class DogEntity extends AbstractDogEntity {
             DoggyTalents2.LOGGER.debug("Saved dog as they died {}", this);
 
             DogLocationStorage.get(this.world).remove(this);
-            DoggyTalents2.LOGGER.debug("Removed dog location as they were removed from the world {}", this);
         }
 
         this.alterations.forEach((alter) -> alter.onDeath(this, cause));

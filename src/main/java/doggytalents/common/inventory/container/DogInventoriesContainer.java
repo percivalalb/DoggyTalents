@@ -69,7 +69,8 @@ public class DogInventoriesContainer extends Container {
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
 
-                PackPuppyItemHandler packInventory = dog.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
+                PackPuppyItemHandler packInventory = dog.getTalent(DoggyTalents.PACK_PUPPY)
+                        .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);
                 if (packInventory == null) {
                     continue;
                 }

@@ -1,34 +1,29 @@
 package doggytalents.api.registry;
 
+import java.util.function.BiFunction;
+
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.AbstractDogEntity;
-import doggytalents.api.inferface.IDogAlteration;
 import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 /**
  * @author ProPercivalalb
  */
-public abstract class Talent extends ForgeRegistryEntry<Talent> implements IDogAlteration {
+public class Talent extends ForgeRegistryEntry<Talent> {
 
     @Nullable
     private String translationKey, translationInfoKey;
 
+    @Nullable
+    private final BiFunction<Talent, Integer, TalentInstance> create;
+
     /**
-     * Called when the talent is added to the dog and anytime the talent map is updated
+     * @param sup
      */
-    public void init(AbstractDogEntity dog) {
-
-    }
-
-    public void set(AbstractDogEntity dog, int level) {
-
-    }
-
-    public void removed(AbstractDogEntity dog, int preLevel) {
-
+    public Talent(BiFunction<Talent, Integer, TalentInstance> sup) {
+        this.create = sup;
     }
 
     public int getMaxLevel() {
@@ -55,6 +50,17 @@ public abstract class Talent extends ForgeRegistryEntry<Talent> implements IDogA
             this.translationInfoKey = this.getTranslationKey() + ".description";
         }
         return this.translationInfoKey;
+    }
+
+    public TalentInstance getDefault(int level) {
+        if (this.create == null) {
+            return new TalentInstance(this, level);
+        }
+        return this.create.apply(this, level);
+    }
+
+    public TalentInstance getDefault() {
+        return this.getDefault(1);
     }
 
 

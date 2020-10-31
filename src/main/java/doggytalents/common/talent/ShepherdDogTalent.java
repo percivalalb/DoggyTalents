@@ -16,6 +16,7 @@ import doggytalents.api.feature.DataKey;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,9 +32,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class ShepherdDogTalent extends Talent {
+public class ShepherdDogTalent extends TalentInstance {
 
     private static DataKey<EntityAIShepherdDog> SHEPHERD_AI = DataKey.make();
+
+    public ShepherdDogTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public void init(AbstractDogEntity dogIn) {

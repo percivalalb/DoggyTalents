@@ -20,11 +20,11 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public interface IDogAlteration {
 
-    default void write(AbstractDogEntity dogIn, CompoundNBT compound) {
+    default void onWrite(AbstractDogEntity dogIn, CompoundNBT compound) {
 
     }
 
-    default void read(AbstractDogEntity dogIn, CompoundNBT compound) {
+    default void onRead(AbstractDogEntity dogIn, CompoundNBT compound) {
 
     }
 

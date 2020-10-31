@@ -1,6 +1,5 @@
 package doggytalents.common.inventory;
 
-import doggytalents.api.inferface.AbstractDogEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -9,40 +8,54 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class PackPuppyItemHandler extends ItemStackHandler {
 
-    private AbstractDogEntity dog;
-
-    public PackPuppyItemHandler(AbstractDogEntity dogIn) {
+    public PackPuppyItemHandler() {
         super(15);
-        this.dog = dogIn;
     }
 
     @Override
     public CompoundNBT serializeNBT() {
-        ListNBT nbtTagList = new ListNBT();
-        for (int i = 0; i < this.stacks.size(); i++) {
-            if (!this.stacks.get(i).isEmpty()) {
-                CompoundNBT itemTag = new CompoundNBT();
-                itemTag.putInt("Slot", i);
-                this.stacks.get(i).write(itemTag);
-                nbtTagList.add(itemTag);
-            }
+        ListNBT itemsList = new ListNBT();
+
+        for(int i = 0; i < this.stacks.size(); i++) {
+           ItemStack stack = this.stacks.get(i);
+           if (!stack.isEmpty()) {
+              CompoundNBT itemTag = new CompoundNBT();
+              itemTag.putByte("Slot", (byte) i);
+              stack.write(itemTag);
+              itemsList.add(itemTag);
+           }
         }
-        CompoundNBT nbt = new CompoundNBT();
-        nbt.put("packpuppyitems", nbtTagList);
-        return nbt;
+
+        CompoundNBT compound = new CompoundNBT();
+        compound.put("items", itemsList);
+
+        return compound;
     }
 
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        ListNBT tagList = nbt.getList("packpuppyitems", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < tagList.size(); i++) {
-            CompoundNBT itemTags = tagList.getCompound(i);
-            int slot = itemTags.getInt("Slot");
+    public void deserializeNBT(CompoundNBT compound) {
+        if (compound.contains("items", Constants.NBT.TAG_LIST)) {
+            ListNBT tagList = compound.getList("items", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < tagList.size(); i++) {
+                CompoundNBT itemTag = tagList.getCompound(i);
+                int slot = itemTag.getInt("Slot");
 
-            if (slot >= 0 && slot < stacks.size()) {
-                this.stacks.set(slot, ItemStack.read(itemTags));
+                if (slot >= 0 && slot < this.stacks.size()) {
+                    this.stacks.set(slot, ItemStack.read(itemTag));
+                }
             }
+            this.onLoad();
+        } else if (compound.contains("packpuppyitems", Constants.NBT.TAG_LIST)) {
+            ListNBT tagList = compound.getList("packpuppyitems", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < tagList.size(); i++) {
+                CompoundNBT itemTag = tagList.getCompound(i);
+                int slot = itemTag.getInt("Slot");
+
+                if (slot >= 0 && slot < this.stacks.size()) {
+                    this.stacks.set(slot, ItemStack.read(itemTag));
+                }
+            }
+            this.onLoad();
         }
-        onLoad();
     }
 }

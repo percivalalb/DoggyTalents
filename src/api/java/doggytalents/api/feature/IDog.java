@@ -1,12 +1,14 @@
 package doggytalents.api.feature;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.LivingEntity;
 
 // TODO: Add javadoc
@@ -39,6 +41,12 @@ public interface IDog {
      */
     public int getLevel(Talent talentIn);
 
+    default Optional<TalentInstance> getTalent(Supplier<? extends Talent> talentGetter) {
+        return this.getTalent(talentGetter.get());
+    }
+
+    public Optional<TalentInstance> getTalent(Talent talentIn);
+
     public int getDogSize();
     public void setDogSize(int size);
 
@@ -65,9 +73,14 @@ public interface IDog {
     /**
      * Tries to put the object in the map, does nothing if the key already exists
      */
+    @Deprecated
     public <T> void setDataIfEmpty(DataKey<T> key, T value);
+    @Deprecated
     public <T> T getData(DataKey<T> key);
+    @Deprecated
     public <T> T getDataOrGet(DataKey<T> key, Supplier<T> other);
+    @Deprecated
     public <T> T getDataOrDefault(DataKey<T> key, T other);
+    @Deprecated
     public <T> boolean hasData(DataKey<T> key);
 }

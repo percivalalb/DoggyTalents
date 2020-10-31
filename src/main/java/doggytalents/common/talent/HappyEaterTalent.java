@@ -3,6 +3,7 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,12 +12,15 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 
-public class HappyEaterTalent extends Talent implements IDogFoodHandler {
+public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler {
+
+    public HappyEaterTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
-        int level = dogIn.getLevel(this);
-        hunger += diff / 10 * level;
+        hunger += diff / 10 * this.level();
         return ActionResult.resultSuccess(hunger);
     }
 
@@ -28,9 +32,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
 
     @Override
     public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        int level = dogIn.getLevel(this);
-
-        if (level >= 3) {
+        if (this.level() >= 3) {
 
             Item item = stackIn.getItem();
 
@@ -38,7 +40,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
                 return true;
             }
 
-            if (level >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
+            if (this.level() >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
                 return true;
             }
         }
@@ -48,9 +50,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
 
     @Override
     public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        int level = dogIn.getLevel(this);
-
-        if (level >= 3) {
+        if (this.level() >= 3) {
 
             Item item = stackIn.getItem();
 
@@ -60,7 +60,7 @@ public class HappyEaterTalent extends Talent implements IDogFoodHandler {
                 return ActionResultType.SUCCESS;
             }
 
-            if (level >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
+            if (this.level() >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
                 dogIn.addHunger(item.getFood().getHealing() * 5);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
                 return ActionResultType.SUCCESS;

@@ -17,7 +17,7 @@ public class FetchGoal extends MoveToClosestItemGoal {
 
     @Override
     public boolean shouldExecute() {
-        if (this.dog.isSleeping()) {
+        if (this.dog.isEntitySleeping()) {
             return false;
         } else if (this.dog.hasBone()) {
             return false;
@@ -28,7 +28,7 @@ public class FetchGoal extends MoveToClosestItemGoal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        if (this.dog.isSleeping()) {
+        if (this.dog.isEntitySleeping()) {
             return false;
         } else if (this.dog.hasBone()) {
             return false;

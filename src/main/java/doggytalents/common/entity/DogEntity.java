@@ -333,7 +333,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public int getVerticalFaceSpeed() {
-        return this.isSleeping() ? 20 : super.getVerticalFaceSpeed();
+        return this.isEntitySleeping() ? 20 : super.getVerticalFaceSpeed();
     }
 
     @Override
@@ -428,7 +428,7 @@ public class DogEntity extends AbstractDogEntity {
             if (!ConfigValues.DISABLE_HUNGER) {
                 this.prevHungerTick = this.hungerTick;
 
-                if (!this.isBeingRidden() && !this.isSleeping()) {
+                if (!this.isBeingRidden() && !this.isEntitySleeping()) {
                     this.hungerTick += 1;
                 }
 
@@ -449,7 +449,7 @@ public class DogEntity extends AbstractDogEntity {
             this.prevHealingTick = this.healingTick;
             this.healingTick += 8;
 
-            if (this.isSleeping()) {
+            if (this.isEntitySleeping()) {
                 this.healingTick += 4;
             }
 
@@ -1004,7 +1004,7 @@ public class DogEntity extends AbstractDogEntity {
             DogEntity entitydog = (DogEntity) otherAnimal;
             if (!entitydog.isTamed()) {
                 return false;
-            } else if (entitydog.isSleeping()) {
+            } else if (entitydog.isEntitySleeping()) {
                 return false;
             } else if (ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
                 return false;

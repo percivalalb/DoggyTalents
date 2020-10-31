@@ -24,7 +24,7 @@ public class DogRescueModel extends SegmentedModel<DogEntity>{
 
     @Override
     public void setLivingAnimations(DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-        if (dogIn.isSleeping()) { // Mapping is wrong isSleeping should be isSitting
+        if (dogIn.isEntitySleeping()) { // Mapping is wrong isEntitySleeping should be isSitting
             if (dogIn.isLying()) {
                 this.rescueBox.setRotationPoint(-1F, 20F, -2F);
                 this.rescueBox.rotateAngleX = (float) (Math.PI / 2);

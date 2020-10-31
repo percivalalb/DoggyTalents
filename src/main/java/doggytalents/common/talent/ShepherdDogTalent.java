@@ -167,7 +167,7 @@ public class ShepherdDogTalent extends TalentInstance {
 
         @Override
         public void tick() {
-            if (!this.dog.isSleeping()) {
+            if (!this.dog.isEntitySleeping()) {
 
                 if (--this.timeToRecalcPath <= 0) {
                     this.timeToRecalcPath = 10;

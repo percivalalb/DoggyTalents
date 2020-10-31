@@ -15,7 +15,7 @@ public class QuickHealerTalent extends TalentInstance {
     @Override
     public ActionResult<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
         if (this.level() > 0) {
-            if (dogIn.isSleeping() && this.level() >= 5) {
+            if (dogIn.isEntitySleeping() && this.level() >= 5) {
                 if (dogIn.getIdleTime() > 100) {
                     healingTick *= 15;
                 } else {

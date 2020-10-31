@@ -63,6 +63,9 @@ public class DTAdvancementProvider extends AdvancementProvider {
             }
         };
 
+        // Disable advancements for now
+        if (true) return;
+
         Advancement advancement = Advancement.Builder.builder()
                 .withDisplay(DisplayInfoBuilder.create().icon(DoggyItems.TRAINING_TREAT).frame(FrameType.TASK).translate("dog.root").background("stone.png").noToast().noAnnouncement().build())
                 .withCriterion("tame_dog", TameAnimalTrigger.Instance.create(EntityPredicate.Builder.create().type(DoggyEntityTypes.DOG.get()).build()))

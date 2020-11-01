@@ -90,9 +90,9 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void removed(AbstractDogEntity dog, int preLevel) {
+    public void set(AbstractDogEntity dog, int preLevel) {
         // No need to drop anything if dog didn't have pack puppy
-        if (preLevel > 0) {
+        if (preLevel > 0 && this.level == 0) {
             this.dropInventory(dog);
         }
     }

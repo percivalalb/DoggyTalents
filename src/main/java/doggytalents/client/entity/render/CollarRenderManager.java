@@ -1,6 +1,7 @@
 package doggytalents.client.entity.render;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -17,6 +18,10 @@ public class CollarRenderManager {
     private static Map<IRegistryDelegate<Accessory>, IAccessoryRenderer<?>> accessoryRendererMap = Maps.newConcurrentMap();
     private static Map<IRegistryDelegate<Talent>, ITalentRenderer<?>> talentRendererMap = Maps.newConcurrentMap();
 
+    public static void registerRenderer(Supplier<? extends Accessory> entityClass, IAccessoryRenderer<?> shader) {
+        registerRenderer(entityClass.get(), shader);
+    }
+
     /**
      * Register a renderer for a collar type
      * Call this during {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}.
@@ -24,6 +29,10 @@ public class CollarRenderManager {
      */
     public static void registerRenderer(Accessory entityClass, IAccessoryRenderer<?> shader) {
         accessoryRendererMap.put(entityClass.delegate, shader);
+    }
+
+    public static void registerRenderer(Supplier<? extends Talent> entityClass, ITalentRenderer<?> shader) {
+        registerRenderer(entityClass.get(), shader);
     }
 
     public static void registerRenderer(Talent entityClass, ITalentRenderer<?> shader) {

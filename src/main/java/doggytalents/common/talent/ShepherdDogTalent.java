@@ -1,5 +1,6 @@
 package doggytalents.common.talent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -7,8 +8,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
-
-import com.google.common.collect.Lists;
 
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
@@ -244,7 +243,7 @@ public class ShepherdDogTalent extends TalentInstance {
                     }
 
                     // Remove dead or faraway entities
-                    List<AnimalEntity> toRemove = Lists.newArrayList();
+                    List<AnimalEntity> toRemove = new ArrayList<>();
                     for (AnimalEntity target : this.targets) {
                         if (!target.isAlive() || target.getDistance(this.dog) > 25D)
                             toRemove.add(target);

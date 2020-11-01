@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import doggytalents.DoggyAccessories;
@@ -51,7 +50,7 @@ public class DogInfoScreen extends Screen {
 
     private int currentPage = 0;
     private int maxPages = 1;
-    private List<Widget> talentWidgets = Lists.newArrayList();
+    private List<Widget> talentWidgets = new ArrayList<>(16);
 
     private Button leftBtn, rightBtn;
 

@@ -1,5 +1,6 @@
 package doggytalents.client.block.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -10,7 +11,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
 
@@ -112,14 +112,15 @@ public class DogBedModel implements IBakedModel {
     }
 
     public IBakedModel bakeModelVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
-        List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
-        for (BlockPart part : this.model.getElements()) {
+        List<BlockPart> parts = this.model.getElements();
+        List<BlockPart> elements = new ArrayList<>(parts.size()); //We have to duplicate this so we can edit it below.
+        for (BlockPart part : parts) {
             elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
         }
 
         BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
             Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.getGuiLight(),
-            this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
+            this.model.getAllTransforms(), new ArrayList<>(this.model.getOverrides()));
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
 

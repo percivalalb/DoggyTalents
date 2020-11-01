@@ -1,11 +1,10 @@
 package doggytalents.common.item;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
 
 import doggytalents.DoggyItems;
 import doggytalents.common.storage.DogLocationData;
@@ -75,8 +74,8 @@ public class RadarItem extends Item {
                 }
             }
 
-            List<RegistryKey<World>> otherDogs = Lists.newArrayList();
-            List<RegistryKey<World>> noDogs = Lists.newArrayList();
+            List<RegistryKey<World>> otherDogs = new ArrayList<>();
+            List<RegistryKey<World>> noDogs = new ArrayList<>();
             for (RegistryKey<World> worldkey : worldIn.getServer().func_240770_D_()) {
                 if (worldkey.equals(worldIn.getDimensionKey()))  continue;
                 ownDogs = locationManager.getDogs(playerIn, worldkey).collect(Collectors.toList()); // Check if radio collar is on

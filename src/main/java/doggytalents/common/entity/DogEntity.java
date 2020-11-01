@@ -33,10 +33,10 @@ import doggytalents.api.feature.DogLevel.Type;
 import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.feature.InteractHandler;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.inferface.IDogFoodHandler;
-import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
@@ -95,7 +95,6 @@ import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.passive.horse.AbstractHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -135,7 +134,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.RegistryObject;
 
 public class DogEntity extends AbstractDogEntity {
 
@@ -474,9 +472,6 @@ public class DogEntity extends AbstractDogEntity {
         this.alterations.forEach((alter) -> alter.livingTick(this));
     }
 
-    private static final Item[] HELMETS = new Item[] {Items.IRON_HELMET, Items.DIAMOND_HELMET, Items.GOLDEN_HELMET, Items.LEATHER_HELMET, Items.CHAINMAIL_HELMET, Items.TURTLE_HELMET, Items.NETHERITE_HELMET};
-    private static final List<RegistryObject<? extends Accessory>> HELMET_ACCESSORIES = Lists.newArrayList(DoggyAccessories.IRON_HELMET, DoggyAccessories.DIAMOND_HELMET, DoggyAccessories.GOLDEN_HELMET, DoggyAccessories.LEATHER_HELMET, DoggyAccessories.CHAINMAIL_HELMET, DoggyAccessories.TURTLE_HELMET, DoggyAccessories.NETHERITE_HELMET);
-
     @Override
     public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
 
@@ -490,23 +485,6 @@ public class DogEntity extends AbstractDogEntity {
                 }
 
                 return ActionResultType.SUCCESS;
-            }
-
-            if (!stack.isEmpty()) {
-                for (int i = 0; i < HELMETS.length; i++) {
-                    if (stack.getItem().equals(HELMETS[i])) {
-                        AccessoryInstance inst;
-                        if (HELMETS[i] == Items.LEATHER_HELMET) {
-                            inst = DoggyAccessories.LEATHER_HELMET.get().create(((IDyeableArmorItem) Items.LEATHER_HELMET).getColor(stack));
-                        } else {
-                            inst = HELMET_ACCESSORIES.get(i).get().getDefault();
-                        }
-                        if (this.addAccessory(inst)) {
-                            this.consumeItemFromStack(player, stack);
-                            return ActionResultType.SUCCESS;
-                        }
-                    }
-                }
             }
         } else { // Not tamed
             if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
@@ -536,12 +514,10 @@ public class DogEntity extends AbstractDogEntity {
             return foodHandler.get().consume(this, stack, player);
         }
 
-        if (stack.getItem() instanceof IDogItem) {
-            IDogItem item = (IDogItem) stack.getItem();
-            ActionResultType result = item.processInteract(this, this.world, player, hand);
-            if (result != ActionResultType.PASS) {
-                return result;
-            }
+        ActionResultType interactResult = InteractHandler.getMatch(this, stack, player, hand);
+
+        if (interactResult != ActionResultType.PASS) {
+            return interactResult;
         }
 
         for (IDogAlteration alter : this.alterations) {

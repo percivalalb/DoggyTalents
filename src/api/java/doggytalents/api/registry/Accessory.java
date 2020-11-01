@@ -62,6 +62,10 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
 
     }
 
+    public AccessoryInstance createFromStack(ItemStack stackIn) {
+        return this.getDefault();
+    }
+
     public ItemStack getReturnItem(AccessoryInstance instance) {
         return this.stack.get();
     }

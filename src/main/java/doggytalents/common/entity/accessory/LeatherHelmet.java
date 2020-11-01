@@ -12,7 +12,6 @@ public class LeatherHelmet extends DyeableAccessory {
         super(DoggyAccessoryTypes.HEAD, itemIn);
     }
 
-
     @Override
     public byte getRenderLayer() {
         return AccessoryInstance.RENDER_TOP;

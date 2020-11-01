@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.feature.InteractHandler;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.data.DTBlockstateProvider;
@@ -19,6 +20,7 @@ import doggytalents.common.data.DTItemTagsProvider;
 import doggytalents.common.data.DTLootTableProvider;
 import doggytalents.common.data.DTRecipeProvider;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.HelmetInteractHandler;
 import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
 import doggytalents.common.lib.Constants;
@@ -116,6 +118,7 @@ public class DoggyTalents2 {
         PacketHandler.init();
         //TODO CriteriaTriggers.register(criterion)
         FoodHandler.registerHandler(new MeatFoodHandler());
+        InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();
         DogRespawnCommand.registerSerilizers();

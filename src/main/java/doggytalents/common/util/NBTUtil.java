@@ -1,20 +1,14 @@
 package doggytalents.common.util;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Maps;
-
 import doggytalents.DoggyTalents2;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.Talent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;

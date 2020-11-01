@@ -9,7 +9,6 @@ import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -71,7 +70,6 @@ public class ConfigHandler {
 
     public static void refreshServer() {
         DoggyTalents2.LOGGER.debug("Refresh Common Config");
-//        ConfigValues.DOGS_IMMORTAL = SERVER.DOGS_IMMORTAL.get();
 //        ConfigValues.TIME_TO_MATURE = SERVER.TIME_TO_MATURE.get();
 //        ConfigValues.DISABLE_HUNGER = SERVER.DISABLE_HUNGER.get();
         ConfigValues.STARTING_ITEMS = SERVER.STARTING_ITEMS.get();
@@ -79,8 +77,6 @@ public class ConfigHandler {
 //        ConfigValues.DOG_WHINE_WHEN_HUNGER_LOW = SERVER.DOG_WHINE_WHEN_HUNGER_LOW.get();
 //        ConfigValues.PUPS_GET_PARENT_LEVELS = SERVER.PUPS_GET_PARENT_LEVELS.get();
 //        ConfigValues.EAT_FOOD_ON_FLOOR = SERVER.EAT_FOOD_ON_FLOOR.get();
-//        ResourceLocation reviveResource = ResourceLocation.tryCreate(SERVER.REVIVE_ITEM.get());
-//        ConfigValues.REVIVE_ITEM = ForgeRegistries.ITEMS.containsKey(reviveResource) ? ForgeRegistries.ITEMS.getValue(reviveResource) : Items.CAKE;
     }
 
     public static void refreshClient() {
@@ -155,7 +151,6 @@ public class ConfigHandler {
 
     static class ServerConfig {
 
-        public ForgeConfigSpec.BooleanValue DOGS_IMMORTAL;
         public ForgeConfigSpec.IntValue TIME_TO_MATURE;
         public ForgeConfigSpec.BooleanValue DISABLE_HUNGER;
         public ForgeConfigSpec.BooleanValue STARTING_ITEMS;
@@ -163,7 +158,6 @@ public class ConfigHandler {
         public ForgeConfigSpec.BooleanValue DOG_WHINE_WHEN_HUNGER_LOW;
         public ForgeConfigSpec.BooleanValue PUPS_GET_PARENT_LEVELS;
         public ForgeConfigSpec.BooleanValue EAT_FOOD_ON_FLOOR;
-        public ConfigValue<String> REVIVE_ITEM;
 
         public Map<String, ForgeConfigSpec.BooleanValue> DISABLED_TALENTS;
 
@@ -177,10 +171,6 @@ public class ConfigHandler {
             builder.pop();
             builder.push("Dog Constants");
 
-            DOGS_IMMORTAL = builder
-                    .comment("Determines if dogs die when their health reaches zero. If true, dogs will not die, and will instead become incapacitated.")
-                    .translation("doggytalents.config.dog.enable_immortality")
-                    .define("enable_immortality", true);
             TIME_TO_MATURE = builder
                     .comment("The time in ticks it takes for a baby dog to become an adult, default 48000 (2 Minecraft days) and minimum 0")
                     .translation("doggytalents.config.dog.time_to_mature")
@@ -209,10 +199,6 @@ public class ConfigHandler {
                     .comment("When enabled dogs will path and eat editable items in the world.")
                     .translation("doggytalents.config.eat_food_on_floor")
                     .define("eat_food_on_floor", true);
-            REVIVE_ITEM = builder
-                    .comment("The item resource path that can be used to revive an incapacitated dog. If item is not valid defaults to minecraft:cake")
-                    .translation("doggytalents.config.revive_item")
-                    .define("revive_item", "minecraft:cake");
 
             builder.pop();
         }

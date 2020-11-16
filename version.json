@@ -1,28 +1,9 @@
 {  
    "homepage":"https://minecraft.curseforge.com/projects/doggy-talents",
    "promos":{  
-      "1.8.9-latest":"1.14.2.314",
-      "1.8.9-recommended":"1.14.2.314",
-      "1.9.4-latest":"1.14.2.314",
-      "1.9.4-recommended":"1.14.2.314",
-      "1.10.2-latest":"1.15.0.2",
-      "1.10.2-recommended":"1.15.0.2",
-      "1.11.2-latest":"1.15.0.2",
-      "1.11.2-recommended":"1.15.0.2",
-      "1.12.2-latest":"1.15.1.4",
-      "1.12.2-recommended":"1.15.1.4",
-      "1.13.2-latest":"1.15.0.2",
-      "1.13.2-recommended":"1.15.0.2",
-      "1.14.2-latest":"1.15.0.4",
-      "1.14.2-recommended":"1.15.0.4",
-      "1.14.3-latest":"1.15.0.7",
-      "1.14.3-recommended":"1.15.0.7",
-      "1.14.4-latest":"1.15.2.0",
-      "1.14.4-recommended":"1.15.2.0",
-      "1.15.2-latest":"2.0.0.0",
-      "1.15.2-recommended":"1.15.2.3",
-	  "1.16.2-latest":"2.0.1.0",
-	  "1.16.3-latest":"2.0.1.0",
+	  "1.16.2-latest":"2.0.1.1",
+	  "1.16.3-latest":"2.0.1.1",
+	  "1.16.4-latest":"2.0.1.1",
       "recommended":"1.15.2.3"
    }
 }

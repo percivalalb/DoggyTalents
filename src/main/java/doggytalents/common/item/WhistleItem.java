@@ -168,7 +168,7 @@ public class WhistleItem extends Item {
                     world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
                     DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
-                    doggyBeam.shoot(player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
+                    doggyBeam.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
                     world.addEntity(doggyBeam);
                 }
 

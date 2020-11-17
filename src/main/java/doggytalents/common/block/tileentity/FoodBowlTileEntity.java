@@ -1,5 +1,7 @@
 package doggytalents.common.block.tileentity;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,7 +45,8 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
         }
     };
     private final LazyOptional<ItemStackHandler> itemStackHandler = LazyOptional.of(() -> this.inventory);
-
+    private Set<DogEntity> dogRecord = new HashSet<>();
+    
 
     public int timeoutCounter;
 
@@ -77,6 +80,7 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
             UUID placerId = this.getPlacerId();
             if (placerId != null && placerId.equals(dog.getOwnerId()) && !dog.getBowlPos().isPresent()) {
                 dog.setBowlPos(this.pos);
+                dogRecord.add(dog);
             }
 
             if (dog.getDogHunger() < dog.getMaxHunger() / 2) {
@@ -89,6 +93,19 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
 
     public ItemStackHandler getInventory() {
         return this.inventory;
+    }
+
+    public void resetDogRecordBowlPos()
+    {
+        for(DogEntity dog : dogRecord)
+        {
+            dog.setBowlPos(null);
+        }
+    }
+
+    public void clearDogRecord()
+    {
+        dogRecord.clear();
     }
 
     @Nonnull

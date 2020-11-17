@@ -122,6 +122,8 @@ public class FoodBowlBlock extends Block {
                     InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), bowlInventory.getStackInSlot(i));
                 }
                 worldIn.updateComparatorOutputLevel(pos, this);
+                foodBowl.resetDogRecordBowlPos();
+                foodBowl.clearDogRecord();
             }
 
             super.onReplaced(state, worldIn, pos, newState, isMoving);

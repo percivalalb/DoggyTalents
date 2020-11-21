@@ -23,6 +23,8 @@ public class DoggyBedMaterials {
     public static final RegistryObject<ICasingMaterial> JUNGLE_PLANKS = registerCasing(Blocks.JUNGLE_PLANKS.delegate);
     public static final RegistryObject<ICasingMaterial> ACACIA_PLANKS = registerCasing(Blocks.ACACIA_PLANKS.delegate);
     public static final RegistryObject<ICasingMaterial> DARK_OAK_PLANKS = registerCasing(Blocks.DARK_OAK_PLANKS.delegate);
+    public static final RegistryObject<ICasingMaterial> CRIMSON_PLANKS = registerCasing(Blocks.CRIMSON_PLANKS.delegate);
+    public static final RegistryObject<ICasingMaterial> WARPED_PLANKS = registerCasing(Blocks.WARPED_PLANKS.delegate);
 
     public static final RegistryObject<IBeddingMaterial> WHITE_WOOL = registerBedding(Blocks.WHITE_WOOL.delegate);
     public static final RegistryObject<IBeddingMaterial> ORANGE_WOOL = registerBedding(Blocks.ORANGE_WOOL.delegate);

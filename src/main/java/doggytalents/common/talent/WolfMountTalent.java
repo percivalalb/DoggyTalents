@@ -100,6 +100,6 @@ public class WolfMountTalent extends TalentInstance {
     @Override
     public ActionResultType hitByEntity(AbstractDogEntity dogIn, Entity entity) {
         // If the attacking entity is riding block
-        return dogIn.isRidingOrBeingRiddenBy(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return dogIn.isRidingSameEntity(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 }

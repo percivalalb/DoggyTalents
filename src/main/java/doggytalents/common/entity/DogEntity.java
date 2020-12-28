@@ -475,6 +475,18 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
+        // Check if dog bowl still exists every 50t/2.5s, if not remove
+        if (this.ticksExisted % 50 == 0) {
+            RegistryKey<World> dimKey = this.world.getDimensionKey();
+            Optional<BlockPos> bowlPos = this.getBowlPos(dimKey);
+
+            // If the dog has a food bowl in this dimension then check if it is still there
+            // Only check if the chunk it is in is loaded
+            if (bowlPos.isPresent() && this.world.isBlockLoaded(bowlPos.get()) && !this.world.getBlockState(bowlPos.get()).isIn(DoggyBlocks.FOOD_BOWL.get())) {
+                this.setBowlPos(dimKey, Optional.empty());
+            }
+        }
+
         this.alterations.forEach((alter) -> alter.livingTick(this));
     }
 

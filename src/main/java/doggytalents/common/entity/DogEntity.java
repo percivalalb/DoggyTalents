@@ -1122,15 +1122,17 @@ public class DogEntity extends AbstractDogEntity {
         this.wetSource = null;
         this.finishShaking();
 
+        this.alterations.forEach((alter) -> alter.onDeath(this, cause));
+        super.onDeath(cause);
+
+        // Save inventory after onDeath is called so that pack puppy inventory
+        // can be dropped and not saved
         if (this.world != null && !this.world.isRemote) {
             DogRespawnStorage.get(this.world).putData(this);
             DoggyTalents2.LOGGER.debug("Saved dog as they died {}", this);
 
             DogLocationStorage.get(this.world).remove(this);
         }
-
-        this.alterations.forEach((alter) -> alter.onDeath(this, cause));
-        super.onDeath(cause);
     }
 
     @Override

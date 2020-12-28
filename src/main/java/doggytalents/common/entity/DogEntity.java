@@ -766,6 +766,12 @@ public class DogEntity extends AbstractDogEntity {
             return false;
         } else {
             Entity entity = source.getTrueSource();
+            // Must be checked here too as hitByEntity only applies to when the dog is
+            // directly hit not indirect damage like sweeping effect etc
+            if (entity instanceof PlayerEntity && !this.canPlayersAttack()) {
+                return false;
+            }
+
             this.func_233687_w_(false);
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {

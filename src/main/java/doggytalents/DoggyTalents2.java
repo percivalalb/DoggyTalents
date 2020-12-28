@@ -1,5 +1,6 @@
 package doggytalents;
 
+import doggytalents.common.talent.HappyEaterTalent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -118,6 +119,8 @@ public class DoggyTalents2 {
         PacketHandler.init();
         //TODO CriteriaTriggers.register(criterion)
         FoodHandler.registerHandler(new MeatFoodHandler());
+
+        FoodHandler.registerDynPredicate(HappyEaterTalent.INNER_DYN_PRED);
         InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
         DoggyEntityTypes.addEntityAttributes();

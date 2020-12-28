@@ -9,18 +9,30 @@ import javax.annotation.Nullable;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
+import doggytalents.api.inferface.IDogFoodPredicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 
 public class FoodHandler {
 
     private static final List<IDogFoodHandler> HANDLERS = Collections.synchronizedList(new ArrayList<>(4));
+    private static final List<IDogFoodPredicate> DYN_PREDICATES = Collections.synchronizedList(new ArrayList<>(2));
 
     public static void registerHandler(IDogFoodHandler handler) {
         HANDLERS.add(handler);
     }
 
-    public static Optional<IDogFoodHandler> isFood(ItemStack stackIn) {
+    public static void registerDynPredicate(IDogFoodPredicate handler) {
+        DYN_PREDICATES.add(handler);
+    }
+
+    public static Optional<IDogFoodPredicate> isFood(ItemStack stackIn) {
+        for (IDogFoodPredicate predicate : DYN_PREDICATES) {
+            if (predicate.isFood(stackIn)) {
+                return Optional.of(predicate);
+            }
+        }
+
         if (stackIn.getItem() instanceof IDogFoodHandler) {
             if (((IDogFoodHandler) stackIn.getItem()).isFood(stackIn)) {
                 return Optional.of((IDogFoodHandler) stackIn.getItem());

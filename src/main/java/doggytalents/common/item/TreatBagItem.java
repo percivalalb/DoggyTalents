@@ -72,7 +72,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
         IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         List<ItemStack> condensedContents = ItemUtil.getContentOverview(bagInventory);
 
-        condensedContents.forEach(food -> {
+        condensedContents.forEach((food) -> {
             tooltip.add(new TranslationTextComponent(this.contentsTranslationKey.get(), food.getCount(), new TranslationTextComponent(food.getTranslationKey())));
         });
     }

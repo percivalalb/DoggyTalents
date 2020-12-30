@@ -1,5 +1,6 @@
 package doggytalents.client.block.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -10,7 +11,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
 
@@ -42,6 +42,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements IBakedModel {
@@ -52,7 +53,7 @@ public class DogBedModel implements IBakedModel {
     private BlockModel model;
     private IBakedModel bakedModel;
 
-    private final Map<Triple<ICasingMaterial, IBeddingMaterial, Direction>, IBakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<IRegistryDelegate<ICasingMaterial>, IRegistryDelegate<IBeddingMaterial>, Direction>, IBakedModel> cache = Maps.newHashMap();
 
     public DogBedModel(ModelLoader modelLoader, BlockModel model, IBakedModel bakedModel) {
         this.modelLoader = modelLoader;
@@ -69,7 +70,7 @@ public class DogBedModel implements IBakedModel {
         if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL.get(); }
         if (facing == null) { facing = Direction.NORTH; }
 
-        return this.cache.computeIfAbsent(ImmutableTriple.of(casing, bedding, facing), (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
+        return this.cache.computeIfAbsent(ImmutableTriple.of(casing.delegate, bedding.delegate, facing), (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
     }
 
     @Override
@@ -110,29 +111,30 @@ public class DogBedModel implements IBakedModel {
         return tileData;
     }
 
-    public IBakedModel bakeModelVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
-        List<BlockPart> elements = Lists.newArrayList(); //We have to duplicate this so we can edit it below.
-        for (BlockPart part : this.model.getElements()) {
+    public IBakedModel bakeModelVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
+        List<BlockPart> parts = this.model.getElements();
+        List<BlockPart> elements = new ArrayList<>(parts.size()); //We have to duplicate this so we can edit it below.
+        for (BlockPart part : parts) {
             elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
         }
 
         BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
             Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.func_230176_c_(),
-            this.model.getAllTransforms(), Lists.newArrayList(this.model.getOverrides()));
+            this.model.getAllTransforms(), new ArrayList<>(this.model.getOverrides()));
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
 
 
-        Either<Material, String> casingTexture = findTexture(casingResource.getTexture());
-        newModel.textures.put("bedding", findTexture(beddingResource.getTexture()));
+        Either<Material, String> casingTexture = findTexture(casingResource.get().getTexture());
+        newModel.textures.put("bedding", findTexture(beddingResource.get().getTexture()));
         newModel.textures.put("casing", casingTexture);
         newModel.textures.put("particle", casingTexture);
 
         return newModel.bakeModel(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
-    private ResourceLocation createResourceVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
-        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.getRegistryName().toString().replace(':', '.') + ",casing=" + casingResource.getRegistryName().toString().replace(':', '.') + ",facing=" + facing.getName());
+    private ResourceLocation createResourceVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
+        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.name().toString().replace(':', '.') + ",casing=" + casingResource.name().toString().replace(':', '.') + ",facing=" + facing.getName2());
     }
 
     private Either<Material, String> findTexture(ResourceLocation resource) {

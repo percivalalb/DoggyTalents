@@ -5,13 +5,18 @@ import java.util.UUID;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import net.minecraft.entity.SharedMonsterAttributes;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
-public class BlackPeltTalent extends Talent {
+public class BlackPeltTalent extends TalentInstance {
 
     private static final UUID BLACK_PELT_DAMAGE_ID = UUID.fromString("9abeafa9-3913-4b4c-b46e-0f1548fb19b3");
     private static final UUID BLACK_PELT_CRIT_CHANCE_ID = UUID.fromString("f07b5d39-a8cc-4d32-b458-6efdf1dc6836");
     private static final UUID BLACK_PELT_CRIT_BONUS_ID = UUID.fromString("e19e0d42-6ee3-4ee1-af1c-7519af4354cd");
+
+    public BlackPeltTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public void init(AbstractDogEntity dogIn) {
@@ -21,26 +26,17 @@ public class BlackPeltTalent extends Talent {
     }
 
     @Override
-    public void set(AbstractDogEntity dogIn, int level) {
+    public void set(AbstractDogEntity dogIn, int levelBefore) {
         dogIn.setAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
         dogIn.setAttributeModifier(AbstractDogEntity.CRIT_CHANCE, BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
         dogIn.setAttributeModifier(AbstractDogEntity.CRIT_BONUS, BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
     }
 
-    @Override
-    public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(SharedMonsterAttributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID);
-        dogIn.removeAttributeModifier(AbstractDogEntity.CRIT_CHANCE, BLACK_PELT_CRIT_CHANCE_ID);
-        dogIn.removeAttributeModifier(AbstractDogEntity.CRIT_BONUS, BLACK_PELT_CRIT_BONUS_ID);
-    }
-
     public AttributeModifier createPeltModifier(AbstractDogEntity dogIn, UUID uuidIn) {
-        int level = dogIn.getLevel(this);
+        if (this.level() > 0) {
+            double damageBonus = this.level();
 
-        if (level > 0) {
-            double damageBonus = level;
-
-            if (level >= 5) {
+            if (this.level() >= 5) {
                 damageBonus += 2;
             }
 
@@ -51,15 +47,13 @@ public class BlackPeltTalent extends Talent {
     }
 
     public AttributeModifier createPeltCritChance(AbstractDogEntity dogIn, UUID uuidIn) {
-        int level = dogIn.getLevel(this);
-
-        if (level <= 0) {
+        if (this.level() <= 0) {
             return null;
         }
 
-        double damageBonus = 0.15D * level;
+        double damageBonus = 0.15D * this.level();
 
-        if (level >= 5) {
+        if (this.level() >= 5) {
             damageBonus = 1D;
         }
 
@@ -67,9 +61,7 @@ public class BlackPeltTalent extends Talent {
     }
 
     public AttributeModifier createPeltCritBonus(AbstractDogEntity dogIn, UUID uuidIn) {
-        int level = dogIn.getLevel(this);
-
-        if (level <= 0) {
+        if (this.level() <= 0) {
             return null;
         }
 

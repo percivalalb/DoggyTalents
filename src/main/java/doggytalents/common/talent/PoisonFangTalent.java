@@ -2,6 +2,7 @@ package doggytalents.common.talent;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,14 +14,16 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class PoisonFangTalent extends Talent {
+public class PoisonFangTalent extends TalentInstance {
+
+    public PoisonFangTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        int level = dogIn.getLevel(this);
-
         if (dogIn.isTamed()) {
-            if (level < 5) {
+            if (this.level() < 5) {
                 return ActionResultType.PASS;
             }
 
@@ -47,7 +50,7 @@ public class PoisonFangTalent extends Talent {
 
     @Override
     public ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {
-        if (dogIn.getLevel(this) >= 3) {
+        if (this.level() >= 3) {
             if (effectIn.getPotion() == Effects.POISON) {
                 return ActionResultType.FAIL;
             }
@@ -59,10 +62,8 @@ public class PoisonFangTalent extends Talent {
     @Override
     public ActionResultType attackEntityAsMob(AbstractDogEntity dog, Entity entity) {
         if (entity instanceof LivingEntity) {
-            int level = dog.getLevel(this);
-
-            if (level > 0) {
-                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.POISON, level * 20, 0));
+            if (this.level() > 0) {
+                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.POISON, this.level() * 20, 0));
                 return ActionResultType.PASS;
             }
         }

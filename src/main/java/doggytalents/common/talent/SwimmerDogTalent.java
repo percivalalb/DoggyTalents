@@ -2,6 +2,7 @@ package doggytalents.common.talent;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectInstance;
@@ -9,15 +10,17 @@ import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 
-public class SwimmerDogTalent extends Talent {
+public class SwimmerDogTalent extends TalentInstance {
 
     //TODO add ai goal to follow owner through water
 
+    public SwimmerDogTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
+
     @Override
     public void livingTick(AbstractDogEntity dogIn) {
-        int level = dogIn.getLevel(this);
-
-        if (level >= 5 && dogIn.isBeingRidden() && dogIn.canBeSteered()) {
+        if (this.level() >= 5 && dogIn.isBeingRidden() && dogIn.canBeSteered()) {
             // canBeSteered checks entity is LivingEntity
             LivingEntity rider = (LivingEntity) dogIn.getControllingPassenger();
             if (rider.isInWater()) {
@@ -28,19 +31,17 @@ public class SwimmerDogTalent extends Talent {
 
     @Override
     public ActionResultType canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
-        return dogIn.getLevel(this) >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     @Override
     public ActionResultType canBreatheUnderwater(AbstractDogEntity dogIn) {
-        return dogIn.getLevel(this) >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 
     @Override
     public ActionResult<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
-        int level = dogIn.getLevel(this);
-
-        if (level > 0 && dogIn.getRNG().nextInt(level + 1) > 0) {
+        if (this.level() > 0 && dogIn.getRNG().nextInt(this.level() + 1) > 0) {
             return ActionResult.resultSuccess(air);
         }
 
@@ -49,10 +50,8 @@ public class SwimmerDogTalent extends Talent {
 
     @Override
     public ActionResult<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
-        int level = dogIn.getLevel(this);
-
-        if (level > 0) {
-            return ActionResult.resultPass(currentAir + level);
+        if (this.level() > 0) {
+            return ActionResult.resultPass(currentAir + this.level());
         }
 
         return ActionResult.resultPass(currentAir);

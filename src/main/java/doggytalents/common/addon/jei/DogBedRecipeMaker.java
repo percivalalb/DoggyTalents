@@ -1,8 +1,8 @@
 package doggytalents.common.addon.jei;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
@@ -20,7 +20,10 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 public final class DogBedRecipeMaker {
 
     public static List<IShapedRecipe<? extends IInventory>> createDogBedRecipes() {
-        List<IShapedRecipe<? extends IInventory>> recipes = Lists.newArrayList();
+        Collection<IBeddingMaterial> beddingMaterials = DoggyTalentsAPI.BEDDING_MATERIAL.getValues();
+        Collection<ICasingMaterial>  casingMaterials  = DoggyTalentsAPI.CASING_MATERIAL.getValues();
+
+        List<IShapedRecipe<? extends IInventory>> recipes = new ArrayList<>(beddingMaterials.size() * casingMaterials.size());
         String group = "doggytalents.dogbed";
         for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
             for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {

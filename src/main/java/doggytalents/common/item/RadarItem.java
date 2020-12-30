@@ -1,10 +1,9 @@
 package doggytalents.common.item;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
 
 import doggytalents.DoggyItems;
 import doggytalents.common.storage.DogLocationData;
@@ -73,9 +72,8 @@ public class RadarItem extends Item {
                 }
             }
 
-
-            List<DimensionType> otherDogs = Lists.newArrayList();
-            List<DimensionType> noDogs = Lists.newArrayList();
+            List<DimensionType> otherDogs = new ArrayList<>();
+            List<DimensionType> noDogs = new ArrayList<>();
             for (DimensionType dimType : DimensionType.getAll()) {
                 if (dimCurr == dimType) continue;
                 ownDogs = locationManager.getDogs(playerIn, dimType).collect(Collectors.toList()); // Check if radio collar is on

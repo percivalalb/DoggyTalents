@@ -1,6 +1,7 @@
 package doggytalents.client.entity.render;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
@@ -10,11 +11,16 @@ import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.client.render.ITalentRenderer;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.Talent;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class CollarRenderManager {
 
-    private static Map<Accessory, IAccessoryRenderer<?>> accessoryRendererMap = Maps.newConcurrentMap();
-    private static Map<Talent, ITalentRenderer<?>> talentRendererMap = Maps.newConcurrentMap();
+    private static Map<IRegistryDelegate<Accessory>, IAccessoryRenderer<?>> accessoryRendererMap = Maps.newConcurrentMap();
+    private static Map<IRegistryDelegate<Talent>, ITalentRenderer<?>> talentRendererMap = Maps.newConcurrentMap();
+
+    public static void registerRenderer(Supplier<? extends Accessory> entityClass, IAccessoryRenderer<?> shader) {
+        registerRenderer(entityClass.get(), shader);
+    }
 
     /**
      * Register a renderer for a collar type
@@ -22,25 +28,29 @@ public class CollarRenderManager {
      * This method is safe to call during parallel mod loading.
      */
     public static void registerRenderer(Accessory entityClass, IAccessoryRenderer<?> shader) {
-        accessoryRendererMap.put(entityClass, shader);
+        accessoryRendererMap.put(entityClass.delegate, shader);
+    }
+
+    public static void registerRenderer(Supplier<? extends Talent> entityClass, ITalentRenderer<?> shader) {
+        registerRenderer(entityClass.get(), shader);
     }
 
     public static void registerRenderer(Talent entityClass, ITalentRenderer<?> shader) {
-        talentRendererMap.put(entityClass, shader);
+        talentRendererMap.put(entityClass.delegate, shader);
     }
 
 
     public static boolean hasRenderer(Accessory type) {
-        return accessoryRendererMap.containsKey(type);
+        return accessoryRendererMap.containsKey(type.delegate);
     }
 
     @Nullable
     public static IAccessoryRenderer<?> getRendererFor(Accessory type) {
-        return accessoryRendererMap.get(type);
+        return accessoryRendererMap.get(type.delegate);
     }
 
     @Nullable
     public static ITalentRenderer<?> getRendererFor(Talent talent) {
-        return talentRendererMap.get(talent);
+        return talentRendererMap.get(talent.delegate);
     }
 }

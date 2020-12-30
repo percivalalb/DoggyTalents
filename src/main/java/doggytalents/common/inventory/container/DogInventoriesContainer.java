@@ -1,8 +1,7 @@
 package doggytalents.common.inventory.container;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.collect.Lists;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
@@ -30,7 +29,7 @@ public class DogInventoriesContainer extends Container {
     private PlayerEntity player;
     private IntReferenceHolder position;
     private IntArray trackableArray;
-    private final List<DogInventorySlot> dogSlots = Lists.newArrayList();
+    private final List<DogInventorySlot> dogSlots = new ArrayList<>();
     private int possibleSlots = 0;
 
     //Server method
@@ -69,7 +68,8 @@ public class DogInventoriesContainer extends Container {
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
 
-                PackPuppyItemHandler packInventory = dog.getData(PackPuppyTalent.PACK_PUPPY_HANDLER);
+                PackPuppyItemHandler packInventory = dog.getTalent(DoggyTalents.PACK_PUPPY)
+                        .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);
                 if (packInventory == null) {
                     continue;
                 }

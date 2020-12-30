@@ -15,14 +15,17 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.DoggyTalents2;
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.dimension.DimensionType;
@@ -53,7 +56,7 @@ public class BackwardsComp {
         return Optional.ofNullable(OLD_NEW_TALENT.get(oldId));
     }
 
-    public static void readTalentMapping(CompoundNBT compound, Map<Talent, Integer> talentMap) {
+    public static void readTalentMapping(CompoundNBT compound, List<TalentInstance> talentMap) {
         if (compound.contains("talents", Constants.NBT.TAG_STRING)) {
 
             String[] split = compound.getString("talents").split(":");
@@ -70,9 +73,21 @@ public class BackwardsComp {
                         }
 
                         if (talent != null) { // Only load if talent exists
-                            talentMap.put(talent.get(), level);
+                            talentMap.add(talent.get().getDefault(level));
                         }
                     });
+                }
+            }
+        } else if (compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
+
+            ListNBT list = compound.getList("talent_level_list", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < list.size(); i++) {
+                CompoundNBT talentCompound = list.getCompound(i);
+                Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS);
+
+                if (talent != null) { // Only load if talent exists
+                    int level = talentCompound.getInt("level");
+                    talentMap.add(talent.getDefault(level));
                 }
             }
         }

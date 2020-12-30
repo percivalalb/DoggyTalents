@@ -48,7 +48,7 @@ public class DogInfoScreen extends Screen {
 
     private int currentPage = 0;
     private int maxPages = 1;
-    private List<Widget> talentWidgets = Lists.newArrayList();
+    private List<Widget> talentWidgets = new ArrayList<>(16);
 
     private Button leftBtn, rightBtn;
 

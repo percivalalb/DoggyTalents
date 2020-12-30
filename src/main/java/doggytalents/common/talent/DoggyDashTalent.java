@@ -4,12 +4,18 @@ import java.util.UUID;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
-public class DoggyDashTalent extends Talent {
+public class DoggyDashTalent extends TalentInstance {
 
     private static final UUID DASH_BOOST_ID = UUID.fromString("50671e49-1ded-4097-902b-78bb6b178772");
+
+    public DoggyDashTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public void init(AbstractDogEntity dogIn) {
@@ -21,18 +27,11 @@ public class DoggyDashTalent extends Talent {
         dogIn.setAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
-    @Override
-    public void removed(AbstractDogEntity dogIn, int preLevel) {
-        dogIn.removeAttributeModifier(SharedMonsterAttributes.MOVEMENT_SPEED, DASH_BOOST_ID);
-    }
-
     public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
-        int level = dogIn.getLevel(this);
+        if (this.level() > 0) {
+            double speed = 0.03D * this.level();
 
-        if (level > 0) {
-            double speed = 0.03D * level;
-
-            if (level >= 5) {
+            if (this.level() >= 5) {
                 speed += 0.04D;
             }
 

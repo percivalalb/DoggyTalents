@@ -44,27 +44,27 @@ public class ClientSetup {
     }
 
     public static void setupCollarRenderers(final FMLClientSetupEvent event) {
-        CollarRenderManager.registerRenderer(DoggyAccessories.DYEABLE_COLLAR.get(), new DyeableAccessoryRenderer(Resources.COLLAR_DEFAULT));
-        CollarRenderManager.registerRenderer(DoggyAccessories.GOLDEN_COLLAR.get(), new DefaultAccessoryRenderer(Resources.COLLAR_GOLDEN));
-        CollarRenderManager.registerRenderer(DoggyAccessories.SPOTTED_COLLAR.get(), new DefaultAccessoryRenderer(Resources.COLLAR_SPOTTED));
-        CollarRenderManager.registerRenderer(DoggyAccessories.MULTICOLORED_COLLAR.get(), new DefaultAccessoryRenderer(Resources.COLLAR_MULTICOLORED));
+        CollarRenderManager.registerRenderer(DoggyAccessories.DYEABLE_COLLAR, new DyeableAccessoryRenderer(Resources.COLLAR_DEFAULT));
+        CollarRenderManager.registerRenderer(DoggyAccessories.GOLDEN_COLLAR, new DefaultAccessoryRenderer(Resources.COLLAR_GOLDEN));
+        CollarRenderManager.registerRenderer(DoggyAccessories.SPOTTED_COLLAR, new DefaultAccessoryRenderer(Resources.COLLAR_SPOTTED));
+        CollarRenderManager.registerRenderer(DoggyAccessories.MULTICOLORED_COLLAR, new DefaultAccessoryRenderer(Resources.COLLAR_MULTICOLORED));
 
-        CollarRenderManager.registerRenderer(DoggyAccessories.CAPE.get(), new DefaultAccessoryRenderer(Resources.CAPE));
-        CollarRenderManager.registerRenderer(DoggyAccessories.DYEABLE_CAPE.get(), new DyeableAccessoryRenderer(Resources.DYEABLE_CAPE));
-        CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_JACKET_CLOTHING.get(), new DefaultAccessoryRenderer(Resources.CLOTHING_LEATHER_JACKET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.GUARD_SUIT.get(), new DefaultAccessoryRenderer(Resources.GUARD_SUIT));
+        CollarRenderManager.registerRenderer(DoggyAccessories.CAPE, new DefaultAccessoryRenderer(Resources.CAPE));
+        CollarRenderManager.registerRenderer(DoggyAccessories.DYEABLE_CAPE, new DyeableAccessoryRenderer(Resources.DYEABLE_CAPE));
+        CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_JACKET_CLOTHING, new DefaultAccessoryRenderer(Resources.CLOTHING_LEATHER_JACKET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.GUARD_SUIT, new DefaultAccessoryRenderer(Resources.GUARD_SUIT));
 
-        CollarRenderManager.registerRenderer(DoggyAccessories.SUNGLASSES.get(), new DefaultAccessoryRenderer(Resources.GLASSES_SUNGLASSES));
+        CollarRenderManager.registerRenderer(DoggyAccessories.SUNGLASSES, new DefaultAccessoryRenderer(Resources.GLASSES_SUNGLASSES));
 
-        CollarRenderManager.registerRenderer(DoggyAccessories.RADIO_BAND.get(), new DefaultAccessoryRenderer(Resources.RADIO_BAND));
-        CollarRenderManager.registerRenderer(DoggyAccessories.DIAMOND_HELMET.get(), new ArmorAccessoryRenderer(Resources.DIAMOND_HELMET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.IRON_HELMET.get(), new ArmorAccessoryRenderer(Resources.IRON_HELMET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.GOLDEN_HELMET.get(), new ArmorAccessoryRenderer(Resources.GOLDEN_HELMET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_HELMET.get(), new LeatherArmorAccessoryRenderer(Resources.LEATHER_HELMET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.CHAINMAIL_HELMET.get(), new ArmorAccessoryRenderer(Resources.CHAINMAIL_HELMET));
-        CollarRenderManager.registerRenderer(DoggyAccessories.TURTLE_HELMET.get(), new ArmorAccessoryRenderer(Resources.TURTLE_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.RADIO_BAND, new DefaultAccessoryRenderer(Resources.RADIO_BAND));
+        CollarRenderManager.registerRenderer(DoggyAccessories.DIAMOND_HELMET, new ArmorAccessoryRenderer(Resources.DIAMOND_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.IRON_HELMET, new ArmorAccessoryRenderer(Resources.IRON_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.GOLDEN_HELMET, new ArmorAccessoryRenderer(Resources.GOLDEN_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.LEATHER_HELMET, new LeatherArmorAccessoryRenderer(Resources.LEATHER_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.CHAINMAIL_HELMET, new ArmorAccessoryRenderer(Resources.CHAINMAIL_HELMET));
+        CollarRenderManager.registerRenderer(DoggyAccessories.TURTLE_HELMET, new ArmorAccessoryRenderer(Resources.TURTLE_HELMET));
 
-        CollarRenderManager.registerRenderer(DoggyTalents.PACK_PUPPY.get(), new PackPuppyRenderer());
-        CollarRenderManager.registerRenderer(DoggyTalents.RESCUE_DOG.get(), new RescueDogRenderer());
+        CollarRenderManager.registerRenderer(DoggyTalents.PACK_PUPPY, new PackPuppyRenderer());
+        CollarRenderManager.registerRenderer(DoggyTalents.RESCUE_DOG, new RescueDogRenderer());
     }
 }

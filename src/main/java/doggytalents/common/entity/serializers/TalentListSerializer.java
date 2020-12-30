@@ -1,46 +1,51 @@
 package doggytalents.common.entity.serializers;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.google.common.collect.Maps;
+import java.util.ArrayList;
+import java.util.List;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.IDataSerializer;
 
-public class TalentListSerializer implements IDataSerializer<Map<Talent, Integer>> {
+public class TalentListSerializer implements IDataSerializer<List<TalentInstance>> {
 
     @Override
-    public void write(PacketBuffer buf, Map<Talent, Integer> value) {
+    public void write(PacketBuffer buf, List<TalentInstance> value) {
         buf.writeInt(value.size());
-        for (Entry<Talent, Integer> entry : value.entrySet()) {
-            buf.writeRegistryIdUnsafe(DoggyTalentsAPI.TALENTS, entry.getKey());
-            buf.writeByte(entry.getValue());
+
+        for (TalentInstance inst : value) {
+            buf.writeRegistryIdUnsafe(DoggyTalentsAPI.TALENTS, inst.getTalent());
+            inst.writeToBuf(buf);
         }
     }
 
     @Override
-    public Map<Talent, Integer> read(PacketBuffer buf) {
-        Map<Talent, Integer> map = Maps.newHashMap();
+    public List<TalentInstance> read(PacketBuffer buf) {
         int size = buf.readInt();
+        List<TalentInstance> newInst = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            Talent talent = buf.readRegistryIdUnsafe(DoggyTalentsAPI.TALENTS);
-            byte level = buf.readByte();
-            map.put(talent, (int)level);
+            TalentInstance inst = buf.readRegistryIdUnsafe(DoggyTalentsAPI.TALENTS).getDefault();
+            inst.readFromBuf(buf);
+            newInst.add(inst);
         }
-        return map;
+        return newInst;
     }
 
     @Override
-    public DataParameter<Map<Talent, Integer>> createKey(int id) {
+    public DataParameter<List<TalentInstance>> createKey(int id) {
         return new DataParameter<>(id, this);
     }
 
     @Override
-    public Map<Talent, Integer> copyValue(Map<Talent, Integer> value) {
-        return Maps.newHashMap(value);
+    public List<TalentInstance> copyValue(List<TalentInstance> value) {
+        List<TalentInstance> newInst = new ArrayList<>(value.size());
+
+        for (TalentInstance inst : value) {
+            newInst.add(inst.copy());
+        }
+
+        return newInst;
     }
 }

@@ -61,4 +61,8 @@ public class DogLevel {
         return new DogLevel(combinedLevel, 0);
     }
 
+    public final boolean isDireDog() {
+        return this.direLevel >= 30;
+    }
+
 }

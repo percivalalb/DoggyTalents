@@ -1,21 +1,14 @@
 package doggytalents.common.util;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Maps;
-
 import doggytalents.DoggyTalents2;
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.registry.Talent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -96,41 +89,6 @@ public class NBTUtil {
         }
 
         return null;
-    }
-
-    public static Map<Talent, Integer> getTalentMap(CompoundNBT compound, String key) {
-        Map<Talent, Integer> talentMap = Maps.newHashMap();
-
-        ListNBT list = compound.getList(key, Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < list.size(); i++) {
-            CompoundNBT talentCompound = list.getCompound(i);
-            Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS);
-
-            if (talent != null) { // Only load if talent exists
-                int level = talentCompound.getInt("level");
-                talentMap.put(talent, level);
-            }
-        }
-
-        return talentMap;
-    }
-
-
-    public static void putTalentMap(CompoundNBT compound, String key, Map<Talent, Integer> talentMap) {
-        if (!talentMap.isEmpty()) {
-            ListNBT list = new ListNBT();
-
-            for (Entry<Talent, Integer> entry : talentMap.entrySet()) {
-                CompoundNBT talentCompound = new CompoundNBT();
-
-                NBTUtil.putRegistryValue(talentCompound, "talent", entry.getKey());
-                talentCompound.putInt("level", entry.getValue());
-
-                list.add(talentCompound);
-            }
-
-            compound.put(key, list);
-        }
     }
 
     @Nullable

@@ -17,5 +17,9 @@ public class ConfigValues {
     public static float   DEFAULT_MAX_HUNGER      = 120F;
     public static boolean STARTING_ITEMS          = false;
 
+    public static boolean DIRE_PARTICLES          = true;
+    public static boolean RENDER_CHEST            = true;
+    public static boolean USE_DT_TEXTURES         = true;
+
     public static List<Talent> DISABLED_TALENTS = new ArrayList<>();
 }

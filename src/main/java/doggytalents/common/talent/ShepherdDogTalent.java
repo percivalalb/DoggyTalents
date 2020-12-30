@@ -1,5 +1,6 @@
 package doggytalents.common.talent;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -8,14 +9,13 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
+import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,9 +31,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class ShepherdDogTalent extends Talent {
+public class ShepherdDogTalent extends TalentInstance {
 
     private static DataKey<EntityAIShepherdDog> SHEPHERD_AI = DataKey.make();
+
+    public ShepherdDogTalent(Talent talentIn, int levelIn) {
+        super(talentIn, levelIn);
+    }
 
     @Override
     public void init(AbstractDogEntity dogIn) {
@@ -239,7 +243,7 @@ public class ShepherdDogTalent extends Talent {
                     }
 
                     // Remove dead or faraway entities
-                    List<AnimalEntity> toRemove = Lists.newArrayList();
+                    List<AnimalEntity> toRemove = new ArrayList<>();
                     for (AnimalEntity target : this.targets) {
                         if (!target.isAlive() || target.getDistance(this.dog) > 25D)
                             toRemove.add(target);

@@ -1,9 +1,11 @@
 package doggytalents;
 
+import doggytalents.common.talent.HappyEaterTalent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import doggytalents.api.feature.FoodHandler;
+import doggytalents.api.feature.InteractHandler;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.data.DTBlockstateProvider;
@@ -18,6 +20,7 @@ import doggytalents.common.data.DTItemTagsProvider;
 import doggytalents.common.data.DTLootTableProvider;
 import doggytalents.common.data.DTRecipeProvider;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.HelmetInteractHandler;
 import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
 import doggytalents.common.lib.Constants;
@@ -111,8 +114,10 @@ public class DoggyTalents2 {
     public void commonSetup(final FMLCommonSetupEvent event) {
         PacketHandler.init();
         //TODO CriteriaTriggers.register(criterion)
-        FoodHandler.registerHandler(DoggyTalents.HAPPY_EATER.get());
         FoodHandler.registerHandler(new MeatFoodHandler());
+
+        FoodHandler.registerDynPredicate(HappyEaterTalent.INNER_DYN_PRED);
+        InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
         DogRespawnCommand.registerSerilizers();
         DogEntity.initDataParameters();

@@ -13,6 +13,7 @@ import doggytalents.common.util.Util;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.IDyeableArmorItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
@@ -70,6 +71,16 @@ public class DyeableAccessory extends Accessory {
 
     public AccessoryInstance create(int color) {
         return new DyeableAccessoryInstance(color);
+    }
+
+    @Override
+    public AccessoryInstance createFromStack(ItemStack stackIn) {
+        Item item = stackIn.getItem();
+        if (item instanceof IDyeableArmorItem) {
+            return this.create(((IDyeableArmorItem) item).getColor(stackIn));
+        }
+
+        return this.getDefault();
     }
 
     public class DyeableAccessoryInstance extends AccessoryInstance implements IDogAlteration {

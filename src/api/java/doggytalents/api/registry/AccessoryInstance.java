@@ -2,11 +2,13 @@ package doggytalents.api.registry;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class AccessoryInstance {
 
@@ -24,6 +26,30 @@ public class AccessoryInstance {
 
     public Accessory getAccessory() {
         return this.accessory;
+    }
+
+    public boolean of(Supplier<Accessory> accessoryIn) {
+        return this.of(accessoryIn.get());
+    }
+
+    public boolean of(Accessory accessoryIn) {
+        return this.of(accessoryIn.delegate);
+    }
+
+    public boolean of(IRegistryDelegate<Accessory> accessoryDelegateIn) {
+        return accessoryDelegateIn.equals(this.accessory.delegate);
+    }
+
+    public boolean ofType(Supplier<AccessoryType> accessoryTypeIn) {
+        return this.ofType(accessoryTypeIn.get());
+    }
+
+    public boolean ofType(AccessoryType accessoryTypeIn) {
+        return this.ofType(accessoryTypeIn.delegate);
+    }
+
+    public boolean ofType(IRegistryDelegate<AccessoryType> accessoryTypeDelegateIn) {
+        return accessoryTypeDelegateIn.equals(this.accessory.getType().delegate);
     }
 
     public AccessoryInstance copy() {

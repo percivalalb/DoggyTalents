@@ -40,7 +40,7 @@ public class HelmetInteractHandler implements IDogItem {
                 RegistryObject<? extends Accessory> associatedAccessory = MAPPING.get(stack.getItem().delegate);
 
                 if (associatedAccessory != null) {
-                    AccessoryInstance inst = associatedAccessory.get().createFromStack(stack);
+                    AccessoryInstance inst = associatedAccessory.get().createFromStack(stack.copy().split(1));
 
                     if (dogIn.addAccessory(inst)) {
                         dogIn.consumeItemFromStack(playerIn, stack);

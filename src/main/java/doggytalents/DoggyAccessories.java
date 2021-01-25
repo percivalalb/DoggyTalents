@@ -3,13 +3,7 @@ package doggytalents;
 import java.util.function.Supplier;
 
 import doggytalents.api.registry.Accessory;
-import doggytalents.common.entity.accessory.Band;
-import doggytalents.common.entity.accessory.Clothing;
-import doggytalents.common.entity.accessory.Collar;
-import doggytalents.common.entity.accessory.DyeableAccessory;
-import doggytalents.common.entity.accessory.Glasses;
-import doggytalents.common.entity.accessory.Helmet;
-import doggytalents.common.entity.accessory.LeatherHelmet;
+import doggytalents.common.entity.accessory.*;
 import doggytalents.common.lib.Constants;
 import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
@@ -34,14 +28,37 @@ public class DoggyAccessories {
 
     public static final RegistryObject<Helmet> IRON_HELMET = registerHelmet("iron_helmet", () -> Items.IRON_HELMET);
     public static final RegistryObject<Helmet> DIAMOND_HELMET = registerHelmet("diamond_helmet", () -> Items.DIAMOND_HELMET);
-    public static final RegistryObject<LeatherHelmet> LEATHER_HELMET = register("leather_helmet", () -> new LeatherHelmet(Items.LEATHER_HELMET.delegate));
     public static final RegistryObject<Helmet> GOLDEN_HELMET = registerHelmet("golden_helmet", () -> Items.GOLDEN_HELMET);
     public static final RegistryObject<Helmet> CHAINMAIL_HELMET = registerHelmet("chainmail_helmet", () -> Items.CHAINMAIL_HELMET);
     public static final RegistryObject<Helmet> TURTLE_HELMET = registerHelmet("turtle_helmet", () -> Items.TURTLE_HELMET);
     public static final RegistryObject<Helmet> NETHERITE_HELMET = registerHelmet("netherite_helmet", () -> Items.NETHERITE_HELMET);
 
+    public static final RegistryObject<ArmourAccessory> IRON_BODY_PIECE = registerBodyPiece("iron_body_piece", () -> Items.IRON_CHESTPLATE);
+    public static final RegistryObject<ArmourAccessory> DIAMOND_BODY_PIECE = registerBodyPiece("diamond_body_piece", () -> Items.DIAMOND_CHESTPLATE);
+    public static final RegistryObject<ArmourAccessory> GOLDEN_BODY_PIECE = registerBodyPiece("golden_body_piece", () -> Items.GOLDEN_CHESTPLATE);
+    public static final RegistryObject<ArmourAccessory> CHAINMAIL_BODY_PIECE = registerBodyPiece("chainmail_body_piece", () -> Items.CHAINMAIL_CHESTPLATE);
+    public static final RegistryObject<ArmourAccessory> NETHERITE_BODY_PIECE = registerBodyPiece("netherite_body_piece", () -> Items.NETHERITE_CHESTPLATE);
+
+    public static final RegistryObject<ArmourAccessory> IRON_BOOTS = registerBoots("iron_boots", () -> Items.IRON_BOOTS);
+    public static final RegistryObject<ArmourAccessory> DIAMOND_BOOTS = registerBoots("diamond_boots", () -> Items.DIAMOND_BOOTS);
+    public static final RegistryObject<ArmourAccessory> GOLDEN_BOOTS = registerBoots("golden_boots", () -> Items.GOLDEN_BOOTS);
+    public static final RegistryObject<ArmourAccessory> CHAINMAIL_BOOTS = registerBoots("chainmail_boots", () -> Items.CHAINMAIL_BOOTS);
+    public static final RegistryObject<ArmourAccessory> NETHERITE_BOOTS = registerBoots("netherite_boots", () -> Items.NETHERITE_BOOTS);
+
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_HELMET = register("leather_helmet", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.HEAD, Items.LEATHER_HELMET.delegate));
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BODY_PIECE = register("leather_body_piece", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.CLOTHING, Items.LEATHER_CHESTPLATE.delegate));
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BOOTS = register("leather_boots", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.FEET, Items.LEATHER_BOOTS.delegate));
+
     private static RegistryObject<Helmet> registerHelmet(final String name, final Supplier<? extends IItemProvider> itemIn) {
         return ACCESSORIES.register(name, () -> new Helmet(itemIn));
+    }
+
+    private static RegistryObject<ArmourAccessory> registerBoots(final String name, final Supplier<? extends IItemProvider> itemIn) {
+        return ACCESSORIES.register(name, () -> new ArmourAccessory(DoggyAccessoryTypes.FEET, itemIn));
+    }
+
+    private static RegistryObject<ArmourAccessory> registerBodyPiece(final String name, final Supplier<? extends IItemProvider> itemIn) {
+        return ACCESSORIES.register(name, () -> new ArmourAccessory(DoggyAccessoryTypes.CLOTHING, itemIn));
     }
 
     private static <T extends Accessory> RegistryObject<T> register(final String name, final Supplier<T> sup) {

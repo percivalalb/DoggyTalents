@@ -86,7 +86,7 @@ public class AccessoryInstance {
 
     @SuppressWarnings("unchecked")
     public <T extends AccessoryInstance> T cast(Class<T> type) {
-        if (this.getClass().isAssignableFrom(type)) {
+        if (type.isAssignableFrom(this.getClass())) {
             return (T) this;
         } else {
             throw new RuntimeException("Could not cast " + this.getClass().getName() + " to " + type.getName());

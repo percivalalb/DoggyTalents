@@ -12,10 +12,13 @@ import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.util.Optional;
 
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
@@ -46,10 +49,15 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             double d0 = this.renderManager.squareDistanceTo(entityIn);
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
-                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
+                double armorValue = 0.0D;
+                if (entityIn.getAttribute(Attributes.ARMOR) != null) {
+                    armorValue = entityIn.getAttribute(Attributes.ARMOR).getValue();
+                }
+                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s(%d)" : "%s(%d)(%d)",
                         new TranslationTextComponent(tip).getString(),
                         MathHelper.ceil(entityIn.getDogHunger()),
-                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString());
+                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString(),
+                        (int) armorValue);
 
                 RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 

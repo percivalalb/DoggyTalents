@@ -1,5 +1,6 @@
 package doggytalents.common.storage;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.annotation.Nullable;
@@ -9,10 +10,12 @@ import doggytalents.DoggyItems;
 import doggytalents.api.feature.EnumGender;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
+import doggytalents.common.util.Util;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.math.vector.Vector3d;
@@ -117,43 +120,49 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public LivingEntity getOwner(ServerWorld worldIn) {
-        boolean flag = false;
+    public Optional<LivingEntity> getOwner(@Nullable World worldIn) {
+        if (worldIn == null) {
+            return Optional.ofNullable(this.owner);
+        }
 
-        for (ServerWorld world : worldIn.getServer().getWorlds()) {
-            LivingEntity possibleOwner = WorldUtil.getCachedEntity(world, LivingEntity.class, this.owner, this.ownerId);
+        MinecraftServer server = worldIn.getServer();
+        if (server == null) {
+            throw new IllegalArgumentException("worldIn must be of ServerWorld");
+        }
+
+        for (ServerWorld world : server.getWorlds()) {
+            LivingEntity possibleOwner = WorldUtil.getCachedEntity(world, LivingEntity.class, this.owner, this.uuid);
             if (possibleOwner != null) {
                 this.owner = possibleOwner;
-                flag = true;
-                break;
+                return Optional.of(this.owner);
             }
         }
 
-        if (!flag) {
-            this.owner = null;
-        }
-
-        return this.owner;
+        this.owner = null;
+        return Optional.empty();
     }
 
     @Nullable
-    public DogEntity getDog(ServerWorld worldIn) {
-        boolean flag = false;
+    public Optional<DogEntity> getDog(@Nullable World worldIn) {
+        if (worldIn == null) {
+            return Optional.ofNullable(this.dog);
+        }
 
-        for (ServerWorld world : worldIn.getServer().getWorlds()) {
+        MinecraftServer server = worldIn.getServer();
+        if (server == null) {
+            throw new IllegalArgumentException("worldIn must be of ServerWorld");
+        }
+
+        for (ServerWorld world : server.getWorlds()) {
             DogEntity possibleDog = WorldUtil.getCachedEntity(world, DogEntity.class, this.dog, this.uuid);
             if (possibleDog != null) {
                 this.dog = possibleDog;
-                flag = true;
-                break;
+                return Optional.of(this.dog);
             }
         }
 
-        if (!flag) {
-            this.dog = null;
-        }
-
-        return this.dog;
+        this.dog = null;
+        return Optional.empty();
     }
 
     public boolean shouldDisplay(World worldIn, PlayerEntity playerIn, Hand handIn) {
@@ -161,8 +170,13 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public ITextComponent getName(World worldIn) {
-        return this.name;
+    public ITextComponent getName(@Nullable World worldIn) {
+        return this.getDog(worldIn).map(DogEntity::getDisplayName).orElse(this.name);
+    }
+
+    @Nullable
+    public Vector3d getPos(@Nullable ServerWorld worldIn) {
+        return this.getDog(worldIn).map(DogEntity::getPositionVec).orElse(this.position);
     }
 
     @Nullable

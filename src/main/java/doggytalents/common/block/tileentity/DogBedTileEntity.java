@@ -10,6 +10,8 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.storage.DogLocationData;
+import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.block.BlockState;
@@ -98,7 +100,6 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     public void setOwner(@Nullable DogEntity owner) {
         this.setOwner(owner == null ? null : owner.getUniqueID());
-        this.ownerName = owner == null ? null : owner.getName();
 
         this.dog = owner;
 
@@ -128,6 +129,17 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     @Nullable
     public ITextComponent getOwnerName() {
+        if (this.dogUUID == null || this.world == null) { return null; }
+
+        ITextComponent name = DogLocationStorage
+                .get(this.world)
+                .getData(this.dogUUID)
+                .getName(this.world);
+
+        if (name != null) {
+            this.ownerName = name;
+        }
+
         return this.ownerName;
     }
 
@@ -137,11 +149,6 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     public void setBedName(@Nullable ITextComponent nameIn) {
         this.name = nameIn;
-        this.markDirty();
-    }
-
-    public void setOwnerName(@Nullable ITextComponent nameIn) {
-        this.ownerName = nameIn;
         this.markDirty();
     }
 }

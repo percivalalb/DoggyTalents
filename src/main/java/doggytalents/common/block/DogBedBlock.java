@@ -125,10 +125,8 @@ public class DogBedBlock extends Block {
             CompoundNBT tag = stack.getChildTag("doggytalents");
             if (tag != null) {
                 ITextComponent name = NBTUtil.getTextComponent(tag, "name");
-                ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
                 UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
                 dogBedTileEntity.setBedName(name);
-                dogBedTileEntity.setOwnerName(ownerName);
                 dogBedTileEntity.setOwner(ownerId);
             }
         }

@@ -22,13 +22,8 @@
                   "op": "replace"
                 },
                 {
-                  "source": "ownerIdMost",
-                  "target": "doggytalents.ownerIdMost",
-                  "op": "replace"
-                },
-                {
-                  "source": "ownerIdLeast",
-                  "target": "doggytalents.ownerIdLeast",
+                  "source": "ownerId",
+                  "target": "doggytalents.ownerId",
                   "op": "replace"
                 },
                 {

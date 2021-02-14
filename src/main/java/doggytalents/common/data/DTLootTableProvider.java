@@ -68,8 +68,7 @@ public class DTLootTableProvider extends LootTableProvider {
                                          CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
                                          .replaceOperation("casingId", "doggytalents.casingId")
                                          .replaceOperation("beddingId", "doggytalents.beddingId")
-                                         .replaceOperation("ownerIdMost", "doggytalents.ownerIdMost")
-                                         .replaceOperation("ownerIdLeast", "doggytalents.ownerIdLeast")
+                                         .replaceOperation("ownerId", "doggytalents.ownerId")
                                          .replaceOperation("name", "doggytalents.name")
                                          .replaceOperation("ownerName", "doggytalents.ownerName")
                                  ))));

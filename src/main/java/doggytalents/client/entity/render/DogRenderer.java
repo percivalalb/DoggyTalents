@@ -35,7 +35,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     @Override
     public void render(DogEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         if (entityIn.isDogWet()) {
-            float f = entityIn.getBrightness() * entityIn.getShadingWhileWet(partialTicks);
+            float f = entityIn.getShadingWhileWet(partialTicks);
             this.entityModel.setTint(f, f, f);
         }
 

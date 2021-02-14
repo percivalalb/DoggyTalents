@@ -277,7 +277,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @OnlyIn(Dist.CLIENT)
     public float getShadingWhileWet(float partialTicks) {
-        return 0.75F + MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.25F;
+        return Math.min(0.5F + MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.5F, 1.0F);
     }
 
     @Override

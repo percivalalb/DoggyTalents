@@ -242,7 +242,7 @@
    "dogbed.casing.null": "Null",
    "dogbed.bedding.missing": "Missing: %s",
    "dogbed.casing.missing": "Missing: %s",
-   
+
    "dogbed.bedding.minecraft.white_wool": "White Wool Bedding",
    "dogbed.bedding.minecraft.orange_wool": "Orange Wool Bedding",
    "dogbed.bedding.minecraft.magenta_wool": "Magenta Wool Bedding",
@@ -265,6 +265,8 @@
    "dogbed.casing.minecraft.jungle_planks": "Jungle Plank Casing",
    "dogbed.casing.minecraft.acacia_planks": "Acacia Plank Casing",
    "dogbed.casing.minecraft.dark_oak_planks": "Dark Oak Plank Casing",
+   "dogbed.casing.minecraft.crimson_planks": "Crimson Plank Casing",
+   "dogbed.casing.minecraft.warped_planks": "Warped Plank Casing",
 
    "dogbed.casing.autumnity.maple_planks": "Maple Plank Casing",
 

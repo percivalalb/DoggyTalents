@@ -1148,10 +1148,12 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void remove(boolean keepData) {
         super.remove(keepData);
+    }
 
-        if (!keepData) {
-            this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
-        }
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
     }
 
     @Override

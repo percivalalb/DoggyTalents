@@ -164,7 +164,7 @@ public class DogBedBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
-        } else if (handIn == Hand.MAIN_HAND) {
+        } else {
             DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
 
             if (dogBedTileEntity != null) {
@@ -190,9 +190,9 @@ public class DogBedBlock extends Block {
                             break;
                         }
 
-                        if (closestSitting == null && dog.isSitting()) {
+                        if (closestSitting == null && dog.isEntitySleeping()) {
                             closestSitting = dog;
-                        } else if (closestStanding == null && !dog.isSitting()) {
+                        } else if (closestStanding == null && !dog.isEntitySleeping()) {
                             closestStanding = dog;
                         }
                     }
@@ -222,8 +222,6 @@ public class DogBedBlock extends Block {
             }
             return ActionResultType.SUCCESS;
         }
-
-        return ActionResultType.FAIL;
     }
 
     @Override

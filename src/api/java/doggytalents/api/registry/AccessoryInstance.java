@@ -28,27 +28,27 @@ public class AccessoryInstance {
         return this.accessory;
     }
 
-    public boolean of(Supplier<Accessory> accessoryIn) {
-        return this.of(accessoryIn.get());
+    public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
+        return this.accessory.of(accessoryIn);
     }
 
-    public boolean of(Accessory accessoryIn) {
-        return this.of(accessoryIn.delegate);
+    public <T extends Accessory> boolean of(T accessoryIn) {
+        return this.accessory.of(accessoryIn);
     }
 
-    public boolean of(IRegistryDelegate<Accessory> accessoryDelegateIn) {
-        return accessoryDelegateIn.equals(this.accessory.delegate);
+    public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
+        return this.accessory.of(accessoryDelegateIn);
     }
 
-    public boolean ofType(Supplier<AccessoryType> accessoryTypeIn) {
+    public <T extends AccessoryType> boolean ofType(Supplier<T> accessoryTypeIn) {
         return this.ofType(accessoryTypeIn.get());
     }
 
-    public boolean ofType(AccessoryType accessoryTypeIn) {
+    public <T extends AccessoryType> boolean ofType(T accessoryTypeIn) {
         return this.ofType(accessoryTypeIn.delegate);
     }
 
-    public boolean ofType(IRegistryDelegate<AccessoryType> accessoryTypeDelegateIn) {
+    public <T extends AccessoryType> boolean ofType(IRegistryDelegate<T> accessoryTypeDelegateIn) {
         return accessoryTypeDelegateIn.equals(this.accessory.getType().delegate);
     }
 

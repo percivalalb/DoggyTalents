@@ -9,7 +9,9 @@ import doggytalents.common.util.ColourCache;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IItemProvider;
+import net.minecraftforge.common.util.Constants;
 
 import java.util.function.Supplier;
 
@@ -22,16 +24,35 @@ public class LeatherArmourAccessory extends ArmourAccessory {
     @Override
     public AccessoryInstance create(ItemStack armourStack) {
         if (armourStack.isEmpty()) {
-            if (this.delegate.equals(DoggyAccessories.IRON_HELMET.get().delegate)) {
-                armourStack = new ItemStack(Items.IRON_HELMET);
-            } else if (this.delegate.equals(DoggyAccessories.DIAMOND_HELMET.get().delegate)) {
-                armourStack = new ItemStack(Items.DIAMOND_HELMET);
-            } // TODO
-
-            //else throw Illegi Arguemnt
+            if (this.of(DoggyAccessories.LEATHER_HELMET)) {
+                armourStack = new ItemStack(Items.LEATHER_HELMET);
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
 
         return new LeatherArmourAccessory.Instance(armourStack.copy());
+    }
+
+    @Override
+    public AccessoryInstance read(CompoundNBT compound) {
+        AccessoryInstance inst = super.read(compound);
+
+        if (this.of(DoggyAccessories.LEATHER_HELMET)) {
+            // Backwards compatibility
+            if (compound.contains("color", Constants.NBT.TAG_ANY_NUMERIC)) {
+                int color = compound.getInt("color");
+
+                Instance def = inst.cast(Instance.class);
+                if (def.armourStack.getItem() instanceof IDyeableArmorItem) {
+                    ((IDyeableArmorItem) def.armourStack.getItem()).setColor(def.armourStack, color);
+                }
+
+                def.color = ColourCache.make(color);
+            }
+        }
+
+        return inst;
     }
 
     public class Instance extends ArmourAccessory.Instance implements IColoredObject {

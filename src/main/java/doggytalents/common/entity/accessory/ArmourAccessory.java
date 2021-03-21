@@ -37,13 +37,21 @@ public class ArmourAccessory extends Accessory {
 
     public AccessoryInstance create(ItemStack armourStack) {
         if (armourStack.isEmpty()) {
-            if (this.delegate.equals(DoggyAccessories.IRON_HELMET.get().delegate)) {
+            if (this.of(DoggyAccessories.IRON_HELMET)) {
                 armourStack = new ItemStack(Items.IRON_HELMET);
-            } else if (this.delegate.equals(DoggyAccessories.DIAMOND_HELMET.get().delegate)) {
+            } else if (this.of(DoggyAccessories.DIAMOND_HELMET)) {
                 armourStack = new ItemStack(Items.DIAMOND_HELMET);
-            } // TODO
-
-            //else throw Illegi Arguemnt
+            } else if (this.of(DoggyAccessories.GOLDEN_HELMET)) {
+                armourStack = new ItemStack(Items.GOLDEN_HELMET);
+            } else if (this.of(DoggyAccessories.CHAINMAIL_HELMET)) {
+                armourStack = new ItemStack(Items.CHAINMAIL_HELMET);
+            } else if (this.of(DoggyAccessories.TURTLE_HELMET)) {
+                armourStack = new ItemStack(Items.TURTLE_HELMET);
+            } else if (this.of(DoggyAccessories.NETHERITE_HELMET)) {
+                armourStack = new ItemStack(Items.NETHERITE_HELMET);
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
 
         return new ArmourAccessory.Instance(armourStack.copy());

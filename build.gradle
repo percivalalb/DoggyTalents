@@ -108,13 +108,13 @@ dependencies {
 }
 
 task sourcesJar(type: Jar) {
-    classifier = "sources"
+    artifactClassifier = "sources"
     from sourceSets.main.allJava
     from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-    classifier = "api"
+    artifactClassifier = "api"
     from sourceSets.api.output
     from sourceSets.api.allJava
 }
@@ -137,7 +137,7 @@ jar {
             "Specification-Vendor": "percivalalb",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
+            "Implementation-Version": "${archiveVersion}",
             "Implementation-Vendor" :"percivalalb",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])

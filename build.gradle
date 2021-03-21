@@ -108,13 +108,13 @@ dependencies {
 }
 
 task sourcesJar(type: Jar) {
-    artifactClassifier = "sources"
+    archiveClassifier = 'sources'
     from sourceSets.main.allJava
     from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
-    artifactClassifier = "api"
+    archiveClassifier = 'api'
     from sourceSets.api.output
     from sourceSets.api.allJava
 }

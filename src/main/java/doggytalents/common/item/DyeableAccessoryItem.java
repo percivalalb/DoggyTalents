@@ -10,6 +10,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+import net.minecraft.item.Item.Properties;
+
 public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmorItem {
 
     private Supplier<? extends DyeableAccessory> accessory;

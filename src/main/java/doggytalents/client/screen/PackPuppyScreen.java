@@ -15,7 +15,7 @@ public class PackPuppyScreen extends ContainerScreen<PackPuppyContainer> {
 
     public PackPuppyScreen(PackPuppyContainer packPuppy, PlayerInventory playerInventory, ITextComponent displayName) {
         super(packPuppy, playerInventory, displayName);
-        //TODO this.field_147002_h.allowUserInput = false;
+        //TODO this.container.allowUserInput = false;
     }
 
     @Override

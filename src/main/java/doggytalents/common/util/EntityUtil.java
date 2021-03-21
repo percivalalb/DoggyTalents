@@ -59,7 +59,7 @@ public class EntityUtil {
     }
 
     private static boolean isTeleportFriendlyBlock(LivingEntity entityIn, BlockPos pos, boolean teleportToLeaves) {
-        PathNodeType pathnodetype = WalkNodeProcessor.func_237231_a_(entityIn.world, pos.toMutable());
+        PathNodeType pathnodetype = WalkNodeProcessor.getFloorNodeType(entityIn.world, pos.toMutable());
         if (pathnodetype != PathNodeType.WALKABLE) {
             return false;
         } else {

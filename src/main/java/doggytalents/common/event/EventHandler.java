@@ -48,7 +48,7 @@ public class EventHandler {
                     DogEntity dog = DoggyEntityTypes.DOG.get().create(world);
                     dog.setTamedBy(player);
                     dog.setHealth(dog.getMaxHealth());
-                    dog.func_233687_w_(false);
+                    dog.setSitting(false);
                     dog.setGrowingAge(wolf.getGrowingAge());
                     dog.setPositionAndRotation(wolf.getPosX(), wolf.getPosY(), wolf.getPosZ(), wolf.rotationYaw, wolf.rotationPitch);
 

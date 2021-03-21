@@ -12,6 +12,8 @@ import net.minecraft.network.datasync.IDataSerializer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
+import java.util.Map.Entry;
+
 public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
 
     private Supplier<IDataSerializer<T>> serializer;

@@ -9,6 +9,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class SizeBoneItem extends Item implements IDogItem {
 
     private final SizeBoneItem.Type type;

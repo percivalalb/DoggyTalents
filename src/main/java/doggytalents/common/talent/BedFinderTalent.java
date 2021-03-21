@@ -29,7 +29,7 @@ public class BedFinderTalent extends TalentInstance {
 
                     if (dogIn.startRiding(playerIn)) {
                         if (!dogIn.world.isRemote) {
-                            dogIn.func_233687_w_(true);
+                            dogIn.setSitting(true);
                         }
 
                         playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);

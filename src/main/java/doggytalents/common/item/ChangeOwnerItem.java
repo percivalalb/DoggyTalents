@@ -10,6 +10,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class ChangeOwnerItem extends Item implements IDogItem {
 
     public ChangeOwnerItem(Properties properties) {
@@ -24,7 +26,7 @@ public class ChangeOwnerItem extends Item implements IDogItem {
                 dogIn.setTamedBy(playerIn);
                 dogIn.getNavigator().clearPath();
                 dogIn.setAttackTarget((LivingEntity) null);
-                dogIn.func_233687_w_(true);
+                dogIn.setSitting(true);
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
 
                 //TODO playerIn.sendMessage(new TranslationTextComponent(""));

@@ -11,6 +11,8 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class SmallButton extends Button {
 
     public SmallButton(int x, int y, ITextComponent text, IPressable onPress) {
@@ -18,7 +20,7 @@ public class SmallButton extends Button {
     }
 
     @Override
-    public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
        Minecraft mc = Minecraft.getInstance();
        FontRenderer font = mc.fontRenderer;
        mc.getTextureManager().bindTexture(Resources.SMALL_WIDGETS);

@@ -87,8 +87,8 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
            return this.withRewards(rewardsBuilder.build());
         }
 
-        public DoggyTalentsAdvancements.Builder withRewards(AdvancementRewards p_200274_1_) {
-           this.rewards = p_200274_1_;
+        public DoggyTalentsAdvancements.Builder withRewards(AdvancementRewards rewards) {
+           this.rewards = rewards;
            return this;
         }
 
@@ -132,7 +132,7 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
         }
 
         public Advancement build(ResourceLocation id) {
-           if (!this.resolveParent((p_199750_0_) -> {
+           if (!this.resolveParent((parentID) -> {
               return null;
            })) {
               throw new IllegalStateException("Tried to build incomplete advancement!");

@@ -14,6 +14,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class DogShearsItem extends Item implements IDogItem {
 
     private static DataKey<Integer> COOLDOWN = DataKey.make();

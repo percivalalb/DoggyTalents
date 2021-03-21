@@ -24,6 +24,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class RadarItem extends Item {
 
     public RadarItem(Properties properties) {

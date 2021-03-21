@@ -41,7 +41,7 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entityHit = ((EntityRayTraceResult) result).getEntity();
 
-            Entity thrower = this.func_234616_v_();
+            Entity thrower = this.getShooter();
 
             if (thrower instanceof LivingEntity && entityHit instanceof LivingEntity) {
                 LivingEntity livingThrower = (LivingEntity) thrower;

@@ -14,7 +14,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BreedGoal extends Goal {
 
-    private static final EntityPredicate breedPredicate = (new EntityPredicate()).setDistance(8.0D).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired().setSkipAttackChecks();
+    private static final EntityPredicate breedPredicate = (new EntityPredicate()).setDistance(8.0D).allowInvulnerable().allowFriendlyFire().setIgnoresLineOfSight().setSkipAttackChecks();
     private final AnimalEntity animal;
     private final Class<? extends AnimalEntity> mateClass;
     private final World world;
@@ -62,7 +62,7 @@ public class BreedGoal extends Goal {
         this.animal.getNavigator().tryMoveToEntityLiving(this.targetMate, this.moveSpeed);
         ++this.spawnBabyDelay;
         if (this.spawnBabyDelay >= 60 && this.animal.getDistanceSq(this.targetMate) < 9.0D) {
-            this.animal.func_234177_a_((ServerWorld) this.world, this.targetMate);
+            this.animal.spawnBabyAnimal((ServerWorld) this.world, this.targetMate);
         }
     }
 

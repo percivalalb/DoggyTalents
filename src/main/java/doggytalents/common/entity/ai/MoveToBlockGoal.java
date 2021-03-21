@@ -20,7 +20,7 @@ public class MoveToBlockGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        return this.dog.getTargetBlock() != null && !this.dog.isSitting();
+        return this.dog.getTargetBlock() != null && !this.dog.isQueuedToSit();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class MoveToBlockGoal extends Goal {
         }
 
         this.dog.setTargetBlock(null);
-        this.dog.func_233687_w_(true);
+        this.dog.setSitting(true);
 
         this.dog.world.setEntityState(this.dog, Constants.EntityState.WOLF_HEARTS);
     }

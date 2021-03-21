@@ -56,7 +56,7 @@ public class WolfMountTalent extends TalentInstance {
             if (dogIn.canInteract(playerIn) && this.level() > 0) { // Dog
                 if (playerIn.getRidingEntity() == null && !playerIn.isOnGround()) { // Player
                     if (!dogIn.world.isRemote) {
-                        dogIn.func_233687_w_(false);
+                        dogIn.setSitting(false);
                         playerIn.rotationYaw = dogIn.rotationYaw;
                         playerIn.rotationPitch = dogIn.rotationPitch;
                         playerIn.startRiding(dogIn);

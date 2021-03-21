@@ -31,6 +31,8 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import net.minecraft.item.Item.Properties;
+
 public class WhistleItem extends Item {
 
     public WhistleItem(Properties properties) {
@@ -67,7 +69,7 @@ public class WhistleItem extends Item {
             if (mode == 0) { // Stand
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
-                        dog.func_233687_w_(false);
+                        dog.setSitting(false);
                         dog.getNavigator().clearPath();
                         dog.setAttackTarget(null);
                         if (dog.getMode() == EnumMode.WANDERING) {
@@ -108,7 +110,7 @@ public class WhistleItem extends Item {
             else if (mode == 2) { // Stay
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
-                        dog.func_233687_w_(true);
+                        dog.setSitting(true);
                         dog.getNavigator().clearPath();
                         dog.setAttackTarget(null);
                         if (dog.getMode() == EnumMode.WANDERING) {
@@ -131,12 +133,12 @@ public class WhistleItem extends Item {
                 if (!world.isRemote) {
                     for (DogEntity dog : dogsList) {
                         if (dog.getMaxHealth() / 2 >= dog.getHealth()) {
-                            dog.func_233687_w_(true);
+                            dog.setSitting(true);
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget(null);
                         }
                         else {
-                            dog.func_233687_w_(false);
+                            dog.setSitting(false);
                             dog.getNavigator().clearPath();
                             dog.setAttackTarget(null);
                         }
@@ -168,7 +170,7 @@ public class WhistleItem extends Item {
                     world.playSound((PlayerEntity)null, player.getPosition(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
                     DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
-                    doggyBeam.func_234612_a_(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
+                    doggyBeam.setDirectionAndMovement(player, player.rotationPitch, player.rotationYaw, 0.0F, 2.0F, 1.0F);
                     world.addEntity(doggyBeam);
                 }
 

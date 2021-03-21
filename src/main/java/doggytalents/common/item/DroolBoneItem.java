@@ -10,6 +10,8 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class DroolBoneItem extends Item {
 
     public Supplier<? extends Item> altBone;

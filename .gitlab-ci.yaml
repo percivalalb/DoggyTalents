@@ -1,0 +1,33 @@
+# Known to run on a centos-8, java-openjdk-11 machine
+# with gitlab runner installed
+
+stages:
+  - build
+  - publish
+
+variables:
+  GIT_DEPTH: 0 # clone all
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
+
+cache:
+  paths:
+    - .gradle
+    - build
+
+build:
+  stage: build
+  script:
+    - ./gradlew build
+  artifacts:
+    paths:
+      - 'build/libs/*.jar'
+    expire_in: 1 week
+
+publish:
+  stage: publish
+  script:
+    - './gradlew curseforge'
+  when: manual

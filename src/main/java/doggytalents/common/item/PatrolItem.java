@@ -21,6 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
+import net.minecraft.item.Item.Properties;
+
 public class PatrolItem extends Item implements IDogItem  {
 
     public static DataKey<List<BlockPos>> POS = DataKey.make();

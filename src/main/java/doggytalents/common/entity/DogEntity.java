@@ -282,8 +282,8 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getShakeAngle(float partialTicks, float p_70923_2_) {
-        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + p_70923_2_) / 1.8F;
+    public float getShakeAngle(float partialTicks, float offset) {
+        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + offset) / 1.8F;
         if (f < 0.0F) {
             f = 0.0F;
         } else if (f > 1.0F) {
@@ -325,7 +325,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public Vector3d func_241205_ce_() {
+    public Vector3d getLeashStartPosition() {
         return new Vector3d(0.0D, 0.6F * this.getEyeHeight(), this.getWidth() * 0.4F);
     }
 
@@ -481,7 +481,7 @@ public class DogEntity extends AbstractDogEntity {
 
             // If the dog has a food bowl in this dimension then check if it is still there
             // Only check if the chunk it is in is loaded
-            if (bowlPos.isPresent() && this.world.isBlockLoaded(bowlPos.get()) && !this.world.getBlockState(bowlPos.get()).isIn(DoggyBlocks.FOOD_BOWL.get())) {
+            if (bowlPos.isPresent() && this.world.isBlockLoaded(bowlPos.get()) && !this.world.getBlockState(bowlPos.get()).matchesBlock(DoggyBlocks.FOOD_BOWL.get())) {
                 this.setBowlPos(dimKey, Optional.empty());
             }
         }
@@ -490,7 +490,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
 
         ItemStack stack = player.getHeldItem(hand);
 
@@ -513,7 +513,7 @@ public class DogEntity extends AbstractDogEntity {
                         this.setTamedBy(player);
                         this.navigator.clearPath();
                         this.setAttackTarget((LivingEntity) null);
-                        this.func_233687_w_(true);
+                        this.setSitting(true);
                         this.setHealth(20.0F);
                         this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_HEARTS);
                     } else {
@@ -544,9 +544,9 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        ActionResultType actionresulttype = super.func_230254_b_(player, hand);
+        ActionResultType actionresulttype = super.getEntityInteractionResult(player, hand);
         if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.canInteract(player)) {
-            this.func_233687_w_(!this.isSitting());
+            this.setSitting(!this.isQueuedToSit());
             this.isJumping = false;
             this.navigator.clearPath();
             this.setAttackTarget(null);
@@ -771,7 +771,7 @@ public class DogEntity extends AbstractDogEntity {
                 return false;
             }
 
-            this.func_233687_w_(false);
+            this.setSitting(false);
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
@@ -1014,7 +1014,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public AgeableEntity func_241840_a(ServerWorld worldIn, AgeableEntity partner) {
+    public AgeableEntity createChild(ServerWorld worldIn, AgeableEntity partner) {
         DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerId();
 
@@ -1950,7 +1950,7 @@ public class DogEntity extends AbstractDogEntity {
     public void untame() {
         this.setTamed(false);
         this.navigator.clearPath();
-        this.func_233687_w_(false);
+        this.setSitting(false);
         this.setHealth(8);
 
         this.getTalentMap().clear();

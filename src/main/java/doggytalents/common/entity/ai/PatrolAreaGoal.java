@@ -12,6 +12,8 @@ import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
+import net.minecraft.entity.ai.goal.Goal.Flag;
+
 public class PatrolAreaGoal extends Goal {
 
     public final DogEntity dog;

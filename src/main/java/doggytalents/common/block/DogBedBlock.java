@@ -239,16 +239,16 @@ public class DogBedBlock extends Block {
             ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
 
             if (name != null) {
-                tooltip.add(new StringTextComponent("Bed Name: ").mergeStyle(TextFormatting.WHITE).append(name));
+                tooltip.add(new StringTextComponent("Bed Name: ").mergeStyle(TextFormatting.WHITE).appendSibling(name));
             }
 
             if (ownerName != null) {
-                tooltip.add(new StringTextComponent("Name: ").mergeStyle(TextFormatting.DARK_AQUA).append(ownerName));
+                tooltip.add(new StringTextComponent("Name: ").mergeStyle(TextFormatting.DARK_AQUA).appendSibling(ownerName));
 
             }
 
             if (ownerId != null && (flagIn.isAdvanced() || Screen.hasShiftDown())) {
-                tooltip.add(new StringTextComponent("UUID: ").mergeStyle(TextFormatting.AQUA).append(new StringTextComponent(ownerId.toString())));
+                tooltip.add(new StringTextComponent("UUID: ").mergeStyle(TextFormatting.AQUA).appendSibling(new StringTextComponent(ownerId.toString())));
             }
         }
     }

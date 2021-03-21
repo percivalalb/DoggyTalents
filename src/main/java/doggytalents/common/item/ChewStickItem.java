@@ -9,6 +9,8 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.ActionResultType;
 
+import net.minecraft.item.Item.Properties;
+
 public class ChewStickItem extends Item implements IDogFoodHandler {
 
     public ChewStickItem(Properties properties) {

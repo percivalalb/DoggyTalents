@@ -21,6 +21,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
+import net.minecraft.client.gui.widget.button.Button.IPressable;
+
 public class DogInventoryButton extends Button {
 
     private Screen parent;
@@ -60,7 +62,7 @@ public class DogInventoryButton extends Button {
     }
 
     @Override
-    public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void renderWidget(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
        Minecraft mc = Minecraft.getInstance();
        mc.getTextureManager().bindTexture(Resources.SMALL_WIDGETS);
        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);

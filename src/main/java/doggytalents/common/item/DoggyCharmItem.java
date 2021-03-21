@@ -24,6 +24,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.minecraft.item.Item.Properties;
+
 public class DoggyCharmItem extends Item {
 
     public DoggyCharmItem(Properties properties) {
@@ -43,7 +45,7 @@ public class DoggyCharmItem extends Item {
             BlockState iblockstate = world.getBlockState(blockpos);
 
             BlockPos blockpos1;
-            if (iblockstate.getCollisionShape(world, blockpos).isEmpty()) {
+            if (iblockstate.getCollisionShapeUncached(world, blockpos).isEmpty()) {
                 blockpos1 = blockpos;
             } else {
                 blockpos1 = blockpos.offset(enumfacing);

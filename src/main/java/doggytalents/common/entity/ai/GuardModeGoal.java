@@ -44,6 +44,6 @@ public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
 
     @Override
     protected void findNearestTarget() {
-       this.nearestTarget = this.dog.world.func_225318_b(this.targetClass, this.targetEntitySelector, this.owner, this.dog.getPosX(), this.dog.getPosYEye(), this.dog.getPosZ(), this.getTargetableArea(this.getTargetDistance()));
+       this.nearestTarget = this.dog.world.getClosestEntity(this.targetClass, this.targetEntitySelector, this.owner, this.dog.getPosX(), this.dog.getPosYEye(), this.dog.getPosZ(), this.getTargetableArea(this.getTargetDistance()));
     }
 }

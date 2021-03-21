@@ -11,6 +11,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
+import net.minecraft.item.Item.Properties;
+
 public class TreatItem extends Item implements IDogItem {
 
     private final int maxLevel;
@@ -56,7 +58,7 @@ public class TreatItem extends Item implements IDogItem {
 
                 dogIn.increaseLevel(this.type);
                 dogIn.setHealth(dogIn.getMaxHealth());
-                dogIn.func_233687_w_(true);
+                dogIn.setSitting(true);
                 worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
                 playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".level_up"), dogIn.getUniqueID());
             }

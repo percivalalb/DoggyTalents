@@ -87,7 +87,7 @@ public class DogRespawnData implements IDogData {
         dog.read(compoundnbt);
 
         dog.setMode(EnumMode.DOCILE);
-        dog.func_233687_w_(true);
+        dog.setSitting(true);
 
         return dog;
     }

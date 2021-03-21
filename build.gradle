@@ -1,27 +1,41 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
+        gradlePluginPortal()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.65"
+        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
 // Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
+apply plugin: 'com.matthewprenger.cursegradle'
+apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DoggyTalents-1.16.4'
+archivesBaseName = 'DoggyTalents-1.16.5'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 repositories {
-    maven { url "https://dvs1.progwml6.com/files/maven/" }
-    maven { url "https://modmaven.k-4u.nl" }
+    maven {
+        url "http://dvs1.progwml6.com/files/maven"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
+    maven {
+        url "https://modmaven.k-4u.nl"
+        content {
+            includeGroup "mezz.jei"
+        }
+    }
 }
 
 sourceSets {
@@ -38,9 +52,9 @@ configurations {
 
 minecraft {
     mappings channel: 'snapshot', version: project.mcp_mappings
-    
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-    
+
     runs {
         client {
             taskName 'doggytalents_client'
@@ -89,8 +103,8 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
 }
 
 task sourcesJar(type: Jar) {
@@ -132,4 +146,41 @@ jar {
 
 test {
     useJUnitPlatform()
+}
+
+import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
+task makeChangelog(type: GitChangelogTask) {
+    file = new File("build/changelog.html")
+    untaggedName = "Current release ${project.version}"
+    fromCommit = 'f594ba81ba02d04a2189b6cf15216d2afb6943ba'
+    toRef = 'HEAD'
+
+    templateContent = file('changelog.mustache').getText('UTF-8')
+}
+
+curseforge {
+    apiKey = findProperty('curseforge_api_key') ?: 0
+    project {
+        id = project.curseforge_project_id
+        changelog = file("build/changelog.html")
+        changelogType = 'html'
+        releaseType = findProperty("curseforge_release_type") ?: 'alpha'
+        addArtifact apiJar
+    }
+}
+
+// Must be done in afterEvaluate as the specific curseforge$id
+// task is generated lazily
+afterEvaluate {
+    tasks.named("curseforge${project.curseforge_project_id}").get().dependsOn.add(makeChangelog)
+}
+
+if (project.hasProperty('UPDATE_MAPPINGS')) {
+    extractRangeMap {
+        sources sourceSets.api.java.srcDirs
+    }
+    applyRangeMap {
+        sources sourceSets.api.java.srcDirs
+    }
+    sourceSets.api.java.srcDirs.each { extractMappedNew.addTarget it }
 }

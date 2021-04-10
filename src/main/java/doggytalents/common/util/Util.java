@@ -19,6 +19,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class Util {
 
@@ -175,6 +176,37 @@ public class Util {
             }
         }
         return false;
+    }
+
+    /**
+     * Takes various registry related objects and returns the
+     * registry id of the object it is representing
+     */
+    public static ResourceLocation getRegistryId(Object obj) {
+        if (obj instanceof ResourceLocation) {
+            return (ResourceLocation) obj;
+        }
+
+        if (obj instanceof String) {
+            // Returns null when namespace or path contain invalid
+            // charcters
+            return ResourceLocation.tryCreate((String) obj);
+        }
+
+        if (obj instanceof IForgeRegistryEntry) {
+            return ((IForgeRegistryEntry) obj).getRegistryName();
+        }
+
+        if (obj instanceof IRegistryDelegate) {
+            return ((IRegistryDelegate) obj).name();
+        }
+
+        if (obj instanceof RegistryObject) {
+            return ((RegistryObject) obj).getId();
+        }
+
+
+        return null;
     }
 
 }

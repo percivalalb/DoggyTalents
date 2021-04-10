@@ -60,10 +60,7 @@ import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
-import doggytalents.common.util.BackwardsComp;
-import doggytalents.common.util.Cache;
-import doggytalents.common.util.NBTUtil;
-import doggytalents.common.util.WorldUtil;
+import doggytalents.common.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -130,10 +127,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
 
@@ -1244,68 +1243,82 @@ public class DogEntity extends AbstractDogEntity {
     public void read(CompoundNBT compound) {
 
         // DataFix uuid entries and attribute ids
-        if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
-            UUID entityUUID = NBTUtil.getOldUniqueId(compound, "UUID");
+        try {
+            if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
+                UUID entityUUID = NBTUtil.getOldUniqueId(compound, "UUID");
 
-            compound.putUniqueId("UUID", entityUUID);
-            NBTUtil.removeOldUniqueId(compound, "UUID");
+                compound.putUniqueId("UUID", entityUUID);
+                NBTUtil.removeOldUniqueId(compound, "UUID");
+            }
+
+            if (compound.contains("OwnerUUID", Constants.NBT.TAG_STRING)) {
+                UUID ownerUUID = UUID.fromString(compound.getString("OwnerUUID"));
+
+                compound.putUniqueId("Owner", ownerUUID);
+                compound.remove("OwnerUUID");
+            } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
+                UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), compound.getString("Owner"));
+
+                compound.putUniqueId("Owner", ownerUUID);
+            }
+
+            if (NBTUtil.hasOldUniqueId(compound, "LoveCause")) {
+                UUID entityUUID = NBTUtil.getOldUniqueId(compound, "LoveCause");
+
+                compound.putUniqueId("LoveCause", entityUUID);
+                NBTUtil.removeOldUniqueId(compound, "LoveCause");
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to data fix UUIDs: " + e.getMessage());
         }
 
-        if (compound.contains("OwnerUUID", Constants.NBT.TAG_STRING)) {
-            UUID ownerUUID = UUID.fromString(compound.getString("OwnerUUID"));
+        try {
+            if (compound.contains("Attributes", Constants.NBT.TAG_LIST)) {
+                ListNBT attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
+                for (int i = 0; i < attributeList.size(); i++) {
+                    CompoundNBT attributeData = attributeList.getCompound(i);
+                    String namePrev = attributeData.getString("Name");
+                    Object name = namePrev;
 
-            compound.putUniqueId("Owner", ownerUUID);
-            compound.remove("OwnerUUID");
-        } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
-            UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), compound.getString("Owner"));
+                    switch (namePrev) {
+                    case "forge.swimSpeed": name = ForgeMod.SWIM_SPEED; break;
+                    case "forge.nameTagDistance": name = ForgeMod.NAMETAG_DISTANCE; break;
+                    case "forge.entity_gravity": name = ForgeMod.ENTITY_GRAVITY; break;
+                    case "forge.reachDistance": name = ForgeMod.REACH_DISTANCE; break;
+                    case "generic.maxHealth": name = Attributes.MAX_HEALTH; break;
+                    case "generic.knockbackResistance": name = Attributes.KNOCKBACK_RESISTANCE; break;
+                    case "generic.movementSpeed": name = Attributes.MOVEMENT_SPEED; break;
+                    case "generic.armor": name = Attributes.ARMOR; break;
+                    case "generic.armorToughness": name = Attributes.ARMOR_TOUGHNESS; break;
+                    case "generic.followRange": name = Attributes.FOLLOW_RANGE; break;
+                    case "generic.attackKnockback": name = Attributes.ATTACK_KNOCKBACK; break;
+                    case "generic.attackDamage": name = Attributes.ATTACK_DAMAGE; break;
+                    case "generic.jumpStrength": name = DoggyAttributes.JUMP_POWER; break;
+                    case "generic.critChance": name = DoggyAttributes.CRIT_CHANCE; break;
+                    case "generic.critBonus": name = DoggyAttributes.CRIT_BONUS; break;
+                    }
 
-            compound.putUniqueId("Owner", ownerUUID);
-        }
+                    ResourceLocation attributeRL = Util.getRegistryId(name);
 
-        if (NBTUtil.hasOldUniqueId(compound, "LoveCause")) {
-            UUID entityUUID = NBTUtil.getOldUniqueId(compound, "LoveCause");
+                    if (attributeRL != null && ForgeRegistries.ATTRIBUTES.containsKey(attributeRL)) {
+                        attributeData.putString("Name", attributeRL.toString());
+                        ListNBT modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
+                        for (int j = 0; j < modifierList.size(); j++) {
+                            CompoundNBT modifierData = modifierList.getCompound(j);
+                            if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
+                                UUID entityUUID = NBTUtil.getOldUniqueId(modifierData, "UUID");
 
-            compound.putUniqueId("LoveCause", entityUUID);
-            NBTUtil.removeOldUniqueId(compound, "LoveCause");
-        }
-
-
-        if (compound.contains("Attributes", Constants.NBT.TAG_LIST)) {
-            ListNBT attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < attributeList.size(); i++) {
-                CompoundNBT attributeData = attributeList.getCompound(i);
-                String name = attributeData.getString("Name");
-
-                switch (name) {
-                case "forge.swimSpeed": name = "forge:swim_speed"; break;
-                case "forge.nameTagDistance": name = "forge:nametag_distance"; break;
-                case "forge.entity_gravity": name = "forge:entity_gravity"; break;
-                case "forge.reachDistance": name = "forge:reach_distance"; break;
-                case "generic.maxHealth": name = "minecraft:generic.max_health"; break;
-                case "generic.knockbackResistance": name = "minecraft:generic.knockback_resistance"; break;
-                case "generic.movementSpeed": name = "minecraft:generic.movement_speed"; break;
-                case "generic.armor": name = "minecraft:generic.armor"; break;
-                case "generic.armorToughness": name = "minecraft:generic.armor_toughness"; break;
-                case "generic.followRange": name = "minecraft:generic.follow_range"; break;
-                case "generic.attackKnockback": name = "minecraft:generic.attack_knockback"; break;
-                case "generic.attackDamage": name = "minecraft:generic.attack_damage"; break;
-                case "generic.jumpStrength": name = "doggytalents:generic.jump_power"; break;
-                case "generic.critChance": name = "doggytalents:generic.crit_chance"; break;
-                case "generic.critBonus": name = "doggytalents:generic.crit_bonus"; break;
-                }
-
-                attributeData.putString("Name", name);
-                ListNBT modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
-                for (int j = 0; j < modifierList.size(); j++) {
-                    CompoundNBT modifierData = modifierList.getCompound(j);
-                    if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
-                        UUID entityUUID = NBTUtil.getOldUniqueId(modifierData, "UUID");
-
-                        modifierData.putUniqueId("UUID", entityUUID);
-                        NBTUtil.removeOldUniqueId(modifierData, "UUID");
+                                modifierData.putUniqueId("UUID", entityUUID);
+                                NBTUtil.removeOldUniqueId(modifierData, "UUID");
+                            }
+                        }
+                    } else {
+                        DoggyTalents2.LOGGER.warn("Failed to data fix '" + namePrev + "'");
                     }
                 }
             }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to data fix attribute IDs: " + e.getMessage());
         }
 
         super.read(compound);
@@ -1352,88 +1365,125 @@ public class DogEntity extends AbstractDogEntity {
         // Does what notifyDataManagerChange would have done but this way only does it once
         this.recalculateAlterationsCache();
         this.spendablePoints.markForRefresh();
-        for (TalentInstance entry : talentMap) {
-            entry.init(this);
+
+        try {
+            for (TalentInstance entry : talentMap) {
+                entry.init(this);
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to init talents: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
+        try {
+            this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
 
-        if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
-            this.setMode(EnumMode.bySaveName(compound.getString("mode")));
-        } else {
-            // Read old mode id
-            BackwardsComp.readMode(compound, this::setMode);
+            if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
+                this.setMode(EnumMode.bySaveName(compound.getString("mode")));
+            } else {
+                // Read old mode id
+                BackwardsComp.readMode(compound, this::setMode);
+            }
+
+            if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
+                this.setSkinHash(compound.getString("customSkinHash"));
+            } else {
+                BackwardsComp.readDogTexture(compound, this::setSkinHash);
+            }
+
+            if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
+                this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
+            } else {
+                BackwardsComp.readHasBone(compound, this::setBoneVariant);
+            }
+
+            this.setHungerDirectly(compound.getFloat("dogHunger"));
+            this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
+            this.setWillObeyOthers(compound.getBoolean("willObey"));
+            this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
+            if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.setDogSize(compound.getInt("dogSize"));
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load levels: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
-            this.setSkinHash(compound.getString("customSkinHash"));
-        } else {
-            BackwardsComp.readDogTexture(compound, this::setSkinHash);
-        }
+        try {
+            if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
+                this.markDataParameterDirty(DOG_LEVEL.get());
+            }
 
-        if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
-            this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
-        } else {
-            BackwardsComp.readHasBone(compound, this::setBoneVariant);
-        }
-
-        this.setHungerDirectly(compound.getFloat("dogHunger"));
-        this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
-        this.setWillObeyOthers(compound.getBoolean("willObey"));
-        this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
-        if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.setDogSize(compound.getInt("dogSize"));
-        }
-
-        if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
-            this.markDataParameterDirty(DOG_LEVEL.get());
-        }
-
-        if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
-            this.markDataParameterDirty(DOG_LEVEL.get());
+            if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
+                this.markDataParameterDirty(DOG_LEVEL.get());
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load levels: " + e.getMessage());
+            e.printStackTrace();
         }
 
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get()).copyEmpty();
 
-        if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
-            ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
+        try {
+            if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
+                ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < bedsList.size(); i++) {
-                CompoundNBT bedNBT = bedsList.getCompound(i);
-                ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
-                RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
-                Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
-                bedsData.put(type, pos);
+                for (int i = 0; i < bedsList.size(); i++) {
+                    CompoundNBT bedNBT = bedsList.getCompound(i);
+                    ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
+                    RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
+                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
+                    bedsData.put(type, pos);
+                }
+            } else {
+                BackwardsComp.readBedLocations(compound, bedsData);
             }
-        } else {
-            BackwardsComp.readBedLocations(compound, bedsData);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load beds: " + e.getMessage());
+            e.printStackTrace();
         }
 
         this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);
 
         DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get()).copyEmpty();
 
-        if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
-            ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
+        try {
+            if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
+                ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < bowlsList.size(); i++) {
-                CompoundNBT bowlsNBT = bowlsList.getCompound(i);
-                ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
-                RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
-                Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
-                bowlsData.put(type, pos);
+                for (int i = 0; i < bowlsList.size(); i++) {
+                    CompoundNBT bowlsNBT = bowlsList.getCompound(i);
+                    ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
+                    RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
+                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
+                    bowlsData.put(type, pos);
+                }
+            } else {
+                BackwardsComp.readBowlLocations(compound, bowlsData);
             }
-        } else {
-            BackwardsComp.readBowlLocations(compound, bowlsData);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load bowls: " + e.getMessage());
+            e.printStackTrace();
         }
 
         this.dataManager.set(DOG_BOWL_LOCATION.get(), bowlsData);
 
-        this.statsTracker.readAdditional(compound);
-
-        this.alterations.forEach((alter) -> alter.onRead(this, compound));
+        try {
+            this.statsTracker.readAdditional(compound);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load stats tracker: " + e.getMessage());
+            e.printStackTrace();
+        }
+        this.alterations.forEach((alter) -> {
+            try {
+                alter.onRead(this, compound);
+            } catch (Exception e) {
+                DoggyTalents2.LOGGER.error("Failed to load alteration: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
 
     }
 

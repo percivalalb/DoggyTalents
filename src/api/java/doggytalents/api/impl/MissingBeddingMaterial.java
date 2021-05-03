@@ -8,6 +8,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class MissingBeddingMaterial extends IBeddingMaterial {
 
+    public static final IBeddingMaterial NULL = new MissingBeddingMaterial();
     private static final ResourceLocation MISSING_TEXTURE = new ResourceLocation("missingno");
 
     @Override

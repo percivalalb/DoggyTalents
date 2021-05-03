@@ -8,6 +8,7 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 public class MissingCasingMissing extends ICasingMaterial {
 
+    public static final ICasingMaterial NULL = new MissingCasingMissing();
     private static final ResourceLocation MISSING_TEXTURE = new ResourceLocation("missingno");
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.Util;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class Accessory extends ForgeRegistryEntry<Accessory> {
 
@@ -72,5 +73,17 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
 
     public final AccessoryType getType() {
         return this.type.get();
+    }
+
+    public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
+        return this.of(accessoryIn.get());
+    }
+
+    public <T extends Accessory> boolean of(T accessoryIn) {
+        return this.of(accessoryIn.delegate);
+    }
+
+    public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
+        return accessoryDelegateIn.equals(this.delegate);
     }
 }

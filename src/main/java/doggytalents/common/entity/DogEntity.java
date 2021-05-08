@@ -1367,13 +1367,13 @@ public class DogEntity extends AbstractDogEntity {
         this.spendablePoints.markForRefresh();
 
         try {
-            for (TalentInstance entry : talentMap) {
-                entry.init(this);
+            for (IDogAlteration inst : this.alterations) {
+                inst.init(this);
             }
         } catch (Exception e) {
-            DoggyTalents2.LOGGER.error("Failed to init talents: " + e.getMessage());
+            DoggyTalents2.LOGGER.error("Failed to init alteration: " + e.getMessage());
             e.printStackTrace();
-        }
+		}
 
         try {
             this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
@@ -1492,13 +1492,13 @@ public class DogEntity extends AbstractDogEntity {
         super.notifyDataManagerChange(key);
         if (TALENTS.get().equals(key) || ACCESSORIES.get().equals(key)) {
             this.recalculateAlterationsCache();
+
+            for (IDogAlteration inst : this.alterations) {
+                inst.init(this);
+            }
         }
 
         if (TALENTS.get().equals(key)) {
-            for (TalentInstance inst : this.getTalentMap()) {
-                inst.init(this);
-            }
-
             this.spendablePoints.markForRefresh();
         }
 
@@ -1585,7 +1585,14 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public List<AccessoryInstance> removeAccessories() {
-        List<AccessoryInstance> removed = Lists.newArrayList(this.getAccessories());
+        List<AccessoryInstance> removed = new ArrayList<>(this.getAccessories());
+
+        for (AccessoryInstance inst : removed) {
+            if (inst instanceof IDogAlteration) {
+                ((IDogAlteration) inst).remove(this);
+            }
+        }
+
         this.getAccessories().clear();
         this.markDataParameterDirty(ACCESSORIES.get());
         return removed;

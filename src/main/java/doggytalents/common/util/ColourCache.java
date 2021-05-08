@@ -2,6 +2,8 @@ package doggytalents.common.util;
 
 public class ColourCache {
 
+    public static final ColourCache WHITE = new ColourCache(16632255);
+
     private final int color;
     private float[] floatArray;
 

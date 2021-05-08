@@ -279,6 +279,7 @@ public class DogInfoScreen extends Screen {
         String health = Util.format1DP(this.dog.getHealth());
         String healthMax = Util.format1DP(this.dog.getMaxHealth());
         String speedValue = Util.format2DP(this.dog.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
+        String armorValue = Util.format2DP(this.dog.getAttribute(Attributes.ARMOR).getValue());
         String ageValue = Util.format2DP(this.dog.getGrowingAge());
         String ageRel = I18n.format(this.dog.isChild() ? "doggui.age.baby" : "doggui.age.adult");
 
@@ -297,8 +298,9 @@ public class DogInfoScreen extends Screen {
         this.font.drawString(stack, I18n.format("doggui.speed") + " " + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
         this.font.drawString(stack, I18n.format("doggui.owner") + " " + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
         this.font.drawString(stack, I18n.format("doggui.age") + " " + ageString, this.width - 160, topY - 80, 0xFFFFFF);
+        this.font.drawString(stack, I18n.format("doggui.armor") + " " + armorValue, this.width - 160, topY - 70, 0xFFFFFF);
         if (ConfigValues.DOG_GENDER) {
-            this.font.drawString(stack, I18n.format("doggui.gender") + " "+ I18n.format(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 70, 0xFFFFFF);
+            this.font.drawString(stack, I18n.format("doggui.gender") + " "+ I18n.format(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 60, 0xFFFFFF);
         }
 
         this.font.drawString(stack, I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);

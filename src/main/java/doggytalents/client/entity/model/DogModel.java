@@ -209,4 +209,15 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
         this.head.rotateAngleY = netHeadYaw * (dogIn.isEntitySleeping() && dogIn.isLying() ? 0.005F : (float)Math.PI / 180F);
         this.tail.rotateAngleX = ageInTicks;
     }
+
+    public void setVisible(boolean visible) {
+        this.head.showModel = visible;
+        this.body.showModel = visible;
+        this.legBackRight.showModel = visible;
+        this.legBackLeft.showModel = visible;
+        this.legFrontRight.showModel = visible;
+        this.legFrontLeft.showModel = visible;
+        this.tail.showModel = visible;
+        this.mane.showModel = visible;
+    }
 }

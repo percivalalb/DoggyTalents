@@ -92,7 +92,7 @@ public class DyeableAccessory extends Accessory {
         }
 
         public DyeableAccessoryInstance(ColourCache colorIn) {
-            super(null);
+            super(DyeableAccessory.this);
             this.color = colorIn;
         }
 
@@ -102,11 +102,6 @@ public class DyeableAccessory extends Accessory {
 
         public float[] getFloatArray() {
             return this.color.getFloatArray();
-        }
-
-        @Override
-        public Accessory getAccessory() {
-            return DyeableAccessory.this;
         }
 
         @Override

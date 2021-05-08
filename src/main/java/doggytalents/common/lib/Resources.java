@@ -41,6 +41,20 @@ public class Resources {
     public static final ResourceLocation TURTLE_HELMET = getEntity("dog", "armor/turtle_helmet");
     public static final ResourceLocation NETHERITE_HELMET = getEntity("dog", "armor/netherite_helmet");
 
+    public static final ResourceLocation IRON_BOOTS = getEntity("dog", "armor/iron_boots");
+    public static final ResourceLocation DIAMOND_BOOTS = getEntity("dog", "armor/diamond_boots");
+    public static final ResourceLocation GOLDEN_BOOTS = getEntity("dog", "armor/golden_boots");
+    public static final ResourceLocation CHAINMAIL_BOOTS = getEntity("dog", "armor/chainmail_boots");
+    public static final ResourceLocation LEATHER_BOOTS = getEntity("dog", "armor/leather_boots");
+    public static final ResourceLocation NETHERITE_BOOTS = getEntity("dog", "armor/netherite_boots");
+
+    public static final ResourceLocation IRON_BODY_PIECE = getEntity("dog", "armor/iron_body");
+    public static final ResourceLocation DIAMOND_BODY_PIECE = getEntity("dog", "armor/diamond_body");
+    public static final ResourceLocation GOLDEN_BODY_PIECE = getEntity("dog", "armor/golden_body");
+    public static final ResourceLocation CHAINMAIL_BODY_PIECE = getEntity("dog", "armor/chainmail_body");
+    public static final ResourceLocation LEATHER_BODY_PIECE = getEntity("dog", "armor/leather_body");
+    public static final ResourceLocation NETHERITE_BODY_PIECE = getEntity("dog", "armor/netherite_body");
+
     public static ResourceLocation getEntity(String type, String textureFileName) {
         return Util.getResource("textures/entity/" + type + "/" + textureFileName + ".png");
     }

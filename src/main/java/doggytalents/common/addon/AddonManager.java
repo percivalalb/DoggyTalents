@@ -11,6 +11,7 @@ import doggytalents.DoggyTalents2;
 import doggytalents.common.addon.autumnity.AutumnityAddon;
 import doggytalents.common.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.common.addon.botania.BotaniaAddon;
+import doggytalents.common.addon.flamboyant.FlamboyantAddon;
 import doggytalents.common.addon.itemphysic.ItemPhysicsAddon;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
 
@@ -20,7 +21,8 @@ public class AddonManager {
             new ItemPhysicsAddon(),
             new BiomesOPlentyAddon(),
             new BotaniaAddon(),
-            new AutumnityAddon()));
+            new AutumnityAddon(),
+            new FlamboyantAddon()));
     private static final List<Addon> RUN = Lists.newArrayList(ADDONS);
 
     public static void init() {
@@ -48,7 +50,7 @@ public class AddonManager {
             if (shouldRun.test(addon)) {
                 try {
                     action.accept(addon);
-                } catch(RuntimeException e) {
+                } catch (RuntimeException e) {
                     failedCallback.accept(addon, e);
                 }
             }

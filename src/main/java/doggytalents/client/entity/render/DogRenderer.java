@@ -49,15 +49,10 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             double d0 = this.renderManager.squareDistanceTo(entityIn);
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
-                double armorValue = 0.0D;
-                if (entityIn.getAttribute(Attributes.ARMOR) != null) {
-                    armorValue = entityIn.getAttribute(Attributes.ARMOR).getValue();
-                }
-                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s(%d)" : "%s(%d)(%d)",
+                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
                         new TranslationTextComponent(tip).getString(),
                         MathHelper.ceil(entityIn.getDogHunger()),
-                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString(),
-                        (int) armorValue);
+                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString());
 
                 RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 

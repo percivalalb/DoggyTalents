@@ -73,15 +73,26 @@ public class AccessoryInstance {
         this.getAccessory().write(this, compound);
     }
 
+    /**
+     * Reads the accessory from the given NBT data. If the accessory id is not
+     * valid or an exception is thrown during loading then an empty optional
+     * is returned.
+     */
     public static Optional<AccessoryInstance> readInstance(CompoundNBT compound) {
-        ResourceLocation rl = ResourceLocation.tryCreate(compound.getString("type"));
-        if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
-            Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
-            return Optional.of(type.read(compound));
-        } else {
+        ResourceLocation rl = null;
+        try {
+            rl = ResourceLocation.tryCreate(compound.getString("type"));
+            if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
+                Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
+                return Optional.of(type.read(compound));
+            } else {
+                DoggyTalentsAPI.LOGGER.warn("Failed to load accessory {}", compound);
+            }
+        } catch (Exception e) {
             DoggyTalentsAPI.LOGGER.warn("Failed to load accessory {}", rl);
-            return Optional.empty();
         }
+
+        return Optional.empty();
     }
 
     @SuppressWarnings("unchecked")

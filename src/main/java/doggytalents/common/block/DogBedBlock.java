@@ -229,8 +229,16 @@ public class DogBedBlock extends Block {
 
         Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
-        tooltip.add(materials.getLeft().getTooltip());
-        tooltip.add(materials.getRight().getTooltip());
+        tooltip.add(materials.getLeft() != null
+                ? materials.getLeft().getTooltip()
+                : new TranslationTextComponent("dogbed.bedding.null").mergeStyle(TextFormatting.RED));
+        tooltip.add(materials.getRight() != null
+                ? materials.getRight().getTooltip()
+                : new TranslationTextComponent("dogbed.casing.null").mergeStyle(TextFormatting.RED));
+
+        if (materials.getLeft() == null && materials.getRight() == null) {
+            tooltip.add(new TranslationTextComponent("dogbed.explain.missing").mergeStyle(TextFormatting.ITALIC));
+        }
 
         CompoundNBT tag = stack.getChildTag("doggytalents");
         if (tag != null) {

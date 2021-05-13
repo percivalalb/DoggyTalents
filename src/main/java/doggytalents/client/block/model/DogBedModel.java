@@ -48,6 +48,7 @@ import net.minecraftforge.registries.IRegistryDelegate;
 public class DogBedModel implements IBakedModel {
 
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
+    private static final ResourceLocation MISSING_TEXTURE = new ResourceLocation("missingno");
 
     private ModelLoader modelLoader;
     private BlockModel model;
@@ -66,16 +67,15 @@ public class DogBedModel implements IBakedModel {
     }
 
     public IBakedModel getModelVariant(ICasingMaterial casing, IBeddingMaterial bedding, Direction facing) {
-        if (casing == null) { casing = DoggyBedMaterials.OAK_PLANKS.get(); }
-        if (bedding == null) { bedding = DoggyBedMaterials.WHITE_WOOL.get(); }
-        if (facing == null) { facing = Direction.NORTH; }
+        Triple<IRegistryDelegate<ICasingMaterial>, IRegistryDelegate<IBeddingMaterial>, Direction> key =
+                ImmutableTriple.of(casing != null ? casing.delegate : null, bedding != null ? bedding.delegate : null, facing != null ? facing : Direction.NORTH);
 
-        return this.cache.computeIfAbsent(ImmutableTriple.of(casing.delegate, bedding.delegate, facing), (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
+        return this.cache.computeIfAbsent(key, (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
     }
 
     @Override
     public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-        return this.getModelVariant(DoggyBedMaterials.OAK_PLANKS.get(), DoggyBedMaterials.WHITE_WOOL.get(), Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
+        return this.getModelVariant(null, null, Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class DogBedModel implements IBakedModel {
     public IModelData getModelData(@Nonnull IBlockDisplayReader world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
         ICasingMaterial casing = null;
         IBeddingMaterial bedding = null;
-        Direction facing = null;
+        Direction facing = Direction.NORTH;
 
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof DogBedTileEntity) {
@@ -111,7 +111,7 @@ public class DogBedModel implements IBakedModel {
         return tileData;
     }
 
-    public IBakedModel bakeModelVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
+    public IBakedModel bakeModelVariant(@Nullable IRegistryDelegate<ICasingMaterial> casingResource, @Nullable IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
         List<BlockPart> parts = this.model.getElements();
         List<BlockPart> elements = new ArrayList<>(parts.size()); //We have to duplicate this so we can edit it below.
         for (BlockPart part : parts) {
@@ -125,8 +125,8 @@ public class DogBedModel implements IBakedModel {
         newModel.parent = this.model.parent;
 
 
-        Either<RenderMaterial, String> casingTexture = findTexture(casingResource.get().getTexture());
-        newModel.textures.put("bedding", findTexture(beddingResource.get().getTexture()));
+        Either<RenderMaterial, String> casingTexture = findCasingTexture(casingResource);
+        newModel.textures.put("bedding", findBeddingTexture(beddingResource));
         newModel.textures.put("casing", casingTexture);
         newModel.textures.put("particle", casingTexture);
 
@@ -134,15 +134,33 @@ public class DogBedModel implements IBakedModel {
     }
 
     private ResourceLocation createResourceVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
-        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingResource.name().toString().replace(':', '.') + ",casing=" + casingResource.name().toString().replace(':', '.') + ",facing=" + facing.getName2());
+        String beddingKey = beddingResource != null
+                ? beddingResource.name().toString().replace(':', '.')
+                : "doggytalents.dogbed.bedding.missing";
+        String casingKey = beddingResource != null
+                ? casingResource.name().toString().replace(':', '.')
+                : "doggytalents.dogbed.casing.missing";
+        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName2());
     }
 
-    private Either<RenderMaterial, String> findTexture(ResourceLocation resource) {
+    private Either<RenderMaterial, String> findCasingTexture(@Nullable IRegistryDelegate<ICasingMaterial> resource) {
+        return findTexture(resource != null ? resource.get().getTexture() : null);
+    }
+
+    private Either<RenderMaterial, String> findBeddingTexture(@Nullable IRegistryDelegate<IBeddingMaterial> resource) {
+        return findTexture(resource != null ? resource.get().getTexture() : null);
+    }
+
+    private Either<RenderMaterial, String> findTexture(@Nullable ResourceLocation resource) {
+        if (resource == null) {
+            resource = MISSING_TEXTURE;
+        }
+
         return Either.left(new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, resource));
     }
 
-    private ModelRotation getModelRotation(Direction dir) {
-        switch(dir) {
+    private ModelRotation getModelRotation(@Nonnull Direction dir) {
+        switch (dir) {
         default:    return ModelRotation.X0_Y0; // North
         case EAST:  return ModelRotation.X0_Y90;
         case SOUTH: return ModelRotation.X0_Y180;

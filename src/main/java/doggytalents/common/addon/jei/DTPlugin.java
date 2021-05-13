@@ -27,7 +27,15 @@ public class DTPlugin implements IModPlugin {
         registration.registerSubtypeInterpreter(DoggyBlocks.DOG_BED.get().asItem(), stack -> {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
-            return materials.getLeft().getRegistryName() + "+" + materials.getRight().getRegistryName();
+            String casingKey = materials.getLeft() != null
+                    ? materials.getLeft().getRegistryName().toString()
+                    : "doggytalents:casing_missing";
+
+            String beddingKey = materials.getRight() != null
+                    ? materials.getRight().getRegistryName().toString()
+                    : "doggytalents:bedding_missing";
+
+            return casingKey + "+" + beddingKey;
         });
     }
 

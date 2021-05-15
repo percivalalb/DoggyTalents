@@ -231,10 +231,10 @@ public class DogBedBlock extends Block {
 
         tooltip.add(materials.getLeft() != null
                 ? materials.getLeft().getTooltip()
-                : new TranslationTextComponent("dogbed.bedding.null").mergeStyle(TextFormatting.RED));
+                : new TranslationTextComponent("dogbed.casing.null").mergeStyle(TextFormatting.RED));
         tooltip.add(materials.getRight() != null
                 ? materials.getRight().getTooltip()
-                : new TranslationTextComponent("dogbed.casing.null").mergeStyle(TextFormatting.RED));
+                : new TranslationTextComponent("dogbed.bedding.null").mergeStyle(TextFormatting.RED));
 
         if (materials.getLeft() == null && materials.getRight() == null) {
             tooltip.add(new TranslationTextComponent("dogbed.explain.missing").mergeStyle(TextFormatting.ITALIC));

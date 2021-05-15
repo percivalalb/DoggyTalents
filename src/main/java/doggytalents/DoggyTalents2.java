@@ -1,5 +1,6 @@
 package doggytalents;
 
+import doggytalents.common.Capabilities;
 import doggytalents.common.talent.HappyEaterTalent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -126,6 +127,7 @@ public class DoggyTalents2 {
         DoggyEntityTypes.addEntityAttributes();
         DogRespawnCommand.registerSerilizers();
         DogEntity.initDataParameters();
+        Capabilities.init();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {

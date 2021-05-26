@@ -19,7 +19,7 @@ apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
 
 version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'DoggyTalents-1.16.5'
+archivesBaseName = "DoggyTalents-${project.target_mc_version}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
@@ -183,7 +183,10 @@ curseforge {
         id = project.curseforge_project_id
         changelog = file("build/changelog.html")
         changelogType = 'html'
-        releaseType = findProperty("curseforge_release_type") ?: 'alpha'
+        releaseType = findProperty("curseforge_release_type") ?: 'beta'
+        for (String v : project.additional_mc_versions.split(',')) {
+            addGameVersion v
+        }
         addArtifact apiJar
     }
 }

@@ -61,7 +61,7 @@ public interface IDog {
     public void markAccessoriesDirty();
 
     public float getWagAngle(float limbSwing, float limbSwingAmount, float partialTickTime);
-    public float getShakeAngle(float partialTicks, float p_70923_2_);
+    public float getShakeAngle(float partialTicks, float offset);
     public float getInterestedAngle(float partialTicks);
 
     public boolean isLying();

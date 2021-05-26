@@ -1,11 +1,12 @@
 modLoader="javafml"
 loaderVersion="[31,)"
+license="GNU GPLv3"
 issueTrackerURL="https://github.com/percivalalb/DoggyTalents/issues"
 displayURL="https://minecraft.curseforge.com/projects/doggy-talents/"
 logoFile="dt_logo.png"
 [[mods]] #mandatory
     modId="doggytalents"
-    version="${file.jarVersion}"
+    version="${version}"
     updateJSONURL="https://raw.githubusercontent.com/percivalalb/DoggyTalents/1.15.x/version.json"
     displayName="Doggy Talents 2"
     credits="percivalalb,RaustBlackDragon,NovaViper"
@@ -16,6 +17,13 @@ logoFile="dt_logo.png"
 [[dependencies.doggytalents]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[31.2.16,)" #mandatory
+    versionRange="${forge_version_range}" #mandatory
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.doggytalents]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"

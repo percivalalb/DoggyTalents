@@ -1,0 +1,15 @@
+{{#tags}}
+    <h3>{{name}}</h3>
+    <ul>
+        {{#commits}}
+            <li>
+                <a href="https://github.com/percivalalb/DoggyTalents/commit/{{hashFull}}">{{{messageTitle}}}</a> - {{{authorName}}}
+                <ul>
+                    {{#messageBodyItems}}
+                        <li>{{.}}</li>
+                    {{/messageBodyItems}}
+                </ul>
+            </li>
+        {{/commits}}
+    </ul>
+{{/tags}}

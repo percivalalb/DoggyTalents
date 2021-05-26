@@ -292,8 +292,8 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public float getShakeAngle(float partialTicks, float p_70923_2_) {
-        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + p_70923_2_) / 1.8F;
+    public float getShakeAngle(float partialTicks, float offset) {
+        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + offset) / 1.8F;
         if (f < 0.0F) {
             f = 0.0F;
         } else if (f > 1.0F) {

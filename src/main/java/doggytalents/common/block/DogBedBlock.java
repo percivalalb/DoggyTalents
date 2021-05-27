@@ -123,10 +123,8 @@ public class DogBedBlock extends Block {
             CompoundNBT tag = stack.getChildTag("doggytalents");
             if (tag != null) {
                 ITextComponent name = NBTUtil.getTextComponent(tag, "name");
-                ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
                 UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
                 dogBedTileEntity.setBedName(name);
-                dogBedTileEntity.setOwnerName(ownerName);
                 dogBedTileEntity.setOwner(ownerId);
             }
         }
@@ -162,7 +160,7 @@ public class DogBedBlock extends Block {
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (worldIn.isRemote) {
             return ActionResultType.SUCCESS;
-        } else if (handIn == Hand.MAIN_HAND) {
+        } else {
             DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
 
             if (dogBedTileEntity != null) {
@@ -220,8 +218,6 @@ public class DogBedBlock extends Block {
             }
             return ActionResultType.SUCCESS;
         }
-
-        return ActionResultType.FAIL;
     }
 
     @Override
@@ -231,8 +227,16 @@ public class DogBedBlock extends Block {
 
         Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
-        tooltip.add(materials.getLeft().getTooltip());
-        tooltip.add(materials.getRight().getTooltip());
+        tooltip.add(materials.getLeft() != null
+                ? materials.getLeft().getTooltip()
+                : new TranslationTextComponent("dogbed.casing.null").applyTextStyle(TextFormatting.RED));
+        tooltip.add(materials.getRight() != null
+                ? materials.getRight().getTooltip()
+                : new TranslationTextComponent("dogbed.bedding.null").applyTextStyle(TextFormatting.RED));
+
+        if (materials.getLeft() == null && materials.getRight() == null) {
+            tooltip.add(new TranslationTextComponent("dogbed.explain.missing").applyTextStyle(TextFormatting.ITALIC));
+        }
 
         CompoundNBT tag = stack.getChildTag("doggytalents");
         if (tag != null) {

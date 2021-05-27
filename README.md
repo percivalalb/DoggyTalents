@@ -41,9 +41,9 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 
 ### Licenses
 DoggyTalents API
- - 2017 - 2020
+ - 2017 - 2021
  - [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 DoggyTalents
- - 2013 - 2020
+ - 2013 - 2021
  - [![License](https://img.shields.io/badge/License-GNU-blue.svg?style=flat-square)](https://opensource.org/licenses/GPL-3.0)

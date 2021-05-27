@@ -20,6 +20,21 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public interface IDogAlteration {
 
+    /**
+     * Called when ever this instance is first added to a dog, this is called when
+     * the level is first set on the dog or when it is loaded from NBT and when the
+     * talents are synced to the client
+     *
+     * @param dogIn The dog
+     */
+    default void init(AbstractDogEntity dogIn) {
+
+    }
+
+    default void remove(AbstractDogEntity dogIn) {
+
+    }
+
     default void onWrite(AbstractDogEntity dogIn, CompoundNBT compound) {
 
     }

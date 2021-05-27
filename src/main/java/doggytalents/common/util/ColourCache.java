@@ -2,8 +2,10 @@ package doggytalents.common.util;
 
 public class ColourCache {
 
-	private final int color;
-	private float[] floatArray;
+    public static final ColourCache WHITE = new ColourCache(16632255);
+
+    private final int color;
+    private float[] floatArray;
 
     protected ColourCache(int color) {
         this.color = color;

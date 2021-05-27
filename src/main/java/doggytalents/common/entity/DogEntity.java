@@ -1065,6 +1065,17 @@ public class DogEntity extends AbstractDogEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        // Any mod that tries to access capabilities from entity size/entity
+        // creation event will crash here because of the order java inits the
+        // classes fields and so will not have been initialised and are
+        // accessed during the classes super() call.
+        // Since this.alterations will be empty anyway as we have not read
+        // NBT data at this point just avoid silent error
+        // DoggyTalents#295, DoggyTalents#296
+        if (this.alterations == null) {
+            return super.getCapability(cap, side);
+        }
+
         for (IDogAlteration alter : this.alterations) {
             LazyOptional<T> result = alter.getCapability(this, cap, side);
 
@@ -1156,10 +1167,12 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void remove(boolean keepData) {
         super.remove(keepData);
+    }
 
-        if (!keepData) {
-            this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
-        }
+    @Override
+    protected void invalidateCaps() {
+        super.invalidateCaps();
+        this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
     }
 
     @Override
@@ -1280,97 +1293,133 @@ public class DogEntity extends AbstractDogEntity {
         // Does what notifyDataManagerChange would have done but this way only does it once
         this.recalculateAlterationsCache();
         this.spendablePoints.markForRefresh();
-        for (TalentInstance entry : talentMap) {
-            entry.init(this);
+
+        try {
+            for (IDogAlteration inst : this.alterations) {
+                inst.init(this);
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to init talents: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
+        try {
+            this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
 
-        if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
-            this.setMode(EnumMode.bySaveName(compound.getString("mode")));
-        } else {
-            // Read old mode id
-            BackwardsComp.readMode(compound, this::setMode);
+            if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
+                this.setMode(EnumMode.bySaveName(compound.getString("mode")));
+            } else {
+                // Read old mode id
+                BackwardsComp.readMode(compound, this::setMode);
+            }
+
+            if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
+                this.setSkinHash(compound.getString("customSkinHash"));
+            } else {
+                BackwardsComp.readDogTexture(compound, this::setSkinHash);
+            }
+
+            if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
+                this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
+            } else {
+                BackwardsComp.readHasBone(compound, this::setBoneVariant);
+            }
+
+            this.setHungerDirectly(compound.getFloat("dogHunger"));
+            this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
+            this.setWillObeyOthers(compound.getBoolean("willObey"));
+            this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
+            if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.setDogSize(compound.getInt("dogSize"));
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load levels: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
-            this.setSkinHash(compound.getString("customSkinHash"));
-        } else {
-            BackwardsComp.readDogTexture(compound, this::setSkinHash);
-        }
+        try {
+            if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
+                this.markDataParameterDirty(DOG_LEVEL.get());
+            }
 
-        if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
-            this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
-        } else {
-            BackwardsComp.readHasBone(compound, this::setBoneVariant);
-        }
-
-        this.setHungerDirectly(compound.getFloat("dogHunger"));
-        this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
-        this.setWillObeyOthers(compound.getBoolean("willObey"));
-        this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
-        if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.setDogSize(compound.getInt("dogSize"));
-        }
-
-        if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
-            this.markDataParameterDirty(DOG_LEVEL.get());
-        }
-
-        if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
-            this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
-            this.markDataParameterDirty(DOG_LEVEL.get());
+            if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
+                this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
+                this.markDataParameterDirty(DOG_LEVEL.get());
+            }
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load levels: " + e.getMessage());
+            e.printStackTrace();
         }
 
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get()).copyEmpty();
 
-        if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
-            ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
+        try {
+            if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
+                ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < bedsList.size(); i++) {
-                CompoundNBT bedNBT = bedsList.getCompound(i);
-                ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
-                Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
-                if (type.isPresent()) {
-                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
-                    bedsData.put(type.get(), pos);
-                } else {
-                    DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                for (int i = 0; i < bedsList.size(); i++) {
+                    CompoundNBT bedNBT = bedsList.getCompound(i);
+                    ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
+                    Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
+                    if (type.isPresent()) {
+                        Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
+                        bedsData.put(type.get(), pos);
+                    } else {
+                        DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                    }
                 }
+            } else {
+                BackwardsComp.readBedLocations(compound, bedsData);
             }
-        } else {
-            BackwardsComp.readBedLocations(compound, bedsData);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load beds: " + e.getMessage());
+            e.printStackTrace();
         }
 
         this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);
 
         DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get()).copyEmpty();
 
-        if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
-            ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
+        try {
+            if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
+                ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
 
-            for (int i = 0; i < bowlsList.size(); i++) {
-                CompoundNBT bowlsNBT = bowlsList.getCompound(i);
-                ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
-                Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
-                if (type.isPresent()) {
-                    Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
-                    bowlsData.put(type.get(), pos);
-                } else {
-                    DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                for (int i = 0; i < bowlsList.size(); i++) {
+                    CompoundNBT bowlsNBT = bowlsList.getCompound(i);
+                    ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
+                    Optional<DimensionType> type = Registry.DIMENSION_TYPE.getValue(loc);
+                    if (type.isPresent()) {
+                        Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
+                        bowlsData.put(type.get(), pos);
+                    } else {
+                        DoggyTalents2.LOGGER.warn("Failed loading from NBT. Could not find dimension {}", loc);
+                    }
                 }
+            } else {
+                BackwardsComp.readBowlLocations(compound, bowlsData);
             }
-        } else {
-            BackwardsComp.readBowlLocations(compound, bowlsData);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load bowls: " + e.getMessage());
+            e.printStackTrace();
         }
 
         this.dataManager.set(DOG_BOWL_LOCATION.get(), bowlsData);
 
-        this.statsTracker.readAdditional(compound);
-
-        this.alterations.forEach((alter) -> alter.onRead(this, compound));
-
+        try {
+            this.statsTracker.readAdditional(compound);
+        } catch (Exception e) {
+            DoggyTalents2.LOGGER.error("Failed to load stats tracker: " + e.getMessage());
+            e.printStackTrace();
+        }
+        this.alterations.forEach((alter) -> {
+            try {
+                alter.onRead(this, compound);
+            } catch (Exception e) {
+                DoggyTalents2.LOGGER.error("Failed to load alteration: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -1378,13 +1427,13 @@ public class DogEntity extends AbstractDogEntity {
         super.notifyDataManagerChange(key);
         if (TALENTS.get().equals(key) || ACCESSORIES.get().equals(key)) {
             this.recalculateAlterationsCache();
+
+            for (IDogAlteration inst : this.alterations) {
+                inst.init(this);
+            }
         }
 
         if (TALENTS.get().equals(key)) {
-            for (TalentInstance inst : this.getTalentMap()) {
-                inst.init(this);
-            }
-
             this.spendablePoints.markForRefresh();
         }
 
@@ -1471,7 +1520,14 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public List<AccessoryInstance> removeAccessories() {
-        List<AccessoryInstance> removed = Lists.newArrayList(this.getAccessories());
+        List<AccessoryInstance> removed = new ArrayList<>(this.getAccessories());
+
+        for (AccessoryInstance inst : removed) {
+            if (inst instanceof IDogAlteration) {
+                ((IDogAlteration) inst).remove(this);
+            }
+        }
+
         this.getAccessories().clear();
         this.markDataParameterDirty(ACCESSORIES.get());
         return removed;

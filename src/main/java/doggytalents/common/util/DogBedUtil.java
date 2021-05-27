@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
+import doggytalents.api.impl.MissingBeddingMaterial;
+import doggytalents.api.impl.MissingCasingMissing;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;

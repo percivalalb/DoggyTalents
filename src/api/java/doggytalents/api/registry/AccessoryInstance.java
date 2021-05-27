@@ -2,11 +2,13 @@ package doggytalents.api.registry;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IRegistryDelegate;
 
 public class AccessoryInstance {
 
@@ -24,6 +26,30 @@ public class AccessoryInstance {
 
     public Accessory getAccessory() {
         return this.accessory;
+    }
+
+    public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
+        return this.accessory.of(accessoryIn);
+    }
+
+    public <T extends Accessory> boolean of(T accessoryIn) {
+        return this.accessory.of(accessoryIn);
+    }
+
+    public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
+        return this.accessory.of(accessoryDelegateIn);
+    }
+
+    public <T extends AccessoryType> boolean ofType(Supplier<T> accessoryTypeIn) {
+        return this.ofType(accessoryTypeIn.get());
+    }
+
+    public <T extends AccessoryType> boolean ofType(T accessoryTypeIn) {
+        return this.ofType(accessoryTypeIn.delegate);
+    }
+
+    public <T extends AccessoryType> boolean ofType(IRegistryDelegate<T> accessoryTypeDelegateIn) {
+        return accessoryTypeDelegateIn.equals(this.accessory.getType().delegate);
     }
 
     public AccessoryInstance copy() {
@@ -47,20 +73,31 @@ public class AccessoryInstance {
         this.getAccessory().write(this, compound);
     }
 
+    /**
+     * Reads the accessory from the given NBT data. If the accessory id is not
+     * valid or an exception is thrown during loading then an empty optional
+     * is returned.
+     */
     public static Optional<AccessoryInstance> readInstance(CompoundNBT compound) {
-        ResourceLocation rl = ResourceLocation.tryCreate(compound.getString("type"));
-        if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
-            Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
-            return Optional.of(type.read(compound));
-        } else {
+        ResourceLocation rl = null;
+        try {
+            rl = ResourceLocation.tryCreate(compound.getString("type"));
+            if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
+                Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
+                return Optional.of(type.read(compound));
+            } else {
+                DoggyTalentsAPI.LOGGER.warn("Failed to load accessory {}", compound);
+            }
+        } catch (Exception e) {
             DoggyTalentsAPI.LOGGER.warn("Failed to load accessory {}", rl);
-            return Optional.empty();
         }
+
+        return Optional.empty();
     }
 
     @SuppressWarnings("unchecked")
     public <T extends AccessoryInstance> T cast(Class<T> type) {
-        if (this.getClass().isAssignableFrom(type)) {
+        if (type.isAssignableFrom(this.getClass())) {
             return (T) this;
         } else {
             throw new RuntimeException("Could not cast " + this.getClass().getName() + " to " + type.getName());

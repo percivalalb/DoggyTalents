@@ -73,8 +73,7 @@ public class DogRespawnData implements IDogData {
 
     @Nullable
     public DogEntity respawn(World worldIn, PlayerEntity playerIn, BlockPos pos) {
-        DogEntity dog = (DogEntity) DoggyEntityTypes.DOG.get().spawn(worldIn, null, playerIn, pos, SpawnReason.TRIGGERED, false, false);
-
+        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundNBT) null, (ITextComponent) null, playerIn, pos, SpawnReason.TRIGGERED, true, false);
         // Failed for some reason
         if (dog == null) {
             return null;

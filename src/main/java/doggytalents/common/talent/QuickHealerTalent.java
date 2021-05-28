@@ -24,7 +24,7 @@ public class QuickHealerTalent extends TalentInstance {
             } else {
                 healingTick *= this.level();
             }
-            DoggyTalents2.LOGGER.debug("Healing tick increase: {} {}", healingTick, dogIn.getIdleTime());
+
             return ActionResult.resultSuccess(healingTick);
         }
 

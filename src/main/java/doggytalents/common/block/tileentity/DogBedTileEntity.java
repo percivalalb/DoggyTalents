@@ -109,8 +109,6 @@ public class DogBedTileEntity extends PlacedTileEntity {
         this.dogUUID = owner;
 
         this.markDirty();
-
-        DoggyTalents2.LOGGER.debug("Set bed owner to {}", owner);
     }
 
     @Nullable

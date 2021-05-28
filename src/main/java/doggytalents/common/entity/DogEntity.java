@@ -470,7 +470,6 @@ public class DogEntity extends AbstractDogEntity {
 
             if (this.healingTick >= 6000) {
                 if (this.getHealth() < this.getMaxHealth()) {
-                    DoggyTalents2.LOGGER.debug("Heal:");
                     this.heal(1);
                 }
 
@@ -1148,8 +1147,6 @@ public class DogEntity extends AbstractDogEntity {
         // can be dropped and not saved
         if (this.world != null && !this.world.isRemote) {
             DogRespawnStorage.get(this.world).putData(this);
-            DoggyTalents2.LOGGER.debug("Saved dog as they died {}", this);
-
             DogLocationStorage.get(this.world).remove(this);
         }
     }
@@ -1851,7 +1848,6 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         this.markDataParameterDirty(TALENTS.get());
-        DoggyTalents2.LOGGER.debug("Set talent {} to level {}", talent.getRegistryName(), level);
         return ActionResultType.SUCCESS;
     }
 
@@ -1952,8 +1948,6 @@ public class DogEntity extends AbstractDogEntity {
         this.setOwnerId(null);
         this.setWillObeyOthers(false);
         this.setMode(EnumMode.DOCILE);
-
-        DoggyTalents2.LOGGER.debug("Untamed dog");
     }
 
     public boolean canSpendPoints(int amount) {

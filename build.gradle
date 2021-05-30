@@ -132,6 +132,7 @@ task replaceResources(type: Copy) {
             'version': project.version,
             'minecraft_version_range': project.minecraft_version_range,
             'forge_version_range': project.forge_version_range,
+            'fml_version_range': project.fml_version_range,
         ])
     }
     into "$buildDir/resources/main/"

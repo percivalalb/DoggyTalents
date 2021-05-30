@@ -130,6 +130,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -1069,8 +1070,8 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public Entity changeDimension(ServerWorld worldIn) {
-        Entity transportedEntity = super.changeDimension(worldIn);
+    public Entity changeDimension(ServerWorld worldIn, ITeleporter teleporter) {
+        Entity transportedEntity = super.changeDimension(worldIn, teleporter);
         if (transportedEntity instanceof DogEntity) {
             DogLocationStorage.get(this.world).getOrCreateData(this).update((DogEntity) transportedEntity);
         }

@@ -26,34 +26,36 @@ public class DogShearsItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        List<AccessoryInstance> accessories = dogIn.getAccessories();
-        if (accessories.isEmpty()) {
-            if (!dogIn.isTamed()) {
-                return ActionResultType.CONSUME;
+        if (dogIn.isOwner(playerIn)) {
+            List<AccessoryInstance> accessories = dogIn.getAccessories();
+            if (accessories.isEmpty()) {
+                if (!dogIn.isTamed()) {
+                    return ActionResultType.CONSUME;
+                }
+
+                if (!worldIn.isRemote) {
+                    int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
+
+                    if (cooldownLeft <= 0) {
+                        worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
+                        dogIn.untame();
+                    }
+                }
+
+                return ActionResultType.SUCCESS;
             }
 
             if (!worldIn.isRemote) {
-                int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
-
-                if (cooldownLeft <= 0) {
-                    worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                    dogIn.untame();
+                for (AccessoryInstance inst : accessories) {
+                    ItemStack returnItem = inst.getReturnItem();
+                    dogIn.entityDropItem(returnItem, 1);
                 }
+
+                dogIn.removeAccessories();
+                dogIn.setData(COOLDOWN, dogIn.ticksExisted + 40);
+
+                return ActionResultType.SUCCESS;
             }
-
-            return ActionResultType.SUCCESS;
-        }
-
-        if (!worldIn.isRemote) {
-            for (AccessoryInstance inst : accessories) {
-                ItemStack returnItem = inst.getReturnItem();
-                dogIn.entityDropItem(returnItem, 1);
-            }
-
-            dogIn.removeAccessories();
-            dogIn.setData(COOLDOWN, dogIn.ticksExisted + 40);
-
-            return ActionResultType.SUCCESS;
         }
 
         return ActionResultType.SUCCESS;

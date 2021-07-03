@@ -51,7 +51,7 @@ configurations {
 }
 
 minecraft {
-    mappings channel: 'snapshot', version: project.mcp_mappings
+    mappings channel: project.mcp_channel, version: project.mcp_mappings
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 

@@ -11,7 +11,7 @@ Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/full_doggy-talents_downl
 
 Thanks to everyone that has contributed. This includes but is not limited to...
  * RaustBlackDragon for creating the original mod and ideas back in 2013
- * NovaViper for coding help and mantaining order
+ * NovaViper for coding help and maintaining order
  * SimonMeskens for some of the textures
 
 Want to know more about the mod? Take a gander at the [wiki](https://github.com/percivalalb/DoggyTalents/wiki)!
@@ -21,7 +21,7 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 ### Installation Instructions
 
 ##### Client
-- Download Minecraft Forge from the [offical site](https://files.minecraftforge.net/).
+- Download Minecraft Forge from the [official site](https://files.minecraftforge.net/).
 - Run the Installer jar and select the 'Install client' option and click OK. Minecraft Forge should now be installed!
 - Now open up the launcher and in the profile selector select 'Forge', login and run Minecraft (This may take a while).
 - Close Minecraft once it is open and find you Minecraft installation directory (PC : %appadata%/.minecraft, MAC : minecraft folder)

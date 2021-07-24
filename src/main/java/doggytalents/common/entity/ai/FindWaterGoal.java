@@ -43,15 +43,14 @@ public class FindWaterGoal extends Goal {
             return false;
         }
 
-        boolean isOnFire = this.creature.isBurning();
-        
-        if (!isOnFire || this.creature.isImmuneToFire()) {
+        if (this.creature.isImmuneToFire()) {
             return false;
         }
         
         boolean isInFire = this.isInDangerSpot(this.creature);
+        boolean isOnFire = this.creature.isBurning();
 
-        if (!isInFire) {
+        if (!isInFire && !isOnFire) {
             return false;
         }
 

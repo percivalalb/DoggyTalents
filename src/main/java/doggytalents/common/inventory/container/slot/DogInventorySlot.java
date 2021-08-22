@@ -2,6 +2,7 @@ package doggytalents.common.inventory.container.slot;
 
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -29,7 +30,13 @@ public class DogInventorySlot extends SlotItemHandler {
         this.row = prev.row;
         this.col = prev.col;
         this.dog = prev.dog;
-        this.index = prev.index;
+        // Work around to set Slot#slotNumber (MCP name) which is Slot#index in official
+        // mappings. Needed because SlotItemHandler#index shadows the latter.
+        {
+            Slot n = this;
+            Slot o = prev;
+            n.index = o.index;
+        }
     }
 
     public void setEnabled(boolean flag) {

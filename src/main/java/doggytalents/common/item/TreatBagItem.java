@@ -12,21 +12,21 @@ import doggytalents.common.inventory.TreatBagItemHandler;
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.InventoryUtil;
 import doggytalents.common.util.ItemUtil;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
@@ -38,7 +38,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class TreatBagItem extends Item implements IDogFoodHandler {
 
@@ -49,38 +49,38 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (worldIn.isClientSide) {
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
         }
         else {
-            if (playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
-                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerIn;
+            if (playerIn instanceof ServerPlayer && !(playerIn instanceof FakePlayer)) {
+                ServerPlayer serverPlayer = (ServerPlayer) playerIn;
 
                 Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.selected);
             }
 
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
         }
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         List<ItemStack> condensedContents = ItemUtil.getContentOverview(bagInventory);
 
         condensedContents.forEach((food) -> {
-            tooltip.add(new TranslationTextComponent(this.contentsTranslationKey.get(), food.getCount(), new TranslationTextComponent(food.getDescriptionId())));
+            tooltip.add(new TranslatableComponent(this.contentsTranslationKey.get(), food.getCount(), new TranslatableComponent(food.getDescriptionId())));
         });
     }
 
     @Override
-    public ICapabilityProvider initCapabilities(final ItemStack stack, CompoundNBT nbt) {
+    public ICapabilityProvider initCapabilities(final ItemStack stack, CompoundTag nbt) {
         // https://github.com/MinecraftForge/MinecraftForge/issues/5989
         if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == null) {
             return null;
@@ -116,7 +116,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         IItemHandlerModifiable treatBag = (IItemHandlerModifiable) stackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         return InventoryUtil.feedDogFrom(dogIn, entityIn, treatBag);
     }

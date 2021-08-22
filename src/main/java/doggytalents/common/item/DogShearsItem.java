@@ -7,14 +7,14 @@ import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.lib.Constants;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class DogShearsItem extends Item implements IDogItem {
 
@@ -25,12 +25,12 @@ public class DogShearsItem extends Item implements IDogItem {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.isOwnedBy(playerIn)) {
             List<AccessoryInstance> accessories = dogIn.getAccessories();
             if (accessories.isEmpty()) {
                 if (!dogIn.isTame()) {
-                    return ActionResultType.CONSUME;
+                    return InteractionResult.CONSUME;
                 }
 
                 if (!worldIn.isClientSide) {
@@ -42,7 +42,7 @@ public class DogShearsItem extends Item implements IDogItem {
                     }
                 }
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
             if (!worldIn.isClientSide) {
@@ -54,13 +54,13 @@ public class DogShearsItem extends Item implements IDogItem {
                 dogIn.removeAccessories();
                 dogIn.setData(COOLDOWN, dogIn.tickCount + 40);
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 
 }

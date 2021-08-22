@@ -3,10 +3,10 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class HellHoundTalent extends TalentInstance {
 
@@ -15,31 +15,31 @@ public class HellHoundTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResult<Integer> setFire(AbstractDogEntity dogIn, int second) {
-        return ActionResult.success(this.level() > 0 ? second / this.level() : second);
+    public InteractionResultHolder<Integer> setFire(AbstractDogEntity dogIn, int second) {
+        return InteractionResultHolder.success(this.level() > 0 ? second / this.level() : second);
     }
 
     @Override
-    public ActionResultType isImmuneToFire(AbstractDogEntity dogIn) {
-        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult isImmuneToFire(AbstractDogEntity dogIn) {
+        return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
+    public InteractionResult isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
         if (source.isFire()) {
-            return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+            return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType attackEntityAsMob(AbstractDogEntity dogIn, Entity entity) {
+    public InteractionResult attackEntityAsMob(AbstractDogEntity dogIn, Entity entity) {
         if (this.level() > 0) {
             entity.setSecondsOnFire(this.level());
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 }

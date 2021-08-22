@@ -1,26 +1,26 @@
 package doggytalents.client.tileentity.renderer;
 
 import com.google.common.base.Objects;
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.client.entity.render.RenderUtil;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
-public class DogBedRenderer extends TileEntityRenderer<DogBedTileEntity> {
+public class DogBedRenderer extends BlockEntityRenderer<DogBedTileEntity> {
 
-    public DogBedRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
+    public DogBedRenderer(BlockEntityRenderDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
 
     @Override
-    public void render(DogBedTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(DogBedTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (tileEntityIn.getBedName() != null && this.isLookingAtBed(tileEntityIn)) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5D, 0.5D, 0.5D);
@@ -33,8 +33,8 @@ public class DogBedRenderer extends TileEntityRenderer<DogBedTileEntity> {
     public boolean isLookingAtBed(DogBedTileEntity tileEntityIn) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (mc.hitResult != null && mc.hitResult.getType() == RayTraceResult.Type.BLOCK) {
-            BlockPos blockpos = ((BlockRayTraceResult) mc.hitResult).getBlockPos();
+        if (mc.hitResult != null && mc.hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockpos = ((BlockHitResult) mc.hitResult).getBlockPos();
             return Objects.equal(blockpos, tileEntityIn.getBlockPos());
          }
 

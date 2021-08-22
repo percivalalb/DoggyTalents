@@ -3,7 +3,7 @@ package doggytalents.common.entity.ai;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 
-public class OwnerHurtByTargetGoal extends net.minecraft.entity.ai.goal.OwnerHurtByTargetGoal {
+public class OwnerHurtByTargetGoal extends net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal {
 
     private DogEntity dog;
 

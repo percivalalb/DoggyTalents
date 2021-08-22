@@ -23,10 +23,10 @@ import doggytalents.common.item.TreatItem;
 import doggytalents.common.item.WhistleItem;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -128,13 +128,13 @@ public class DoggyItems {
         ItemColors itemColors = event.getItemColors();
         Util.acceptOrElse(DoggyItems.WOOL_COLLAR, (item) -> {
             itemColors.register((stack, tintIndex) -> {
-                return tintIndex > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
+                return tintIndex > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack);
              }, item);
         }, DoggyBlocks::logError);
 
         Util.acceptOrElse(DoggyItems.CAPE_COLOURED, (item) -> {
             itemColors.register((stack, tintIndex) -> {
-                return tintIndex > 0 ? -1 : ((IDyeableArmorItem) stack.getItem()).getColor(stack);
+                return tintIndex > 0 ? -1 : ((DyeableLeatherItem) stack.getItem()).getColor(stack);
              }, item);
         }, DoggyBlocks::logError);
 

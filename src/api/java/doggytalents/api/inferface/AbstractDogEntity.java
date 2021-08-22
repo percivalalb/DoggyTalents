@@ -9,25 +9,25 @@ import com.google.common.base.Function;
 
 import doggytalents.api.feature.EnumGender;
 import doggytalents.api.feature.IDog;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
-public abstract class AbstractDogEntity extends TameableEntity implements IDog {
+public abstract class AbstractDogEntity extends TamableAnimal implements IDog {
 
-    protected AbstractDogEntity(EntityType<? extends TameableEntity> type, World worldIn) {
+    protected AbstractDogEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
     }
 
     public void setAttributeModifier(Attribute attribute, UUID modifierUUID, BiFunction<AbstractDogEntity, UUID, AttributeModifier> modifierGenerator) {
-        ModifiableAttributeInstance attributeInst = this.getAttribute(attribute);
+        AttributeInstance attributeInst = this.getAttribute(attribute);
 
         AttributeModifier currentModifier = attributeInst.getModifier(modifierUUID);
 
@@ -67,32 +67,32 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
     }
 
     public void consumeItemFromStack(@Nullable Entity entity, ItemStack stack) {
-        if (entity instanceof PlayerEntity) {
-            super.usePlayerItem((PlayerEntity) entity, stack);
+        if (entity instanceof Player) {
+            super.usePlayerItem((Player) entity, stack);
         } else {
             stack.shrink(1);
         }
     }
 
-    public abstract TranslationTextComponent getTranslationKey(Function<EnumGender, String> function);
+    public abstract TranslatableComponent getTranslationKey(Function<EnumGender, String> function);
 
-    public TranslationTextComponent getGenderPronoun() {
+    public TranslatableComponent getGenderPronoun() {
         return this.getTranslationKey(EnumGender::getUnlocalisedPronoun);
     }
 
-    public TranslationTextComponent getGenderSubject() {
+    public TranslatableComponent getGenderSubject() {
         return this.getTranslationKey(EnumGender::getUnlocalisedSubject);
     }
 
-    public TranslationTextComponent getGenderTitle() {
+    public TranslatableComponent getGenderTitle() {
         return this.getTranslationKey(EnumGender::getUnlocalisedTitle);
     }
 
-    public TranslationTextComponent getGenderTip() {
+    public TranslatableComponent getGenderTip() {
         return this.getTranslationKey(EnumGender::getUnlocalisedTip);
     }
 
-    public TranslationTextComponent getGenderName() {
+    public TranslatableComponent getGenderName() {
         return this.getTranslationKey(EnumGender::getUnlocalisedName);
     }
 }

@@ -10,16 +10,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.util.Mth;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public class InventoryUtil {
 
-    public static ActionResultType feedDogFrom(AbstractDogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
+    public static InteractionResult feedDogFrom(AbstractDogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
 
         for (int i = 0; i < source.getSlots(); i++) {
 
@@ -27,13 +27,13 @@ public class InventoryUtil {
             Optional<IDogFoodHandler> foodHandler = FoodHandler.getMatch(dogIn, stack, entity);
 
             if (foodHandler.isPresent()) {
-                ActionResultType response = foodHandler.get().consume(dogIn, stack, entity);
+                InteractionResult response = foodHandler.get().consume(dogIn, stack, entity);
                 source.setStackInSlot(i, stack);
                 return response;
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     public static Pair<ItemStack, Integer> findStack(IItemHandler source, Predicate<ItemStack> searchCriteria) {
@@ -86,7 +86,7 @@ public class InventoryUtil {
            }
 
            f = f / inv.getSlots();
-           return MathHelper.floor(f * 14.0F) + (i > 0 ? 1 : 0);
+           return Mth.floor(f * 14.0F) + (i > 0 ? 1 : 0);
         }
      }
 }

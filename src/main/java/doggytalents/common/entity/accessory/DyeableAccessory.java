@@ -10,43 +10,43 @@ import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.util.ColourCache;
 import doggytalents.common.util.Util;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.Level;
 
 public class DyeableAccessory extends Accessory {
 
-    public DyeableAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends IItemProvider> itemIn) {
+    public DyeableAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends ItemLike> itemIn) {
         super(typeIn, itemIn);
     }
 
     @Override
-    public AccessoryInstance createInstance(PacketBuffer buf) {
+    public AccessoryInstance createInstance(FriendlyByteBuf buf) {
         return this.create(buf.readInt());
     }
 
     @Override
-    public void write(AccessoryInstance instance, PacketBuffer buf) {
+    public void write(AccessoryInstance instance, FriendlyByteBuf buf) {
         DyeableAccessoryInstance exact = instance.cast(DyeableAccessoryInstance.class);
         buf.writeInt(exact.getColor());
     }
 
     @Override
-    public void write(AccessoryInstance instance, CompoundNBT compound) {
+    public void write(AccessoryInstance instance, CompoundTag compound) {
         DyeableAccessoryInstance exact = instance.cast(DyeableAccessoryInstance.class);
         compound.putInt("color", exact.getColor());
     }
 
     @Override
-    public AccessoryInstance read(CompoundNBT compound) {
+    public AccessoryInstance read(CompoundTag compound) {
         return this.create(compound.getInt("color"));
     }
 
@@ -60,8 +60,8 @@ public class DyeableAccessory extends Accessory {
         DyeableAccessoryInstance exact = instance.cast(DyeableAccessoryInstance.class);
 
         ItemStack returnStack = super.getReturnItem(instance);
-        if (returnStack.getItem() instanceof IDyeableArmorItem) {
-            ((IDyeableArmorItem) returnStack.getItem()).setColor(returnStack, exact.getColor());
+        if (returnStack.getItem() instanceof DyeableLeatherItem) {
+            ((DyeableLeatherItem) returnStack.getItem()).setColor(returnStack, exact.getColor());
         } else {
             DoggyTalents2.LOGGER.info("Unable to set set dyable accessory color.");
         }
@@ -76,8 +76,8 @@ public class DyeableAccessory extends Accessory {
     @Override
     public AccessoryInstance createFromStack(ItemStack stackIn) {
         Item item = stackIn.getItem();
-        if (item instanceof IDyeableArmorItem) {
-            return this.create(((IDyeableArmorItem) item).getColor(stackIn));
+        if (item instanceof DyeableLeatherItem) {
+            return this.create(((DyeableLeatherItem) item).getColor(stackIn));
         }
 
         return this.getDefault();
@@ -110,7 +110,7 @@ public class DyeableAccessory extends Accessory {
         }
 
         @Override
-        public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+        public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
             ItemStack stack = playerIn.getItemInHand(handIn);
 
             DyeColor dyeColor = DyeColor.getColor(stack);
@@ -119,16 +119,16 @@ public class DyeableAccessory extends Accessory {
 
                 // No change
                 if (this.color.is(colorNew)) {
-                    return ActionResultType.FAIL;
+                    return InteractionResult.FAIL;
                 }
 
                 this.color = ColourCache.make(colorNew);
                 dogIn.consumeItemFromStack(playerIn, stack);
                 // Make sure to sync change with client
                 dogIn.markAccessoriesDirty();
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
     }
 

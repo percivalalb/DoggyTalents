@@ -8,19 +8,19 @@ import doggytalents.api.registry.Talent;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogTalentData;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class DogTalentPacket extends DogPacket<DogTalentData> {
 
     @Override
-    public void encode(DogTalentData data, PacketBuffer buf) {
+    public void encode(DogTalentData data, FriendlyByteBuf buf) {
         super.encode(data, buf);
         buf.writeRegistryIdUnsafe(DoggyTalentsAPI.TALENTS, data.talent);
     }
 
     @Override
-    public DogTalentData decode(PacketBuffer buf) {
+    public DogTalentData decode(FriendlyByteBuf buf) {
         int entityId = buf.readInt();
         Talent talent = buf.readRegistryIdUnsafe(DoggyTalentsAPI.TALENTS);
         return new DogTalentData(entityId, talent);

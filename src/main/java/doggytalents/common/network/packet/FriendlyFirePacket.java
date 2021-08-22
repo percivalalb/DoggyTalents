@@ -4,19 +4,19 @@ import java.util.function.Supplier;
 
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.FriendlyFireData;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class FriendlyFirePacket extends DogPacket<FriendlyFireData> {
 
     @Override
-    public void encode(FriendlyFireData data, PacketBuffer buf) {
+    public void encode(FriendlyFireData data, FriendlyByteBuf buf) {
         super.encode(data, buf);
         buf.writeBoolean(data.friendlyFire);
     }
 
     @Override
-    public FriendlyFireData decode(PacketBuffer buf) {
+    public FriendlyFireData decode(FriendlyByteBuf buf) {
         int entityId = buf.readInt();
         boolean obeyOthers = buf.readBoolean();
         return new FriendlyFireData(entityId, obeyOthers);

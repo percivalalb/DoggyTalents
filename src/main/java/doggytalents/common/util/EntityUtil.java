@@ -6,33 +6,33 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.pathfinding.WalkNodeProcessor;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public class EntityUtil {
 
     public static double getFollowRange(LivingEntity entityIn) {
-        ModifiableAttributeInstance rangeAttribute = entityIn.getAttribute(Attributes.FOLLOW_RANGE);
+        AttributeInstance rangeAttribute = entityIn.getAttribute(Attributes.FOLLOW_RANGE);
         return rangeAttribute == null ? 16.0D : rangeAttribute.getValue();
     }
 
-    public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, LivingEntity target, int radius) {
+    public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigation navigator, LivingEntity target, int radius) {
         return tryToTeleportNearEntity(entityIn, navigator, target.blockPosition(), radius);
     }
 
-    public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, BlockPos targetPos, int radius) {
+    public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigation navigator, BlockPos targetPos, int radius) {
         for (int i = 0; i < 10; ++i) {
             int j = getRandomNumber(entityIn, -radius, radius);
             int k = getRandomNumber(entityIn, -1, 1);
@@ -46,7 +46,7 @@ public class EntityUtil {
         return false;
     }
 
-    public static boolean tryToTeleportToLocation(LivingEntity entityIn, PathNavigator navigator, BlockPos targetPos, int x, int y, int z) {
+    public static boolean tryToTeleportToLocation(LivingEntity entityIn, PathNavigation navigator, BlockPos targetPos, int x, int y, int z) {
         if (Math.abs(x - targetPos.getX()) < 2.0D && Math.abs(z - targetPos.getZ()) < 2.0D) {
             return false;
         } else if (!isTeleportFriendlyBlock(entityIn, new BlockPos(x, y, z), false)) {
@@ -59,8 +59,8 @@ public class EntityUtil {
     }
 
     private static boolean isTeleportFriendlyBlock(LivingEntity entityIn, BlockPos pos, boolean teleportToLeaves) {
-        PathNodeType pathnodetype = WalkNodeProcessor.getBlockPathTypeStatic(entityIn.level, pos.mutable());
-        if (pathnodetype != PathNodeType.WALKABLE) {
+        BlockPathTypes pathnodetype = WalkNodeEvaluator.getBlockPathTypeStatic(entityIn.level, pos.mutable());
+        if (pathnodetype != BlockPathTypes.WALKABLE) {
             return false;
         } else {
             BlockState blockstate = entityIn.level.getBlockState(pos.below());
@@ -77,7 +77,7 @@ public class EntityUtil {
         return entityIn.getRandom().nextInt(maxIn - minIn + 1) + minIn;
     }
 
-    public static boolean isHolding(@Nullable Entity entity, Item item, Predicate<CompoundNBT> nbtPredicate) {
+    public static boolean isHolding(@Nullable Entity entity, Item item, Predicate<CompoundTag> nbtPredicate) {
         return isHolding(entity, stack -> stack.getItem() == item && stack.hasTag() && nbtPredicate.test(stack.getTag()));
     }
 
@@ -105,7 +105,7 @@ public class EntityUtil {
         return getClosestTo(center.position(), entities);
     }
 
-    public static <T extends Entity> T getClosestTo(Vector3d posVec, Iterable<T> entities) {
+    public static <T extends Entity> T getClosestTo(Vec3 posVec, Iterable<T> entities) {
         double smallestDist = Double.MAX_VALUE;
         T closest = null;
 
@@ -122,13 +122,13 @@ public class EntityUtil {
 
     public static class Sorter implements Comparator<Entity> {
 
-        private final Vector3d vec3d;
+        private final Vec3 vec3d;
 
         public Sorter(Entity entityIn) {
             this.vec3d = entityIn.position();
         }
 
-        public Sorter(Vector3d vec3d) {
+        public Sorter(Vec3 vec3d) {
             this.vec3d = vec3d;
         }
 

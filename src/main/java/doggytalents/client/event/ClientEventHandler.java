@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -16,27 +16,27 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.recipebook.RecipeBookGui;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.model.BlockModel;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
-import net.minecraft.client.renderer.model.ModelRotation;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.block.BlockModelShaper;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.BlockModelRotation;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.GuiContainerEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
@@ -51,18 +51,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ClientEventHandler {
 
     public static void onModelBakeEvent(final ModelBakeEvent event) {
-        Map<ResourceLocation, IBakedModel> modelRegistry = event.getModelRegistry();
+        Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
 
         try {
             ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(DoggyBlocks.DOG_BED.get());
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
             BlockModel model = (BlockModel) event.getModelLoader().getModel(unbakedModelLoc);
-            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc, true));
+            BakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), BlockModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
             DoggyBlocks.DOG_BED.get().getStateDefinition().getPossibleStates().forEach(state -> {
-                modelRegistry.put(BlockModelShapes.stateToModelLocation(state), customModel);
+                modelRegistry.put(BlockModelShaper.stateToModelLocation(state), customModel);
             });
 
             // Replace inventory model
@@ -92,8 +92,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void onScreenInit(final GuiScreenEvent.InitGuiEvent.Post event) {
         Screen screen = event.getGui();
-        if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) {
-            boolean creative = screen instanceof CreativeScreen;
+        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+            boolean creative = screen instanceof CreativeModeInventoryScreen;
             Minecraft mc = Minecraft.getInstance();
             int width = mc.getWindow().getGuiScaledWidth();
             int height = mc.getWindow().getGuiScaledHeight();
@@ -115,12 +115,12 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void onScreenDrawForeground(final GuiContainerEvent.DrawForeground event) {
         Screen screen = event.getGuiContainer();
-        if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) {
-            boolean creative = screen instanceof CreativeScreen;
+        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+            boolean creative = screen instanceof CreativeModeInventoryScreen;
             DogInventoryButton btn = null;
 
             //TODO just create a static variable in this class
-            for (Widget widget : screen.buttons) {
+            for (AbstractWidget widget : screen.buttons) {
                 if (widget instanceof DogInventoryButton) {
                     btn = (DogInventoryButton) widget;
                     break;
@@ -136,7 +136,7 @@ public class ClientEventHandler {
                 int guiLeft = (width - sizeX) / 2;
                 int guiTop = (height - sizeY) / 2;
                 if (!creative) {
-                    RecipeBookGui recipeBook = ((InventoryScreen) screen).getRecipeBookComponent();
+                    RecipeBookComponent recipeBook = ((InventoryScreen) screen).getRecipeBookComponent();
                     if (recipeBook.isVisible()) {
                         guiLeft += 76;
                     }
@@ -178,7 +178,7 @@ public class ClientEventHandler {
 //        RenderSystem.popMatrix();
 //    }
 
-    public void drawSelectionBox(MatrixStack matrixStackIn, PlayerEntity player, float particleTicks, AxisAlignedBB boundingBox) {
+    public void drawSelectionBox(PoseStack matrixStackIn, Player player, float particleTicks, AABB boundingBox) {
         RenderSystem.disableAlphaTest();
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -189,15 +189,15 @@ public class ClientEventHandler {
 
 
         RenderSystem.disableTexture();
-        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        Vec3 vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         double d0 = vec3d.x();
         double d1 = vec3d.y();
         double d2 = vec3d.z();
 
-        BufferBuilder buf = Tessellator.getInstance().getBuilder();
-        buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        WorldRenderer.renderLineBox(matrixStackIn, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
-        Tessellator.getInstance().end();
+        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+        buf.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
+        LevelRenderer.renderLineBox(matrixStackIn, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
+        Tesselator.getInstance().end();
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         RenderSystem.depthMask(true);
         RenderSystem.enableTexture();
@@ -214,7 +214,7 @@ public class ClientEventHandler {
                 break label;
             }
 
-            MatrixStack stack = event.getMatrixStack();
+            PoseStack stack = event.getMatrixStack();
 
             DogEntity dog = (DogEntity) mc.player.getVehicle();
             int width = mc.getWindow().getGuiScaledWidth();
@@ -226,7 +226,7 @@ public class ClientEventHandler {
             int left = width / 2 + 91;
             int top = height - ForgeIngameGui.right_height;
             ForgeIngameGui.right_height += 10;
-            int level = MathHelper.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
+            int level = Mth.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
 
             for (int i = 0; i < 10; ++i) {
                 int idx = i * 2 + 1;
@@ -255,8 +255,8 @@ public class ClientEventHandler {
 
             if (dog.isEyeInFluid(FluidTags.WATER) || l6 < j7) {
                 int air = dog.getAirSupply();
-                int full = MathHelper.ceil((air - 2) * 10.0D / 300.0D);
-                int partial = MathHelper.ceil(air * 10.0D / 300.0D) - full;
+                int full = Mth.ceil((air - 2) * 10.0D / 300.0D);
+                int partial = Mth.ceil(air * 10.0D / 300.0D) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
                     mc.gui.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);

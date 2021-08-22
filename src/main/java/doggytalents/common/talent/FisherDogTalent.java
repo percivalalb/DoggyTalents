@@ -5,7 +5,7 @@ import doggytalents.api.enu.WetSource;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.item.Items;
+import net.minecraft.world.item.Items;
 
 public class FisherDogTalent extends TalentInstance {
 

@@ -6,18 +6,18 @@ import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.Level;
 
 public class DogFollowOwnerGoal extends Goal {
 
     private final DogEntity dog;
-    private final PathNavigator navigator;
-    private final World world;
+    private final PathNavigation navigator;
+    private final Level world;
     private final double followSpeed;
     private final float stopDist; // If closer than stopDist stop moving towards owner
     private final float startDist; // If further than startDist moving towards owner
@@ -69,8 +69,8 @@ public class DogFollowOwnerGoal extends Goal {
     @Override
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
-        this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
+        this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class DogFollowOwnerGoal extends Goal {
 
         this.owner = null;
         this.navigator.stop();
-        this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
     }
 
     @Override

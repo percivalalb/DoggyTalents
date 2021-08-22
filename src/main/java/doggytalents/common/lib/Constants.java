@@ -1,7 +1,7 @@
 package doggytalents.common.lib;
 
 import doggytalents.common.util.Util;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 
 public class Constants {
 

@@ -12,17 +12,17 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.Util;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.util.Constants;
 
 public class DogLocationData implements IDogData {
@@ -32,12 +32,12 @@ public class DogLocationData implements IDogData {
     private @Nullable UUID ownerId;
 
     // Location data
-    private @Nullable Vector3d position;
-    private @Nullable RegistryKey<World> dimension;
+    private @Nullable Vec3 position;
+    private @Nullable ResourceKey<Level> dimension;
 
     // Other saved data
-    private @Nullable ITextComponent name;
-    private @Nullable ITextComponent ownerName;
+    private @Nullable Component name;
+    private @Nullable Component ownerName;
     private @Nullable EnumGender gender;
     private boolean hasRadarCollar;
 
@@ -90,10 +90,10 @@ public class DogLocationData implements IDogData {
     }
 
 
-    public void read(CompoundNBT compound) {
+    public void read(CompoundTag compound) {
         this.ownerId = NBTUtil.getUniqueId(compound, "ownerId");
         this.position = NBTUtil.getVector3d(compound);
-        this.dimension = RegistryKey.create(Registry.DIMENSION_REGISTRY, NBTUtil.getResourceLocation(compound, "dimension"));
+        this.dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, NBTUtil.getResourceLocation(compound, "dimension"));
         this.name = NBTUtil.getTextComponent(compound, "name_text_component");
         if (compound.contains("gender", Constants.NBT.TAG_STRING)) {
             this.gender = EnumGender.bySaveName(compound.getString("gender"));
@@ -101,7 +101,7 @@ public class DogLocationData implements IDogData {
         this.hasRadarCollar = compound.getBoolean("collar");
     }
 
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag write(CompoundTag compound) {
         NBTUtil.putUniqueId(compound, "ownerId", this.ownerId);
         NBTUtil.putVector3d(compound, this.position);
         NBTUtil.putResourceLocation(compound, "dimension", this.dimension.location());
@@ -120,7 +120,7 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public Optional<LivingEntity> getOwner(@Nullable World worldIn) {
+    public Optional<LivingEntity> getOwner(@Nullable Level worldIn) {
         if (worldIn == null) {
             return Optional.ofNullable(this.owner);
         }
@@ -130,7 +130,7 @@ public class DogLocationData implements IDogData {
             throw new IllegalArgumentException("worldIn must be of ServerWorld");
         }
 
-        for (ServerWorld world : server.getAllLevels()) {
+        for (ServerLevel world : server.getAllLevels()) {
             LivingEntity possibleOwner = WorldUtil.getCachedEntity(world, LivingEntity.class, this.owner, this.uuid);
             if (possibleOwner != null) {
                 this.owner = possibleOwner;
@@ -143,7 +143,7 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public Optional<DogEntity> getDog(@Nullable World worldIn) {
+    public Optional<DogEntity> getDog(@Nullable Level worldIn) {
         if (worldIn == null) {
             return Optional.ofNullable(this.dog);
         }
@@ -153,7 +153,7 @@ public class DogLocationData implements IDogData {
             throw new IllegalArgumentException("worldIn must be of ServerWorld");
         }
 
-        for (ServerWorld world : server.getAllLevels()) {
+        for (ServerLevel world : server.getAllLevels()) {
             DogEntity possibleDog = WorldUtil.getCachedEntity(world, DogEntity.class, this.dog, this.uuid);
             if (possibleDog != null) {
                 this.dog = possibleDog;
@@ -165,27 +165,27 @@ public class DogLocationData implements IDogData {
         return Optional.empty();
     }
 
-    public boolean shouldDisplay(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public boolean shouldDisplay(Level worldIn, Player playerIn, InteractionHand handIn) {
         return this.hasRadarCollar || playerIn.isCreative() || playerIn.getItemInHand(handIn).getItem() == DoggyItems.CREATIVE_RADAR.get();
     }
 
     @Nullable
-    public ITextComponent getName(@Nullable World worldIn) {
+    public Component getName(@Nullable Level worldIn) {
         return this.getDog(worldIn).map(DogEntity::getDisplayName).orElse(this.name);
     }
 
     @Nullable
-    public Vector3d getPos(@Nullable ServerWorld worldIn) {
+    public Vec3 getPos(@Nullable ServerLevel worldIn) {
         return this.getDog(worldIn).map(DogEntity::position).orElse(this.position);
     }
 
     @Nullable
-    public Vector3d getPos() {
+    public Vec3 getPos() {
         return this.position;
     }
 
     @Nullable
-    public RegistryKey<World> getDimension() {
+    public ResourceKey<Level> getDimension() {
         return this.dimension;
     }
 

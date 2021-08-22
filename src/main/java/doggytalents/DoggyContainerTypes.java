@@ -10,11 +10,11 @@ import doggytalents.common.inventory.container.FoodBowlContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.inventory.container.TreatBagContainer;
 import doggytalents.common.lib.Constants;
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.ContainerType;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.network.IContainerFactory;
@@ -23,24 +23,24 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DoggyContainerTypes {
 
-    public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Constants.MOD_ID);
+    public static final DeferredRegister<MenuType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Constants.MOD_ID);
 
-    public static final RegistryObject<ContainerType<FoodBowlContainer>> FOOD_BOWL = register("food_bowl", (windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<FoodBowlContainer>> FOOD_BOWL = register("food_bowl", (windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
         return new FoodBowlContainer(windowId, inv.player.level, pos, inv, inv.player);
     });
-    public static final RegistryObject<ContainerType<PackPuppyContainer>> PACK_PUPPY = register("pack_puppy", (windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<PackPuppyContainer>> PACK_PUPPY = register("pack_puppy", (windowId, inv, data) -> {
         Entity entity = inv.player.level.getEntity(data.readInt());
         return entity instanceof DogEntity ? new PackPuppyContainer(windowId, inv, (DogEntity) entity) : null;
     });
-    public static final RegistryObject<ContainerType<TreatBagContainer>> TREAT_BAG = register("treat_bag", (windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<TreatBagContainer>> TREAT_BAG = register("treat_bag", (windowId, inv, data) -> {
         int slotId = data.readByte();
         return new TreatBagContainer(windowId, inv, slotId, data.readItem());
     });
-    public static final RegistryObject<ContainerType<DogInventoriesContainer>> DOG_INVENTORIES = register("dog_inventories", (windowId, inv, data) -> {
+    public static final RegistryObject<MenuType<DogInventoriesContainer>> DOG_INVENTORIES = register("dog_inventories", (windowId, inv, data) -> {
         int noDogs = data.readInt();
         List<DogEntity> dogs = new ArrayList<>(noDogs);
-        IntArray array = new IntArray(noDogs);
+        SimpleContainerData array = new SimpleContainerData(noDogs);
         for (int i = 0; i < noDogs; i++) {
             Entity entity = inv.player.level.getEntity(data.readInt());
             if (entity instanceof DogEntity) {
@@ -51,11 +51,11 @@ public class DoggyContainerTypes {
         return !dogs.isEmpty() ? new DogInventoriesContainer(windowId, inv, array) : null;
     });
 
-    private static <X extends Container, T extends ContainerType<X>> RegistryObject<ContainerType<X>> register(final String name, final IContainerFactory<X> factory) {
+    private static <X extends AbstractContainerMenu, T extends MenuType<X>> RegistryObject<MenuType<X>> register(final String name, final IContainerFactory<X> factory) {
         return register(name, () -> IForgeContainerType.create(factory));
     }
 
-    private static <T extends ContainerType<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+    private static <T extends MenuType<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
         return CONTAINERS.register(name, sup);
     }
 }

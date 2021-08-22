@@ -3,11 +3,11 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.sounds.SoundEvents;
 
 public class GuardDogTalent extends TalentInstance {
 
@@ -30,22 +30,22 @@ public class GuardDogTalent extends TalentInstance {
     }
 
     @Override
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         super.writeToNBT(dogIn, compound);
         int timeLeft = this.cooldown - dogIn.tickCount;
         compound.putInt("guardtime", timeLeft);
     }
 
     @Override
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         super.readFromNBT(dogIn, compound);
         this.cooldown = dogIn.tickCount + compound.getInt("guardtime");
     }
 
     @Override
-    public ActionResult<Float> attackEntityFrom(AbstractDogEntity dogIn, DamageSource damageSource, float damage) {
+    public InteractionResultHolder<Float> attackEntityFrom(AbstractDogEntity dogIn, DamageSource damageSource, float damage) {
         if (dogIn.level.isClientSide) {
-            return ActionResult.pass(damage);
+            return InteractionResultHolder.pass(damage);
         }
 
         Entity entity = damageSource.getEntity();
@@ -58,12 +58,12 @@ public class GuardDogTalent extends TalentInstance {
                 if (dogIn.getRandom().nextInt(12) < blockChance) {
                     this.cooldown = dogIn.tickCount + 10;
                     dogIn.playSound(SoundEvents.ITEM_BREAK, dogIn.getSoundVolume() / 2, (dogIn.getRandom().nextFloat() - dogIn.getRandom().nextFloat()) * 0.2F + 1.0F);
-                    return ActionResult.fail(0F);
+                    return InteractionResultHolder.fail(0F);
                 }
             }
         }
 
-        return ActionResult.pass(damage);
+        return InteractionResultHolder.pass(damage);
     }
 
 }

@@ -2,15 +2,15 @@ package doggytalents.common.inventory.container;
 
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyContainerTypes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IWorldPosCallable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -18,12 +18,12 @@ import net.minecraftforge.items.SlotItemHandler;
 /**
  * @author ProPercivalalb
  */
-public class FoodBowlContainer extends Container {
+public class FoodBowlContainer extends AbstractContainerMenu {
 
-    private TileEntity tileEntity;
+    private BlockEntity tileEntity;
 
     //Server method
-    public FoodBowlContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
+    public FoodBowlContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(DoggyContainerTypes.FOOD_BOWL.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
         IItemHandler inventory = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
@@ -46,12 +46,12 @@ public class FoodBowlContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
-        return stillValid(IWorldPosCallable.create(this.tileEntity.getLevel(), this.tileEntity.getBlockPos()), player, DoggyBlocks.FOOD_BOWL.get());
+    public boolean stillValid(Player player) {
+        return stillValid(ContainerLevelAccess.create(this.tileEntity.getLevel(), this.tileEntity.getBlockPos()), player, DoggyBlocks.FOOD_BOWL.get());
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(Player player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(i);
 

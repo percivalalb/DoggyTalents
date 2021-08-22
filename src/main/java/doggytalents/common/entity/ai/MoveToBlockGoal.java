@@ -6,8 +6,8 @@ import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.core.BlockPos;
 
 public class MoveToBlockGoal extends Goal {
 

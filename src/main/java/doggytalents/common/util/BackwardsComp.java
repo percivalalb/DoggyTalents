@@ -21,14 +21,14 @@ import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
@@ -56,7 +56,7 @@ public class BackwardsComp {
         return Optional.ofNullable(OLD_NEW_TALENT.get(oldId));
     }
 
-    public static void readTalentMapping(CompoundNBT compound, List<TalentInstance> talentMap) {
+    public static void readTalentMapping(CompoundTag compound, List<TalentInstance> talentMap) {
         if (compound.contains("talents", Constants.NBT.TAG_STRING)) {
 
             String[] split = compound.getString("talents").split(":");
@@ -80,9 +80,9 @@ public class BackwardsComp {
             }
         } else if (compound.contains("talent_level_list", Constants.NBT.TAG_LIST)) {
 
-            ListNBT list = compound.getList("talent_level_list", Constants.NBT.TAG_COMPOUND);
+            ListTag list = compound.getList("talent_level_list", Constants.NBT.TAG_COMPOUND);
             for (int i = 0; i < list.size(); i++) {
-                CompoundNBT talentCompound = list.getCompound(i);
+                CompoundTag talentCompound = list.getCompound(i);
                 Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS);
 
                 if (talent != null) { // Only load if talent exists
@@ -93,7 +93,7 @@ public class BackwardsComp {
         }
     }
 
-    public static void readAccessories(CompoundNBT compound, List<AccessoryInstance> accessories) {
+    public static void readAccessories(CompoundTag compound, List<AccessoryInstance> accessories) {
         if (compound.contains("radioCollar", Constants.NBT.TAG_BYTE) && compound.getBoolean("radioCollar")) {
             accessories.add(DoggyAccessories.RADIO_BAND.get().getDefault());
         }
@@ -137,11 +137,11 @@ public class BackwardsComp {
         }
     }
 
-    public static void readMode(CompoundNBT compound, Consumer<EnumMode> consumer) {
+    public static void readMode(CompoundTag compound, Consumer<EnumMode> consumer) {
         consumer.accept(EnumMode.byIndex(compound.getInt("mode")));
     }
 
-    public static void readDogTexture(CompoundNBT compound, Consumer<String> consumer) {
+    public static void readDogTexture(CompoundTag compound, Consumer<String> consumer) {
         if (compound.contains("doggyTex", Constants.NBT.TAG_ANY_NUMERIC)) {
             int value = compound.getInt("doggyTex");
 
@@ -159,7 +159,7 @@ public class BackwardsComp {
         }
     }
 
-    public static void readHasBone(CompoundNBT compound, Consumer<ItemStack> consumer) {
+    public static void readHasBone(CompoundTag compound, Consumer<ItemStack> consumer) {
         if (compound.contains("hasBone", Constants.NBT.TAG_BYTE) && compound.getBoolean("hasBone")) {
             int variant = compound.getInt("boneVariant");
             if (variant == 0) {
@@ -170,15 +170,15 @@ public class BackwardsComp {
         }
     }
 
-    public static void readBowlLocations(CompoundNBT compound, DimensionDependantArg<Optional<BlockPos>> bowlsData) {
+    public static void readBowlLocations(CompoundTag compound, DimensionDependantArg<Optional<BlockPos>> bowlsData) {
         if (compound.contains("bowlPosX", Constants.NBT.TAG_ANY_NUMERIC)) {
-            bowlsData.put(World.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bowlPosX"), compound.getInt("bowlPosY"), compound.getInt("bowlPosZ"))));
+            bowlsData.put(Level.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bowlPosX"), compound.getInt("bowlPosY"), compound.getInt("bowlPosZ"))));
         }
     }
 
-    public static void readBedLocations(CompoundNBT compound, DimensionDependantArg<Optional<BlockPos>> bedsData) {
+    public static void readBedLocations(CompoundTag compound, DimensionDependantArg<Optional<BlockPos>> bedsData) {
         if (compound.contains("bedPosX", Constants.NBT.TAG_ANY_NUMERIC)) {
-            bedsData.put(World.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bedPosX"), compound.getInt("bedPosY"), compound.getInt("bedPosZ"))));
+            bedsData.put(Level.OVERWORLD, Optional.of(new BlockPos(compound.getInt("bedPosX"), compound.getInt("bedPosY"), compound.getInt("bedPosZ"))));
         }
     }
 

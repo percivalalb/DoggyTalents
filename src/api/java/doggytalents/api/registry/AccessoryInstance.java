@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IRegistryDelegate;
 
 public class AccessoryInstance {
@@ -64,7 +64,7 @@ public class AccessoryInstance {
         return this.getAccessory().getRenderLayer();
     }
 
-    public final void writeInstance(CompoundNBT compound) {
+    public final void writeInstance(CompoundTag compound) {
         ResourceLocation rl = this.getAccessory().getRegistryName();
         if (rl != null) {
             compound.putString("type", rl.toString());
@@ -78,7 +78,7 @@ public class AccessoryInstance {
      * valid or an exception is thrown during loading then an empty optional
      * is returned.
      */
-    public static Optional<AccessoryInstance> readInstance(CompoundNBT compound) {
+    public static Optional<AccessoryInstance> readInstance(CompoundTag compound) {
         ResourceLocation rl = null;
         try {
             rl = ResourceLocation.tryParse(compound.getString("type"));

@@ -1,9 +1,9 @@
 package doggytalents.api.inferface;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 public interface IDogItem {
 
@@ -15,10 +15,10 @@ public interface IDogItem {
      * @param handIn The hand used
      * @return The result of the interaction
      */
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn);
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn);
 
     @Deprecated
-    default ActionResultType onInteractWithDog(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    default InteractionResult onInteractWithDog(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         return processInteract(dogIn, worldIn, playerIn, handIn);
     }
 }

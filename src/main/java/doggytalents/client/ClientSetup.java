@@ -20,7 +20,7 @@ import doggytalents.client.screen.PackPuppyScreen;
 import doggytalents.client.screen.TreatBagScreen;
 import doggytalents.client.tileentity.renderer.DogBedRenderer;
 import doggytalents.common.lib.Resources;
-import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -28,10 +28,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
     public static void setupScreenManagers(final FMLClientSetupEvent event) {
-        ScreenManager.register(DoggyContainerTypes.FOOD_BOWL.get(), FoodBowlScreen::new);
-        ScreenManager.register(DoggyContainerTypes.PACK_PUPPY.get(), PackPuppyScreen::new);
-        ScreenManager.register(DoggyContainerTypes.TREAT_BAG.get(), TreatBagScreen::new);
-        ScreenManager.register(DoggyContainerTypes.DOG_INVENTORIES.get(), DogInventoriesScreen::new);
+        MenuScreens.register(DoggyContainerTypes.FOOD_BOWL.get(), FoodBowlScreen::new);
+        MenuScreens.register(DoggyContainerTypes.PACK_PUPPY.get(), PackPuppyScreen::new);
+        MenuScreens.register(DoggyContainerTypes.TREAT_BAG.get(), TreatBagScreen::new);
+        MenuScreens.register(DoggyContainerTypes.DOG_INVENTORIES.get(), DogInventoriesScreen::new);
     }
 
     public static void setupEntityRenderers(final FMLClientSetupEvent event) {

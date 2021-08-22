@@ -9,22 +9,22 @@ import java.util.stream.Collectors;
 import doggytalents.DoggyItems;
 import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.Util;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class RadarItem extends Item {
 
@@ -33,7 +33,7 @@ public class RadarItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 //        if (worldIn.isRemote) {
 //            DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> RadarScreen.open(playerIn));
@@ -43,20 +43,20 @@ public class RadarItem extends Item {
             if (playerIn.isShiftKeyDown()) {
                 DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
                 for (UUID uuid : locationManager.getAllUUID()) {
-                    playerIn.sendMessage(new StringTextComponent(locationManager.getData(uuid).toString()), Util.NIL_UUID);
+                    playerIn.sendMessage(new TextComponent(locationManager.getData(uuid).toString()), Util.NIL_UUID);
                 }
-                return new ActionResult<ItemStack>(ActionResultType.FAIL, playerIn.getItemInHand(handIn));
+                return new InteractionResultHolder<ItemStack>(InteractionResult.FAIL, playerIn.getItemInHand(handIn));
             }
 
-            RegistryKey<World> dimCurr = playerIn.level.dimension();
+            ResourceKey<Level> dimCurr = playerIn.level.dimension();
 
-            playerIn.sendMessage(new StringTextComponent(""), Util.NIL_UUID);
+            playerIn.sendMessage(new TextComponent(""), Util.NIL_UUID);
 
             DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
             List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, dimCurr).collect(Collectors.toList());
 
             if (ownDogs.isEmpty()) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", dimCurr), Util.NIL_UUID);
+                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", dimCurr), Util.NIL_UUID);
             } else {
                 boolean flag = false;
 
@@ -65,20 +65,20 @@ public class RadarItem extends Item {
                         flag = true;
 
                         String translateStr = RadarItem.getDirectionTranslationKey(loc, playerIn);
-                        int distance = MathHelper.ceil(loc.getPos() != null ? loc.getPos().distanceTo(playerIn.position()) : -1);
+                        int distance = Mth.ceil(loc.getPos() != null ? loc.getPos().distanceTo(playerIn.position()) : -1);
 
-                        playerIn.sendMessage(new TranslationTextComponent(translateStr, loc.getName(worldIn), distance), Util.NIL_UUID);
+                        playerIn.sendMessage(new TranslatableComponent(translateStr, loc.getName(worldIn), distance), Util.NIL_UUID);
                     }
                 }
 
                 if (!flag) {
-                    playerIn.sendMessage(new TranslationTextComponent("dogradar.errornoradio"), Util.NIL_UUID);
+                    playerIn.sendMessage(new TranslatableComponent("dogradar.errornoradio"), Util.NIL_UUID);
                 }
             }
 
-            List<RegistryKey<World>> otherDogs = new ArrayList<>();
-            List<RegistryKey<World>> noDogs = new ArrayList<>();
-            for (RegistryKey<World> worldkey : worldIn.getServer().levelKeys()) {
+            List<ResourceKey<Level>> otherDogs = new ArrayList<>();
+            List<ResourceKey<Level>> noDogs = new ArrayList<>();
+            for (ResourceKey<Level> worldkey : worldIn.getServer().levelKeys()) {
                 if (worldkey.equals(worldIn.dimension()))  continue;
                 ownDogs = locationManager.getDogs(playerIn, worldkey).collect(Collectors.toList()); // Check if radio collar is on
 
@@ -86,22 +86,22 @@ public class RadarItem extends Item {
             }
 
             if (otherDogs.size() > 0) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.notindim", otherDogs.stream().map(RegistryKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
+                playerIn.sendMessage(new TranslatableComponent("dogradar.notindim", otherDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
             }
 
             if (noDogs.size() > 0 && stack.getItem() == DoggyItems.CREATIVE_RADAR.get()) {
-                playerIn.sendMessage(new TranslationTextComponent("dogradar.errornull", noDogs.stream().map(RegistryKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
+                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", noDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
             }
         }
-        return new ActionResult<ItemStack>(ActionResultType.FAIL, stack);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.FAIL, stack);
     }
 
     public static String getDirectionTranslationKey(DogLocationData loc, Entity entity) {
         if (loc.getPos() == null) {
             return "dogradar.unknown";
         }
-        Vector3d diff = loc.getPos().add(entity.position().reverse());
-        double angle = MathHelper.atan2(diff.x(), diff.z());
+        Vec3 diff = loc.getPos().add(entity.position().reverse());
+        double angle = Mth.atan2(diff.x(), diff.z());
 
         if (angle < -Math.PI + Math.PI / 8) {
             return "dogradar.north";

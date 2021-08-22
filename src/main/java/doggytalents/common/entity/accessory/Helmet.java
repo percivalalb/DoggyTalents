@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import doggytalents.DoggyAccessoryTypes;
 import doggytalents.api.registry.Accessory;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 
 public class Helmet extends ArmourAccessory {
 
-    public Helmet(Supplier<? extends IItemProvider> itemIn) {
+    public Helmet(Supplier<? extends ItemLike> itemIn) {
         super(DoggyAccessoryTypes.HEAD, itemIn);
     }
 

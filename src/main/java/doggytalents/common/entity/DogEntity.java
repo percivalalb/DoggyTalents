@@ -61,70 +61,70 @@ import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.AgeableEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
-import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.entity.ai.goal.LookAtGoal;
-import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.ai.goal.SitGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WaterAvoidingRandomWalkingGoal;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.entity.monster.GhastEntity;
-import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.datasync.EntityDataManager.DataEntry;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.server.management.PreYggdrasilConverter;
+import net.minecraft.world.entity.AgableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Ghast;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.syncher.SynchedEntityData.DataItem;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
@@ -137,23 +137,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
 
-    private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.defineId(DogEntity.class, DataSerializers.OPTIONAL_COMPONENT);
-    private static final DataParameter<Byte> DOG_FLAGS = EntityDataManager.defineId(DogEntity.class, DataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<Component>> LAST_KNOWN_NAME = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.OPTIONAL_COMPONENT);
+    private static final EntityDataAccessor<Byte> DOG_FLAGS = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.BYTE);
 
-    private static final DataParameter<Float> HUNGER_INT = EntityDataManager.defineId(DogEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<String> CUSTOM_SKIN = EntityDataManager.defineId(DogEntity.class, DataSerializers.STRING);
+    private static final EntityDataAccessor<Float> HUNGER_INT = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> CUSTOM_SKIN = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.STRING);
 
-    private static final DataParameter<Byte> SIZE = EntityDataManager.defineId(DogEntity.class, DataSerializers.BYTE);
-    private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.defineId(DogEntity.class, DataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Byte> SIZE = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<ItemStack> BONE_VARIANT = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.ITEM_STACK);
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
-    private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<List<TalentInstance>>> TALENTS = Cache.make(() -> (DataParameter<List<TalentInstance>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<EnumGender>> GENDER = Cache.make(() -> (DataParameter<EnumGender>) EntityDataManager.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<EnumMode>> MODE = Cache.make(() -> (DataParameter<EnumMode>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (EntityDataAccessor<List<AccessoryInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<List<TalentInstance>>> TALENTS = Cache.make(() -> (EntityDataAccessor<List<TalentInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DogLevel>> DOG_LEVEL = Cache.make(() -> (EntityDataAccessor<DogLevel>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<EnumGender>> GENDER = Cache.make(() -> (EntityDataAccessor<EnumGender>) SynchedEntityData.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<EnumMode>> MODE = Cache.make(() -> (EntityDataAccessor<EnumMode>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
 
     public static final void initDataParameters() {
         ACCESSORIES.get();
@@ -190,7 +190,7 @@ public class DogEntity extends AbstractDogEntity {
 
     protected BlockPos targetBlock;
 
-    public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
+    public DogEntity(EntityType<? extends DogEntity> type, Level worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.setGender(EnumGender.random(this.getRandom()));
@@ -210,16 +210,16 @@ public class DogEntity extends AbstractDogEntity {
         this.entityData.define(DOG_LEVEL.get(), new DogLevel(0, 0));
         this.entityData.define(SIZE, (byte) 3);
         this.entityData.define(BONE_VARIANT, ItemStack.EMPTY);
-        this.entityData.define(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
-        this.entityData.define(DOG_BOWL_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
+        this.entityData.define(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> EntityDataSerializers.OPTIONAL_BLOCK_POS));
+        this.entityData.define(DOG_BOWL_LOCATION.get(), new DimensionDependantArg<>(() -> EntityDataSerializers.OPTIONAL_BLOCK_POS));
     }
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         //this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
-        this.goalSelector.addGoal(2, new SitGoal(this));
+        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         //this.goalSelector.addGoal(3, new WolfEntity.AvoidEntityGoal(this, LlamaEntity.class, 24.0F, 1.5D, 1.5D));
         this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, true));
@@ -228,17 +228,17 @@ public class DogEntity extends AbstractDogEntity {
         this.goalSelector.addGoal(6, new FetchGoal(this, 1.0D, 32.0F));
         this.goalSelector.addGoal(6, new DogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F));
         this.goalSelector.addGoal(7, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
         this.goalSelector.addGoal(9, new DogBegGoal(this, 8.0F));
-        this.goalSelector.addGoal(10, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
-        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
-        this.targetSelector.addGoal(6, new BerserkerModeGoal<>(this, MonsterEntity.class, false));
+        this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeleton.class, false));
+        this.targetSelector.addGoal(6, new BerserkerModeGoal<>(this, Monster.class, false));
         this.targetSelector.addGoal(6, new GuardModeGoal(this, false));
     }
 
@@ -277,26 +277,26 @@ public class DogEntity extends AbstractDogEntity {
 
     @OnlyIn(Dist.CLIENT)
     public float getShadingWhileWet(float partialTicks) {
-        return Math.min(0.5F + MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.5F, 1.0F);
+        return Math.min(0.5F + Mth.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) / 2.0F * 0.5F, 1.0F);
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public float getShakeAngle(float partialTicks, float offset) {
-        float f = (MathHelper.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + offset) / 1.8F;
+        float f = (Mth.lerp(partialTicks, this.prevTimeWolfIsShaking, this.timeWolfIsShaking) + offset) / 1.8F;
         if (f < 0.0F) {
             f = 0.0F;
         } else if (f > 1.0F) {
             f = 1.0F;
         }
 
-        return MathHelper.sin(f * (float)Math.PI) * MathHelper.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
+        return Mth.sin(f * (float)Math.PI) * Mth.sin(f * (float)Math.PI * 11.0F) * 0.15F * (float)Math.PI;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
     public float getInterestedAngle(float partialTicks) {
-        return MathHelper.lerp(partialTicks, this.headRotationCourseOld, this.headRotationCourse) * 0.15F * (float)Math.PI;
+        return Mth.lerp(partialTicks, this.headRotationCourseOld, this.headRotationCourse) * 0.15F * (float)Math.PI;
     }
 
     @Override
@@ -316,17 +316,17 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public float getWagAngle(float limbSwing, float limbSwingAmount, float partialTickTime) {
-        return MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        return Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
+    protected float getStandingEyeHeight(Pose poseIn, EntityDimensions sizeIn) {
         return sizeIn.height * 0.8F;
     }
 
     @Override
-    public Vector3d getLeashOffset() {
-        return new Vector3d(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
+    public Vec3 getLeashOffset() {
+        return new Vec3(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
     @Override
@@ -336,7 +336,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public double getMyRidingOffset() {
-        return this.getVehicle() instanceof PlayerEntity ? 0.5D : 0.0D;
+        return this.getVehicle() instanceof Player ? 0.5D : 0.0D;
     }
 
     @Override
@@ -386,8 +386,8 @@ public class DogEntity extends AbstractDogEntity {
 
                 if (this.timeWolfIsShaking > 0.4F) {
                     float f = (float)this.getY();
-                    int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
-                    Vector3d vec3d = this.getDeltaMovement();
+                    int i = (int)(Mth.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
+                    Vec3 vec3d = this.getDeltaMovement();
 
                     for (int j = 0; j < i; ++j) {
                         float f1 = (this.random.nextFloat() * 2.0F - 1.0F) * this.getBbWidth() * 0.5F;
@@ -431,7 +431,7 @@ public class DogEntity extends AbstractDogEntity {
                 }
 
                 for (IDogAlteration alter : this.alterations) {
-                    ActionResult<Integer> result = alter.hungerTick(this, this.hungerTick - this.prevHungerTick);
+                    InteractionResultHolder<Integer> result = alter.hungerTick(this, this.hungerTick - this.prevHungerTick);
 
                     if (result.getResult().shouldSwing()) {
                         this.hungerTick = result.getObject() + this.prevHungerTick;
@@ -452,7 +452,7 @@ public class DogEntity extends AbstractDogEntity {
             }
 
             for (IDogAlteration alter : this.alterations) {
-                ActionResult<Integer> result = alter.healingTick(this, this.healingTick - this.prevHealingTick);
+                InteractionResultHolder<Integer> result = alter.healingTick(this, this.healingTick - this.prevHealingTick);
 
                 if (result.getResult().shouldSwing()) {
                     this.healingTick = result.getObject() + this.prevHealingTick;
@@ -476,7 +476,7 @@ public class DogEntity extends AbstractDogEntity {
 
         // Check if dog bowl still exists every 50t/2.5s, if not remove
         if (this.tickCount % 50 == 0) {
-            RegistryKey<World> dimKey = this.level.dimension();
+            ResourceKey<Level> dimKey = this.level.dimension();
             Optional<BlockPos> bowlPos = this.getBowlPos(dimKey);
 
             // If the dog has a food bowl in this dimension then check if it is still there
@@ -490,7 +490,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
 
         ItemStack stack = player.getItemInHand(hand);
 
@@ -501,7 +501,7 @@ public class DogEntity extends AbstractDogEntity {
                     DogInfoScreen.open(this);
                 }
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         } else { // Not tamed
             if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
@@ -521,7 +521,7 @@ public class DogEntity extends AbstractDogEntity {
                     }
                 }
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
@@ -531,26 +531,26 @@ public class DogEntity extends AbstractDogEntity {
             return foodHandler.get().consume(this, stack, player);
         }
 
-        ActionResultType interactResult = InteractHandler.getMatch(this, stack, player, hand);
+        InteractionResult interactResult = InteractHandler.getMatch(this, stack, player, hand);
 
-        if (interactResult != ActionResultType.PASS) {
+        if (interactResult != InteractionResult.PASS) {
             return interactResult;
         }
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.processInteract(this, this.level, player, hand);
-            if (result != ActionResultType.PASS) {
+            InteractionResult result = alter.processInteract(this, this.level, player, hand);
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
 
-        ActionResultType actionresulttype = super.mobInteract(player, hand);
+        InteractionResult actionresulttype = super.mobInteract(player, hand);
         if ((!actionresulttype.consumesAction() || this.isBaby()) && this.canInteract(player)) {
             this.setOrderedToSit(!this.isOrderedToSit());
             this.jumping = false;
             this.navigation.stop();
             this.setTarget(null);
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         return actionresulttype;
@@ -559,11 +559,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean canBeRiddenInWater(Entity rider) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canBeRiddenInWater(this, rider);
+            InteractionResult result = alter.canBeRiddenInWater(this, rider);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -574,11 +574,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean canTrample(BlockState state, BlockPos pos, float fallDistance) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canTrample(this, state, pos, fallDistance);
+            InteractionResult result = alter.canTrample(this, state, pos, fallDistance);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -589,11 +589,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean causeFallDamage(float distance, float damageMultiplier) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.onLivingFall(this, distance, damageMultiplier);
+            InteractionResult result = alter.onLivingFall(this, distance, damageMultiplier);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -609,12 +609,12 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     protected int calculateFallDamage(float distance, float damageMultiplier) {
-        EffectInstance effectInst = this.getEffect(Effects.JUMP);
+        MobEffectInstance effectInst = this.getEffect(MobEffects.JUMP);
         float f = effectInst == null ? 0.0F : effectInst.getAmplifier() + 1;
         distance -= f;
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Float> result = alter.calculateFallDistance(this, distance);
+            InteractionResultHolder<Float> result = alter.calculateFallDistance(this, distance);
 
             if (result.getResult().shouldSwing()) {
                 distance = result.getObject();
@@ -622,17 +622,17 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        return MathHelper.ceil((distance - 3.0F - f) * damageMultiplier);
+        return Mth.ceil((distance - 3.0F - f) * damageMultiplier);
     }
 
     @Override
     public boolean canBreatheUnderwater() {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canBreatheUnderwater(this);
+            InteractionResult result = alter.canBreatheUnderwater(this);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -643,7 +643,7 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     protected int decreaseAirSupply(int air) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Integer> result = alter.decreaseAirSupply(this, air);
+            InteractionResultHolder<Integer> result = alter.decreaseAirSupply(this, air);
 
             if (result.getResult().shouldSwing()) {
                 return result.getObject();
@@ -657,7 +657,7 @@ public class DogEntity extends AbstractDogEntity {
     protected int increaseAirSupply(int currentAir) {
         currentAir += 4;
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Integer> result = alter.determineNextAir(this, currentAir);
+            InteractionResultHolder<Integer> result = alter.determineNextAir(this, currentAir);
 
             if (result.getResult().shouldSwing()) {
                 currentAir = result.getObject();
@@ -675,11 +675,11 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canAttack(this, target);
+            InteractionResult result = alter.canAttack(this, target);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -694,11 +694,11 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canAttack(this, entityType);
+            InteractionResult result = alter.canAttack(this, entityType);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -714,31 +714,31 @@ public class DogEntity extends AbstractDogEntity {
 
         //TODO make wolves not able to attack dogs
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.shouldAttackEntity(this, target, owner);
+            InteractionResult result = alter.shouldAttackEntity(this, target, owner);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
 
-        if (target instanceof CreeperEntity || target instanceof GhastEntity) {
+        if (target instanceof Creeper || target instanceof Ghast) {
             return false;
         }
 
-        if (target instanceof WolfEntity) {
-            WolfEntity wolfentity = (WolfEntity)target;
+        if (target instanceof Wolf) {
+            Wolf wolfentity = (Wolf)target;
             return !wolfentity.isTame() || wolfentity.getOwner() != owner;
         } else if (target instanceof DogEntity) {
             DogEntity dogEntity = (DogEntity)target;
             return !dogEntity.isTame() || dogEntity.getOwner() != owner;
-         } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canHarmPlayer((PlayerEntity)target)) {
+         } else if (target instanceof Player && owner instanceof Player && !((Player)owner).canHarmPlayer((Player)target)) {
              return false;
-        } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTamed()) {
+        } else if (target instanceof AbstractHorse && ((AbstractHorse)target).isTamed()) {
             return false;
         } else {
-            return !(target instanceof TameableEntity) || !((TameableEntity)target).isTame();
+            return !(target instanceof TamableAnimal) || !((TamableAnimal)target).isTame();
         }
     }
 
@@ -751,10 +751,10 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Float> result = alter.attackEntityFrom(this, source, amount);
+            InteractionResultHolder<Float> result = alter.attackEntityFrom(this, source, amount);
 
             // TODO
-            if (result.getResult() == ActionResultType.FAIL) {
+            if (result.getResult() == InteractionResult.FAIL) {
                 return false;
             } else {
                 amount = result.getObject();
@@ -767,13 +767,13 @@ public class DogEntity extends AbstractDogEntity {
             Entity entity = source.getEntity();
             // Must be checked here too as hitByEntity only applies to when the dog is
             // directly hit not indirect damage like sweeping effect etc
-            if (entity instanceof PlayerEntity && !this.canPlayersAttack()) {
+            if (entity instanceof Player && !this.canPlayersAttack()) {
                 return false;
             }
 
             this.setOrderedToSit(false);
 
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
@@ -784,16 +784,16 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean doHurtTarget(Entity target) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.attackEntityAsMob(this, target);
+            InteractionResult result = alter.attackEntityAsMob(this, target);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
 
-        ModifiableAttributeInstance attackDamageInst = this.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance attackDamageInst = this.getAttribute(Attributes.ATTACK_DAMAGE);
 
         Set<AttributeModifier> critModifiers = null;
 
@@ -830,11 +830,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean isDamageSourceBlocked(DamageSource source) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.canBlockDamageSource(this, source);
+            InteractionResult result = alter.canBlockDamageSource(this, source);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -845,7 +845,7 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void setSecondsOnFire(int second) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Integer> result = alter.setFire(this, second);
+            InteractionResultHolder<Integer> result = alter.setFire(this, second);
 
             if (result.getResult().shouldSwing()) {
                 second = result.getObject();
@@ -858,11 +858,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean fireImmune() {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.isImmuneToFire(this);
+            InteractionResult result = alter.isImmuneToFire(this);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -873,11 +873,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.isInvulnerableTo(this, source);
+            InteractionResult result = alter.isInvulnerableTo(this, source);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -888,11 +888,11 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public boolean isInvulnerable() {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.isInvulnerable(this);
+            InteractionResult result = alter.isInvulnerable(this);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -901,13 +901,13 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canBeAffected(EffectInstance effectIn) {
+    public boolean canBeAffected(MobEffectInstance effectIn) {
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.isPotionApplicable(this, effectIn);
+            InteractionResult result = alter.isPotionApplicable(this, effectIn);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -934,7 +934,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void tame(PlayerEntity player) {
+    public void tame(Player player) {
         super.tame(player);
         // When tamed by player cache their display name
         this.setOwnersName(player.getName());
@@ -958,22 +958,22 @@ public class DogEntity extends AbstractDogEntity {
         super.setOwnerUUID(uuid);
 
         if (uuid == null) {
-            this.setOwnersName((ITextComponent) null);
+            this.setOwnersName((Component) null);
         }
     }
 
     @Override // blockAttackFromPlayer
     public boolean skipAttackInteraction(Entity entityIn) {
-        if (entityIn instanceof PlayerEntity && !this.canPlayersAttack()) {
+        if (entityIn instanceof Player && !this.canPlayersAttack()) {
             return true;
         }
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.hitByEntity(this, entityIn);
+            InteractionResult result = alter.hitByEntity(this, entityIn);
 
             if (result.shouldSwing()) {
                 return true;
-            } else if (result == ActionResultType.FAIL) {
+            } else if (result == InteractionResult.FAIL) {
                 return false;
             }
         }
@@ -982,7 +982,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(DoggyItems.DOGGY_CHARM.get());
     }
 
@@ -992,7 +992,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canMate(AnimalEntity otherAnimal) {
+    public boolean canMate(Animal otherAnimal) {
         if (otherAnimal == this) {
             return false;
         } else if (!this.isTame()) {
@@ -1014,7 +1014,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld worldIn, AgeableEntity partner) {
+    public AgableMob getBreedOffspring(ServerLevel worldIn, AgableMob partner) {
         DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerUUID();
 
@@ -1070,7 +1070,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public Entity changeDimension(ServerWorld worldIn, ITeleporter teleporter) {
+    public Entity changeDimension(ServerLevel worldIn, ITeleporter teleporter) {
         Entity transportedEntity = super.changeDimension(worldIn, teleporter);
         if (transportedEntity instanceof DogEntity) {
             DogLocationStorage.get(this.level).getOrCreateData(this).update((DogEntity) transportedEntity);
@@ -1165,25 +1165,25 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
 
-        ListNBT talentList = new ListNBT();
+        ListTag talentList = new ListTag();
         List<TalentInstance> talents = this.getTalentMap();
 
         for (int i = 0; i < talents.size(); i++) {
-            CompoundNBT talentTag = new CompoundNBT();
+            CompoundTag talentTag = new CompoundTag();
             talents.get(i).writeInstance(this, talentTag);
             talentList.add(talentTag);
         }
 
         compound.put("talents", talentList);
 
-        ListNBT accessoryList = new ListNBT();
+        ListTag accessoryList = new ListTag();
         List<AccessoryInstance> accessories = this.getAccessories();
 
         for (int i = 0; i < accessories.size(); i++) {
-            CompoundNBT accessoryTag = new CompoundNBT();
+            CompoundTag accessoryTag = new CompoundTag();
             accessories.get(i).writeInstance(accessoryTag);
             accessoryList.add(accessoryTag);
         }
@@ -1208,10 +1208,10 @@ public class DogEntity extends AbstractDogEntity {
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.entityData.get(DOG_BED_LOCATION.get());
 
         if (!bedsData.isEmpty()) {
-            ListNBT bedsList = new ListNBT();
+            ListTag bedsList = new ListTag();
 
-            for (Entry<RegistryKey<World>, Optional<BlockPos>> entry : bedsData.entrySet()) {
-                CompoundNBT bedNBT = new CompoundNBT();
+            for (Entry<ResourceKey<Level>, Optional<BlockPos>> entry : bedsData.entrySet()) {
+                CompoundTag bedNBT = new CompoundTag();
                 NBTUtil.putResourceLocation(bedNBT, "dim", entry.getKey().location());
                 NBTUtil.putBlockPos(bedNBT, "pos", entry.getValue());
                 bedsList.add(bedNBT);
@@ -1223,10 +1223,10 @@ public class DogEntity extends AbstractDogEntity {
         DimensionDependantArg<Optional<BlockPos>> bowlsData = this.entityData.get(DOG_BOWL_LOCATION.get());
 
         if (!bowlsData.isEmpty()) {
-            ListNBT bowlsList = new ListNBT();
+            ListTag bowlsList = new ListTag();
 
-            for (Entry<RegistryKey<World>, Optional<BlockPos>> entry : bowlsData.entrySet()) {
-                CompoundNBT bowlsNBT = new CompoundNBT();
+            for (Entry<ResourceKey<Level>, Optional<BlockPos>> entry : bowlsData.entrySet()) {
+                CompoundTag bowlsNBT = new CompoundTag();
                 NBTUtil.putResourceLocation(bowlsNBT, "dim", entry.getKey().location());
                 NBTUtil.putBlockPos(bowlsNBT, "pos", entry.getValue());
                 bowlsList.add(bowlsNBT);
@@ -1241,7 +1241,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void load(CompoundNBT compound) {
+    public void load(CompoundTag compound) {
 
         // DataFix uuid entries and attribute ids
         try {
@@ -1258,7 +1258,7 @@ public class DogEntity extends AbstractDogEntity {
                 compound.putUUID("Owner", ownerUUID);
                 compound.remove("OwnerUUID");
             } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
-                UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNecessary(this.getServer(), compound.getString("Owner"));
+                UUID ownerUUID = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), compound.getString("Owner"));
 
                 compound.putUUID("Owner", ownerUUID);
             }
@@ -1275,9 +1275,9 @@ public class DogEntity extends AbstractDogEntity {
 
         try {
             if (compound.contains("Attributes", Constants.NBT.TAG_LIST)) {
-                ListNBT attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
+                ListTag attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
                 for (int i = 0; i < attributeList.size(); i++) {
-                    CompoundNBT attributeData = attributeList.getCompound(i);
+                    CompoundTag attributeData = attributeList.getCompound(i);
                     String namePrev = attributeData.getString("Name");
                     Object name = namePrev;
 
@@ -1303,9 +1303,9 @@ public class DogEntity extends AbstractDogEntity {
 
                     if (attributeRL != null && ForgeRegistries.ATTRIBUTES.containsKey(attributeRL)) {
                         attributeData.putString("Name", attributeRL.toString());
-                        ListNBT modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
+                        ListTag modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
                         for (int j = 0; j < modifierList.size(); j++) {
-                            CompoundNBT modifierData = modifierList.getCompound(j);
+                            CompoundTag modifierData = modifierList.getCompound(j);
                             if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
                                 UUID entityUUID = NBTUtil.getOldUniqueId(modifierData, "UUID");
 
@@ -1326,14 +1326,14 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
         List<TalentInstance> talentMap = this.getTalentMap();
         talentMap.clear();
 
         if (compound.contains("talents", Constants.NBT.TAG_LIST)) {
-            ListNBT talentList = compound.getList("talents", Constants.NBT.TAG_COMPOUND);
+            ListTag talentList = compound.getList("talents", Constants.NBT.TAG_COMPOUND);
 
             for (int i = 0; i < talentList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
@@ -1350,7 +1350,7 @@ public class DogEntity extends AbstractDogEntity {
         accessories.clear();
 
         if (compound.contains("accessories", Constants.NBT.TAG_LIST)) {
-            ListNBT accessoryList = compound.getList("accessories", Constants.NBT.TAG_COMPOUND);
+            ListTag accessoryList = compound.getList("accessories", Constants.NBT.TAG_COMPOUND);
 
             for (int i = 0; i < accessoryList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
@@ -1429,12 +1429,12 @@ public class DogEntity extends AbstractDogEntity {
 
         try {
             if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
-                ListNBT bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
+                ListTag bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
 
                 for (int i = 0; i < bedsList.size(); i++) {
-                    CompoundNBT bedNBT = bedsList.getCompound(i);
+                    CompoundTag bedNBT = bedsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
-                    RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, loc);
+                    ResourceKey<Level> type = ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
                     bedsData.put(type, pos);
                 }
@@ -1452,12 +1452,12 @@ public class DogEntity extends AbstractDogEntity {
 
         try {
             if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
-                ListNBT bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
+                ListTag bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
 
                 for (int i = 0; i < bowlsList.size(); i++) {
-                    CompoundNBT bowlsNBT = bowlsList.getCompound(i);
+                    CompoundTag bowlsNBT = bowlsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
-                    RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, loc);
+                    ResourceKey<Level> type = ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
                     bowlsData.put(type, pos);
                 }
@@ -1489,7 +1489,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void onSyncedDataUpdated(DataParameter<?> key) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (TALENTS.get().equals(key) || ACCESSORIES.get().equals(key)) {
             this.recalculateAlterationsCache();
@@ -1623,15 +1623,15 @@ public class DogEntity extends AbstractDogEntity {
         return Optional.empty();
     }
 
-    public Optional<ITextComponent> getOwnersName() {
+    public Optional<Component> getOwnersName() {
         return this.entityData.get(LAST_KNOWN_NAME);
     }
 
-    public void setOwnersName(@Nullable ITextComponent comp) {
+    public void setOwnersName(@Nullable Component comp) {
         this.setOwnersName(Optional.ofNullable(comp));
     }
 
-    public void setOwnersName(Optional<ITextComponent> collar) {
+    public void setOwnersName(Optional<Component> collar) {
         this.entityData.set(LAST_KNOWN_NAME, collar);
     }
 
@@ -1667,7 +1667,7 @@ public class DogEntity extends AbstractDogEntity {
         return this.getBedPos(this.level.dimension());
     }
 
-    public Optional<BlockPos> getBedPos(RegistryKey<World> registryKey) {
+    public Optional<BlockPos> getBedPos(ResourceKey<Level> registryKey) {
         return this.entityData.get(DOG_BED_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
     }
 
@@ -1675,11 +1675,11 @@ public class DogEntity extends AbstractDogEntity {
         this.setBedPos(this.level.dimension(), pos);
     }
 
-    public void setBedPos(RegistryKey<World> registryKey, @Nullable BlockPos pos) {
+    public void setBedPos(ResourceKey<Level> registryKey, @Nullable BlockPos pos) {
         this.setBedPos(registryKey, WorldUtil.toImmutable(pos));
     }
 
-    public void setBedPos(RegistryKey<World> registryKey, Optional<BlockPos> pos) {
+    public void setBedPos(ResourceKey<Level> registryKey, Optional<BlockPos> pos) {
         this.entityData.set(DOG_BED_LOCATION.get(), this.entityData.get(DOG_BED_LOCATION.get()).copy().set(registryKey, pos));
     }
 
@@ -1687,7 +1687,7 @@ public class DogEntity extends AbstractDogEntity {
         return this.getBowlPos(this.level.dimension());
     }
 
-    public Optional<BlockPos> getBowlPos(RegistryKey<World> registryKey) {
+    public Optional<BlockPos> getBowlPos(ResourceKey<Level> registryKey) {
         return this.entityData.get(DOG_BOWL_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
     }
 
@@ -1695,11 +1695,11 @@ public class DogEntity extends AbstractDogEntity {
         this.setBowlPos(this.level.dimension(), pos);
     }
 
-    public void setBowlPos(RegistryKey<World> registryKey, @Nullable BlockPos pos) {
+    public void setBowlPos(ResourceKey<Level> registryKey, @Nullable BlockPos pos) {
         this.setBowlPos(registryKey, WorldUtil.toImmutable(pos));
     }
 
-    public void setBowlPos(RegistryKey<World> registryKey, Optional<BlockPos> pos) {
+    public void setBowlPos(ResourceKey<Level> registryKey, Optional<BlockPos> pos) {
         this.entityData.set(DOG_BOWL_LOCATION.get(), this.entityData.get(DOG_BOWL_LOCATION.get()).copy().set(registryKey, pos));
     }
 
@@ -1708,7 +1708,7 @@ public class DogEntity extends AbstractDogEntity {
         float maxHunger = ConfigValues.DEFAULT_MAX_HUNGER;
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Float> result = alter.getMaxHunger(this, maxHunger);
+            InteractionResultHolder<Float> result = alter.getMaxHunger(this, maxHunger);
 
             if (result.getResult().shouldSwing()) {
                 maxHunger = result.getObject();
@@ -1733,7 +1733,7 @@ public class DogEntity extends AbstractDogEntity {
         float diff = hunger - this.getDogHunger();
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResult<Float> result = alter.setDogHunger(this, hunger, diff);
+            InteractionResultHolder<Float> result = alter.setDogHunger(this, hunger, diff);
 
             if (result.getResult().shouldSwing()) {
                 hunger = result.getObject();
@@ -1741,7 +1741,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        this.setHungerDirectly(MathHelper.clamp(hunger, 0, this.getMaxHunger()));
+        this.setHungerDirectly(Mth.clamp(hunger, 0, this.getMaxHunger()));
     }
 
     private void setHungerDirectly(float hunger) {
@@ -1879,9 +1879,9 @@ public class DogEntity extends AbstractDogEntity {
         this.entityData.set(TALENTS.get(), map);
     }
 
-    public ActionResultType setTalentLevel(Talent talent, int level) {
+    public InteractionResult setTalentLevel(Talent talent, int level) {
         if (0 > level || level > talent.getMaxLevel()) {
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
 
         List<TalentInstance> activeTalents = this.getTalentMap();
@@ -1896,7 +1896,7 @@ public class DogEntity extends AbstractDogEntity {
 
         if (inst == null) {
             if (level == 0) {
-                return ActionResultType.PASS;
+                return InteractionResult.PASS;
             }
 
             inst = talent.getDefault(level);
@@ -1905,7 +1905,7 @@ public class DogEntity extends AbstractDogEntity {
         } else {
             int previousLevel = inst.level();
             if (previousLevel == level) {
-                return ActionResultType.PASS;
+                return InteractionResult.PASS;
             }
 
             inst.setLevel(level);
@@ -1917,21 +1917,21 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         this.markDataParameterDirty(TALENTS.get());
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
 
-    public <T> void markDataParameterDirty(DataParameter<T> key) {
+    public <T> void markDataParameterDirty(EntityDataAccessor<T> key) {
         this.markDataParameterDirty(key, true);
     }
 
-    public <T> void markDataParameterDirty(DataParameter<T> key, boolean notify) {
+    public <T> void markDataParameterDirty(EntityDataAccessor<T> key, boolean notify) {
         if (notify) {
             this.onSyncedDataUpdated(key);
         }
 
         // Force the entry to update
-        DataEntry<T> dataentry = this.entityData.getItem(key);
+        DataItem<T> dataentry = this.entityData.getItem(key);
         dataentry.setDirty(true);
         this.entityData.isDirty = true;
     }
@@ -2096,7 +2096,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void travel(Vector3d positionIn) {
+    public void travel(Vec3 positionIn) {
         if (this.isAlive()) {
             if (this.isVehicle() && this.canBeControlledByRider()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
@@ -2123,12 +2123,12 @@ public class DogEntity extends AbstractDogEntity {
 
                     // Calculate jump value based of jump strength, power this jump and jump boosts
                     double jumpValue = this.getAttribute(DoggyAttributes.JUMP_POWER.get()).getValue() * this.getBlockJumpFactor() * this.jumpPower; //TODO do we want getJumpFactor?
-                    if (this.hasEffect(Effects.JUMP)) {
-                        jumpValue += (this.getEffect(Effects.JUMP).getAmplifier() + 1) * 0.1F;
+                    if (this.hasEffect(MobEffects.JUMP)) {
+                        jumpValue += (this.getEffect(MobEffects.JUMP).getAmplifier() + 1) * 0.1F;
                     }
 
                     // Apply jump
-                    Vector3d vec3d = this.getDeltaMovement();
+                    Vec3 vec3d = this.getDeltaMovement();
                     this.setDeltaMovement(vec3d.x, jumpValue, vec3d.z);
                     this.setDogJumping(true);
                     this.hasImpulse = true;
@@ -2136,8 +2136,8 @@ public class DogEntity extends AbstractDogEntity {
                     // If moving forward, propel further in the direction
                     if (foward > 0.0F) {
                         final float amount = 0.4F; // TODO Allow people to change this value
-                        float compX = MathHelper.sin(this.yRot * ((float)Math.PI / 180F));
-                        float compZ = MathHelper.cos(this.yRot * ((float)Math.PI / 180F));
+                        float compX = Mth.sin(this.yRot * ((float)Math.PI / 180F));
+                        float compZ = Mth.cos(this.yRot * ((float)Math.PI / 180F));
                         this.setDeltaMovement(this.getDeltaMovement().add(-amount * compX * this.jumpPower, 0.0D, amount * compZ * this.jumpPower));
                         //this.playJumpSound();
                     }
@@ -2150,11 +2150,11 @@ public class DogEntity extends AbstractDogEntity {
                 if (this.isControlledByLocalInstance()) {
                     // Set the move speed and move the dog in the direction of the controlling entity
                     this.setSpeed((float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue() * 0.5F);
-                    super.travel(new Vector3d(straf, positionIn.y, foward));
+                    super.travel(new Vec3(straf, positionIn.y, foward));
                     this.lerpSteps = 0;
-                } else if (livingentity instanceof PlayerEntity) {
+                } else if (livingentity instanceof Player) {
                     // A player is riding and can not control then
-                    this.setDeltaMovement(Vector3d.ZERO);
+                    this.setDeltaMovement(Vec3.ZERO);
                 }
 
                 // Once the entity reaches the ground again allow it to jump again
@@ -2167,7 +2167,7 @@ public class DogEntity extends AbstractDogEntity {
                 this.animationSpeedOld = this.animationSpeed;
                 double changeX = this.getX() - this.xo;
                 double changeY = this.getZ() - this.zo;
-                float f4 = MathHelper.sqrt(changeX * changeX + changeY * changeY) * 4.0F;
+                float f4 = Mth.sqrt(changeX * changeX + changeY * changeY) * 4.0F;
 
                 if (f4 > 1.0F) {
                    f4 = 1.0F;
@@ -2187,22 +2187,22 @@ public class DogEntity extends AbstractDogEntity {
 
     public void addMovementStat(double xD, double yD, double zD) {
         if (this.isVehicle()) {
-            int j = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+            int j = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
             this.statsTracker.increaseDistanceRidden(j);
         }
         if (!this.isPassenger()) {
             if (this.isEyeInFluid(FluidTags.WATER)) {
-                int j = Math.round(MathHelper.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
+                int j = Math.round(Mth.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
                 if (j > 0) {
                     this.statsTracker.increaseDistanceOnWater(j);
                 }
             } else if (this.isInWater()) {
-                int k = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                int k = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
                 if (k > 0) {
                     this.statsTracker.increaseDistanceInWater(k);
                 }
             } else if (this.isOnGround()) {
-                int l = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                int l = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
                 if (l > 0) {
                     if (this.isSprinting()) {
                         this.statsTracker.increaseDistanceSprint(l);
@@ -2213,7 +2213,7 @@ public class DogEntity extends AbstractDogEntity {
                     }
                 }
             } else { // Time in air
-                int j1 = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
+                int j1 = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
                 //this.STATS.increaseDistanceInWater(k);
             }
 
@@ -2222,8 +2222,8 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public TranslationTextComponent getTranslationKey(Function<EnumGender, String> function) {
-        return new TranslationTextComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
+    public TranslatableComponent getTranslationKey(Function<EnumGender, String> function) {
+        return new TranslatableComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
     }
 
     @Override

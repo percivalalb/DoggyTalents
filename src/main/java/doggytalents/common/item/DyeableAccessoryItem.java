@@ -5,12 +5,12 @@ import java.util.function.Supplier;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.entity.accessory.DyeableAccessory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.NonNullList;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmorItem {
 
@@ -22,12 +22,12 @@ public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmor
     }
 
     @Override
-    public AccessoryInstance createInstance(AbstractDogEntity dogIn, ItemStack stack, PlayerEntity playerIn) {
+    public AccessoryInstance createInstance(AbstractDogEntity dogIn, ItemStack stack, Player playerIn) {
         return this.accessory.get().create(this.getColor(stack));
     }
 
     @Override
-    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         if (this.allowdedIn(group)) {
             ItemStack stack = new ItemStack(this);
             this.setColor(stack, this.getDefaultColor(stack));

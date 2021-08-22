@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.common.lib.Constants;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
@@ -67,11 +67,11 @@ public class DTItemModelProvider extends ItemModelProvider {
         blockItem(DoggyBlocks.FOOD_BOWL);
     }
 
-    private ResourceLocation itemTexture(Supplier<? extends IItemProvider> item) {
+    private ResourceLocation itemTexture(Supplier<? extends ItemLike> item) {
         return modLoc(ModelProvider.ITEM_FOLDER + "/" + name(item));
     }
 
-    private String name(Supplier<? extends IItemProvider> item) {
+    private String name(Supplier<? extends ItemLike> item) {
         return item.get().asItem().getRegistryName().getPath();
     }
 
@@ -79,11 +79,11 @@ public class DTItemModelProvider extends ItemModelProvider {
         return blockItem(block, "");
     }
 
-    private ItemModelBuilder radar(Supplier<? extends IItemProvider> item) {
+    private ItemModelBuilder radar(Supplier<? extends ItemLike> item) {
         return radar(item, itemTexture(item));
     }
 
-    private ItemModelBuilder radar(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
+    private ItemModelBuilder radar(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         ItemModelBuilder builder = generated(item, texture);
         builder.transforms().transform(Perspective.THIRDPERSON_RIGHT).rotation(0, 0, 55F).translation(0, 4F, 0.5F).scale(0.85F);
         builder.transforms().transform(Perspective.THIRDPERSON_LEFT).rotation(0, 0, -55F).translation(0, 4F, 0.5F).scale(0.85F);
@@ -92,19 +92,19 @@ public class DTItemModelProvider extends ItemModelProvider {
         return builder;
     }
 
-    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item) {
+    private ItemModelBuilder generated(Supplier<? extends ItemLike> item) {
         return generated(item, itemTexture(item));
     }
 
-    private ItemModelBuilder generated(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
+    private ItemModelBuilder generated(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         return getBuilder(name(item)).parent(new UncheckedModelFile(ModelProvider.ITEM_FOLDER + "/generated")).texture("layer0", texture);
     }
 
-    private ItemModelBuilder handheld(Supplier<? extends IItemProvider> item) {
+    private ItemModelBuilder handheld(Supplier<? extends ItemLike> item) {
         return handheld(item, itemTexture(item));
     }
 
-    private ItemModelBuilder handheld(Supplier<? extends IItemProvider> item, ResourceLocation texture) {
+    private ItemModelBuilder handheld(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         return getBuilder(name(item)).parent(new UncheckedModelFile(ModelProvider.ITEM_FOLDER + "/handheld")).texture("layer0", texture);
     }
 

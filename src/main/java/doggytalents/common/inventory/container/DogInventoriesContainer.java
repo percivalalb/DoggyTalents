@@ -9,35 +9,35 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.talent.PackPuppyTalent;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IntArray;
-import net.minecraft.util.IntReferenceHolder;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 /**
  * @author ProPercivalalb
  */
-public class DogInventoriesContainer extends Container {
+public class DogInventoriesContainer extends AbstractContainerMenu {
 
-    private World world;
-    private PlayerEntity player;
-    private IntReferenceHolder position;
-    private IntArray trackableArray;
+    private Level world;
+    private Player player;
+    private DataSlot position;
+    private SimpleContainerData trackableArray;
     private final List<DogInventorySlot> dogSlots = new ArrayList<>();
     private int possibleSlots = 0;
 
     //Server method
-    public DogInventoriesContainer(int windowId, PlayerInventory playerInventory, IntArray trackableArray) {
+    public DogInventoriesContainer(int windowId, Inventory playerInventory, SimpleContainerData trackableArray) {
         super(DoggyContainerTypes.DOG_INVENTORIES.get(), windowId);
         this.world = playerInventory.player.level;
         this.player = playerInventory.player;
-        this.position = IntReferenceHolder.standalone();
+        this.position = DataSlot.standalone();
         checkContainerDataCount(trackableArray, 1);
         this.addDataSlot(this.position);
         this.trackableArray = trackableArray;
@@ -74,8 +74,8 @@ public class DogInventoriesContainer extends Container {
                     continue;
                 }
 
-                int level = MathHelper.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY), 0, 5); // Number of rows for this dog
-                int numCols = MathHelper.clamp(level, 0, Math.max(0, TOTAL_COLUMNS)); // Number of rows to draw
+                int level = Mth.clamp(dog.getLevel(DoggyTalents.PACK_PUPPY), 0, 5); // Number of rows for this dog
+                int numCols = Mth.clamp(level, 0, Math.max(0, TOTAL_COLUMNS)); // Number of rows to draw
 
                 for (int row = 0; row < 3; row++) {
                     for (int col = 0; col < numCols; col++) {
@@ -143,12 +143,12 @@ public class DogInventoriesContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(Player player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(i);
 

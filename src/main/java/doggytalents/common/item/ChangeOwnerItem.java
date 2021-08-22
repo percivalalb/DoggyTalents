@@ -3,14 +3,14 @@ package doggytalents.common.item;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.common.lib.Constants;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class ChangeOwnerItem extends Item implements IDogItem {
 
@@ -19,7 +19,7 @@ public class ChangeOwnerItem extends Item implements IDogItem {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (!dogIn.isOwnedBy(playerIn)) {
 
             if (!worldIn.isClientSide) {
@@ -32,10 +32,10 @@ public class ChangeOwnerItem extends Item implements IDogItem {
                 //TODO playerIn.sendMessage(new TranslationTextComponent(""));
             }
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
         //TODO playerIn.sendMessage(new TranslationTextComponent(""));
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

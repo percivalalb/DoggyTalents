@@ -10,13 +10,13 @@ import javax.annotation.Nullable;
 
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 public class MoveToClosestItemGoal extends Goal {
 
@@ -24,7 +24,7 @@ public class MoveToClosestItemGoal extends Goal {
     protected final Predicate<ItemEntity> predicate;
     protected final Comparator<Entity> sorter;
     protected final double followSpeed;
-    protected final PathNavigator dogNavigator;
+    protected final PathNavigation dogNavigator;
     protected final float minDist;
 
     protected ItemEntity target;
@@ -84,8 +84,8 @@ public class MoveToClosestItemGoal extends Goal {
     @Override
     public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
-        this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
+        this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.oldRangeSense = this.dog.getAttribute(Attributes.FOLLOW_RANGE).getValue();
         this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.maxDist);
     }
@@ -107,7 +107,7 @@ public class MoveToClosestItemGoal extends Goal {
     public void stop() {
         this.target = null;
         this.dogNavigator.stop();
-        this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+        this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
         this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 }

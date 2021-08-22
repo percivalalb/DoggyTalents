@@ -3,22 +3,22 @@ package doggytalents.common.item;
 import java.util.function.Supplier;
 
 import doggytalents.api.inferface.IThrowableItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 /**
  * @author ProPercivalalb
@@ -50,19 +50,19 @@ public class ThrowableItem extends Item implements IThrowableItem {
     }
 
     public void setHeadingFromThrower(ItemEntity entityItem, Entity entityThrower, float rotationPitchIn, float rotationYawIn, float pitchOffset, float velocity, float inaccuracy) {
-        float f = -MathHelper.sin(rotationYawIn * ((float)Math.PI / 180F)) * MathHelper.cos(rotationPitchIn * ((float)Math.PI / 180F));
-        float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * ((float)Math.PI / 180F));
-        float f2 = MathHelper.cos(rotationYawIn * ((float)Math.PI / 180F)) * MathHelper.cos(rotationPitchIn * ((float)Math.PI / 180F));
+        float f = -Mth.sin(rotationYawIn * ((float)Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float)Math.PI / 180F));
+        float f1 = -Mth.sin((rotationPitchIn + pitchOffset) * ((float)Math.PI / 180F));
+        float f2 = Mth.cos(rotationYawIn * ((float)Math.PI / 180F)) * Mth.cos(rotationPitchIn * ((float)Math.PI / 180F));
         this.setThrowableHeading(entityItem, f, f1, f2, velocity, inaccuracy);
-        Vector3d vec3d = entityThrower.getDeltaMovement();
+        Vec3 vec3d = entityThrower.getDeltaMovement();
         entityItem.setDeltaMovement(entityItem.getDeltaMovement().add(vec3d.x, entityThrower.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemStackIn = playerIn.getItemInHand(handIn);
 
-        worldIn.playSound((PlayerEntity)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
         if (!worldIn.isClientSide) {
             ItemStack stack = itemStackIn.copy();
@@ -77,16 +77,16 @@ public class ThrowableItem extends Item implements IThrowableItem {
             itemStackIn.shrink(1);
 
         playerIn.awardStat(Stats.ITEM_USED.get(this));
-        return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, itemStackIn);
 
     }
 
     public void setThrowableHeading(ItemEntity entityItem, double x, double y, double z, float velocity, float inaccuracy) {
-        Vector3d vec3d = (new Vector3d(x, y, z)).normalize().add(random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
+        Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
         entityItem.setDeltaMovement(vec3d);
-        float f = MathHelper.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
-        entityItem.yRot = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
-        entityItem.xRot = (float)(MathHelper.atan2(vec3d.y, f) * (180F / (float)Math.PI));
+        float f = Mth.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
+        entityItem.yRot = (float)(Mth.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
+        entityItem.xRot = (float)(Mth.atan2(vec3d.y, f) * (180F / (float)Math.PI));
         entityItem.yRotO =  entityItem.yRot;
         entityItem.xRotO = entityItem.xRot;
     }

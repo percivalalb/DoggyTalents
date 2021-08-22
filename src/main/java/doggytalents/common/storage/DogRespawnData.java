@@ -11,18 +11,18 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 
 public class DogRespawnData implements IDogData {
 
     private final DogRespawnStorage storage;
     private final UUID uuid;
-    private CompoundNBT data;
+    private CompoundTag data;
 
     //TODO Make it list you can only add too
     private static final List<String> TAGS_TO_REMOVE = Lists.newArrayList(
@@ -42,7 +42,7 @@ public class DogRespawnData implements IDogData {
 
     @Override
     public String getDogName() {
-        ITextComponent name = NBTUtil.getTextComponent(this.data, "CustomName");
+        Component name = NBTUtil.getTextComponent(this.data, "CustomName");
         return name == null ? "" : name.getString();
     }
 
@@ -54,12 +54,12 @@ public class DogRespawnData implements IDogData {
 
     @Override
     public String getOwnerName() {
-        ITextComponent name = NBTUtil.getTextComponent(this.data, "lastKnownOwnerName");
+        Component name = NBTUtil.getTextComponent(this.data, "lastKnownOwnerName");
         return name == null ? "" : name.getString();
     }
 
     public void populate(DogEntity dogIn) {
-        this.data = new CompoundNBT();
+        this.data = new CompoundTag();
         dogIn.saveWithoutId(this.data);
 
         // Remove tags that don't need to be saved
@@ -72,15 +72,15 @@ public class DogRespawnData implements IDogData {
     }
 
     @Nullable
-    public DogEntity respawn(ServerWorld worldIn, PlayerEntity playerIn, BlockPos pos) {
-        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundNBT) null, (ITextComponent) null, playerIn, pos, SpawnReason.TRIGGERED, true, false);
+    public DogEntity respawn(ServerLevel worldIn, Player playerIn, BlockPos pos) {
+        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundTag) null, (Component) null, playerIn, pos, MobSpawnType.TRIGGERED, true, false);
 
         // Failed for some reason
         if (dog == null) {
             return null;
         }
 
-        CompoundNBT compoundnbt = dog.saveWithoutId(new CompoundNBT());
+        CompoundTag compoundnbt = dog.saveWithoutId(new CompoundTag());
         UUID uuid = dog.getUUID();
         compoundnbt.merge(this.data);
         dog.setUUID(uuid);
@@ -92,11 +92,11 @@ public class DogRespawnData implements IDogData {
         return dog;
     }
 
-    public void read(CompoundNBT compound) {
+    public void read(CompoundTag compound) {
         this.data = compound.getCompound("data");
     }
 
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundTag write(CompoundTag compound) {
         compound.put("data", this.data);
         return compound;
     }

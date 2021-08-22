@@ -1,6 +1,6 @@
 package doggytalents.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.entity.model.DogModel;
@@ -9,20 +9,20 @@ import doggytalents.client.entity.render.layer.DogAccessoryLayer;
 import doggytalents.client.entity.render.layer.DogTalentLayer;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Optional;
 
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
-    public DogRenderer(EntityRendererManager renderManagerIn) {
+    public DogRenderer(EntityRenderDispatcher renderManagerIn) {
         super(renderManagerIn, new DogModel<>(), 0.5F);
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
@@ -36,7 +36,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     }
 
     @Override
-    public void render(DogEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
+    public void render(DogEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         if (entityIn.isDogWet()) {
             float f = entityIn.getShadingWhileWet(partialTicks);
             this.model.setColor(f, f, f);
@@ -50,9 +50,9 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
                 String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
-                        new TranslationTextComponent(tip).getString(),
-                        MathHelper.ceil(entityIn.getDogHunger()),
-                        new TranslationTextComponent(entityIn.getGender().getUnlocalisedTip()).getString());
+                        new TranslatableComponent(tip).getString(),
+                        Mth.ceil(entityIn.getDogHunger()),
+                        new TranslatableComponent(entityIn.getGender().getUnlocalisedTip()).getString());
 
                 RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 
@@ -69,8 +69,8 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     }
 
 
-    private ITextComponent getNameUnknown(DogEntity dogIn) {
-        return new TranslationTextComponent(dogIn.getOwnerUUID() != null ? "entity.doggytalents.dog.unknown_owner" : "entity.doggytalents.dog.untamed");
+    private Component getNameUnknown(DogEntity dogIn) {
+        return new TranslatableComponent(dogIn.getOwnerUUID() != null ? "entity.doggytalents.dog.unknown_owner" : "entity.doggytalents.dog.untamed");
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     }
 
     @Override
-    protected void scale(DogEntity dogIn, MatrixStack matrixStackIn, float partialTickTime) {
+    protected void scale(DogEntity dogIn, PoseStack matrixStackIn, float partialTickTime) {
         float size = dogIn.getDogSize() * 0.3F + 0.1F;
         matrixStackIn.scale(size, size, size);
         this.shadowRadius = size * 0.5F;

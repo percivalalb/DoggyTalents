@@ -7,17 +7,17 @@ import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.item.PatrolItem;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 
-import net.minecraft.entity.ai.goal.Goal.Flag;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 
 public class PatrolAreaGoal extends Goal {
 
     public final DogEntity dog;
-    private final PathNavigator navigator;
+    private final PathNavigation navigator;
     public int index;
     private int timeToRecalcPath;
 
@@ -56,7 +56,7 @@ public class PatrolAreaGoal extends Goal {
 
                 List<BlockPos> patrolPos = this.dog.getData(PatrolItem.POS);
 
-                this.index = MathHelper.clamp(this.index, 0, patrolPos.size() - 1);
+                this.index = Mth.clamp(this.index, 0, patrolPos.size() - 1);
                 BlockPos pos = patrolPos.get(this.index);
 
                 DoggyTalents2.LOGGER.info("Update" + this.index);

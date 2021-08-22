@@ -10,7 +10,7 @@ import doggytalents.common.entity.serializers.GenderSerializer;
 import doggytalents.common.entity.serializers.ModeSerializer;
 import doggytalents.common.entity.serializers.TalentListSerializer;
 import doggytalents.common.lib.Constants;
-import net.minecraft.network.datasync.IDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
@@ -28,7 +28,7 @@ public class DoggySerializers {
     public static final RegistryObject<DataSerializerEntry> DOG_LEVEL_SERIALIZER = register2("dog_level", DogLevelSerializer::new);
     public static final RegistryObject<DataSerializerEntry> BED_LOC_SERIALIZER = register2("dog_bed_location", BedLocationsSerializer::new);
 
-    private static <X extends IDataSerializer<?>> RegistryObject<DataSerializerEntry> register2(final String name, final Supplier<X> factory) {
+    private static <X extends EntityDataSerializer<?>> RegistryObject<DataSerializerEntry> register2(final String name, final Supplier<X> factory) {
         return register(name, () -> new DataSerializerEntry(factory.get()));
     }
 

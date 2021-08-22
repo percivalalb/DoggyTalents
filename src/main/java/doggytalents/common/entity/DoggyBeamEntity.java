@@ -8,38 +8,38 @@ import doggytalents.DoggyEntityTypes;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.projectile.ThrowableEntity;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.FMLPlayMessages;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditionalSpawnData {
+public class DoggyBeamEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
-    public DoggyBeamEntity(EntityType<? extends ThrowableEntity> type, World worldIn) {
+    public DoggyBeamEntity(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public DoggyBeamEntity(World worldIn, LivingEntity livingEntityIn) {
+    public DoggyBeamEntity(Level worldIn, LivingEntity livingEntityIn) {
         super(DoggyEntityTypes.DOG_BEAM.get(), livingEntityIn, worldIn);
     }
 
-    public DoggyBeamEntity(FMLPlayMessages.SpawnEntity packet, World worldIn) {
+    public DoggyBeamEntity(FMLPlayMessages.SpawnEntity packet, Level worldIn) {
         super(DoggyEntityTypes.DOG_BEAM.get(), worldIn);
     }
 
     @Override
-    protected void onHit(RayTraceResult result) {
-        if (result.getType() == RayTraceResult.Type.ENTITY) {
-            Entity entityHit = ((EntityRayTraceResult) result).getEntity();
+    protected void onHit(HitResult result) {
+        if (result.getType() == HitResult.Type.ENTITY) {
+            Entity entityHit = ((EntityHitResult) result).getEntity();
 
             Entity thrower = this.getOwner();
 
@@ -68,12 +68,12 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public void writeSpawnData(PacketBuffer buffer) {
+    public void writeSpawnData(FriendlyByteBuf buffer) {
         UUID ownerId = this.uuid;
         buffer.writeBoolean(ownerId != null);
         if (ownerId != null) {
@@ -82,7 +82,7 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
     }
 
     @Override
-    public void readSpawnData(PacketBuffer buffer) {
+    public void readSpawnData(FriendlyByteBuf buffer) {
         boolean hasThrower = buffer.readBoolean();
         if (hasThrower) {
             this.uuid = buffer.readUUID();

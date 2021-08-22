@@ -2,22 +2,22 @@ package doggytalents.common.inventory.container;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyItems;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class TreatBagContainer extends Container {
+public class TreatBagContainer extends AbstractContainerMenu {
 
     public int slot;
     public ItemStack itemstack;
     public IItemHandler bagInventory;
 
-    public TreatBagContainer(int windowId, PlayerInventory playerInventory, int slotIn, ItemStack itemstackIn) {
+    public TreatBagContainer(int windowId, Inventory playerInventory, int slotIn, ItemStack itemstackIn) {
         super(DoggyContainerTypes.TREAT_BAG.get(), windowId);
         this.slot = slotIn;
         this.itemstack = itemstackIn;
@@ -38,7 +38,7 @@ public class TreatBagContainer extends Container {
         for (int k = 0; k < 9; k++) {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
                 @Override
-                public boolean mayPickup(PlayerEntity playerIn) {
+                public boolean mayPickup(Player playerIn) {
                     return TreatBagContainer.this.slot != this.getSlotIndex();
                 }
             });
@@ -46,7 +46,7 @@ public class TreatBagContainer extends Container {
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(Player playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
@@ -78,7 +78,7 @@ public class TreatBagContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity playerIn) {
+    public boolean stillValid(Player playerIn) {
         return playerIn.inventory.getItem(this.slot).getItem() == DoggyItems.TREAT_BAG.get();
     }
 }

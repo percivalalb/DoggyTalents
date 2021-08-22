@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public class FetchGoal extends MoveToClosestItemGoal {
 

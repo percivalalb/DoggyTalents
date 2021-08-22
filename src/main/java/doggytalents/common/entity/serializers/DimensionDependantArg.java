@@ -8,24 +8,24 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import net.minecraft.network.datasync.IDataSerializer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 import java.util.Map.Entry;
 
-public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
+public class DimensionDependantArg<T> implements Map<ResourceKey<Level>, T> {
 
-    private Supplier<IDataSerializer<T>> serializer;
+    private Supplier<EntityDataSerializer<T>> serializer;
 
-    public Map<RegistryKey<World>, T> map = new HashMap<>();
+    public Map<ResourceKey<Level>, T> map = new HashMap<>();
 
-    public DimensionDependantArg(Supplier<IDataSerializer<T>> serializer) {
+    public DimensionDependantArg(Supplier<EntityDataSerializer<T>> serializer) {
         this.serializer = serializer;
     }
 
     @Override
-    public T put(RegistryKey<World> dim, T obj) {
+    public T put(ResourceKey<Level> dim, T obj) {
         return this.map.put(dim, obj);
     }
 
@@ -39,7 +39,7 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
         this.map.clear();
     }
 
-    public IDataSerializer<T> getSerializer() {
+    public EntityDataSerializer<T> getSerializer() {
         return this.serializer.get();
     }
 
@@ -53,7 +53,7 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
         return new DimensionDependantArg<>(this.serializer);
     }
 
-    public DimensionDependantArg<T> set(RegistryKey<World> dim, T value) {
+    public DimensionDependantArg<T> set(ResourceKey<Level> dim, T value) {
         this.put(dim, value);
         return this;
     }
@@ -106,12 +106,12 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
     }
 
     @Override
-    public void putAll(Map<? extends RegistryKey<World>, ? extends T> m) {
+    public void putAll(Map<? extends ResourceKey<Level>, ? extends T> m) {
         this.map.putAll(m);
     }
 
     @Override
-    public Set<RegistryKey<World>> keySet() {
+    public Set<ResourceKey<Level>> keySet() {
         return this.map.keySet();
     }
 
@@ -121,7 +121,7 @@ public class DimensionDependantArg<T> implements Map<RegistryKey<World>, T> {
     }
 
     @Override
-    public Set<Entry<RegistryKey<World>, T>> entrySet() {
+    public Set<Entry<ResourceKey<Level>, T>> entrySet() {
         return Collections.unmodifiableSet(this.map.entrySet());
     }
 }

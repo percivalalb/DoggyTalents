@@ -14,11 +14,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.DoggyTalents2;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.NativeImage;
+import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
-import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.ResourceLocation;
+import com.mojang.blaze3d.platform.TextureUtil;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.resources.ResourceLocation;
 
 public class CachedFileTexture extends SimpleTexture {
 
@@ -49,7 +49,7 @@ public class CachedFileTexture extends SimpleTexture {
     }
 
     @Override
-    public void load(IResourceManager manager) throws IOException {
+    public void load(ResourceManager manager) throws IOException {
         Minecraft.getInstance().execute(() -> {
             if (!this.textureUploaded) {
                 NativeImage nativeimage = null;

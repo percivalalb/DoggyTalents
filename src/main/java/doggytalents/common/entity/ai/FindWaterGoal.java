@@ -5,22 +5,22 @@ import java.util.EnumSet;
 import javax.annotation.Nullable;
 
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.CreatureEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.Level;
 
 public class FindWaterGoal extends Goal {
 
-    private final CreatureEntity creature;
-    private final PathNavigator navigator;
-    private final World world;
+    private final PathfinderMob creature;
+    private final PathNavigation navigator;
+    private final Level world;
 
     private final int waterSearchRange = 12;
     private final int safeSearchRange = 6;
@@ -30,7 +30,7 @@ public class FindWaterGoal extends Goal {
     private int timeToRecalcPath;
 
 
-    public FindWaterGoal(CreatureEntity creatureIn) {
+    public FindWaterGoal(PathfinderMob creatureIn) {
         this.creature = creatureIn;
         this.navigator = creatureIn.getNavigation();
         this.world = creatureIn.level;
@@ -103,7 +103,7 @@ public class FindWaterGoal extends Goal {
             if (this.waterPos != null) {
                 targetPos = this.waterPos;
             } else if (!this.creature.isPathFinding()) {
-                BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+                BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
                 for (int i = 0; i < 10; ++i) {
                     int j = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
                     int k = EntityUtil.getRandomNumber(this.creature, -4, 4);
@@ -136,14 +136,14 @@ public class FindWaterGoal extends Goal {
      * @return
      */
     public boolean isInDangerSpot(Entity entityIn) {
-        AxisAlignedBB bb = entityIn.getBoundingBox();
-        int minX = MathHelper.floor(bb.minX);
-        int minY = MathHelper.floor(bb.minY);
-        int minZ = MathHelper.floor(bb.minZ);
+        AABB bb = entityIn.getBoundingBox();
+        int minX = Mth.floor(bb.minX);
+        int minY = Mth.floor(bb.minY);
+        int minZ = Mth.floor(bb.minZ);
 
-        int maxX = MathHelper.ceil(bb.maxX);
-        int maxY = MathHelper.ceil(bb.maxY);
-        int maxZ = MathHelper.ceil(bb.maxZ);
+        int maxX = Mth.ceil(bb.maxX);
+        int maxY = Mth.ceil(bb.maxY);
+        int maxZ = Mth.ceil(bb.maxZ);
 
         for (BlockPos pos : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
             BlockType safety = this.getBlockType(pos);

@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
 
 public class InteractHandler {
 
@@ -21,22 +21,22 @@ public class InteractHandler {
         HANDLERS.add(handler);
     }
 
-    public static ActionResultType getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, PlayerEntity playerIn, Hand handIn) {
+    public static InteractionResult getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, Player playerIn, InteractionHand handIn) {
         if (stackIn.getItem() instanceof IDogItem) {
             IDogItem item = (IDogItem) stackIn.getItem();
-            ActionResultType result = item.processInteract(dogIn, dogIn.level, playerIn, handIn);
-            if (result != ActionResultType.PASS) {
+            InteractionResult result = item.processInteract(dogIn, dogIn.level, playerIn, handIn);
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
 
         for (IDogItem handler : HANDLERS) {
-            ActionResultType result = handler.processInteract(dogIn, dogIn.level, playerIn, handIn);
-            if (result != ActionResultType.PASS) {
+            InteractionResult result = handler.processInteract(dogIn, dogIn.level, playerIn, handIn);
+            if (result != InteractionResult.PASS) {
                 return result;
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 }

@@ -15,7 +15,7 @@ import com.google.common.hash.Hashing;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.common.util.Util;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 public class DogTextureServer {

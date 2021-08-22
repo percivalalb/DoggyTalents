@@ -6,15 +6,15 @@ import doggytalents.DoggyAttributes;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 public class WolfMountTalent extends TalentInstance {
 
@@ -49,7 +49,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (stack.isEmpty()) { // Held item
@@ -61,45 +61,45 @@ public class WolfMountTalent extends TalentInstance {
                         playerIn.xRot = dogIn.xRot;
                         playerIn.startRiding(dogIn);
                     }
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
     public void livingTick(AbstractDogEntity dog) {
         if (dog.isVehicle() && dog.getDogHunger() < 1) {
-            dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUUID());
+            dog.getControllingPassenger().sendMessage(new TranslatableComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUUID());
 
             dog.ejectPassengers();
         }
     }
 
     @Override
-    public ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
+    public InteractionResultHolder<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
         if (dogIn.isControlledByLocalInstance()) {
             hungerTick += this.level() < 5 ? 3 : 1;
-            return ActionResult.success(hungerTick);
+            return InteractionResultHolder.success(hungerTick);
         }
 
-        return ActionResult.pass(hungerTick);
+        return InteractionResultHolder.pass(hungerTick);
     }
 
     @Override
-    public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+    public InteractionResultHolder<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
         if (this.level() >= 5) {
-            return ActionResult.success(distance - 1F);
+            return InteractionResultHolder.success(distance - 1F);
         }
 
-        return ActionResult.pass(0F);
+        return InteractionResultHolder.pass(0F);
     }
 
     @Override
-    public ActionResultType hitByEntity(AbstractDogEntity dogIn, Entity entity) {
+    public InteractionResult hitByEntity(AbstractDogEntity dogIn, Entity entity) {
         // If the attacking entity is riding block
-        return dogIn.isPassengerOfSameVehicle(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return dogIn.isPassengerOfSameVehicle(entity) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 }

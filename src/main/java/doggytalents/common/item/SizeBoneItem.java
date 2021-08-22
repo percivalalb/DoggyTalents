@@ -2,14 +2,14 @@ package doggytalents.common.item;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class SizeBoneItem extends Item implements IDogItem {
 
@@ -36,14 +36,14 @@ public class SizeBoneItem extends Item implements IDogItem {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.getAge() < 0) {
 
             if (!playerIn.level.isClientSide){
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUUID());
+                playerIn.sendMessage(new TranslatableComponent("treat."+this.type.getName()+".too_young"), dogIn.getUUID());
             }
 
-            return ActionResultType.FAIL;
+            return InteractionResult.FAIL;
         }
         else {
             if (!playerIn.abilities.instabuild) {
@@ -53,7 +53,7 @@ public class SizeBoneItem extends Item implements IDogItem {
             if (!playerIn.level.isClientSide) {
                 dogIn.setDogSize(dogIn.getDogSize() + (this.type == Type.BIG ? 1 : -1));
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 }

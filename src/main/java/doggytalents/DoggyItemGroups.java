@@ -3,15 +3,15 @@ package doggytalents;
 import java.util.function.Supplier;
 
 import doggytalents.common.util.DogBedUtil;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
 public class DoggyItemGroups {
 
-    public static final ItemGroup GENERAL = new CustomItemGroup("doggytalents", () -> new ItemStack(DoggyItems.TRAINING_TREAT.get()));
-    public static final ItemGroup DOG_BED = new CustomItemGroup("doggytalents.dogbed", DogBedUtil::createRandomBed);
+    public static final CreativeModeTab GENERAL = new CustomItemGroup("doggytalents", () -> new ItemStack(DoggyItems.TRAINING_TREAT.get()));
+    public static final CreativeModeTab DOG_BED = new CustomItemGroup("doggytalents.dogbed", DogBedUtil::createRandomBed);
 
-    public static class CustomItemGroup extends ItemGroup {
+    public static class CustomItemGroup extends CreativeModeTab {
 
         private Supplier<ItemStack> icon;
 

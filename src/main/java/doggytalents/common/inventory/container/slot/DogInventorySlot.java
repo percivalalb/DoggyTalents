@@ -1,20 +1,20 @@
 package doggytalents.common.inventory.container.slot;
 
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class DogInventorySlot extends SlotItemHandler {
 
     private boolean enabled = true;
-    private PlayerEntity player;
+    private Player player;
     private DogEntity dog;
     private int overallColumn, row, col;
 
-    public DogInventorySlot(DogEntity dogIn, PlayerEntity playerIn, IItemHandler itemHandler, int overallColumn, int row, int col, int index, int xPosition, int yPosition) {
+    public DogInventorySlot(DogEntity dogIn, Player playerIn, IItemHandler itemHandler, int overallColumn, int row, int col, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
         this.player = playerIn;
         this.overallColumn = overallColumn;
@@ -63,7 +63,7 @@ public class DogInventorySlot extends SlotItemHandler {
         return this.dog;
     }
 
-    public PlayerEntity getPlayer() {
+    public Player getPlayer() {
         return this.player;
     }
 

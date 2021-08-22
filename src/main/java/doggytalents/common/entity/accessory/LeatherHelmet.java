@@ -4,11 +4,11 @@ import java.util.function.Supplier;
 
 import doggytalents.DoggyAccessoryTypes;
 import doggytalents.api.registry.AccessoryInstance;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 
 public class LeatherHelmet extends DyeableAccessory {
 
-    public LeatherHelmet(Supplier<? extends IItemProvider> itemIn) {
+    public LeatherHelmet(Supplier<? extends ItemLike> itemIn) {
         super(DoggyAccessoryTypes.HEAD, itemIn);
     }
 

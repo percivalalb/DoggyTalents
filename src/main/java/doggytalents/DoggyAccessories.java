@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import doggytalents.api.registry.Accessory;
 import doggytalents.common.entity.accessory.*;
 import doggytalents.common.lib.Constants;
-import net.minecraft.item.Items;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
@@ -49,15 +49,15 @@ public class DoggyAccessories {
     public static final RegistryObject<LeatherArmourAccessory> LEATHER_BODY_PIECE = register("leather_body_piece", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.CLOTHING, Items.LEATHER_CHESTPLATE.delegate));
     public static final RegistryObject<LeatherArmourAccessory> LEATHER_BOOTS = register("leather_boots", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.FEET, Items.LEATHER_BOOTS.delegate));
 
-    private static RegistryObject<Helmet> registerHelmet(final String name, final Supplier<? extends IItemProvider> itemIn) {
+    private static RegistryObject<Helmet> registerHelmet(final String name, final Supplier<? extends ItemLike> itemIn) {
         return ACCESSORIES.register(name, () -> new Helmet(itemIn));
     }
 
-    private static RegistryObject<ArmourAccessory> registerBoots(final String name, final Supplier<? extends IItemProvider> itemIn) {
+    private static RegistryObject<ArmourAccessory> registerBoots(final String name, final Supplier<? extends ItemLike> itemIn) {
         return ACCESSORIES.register(name, () -> new ArmourAccessory(DoggyAccessoryTypes.FEET, itemIn));
     }
 
-    private static RegistryObject<ArmourAccessory> registerBodyPiece(final String name, final Supplier<? extends IItemProvider> itemIn) {
+    private static RegistryObject<ArmourAccessory> registerBodyPiece(final String name, final Supplier<? extends ItemLike> itemIn) {
         return ACCESSORIES.register(name, () -> new ArmourAccessory(DoggyAccessoryTypes.CLOTHING, itemIn));
     }
 

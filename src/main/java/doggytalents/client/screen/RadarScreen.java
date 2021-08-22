@@ -1,24 +1,24 @@
 package doggytalents.client.screen;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class RadarScreen extends Screen {
 
-    private PlayerEntity player;
+    private Player player;
 
-    protected RadarScreen(PlayerEntity playerIn) {
-        super(new TranslationTextComponent("doggytalents.screen.radar.title"));
+    protected RadarScreen(Player playerIn) {
+        super(new TranslatableComponent("doggytalents.screen.radar.title"));
         this.player = playerIn;
     }
 
-    public static void open(PlayerEntity player) {
+    public static void open(Player player) {
         Minecraft mc = Minecraft.getInstance();
         mc.setScreen(new RadarScreen(player));
     }
@@ -29,7 +29,7 @@ public class RadarScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bind(Resources.GUI_RADAR);
         int xSize = 210;

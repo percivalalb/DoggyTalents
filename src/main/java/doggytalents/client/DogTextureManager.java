@@ -34,13 +34,13 @@ import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.RequestSkinData;
 import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.Texture;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.SkinManager;
-import net.minecraft.resources.IResource;
-import net.minecraft.resources.IResourceManager;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.ISelectiveResourceReloadListener;
@@ -113,8 +113,8 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
     public InputStream getResourceStream(ResourceLocation loc) throws IOException {
         Minecraft mc = Minecraft.getInstance();
 
-        IResourceManager resourceManager = mc.getResourceManager();
-        IResource resource = resourceManager.getResource(loc);
+        ResourceManager resourceManager = mc.getResourceManager();
+        Resource resource = resourceManager.getResource(loc);
         return resource.getInputStream();
     }
 
@@ -128,14 +128,14 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
     }
 
 
-    public Texture getOrLoadTexture(File baseFolder, String hash) {
+    public AbstractTexture getOrLoadTexture(File baseFolder, String hash) {
         Minecraft mc = Minecraft.getInstance();
         TextureManager textureManager = mc.getTextureManager();
 
         File cacheFile = getCacheFile(baseFolder, hash);
         ResourceLocation loc = getResourceLocation(hash);
 
-        Texture texture = textureManager.getTexture(loc);
+        AbstractTexture texture = textureManager.getTexture(loc);
         if (texture == null && cacheFile.isFile() && cacheFile.exists()) {
             texture = new CachedFileTexture(loc, cacheFile);
             textureManager.register(loc, texture);
@@ -157,7 +157,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         File cacheFile = this.getCacheFile(baseFolder, hash);
         ResourceLocation loc = this.getResourceLocation(hash);
 
-        Texture texture = textureManager.getTexture(loc);
+        AbstractTexture texture = textureManager.getTexture(loc);
         if (texture == null) {
             DoggyTalents2.LOGGER.debug("Saved dog texture to local cache ({})", cacheFile);
             FileUtils.writeByteArrayToFile(cacheFile, data);
@@ -175,7 +175,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
 
         ResourceLocation loc = this.getResourceLocation(hash);
 
-        Texture texture = getOrLoadTexture(getClientFolder(), hash);
+        AbstractTexture texture = getOrLoadTexture(getClientFolder(), hash);
         if (texture != null) {
             return loc;
         }
@@ -195,7 +195,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
     }
 
     @Override
-    public void onResourceManagerReload(IResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
+    public void onResourceManagerReload(ResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
         if (resourcePredicate.test(this.getResourceType())) {
 
             this.skinHashToLoc.clear();
@@ -207,7 +207,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
 
             for (ResourceLocation rl : resources) {
                 try {
-                    IResource resource = resourceManager.getResource(rl);
+                    Resource resource = resourceManager.getResource(rl);
 
                     if (resource == null) {
                         DoggyTalents2.LOGGER.warn("Could not get resource");
@@ -223,7 +223,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
             }
 
             try {
-                List<IResource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
+                List<Resource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
                 this.loadOverrideData(resourcelocation);
             } catch (FileNotFoundException e) {
                 ;
@@ -233,7 +233,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         }
     }
 
-    private synchronized void loadDogSkinResource(IResource resource) {
+    private synchronized void loadDogSkinResource(Resource resource) {
         InputStream inputstream = null;
         try {
             inputstream = resource.getInputStream();
@@ -255,8 +255,8 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         }
     }
 
-    private void loadOverrideData(List<IResource> resourcesList) {
-        for (IResource iresource : resourcesList) {
+    private void loadOverrideData(List<Resource> resourcesList) {
+        for (Resource iresource : resourcesList) {
             InputStream inputstream = iresource.getInputStream();
 
             try {
@@ -269,11 +269,11 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
 
     private synchronized void loadLocaleData(InputStream inputStreamIn) {
         JsonElement jsonelement = GSON.fromJson(new InputStreamReader(inputStreamIn, StandardCharsets.UTF_8), JsonElement.class);
-        JsonObject jsonobject = JSONUtils.convertToJsonObject(jsonelement, "strings");
+        JsonObject jsonobject = GsonHelper.convertToJsonObject(jsonelement, "strings");
 
         for (Entry<String, JsonElement> entry : jsonobject.entrySet()) {
             String hash = entry.getKey();
-            ResourceLocation texture = new ResourceLocation(JSONUtils.convertToString(entry.getValue(), hash));
+            ResourceLocation texture = new ResourceLocation(GsonHelper.convertToString(entry.getValue(), hash));
             ResourceLocation previous = this.skinHashToLoc.put(hash, texture);
 
             if (previous != null) {

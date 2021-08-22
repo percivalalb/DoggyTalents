@@ -4,28 +4,28 @@ import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.common.talent.PackPuppyTalent;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.util.Mth;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 /**
  * @author ProPercivalalb
  */
-public class PackPuppyContainer extends Container {
+public class PackPuppyContainer extends AbstractContainerMenu {
 
     private AbstractDogEntity dog;
     private ItemStackHandler packInventory;
     private int level;
 
-    public PackPuppyContainer(int windowId, PlayerInventory playerInventory, AbstractDogEntity dogIn) {
+    public PackPuppyContainer(int windowId, Inventory playerInventory, AbstractDogEntity dogIn) {
         super(DoggyContainerTypes.PACK_PUPPY.get(), windowId);
         this.dog = dogIn;
-        this.level = MathHelper.clamp(dogIn.getLevel(DoggyTalents.PACK_PUPPY), 0, 5);
+        this.level = Mth.clamp(dogIn.getLevel(DoggyTalents.PACK_PUPPY), 0, 5);
         this.packInventory = dogIn.getCapability(PackPuppyTalent.PACK_PUPPY_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
 
         for (int j = 0; j < 3; j++) {
@@ -49,10 +49,10 @@ public class PackPuppyContainer extends Container {
     }
 
     @Override
-    public ItemStack quickMoveStack(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(Player player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(i);
-        int packpuppyLevel = MathHelper.clamp(this.level, 0, 5);
+        int packpuppyLevel = Mth.clamp(this.level, 0, 5);
 
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
@@ -78,12 +78,12 @@ public class PackPuppyContainer extends Container {
     }
 
     @Override
-    public boolean stillValid(PlayerEntity player) {
+    public boolean stillValid(Player player) {
         return this.dog.distanceToSqr(player) < 144D;
     }
 
     @Override
-    public void removed(PlayerEntity player) {
+    public void removed(Player player) {
         super.removed(player);
     }
 

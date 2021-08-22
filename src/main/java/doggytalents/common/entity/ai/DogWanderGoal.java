@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 
 public class DogWanderGoal extends Goal {
 
@@ -56,13 +56,13 @@ public class DogWanderGoal extends Goal {
             return;
         }
 
-        Vector3d pos = this.getPosition();
+        Vec3 pos = this.getPosition();
         this.dog.getNavigation().moveTo(pos.x, pos.y, pos.z, this.speed);
     }
 
     @Nullable
-    protected Vector3d getPosition() {
-        PathNavigator pathNavigate = this.dog.getNavigation();
+    protected Vec3 getPosition() {
+        PathNavigation pathNavigate = this.dog.getNavigation();
         Random random = this.dog.getRandom();
 
         int xzRange = 5;
@@ -89,6 +89,6 @@ public class DogWanderGoal extends Goal {
             }
         }
 
-        return new Vector3d(bestPos.getX(), bestPos.getY(), bestPos.getZ());
+        return new Vec3(bestPos.getX(), bestPos.getY(), bestPos.getZ());
     }
 }

@@ -9,15 +9,15 @@ import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyRecipeSerializers;
 import doggytalents.common.util.Util;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.CustomRecipeBuilder;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IFinishedRecipe;
-import net.minecraft.data.RecipeProvider;
-import net.minecraft.data.ShapedRecipeBuilder;
-import net.minecraft.data.ShapelessRecipeBuilder;
-import net.minecraft.item.Items;
+import net.minecraft.data.HashCache;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
 
 public class DTRecipeProvider extends RecipeProvider {
@@ -32,7 +32,7 @@ public class DTRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+    protected void buildShapelessRecipes(Consumer<FinishedRecipe> consumer) {
         //TODO
         ShapedRecipeBuilder.shaped(DoggyItems.THROW_BONE.get()).pattern(" X ").pattern("XYX").pattern(" X ").define('X', Items.BONE).define('Y', Items.SLIME_BALL).unlockedBy("has_bone", has(Items.BONE)).save(consumer);
         ShapelessRecipeBuilder.shapeless(DoggyItems.THROW_BONE.get()).requires(DoggyItems.THROW_BONE_WET.get(), 1).unlockedBy("has_throw_bone", has(DoggyItems.THROW_BONE.get())).save(consumer, Util.getResource("throw_bone_wet"));
@@ -66,11 +66,11 @@ public class DTRecipeProvider extends RecipeProvider {
         ShapedRecipeBuilder.shaped(DoggyItems.RADIO_COLLAR.get(), 1).pattern("XX").pattern("YX").define('X', Items.IRON_INGOT).define('Y', Items.REDSTONE).unlockedBy("has_redstone", has(Items.REDSTONE)).save(consumer);
         ShapelessRecipeBuilder.shapeless(DoggyItems.RADAR.get(), 1).requires(Items.MAP, 1).requires(Items.REDSTONE, 1).requires(DoggyItems.RADIO_COLLAR.get(), 1).unlockedBy("has_redstone", has(Items.REDSTONE)).save(consumer);
 
-        CustomRecipeBuilder.special(DoggyRecipeSerializers.DOG_BED.get()).save(consumer, Util.getResourcePath("dog_bed"));
+        SpecialRecipeBuilder.special(DoggyRecipeSerializers.DOG_BED.get()).save(consumer, Util.getResourcePath("dog_bed"));
     }
 
     @Override
-    protected void saveAdvancement(DirectoryCache cache, JsonObject advancementJson, Path pathIn) {
+    protected void saveAdvancement(HashCache cache, JsonObject advancementJson, Path pathIn) {
         //NOOP - We dont replace any of the advancement things yet...
     }
 }

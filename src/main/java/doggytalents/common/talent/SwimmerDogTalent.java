@@ -3,12 +3,12 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 
 public class SwimmerDogTalent extends TalentInstance {
 
@@ -24,36 +24,36 @@ public class SwimmerDogTalent extends TalentInstance {
             // canBeSteered checks entity is LivingEntity
             LivingEntity rider = (LivingEntity) dogIn.getControllingPassenger();
             if (rider.isInWater()) {
-                rider.addEffect(new EffectInstance(Effects.NIGHT_VISION, 80, 1, true, false));
+                rider.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 80, 1, true, false));
             }
         }
     }
 
     @Override
-    public ActionResultType canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
-        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
+        return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType canBreatheUnderwater(AbstractDogEntity dogIn) {
-        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult canBreatheUnderwater(AbstractDogEntity dogIn) {
+        return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResult<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
+    public InteractionResultHolder<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
         if (this.level() > 0 && dogIn.getRandom().nextInt(this.level() + 1) > 0) {
-            return ActionResult.success(air);
+            return InteractionResultHolder.success(air);
         }
 
-        return ActionResult.pass(air);
+        return InteractionResultHolder.pass(air);
     }
 
     @Override
-    public ActionResult<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
+    public InteractionResultHolder<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
         if (this.level() > 0) {
-            return ActionResult.pass(currentAir + this.level());
+            return InteractionResultHolder.pass(currentAir + this.level());
         }
 
-        return ActionResult.pass(currentAir);
+        return InteractionResultHolder.pass(currentAir);
     }
 }

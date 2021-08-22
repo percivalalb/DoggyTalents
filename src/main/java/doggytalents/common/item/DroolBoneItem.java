@@ -2,15 +2,15 @@ package doggytalents.common.item;
 
 import java.util.function.Supplier;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class DroolBoneItem extends Item {
 
@@ -22,7 +22,7 @@ public class DroolBoneItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemStackIn = playerIn.getItemInHand(handIn);
 
         if (itemStackIn.getItem() == this) {
@@ -33,9 +33,9 @@ public class DroolBoneItem extends Item {
             }
 
             playerIn.swing(handIn);
-            return new ActionResult<ItemStack>(ActionResultType.SUCCESS, returnStack);
+            return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, returnStack);
         }
 
-        return new ActionResult<ItemStack>(ActionResultType.FAIL, itemStackIn);
+        return new InteractionResultHolder<ItemStack>(InteractionResult.FAIL, itemStackIn);
     }
 }

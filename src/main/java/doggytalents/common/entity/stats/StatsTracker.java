@@ -8,11 +8,11 @@ import com.google.common.collect.Maps;
 
 import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -30,10 +30,10 @@ public class StatsTracker {
     // Cache
     private final Cache<Integer> killCount = Cache.make(this::getTotalKillCountInternal);
 
-    public void writeAdditional(CompoundNBT compound) {
-        ListNBT killList = new ListNBT();
+    public void writeAdditional(CompoundTag compound) {
+        ListTag killList = new ListTag();
         for (Entry<EntityType<?>, Integer> entry : this.ENTITY_KILLS.entrySet()) {
-            CompoundNBT stats = new CompoundNBT();
+            CompoundTag stats = new CompoundTag();
             NBTUtil.putRegistryValue(stats, "type", entry.getKey());
             stats.putInt("count", entry.getValue());
             killList.add(stats);
@@ -48,10 +48,10 @@ public class StatsTracker {
         compound.putInt("distanceRidden", this.distanceRidden);
     }
 
-    public void readAdditional(CompoundNBT compound) {
-        ListNBT killList = compound.getList("entityKills", Constants.NBT.TAG_COMPOUND);
+    public void readAdditional(CompoundTag compound) {
+        ListTag killList = compound.getList("entityKills", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < killList.size(); i++) {
-            CompoundNBT stats = killList.getCompound(i);
+            CompoundTag stats = killList.getCompound(i);
             EntityType<?> type = NBTUtil.getRegistryValue(stats, "type", ForgeRegistries.ENTITIES);
             this.ENTITY_KILLS.put(type, stats.getInt("count"));
         }
@@ -68,7 +68,7 @@ public class StatsTracker {
         return this.ENTITY_KILLS.getOrDefault(type, 0);
     }
 
-    public int getKillCountFor(Predicate<EntityClassification> classification) {
+    public int getKillCountFor(Predicate<MobCategory> classification) {
         int total = 0;
         for (Entry<EntityType<?>, Integer> entry : this.ENTITY_KILLS.entrySet()) {
             if (classification.test(entry.getKey().getCategory())) {

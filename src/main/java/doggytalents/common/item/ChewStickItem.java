@@ -2,14 +2,14 @@ package doggytalents.common.item;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.InteractionResult;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class ChewStickItem extends Item implements IDogFoodHandler {
 
@@ -28,15 +28,15 @@ public class ChewStickItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         if (!dogIn.level.isClientSide) {
-            dogIn.addEffect(new EffectInstance(Effects.GLOWING, 100, 1, false, true));
-            dogIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 200, 6, false, true));
-            dogIn.addEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, true));
+            dogIn.addEffect(new MobEffectInstance(MobEffects.GLOWING, 100, 1, false, true));
+            dogIn.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 6, false, true));
+            dogIn.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 2, false, true));
             dogIn.consumeItemFromStack(entityIn, stackIn);
         }
 
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
 }

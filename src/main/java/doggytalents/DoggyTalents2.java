@@ -30,7 +30,7 @@ import doggytalents.common.network.PacketHandler;
 import doggytalents.common.util.BackwardsComp;
 import net.minecraft.client.Minecraft;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.IReloadableResourceManager;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -107,7 +107,7 @@ public class DoggyTalents2 {
 
             // If mc is null we are running data gen so no need to add listener
             if (mc != null) {
-                ((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(DogTextureManager.INSTANCE);
+                ((ReloadableResourceManager) mc.getResourceManager()).registerReloadListener(DogTextureManager.INSTANCE);
             }
         });
 

@@ -5,16 +5,16 @@ import doggytalents.DoggyItems;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.talent.HunterDogTalent;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.AvoidEntityGoal;
-import net.minecraft.entity.monster.AbstractSkeletonEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
@@ -26,17 +26,17 @@ public class EventHandler {
     @SubscribeEvent
     public void rightClickEntity(final PlayerInteractEvent.EntityInteract event) {
 
-        World world = event.getWorld();
+        Level world = event.getWorld();
 
         ItemStack stack = event.getItemStack();
         Entity target = event.getTarget();
 
-        if (target.getType() == EntityType.WOLF && target instanceof TameableEntity && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
+        if (target.getType() == EntityType.WOLF && target instanceof TamableAnimal && stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
             event.setCanceled(true);
 
-            TameableEntity wolf = (TameableEntity) target;
+            TamableAnimal wolf = (TamableAnimal) target;
 
-            PlayerEntity player = event.getPlayer();
+            Player player = event.getPlayer();
 
             if (wolf.isAlive() && wolf.isTame() && wolf.isOwnedBy(player)) {
 
@@ -57,9 +57,9 @@ public class EventHandler {
                     wolf.remove();
                 }
 
-                event.setCancellationResult(ActionResultType.SUCCESS);
+                event.setCancellationResult(InteractionResult.SUCCESS);
             } else {
-                event.setCancellationResult(ActionResultType.FAIL);
+                event.setCancellationResult(InteractionResult.FAIL);
             }
         }
     }
@@ -68,8 +68,8 @@ public class EventHandler {
     public void onEntitySpawn(final EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof AbstractSkeletonEntity) {
-            AbstractSkeletonEntity skeleton = (AbstractSkeletonEntity) entity;
+        if (entity instanceof AbstractSkeleton) {
+            AbstractSkeleton skeleton = (AbstractSkeleton) entity;
             skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, DogEntity.class, 6.0F, 1.0D, 1.2D)); // Same goal as in AbstractSkeletonEntity
         }
     }
@@ -78,15 +78,15 @@ public class EventHandler {
     public void playerLoggedIn(final PlayerLoggedInEvent event) {
         if (ConfigValues.STARTING_ITEMS) {
 
-            PlayerEntity player = event.getPlayer();
+            Player player = event.getPlayer();
 
-            CompoundNBT tag = player.getPersistentData();
+            CompoundTag tag = player.getPersistentData();
 
-            if (!tag.contains(PlayerEntity.PERSISTED_NBT_TAG)) {
-                tag.put(PlayerEntity.PERSISTED_NBT_TAG, new CompoundNBT());
+            if (!tag.contains(Player.PERSISTED_NBT_TAG)) {
+                tag.put(Player.PERSISTED_NBT_TAG, new CompoundTag());
             }
 
-            CompoundNBT persistTag = tag.getCompound(PlayerEntity.PERSISTED_NBT_TAG);
+            CompoundTag persistTag = tag.getCompound(Player.PERSISTED_NBT_TAG);
 
             if (!persistTag.getBoolean("gotDTStartingItems")) {
                 persistTag.putBoolean("gotDTStartingItems", true);

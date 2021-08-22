@@ -6,28 +6,28 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class BreedGoal extends Goal {
 
-    private static final EntityPredicate breedPredicate = (new EntityPredicate()).range(8.0D).allowInvulnerable().allowSameTeam().allowUnseeable().allowNonAttackable();
-    private final AnimalEntity animal;
-    private final Class<? extends AnimalEntity> mateClass;
-    private final World world;
+    private static final TargetingConditions breedPredicate = (new TargetingConditions()).range(8.0D).allowInvulnerable().allowSameTeam().allowUnseeable().allowNonAttackable();
+    private final Animal animal;
+    private final Class<? extends Animal> mateClass;
+    private final Level world;
     private final double moveSpeed;
 
-    protected AnimalEntity targetMate;
+    protected Animal targetMate;
     private int spawnBabyDelay;
 
-    public BreedGoal(AnimalEntity animal, double speedIn) {
+    public BreedGoal(Animal animal, double speedIn) {
         this(animal, speedIn, animal.getClass());
     }
 
-    public BreedGoal(AnimalEntity animal, double moveSpeed, Class<? extends AnimalEntity> mateClass) {
+    public BreedGoal(Animal animal, double moveSpeed, Class<? extends Animal> mateClass) {
         this.animal = animal;
         this.world = animal.level;
         this.mateClass = mateClass;
@@ -62,19 +62,19 @@ public class BreedGoal extends Goal {
         this.animal.getNavigation().moveTo(this.targetMate, this.moveSpeed);
         ++this.spawnBabyDelay;
         if (this.spawnBabyDelay >= 60 && this.animal.distanceToSqr(this.targetMate) < 9.0D) {
-            this.animal.spawnChildFromBreeding((ServerWorld) this.world, this.targetMate);
+            this.animal.spawnChildFromBreeding((ServerLevel) this.world, this.targetMate);
         }
     }
 
     @Nullable
-    private AnimalEntity getNearbyMate() {
-        List<AnimalEntity> entities = this.world.getEntitiesOfClass(
+    private Animal getNearbyMate() {
+        List<Animal> entities = this.world.getEntitiesOfClass(
             this.mateClass, this.animal.getBoundingBox().inflate(8.0D), this::filterEntities
         );
         return EntityUtil.getClosestTo(this.animal, entities);
     }
 
-    private boolean filterEntities(AnimalEntity entity) {
+    private boolean filterEntities(Animal entity) {
         return breedPredicate.test(this.animal, entity) && this.animal.canMate(entity);
     }
 }

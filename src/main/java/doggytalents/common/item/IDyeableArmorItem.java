@@ -1,13 +1,13 @@
 package doggytalents.common.item;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 
-public interface IDyeableArmorItem extends net.minecraft.item.IDyeableArmorItem {
+public interface IDyeableArmorItem extends net.minecraft.world.item.DyeableLeatherItem {
 
     @Override
     default int getColor(ItemStack stack) {
-        CompoundNBT compoundnbt = stack.getTagElement("display");
+        CompoundTag compoundnbt = stack.getTagElement("display");
         return compoundnbt != null && compoundnbt.contains("color", 99) ? compoundnbt.getInt("color") : this.getDefaultColor(stack);
     }
 

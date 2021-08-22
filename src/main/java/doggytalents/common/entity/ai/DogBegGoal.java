@@ -5,27 +5,27 @@ import java.util.EnumSet;
 import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 public class DogBegGoal extends Goal {
 
     private final DogEntity dog;
-    private PlayerEntity player;
-    private final World world;
+    private Player player;
+    private final Level world;
     private final float minPlayerDistance;
     private int timeoutCounter;
-    private final EntityPredicate playerPredicate;
+    private final TargetingConditions playerPredicate;
 
     public DogBegGoal(DogEntity wolf, float minDistance) {
         this.dog = wolf;
         this.world = wolf.level;
         this.minPlayerDistance = minDistance;
-        this.playerPredicate = (new EntityPredicate()).range(minDistance).allowInvulnerable().allowSameTeam().allowNonAttackable();
+        this.playerPredicate = (new TargetingConditions()).range(minDistance).allowInvulnerable().allowSameTeam().allowNonAttackable();
         this.setFlags(EnumSet.of(Goal.Flag.LOOK));
     }
 
@@ -64,8 +64,8 @@ public class DogBegGoal extends Goal {
         --this.timeoutCounter;
     }
 
-    private boolean hasTemptationItemInHand(PlayerEntity player) {
-        for (Hand hand : Hand.values()) {
+    private boolean hasTemptationItemInHand(Player player) {
+        for (InteractionHand hand : InteractionHand.values()) {
             ItemStack itemstack = player.getItemInHand(hand);
             if (itemstack.getItem().is(this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED)) {
                 return true;

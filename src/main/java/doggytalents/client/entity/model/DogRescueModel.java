@@ -3,22 +3,22 @@ package doggytalents.client.entity.model;
 import com.google.common.collect.ImmutableList;
 
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.client.renderer.entity.model.SegmentedModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.client.model.ListModel;
+import net.minecraft.client.model.geom.ModelPart;
 
-public class DogRescueModel extends SegmentedModel<DogEntity>{
+public class DogRescueModel extends ListModel<DogEntity>{
 
-    public ModelRenderer rescueBox;
+    public ModelPart rescueBox;
 
     public DogRescueModel() {
-        this.rescueBox = new ModelRenderer(this, 0, 0);
+        this.rescueBox = new ModelPart(this, 0, 0);
         this.rescueBox.addBox(-1F, -4F, -4.5F, 4, 2, 2);
         this.rescueBox.setPos(-1F, 14F, -3F);
         this.rescueBox.xRot = (float) (Math.PI / 2);
     }
 
     @Override
-    public Iterable<ModelRenderer> parts() {
+    public Iterable<ModelPart> parts() {
         return ImmutableList.of(this.rescueBox);
     }
 

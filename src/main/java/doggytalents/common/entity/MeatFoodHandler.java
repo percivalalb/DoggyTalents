@@ -2,10 +2,10 @@ package doggytalents.common.entity;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
 
 public class MeatFoodHandler implements IDogFoodHandler {
 
@@ -20,7 +20,7 @@ public class MeatFoodHandler implements IDogFoodHandler {
     }
 
     @Override
-    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
 
         if (dogIn.getDogHunger() < dogIn.getMaxHunger()) {
             if (!dogIn.level.isClientSide) {
@@ -30,10 +30,10 @@ public class MeatFoodHandler implements IDogFoodHandler {
                 dogIn.consumeItemFromStack(entityIn, stackIn);
             }
 
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
 
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
 
     }
 

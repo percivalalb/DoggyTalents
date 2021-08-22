@@ -3,8 +3,8 @@ package doggytalents.common.inventory;
 import javax.annotation.Nonnull;
 
 import doggytalents.api.feature.FoodHandler;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class TreatBagItemHandler extends ItemStackHandler {
@@ -15,7 +15,7 @@ public class TreatBagItemHandler extends ItemStackHandler {
         super(5);
         this.bag = bag;
 
-        CompoundNBT inventoryNBT = bag.getTagElement("inventory");
+        CompoundTag inventoryNBT = bag.getTagElement("inventory");
         if (inventoryNBT != null) {
             this.deserializeNBT(inventoryNBT);
         }

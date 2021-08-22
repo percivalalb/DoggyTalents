@@ -1,37 +1,37 @@
 package doggytalents.client.entity.render;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldVertexBufferUploader;
+import net.minecraft.client.gui.Font;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.BufferUploader;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.vector.Matrix4f;
-import net.minecraft.util.text.ITextComponent;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import net.minecraft.world.entity.Entity;
+import com.mojang.math.Matrix4f;
+import net.minecraft.network.chat.Component;
 
 public class RenderUtil {
 
-    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, ITextComponent text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yChange) {
+    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, Component text, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float scale, float yChange) {
         RenderUtil.renderLabelWithScale(entity, renderer, text.getString(), stack, buffer, packedLightIn, scale, yChange);
     }
 
-    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yChange) {
+    public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float scale, float yChange) {
         renderLabelWithScale(!entity.isDiscrete(), renderer.getDispatcher(), text, stack, buffer, packedLightIn, scale, yChange + entity.getBbHeight() + 0.5F);
     }
 
-    public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, ITextComponent text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {
+    public static void renderLabelWithScale(boolean flag, EntityRenderDispatcher renderManager, Component text, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float scale, float yOffset) {
         renderLabelWithScale(flag, renderManager, text.getString(), stack, buffer, packedLightIn, scale, yOffset);
     }
 
-    public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {
+    public static void renderLabelWithScale(boolean flag, EntityRenderDispatcher renderManager, String text, PoseStack stack, MultiBufferSource buffer, int packedLightIn, float scale, float yOffset) {
         stack.pushPose();
         stack.translate(0.0D, yOffset, 0.0D);
         stack.mulPose(renderManager.cameraOrientation());
@@ -39,7 +39,7 @@ public class RenderUtil {
         Matrix4f matrix4f = stack.last().pose();
         float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
         int j = (int) (f1 * 255.0F) << 24;
-        FontRenderer fontrenderer = renderManager.getFont();
+        Font fontrenderer = renderManager.getFont();
         float f2 = -fontrenderer.width(text) / 2F;
         fontrenderer.drawInBatch(text, f2, 0, 553648127, false, matrix4f, buffer, flag, j, packedLightIn);
         if (flag) {
@@ -75,14 +75,14 @@ public class RenderUtil {
     }
 
     public static void innerBlit(int minX, int maxX, int yMin, int yMax, int zLevel, float textureXMin, float textureXMax, float textureYMin, float textureYMax) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
-        bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(7, DefaultVertexFormat.POSITION_TEX);
         bufferbuilder.vertex(minX, yMax, zLevel).uv(textureXMin, textureYMax).endVertex();
         bufferbuilder.vertex(maxX, yMax, zLevel).uv(textureXMax, textureYMax).endVertex();
         bufferbuilder.vertex(maxX, yMin, zLevel).uv(textureXMax, textureYMin).endVertex();
         bufferbuilder.vertex(minX, yMin, zLevel).uv(textureXMin, textureYMin).endVertex();
         bufferbuilder.end();
         RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.end(bufferbuilder);
+        BufferUploader.end(bufferbuilder);
     }
 }

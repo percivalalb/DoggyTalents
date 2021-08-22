@@ -7,19 +7,19 @@ import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.RequestSkinData;
 import doggytalents.common.network.packet.data.SendSkinData;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class RequestSkinPacket implements IPacket<RequestSkinData> {
 
     @Override
-    public void encode(RequestSkinData data, PacketBuffer buf) {
+    public void encode(RequestSkinData data, FriendlyByteBuf buf) {
         buf.writeUtf(data.hash, 128);
     }
 
     @Override
-    public RequestSkinData decode(PacketBuffer buf) {
+    public RequestSkinData decode(FriendlyByteBuf buf) {
         return new RequestSkinData(buf.readUtf(128));
     }
 

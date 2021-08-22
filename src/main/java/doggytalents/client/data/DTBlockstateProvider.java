@@ -6,12 +6,12 @@ import java.util.function.Supplier;
 
 import doggytalents.DoggyBlocks;
 import doggytalents.common.lib.Constants;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
@@ -42,13 +42,13 @@ public class DTBlockstateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         dogBath(DoggyBlocks.DOG_BATH);
         dogBed(DoggyBlocks.DOG_BED);
-        createFromShape(DoggyBlocks.FOOD_BOWL, new AxisAlignedBB(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D));
+        createFromShape(DoggyBlocks.FOOD_BOWL, new AABB(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D));
     }
 
     // Applies texture to all faces and for the input face culls that direction
     private static BiFunction<String, Direction, BiConsumer<Direction, ModelBuilder<BlockModelBuilder>.ElementBuilder.FaceBuilder>> cullFaceFactory = (texture, input) -> (d, b) -> b.texture(texture).cullface(d == input ? d : null);
 
-    protected void createFromShape(Supplier<? extends Block> blockIn, AxisAlignedBB bb) {
+    protected void createFromShape(Supplier<? extends Block> blockIn, AABB bb) {
         BlockModelBuilder model = this.models()
                 .getBuilder(name(blockIn))
                 .parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block")))

@@ -4,19 +4,19 @@ import java.util.function.Supplier;
 
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 /**
  * Defaults are to show toast, announce to chat and not to be hidden
  */
 public class DisplayInfoBuilder {
 
-    private ITextComponent title;
-    private ITextComponent description;
+    private Component title;
+    private Component description;
     private ItemStack icon;
     private ResourceLocation background;
     private FrameType frame;
@@ -29,26 +29,26 @@ public class DisplayInfoBuilder {
     }
 
     public DisplayInfoBuilder translate(String key) {
-        this.title(new TranslationTextComponent("advancements."+key+".title"));
-        this.description(new TranslationTextComponent("advancements."+key+".description"));
+        this.title(new TranslatableComponent("advancements."+key+".title"));
+        this.description(new TranslatableComponent("advancements."+key+".description"));
         return this;
     }
 
-    public DisplayInfoBuilder title(ITextComponent titleIn) {
+    public DisplayInfoBuilder title(Component titleIn) {
         this.title = titleIn;
         return this;
     }
 
-    public DisplayInfoBuilder description(ITextComponent descriptionIn) {
+    public DisplayInfoBuilder description(Component descriptionIn) {
         this.description = descriptionIn;
         return this;
     }
 
-    public DisplayInfoBuilder icon(Supplier<? extends IItemProvider> stackIn) {
+    public DisplayInfoBuilder icon(Supplier<? extends ItemLike> stackIn) {
         return this.icon(stackIn.get());
     }
 
-    public DisplayInfoBuilder icon(IItemProvider provider) {
+    public DisplayInfoBuilder icon(ItemLike provider) {
         return this.icon(new ItemStack(provider.asItem()));
     }
 

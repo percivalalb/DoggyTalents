@@ -3,14 +3,14 @@ package doggytalents.client.screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 
 public class ScreenUtil {
 
-    public static List<ITextComponent> splitInto(String text, int maxLength, FontRenderer font) {
-        List<ITextComponent> list = new ArrayList<>();
+    public static List<Component> splitInto(String text, int maxLength, Font font) {
+        List<Component> list = new ArrayList<>();
 
         StringBuilder temp = new StringBuilder();
         String[] split = text.split(" ");
@@ -20,7 +20,7 @@ public class ScreenUtil {
             int length = font.width(temp + str);
 
             if (length > maxLength) {
-                list.add(new StringTextComponent(temp.toString()));
+                list.add(new TextComponent(temp.toString()));
                 temp = new StringBuilder();
             }
 
@@ -28,7 +28,7 @@ public class ScreenUtil {
             temp.append(" ");
 
             if (i == split.length - 1) {
-                list.add(new StringTextComponent(temp.toString()));
+                list.add(new TextComponent(temp.toString()));
             }
         }
 

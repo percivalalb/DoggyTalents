@@ -1,18 +1,18 @@
 package doggytalents.common.entity.serializers;
 
 import doggytalents.api.feature.EnumGender;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.IDataSerializer;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.syncher.EntityDataSerializer;
 
-public class GenderSerializer implements IDataSerializer<EnumGender> {
+public class GenderSerializer implements EntityDataSerializer<EnumGender> {
 
     @Override
-    public void write(PacketBuffer buf, EnumGender value) {
+    public void write(FriendlyByteBuf buf, EnumGender value) {
         buf.writeByte(value.getIndex());
     }
 
     @Override
-    public EnumGender read(PacketBuffer buf) {
+    public EnumGender read(FriendlyByteBuf buf) {
         return EnumGender.byIndex(buf.readByte());
     }
 

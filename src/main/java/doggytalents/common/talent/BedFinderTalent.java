@@ -3,12 +3,12 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 
 public class BedFinderTalent extends TalentInstance {
 
@@ -22,7 +22,7 @@ public class BedFinderTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (this.level() > 0) {
             if (!playerIn.hasPassenger(dogIn)) {
                 if (playerIn.getItemInHand(handIn).getItem() == Items.BONE && dogIn.canInteract(playerIn)) {
@@ -32,15 +32,15 @@ public class BedFinderTalent extends TalentInstance {
                             dogIn.setOrderedToSit(true);
                         }
 
-                        playerIn.displayClientMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
-                        return ActionResultType.SUCCESS;
+                        playerIn.displayClientMessage(new TranslatableComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
+                        return InteractionResult.SUCCESS;
                     }
                 }
             } else {
                 dogIn.stopRiding();
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 }

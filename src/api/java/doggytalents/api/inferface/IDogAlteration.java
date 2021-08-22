@@ -1,20 +1,20 @@
 package doggytalents.api.inferface;
 
 import doggytalents.api.enu.WetSource;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -35,11 +35,11 @@ public interface IDogAlteration {
 
     }
 
-    default void onWrite(AbstractDogEntity dogIn, CompoundNBT compound) {
+    default void onWrite(AbstractDogEntity dogIn, CompoundTag compound) {
 
     }
 
-    default void onRead(AbstractDogEntity dogIn, CompoundNBT compound) {
+    default void onRead(AbstractDogEntity dogIn, CompoundTag compound) {
 
     }
 
@@ -57,61 +57,61 @@ public interface IDogAlteration {
 
     }
 
-    default ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
-        return ActionResult.pass(hungerTick);
+    default InteractionResultHolder<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
+        return InteractionResultHolder.pass(hungerTick);
     }
 
-    default ActionResult<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
-        return ActionResult.pass(healingTick);
+    default InteractionResultHolder<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
+        return InteractionResultHolder.pass(healingTick);
     }
 
-    default ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        return ActionResultType.PASS;
+    default InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
-        return ActionResultType.PASS;
+    default InteractionResult canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType canTrample(AbstractDogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
-        return ActionResultType.PASS;
+    default InteractionResult canTrample(AbstractDogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
-        return ActionResult.pass(0F);
+    default InteractionResultHolder<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+        return InteractionResultHolder.pass(0F);
     }
 
-    default ActionResultType canBreatheUnderwater(AbstractDogEntity dogIn) {
-        return ActionResultType.PASS;
+    default InteractionResult canBreatheUnderwater(AbstractDogEntity dogIn) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType canAttack(AbstractDogEntity dogIn, LivingEntity target) {
-        return ActionResultType.PASS;
+    default InteractionResult canAttack(AbstractDogEntity dogIn, LivingEntity target) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType canAttack(AbstractDogEntity dogIn, EntityType<?> entityType) {
-        return ActionResultType.PASS;
+    default InteractionResult canAttack(AbstractDogEntity dogIn, EntityType<?> entityType) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
-        return ActionResultType.PASS;
+    default InteractionResult shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType hitByEntity(AbstractDogEntity dog, Entity entity) {
-        return ActionResultType.PASS;
+    default InteractionResult hitByEntity(AbstractDogEntity dog, Entity entity) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType attackEntityAsMob(AbstractDogEntity dogIn, Entity target) {
-        return ActionResultType.PASS;
+    default InteractionResult attackEntityAsMob(AbstractDogEntity dogIn, Entity target) {
+        return InteractionResult.PASS;
     }
 
 
-    default ActionResult<Float> attackEntityFrom(AbstractDogEntity dog, DamageSource source, float damage) {
-        return ActionResult.pass(damage);
+    default InteractionResultHolder<Float> attackEntityFrom(AbstractDogEntity dog, DamageSource source, float damage) {
+        return InteractionResultHolder.pass(damage);
     }
 
-    default ActionResultType canBlockDamageSource(AbstractDogEntity dog, DamageSource source) {
-        return ActionResultType.PASS;
+    default InteractionResult canBlockDamageSource(AbstractDogEntity dog, DamageSource source) {
+        return InteractionResult.PASS;
     }
 
     default void onDeath(AbstractDogEntity dog, DamageSource source) {
@@ -130,36 +130,36 @@ public interface IDogAlteration {
 
     }
 
-    default ActionResult<Float> attackEntityFrom(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
-        return ActionResult.pass(distance);
+    default InteractionResultHolder<Float> attackEntityFrom(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
+        return InteractionResultHolder.pass(distance);
     }
 
-    default ActionResult<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
-        return ActionResult.pass(air);
+    default InteractionResultHolder<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
+        return InteractionResultHolder.pass(air);
     }
 
-    default ActionResult<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
-        return ActionResult.pass(currentAir);
+    default InteractionResultHolder<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
+        return InteractionResultHolder.pass(currentAir);
     }
 
-    default ActionResult<Integer> setFire(AbstractDogEntity dogIn, int second) {
-        return ActionResult.pass(second);
+    default InteractionResultHolder<Integer> setFire(AbstractDogEntity dogIn, int second) {
+        return InteractionResultHolder.pass(second);
     }
 
-    default ActionResultType isImmuneToFire(AbstractDogEntity dogIn) {
-        return ActionResultType.PASS;
+    default InteractionResult isImmuneToFire(AbstractDogEntity dogIn) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
-        return ActionResultType.PASS;
+    default InteractionResult isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType isInvulnerable(AbstractDogEntity dogIn) {
-        return ActionResultType.PASS;
+    default InteractionResult isInvulnerable(AbstractDogEntity dogIn) {
+        return InteractionResult.PASS;
     }
 
-    default ActionResultType onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
-        return ActionResultType.PASS;
+    default InteractionResult onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
+        return InteractionResult.PASS;
     }
 
     default <T> LazyOptional<T> getCapability(AbstractDogEntity dogIn, Capability<T> cap, Direction side) {
@@ -170,16 +170,16 @@ public interface IDogAlteration {
 
     }
 
-    default ActionResult<Float> getMaxHunger(AbstractDogEntity dogIn, float currentMax) {
-        return ActionResult.pass(currentMax);
+    default InteractionResultHolder<Float> getMaxHunger(AbstractDogEntity dogIn, float currentMax) {
+        return InteractionResultHolder.pass(currentMax);
     }
 
-    default ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
-        return ActionResult.pass(hunger);
+    default InteractionResultHolder<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
+        return InteractionResultHolder.pass(hunger);
     }
 
-    default ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {
-        return ActionResultType.PASS;
+    default InteractionResult isPotionApplicable(AbstractDogEntity dogIn, MobEffectInstance effectIn) {
+        return InteractionResult.PASS;
     }
 
     /**

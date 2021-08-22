@@ -11,17 +11,17 @@ import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.util.InventoryUtil;
-import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.util.LazyOptional;
@@ -70,7 +70,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (dogIn.isTame() && this.level() > 0) { // Dog requirements
@@ -79,14 +79,14 @@ public class PackPuppyTalent extends TalentInstance {
                 if (dogIn.canInteract(playerIn)) {
 
                     if (!playerIn.level.isClientSide) {
-                        playerIn.displayClientMessage(new TranslationTextComponent("talent.doggytalents.pack_puppy.version_migration"), false);
+                        playerIn.displayClientMessage(new TranslatableComponent("talent.doggytalents.pack_puppy.version_migration"), false);
                     }
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
@@ -102,26 +102,26 @@ public class PackPuppyTalent extends TalentInstance {
         //TODO either drop inventory or save to respawn data, currently does both
         // No need to drop anything if dog didn't have pack puppy
         for (int i = 0; i < this.packPuppyHandler.getSlots(); ++i) {
-            InventoryHelper.dropItemStack(dogIn.level, dogIn.getX(), dogIn.getY(), dogIn.getZ(), this.packPuppyHandler.getStackInSlot(i));
+            Containers.dropItemStack(dogIn.level, dogIn.getX(), dogIn.getY(), dogIn.getZ(), this.packPuppyHandler.getStackInSlot(i));
             this.packPuppyHandler.setStackInSlot(i, ItemStack.EMPTY);
         }
     }
 
     @Override
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         super.writeToNBT(dogIn, compound);
         compound.merge(this.packPuppyHandler.serializeNBT());
     }
 
     @Override
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         super.readFromNBT(dogIn, compound);
         this.packPuppyHandler.deserializeNBT(compound);
     }
 
     // Left in for backwards compatibility for versions <= 2.0.0.5
     @Override
-    public void onRead(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void onRead(AbstractDogEntity dogIn, CompoundTag compound) {
         this.packPuppyHandler.deserializeNBT(compound);
     }
 

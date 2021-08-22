@@ -3,20 +3,20 @@ package doggytalents.client.entity.model;
 import com.google.common.collect.ImmutableList;
 
 import doggytalents.api.inferface.AbstractDogEntity;
-import net.minecraft.client.renderer.entity.model.TintedAgeableModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.model.ColorableAgeableListModel;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 
-public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T> {
+public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListModel<T> {
 
-    public ModelRenderer head;
-    public ModelRenderer body;
-    public ModelRenderer legBackRight;
-    public ModelRenderer legBackLeft;
-    public ModelRenderer legFrontRight;
-    public ModelRenderer legFrontLeft;
-    public ModelRenderer tail;
-    public ModelRenderer mane;
+    public ModelPart head;
+    public ModelPart body;
+    public ModelPart legBackRight;
+    public ModelPart legBackLeft;
+    public ModelPart legFrontRight;
+    public ModelPart legFrontLeft;
+    public ModelPart tail;
+    public ModelPart mane;
 
     public DogModel() {
         this(0.0F);
@@ -30,36 +30,36 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
         // y is back and forward
 
         //Head
-        this.head = new ModelRenderer(this, 0, 0);
+        this.head = new ModelPart(this, 0, 0);
         this.head.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, scaleFactor);
         this.head.setPos(-1.0F, f1, -7.0F);
 
         //Body
-        this.body = new ModelRenderer(this, 18, 14);
+        this.body = new ModelPart(this, 18, 14);
         this.body.addBox(-3.0F, -2.0F, -3.0F, 6, 9, 6, scaleFactor);
         this.body.setPos(0.0F, 14.0F, 2.0F);
 
         //Mane
-        this.mane = new ModelRenderer(this, 21, 0);
+        this.mane = new ModelPart(this, 21, 0);
         this.mane.addBox(-3.0F, -3.0F, -3.0F, 8, 6, 7, scaleFactor);
         this.mane.setPos(-1.0F, 14.0F, 2.0F);
 
         //Limbs
-        this.legBackRight = new ModelRenderer(this, 0, 18);
+        this.legBackRight = new ModelPart(this, 0, 18);
         this.legBackRight.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legBackRight.setPos(-2.5F, 16.0F, 7.0F);
-        this.legBackLeft = new ModelRenderer(this, 0, 18);
+        this.legBackLeft = new ModelPart(this, 0, 18);
         this.legBackLeft.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legBackLeft.setPos(0.5F, 16.0F, 7.0F);
-        this.legFrontRight = new ModelRenderer(this, 0, 18);
+        this.legFrontRight = new ModelPart(this, 0, 18);
         this.legFrontRight.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legFrontRight.setPos(-2.5F, 16.0F, -4.0F);
-        this.legFrontLeft = new ModelRenderer(this, 0, 18);
+        this.legFrontLeft = new ModelPart(this, 0, 18);
         this.legFrontLeft.addBox(0.0F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.legFrontLeft.setPos(0.5F, 16.0F, -4.0F);
 
         //Tail1
-        this.tail = new ModelRenderer(this, 9, 18);
+        this.tail = new ModelPart(this, 9, 18);
         this.tail.addBox(-0.5F, 0.0F, -1.0F, 2, 8, 2, scaleFactor);
         this.tail.setPos(-0.5F, 12.0F, 8.0F);
 
@@ -86,12 +86,12 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
     }
 
     @Override
-    protected Iterable<ModelRenderer> headParts() {
+    protected Iterable<ModelPart> headParts() {
         return ImmutableList.of(this.head);
     }
 
     @Override
-    protected Iterable<ModelRenderer> bodyParts() {
+    protected Iterable<ModelPart> bodyParts() {
         return ImmutableList.of(this.body, this.legBackRight, this.legBackLeft, this.legFrontRight, this.legFrontLeft, this.tail, this.mane);
     }
 
@@ -187,10 +187,10 @@ public class DogModel<T extends AbstractDogEntity> extends TintedAgeableModel<T>
             this.legBackLeft.setPos(0.5F, 16.0F, 7.0F);
             this.legFrontRight.setPos(-2.5F, 16.0F, -4.0F);
             this.legFrontLeft.setPos(0.5F, 16.0F, -4.0F);
-            this.legBackRight.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-            this.legBackLeft.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.legFrontRight.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-            this.legFrontLeft.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.legBackRight.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+            this.legBackLeft.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.legFrontRight.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+            this.legFrontLeft.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
 
             this.head.setPos(-1.0F, 13.5F, -7.0F);
             this.legFrontRight.yRot = 0.0F;

@@ -17,17 +17,17 @@ import doggytalents.DoggyItems;
 import doggytalents.common.util.Util;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.EntityPredicate;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.advancements.criterion.TameAnimalTrigger;
-import net.minecraft.block.Blocks;
-import net.minecraft.data.AdvancementProvider;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.advancements.critereon.TameAnimalTrigger;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DirectoryCache;
-import net.minecraft.data.IDataProvider;
-import net.minecraft.item.Items;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.HashCache;
+import net.minecraft.data.DataProvider;
+import net.minecraft.world.item.Items;
+import net.minecraft.resources.ResourceLocation;
 
 public class DTAdvancementProvider extends AdvancementProvider {
 
@@ -46,7 +46,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
     }
 
     @Override
-    public void run(DirectoryCache cache) throws IOException {
+    public void run(HashCache cache) throws IOException {
         Path path = this.generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
         Consumer<Advancement> consumer = (advancement) -> {
@@ -56,7 +56,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
                 Path path1 = getPath(path, advancement);
 
                 try {
-                    IDataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), path1);
+                    DataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), path1);
                 } catch (IOException ioexception) {
                     LOGGER.error("Couldn't save advancement {}", path1, ioexception);
                 }
@@ -68,26 +68,26 @@ public class DTAdvancementProvider extends AdvancementProvider {
 
         Advancement advancement = Advancement.Builder.advancement()
                 .display(DisplayInfoBuilder.create().icon(DoggyItems.TRAINING_TREAT).frame(FrameType.TASK).translate("dog.root").background("stone.png").noToast().noAnnouncement().build())
-                .addCriterion("tame_dog", TameAnimalTrigger.Instance.tamedAnimal(EntityPredicate.Builder.entity().of(DoggyEntityTypes.DOG.get()).build()))
+                .addCriterion("tame_dog", TameAnimalTrigger.TriggerInstance.tamedAnimal(EntityPredicate.Builder.entity().of(DoggyEntityTypes.DOG.get()).build()))
                 //.withCriterion("get_dog", ItemUseTrigger.TameAnimalTrigger.Instance.create(EntityPredicate.Builder.create().type(DoggyEntityTypes.DOG.get()).build()))
-                .requirements(IRequirementsStrategy.OR)
+                .requirements(RequirementsStrategy.OR)
                 .save(consumer, Util.getResourcePath("default/tame_dog"));
 
         Advancement advancement1 = Advancement.Builder.advancement()
                 .parent(advancement)
                 .display(DisplayInfoBuilder.create().icon(Items.WOODEN_PICKAXE).frame(FrameType.TASK).translate("dog.level_talent").build())
-                .addCriterion("level_talent", InventoryChangeTrigger.Instance.hasItems(Blocks.COBBLESTONE))
+                .addCriterion("level_talent", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE))
                 .save(consumer, Util.getResourcePath("default/level_talent"));
         Advancement advancement2 = Advancement.Builder.advancement()
                 .parent(advancement1)
                 .display(DisplayInfoBuilder.create().icon(DoggyItems.CAPE).frame(FrameType.TASK).translate("dog.accessorise").build())
-                .addCriterion("accessorise", InventoryChangeTrigger.Instance.hasItems(Items.STONE_PICKAXE))
+                .addCriterion("accessorise", InventoryChangeTrigger.TriggerInstance.hasItems(Items.STONE_PICKAXE))
                 .save(consumer, Util.getResourcePath("default/accessorise"));
 
         Advancement advancement3 = Advancement.Builder.advancement()
                 .parent(advancement2)
                 .display(DisplayInfoBuilder.create().icon(DoggyItems.RADIO_COLLAR).frame(FrameType.TASK).translate("dog.radio_collar").build())
-                .addCriterion("iron", InventoryChangeTrigger.Instance.hasItems(Items.IRON_INGOT))
+                .addCriterion("iron", InventoryChangeTrigger.TriggerInstance.hasItems(Items.IRON_INGOT))
                 .save(consumer, Util.getResourcePath("default/radio_collar"));
     }
 

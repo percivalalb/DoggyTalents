@@ -2,17 +2,17 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
-import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 
-public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
+public class GuardModeGoal extends NearestAttackableTargetGoal<Monster> {
 
     private final DogEntity dog;
     private LivingEntity owner;
 
     public GuardModeGoal(DogEntity dogIn, boolean checkSight) {
-        super(dogIn, MonsterEntity.class, 0, checkSight, false, null);
+        super(dogIn, Monster.class, 0, checkSight, false, null);
         this.dog = dogIn;
     }
 

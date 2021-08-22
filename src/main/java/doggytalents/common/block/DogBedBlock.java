@@ -21,50 +21,50 @@ import doggytalents.common.util.DogBedUtil;
 import doggytalents.common.util.EntityUtil;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.Util;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
@@ -72,7 +72,7 @@ import net.minecraftforge.common.util.Constants;
 public class DogBedBlock extends Block {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final DirectionProperty FACING = HorizontalBlock.FACING;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
     protected static final VoxelShape SHAPE_COLLISION = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D);
@@ -83,17 +83,17 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext selectionContext) {
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext selectionContext) {
         return SHAPE_COLLISION;
     }
 
@@ -103,17 +103,17 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
         return new DogBedTileEntity();
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return Block.canSupportCenter(worldIn, pos.below(), Direction.UP);
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         state = state.setValue(FACING, placer.getDirection().getOpposite());
 
         DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
@@ -122,9 +122,9 @@ public class DogBedBlock extends Block {
             DogBedUtil.setBedVariant(dogBedTileEntity, stack);
 
             dogBedTileEntity.setPlacer(placer);
-            CompoundNBT tag = stack.getTagElement("doggytalents");
+            CompoundTag tag = stack.getTagElement("doggytalents");
             if (tag != null) {
-                ITextComponent name = NBTUtil.getTextComponent(tag, "name");
+                Component name = NBTUtil.getTextComponent(tag, "name");
                 UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
                 dogBedTileEntity.setBedName(name);
                 dogBedTileEntity.setOwner(ownerId);
@@ -135,7 +135,7 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (stateIn.getValue(WATERLOGGED)) {
             worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
@@ -159,9 +159,9 @@ public class DogBedBlock extends Block {
 
     @Override
     @Deprecated
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (worldIn.isClientSide) {
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         } else {
             DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
 
@@ -176,10 +176,10 @@ public class DogBedBlock extends Block {
                     }
 
                     worldIn.sendBlockUpdated(pos, state, state, Constants.BlockFlags.DEFAULT);
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 } else if (player.isShiftKeyDown() && dogBedTileEntity.getOwnerUUID() == null) {
-                    List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
-                    Collections.sort(dogs, new EntityUtil.Sorter(new Vector3d(pos.getX(), pos.getY(), pos.getZ())));
+                    List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AABB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
+                    Collections.sort(dogs, new EntityUtil.Sorter(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
 
                     DogEntity closestStanding = null;
                     DogEntity closestSitting = null;
@@ -203,66 +203,66 @@ public class DogBedBlock extends Block {
                     DogRespawnData storage = DogRespawnStorage.get(worldIn).remove(dogBedTileEntity.getOwnerUUID());
 
                     if (storage != null) {
-                        DogEntity dog = storage.respawn((ServerWorld) worldIn, player, pos.above());
+                        DogEntity dog = storage.respawn((ServerLevel) worldIn, player, pos.above());
 
                         dogBedTileEntity.setOwner(dog);
                         dog.setBedPos(dog.level.dimension(), pos);
-                        return ActionResultType.SUCCESS;
+                        return InteractionResult.SUCCESS;
                     } else {
-                        ITextComponent name = dogBedTileEntity.getOwnerName();
-                        player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"), Util.NIL_UUID);
-                        return ActionResultType.FAIL;
+                        Component name = dogBedTileEntity.getOwnerName();
+                        player.sendMessage(new TranslatableComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"), Util.NIL_UUID);
+                        return InteractionResult.FAIL;
                     }
                 } else {
-                    player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.set_owner_help"), Util.NIL_UUID);
-                    return ActionResultType.SUCCESS;
+                    player.sendMessage(new TranslatableComponent("block.doggytalents.dog_bed.set_owner_help"), Util.NIL_UUID);
+                    return InteractionResult.SUCCESS;
                 }
             }
-            return ActionResultType.SUCCESS;
+            return InteractionResult.SUCCESS;
         }
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter worldIn, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
         tooltip.add(materials.getLeft() != null
                 ? materials.getLeft().getTooltip()
-                : new TranslationTextComponent("dogbed.casing.null").withStyle(TextFormatting.RED));
+                : new TranslatableComponent("dogbed.casing.null").withStyle(ChatFormatting.RED));
         tooltip.add(materials.getRight() != null
                 ? materials.getRight().getTooltip()
-                : new TranslationTextComponent("dogbed.bedding.null").withStyle(TextFormatting.RED));
+                : new TranslatableComponent("dogbed.bedding.null").withStyle(ChatFormatting.RED));
 
         if (materials.getLeft() == null && materials.getRight() == null) {
-            tooltip.add(new TranslationTextComponent("dogbed.explain.missing").withStyle(TextFormatting.ITALIC));
+            tooltip.add(new TranslatableComponent("dogbed.explain.missing").withStyle(ChatFormatting.ITALIC));
         }
 
-        CompoundNBT tag = stack.getTagElement("doggytalents");
+        CompoundTag tag = stack.getTagElement("doggytalents");
         if (tag != null) {
             UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
-            ITextComponent name = NBTUtil.getTextComponent(tag, "name");
-            ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
+            Component name = NBTUtil.getTextComponent(tag, "name");
+            Component ownerName = NBTUtil.getTextComponent(tag, "ownerName");
 
             if (name != null) {
-                tooltip.add(new StringTextComponent("Bed Name: ").withStyle(TextFormatting.WHITE).append(name));
+                tooltip.add(new TextComponent("Bed Name: ").withStyle(ChatFormatting.WHITE).append(name));
             }
 
             if (ownerName != null) {
-                tooltip.add(new StringTextComponent("Name: ").withStyle(TextFormatting.DARK_AQUA).append(ownerName));
+                tooltip.add(new TextComponent("Name: ").withStyle(ChatFormatting.DARK_AQUA).append(ownerName));
 
             }
 
             if (ownerId != null && (flagIn.isAdvanced() || Screen.hasShiftDown())) {
-                tooltip.add(new StringTextComponent("UUID: ").withStyle(TextFormatting.AQUA).append(new StringTextComponent(ownerId.toString())));
+                tooltip.add(new TextComponent("UUID: ").withStyle(ChatFormatting.AQUA).append(new TextComponent(ownerId.toString())));
             }
         }
     }
 
     @Override
-    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
         for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
             for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
                 items.add(DogBedUtil.createItemStack(casingId, beddingId));
@@ -271,7 +271,7 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
+    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(world, pos, DogBedTileEntity.class);
 
         if (dogBedTileEntity != null) {

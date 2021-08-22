@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.Util;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.Util;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import net.minecraftforge.registries.IRegistryDelegate;
 
@@ -28,7 +28,7 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
         this.stack = stackIn;
     }
 
-    public Accessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends IItemProvider> itemIn) {
+    public Accessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends ItemLike> itemIn) {
         this(typeIn, () -> new ItemStack(itemIn.get()), 0);
     }
 
@@ -47,19 +47,19 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
         return new AccessoryInstance(this);
     }
 
-    public AccessoryInstance createInstance(PacketBuffer buf) {
+    public AccessoryInstance createInstance(FriendlyByteBuf buf) {
         return this.getDefault();
     }
 
-    public AccessoryInstance read(CompoundNBT compound) {
+    public AccessoryInstance read(CompoundTag compound) {
         return this.getDefault();
     }
 
-    public void write(AccessoryInstance instance, PacketBuffer buf) {
+    public void write(AccessoryInstance instance, FriendlyByteBuf buf) {
 
     }
 
-    public void write(AccessoryInstance instance, CompoundNBT compound) {
+    public void write(AccessoryInstance instance, CompoundTag compound) {
 
     }
 

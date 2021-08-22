@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.DoggyAccessories;
 import doggytalents.DoggyTalents2;
@@ -28,29 +28,29 @@ import doggytalents.common.network.packet.data.FriendlyFireData;
 import doggytalents.common.network.packet.data.SendSkinData;
 import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.Widget;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class DogInfoScreen extends Screen {
 
     public final DogEntity dog;
-    public final PlayerEntity player;
+    public final Player player;
 
     private int currentPage = 0;
     private int maxPages = 1;
-    private List<Widget> talentWidgets = new ArrayList<>(16);
+    private List<AbstractWidget> talentWidgets = new ArrayList<>(16);
 
     private Button leftBtn, rightBtn;
 
@@ -59,8 +59,8 @@ public class DogInfoScreen extends Screen {
 
     public int textureIndex;
 
-    public DogInfoScreen(DogEntity dog, PlayerEntity player) {
-        super(new TranslationTextComponent("doggytalents.screen.dog.title"));
+    public DogInfoScreen(DogEntity dog, Player player) {
+        super(new TranslatableComponent("doggytalents.screen.dog.title"));
         this.dog = dog;
         this.player = player;
         this.talentList = DoggyTalentsAPI.TALENTS
@@ -86,7 +86,7 @@ public class DogInfoScreen extends Screen {
         int topX = this.width / 2;
         int topY = this.height / 2;
 
-        TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20,  new TranslationTextComponent("dogInfo.enterName"));
+        EditBox nameTextField = new EditBox(this.font, topX - 100, topY + 50, 200, 20,  new TranslatableComponent("dogInfo.enterName"));
         nameTextField.setResponder(text ->  {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogNameData(DogInfoScreen.this.dog.getId(), text));
         });
@@ -102,30 +102,30 @@ public class DogInfoScreen extends Screen {
 
 
         if (this.dog.isOwnedBy(this.player)) {
-            Button obeyBtn = new Button(this.width - 64, topY + 77, 42, 20, new StringTextComponent(String.valueOf(this.dog.willObeyOthers())), (btn) -> {
-                btn.setMessage(new StringTextComponent(String.valueOf(!this.dog.willObeyOthers())));
+            Button obeyBtn = new Button(this.width - 64, topY + 77, 42, 20, new TextComponent(String.valueOf(this.dog.willObeyOthers())), (btn) -> {
+                btn.setMessage(new TextComponent(String.valueOf(!this.dog.willObeyOthers())));
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyData(this.dog.getId(), !this.dog.willObeyOthers()));
             });
 
             this.addButton(obeyBtn);
         }
 
-        Button attackPlayerBtn = new Button(this.width - 64, topY - 5, 42, 20, new StringTextComponent(String.valueOf(this.dog.canPlayersAttack())), button -> {
-            button.setMessage(new StringTextComponent(String.valueOf(!this.dog.canPlayersAttack())));
+        Button attackPlayerBtn = new Button(this.width - 64, topY - 5, 42, 20, new TextComponent(String.valueOf(this.dog.canPlayersAttack())), button -> {
+            button.setMessage(new TextComponent(String.valueOf(!this.dog.canPlayersAttack())));
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFireData(this.dog.getId(), !this.dog.canPlayersAttack()));
         });
 
         this.addButton(attackPlayerBtn);
 
         //if (ConfigValues.USE_DT_TEXTURES) {
-            Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, new StringTextComponent("+"), (btn) -> {
+            Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, new TextComponent("+"), (btn) -> {
                 this.textureIndex += 1;
                 this.textureIndex %= this.customSkinList.size();
                 ResourceLocation rl = this.customSkinList.get(this.textureIndex);
 
                 this.setDogTexture(rl);
             });
-            Button lessBtn = new Button(this.width - 64, topY + 30, 20, 20, new StringTextComponent("-"), (btn) -> {
+            Button lessBtn = new Button(this.width - 64, topY + 30, 20, 20, new TextComponent("-"), (btn) -> {
                 this.textureIndex += this.customSkinList.size() - 1;
                 this.textureIndex %= this.customSkinList.size();
                 ResourceLocation rl = this.customSkinList.get(this.textureIndex);
@@ -137,20 +137,20 @@ public class DogInfoScreen extends Screen {
         //}
 
 
-        Button modeBtn = new Button(topX + 40, topY + 25, 60, 20, new TranslationTextComponent(this.dog.getMode().getUnlocalisedName()), button -> {
+        Button modeBtn = new Button(topX + 40, topY + 25, 60, 20, new TranslatableComponent(this.dog.getMode().getUnlocalisedName()), button -> {
             EnumMode mode = DogInfoScreen.this.dog.getMode().nextMode();
 
             if (mode == EnumMode.WANDERING && !DogInfoScreen.this.dog.getBowlPos().isPresent()) {
-                button.setMessage(new TranslationTextComponent(mode.getUnlocalisedName()).withStyle(TextFormatting.RED));
+                button.setMessage(new TranslatableComponent(mode.getUnlocalisedName()).withStyle(ChatFormatting.RED));
             } else {
-                button.setMessage(new TranslationTextComponent(mode.getUnlocalisedName()));
+                button.setMessage(new TranslatableComponent(mode.getUnlocalisedName()));
             }
 
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogModeData(DogInfoScreen.this.dog.getId(), mode));
         }) {
             @Override
-            public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                List<ITextComponent> list = new ArrayList<>();
+            public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
+                List<Component> list = new ArrayList<>();
                 String str = I18n.get(dog.getMode().getUnlocalisedInfo());
                 list.addAll(ScreenUtil.splitInto(str, 150, DogInfoScreen.this.font));
                 if (DogInfoScreen.this.dog.getMode() == EnumMode.WANDERING) {
@@ -160,12 +160,12 @@ public class DogInfoScreen extends Screen {
                         double distance = DogInfoScreen.this.dog.blockPosition().distSqr(DogInfoScreen.this.dog.getBowlPos().get());
 
                         if (distance > 256D) {
-                            list.add(new TranslationTextComponent("dog.mode.docile.distance", (int) Math.sqrt(distance)).withStyle(TextFormatting.RED));
+                            list.add(new TranslatableComponent("dog.mode.docile.distance", (int) Math.sqrt(distance)).withStyle(ChatFormatting.RED));
                         } else {
-                            list.add(new TranslationTextComponent("dog.mode.docile.bowl", (int) Math.sqrt(distance)).withStyle(TextFormatting.GREEN));
+                            list.add(new TranslatableComponent("dog.mode.docile.bowl", (int) Math.sqrt(distance)).withStyle(ChatFormatting.GREEN));
                         }
                     } else {
-                        list.add(new TranslationTextComponent("dog.mode.docile.nobowl").withStyle(TextFormatting.RED));
+                        list.add(new TranslatableComponent("dog.mode.docile.nobowl").withStyle(ChatFormatting.RED));
                     }
                 }
 
@@ -177,34 +177,34 @@ public class DogInfoScreen extends Screen {
 
         // Talent level-up buttons
         int size = DoggyTalentsAPI.TALENTS.getKeys().size();
-        int perPage = Math.max(MathHelper.floor((this.height - 10) / (double) 21) - 2, 1);
+        int perPage = Math.max(Mth.floor((this.height - 10) / (double) 21) - 2, 1);
         this.currentPage = 0;
         this.recalculatePage(perPage);
 
 
         if (perPage < size) {
-            this.leftBtn = new Button(25, perPage * 21 + 10, 20, 20, new StringTextComponent("<"), (btn) -> {
+            this.leftBtn = new Button(25, perPage * 21 + 10, 20, 20, new TextComponent("<"), (btn) -> {
                 this.currentPage = Math.max(0, this.currentPage - 1);
                 btn.active = this.currentPage > 0;
                 this.rightBtn.active = true;
                 this.recalculatePage(perPage);
             }) {
                 @Override
-                public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.prevpage").withStyle(TextFormatting.ITALIC), mouseX, mouseY);
+                public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
+                    DogInfoScreen.this.renderTooltip(stack, new TranslatableComponent("doggui.prevpage").withStyle(ChatFormatting.ITALIC), mouseX, mouseY);
                 }
             };
             this.leftBtn.active = false;
 
-            this.rightBtn = new Button(48, perPage * 21 + 10, 20, 20, new StringTextComponent(">"), (btn) -> {
+            this.rightBtn = new Button(48, perPage * 21 + 10, 20, 20, new TextComponent(">"), (btn) -> {
                 this.currentPage = Math.min(this.maxPages - 1, this.currentPage + 1);
                 btn.active = this.currentPage < this.maxPages - 1;
                 this.leftBtn.active = true;
                 this.recalculatePage(perPage);
             }) {
                 @Override
-                public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.nextpage").withStyle(TextFormatting.ITALIC), mouseX, mouseY);
+                public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
+                    DogInfoScreen.this.renderTooltip(stack, new TranslatableComponent("doggui.nextpage").withStyle(ChatFormatting.ITALIC), mouseX, mouseY);
                 }
             };
 
@@ -230,7 +230,7 @@ public class DogInfoScreen extends Screen {
         this.talentWidgets.forEach(this::removeWidget);
         this.talentWidgets.clear();
 
-        this.maxPages = MathHelper.ceil(this.talentList.size() / (double) perPage);
+        this.maxPages = Mth.ceil(this.talentList.size() / (double) perPage);
 
         for (int i = 0; i < perPage; ++i) {
 
@@ -238,7 +238,7 @@ public class DogInfoScreen extends Screen {
             if (index >= this.talentList.size()) break;
             Talent talent = this.talentList.get(index);
 
-            Button button = new TalentButton(25, 10 + i * 21, 20, 20, new StringTextComponent("+"), talent, (btn) -> {
+            Button button = new TalentButton(25, 10 + i * 21, 20, 20, new TextComponent("+"), talent, (btn) -> {
                 int level = DogInfoScreen.this.dog.getLevel(talent);
                 if (level < talent.getMaxLevel() && DogInfoScreen.this.dog.canSpendPoints(talent.getLevelCost(level + 1))) {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getId(), talent));
@@ -246,16 +246,16 @@ public class DogInfoScreen extends Screen {
 
             }) {
                 @Override
-                public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                    List<ITextComponent> list = new ArrayList<>();
+                public void renderToolTip(PoseStack stack, int mouseX, int mouseY) {
+                    List<Component> list = new ArrayList<>();
 
-                    list.add(new TranslationTextComponent(talent.getTranslationKey()).withStyle(TextFormatting.GREEN));
+                    list.add(new TranslatableComponent(talent.getTranslationKey()).withStyle(ChatFormatting.GREEN));
                     if (this.active) {
-                        list.add(new StringTextComponent("Level: " + DogInfoScreen.this.dog.getLevel(talent)));
-                        list.add(new StringTextComponent("--------------------------------").withStyle(TextFormatting.GRAY));
+                        list.add(new TextComponent("Level: " + DogInfoScreen.this.dog.getLevel(talent)));
+                        list.add(new TextComponent("--------------------------------").withStyle(ChatFormatting.GRAY));
                         list.addAll(ScreenUtil.splitInto(I18n.get(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
                     } else {
-                        list.add(new StringTextComponent("Talent disabled").withStyle(TextFormatting.RED));
+                        list.add(new TextComponent("Talent disabled").withStyle(ChatFormatting.RED));
                     }
 
                     DogInfoScreen.this.renderComponentTooltip(stack, list, mouseX, mouseY);
@@ -269,7 +269,7 @@ public class DogInfoScreen extends Screen {
     }
 
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         //Background
         int topX = this.width / 2;
         int topY = this.height / 2;
@@ -307,7 +307,7 @@ public class DogInfoScreen extends Screen {
         this.font.draw(stack, I18n.get("doggui.level") + " " + this.dog.getLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
         this.font.draw(stack, I18n.get("doggui.leveldire") + " " + this.dog.getLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
         if (this.dog.getAccessory(DoggyAccessories.GOLDEN_COLLAR.get()).isPresent()) {
-            this.font.draw(stack, TextFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
+            this.font.draw(stack, ChatFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
         } else {
             this.font.draw(stack, I18n.get("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
         }
@@ -333,7 +333,7 @@ public class DogInfoScreen extends Screen {
         super.render(stack, mouseX, mouseY, partialTicks);
         //RenderHelper.disableStandardItemLighting(); // 1.14 enableGUIStandardItemLighting
 
-        for (Widget widget : this.buttons) {
+        for (AbstractWidget widget : this.buttons) {
             if (widget.isHovered()) {
                widget.renderToolTip(stack, mouseX, mouseY);
                break;
@@ -354,7 +354,7 @@ public class DogInfoScreen extends Screen {
         return false;
     }
 
-    protected <T extends Widget> T removeWidget(T widgetIn) {
+    protected <T extends AbstractWidget> T removeWidget(T widgetIn) {
         this.buttons.remove(widgetIn);
         this.children.remove(widgetIn);
         return widgetIn;
@@ -363,7 +363,7 @@ public class DogInfoScreen extends Screen {
     private static class TalentButton extends Button {
 
         protected Talent talent;
-        private TalentButton(int x, int y, int widthIn, int heightIn, ITextComponent buttonText, Talent talent, Consumer<TalentButton> onPress) {
+        private TalentButton(int x, int y, int widthIn, int heightIn, Component buttonText, Talent talent, Consumer<TalentButton> onPress) {
             super(x, y, widthIn, heightIn, buttonText, button -> onPress.accept((TalentButton) button));
             this.talent = talent;
         }

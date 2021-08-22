@@ -2,8 +2,8 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 
 public class BerserkerModeGoal<T extends LivingEntity> extends NearestAttackableTargetGoal<T> {
 

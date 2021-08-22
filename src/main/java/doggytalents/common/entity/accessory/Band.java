@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import doggytalents.DoggyAccessoryTypes;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 
 public class Band extends Accessory {
 
-    public Band(Supplier<? extends IItemProvider> itemIn) {
+    public Band(Supplier<? extends ItemLike> itemIn) {
         super(DoggyAccessoryTypes.BAND, itemIn);
     }
 

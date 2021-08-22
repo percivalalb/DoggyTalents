@@ -14,11 +14,11 @@ import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
@@ -36,15 +36,15 @@ public class DogBedTileEntity extends PlacedTileEntity {
     private @Deprecated @Nullable DogEntity dog;
     private @Nullable UUID dogUUID;
 
-    private @Nullable ITextComponent name;
-    private @Nullable ITextComponent ownerName;
+    private @Nullable Component name;
+    private @Nullable Component ownerName;
 
     public DogBedTileEntity() {
         super(DoggyTileEntityTypes.DOG_BED.get());
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT compound) {
+    public void load(BlockState state, CompoundTag compound) {
         super.load(state, compound);
 
         this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
@@ -56,7 +56,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
 
         NBTUtil.putRegistryValue(compound, "casingId", this.casingType);
@@ -123,15 +123,15 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Nullable
-    public ITextComponent getBedName() {
+    public Component getBedName() {
         return this.name;
     }
 
     @Nullable
-    public ITextComponent getOwnerName() {
+    public Component getOwnerName() {
         if (this.dogUUID == null || this.level == null) { return null; }
 
-        ITextComponent name = DogLocationStorage
+        Component name = DogLocationStorage
                 .get(this.level)
                 .getData(this.dogUUID)
                 .getName(this.level);
@@ -147,7 +147,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
         return true;
     }
 
-    public void setBedName(@Nullable ITextComponent nameIn) {
+    public void setBedName(@Nullable Component nameIn) {
         this.name = nameIn;
         this.setChanged();
     }

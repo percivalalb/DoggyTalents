@@ -7,20 +7,20 @@ import org.apache.commons.lang3.tuple.Pair;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.util.DogBedUtil;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ItemOverrideList;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.renderer.block.model.ItemOverrides;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.Direction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class DogBedItemOverride extends ItemOverrideList {
+public class DogBedItemOverride extends ItemOverrides {
 
     @Override
-    public IBakedModel resolve(IBakedModel modelOriginal, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity livingEntity) {
+    public BakedModel resolve(BakedModel modelOriginal, ItemStack stack, @Nullable ClientLevel world, @Nullable LivingEntity livingEntity) {
         if (modelOriginal instanceof DogBedModel) {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
             return ((DogBedModel) modelOriginal).getModelVariant(materials.getLeft(), materials.getRight(), Direction.NORTH);

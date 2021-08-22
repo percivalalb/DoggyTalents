@@ -1,25 +1,25 @@
 package doggytalents.client.entity.render.layer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.DogRenderer;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
+import com.mojang.math.Vector3f;
 
-public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
+public class BoneLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 
     public BoneLayer(DogRenderer dogRendererIn) {
         super(dogRendererIn);
     }
 
     @Override
-    public void render(MatrixStack matrixStack, IRenderTypeBuffer bufferSource, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStack, MultiBufferSource bufferSource, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (dog.hasBone()) {
 
             matrixStack.pushPose();
@@ -36,7 +36,7 @@ public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
             matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
             matrixStack.popPose();
         }
     }

@@ -7,12 +7,12 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.AbstractIterator;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
 public class WorldUtil {
 
@@ -20,7 +20,7 @@ public class WorldUtil {
         return () -> {
             return new AbstractIterator<BlockPos>() {
                 final RadialCoordinateIterator coordinateIterator = new RadialCoordinateIterator(x1, y1, z1, x2, y2, z2);
-                final BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+                final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
                 @Override
                 protected BlockPos computeNext() {
@@ -32,8 +32,8 @@ public class WorldUtil {
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public static <T extends TileEntity> T getTileEntity(IBlockReader worldIn, BlockPos posIn, Class<T> type) {
-        TileEntity tileEntity = worldIn.getBlockEntity(posIn);
+    public static <T extends BlockEntity> T getTileEntity(BlockGetter worldIn, BlockPos posIn, Class<T> type) {
+        BlockEntity tileEntity = worldIn.getBlockEntity(posIn);
         if (tileEntity != null && tileEntity.getClass().isAssignableFrom(type)) {
             return (T) tileEntity;
         }
@@ -43,9 +43,9 @@ public class WorldUtil {
 
     @SuppressWarnings({ "unchecked", "deprecation" })
     @Nullable
-    public static <T extends Entity> T getCachedEntity(@Nullable World worldIn, Class<T> type, @Nullable T cached, @Nullable UUID uuid) {
-        if ((cached == null || cached.removed) && uuid != null && worldIn instanceof ServerWorld) {
-            Entity entity = ((ServerWorld) worldIn).getEntity(uuid);
+    public static <T extends Entity> T getCachedEntity(@Nullable Level worldIn, Class<T> type, @Nullable T cached, @Nullable UUID uuid) {
+        if ((cached == null || cached.removed) && uuid != null && worldIn instanceof ServerLevel) {
+            Entity entity = ((ServerLevel) worldIn).getEntity(uuid);
             if (entity != null && entity.getClass().isAssignableFrom(type)) {
                 return (T) entity;
             } else {

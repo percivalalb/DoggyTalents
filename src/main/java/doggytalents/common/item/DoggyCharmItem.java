@@ -4,27 +4,27 @@ import java.util.Objects;
 
 import doggytalents.DoggyEntityTypes;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.FlowingFluidBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUseContext;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class DoggyCharmItem extends Item {
 
@@ -33,12 +33,12 @@ public class DoggyCharmItem extends Item {
     }
 
     @Override
-    public ActionResultType useOn(ItemUseContext context) {
-        World world = context.getLevel();
-        if (world.isClientSide || !(world instanceof ServerWorld)) {
-            return ActionResultType.SUCCESS;
+    public InteractionResult useOn(UseOnContext context) {
+        Level world = context.getLevel();
+        if (world.isClientSide || !(world instanceof ServerLevel)) {
+            return InteractionResult.SUCCESS;
         } else {
-            PlayerEntity player = context.getPlayer();
+            Player player = context.getPlayer();
             ItemStack itemstack = context.getItemInHand();
             BlockPos blockpos = context.getClickedPos();
             Direction enumfacing = context.getClickedFace();
@@ -52,7 +52,7 @@ public class DoggyCharmItem extends Item {
             }
 
 
-            Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerWorld) world, itemstack, context.getPlayer(), blockpos1, SpawnReason.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
+            Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerLevel) world, itemstack, context.getPlayer(), blockpos1, MobSpawnType.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
             if (entity instanceof DogEntity) {
                DogEntity dog = (DogEntity)entity;
                if (player != null) {
@@ -62,23 +62,23 @@ public class DoggyCharmItem extends Item {
                itemstack.shrink(1);
            }
 
-           return ActionResultType.SUCCESS;
+           return InteractionResult.SUCCESS;
         }
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
-        if (worldIn.isClientSide || !(worldIn instanceof ServerWorld)) {
-            return new ActionResult<>(ActionResultType.PASS, itemstack);
+        if (worldIn.isClientSide || !(worldIn instanceof ServerLevel)) {
+            return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
         } else {
-            RayTraceResult raytraceresult = Item.getPlayerPOVHitResult(worldIn, playerIn, RayTraceContext.FluidMode.SOURCE_ONLY);
-            if (raytraceresult != null && raytraceresult.getType() == RayTraceResult.Type.BLOCK) {
-                BlockPos blockpos = ((BlockRayTraceResult)raytraceresult).getBlockPos();
-                if (!(worldIn.getBlockState(blockpos).getBlock() instanceof FlowingFluidBlock)) {
-                    return new ActionResult<>(ActionResultType.PASS, itemstack);
-                } else if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos, ((BlockRayTraceResult)raytraceresult).getDirection(), itemstack)) {
-                    Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerWorld) worldIn, itemstack, playerIn, blockpos, SpawnReason.SPAWN_EGG, false, false);
+            HitResult raytraceresult = Item.getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.SOURCE_ONLY);
+            if (raytraceresult != null && raytraceresult.getType() == HitResult.Type.BLOCK) {
+                BlockPos blockpos = ((BlockHitResult)raytraceresult).getBlockPos();
+                if (!(worldIn.getBlockState(blockpos).getBlock() instanceof LiquidBlock)) {
+                    return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
+                } else if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos, ((BlockHitResult)raytraceresult).getDirection(), itemstack)) {
+                    Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerLevel) worldIn, itemstack, playerIn, blockpos, MobSpawnType.SPAWN_EGG, false, false);
                     if (entity instanceof DogEntity) {
                         DogEntity dog = (DogEntity)entity;
                            dog.setTame(true);
@@ -86,15 +86,15 @@ public class DoggyCharmItem extends Item {
                            itemstack.shrink(1);
 
                         playerIn.awardStat(Stats.ITEM_USED.get(this));
-                        return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
+                        return new InteractionResultHolder<>(InteractionResult.SUCCESS, itemstack);
                     } else {
-                        return new ActionResult<>(ActionResultType.PASS, itemstack);
+                        return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
                     }
                 } else {
-                    return new ActionResult<>(ActionResultType.FAIL, itemstack);
+                    return new InteractionResultHolder<>(InteractionResult.FAIL, itemstack);
                 }
             } else {
-                return new ActionResult<>(ActionResultType.PASS, itemstack);
+                return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
             }
         }
     }

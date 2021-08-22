@@ -18,14 +18,14 @@ import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.saveddata.SavedData;
 
-public class DogRespawnStorage extends WorldSavedData {
+public class DogRespawnStorage extends SavedData {
 
     private Map<UUID, DogRespawnData> respawnDataMap = Maps.newConcurrentMap();
 
@@ -33,14 +33,14 @@ public class DogRespawnStorage extends WorldSavedData {
         super(Constants.STORAGE_DOG_RESPAWN);
     }
 
-    public static DogRespawnStorage get(World world) {
-        if (!(world instanceof ServerWorld)) {
+    public static DogRespawnStorage get(Level world) {
+        if (!(world instanceof ServerLevel)) {
             throw new RuntimeException("Tried to access dog respawn data from the client. This should not happen...");
         }
 
-        ServerWorld overworld = world.getServer().getLevel(World.OVERWORLD);
+        ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
-        DimensionSavedDataManager storage = overworld.getDataStorage();
+        DimensionDataStorage storage = overworld.getDataStorage();
         return storage.computeIfAbsent(DogRespawnStorage::new, Constants.STORAGE_DOG_RESPAWN);
     }
 
@@ -98,13 +98,13 @@ public class DogRespawnStorage extends WorldSavedData {
     }
 
     @Override
-    public void load(CompoundNBT nbt) {
+    public void load(CompoundTag nbt) {
         this.respawnDataMap.clear();
 
-        ListNBT list = nbt.getList("respawnData", TAG_COMPOUND);
+        ListTag list = nbt.getList("respawnData", TAG_COMPOUND);
 
         for (int i = 0; i < list.size(); ++i) {
-            CompoundNBT respawnCompound = list.getCompound(i);
+            CompoundTag respawnCompound = list.getCompound(i);
 
             UUID uuid = NBTUtil.getUniqueId(respawnCompound, "uuid");
             DogRespawnData respawnData = new DogRespawnData(this, uuid);
@@ -121,11 +121,11 @@ public class DogRespawnStorage extends WorldSavedData {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        ListNBT list = new ListNBT();
+    public CompoundTag save(CompoundTag compound) {
+        ListTag list = new ListTag();
 
         for (Map.Entry<UUID, DogRespawnData> entry : this.respawnDataMap.entrySet()) {
-            CompoundNBT respawnCompound = new CompoundNBT();
+            CompoundTag respawnCompound = new CompoundTag();
 
             DogRespawnData respawnData = entry.getValue();
             NBTUtil.putUniqueId(respawnCompound, "uuid", entry.getKey());

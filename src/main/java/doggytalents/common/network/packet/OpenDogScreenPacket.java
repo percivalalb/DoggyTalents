@@ -8,21 +8,21 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import doggytalents.common.talent.PackPuppyTalent;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class OpenDogScreenPacket implements IPacket<OpenDogScreenData>  {
 
     @Override
-    public OpenDogScreenData decode(PacketBuffer buf) {
+    public OpenDogScreenData decode(FriendlyByteBuf buf) {
         return new OpenDogScreenData();
     }
 
 
     @Override
-    public void encode(OpenDogScreenData data, PacketBuffer buf) {
+    public void encode(OpenDogScreenData data, FriendlyByteBuf buf) {
 
     }
 
@@ -30,7 +30,7 @@ public class OpenDogScreenPacket implements IPacket<OpenDogScreenData>  {
     public void handle(OpenDogScreenData data, Supplier<Context> ctx) {
         ctx.get().enqueueWork(() -> {
             if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
-                ServerPlayerEntity player = ctx.get().getSender();
+                ServerPlayer player = ctx.get().getSender();
                 List<DogEntity> dogs = player.level.getEntitiesOfClass(DogEntity.class, player.getBoundingBox().inflate(12D, 12D, 12D), PackPuppyTalent::hasInventory);
                 Screens.openDogInventoriesScreen(player, dogs);
             }

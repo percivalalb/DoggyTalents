@@ -1,15 +1,15 @@
 package doggytalents.client.entity.render.layer.accessory;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.resources.ResourceLocation;
 
 public class DefaultAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
 
@@ -20,9 +20,9 @@ public class DefaultAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
     }
 
     @Override
-    public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(RenderLayer<DogEntity, EntityModel<DogEntity>> layer, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (dog.isTame() && !dog.isInvisible()) {
-            LayerRenderer.renderColoredCutoutModel(layer.getParentModel(), this.getTexture(dog, data), matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
+            RenderLayer.renderColoredCutoutModel(layer.getParentModel(), this.getTexture(dog, data), matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
         }
     }
 

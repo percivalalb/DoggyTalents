@@ -17,19 +17,19 @@ import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigator;
-import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
 
 public class ShepherdDogTalent extends TalentInstance {
 
@@ -42,7 +42,7 @@ public class ShepherdDogTalent extends TalentInstance {
     @Override
     public void init(AbstractDogEntity dogIn) {
         if (!dogIn.hasData(SHEPHERD_AI)) {
-            EntityAIShepherdDog shepherdAI = new EntityAIShepherdDog(dogIn, 1.0D, 8F, entity -> !(entity instanceof TameableEntity));
+            EntityAIShepherdDog shepherdAI = new EntityAIShepherdDog(dogIn, 1.0D, 8F, entity -> !(entity instanceof TamableAnimal));
             dogIn.goalSelector.addGoal(7, shepherdAI);
             dogIn.setData(SHEPHERD_AI, shepherdAI);
         }
@@ -68,23 +68,23 @@ public class ShepherdDogTalent extends TalentInstance {
     public static class EntityAIShepherdDog extends Goal {
 
         protected final AbstractDogEntity dog;
-        private final World world;
+        private final Level world;
         private final double followSpeed;
         private final float maxDist;
-        private final PathNavigator dogPathfinder;
+        private final PathNavigation dogPathfinder;
         private final Predicate<ItemStack> holdingPred;
-        private final Predicate<AnimalEntity> predicate;
+        private final Predicate<Animal> predicate;
         private final Comparator<Entity> sorter;
 
 
         private int timeToRecalcPath;
         private LivingEntity owner;
-        protected List<AnimalEntity> targets;
+        protected List<Animal> targets;
         private float oldWaterCost;
 
         private int MAX_FOLLOW = 5;
 
-        public EntityAIShepherdDog(AbstractDogEntity dogIn, double speedIn, float range, @Nullable Predicate<AnimalEntity> targetSelector) {
+        public EntityAIShepherdDog(AbstractDogEntity dogIn, double speedIn, float range, @Nullable Predicate<Animal> targetSelector) {
             this.dog = dogIn;
             this.world = dogIn.level;
             this.dogPathfinder = dogIn.getNavigation();
@@ -119,12 +119,12 @@ public class ShepherdDogTalent extends TalentInstance {
                 LivingEntity owner = this.dog.getOwner();
                 if (owner == null) {
                    return false;
-                } else if (owner instanceof PlayerEntity && ((PlayerEntity) owner).isSpectator()) {
+                } else if (owner instanceof Player && ((Player) owner).isSpectator()) {
                     return false;
                 } else if (!EntityUtil.isHolding(owner, DoggyItems.WHISTLE.get(), (nbt) -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
                     return false;
                 } else {
-                    List<AnimalEntity> list = this.world.getEntitiesOfClass(AnimalEntity.class, this.dog.getBoundingBox().inflate(12D, 4.0D, 12D), this.predicate);
+                    List<Animal> list = this.world.getEntitiesOfClass(Animal.class, this.dog.getBoundingBox().inflate(12D, 4.0D, 12D), this.predicate);
                     Collections.sort(list, this.sorter);
                     if (list.isEmpty()) {
                         return false;
@@ -160,8 +160,8 @@ public class ShepherdDogTalent extends TalentInstance {
         @Override
         public void start() {
             this.timeToRecalcPath = 0;
-            this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
-            this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
+            this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         }
 
         @Override
@@ -173,7 +173,7 @@ public class ShepherdDogTalent extends TalentInstance {
 
                     // Pick up more animals
                     if (this.targets.size() < MAX_FOLLOW) {
-                        List<AnimalEntity> list = this.world.getEntitiesOfClass(AnimalEntity.class,
+                        List<Animal> list = this.world.getEntitiesOfClass(Animal.class,
                                 this.dog.getBoundingBox().inflate(16, 4.0D, 16), this.predicate);
                         list.removeAll(this.targets);
                         Collections.sort(list, this.sorter);
@@ -184,7 +184,7 @@ public class ShepherdDogTalent extends TalentInstance {
                     Collections.sort(this.targets, this.sorter);
                     boolean teleport = this.owner.distanceTo(this.targets.get(0)) > 16;
 
-                    for (AnimalEntity target : this.targets) {
+                    for (Animal target : this.targets) {
                         //target.goalSelector.addGoal(0, new );
 
                         double distanceAway = target.distanceTo(this.owner);
@@ -206,10 +206,10 @@ public class ShepherdDogTalent extends TalentInstance {
                         }
                     }
 
-                    Vector3d vec = Vector3d.ZERO;
+                    Vec3 vec = Vec3.ZERO;
 
                     // Calculate average pos of targets
-                    for (AnimalEntity target : this.targets) {
+                    for (Animal target : this.targets) {
                         vec = vec.add(target.position());
                     }
 
@@ -243,8 +243,8 @@ public class ShepherdDogTalent extends TalentInstance {
                     }
 
                     // Remove dead or faraway entities
-                    List<AnimalEntity> toRemove = new ArrayList<>();
-                    for (AnimalEntity target : this.targets) {
+                    List<Animal> toRemove = new ArrayList<>();
+                    for (Animal target : this.targets) {
                         if (!target.isAlive() || target.distanceTo(this.dog) > 25D)
                             toRemove.add(target);
                     }
@@ -256,11 +256,11 @@ public class ShepherdDogTalent extends TalentInstance {
         @Override
         public void stop() {
             this.owner = null;
-            for (AnimalEntity target : this.targets) {
+            for (Animal target : this.targets) {
                 target.getNavigation().stop();
             }
             this.dogPathfinder.stop();
-            this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
         }
     }
 }

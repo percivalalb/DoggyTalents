@@ -12,21 +12,21 @@ import com.mojang.datafixers.util.Pair;
 
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyEntityTypes;
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.LootTableProvider;
-import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.data.loot.EntityLootTables;
-import net.minecraft.entity.EntityType;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootParameterSet;
-import net.minecraft.loot.LootParameterSets;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
-import net.minecraft.loot.ValidationTracker;
-import net.minecraft.loot.functions.CopyNbt;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.EntityLoot;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.storage.loot.ConstantIntValue;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.ValidationContext;
+import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.resources.ResourceLocation;
 
 public class DTLootTableProvider extends LootTableProvider {
 
@@ -40,17 +40,17 @@ public class DTLootTableProvider extends LootTableProvider {
     }
 
     @Override
-    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
+    protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         return ImmutableList.of(
-                Pair.of(Blocks::new, LootParameterSets.BLOCK),
-                Pair.of(Entities::new, LootParameterSets.ENTITY)
+                Pair.of(Blocks::new, LootContextParamSets.BLOCK),
+                Pair.of(Entities::new, LootContextParamSets.ENTITY)
                );
     }
 
     @Override
-    protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationTracker) {}
+    protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationTracker) {}
 
-    private static class Blocks extends BlockLootTables {
+    private static class Blocks extends BlockLoot {
 
         @Override
         protected void addTables() {
@@ -62,10 +62,10 @@ public class DTLootTableProvider extends LootTableProvider {
         private void dropDogBed(Supplier<? extends Block> block) {
             LootTable.Builder lootTableBuilder = LootTable.lootTable().withPool(applyExplosionCondition(block.get(),
                        LootPool.lootPool()
-                         .setRolls(ConstantRange.exactly(1))
-                         .add(ItemLootEntry.lootTableItem(block.get())
+                         .setRolls(ConstantIntValue.exactly(1))
+                         .add(LootItem.lootTableItem(block.get())
                                  .apply(
-                                         CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+                                         CopyNbtFunction.copyData(CopyNbtFunction.DataSource.BLOCK_ENTITY)
                                          .copy("casingId", "doggytalents.casingId")
                                          .copy("beddingId", "doggytalents.beddingId")
                                          .copy("ownerId", "doggytalents.ownerId")
@@ -86,7 +86,7 @@ public class DTLootTableProvider extends LootTableProvider {
         }
     }
 
-    private static class Entities extends EntityLootTables {
+    private static class Entities extends EntityLoot {
 
         @Override
         protected void addTables() {

@@ -5,13 +5,13 @@ import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IDogFoodPredicate;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 
 public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler {
 
@@ -25,9 +25,9 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     }
 
     @Override
-    public ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
+    public InteractionResultHolder<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
         hunger += diff / 10 * this.level();
-        return ActionResult.success(hunger);
+        return InteractionResultHolder.success(hunger);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     }
 
     @Override
-    public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
         if (this.level() >= 3) {
 
             Item item = stackIn.getItem();
@@ -62,16 +62,16 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
             if (item == Items.ROTTEN_FLESH) {
                 dogIn.addHunger(30);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
 
             if (this.level() >= 5 && item.isEdible() && item.is(ItemTags.FISHES)) {
                 dogIn.addHunger(item.getFoodProperties().getNutrition() * 5);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResultType.FAIL;
+        return InteractionResult.FAIL;
     }
 }

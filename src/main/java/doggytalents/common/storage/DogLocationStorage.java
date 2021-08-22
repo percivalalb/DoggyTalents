@@ -18,16 +18,16 @@ import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.saveddata.SavedData;
 
-public class DogLocationStorage extends WorldSavedData {
+public class DogLocationStorage extends SavedData {
 
     private Map<UUID, DogLocationData> locationDataMap = Maps.newConcurrentMap();
 
@@ -35,14 +35,14 @@ public class DogLocationStorage extends WorldSavedData {
         super(Constants.STORAGE_DOG_LOCATION);
     }
 
-    public static DogLocationStorage get(World world) {
-        if (!(world instanceof ServerWorld)) {
+    public static DogLocationStorage get(Level world) {
+        if (!(world instanceof ServerLevel)) {
             throw new RuntimeException("Tried to access dog location data from the client. This should not happen...");
         }
 
-        ServerWorld overworld = world.getServer().getLevel(World.OVERWORLD);
+        ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
-        DimensionSavedDataManager storage = overworld.getDataStorage();
+        DimensionDataStorage storage = overworld.getDataStorage();
         return storage.computeIfAbsent(DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
     }
 
@@ -53,7 +53,7 @@ public class DogLocationStorage extends WorldSavedData {
                 .filter(data -> ownerId.equals(data.getOwnerId()));
     }
 
-    public Stream<DogLocationData> getDogs(LivingEntity owner, RegistryKey<World> key) {
+    public Stream<DogLocationData> getDogs(LivingEntity owner, ResourceKey<Level> key) {
         UUID ownerId = owner.getUUID();
 
         return this.locationDataMap.values().stream()
@@ -124,10 +124,10 @@ public class DogLocationStorage extends WorldSavedData {
     }
 
     @Override
-    public void load(CompoundNBT nbt) {
+    public void load(CompoundTag nbt) {
         this.locationDataMap.clear();
 
-        ListNBT list = nbt.getList("locationData", TAG_COMPOUND);
+        ListTag list = nbt.getList("locationData", TAG_COMPOUND);
 
         // Old style
         if (list.isEmpty()) {
@@ -135,7 +135,7 @@ public class DogLocationStorage extends WorldSavedData {
         }
 
         for (int i = 0; i < list.size(); ++i) {
-            CompoundNBT locationCompound = list.getCompound(i);
+            CompoundTag locationCompound = list.getCompound(i);
 
             UUID uuid = NBTUtil.getUniqueId(locationCompound, "uuid");
 
@@ -158,11 +158,11 @@ public class DogLocationStorage extends WorldSavedData {
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
-        ListNBT list = new ListNBT();
+    public CompoundTag save(CompoundTag compound) {
+        ListTag list = new ListTag();
 
         for (Entry<UUID, DogLocationData> entry : this.locationDataMap.entrySet()) {
-            CompoundNBT locationCompound = new CompoundNBT();
+            CompoundTag locationCompound = new CompoundTag();
 
             DogLocationData locationData = entry.getValue();
             NBTUtil.putUniqueId(locationCompound, "uuid", entry.getKey());

@@ -16,22 +16,26 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+
 public class ArmourAccessory extends Accessory {
 
-    public ArmourAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends IItemProvider> itemIn) {
+    public ArmourAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends ItemLike> itemIn) {
         super(typeIn, itemIn);
     }
 
@@ -68,26 +72,26 @@ public class ArmourAccessory extends Accessory {
     }
 
     @Override
-    public AccessoryInstance createInstance(PacketBuffer buf) {
+    public AccessoryInstance createInstance(FriendlyByteBuf buf) {
         return this.create(buf.readItem());
     }
 
     @Override
-    public void write(AccessoryInstance instance, PacketBuffer buf) {
+    public void write(AccessoryInstance instance, FriendlyByteBuf buf) {
         ArmourAccessory.Instance exact = instance.cast(ArmourAccessory.Instance.class);
         buf.writeItem(exact.armourStack);
     }
 
     @Override
-    public void write(AccessoryInstance instance, CompoundNBT compound) {
+    public void write(AccessoryInstance instance, CompoundTag compound) {
         ArmourAccessory.Instance exact = instance.cast(ArmourAccessory.Instance.class);
-        CompoundNBT itemTag = new CompoundNBT();
+        CompoundTag itemTag = new CompoundTag();
         exact.armourStack.save(itemTag);
         compound.put("item", itemTag);
     }
 
     @Override
-    public AccessoryInstance read(CompoundNBT compound) {
+    public AccessoryInstance read(CompoundTag compound) {
         return this.create(ItemStack.of(compound.getCompound("item")));
     }
 
@@ -103,7 +107,7 @@ public class ArmourAccessory extends Accessory {
 
         @Override
         public void init(AbstractDogEntity dogIn) {
-            EquipmentSlotType slotType = null;
+            EquipmentSlot slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {
                 slotType = ((ArmorItem) this.armourStack.getItem()).getSlot();
@@ -114,7 +118,7 @@ public class ArmourAccessory extends Accessory {
 
         @Override
         public void remove(AbstractDogEntity dogIn) {
-            EquipmentSlotType slotType = null;
+            EquipmentSlot slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {
                 slotType = ((ArmorItem) this.armourStack.getItem()).getSlot();

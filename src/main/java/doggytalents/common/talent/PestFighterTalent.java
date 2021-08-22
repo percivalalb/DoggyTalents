@@ -5,9 +5,9 @@ import java.util.List;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.monster.SilverfishEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityPredicates;
+import net.minecraft.world.entity.monster.Silverfish;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntitySelector;
 
 public class PestFighterTalent extends TalentInstance {
 
@@ -28,10 +28,10 @@ public class PestFighterTalent extends TalentInstance {
                 damage = 2;
             }
 
-            List<SilverfishEntity> list = dogIn.level.getEntitiesOfClass(
-                SilverfishEntity.class, dogIn.getBoundingBox().inflate(this.level() * 3, 4D, this.level() * 3), EntityPredicates.ENTITY_STILL_ALIVE
+            List<Silverfish> list = dogIn.level.getEntitiesOfClass(
+                Silverfish.class, dogIn.getBoundingBox().inflate(this.level() * 3, 4D, this.level() * 3), EntitySelector.ENTITY_STILL_ALIVE
             );
-            for (SilverfishEntity silverfish : list) {
+            for (Silverfish silverfish : list) {
                 if (dogIn.getRandom().nextInt(10) == 0) {
                     silverfish.hurt(DamageSource.GENERIC, damage);
                 }

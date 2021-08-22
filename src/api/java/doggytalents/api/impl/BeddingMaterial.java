@@ -6,12 +6,12 @@ import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
-import net.minecraft.block.Block;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class BeddingMaterial extends IBeddingMaterial {
 
@@ -47,12 +47,12 @@ public class BeddingMaterial extends IBeddingMaterial {
      * The translation key using for the tooltip
      */
     @Override
-    public ITextComponent getTooltip() {
+    public Component getTooltip() {
         if (this.translationKey == null) {
             this.translationKey = Util.makeDescriptionId("dogbed.bedding", DoggyTalentsAPI.BEDDING_MATERIAL.getKey(this));
         }
 
-        return new TranslationTextComponent(this.translationKey);
+        return new TranslatableComponent(this.translationKey);
     }
 
     /**

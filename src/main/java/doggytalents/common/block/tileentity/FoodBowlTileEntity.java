@@ -11,24 +11,24 @@ import doggytalents.api.feature.FoodHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.container.FoodBowlContainer;
 import doggytalents.common.util.InventoryUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.ITickableTileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.entity.TickableBlockEntity;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class FoodBowlTileEntity extends PlacedTileEntity implements MenuProvider, TickableBlockEntity {
 
     private final ItemStackHandler inventory = new ItemStackHandler(5) {
         @Override
@@ -52,13 +52,13 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
     }
 
     @Override
-    public void load(BlockState state, CompoundNBT compound) {
+    public void load(BlockState state, CompoundTag compound) {
         super.load(state, compound);
         this.inventory.deserializeNBT(compound);
     }
 
     @Override
-    public CompoundNBT save(CompoundNBT compound) {
+    public CompoundTag save(CompoundTag compound) {
         super.save(compound);
         compound.merge(this.inventory.serializeNBT());
         return compound;
@@ -70,7 +70,7 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
         //Only run update code every 5 ticks (0.25s)
         if (++this.timeoutCounter < 5) { return; }
 
-        List<DogEntity> dogList = this.level.getEntitiesOfClass(DogEntity.class, new AxisAlignedBB(this.worldPosition).inflate(5, 5, 5));
+        List<DogEntity> dogList = this.level.getEntitiesOfClass(DogEntity.class, new AABB(this.worldPosition).inflate(5, 5, 5));
 
         for (DogEntity dog : dogList) {
             //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
@@ -101,12 +101,12 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
     }
 
     @Override
-    public ITextComponent getDisplayName() {
-        return new TranslationTextComponent("container.doggytalents.food_bowl");
+    public Component getDisplayName() {
+        return new TranslatableComponent("container.doggytalents.food_bowl");
     }
 
     @Override
-    public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity playerIn) {
+    public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player playerIn) {
         return new FoodBowlContainer(windowId, this.level, this.worldPosition, playerInventory, playerIn);
     }
 }

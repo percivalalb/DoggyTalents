@@ -9,19 +9,19 @@ import doggytalents.api.feature.DataKey;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.common.util.NBTUtil;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 
-import net.minecraft.item.Item.Properties;
+import net.minecraft.world.item.Item.Properties;
 
 public class PatrolItem extends Item implements IDogItem  {
 
@@ -32,15 +32,15 @@ public class PatrolItem extends Item implements IDogItem  {
     }
 
     @Override
-    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         this.addPosToStack(playerIn.getItemInHand(handIn), playerIn.blockPosition());
-        return ActionResult.pass(playerIn.getItemInHand(handIn));
+        return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
     }
 
     public void addPosToStack(ItemStack stackIn, BlockPos posIn) {
-        CompoundNBT tag = stackIn.getOrCreateTag();
-        ListNBT list = tag.getList("patrolPos", Constants.NBT.TAG_COMPOUND);
-        CompoundNBT pos = new CompoundNBT();
+        CompoundTag tag = stackIn.getOrCreateTag();
+        ListTag list = tag.getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+        CompoundTag pos = new CompoundTag();
         NBTUtil.putBlockPos(pos, posIn);
         list.add(pos);
         tag.put("patrolPos", list);
@@ -48,7 +48,7 @@ public class PatrolItem extends Item implements IDogItem  {
 
     public List<BlockPos> getPos(ItemStack stackIn) {
         if (stackIn.hasTag() && stackIn.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
-            ListNBT list = stackIn.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+            ListTag list = stackIn.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
             List<BlockPos> pos = new ArrayList<>(list.size());
             for (int i = 0; i < list.size(); i++) {
                 pos.add(NBTUtil.getBlockPos(list.getCompound(i)));
@@ -60,10 +60,10 @@ public class PatrolItem extends Item implements IDogItem  {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         List<BlockPos> pos = getPos(playerIn.getItemInHand(handIn));
         DoggyTalents2.LOGGER.debug("{}", pos);
         dogIn.setData(POS, pos);
-        return ActionResultType.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 }

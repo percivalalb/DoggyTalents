@@ -3,8 +3,8 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.Mth;
 
 public class RescueDogTalent extends TalentInstance {
 
@@ -26,7 +26,7 @@ public class RescueDogTalent extends TalentInstance {
                 int healCost = this.healCost(this.level());
 
                 if (dogIn.getDogHunger() >= healCost) {
-                    owner.heal(MathHelper.floor(this.level() * 1.5D));
+                    owner.heal(Mth.floor(this.level() * 1.5D));
                     dogIn.setDogHunger(dogIn.getDogHunger() - healCost);
                 }
             }

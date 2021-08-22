@@ -6,9 +6,9 @@ import java.util.function.Supplier;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.IRegistryDelegate;
 
 public class TalentInstance implements IDogAlteration {
@@ -58,23 +58,23 @@ public class TalentInstance implements IDogAlteration {
         return this.talentDelegate.get().getDefault(this.level);
     }
 
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         compound.putInt("level", this.level());
     }
 
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
         this.setLevel(compound.getInt("level"));
     }
 
-    public void writeToBuf(PacketBuffer buf) {
+    public void writeToBuf(FriendlyByteBuf buf) {
         buf.writeInt(this.level());
     }
 
-    public void readFromBuf(PacketBuffer buf) {
+    public void readFromBuf(FriendlyByteBuf buf) {
         this.setLevel(buf.readInt());
     }
 
-    public final void writeInstance(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public final void writeInstance(AbstractDogEntity dogIn, CompoundTag compound) {
         ResourceLocation rl = this.talentDelegate.name();
         if (rl != null) {
             compound.putString("type", rl.toString());
@@ -83,7 +83,7 @@ public class TalentInstance implements IDogAlteration {
         this.writeToNBT(dogIn, compound);
     }
 
-    public static Optional<TalentInstance> readInstance(AbstractDogEntity dogIn, CompoundNBT compound) {
+    public static Optional<TalentInstance> readInstance(AbstractDogEntity dogIn, CompoundTag compound) {
         ResourceLocation rl = ResourceLocation.tryParse(compound.getString("type"));
         if (DoggyTalentsAPI.TALENTS.containsKey(rl)) {
             TalentInstance inst = DoggyTalentsAPI.TALENTS.getValue(rl).getDefault();

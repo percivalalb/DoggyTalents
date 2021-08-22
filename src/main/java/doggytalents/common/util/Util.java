@@ -14,9 +14,9 @@ import com.google.common.collect.Lists;
 
 import doggytalents.common.lib.Constants;
 import io.netty.buffer.Unpooled;
-import net.minecraft.item.DyeColor;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.IRegistryDelegate;
@@ -122,8 +122,8 @@ public class Util {
         return getResource(modId, name).toString();
     }
 
-    public static PacketBuffer createBuf() {
-        return new PacketBuffer(Unpooled.buffer());
+    public static FriendlyByteBuf createBuf() {
+        return new FriendlyByteBuf(Unpooled.buffer());
     }
 
     // From net.minecraft.util.Util

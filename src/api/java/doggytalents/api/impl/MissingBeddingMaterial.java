@@ -1,10 +1,10 @@
 package doggytalents.api.impl;
 
 import doggytalents.api.registry.IBeddingMaterial;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class MissingBeddingMaterial extends IBeddingMaterial {
 
@@ -17,8 +17,8 @@ public class MissingBeddingMaterial extends IBeddingMaterial {
     }
 
     @Override
-    public ITextComponent getTooltip() {
-        return new TranslationTextComponent("dogbed.bedding.missing", this.getRegistryName());
+    public Component getTooltip() {
+        return new TranslatableComponent("dogbed.bedding.missing", this.getRegistryName());
     }
 
     @Override

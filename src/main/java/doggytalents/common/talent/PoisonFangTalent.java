@@ -3,16 +3,16 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.Level;
 
 public class PoisonFangTalent extends TalentInstance {
 
@@ -21,18 +21,18 @@ public class PoisonFangTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
+    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.isTame()) {
             if (this.level() < 5) {
-                return ActionResultType.PASS;
+                return InteractionResult.PASS;
             }
 
             ItemStack stack = playerIn.getItemInHand(handIn);
 
             if (stack.getItem() == Items.SPIDER_EYE) {
 
-                if (playerIn.getEffect(Effects.POISON) == null || dogIn.getDogHunger() < 30) {
-                    return ActionResultType.FAIL;
+                if (playerIn.getEffect(MobEffects.POISON) == null || dogIn.getDogHunger() < 30) {
+                    return InteractionResult.FAIL;
                 }
 
                 if (!worldIn.isClientSide) {
@@ -41,33 +41,33 @@ public class PoisonFangTalent extends TalentInstance {
                     dogIn.consumeItemFromStack(playerIn, stack);
                 }
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {
+    public InteractionResult isPotionApplicable(AbstractDogEntity dogIn, MobEffectInstance effectIn) {
         if (this.level() >= 3) {
-            if (effectIn.getEffect() == Effects.POISON) {
-                return ActionResultType.FAIL;
+            if (effectIn.getEffect() == MobEffects.POISON) {
+                return InteractionResult.FAIL;
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType attackEntityAsMob(AbstractDogEntity dog, Entity entity) {
+    public InteractionResult attackEntityAsMob(AbstractDogEntity dog, Entity entity) {
         if (entity instanceof LivingEntity) {
             if (this.level() > 0) {
-                ((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, this.level() * 20, 0));
-                return ActionResultType.PASS;
+                ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, this.level() * 20, 0));
+                return InteractionResult.PASS;
             }
         }
 
-        return ActionResultType.PASS;
+        return InteractionResult.PASS;
     }
 }

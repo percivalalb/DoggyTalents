@@ -5,11 +5,11 @@ import java.util.List;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.monster.CreeperEntity;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.sounds.SoundEvents;
 
 public class CreeperSweeperTalent extends TalentInstance {
 
@@ -30,7 +30,7 @@ public class CreeperSweeperTalent extends TalentInstance {
             int timeLeft = this.cooldown - dogIn.tickCount;
 
             if (timeLeft <= 0 && !dogIn.isInSittingPose()) {
-                List<CreeperEntity> list = dogIn.level.getEntitiesOfClass(CreeperEntity.class, dogIn.getBoundingBox().inflate(this.level() * 5,this.level() * 2, this.level() * 5));
+                List<Creeper> list = dogIn.level.getEntitiesOfClass(Creeper.class, dogIn.getBoundingBox().inflate(this.level() * 5,this.level() * 2, this.level() * 5));
 
                 if (!list.isEmpty()) {
                     dogIn.playSound(SoundEvents.WOLF_GROWL, dogIn.getSoundVolume(), (dogIn.getRandom().nextFloat() - dogIn.getRandom().nextFloat()) * 0.2F + 1.0F);
@@ -38,25 +38,25 @@ public class CreeperSweeperTalent extends TalentInstance {
                 }
             }
 
-            if (dogIn.getTarget() instanceof CreeperEntity) {
-                CreeperEntity creeper = (CreeperEntity) dogIn.getTarget();
+            if (dogIn.getTarget() instanceof Creeper) {
+                Creeper creeper = (Creeper) dogIn.getTarget();
                 creeper.setSwellDir(-1);
             }
         }
     }
 
     @Override
-    public ActionResultType canAttack(AbstractDogEntity dog, EntityType<?> entityType) {
-        return entityType == EntityType.CREEPER && this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult canAttack(AbstractDogEntity dog, EntityType<?> entityType) {
+        return entityType == EntityType.CREEPER && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType canAttack(AbstractDogEntity dog, LivingEntity entity) {
-        return entity instanceof CreeperEntity && this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult canAttack(AbstractDogEntity dog, LivingEntity entity) {
+        return entity instanceof Creeper && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
-        return target instanceof CreeperEntity && this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
+        return target instanceof Creeper && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
      }
 }

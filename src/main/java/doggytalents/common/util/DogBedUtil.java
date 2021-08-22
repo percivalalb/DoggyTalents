@@ -14,8 +14,8 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -37,7 +37,7 @@ public class DogBedUtil {
     }
 
     public static Pair<ICasingMaterial, IBeddingMaterial> getMaterials(ItemStack stack) {
-        CompoundNBT tag = stack.getTagElement("doggytalents");
+        CompoundTag tag = stack.getTagElement("doggytalents");
         if (tag != null) {
             ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
             IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
@@ -51,7 +51,7 @@ public class DogBedUtil {
     public static ItemStack createItemStack(ICasingMaterial casingId, IBeddingMaterial beddingId) {
         ItemStack stack = new ItemStack(DoggyBlocks.DOG_BED.get(), 1);
 
-        CompoundNBT tag = stack.getOrCreateTagElement("doggytalents");
+        CompoundTag tag = stack.getOrCreateTagElement("doggytalents");
         NBTUtil.putRegistryValue(tag, "casingId", casingId);
         NBTUtil.putRegistryValue(tag, "beddingId", beddingId);
 

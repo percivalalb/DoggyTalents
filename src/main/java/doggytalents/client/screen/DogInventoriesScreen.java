@@ -2,7 +2,7 @@ package doggytalents.client.screen;
 
 import java.util.Optional;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import doggytalents.DoggyAccessories;
@@ -14,26 +14,26 @@ import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogInventoryPageData;
-import net.minecraft.client.gui.screen.inventory.ContainerScreen;
-import net.minecraft.client.gui.screen.inventory.CreativeScreen;
-import net.minecraft.client.gui.screen.inventory.InventoryScreen;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.util.InputMappings;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.components.Button;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContainer> {
+public class DogInventoriesScreen extends AbstractContainerScreen<DogInventoriesContainer> {
 
     private Button left, right;
 
-    public DogInventoriesScreen(DogInventoriesContainer packPuppy, PlayerInventory playerInventory, ITextComponent displayName) {
+    public DogInventoriesScreen(DogInventoriesContainer packPuppy, Inventory playerInventory, Component displayName) {
         super(packPuppy, playerInventory, displayName);
     }
 
     @Override
-    public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
         this.renderTooltip(stack, mouseX, mouseY);
@@ -42,7 +42,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     @Override
     public void init() {
         super.init();
-        this.left = new SmallButton(this.leftPos + this.imageWidth - 29, this.topPos + 4, new StringTextComponent("<"), (btn) -> {
+        this.left = new SmallButton(this.leftPos + this.imageWidth - 29, this.topPos + 4, new TextComponent("<"), (btn) -> {
             int page = this.getMenu().getPage();
 
             if (page > 0) {
@@ -52,7 +52,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
             btn.active = page > 0;
             this.right.active = page < this.getMenu().getTotalNumColumns() - 9;
         });
-        this.right = new SmallButton(this.leftPos + this.imageWidth - 26 + 9, this.topPos + 4, new StringTextComponent(">"), (btn) -> {
+        this.right = new SmallButton(this.leftPos + this.imageWidth - 26 + 9, this.topPos + 4, new TextComponent(">"), (btn) -> {
             int page = this.getMenu().getPage();
 
             if (page < this.getMenu().getTotalNumColumns() - 9) {
@@ -76,13 +76,13 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     }
 
     @Override
-    protected void renderLabels(MatrixStack stack, int par1, int par2) {
+    protected void renderLabels(PoseStack stack, int par1, int par2) {
         this.font.draw(stack, this.title.getString(), 8, 6, 4210752);
         this.font.draw(stack, this.inventory.getDisplayName().getString(), 8.0F, this.imageHeight - 96 + 2, 4210752);
     }
 
     @Override
-    protected void renderBg(MatrixStack stack, float partialTicks, int xMouse, int yMouse) {
+    protected void renderBg(PoseStack stack, float partialTicks, int xMouse, int yMouse) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bind(Resources.DOG_INVENTORY);
         int l = (this.width - this.imageWidth) / 2;
@@ -108,10 +108,10 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-       InputMappings.Input mouseKey = InputMappings.getKey(keyCode, scanCode);
+       InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
        if (this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
            if (this.inventory.player.abilities.instabuild) {
-               this.minecraft.setScreen(new CreativeScreen(this.inventory.player));
+               this.minecraft.setScreen(new CreativeModeInventoryScreen(this.inventory.player));
            } else {
                this.minecraft.setScreen(new InventoryScreen(this.inventory.player));
            }
@@ -122,7 +122,7 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     }
 
     @Override
-    protected void renderTooltip(MatrixStack stack, int mouseX, int mouseY) {
+    protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
         if (this.minecraft.player.inventory.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
 //            if (this.hoveredSlot instanceof DogInventorySlot) {
 //                this.renderTooltip(Arrays.asList(new TranslationTextComponent("test").applyTextStyle(TextFormatting.RED).getFormattedText()), mouseX, mouseY);

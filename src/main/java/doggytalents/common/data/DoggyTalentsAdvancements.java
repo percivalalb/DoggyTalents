@@ -15,25 +15,25 @@ import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.ICriterionInstance;
-import net.minecraft.advancements.IRequirementsStrategy;
-import net.minecraft.advancements.criterion.InventoryChangeTrigger;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.advancements.CriterionTriggerInstance;
+import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>> {
 
     @Override
     public void accept(Consumer<Advancement> register) {
-        Advancement advancement = Advancement.Builder.advancement().display(DoggyItems.TRAINING_TREAT.get(), new TranslationTextComponent("advancements.dog.root.title"), new TranslationTextComponent("advancements.dog.root.description"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), FrameType.TASK, false, false, false).addCriterion("crafting_table", InventoryChangeTrigger.Instance.hasItems(Blocks.CRAFTING_TABLE)).save(register, Util.getResourcePath("dog/find_dog"));
-        Advancement advancement1 = Advancement.Builder.advancement().parent(advancement).display(Items.WOODEN_PICKAXE, new TranslationTextComponent("advancements.dog.mine_stone.title"), new TranslationTextComponent("advancements.dog.mine_stone.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("get_stone", InventoryChangeTrigger.Instance.hasItems(Blocks.COBBLESTONE)).save(register, Util.getResourcePath("dog/level_talent"));
-        Advancement advancement2 = Advancement.Builder.advancement().parent(advancement1).display(DoggyItems.CAPE.get(), new TranslationTextComponent("advancements.dog.upgrade_tools.title"), new TranslationTextComponent("advancements.dog.upgrade_tools.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("stone_pickaxe", InventoryChangeTrigger.Instance.hasItems(Items.STONE_PICKAXE)).save(register, Util.getResourcePath("dog/accessorise"));
-        Advancement advancement3 = Advancement.Builder.advancement().parent(advancement2).display(DoggyItems.RADIO_COLLAR.get(), new TranslationTextComponent("advancements.dog.smelt_iron.title"), new TranslationTextComponent("advancements.dog.smelt_iron.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("iron", InventoryChangeTrigger.Instance.hasItems(Items.IRON_INGOT)).save(register, Util.getResourcePath("dog/radio_collar"));
+        Advancement advancement = Advancement.Builder.advancement().display(DoggyItems.TRAINING_TREAT.get(), new TranslatableComponent("advancements.dog.root.title"), new TranslatableComponent("advancements.dog.root.description"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), FrameType.TASK, false, false, false).addCriterion("crafting_table", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.CRAFTING_TABLE)).save(register, Util.getResourcePath("dog/find_dog"));
+        Advancement advancement1 = Advancement.Builder.advancement().parent(advancement).display(Items.WOODEN_PICKAXE, new TranslatableComponent("advancements.dog.mine_stone.title"), new TranslatableComponent("advancements.dog.mine_stone.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("get_stone", InventoryChangeTrigger.TriggerInstance.hasItems(Blocks.COBBLESTONE)).save(register, Util.getResourcePath("dog/level_talent"));
+        Advancement advancement2 = Advancement.Builder.advancement().parent(advancement1).display(DoggyItems.CAPE.get(), new TranslatableComponent("advancements.dog.upgrade_tools.title"), new TranslatableComponent("advancements.dog.upgrade_tools.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("stone_pickaxe", InventoryChangeTrigger.TriggerInstance.hasItems(Items.STONE_PICKAXE)).save(register, Util.getResourcePath("dog/accessorise"));
+        Advancement advancement3 = Advancement.Builder.advancement().parent(advancement2).display(DoggyItems.RADIO_COLLAR.get(), new TranslatableComponent("advancements.dog.smelt_iron.title"), new TranslatableComponent("advancements.dog.smelt_iron.description"), (ResourceLocation)null, FrameType.TASK, true, true, false).addCriterion("iron", InventoryChangeTrigger.TriggerInstance.hasItems(Items.IRON_INGOT)).save(register, Util.getResourcePath("dog/radio_collar"));
     }
 
     public static class Builder {
@@ -43,7 +43,7 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
         private AdvancementRewards rewards = AdvancementRewards.EMPTY;
         private Map<String, Criterion> criteria = Maps.newLinkedHashMap();
         private String[][] requirements;
-        private IRequirementsStrategy requirementsStrategy = IRequirementsStrategy.AND;
+        private RequirementsStrategy requirementsStrategy = RequirementsStrategy.AND;
 
         private Builder(@Nullable ResourceLocation parentIdIn, @Nullable DisplayInfo displayIn, AdvancementRewards rewardsIn, Map<String, Criterion> criteriaIn, String[][] requirementsIn) {
            this.parentId = parentIdIn;
@@ -70,11 +70,11 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
            return this;
         }
 
-        public DoggyTalentsAdvancements.Builder withDisplay(ItemStack stack, ITextComponent title, ITextComponent description, @Nullable ResourceLocation background, FrameType frame, boolean showToast, boolean announceToChat, boolean hidden) {
+        public DoggyTalentsAdvancements.Builder withDisplay(ItemStack stack, Component title, Component description, @Nullable ResourceLocation background, FrameType frame, boolean showToast, boolean announceToChat, boolean hidden) {
            return this.withDisplay(new DisplayInfo(stack, title, description, background, frame, showToast, announceToChat, hidden));
         }
 
-        public DoggyTalentsAdvancements.Builder withDisplay(IItemProvider itemIn, ITextComponent title, ITextComponent description, @Nullable ResourceLocation background, FrameType frame, boolean showToast, boolean announceToChat, boolean hidden) {
+        public DoggyTalentsAdvancements.Builder withDisplay(ItemLike itemIn, Component title, Component description, @Nullable ResourceLocation background, FrameType frame, boolean showToast, boolean announceToChat, boolean hidden) {
            return this.withDisplay(new DisplayInfo(new ItemStack(itemIn.asItem()), title, description, background, frame, showToast, announceToChat, hidden));
         }
 
@@ -95,7 +95,7 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
         /**
          * Adds a criterion to the list of criteria
          */
-        public DoggyTalentsAdvancements.Builder withCriterion(String key, ICriterionInstance criterionIn) {
+        public DoggyTalentsAdvancements.Builder withCriterion(String key, CriterionTriggerInstance criterionIn) {
            return this.withCriterion(key, new Criterion(criterionIn));
         }
 
@@ -111,7 +111,7 @@ public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>>
            }
         }
 
-        public DoggyTalentsAdvancements.Builder withRequirementsStrategy(IRequirementsStrategy strategy) {
+        public DoggyTalentsAdvancements.Builder withRequirementsStrategy(RequirementsStrategy strategy) {
            this.requirementsStrategy = strategy;
            return this;
         }

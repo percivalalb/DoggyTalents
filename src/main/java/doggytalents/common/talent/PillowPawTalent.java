@@ -5,11 +5,11 @@ import java.util.UUID;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.ForgeMod;
 
 public class PillowPawTalent extends TalentInstance {
@@ -39,21 +39,21 @@ public class PillowPawTalent extends TalentInstance {
     }
 
     @Override
-    public ActionResultType canTrample(AbstractDogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
-        return this.level() >= 5 ? ActionResultType.FAIL : ActionResultType.PASS;
+    public InteractionResult canTrample(AbstractDogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
+        return this.level() >= 5 ? InteractionResult.FAIL : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResultType onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
-        return this.level() >= 5 ? ActionResultType.SUCCESS : ActionResultType.PASS;
+    public InteractionResult onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
+        return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+    public InteractionResultHolder<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
         if (this.level() > 0) {
-            return ActionResult.success(distance - this.level() * 3);
+            return InteractionResultHolder.success(distance - this.level() * 3);
         }
 
-        return ActionResult.pass(0F);
+        return InteractionResultHolder.pass(0F);
     }
 }

@@ -15,22 +15,22 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.SendSkinData;
-import net.minecraft.entity.Entity;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.network.NetworkEvent.Context;
 
 public class SendSkinPacket implements IPacket<SendSkinData> {
 
     @Override
-    public void encode(SendSkinData data, PacketBuffer buf) {
+    public void encode(SendSkinData data, FriendlyByteBuf buf) {
         buf.writeInt(data.entityId);
         buf.writeInt(data.image.length);
         buf.writeBytes(data.image);
     }
 
     @Override
-    public SendSkinData decode(PacketBuffer buf) {
+    public SendSkinData decode(FriendlyByteBuf buf) {
         int entityId = buf.readInt();
         byte[] targetArray = new byte[buf.readInt()];
         buf.readBytes(targetArray);

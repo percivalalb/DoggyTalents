@@ -6,18 +6,18 @@ import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.util.ColourCache;
-import net.minecraft.item.IDyeableArmorItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IItemProvider;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.function.Supplier;
 
 public class LeatherArmourAccessory extends ArmourAccessory {
 
-    public LeatherArmourAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends IItemProvider> itemIn) {
+    public LeatherArmourAccessory(Supplier<? extends AccessoryType> typeIn, Supplier<? extends ItemLike> itemIn) {
         super(typeIn, itemIn);
     }
 
@@ -35,7 +35,7 @@ public class LeatherArmourAccessory extends ArmourAccessory {
     }
 
     @Override
-    public AccessoryInstance read(CompoundNBT compound) {
+    public AccessoryInstance read(CompoundTag compound) {
         AccessoryInstance inst = super.read(compound);
 
         if (this.of(DoggyAccessories.LEATHER_HELMET)) {
@@ -44,8 +44,8 @@ public class LeatherArmourAccessory extends ArmourAccessory {
                 int color = compound.getInt("color");
 
                 Instance def = inst.cast(Instance.class);
-                if (def.armourStack.getItem() instanceof IDyeableArmorItem) {
-                    ((IDyeableArmorItem) def.armourStack.getItem()).setColor(def.armourStack, color);
+                if (def.armourStack.getItem() instanceof DyeableLeatherItem) {
+                    ((DyeableLeatherItem) def.armourStack.getItem()).setColor(def.armourStack, color);
                 }
 
                 def.color = ColourCache.make(color);
@@ -62,8 +62,8 @@ public class LeatherArmourAccessory extends ArmourAccessory {
         public Instance(ItemStack armourStack) {
             super(armourStack);
 
-            if (armourStack.getItem() instanceof IDyeableArmorItem) {
-                this.color = ColourCache.make(((IDyeableArmorItem) armourStack.getItem()).getColor(armourStack));
+            if (armourStack.getItem() instanceof DyeableLeatherItem) {
+                this.color = ColourCache.make(((DyeableLeatherItem) armourStack.getItem()).getColor(armourStack));
             }
         }
 

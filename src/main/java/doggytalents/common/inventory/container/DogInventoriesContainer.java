@@ -120,7 +120,10 @@ public class DogInventoriesContainer extends Container {
 
     private void replaceDogSlot(int i, DogInventorySlot slotIn) {
         this.dogSlots.set(i, slotIn);
-        this.slots.set(slotIn.index, slotIn);
+        // Work around to set Slot#slotNumber (MCP name) which is Slot#index in official
+        // mappings. Needed because SlotItemHandler#index shadows the latter.
+        Slot s = slotIn;
+        this.slots.set(s.index, slotIn);
     }
 
     public int getTotalNumColumns() {

@@ -12,13 +12,13 @@ public class DogTexturePacket extends DogPacket<DogTextureData> {
     @Override
     public void encode(DogTextureData data, PacketBuffer buf) {
         super.encode(data, buf);
-        buf.writeString(data.hash);
+        buf.writeUtf(data.hash);
     }
 
     @Override
     public DogTextureData decode(PacketBuffer buf) {
         int entityId = buf.readInt();
-        String texture = buf.readString(128);
+        String texture = buf.readUtf(128);
         return new DogTextureData(entityId, texture);
     }
 

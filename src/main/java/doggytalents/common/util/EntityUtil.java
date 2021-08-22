@@ -29,7 +29,7 @@ public class EntityUtil {
     }
 
     public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, LivingEntity target, int radius) {
-        return tryToTeleportNearEntity(entityIn, navigator, target.getPosition(), radius);
+        return tryToTeleportNearEntity(entityIn, navigator, target.blockPosition(), radius);
     }
 
     public static boolean tryToTeleportNearEntity(LivingEntity entityIn, PathNavigator navigator, BlockPos targetPos, int radius) {
@@ -52,29 +52,29 @@ public class EntityUtil {
         } else if (!isTeleportFriendlyBlock(entityIn, new BlockPos(x, y, z), false)) {
             return false;
         } else {
-            entityIn.setLocationAndAngles(x + 0.5F, y, z + 0.5F, entityIn.rotationYaw, entityIn.rotationPitch);
-            navigator.clearPath();
+            entityIn.moveTo(x + 0.5F, y, z + 0.5F, entityIn.yRot, entityIn.xRot);
+            navigator.stop();
             return true;
         }
     }
 
     private static boolean isTeleportFriendlyBlock(LivingEntity entityIn, BlockPos pos, boolean teleportToLeaves) {
-        PathNodeType pathnodetype = WalkNodeProcessor.getFloorNodeType(entityIn.world, pos.toMutable());
+        PathNodeType pathnodetype = WalkNodeProcessor.getBlockPathTypeStatic(entityIn.level, pos.mutable());
         if (pathnodetype != PathNodeType.WALKABLE) {
             return false;
         } else {
-            BlockState blockstate = entityIn.world.getBlockState(pos.down());
+            BlockState blockstate = entityIn.level.getBlockState(pos.below());
             if (!teleportToLeaves && blockstate.getBlock() instanceof LeavesBlock) {
                 return false;
             } else {
-                BlockPos blockpos = pos.subtract(entityIn.getPosition());
-                return entityIn.world.hasNoCollisions(entityIn, entityIn.getBoundingBox().offset(blockpos));
+                BlockPos blockpos = pos.subtract(entityIn.blockPosition());
+                return entityIn.level.noCollision(entityIn, entityIn.getBoundingBox().move(blockpos));
             }
         }
     }
 
     public static int getRandomNumber(LivingEntity entityIn, int minIn, int maxIn) {
-        return entityIn.getRNG().nextInt(maxIn - minIn + 1) + minIn;
+        return entityIn.getRandom().nextInt(maxIn - minIn + 1) + minIn;
     }
 
     public static boolean isHolding(@Nullable Entity entity, Item item, Predicate<CompoundNBT> nbtPredicate) {
@@ -90,7 +90,7 @@ public class EntityUtil {
             return false;
         }
 
-        Iterator<ItemStack> heldItems = entity.getHeldEquipment().iterator();
+        Iterator<ItemStack> heldItems = entity.getHandSlots().iterator();
         while (heldItems.hasNext()) {
             ItemStack stack = heldItems.next();
             if (matcher.test(stack)) {
@@ -102,7 +102,7 @@ public class EntityUtil {
     }
 
     public static <T extends Entity> T getClosestTo(Entity center, Iterable<T> entities) {
-        return getClosestTo(center.getPositionVec(), entities);
+        return getClosestTo(center.position(), entities);
     }
 
     public static <T extends Entity> T getClosestTo(Vector3d posVec, Iterable<T> entities) {
@@ -110,7 +110,7 @@ public class EntityUtil {
         T closest = null;
 
         for (T entity : entities) {
-            double distance = posVec.squareDistanceTo(entity.getPositionVec());
+            double distance = posVec.distanceToSqr(entity.position());
             if (distance < smallestDist) {
                 closest = entity;
                 smallestDist = distance;
@@ -125,7 +125,7 @@ public class EntityUtil {
         private final Vector3d vec3d;
 
         public Sorter(Entity entityIn) {
-            this.vec3d = entityIn.getPositionVec();
+            this.vec3d = entityIn.position();
         }
 
         public Sorter(Vector3d vec3d) {
@@ -134,8 +134,8 @@ public class EntityUtil {
 
         @Override
         public int compare(Entity entity1, Entity entity2) {
-            double d0 = this.vec3d.squareDistanceTo(entity1.getPositionVec());
-            double d1 = this.vec3d.squareDistanceTo(entity2.getPositionVec());
+            double d0 = this.vec3d.distanceToSqr(entity1.position());
+            double d1 = this.vec3d.distanceToSqr(entity2.position());
 
             return Double.compare(d0, d1);
         }

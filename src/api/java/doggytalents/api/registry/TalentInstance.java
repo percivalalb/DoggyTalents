@@ -84,7 +84,7 @@ public class TalentInstance implements IDogAlteration {
     }
 
     public static Optional<TalentInstance> readInstance(AbstractDogEntity dogIn, CompoundNBT compound) {
-        ResourceLocation rl = ResourceLocation.tryCreate(compound.getString("type"));
+        ResourceLocation rl = ResourceLocation.tryParse(compound.getString("type"));
         if (DoggyTalentsAPI.TALENTS.containsKey(rl)) {
             TalentInstance inst = DoggyTalentsAPI.TALENTS.getValue(rl).getDefault();
             inst.readFromNBT(dogIn, compound);

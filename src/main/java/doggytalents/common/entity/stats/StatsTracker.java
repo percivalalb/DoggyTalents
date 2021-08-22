@@ -71,7 +71,7 @@ public class StatsTracker {
     public int getKillCountFor(Predicate<EntityClassification> classification) {
         int total = 0;
         for (Entry<EntityType<?>, Integer> entry : this.ENTITY_KILLS.entrySet()) {
-            if (classification.test(entry.getKey().getClassification())) {
+            if (classification.test(entry.getKey().getCategory())) {
                 total += entry.getValue();
             }
         }

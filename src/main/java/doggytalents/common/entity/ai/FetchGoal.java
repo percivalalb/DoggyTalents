@@ -16,25 +16,25 @@ public class FetchGoal extends MoveToClosestItemGoal {
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (this.dog.isEntitySleeping()) {
+    public boolean canUse() {
+        if (this.dog.isInSittingPose()) {
             return false;
         } else if (this.dog.hasBone()) {
             return false;
         }
 
-        return this.dog.getMode() == EnumMode.DOCILE && super.shouldExecute();
+        return this.dog.getMode() == EnumMode.DOCILE && super.canUse();
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        if (this.dog.isEntitySleeping()) {
+    public boolean canContinueToUse() {
+        if (this.dog.isInSittingPose()) {
             return false;
         } else if (this.dog.hasBone()) {
             return false;
         }
 
-        return this.dog.getMode() == EnumMode.DOCILE && super.shouldContinueExecuting();
+        return this.dog.getMode() == EnumMode.DOCILE && super.canContinueToUse();
     }
 
     @Override
@@ -45,10 +45,10 @@ public class FetchGoal extends MoveToClosestItemGoal {
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         // Dog doesn't have bone and is close enough to target
-        if (!this.dog.hasBone() && this.dog.getDistance(this.target) < this.minDist * this.minDist) {
-            if (this.target.isAlive() && !this.target.cannotPickup()) {
+        if (!this.dog.hasBone() && this.dog.distanceTo(this.target) < this.minDist * this.minDist) {
+            if (this.target.isAlive() && !this.target.hasPickUpDelay()) {
 
                 this.dog.setBoneVariant(this.target.getItem());
 
@@ -56,6 +56,6 @@ public class FetchGoal extends MoveToClosestItemGoal {
             }
         }
 
-        super.resetTask();
+        super.stop();
     }
 }

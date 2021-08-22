@@ -38,21 +38,21 @@ public class EventHandler {
 
             PlayerEntity player = event.getPlayer();
 
-            if (wolf.isAlive() && wolf.isTamed() && wolf.isOwner(player)) {
+            if (wolf.isAlive() && wolf.isTame() && wolf.isOwnedBy(player)) {
 
-                if (!world.isRemote) {
-                    if (!player.abilities.isCreativeMode) {
+                if (!world.isClientSide) {
+                    if (!player.abilities.instabuild) {
                         stack.shrink(1);
                     }
 
                     DogEntity dog = DoggyEntityTypes.DOG.get().create(world);
-                    dog.setTamedBy(player);
+                    dog.tame(player);
                     dog.setHealth(dog.getMaxHealth());
-                    dog.setSitting(false);
-                    dog.setGrowingAge(wolf.getGrowingAge());
-                    dog.setPositionAndRotation(wolf.getPosX(), wolf.getPosY(), wolf.getPosZ(), wolf.rotationYaw, wolf.rotationPitch);
+                    dog.setOrderedToSit(false);
+                    dog.setAge(wolf.getAge());
+                    dog.absMoveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.yRot, wolf.xRot);
 
-                    world.addEntity(dog);
+                    world.addFreshEntity(dog);
 
                     wolf.remove();
                 }
@@ -91,8 +91,8 @@ public class EventHandler {
             if (!persistTag.getBoolean("gotDTStartingItems")) {
                 persistTag.putBoolean("gotDTStartingItems", true);
 
-                player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
-                player.inventory.addItemStackToInventory(new ItemStack(DoggyItems.WHISTLE.get()));
+                player.inventory.add(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
+                player.inventory.add(new ItemStack(DoggyItems.WHISTLE.get()));
             }
         }
     }

@@ -27,7 +27,7 @@ public class DTItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    public void registerTags() {
+    public void addTags() {
         createTag(DoggyTags.BEG_ITEMS_TAMED, DoggyItems.BREEDING_BONE, DoggyItems.THROW_STICK, DoggyItems.THROW_BONE, Items.BONE.delegate);
         appendToTag(DoggyTags.TREATS);
         createTag(DoggyTags.BEG_ITEMS_UNTAMED, DoggyItems.TRAINING_TREAT, Items.BONE.delegate);
@@ -38,11 +38,11 @@ public class DTItemTagsProvider extends ItemTagsProvider {
 
     @SafeVarargs
     private final void createTag(ITag.INamedTag<Item> tag, Supplier<? extends IItemProvider>... items) {
-        getOrCreateBuilder(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
+        tag(tag).add(Arrays.stream(items).map(Supplier::get).map(IItemProvider::asItem).toArray(Item[]::new));
     }
 
     @SafeVarargs
     private final void appendToTag(ITag.INamedTag<Item> tag, ITag.INamedTag<Item>... toAppend) {
-        getOrCreateBuilder(tag).addTags(toAppend);
+        tag(tag).addTags(toAppend);
     }
 }

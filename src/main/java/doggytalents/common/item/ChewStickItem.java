@@ -29,10 +29,10 @@ public class ChewStickItem extends Item implements IDogFoodHandler {
 
     @Override
     public ActionResultType consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
-        if (!dogIn.world.isRemote) {
-            dogIn.addPotionEffect(new EffectInstance(Effects.GLOWING, 100, 1, false, true));
-            dogIn.addPotionEffect(new EffectInstance(Effects.SPEED, 200, 6, false, true));
-            dogIn.addPotionEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, true));
+        if (!dogIn.level.isClientSide) {
+            dogIn.addEffect(new EffectInstance(Effects.GLOWING, 100, 1, false, true));
+            dogIn.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED, 200, 6, false, true));
+            dogIn.addEffect(new EffectInstance(Effects.REGENERATION, 100, 2, false, true));
             dogIn.consumeItemFromStack(entityIn, stackIn);
         }
 

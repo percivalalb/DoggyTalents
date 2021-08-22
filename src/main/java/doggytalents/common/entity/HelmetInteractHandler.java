@@ -46,8 +46,8 @@ public class HelmetInteractHandler implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (dogIn.isTamed() && dogIn.canInteract(playerIn)) {
-            ItemStack stack = playerIn.getHeldItem(handIn);
+        if (dogIn.isTame() && dogIn.canInteract(playerIn)) {
+            ItemStack stack = playerIn.getItemInHand(handIn);
 
             if (!stack.isEmpty()) {
                 RegistryObject<? extends Accessory> associatedAccessory = MAPPING.get(stack.getItem().delegate);

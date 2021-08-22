@@ -34,25 +34,25 @@ public class ArmorAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
 
     @Override
     public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (dog.isTamed() && !dog.isInvisible()) {
+        if (dog.isTame() && !dog.isInvisible()) {
             ArmourAccessory.Instance armorInstance = data.cast(ArmourAccessory.Instance.class);
-            layer.getEntityModel().copyModelAttributesTo(this.model);
-            this.model.setLivingAnimations(dog, limbSwing, limbSwingAmount, partialTicks);
-            this.model.setRotationAngles(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            layer.getParentModel().copyPropertiesTo(this.model);
+            this.model.prepareMobModel(dog, limbSwing, limbSwingAmount, partialTicks);
+            this.model.setupAnim(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
             this.model.setVisible(false);
 
             if (armorInstance.ofType(DoggyAccessoryTypes.FEET)) {
-                this.model.legBackLeft.showModel = true;
-                this.model.legBackRight.showModel = true;
-                this.model.legFrontLeft.showModel = true;
-                this.model.legFrontRight.showModel = true;
+                this.model.legBackLeft.visible = true;
+                this.model.legBackRight.visible = true;
+                this.model.legFrontLeft.visible = true;
+                this.model.legFrontRight.visible = true;
             } else if (armorInstance.ofType(DoggyAccessoryTypes.HEAD)) {
-                this.model.head.showModel = true;
+                this.model.head.visible = true;
             } else if (armorInstance.ofType(DoggyAccessoryTypes.CLOTHING)) {
-                this.model.body.showModel = true;
-                this.model.mane.showModel = true;
+                this.model.body.visible = true;
+                this.model.mane.visible = true;
             } else if (armorInstance.ofType(DoggyAccessoryTypes.TAIL)) {
-                this.model.tail.showModel = true;
+                this.model.tail.visible = true;
             }
 
             if (armorInstance instanceof IColoredObject) {
@@ -66,8 +66,8 @@ public class ArmorAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
     }
 
     public static <T extends LivingEntity> void renderArmorCutout(EntityModel<T> modelIn, ResourceLocation textureLocationIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entityIn, float red, float green, float blue, boolean enchanted) {
-        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorVertexBuilder(bufferIn, RenderType.getArmorCutoutNoCull(textureLocationIn), false, enchanted);
-        modelIn.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        IVertexBuilder ivertexbuilder = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(textureLocationIn), false, enchanted);
+        modelIn.renderToBuffer(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
     }
 
     public <T extends AbstractDogEntity> ResourceLocation getTexture(T dog, AccessoryInstance data) {

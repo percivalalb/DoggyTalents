@@ -40,21 +40,21 @@ public class DogLocationStorage extends WorldSavedData {
             throw new RuntimeException("Tried to access dog location data from the client. This should not happen...");
         }
 
-        ServerWorld overworld = world.getServer().getWorld(World.OVERWORLD);
+        ServerWorld overworld = world.getServer().getLevel(World.OVERWORLD);
 
-        DimensionSavedDataManager storage = overworld.getSavedData();
-        return storage.getOrCreate(DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
+        DimensionSavedDataManager storage = overworld.getDataStorage();
+        return storage.computeIfAbsent(DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
     }
 
     public Stream<DogLocationData> getDogs(LivingEntity owner) {
-        UUID ownerId = owner.getUniqueID();
+        UUID ownerId = owner.getUUID();
 
         return this.locationDataMap.values().stream()
                 .filter(data -> ownerId.equals(data.getOwnerId()));
     }
 
     public Stream<DogLocationData> getDogs(LivingEntity owner, RegistryKey<World> key) {
-        UUID ownerId = owner.getUniqueID();
+        UUID ownerId = owner.getUUID();
 
         return this.locationDataMap.values().stream()
                 .filter(data -> ownerId.equals(data.getOwnerId()))
@@ -63,7 +63,7 @@ public class DogLocationStorage extends WorldSavedData {
 
     @Nullable
     public DogLocationData getData(DogEntity dogIn) {
-        return getData(dogIn.getUniqueID());
+        return getData(dogIn.getUUID());
     }
 
     @Nullable
@@ -77,15 +77,15 @@ public class DogLocationStorage extends WorldSavedData {
 
     @Nullable
     public DogLocationData remove(DogEntity dogIn) {
-        return remove(dogIn.getUniqueID());
+        return remove(dogIn.getUUID());
     }
 
     @Nullable
     public DogLocationData getOrCreateData(DogEntity dogIn) {
-        UUID uuid = dogIn.getUniqueID();
+        UUID uuid = dogIn.getUUID();
 
         return this.locationDataMap.computeIfAbsent(uuid, ($) -> {
-            this.markDirty();
+            this.setDirty();
             return DogLocationData.from(this, dogIn);
         });
     }
@@ -96,7 +96,7 @@ public class DogLocationStorage extends WorldSavedData {
             DogLocationData storage = this.locationDataMap.remove(uuid);
 
             // Mark dirty so changes are saved
-            this.markDirty();
+            this.setDirty();
             return storage;
         }
 
@@ -105,13 +105,13 @@ public class DogLocationStorage extends WorldSavedData {
 
     @Nullable
     public DogLocationData putData(DogEntity dogIn) {
-        UUID uuid = dogIn.getUniqueID();
+        UUID uuid = dogIn.getUUID();
 
         DogLocationData storage = new DogLocationData(this, uuid);
 
         this.locationDataMap.put(uuid, storage);
         // Mark dirty so changes are saved
-        this.markDirty();
+        this.setDirty();
         return storage;
     }
 
@@ -124,7 +124,7 @@ public class DogLocationStorage extends WorldSavedData {
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
+    public void load(CompoundNBT nbt) {
         this.locationDataMap.clear();
 
         ListNBT list = nbt.getList("locationData", TAG_COMPOUND);
@@ -158,7 +158,7 @@ public class DogLocationStorage extends WorldSavedData {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         ListNBT list = new ListNBT();
 
         for (Entry<UUID, DogLocationData> entry : this.locationDataMap.entrySet()) {

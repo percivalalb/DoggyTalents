@@ -21,7 +21,7 @@ public class DoggyItemGroups {
         }
 
         @Override
-        public ItemStack createIcon() {
+        public ItemStack makeIcon() {
             return this.icon.get();
         }
     }

@@ -20,7 +20,7 @@ public class DoggyTileEntityTypes {
     public static final RegistryObject<TileEntityType<FoodBowlTileEntity>> FOOD_BOWL = register("food_bowl", FoodBowlTileEntity::new, DoggyBlocks.FOOD_BOWL);
 
     private static <T extends TileEntity> RegistryObject<TileEntityType<T>> register(final String name, final Supplier<T> sup, Supplier<? extends Block> validBlock) {
-        return register(name, () -> TileEntityType.Builder.create(sup, validBlock.get()).build(null));
+        return register(name, () -> TileEntityType.Builder.of(sup, validBlock.get()).build(null));
     }
 
     private static <T extends TileEntityType<?>> RegistryObject<T> register(final String name, final Supplier<T> sup) {

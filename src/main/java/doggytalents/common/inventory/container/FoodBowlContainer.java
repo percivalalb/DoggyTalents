@@ -25,7 +25,7 @@ public class FoodBowlContainer extends Container {
     //Server method
     public FoodBowlContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(DoggyContainerTypes.FOOD_BOWL.get(), windowId);
-        this.tileEntity = world.getTileEntity(pos);
+        this.tileEntity = world.getBlockEntity(pos);
         IItemHandler inventory = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
 
         for (int i = 0; i < 1; i++) {
@@ -46,32 +46,32 @@ public class FoodBowlContainer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity player) {
-        return isWithinUsableDistance(IWorldPosCallable.of(this.tileEntity.getWorld(), this.tileEntity.getPos()), player, DoggyBlocks.FOOD_BOWL.get());
+    public boolean stillValid(PlayerEntity player) {
+        return stillValid(IWorldPosCallable.create(this.tileEntity.getLevel(), this.tileEntity.getBlockPos()), player, DoggyBlocks.FOOD_BOWL.get());
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(i);
+        Slot slot = this.slots.get(i);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             if (i < 5) {
-                if (!mergeItemStack(itemstack1, 5, inventorySlots.size(), true)) {
+                if (!moveItemStackTo(itemstack1, 5, slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!mergeItemStack(itemstack1, 0, 5, false)) {
+            else if (!moveItemStackTo(itemstack1, 0, 5, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {

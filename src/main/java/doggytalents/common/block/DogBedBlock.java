@@ -72,18 +72,18 @@ import net.minecraftforge.common.util.Constants;
 public class DogBedBlock extends Block {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+    public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
-    protected static final VoxelShape SHAPE_COLLISION = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D);
+    protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D);
+    protected static final VoxelShape SHAPE_COLLISION = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D);
 
     public DogBedBlock() {
-        super(Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F, 5.0F).sound(SoundType.WOOD));
-        this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+        super(Block.Properties.of(Material.WOOD).strength(3.0F, 5.0F).sound(SoundType.WOOD));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
     }
 
     @Override
-    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
     }
 
@@ -108,13 +108,13 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
-        return Block.hasEnoughSolidSide(worldIn, pos.down(), Direction.UP);
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return Block.canSupportCenter(worldIn, pos.below(), Direction.UP);
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        state = state.with(FACING, placer.getHorizontalFacing().getOpposite());
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        state = state.setValue(FACING, placer.getDirection().getOpposite());
 
         DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
 
@@ -122,7 +122,7 @@ public class DogBedBlock extends Block {
             DogBedUtil.setBedVariant(dogBedTileEntity, stack);
 
             dogBedTileEntity.setPlacer(placer);
-            CompoundNBT tag = stack.getChildTag("doggytalents");
+            CompoundNBT tag = stack.getTagElement("doggytalents");
             if (tag != null) {
                 ITextComponent name = NBTUtil.getTextComponent(tag, "name");
                 UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
@@ -131,54 +131,54 @@ public class DogBedBlock extends Block {
             }
         }
 
-        worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
     }
 
     @Override
-    public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.get(WATERLOGGED)) {
-            worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+        if (stateIn.getValue(WATERLOGGED)) {
+            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
-        return facing == Direction.DOWN && !stateIn.isValidPosition(worldIn, currentPos) ? Blocks.AIR.getDefaultState() : super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
     public BlockState rotate(BlockState state, Rotation rot) {
-        return state.with(FACING, rot.rotate(state.get(FACING)));
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
     }
 
     @Override
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+        return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
     }
 
     @Override
     @Deprecated
-    public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isRemote) {
+    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn.isClientSide) {
             return ActionResultType.SUCCESS;
         } else {
             DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(worldIn, pos, DogBedTileEntity.class);
 
             if (dogBedTileEntity != null) {
 
-                ItemStack stack = player.getHeldItem(handIn);
-                if (stack.getItem() == Items.NAME_TAG && stack.hasDisplayName()) {
-                    dogBedTileEntity.setBedName(stack.getDisplayName());
+                ItemStack stack = player.getItemInHand(handIn);
+                if (stack.getItem() == Items.NAME_TAG && stack.hasCustomHoverName()) {
+                    dogBedTileEntity.setBedName(stack.getHoverName());
 
-                    if (!player.abilities.isCreativeMode) {
+                    if (!player.abilities.instabuild) {
                         stack.shrink(1);
                     }
 
-                    worldIn.notifyBlockUpdate(pos, state, state, Constants.BlockFlags.DEFAULT);
+                    worldIn.sendBlockUpdated(pos, state, state, Constants.BlockFlags.DEFAULT);
                     return ActionResultType.SUCCESS;
-                } else if (player.isSneaking() && dogBedTileEntity.getOwnerUUID() == null) {
-                    List<DogEntity> dogs = worldIn.getEntitiesWithinAABB(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).grow(10D), (dog) -> dog.isAlive() && dog.isOwner(player));
+                } else if (player.isShiftKeyDown() && dogBedTileEntity.getOwnerUUID() == null) {
+                    List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AxisAlignedBB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
                     Collections.sort(dogs, new EntityUtil.Sorter(new Vector3d(pos.getX(), pos.getY(), pos.getZ())));
 
                     DogEntity closestStanding = null;
@@ -188,9 +188,9 @@ public class DogBedBlock extends Block {
                             break;
                         }
 
-                        if (closestSitting == null && dog.isEntitySleeping()) {
+                        if (closestSitting == null && dog.isInSittingPose()) {
                             closestSitting = dog;
-                        } else if (closestStanding == null && !dog.isEntitySleeping()) {
+                        } else if (closestStanding == null && !dog.isInSittingPose()) {
                             closestStanding = dog;
                         }
                     }
@@ -203,18 +203,18 @@ public class DogBedBlock extends Block {
                     DogRespawnData storage = DogRespawnStorage.get(worldIn).remove(dogBedTileEntity.getOwnerUUID());
 
                     if (storage != null) {
-                        DogEntity dog = storage.respawn((ServerWorld) worldIn, player, pos.up());
+                        DogEntity dog = storage.respawn((ServerWorld) worldIn, player, pos.above());
 
                         dogBedTileEntity.setOwner(dog);
-                        dog.setBedPos(dog.world.getDimensionKey(), pos);
+                        dog.setBedPos(dog.level.dimension(), pos);
                         return ActionResultType.SUCCESS;
                     } else {
                         ITextComponent name = dogBedTileEntity.getOwnerName();
-                        player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"), Util.DUMMY_UUID);
+                        player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"), Util.NIL_UUID);
                         return ActionResultType.FAIL;
                     }
                 } else {
-                    player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.set_owner_help"), Util.DUMMY_UUID);
+                    player.sendMessage(new TranslationTextComponent("block.doggytalents.dog_bed.set_owner_help"), Util.NIL_UUID);
                     return ActionResultType.SUCCESS;
                 }
             }
@@ -224,45 +224,45 @@ public class DogBedBlock extends Block {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
         tooltip.add(materials.getLeft() != null
                 ? materials.getLeft().getTooltip()
-                : new TranslationTextComponent("dogbed.casing.null").mergeStyle(TextFormatting.RED));
+                : new TranslationTextComponent("dogbed.casing.null").withStyle(TextFormatting.RED));
         tooltip.add(materials.getRight() != null
                 ? materials.getRight().getTooltip()
-                : new TranslationTextComponent("dogbed.bedding.null").mergeStyle(TextFormatting.RED));
+                : new TranslationTextComponent("dogbed.bedding.null").withStyle(TextFormatting.RED));
 
         if (materials.getLeft() == null && materials.getRight() == null) {
-            tooltip.add(new TranslationTextComponent("dogbed.explain.missing").mergeStyle(TextFormatting.ITALIC));
+            tooltip.add(new TranslationTextComponent("dogbed.explain.missing").withStyle(TextFormatting.ITALIC));
         }
 
-        CompoundNBT tag = stack.getChildTag("doggytalents");
+        CompoundNBT tag = stack.getTagElement("doggytalents");
         if (tag != null) {
             UUID ownerId = NBTUtil.getUniqueId(tag, "ownerId");
             ITextComponent name = NBTUtil.getTextComponent(tag, "name");
             ITextComponent ownerName = NBTUtil.getTextComponent(tag, "ownerName");
 
             if (name != null) {
-                tooltip.add(new StringTextComponent("Bed Name: ").mergeStyle(TextFormatting.WHITE).appendSibling(name));
+                tooltip.add(new StringTextComponent("Bed Name: ").withStyle(TextFormatting.WHITE).append(name));
             }
 
             if (ownerName != null) {
-                tooltip.add(new StringTextComponent("Name: ").mergeStyle(TextFormatting.DARK_AQUA).appendSibling(ownerName));
+                tooltip.add(new StringTextComponent("Name: ").withStyle(TextFormatting.DARK_AQUA).append(ownerName));
 
             }
 
             if (ownerId != null && (flagIn.isAdvanced() || Screen.hasShiftDown())) {
-                tooltip.add(new StringTextComponent("UUID: ").mergeStyle(TextFormatting.AQUA).appendSibling(new StringTextComponent(ownerId.toString())));
+                tooltip.add(new StringTextComponent("UUID: ").withStyle(TextFormatting.AQUA).append(new StringTextComponent(ownerId.toString())));
             }
         }
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
         for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
             for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
                 items.add(DogBedUtil.createItemStack(casingId, beddingId));

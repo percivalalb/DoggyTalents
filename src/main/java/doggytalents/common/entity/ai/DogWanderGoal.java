@@ -24,12 +24,12 @@ public class DogWanderGoal extends Goal {
         this.dog = dogIn;
         this.speed = speedIn;
         this.executionChance = 60;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (!this.dog.isTamed() || this.dog.isBeingRidden()) {
+    public boolean canUse() {
+        if (!this.dog.isTame() || this.dog.isVehicle()) {
             return false;
         }
 
@@ -43,27 +43,27 @@ public class DogWanderGoal extends Goal {
             return false;
         }
 
-        return bowlPos.get().distanceSq(this.dog.getPosition()) < 400.0D;
+        return bowlPos.get().distSqr(this.dog.blockPosition()) < 400.0D;
     }
 
     @Override
     public void tick() {
-        if (this.dog.getIdleTime() >= 100) {
+        if (this.dog.getNoActionTime() >= 100) {
             return;
-        } else if (this.dog.getRNG().nextInt(this.executionChance) != 0) {
+        } else if (this.dog.getRandom().nextInt(this.executionChance) != 0) {
             return;
-        } if (this.dog.hasPath()) {
+        } if (this.dog.isPathFinding()) {
             return;
         }
 
         Vector3d pos = this.getPosition();
-        this.dog.getNavigator().tryMoveToXYZ(pos.x, pos.y, pos.z, this.speed);
+        this.dog.getNavigation().moveTo(pos.x, pos.y, pos.z, this.speed);
     }
 
     @Nullable
     protected Vector3d getPosition() {
-        PathNavigator pathNavigate = this.dog.getNavigator();
-        Random random = this.dog.getRNG();
+        PathNavigator pathNavigate = this.dog.getNavigation();
+        Random random = this.dog.getRandom();
 
         int xzRange = 5;
         int yRange = 3;
@@ -77,10 +77,10 @@ public class DogWanderGoal extends Goal {
             int i1 = random.nextInt(2 * yRange + 1) - yRange;
             int j1 = random.nextInt(2 * xzRange + 1) - xzRange;
 
-            BlockPos testPos = bowlPos.get().add(l, i1, j1);
+            BlockPos testPos = bowlPos.get().offset(l, i1, j1);
 
-            if (pathNavigate.canEntityStandOnPos(testPos)) {
-                float weight = this.dog.getBlockPathWeight(testPos);
+            if (pathNavigate.isStableDestination(testPos)) {
+                float weight = this.dog.getWalkTargetValue(testPos);
 
                 if (weight > bestWeight) {
                     bestWeight = weight;

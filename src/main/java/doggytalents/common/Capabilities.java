@@ -23,7 +23,7 @@ public class Capabilities {
                     if (!stack.isEmpty()) {
                         CompoundNBT itemTag = new CompoundNBT();
                         itemTag.putInt("Slot", i);
-                        stack.write(itemTag);
+                        stack.save(itemTag);
                         nbtTagList.add(itemTag);
                     }
                 }
@@ -38,7 +38,7 @@ public class Capabilities {
                     int j = itemTags.getInt("Slot");
 
                     if (j >= 0 && j < instance.getSlots())  {
-                        instance.setStackInSlot(j, ItemStack.read(itemTags));
+                        instance.setStackInSlot(j, ItemStack.of(itemTags));
                     }
                 }
             }

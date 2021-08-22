@@ -66,7 +66,7 @@ public class DogInfoScreen extends Screen {
         this.talentList = DoggyTalentsAPI.TALENTS
                 .getValues()
                 .stream()
-                .sorted(Comparator.comparing((t) -> I18n.format(t.getTranslationKey())))
+                .sorted(Comparator.comparing((t) -> I18n.get(t.getTranslationKey())))
                 .collect(Collectors.toList());
 
         this.customSkinList = DogTextureManager.INSTANCE.getAll();
@@ -76,35 +76,35 @@ public class DogInfoScreen extends Screen {
 
     public static void open(DogEntity dog) {
         Minecraft mc = Minecraft.getInstance();
-        mc.displayGuiScreen(new DogInfoScreen(dog, mc.player));
+        mc.setScreen(new DogInfoScreen(dog, mc.player));
     }
 
     @Override
     public void init() {
         super.init();
-        this.minecraft.keyboardListener.enableRepeatEvents(true);
+        this.minecraft.keyboardHandler.setSendRepeatsToGui(true);
         int topX = this.width / 2;
         int topY = this.height / 2;
 
         TextFieldWidget nameTextField = new TextFieldWidget(this.font, topX - 100, topY + 50, 200, 20,  new TranslationTextComponent("dogInfo.enterName"));
         nameTextField.setResponder(text ->  {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogNameData(DogInfoScreen.this.dog.getEntityId(), text));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogNameData(DogInfoScreen.this.dog.getId(), text));
         });
-        nameTextField.setFocused2(false);
-        nameTextField.setMaxStringLength(32);
+        nameTextField.setFocus(false);
+        nameTextField.setMaxLength(32);
 
         if (this.dog.hasCustomName()) {
-            nameTextField.setText(this.dog.getCustomName().getUnformattedComponentText());
+            nameTextField.setValue(this.dog.getCustomName().getContents());
         }
 
         this.addButton(nameTextField);
 
 
 
-        if (this.dog.isOwner(this.player)) {
+        if (this.dog.isOwnedBy(this.player)) {
             Button obeyBtn = new Button(this.width - 64, topY + 77, 42, 20, new StringTextComponent(String.valueOf(this.dog.willObeyOthers())), (btn) -> {
                 btn.setMessage(new StringTextComponent(String.valueOf(!this.dog.willObeyOthers())));
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyData(this.dog.getEntityId(), !this.dog.willObeyOthers()));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyData(this.dog.getId(), !this.dog.willObeyOthers()));
             });
 
             this.addButton(obeyBtn);
@@ -112,7 +112,7 @@ public class DogInfoScreen extends Screen {
 
         Button attackPlayerBtn = new Button(this.width - 64, topY - 5, 42, 20, new StringTextComponent(String.valueOf(this.dog.canPlayersAttack())), button -> {
             button.setMessage(new StringTextComponent(String.valueOf(!this.dog.canPlayersAttack())));
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFireData(this.dog.getEntityId(), !this.dog.canPlayersAttack()));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFireData(this.dog.getId(), !this.dog.canPlayersAttack()));
         });
 
         this.addButton(attackPlayerBtn);
@@ -141,35 +141,35 @@ public class DogInfoScreen extends Screen {
             EnumMode mode = DogInfoScreen.this.dog.getMode().nextMode();
 
             if (mode == EnumMode.WANDERING && !DogInfoScreen.this.dog.getBowlPos().isPresent()) {
-                button.setMessage(new TranslationTextComponent(mode.getUnlocalisedName()).mergeStyle(TextFormatting.RED));
+                button.setMessage(new TranslationTextComponent(mode.getUnlocalisedName()).withStyle(TextFormatting.RED));
             } else {
                 button.setMessage(new TranslationTextComponent(mode.getUnlocalisedName()));
             }
 
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogModeData(DogInfoScreen.this.dog.getEntityId(), mode));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogModeData(DogInfoScreen.this.dog.getId(), mode));
         }) {
             @Override
             public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
                 List<ITextComponent> list = new ArrayList<>();
-                String str = I18n.format(dog.getMode().getUnlocalisedInfo());
+                String str = I18n.get(dog.getMode().getUnlocalisedInfo());
                 list.addAll(ScreenUtil.splitInto(str, 150, DogInfoScreen.this.font));
                 if (DogInfoScreen.this.dog.getMode() == EnumMode.WANDERING) {
 
 
                     if (DogInfoScreen.this.dog.getBowlPos().isPresent()) {
-                        double distance = DogInfoScreen.this.dog.getPosition().distanceSq(DogInfoScreen.this.dog.getBowlPos().get());
+                        double distance = DogInfoScreen.this.dog.blockPosition().distSqr(DogInfoScreen.this.dog.getBowlPos().get());
 
                         if (distance > 256D) {
-                            list.add(new TranslationTextComponent("dog.mode.docile.distance", (int) Math.sqrt(distance)).mergeStyle(TextFormatting.RED));
+                            list.add(new TranslationTextComponent("dog.mode.docile.distance", (int) Math.sqrt(distance)).withStyle(TextFormatting.RED));
                         } else {
-                            list.add(new TranslationTextComponent("dog.mode.docile.bowl", (int) Math.sqrt(distance)).mergeStyle(TextFormatting.GREEN));
+                            list.add(new TranslationTextComponent("dog.mode.docile.bowl", (int) Math.sqrt(distance)).withStyle(TextFormatting.GREEN));
                         }
                     } else {
-                        list.add(new TranslationTextComponent("dog.mode.docile.nobowl").mergeStyle(TextFormatting.RED));
+                        list.add(new TranslationTextComponent("dog.mode.docile.nobowl").withStyle(TextFormatting.RED));
                     }
                 }
 
-                DogInfoScreen.this.func_243308_b(stack, list, mouseX, mouseY);
+                DogInfoScreen.this.renderComponentTooltip(stack, list, mouseX, mouseY);
             }
         };
 
@@ -191,7 +191,7 @@ public class DogInfoScreen extends Screen {
             }) {
                 @Override
                 public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.prevpage").mergeStyle(TextFormatting.ITALIC), mouseX, mouseY);
+                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.prevpage").withStyle(TextFormatting.ITALIC), mouseX, mouseY);
                 }
             };
             this.leftBtn.active = false;
@@ -204,7 +204,7 @@ public class DogInfoScreen extends Screen {
             }) {
                 @Override
                 public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
-                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.nextpage").mergeStyle(TextFormatting.ITALIC), mouseX, mouseY);
+                    DogInfoScreen.this.renderTooltip(stack, new TranslationTextComponent("doggui.nextpage").withStyle(TextFormatting.ITALIC), mouseX, mouseY);
                 }
             };
 
@@ -217,12 +217,12 @@ public class DogInfoScreen extends Screen {
         if (ConfigValues.SEND_SKIN) {
             try {
                 byte[] data = DogTextureManager.INSTANCE.getResourceBytes(rl);
-                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getEntityId(), data));
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getId(), data));
             } catch (IOException e) {
                 DoggyTalents2.LOGGER.error("Was unable to get resource data for {}, {}", rl, e);
             }
         } else {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTextureData(this.dog.getEntityId(), DogTextureManager.INSTANCE.getTextureHash(rl)));
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTextureData(this.dog.getId(), DogTextureManager.INSTANCE.getTextureHash(rl)));
         }
     }
 
@@ -241,7 +241,7 @@ public class DogInfoScreen extends Screen {
             Button button = new TalentButton(25, 10 + i * 21, 20, 20, new StringTextComponent("+"), talent, (btn) -> {
                 int level = DogInfoScreen.this.dog.getLevel(talent);
                 if (level < talent.getMaxLevel() && DogInfoScreen.this.dog.canSpendPoints(talent.getLevelCost(level + 1))) {
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getEntityId(), talent));
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getId(), talent));
                 }
 
             }) {
@@ -249,16 +249,16 @@ public class DogInfoScreen extends Screen {
                 public void renderToolTip(MatrixStack stack, int mouseX, int mouseY) {
                     List<ITextComponent> list = new ArrayList<>();
 
-                    list.add(new TranslationTextComponent(talent.getTranslationKey()).mergeStyle(TextFormatting.GREEN));
+                    list.add(new TranslationTextComponent(talent.getTranslationKey()).withStyle(TextFormatting.GREEN));
                     if (this.active) {
                         list.add(new StringTextComponent("Level: " + DogInfoScreen.this.dog.getLevel(talent)));
-                        list.add(new StringTextComponent("--------------------------------").mergeStyle(TextFormatting.GRAY));
-                        list.addAll(ScreenUtil.splitInto(I18n.format(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
+                        list.add(new StringTextComponent("--------------------------------").withStyle(TextFormatting.GRAY));
+                        list.addAll(ScreenUtil.splitInto(I18n.get(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
                     } else {
-                        list.add(new StringTextComponent("Talent disabled").mergeStyle(TextFormatting.RED));
+                        list.add(new StringTextComponent("Talent disabled").withStyle(TextFormatting.RED));
                     }
 
-                    DogInfoScreen.this.func_243308_b(stack, list, mouseX, mouseY);
+                    DogInfoScreen.this.renderComponentTooltip(stack, list, mouseX, mouseY);
                 }
             };
             button.active = !ConfigValues.DISABLED_TALENTS.contains(talent);
@@ -280,53 +280,53 @@ public class DogInfoScreen extends Screen {
         String healthMax = Util.format1DP(this.dog.getMaxHealth());
         String speedValue = Util.format2DP(this.dog.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
         String armorValue = Util.format2DP(this.dog.getAttribute(Attributes.ARMOR).getValue());
-        String ageValue = Util.format2DP(this.dog.getGrowingAge());
-        String ageRel = I18n.format(this.dog.isChild() ? "doggui.age.baby" : "doggui.age.adult");
+        String ageValue = Util.format2DP(this.dog.getAge());
+        String ageRel = I18n.get(this.dog.isBaby() ? "doggui.age.baby" : "doggui.age.adult");
 
         String ageString = ageValue + " " + ageRel;
 
         String tamedString = "";
-        if (this.dog.isTamed()) {
-            if (this.dog.isOwner(this.player)) {
-                tamedString = I18n.format("doggui.owner.you");
+        if (this.dog.isTame()) {
+            if (this.dog.isOwnedBy(this.player)) {
+                tamedString = I18n.get("doggui.owner.you");
             } else if (this.dog.getOwnersName().isPresent()) {
                 tamedString = this.dog.getOwnersName().get().getString();
             }
         }
 
         //this.font.drawString(I18n.format("doggui.health") + healthState, this.width - 160, topY - 110, 0xFFFFFF);
-        this.font.drawString(stack, I18n.format("doggui.speed") + " " + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
-        this.font.drawString(stack, I18n.format("doggui.owner") + " " + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
-        this.font.drawString(stack, I18n.format("doggui.age") + " " + ageString, this.width - 160, topY - 80, 0xFFFFFF);
-        this.font.drawString(stack, I18n.format("doggui.armor") + " " + armorValue, this.width - 160, topY - 70, 0xFFFFFF);
+        this.font.draw(stack, I18n.get("doggui.speed") + " " + speedValue, this.width - 160, topY - 100, 0xFFFFFF);
+        this.font.draw(stack, I18n.get("doggui.owner") + " " + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
+        this.font.draw(stack, I18n.get("doggui.age") + " " + ageString, this.width - 160, topY - 80, 0xFFFFFF);
+        this.font.draw(stack, I18n.get("doggui.armor") + " " + armorValue, this.width - 160, topY - 70, 0xFFFFFF);
         if (ConfigValues.DOG_GENDER) {
-            this.font.drawString(stack, I18n.format("doggui.gender") + " "+ I18n.format(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 60, 0xFFFFFF);
+            this.font.draw(stack, I18n.get("doggui.gender") + " "+ I18n.get(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 60, 0xFFFFFF);
         }
 
-        this.font.drawString(stack, I18n.format("doggui.newname"), topX - 100, topY + 38, 4210752);
-        this.font.drawString(stack, I18n.format("doggui.level") + " " + this.dog.getLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
-        this.font.drawString(stack, I18n.format("doggui.leveldire") + " " + this.dog.getLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
+        this.font.draw(stack, I18n.get("doggui.newname"), topX - 100, topY + 38, 4210752);
+        this.font.draw(stack, I18n.get("doggui.level") + " " + this.dog.getLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
+        this.font.draw(stack, I18n.get("doggui.leveldire") + " " + this.dog.getLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
         if (this.dog.getAccessory(DoggyAccessories.GOLDEN_COLLAR.get()).isPresent()) {
-            this.font.drawString(stack, TextFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
+            this.font.draw(stack, TextFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
         } else {
-            this.font.drawString(stack, I18n.format("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
+            this.font.draw(stack, I18n.get("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
         }
        // if (ConfigValues.USE_DT_TEXTURES) {
-            this.font.drawString(stack, I18n.format("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
-            this.font.drawString(stack, this.dog.getSkinHash().substring(0, Math.min(this.dog.getSkinHash().length(), 10)), this.width - 73, topY + 54, 0xFFFFFF);
+            this.font.draw(stack, I18n.get("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
+            this.font.draw(stack, this.dog.getSkinHash().substring(0, Math.min(this.dog.getSkinHash().length(), 10)), this.width - 73, topY + 54, 0xFFFFFF);
        // }
 
-        if (this.dog.isOwner(this.player)) {
-            this.font.drawString(stack, I18n.format("doggui.obeyothers"), this.width - 76, topY + 67, 0xFFFFFF);
+        if (this.dog.isOwnedBy(this.player)) {
+            this.font.draw(stack, I18n.get("doggui.obeyothers"), this.width - 76, topY + 67, 0xFFFFFF);
         }
 
-        this.font.drawString(stack, I18n.format("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
+        this.font.draw(stack, I18n.get("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 
 
         this.buttons.forEach(widget -> {
             if (widget instanceof TalentButton) {
                 TalentButton talBut = (TalentButton)widget;
-                this.font.drawString(stack, I18n.format(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
+                this.font.draw(stack, I18n.get(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
             }
         });
 
@@ -344,9 +344,9 @@ public class DogInfoScreen extends Screen {
     }
 
     @Override
-    public void onClose() {
-        super.onClose();
-        this.minecraft.keyboardListener.enableRepeatEvents(false);
+    public void removed() {
+        super.removed();
+        this.minecraft.keyboardHandler.setSendRepeatsToGui(false);
     }
 
     @Override

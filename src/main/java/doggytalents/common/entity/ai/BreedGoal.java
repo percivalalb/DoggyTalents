@@ -14,7 +14,7 @@ import net.minecraft.world.server.ServerWorld;
 
 public class BreedGoal extends Goal {
 
-    private static final EntityPredicate breedPredicate = (new EntityPredicate()).setDistance(8.0D).allowInvulnerable().allowFriendlyFire().setIgnoresLineOfSight().setSkipAttackChecks();
+    private static final EntityPredicate breedPredicate = (new EntityPredicate()).range(8.0D).allowInvulnerable().allowSameTeam().allowUnseeable().allowNonAttackable();
     private final AnimalEntity animal;
     private final Class<? extends AnimalEntity> mateClass;
     private final World world;
@@ -29,14 +29,14 @@ public class BreedGoal extends Goal {
 
     public BreedGoal(AnimalEntity animal, double moveSpeed, Class<? extends AnimalEntity> mateClass) {
         this.animal = animal;
-        this.world = animal.world;
+        this.world = animal.level;
         this.mateClass = mateClass;
         this.moveSpeed = moveSpeed;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         if (!this.animal.isInLove()) {
             return false;
         } else {
@@ -46,35 +46,35 @@ public class BreedGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         return this.targetMate.isAlive() && this.targetMate.isInLove() && this.spawnBabyDelay < 60;
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.targetMate = null;
         this.spawnBabyDelay = 0;
     }
 
     @Override
     public void tick() {
-        this.animal.getLookController().setLookPositionWithEntity(this.targetMate, 10.0F, this.animal.getVerticalFaceSpeed());
-        this.animal.getNavigator().tryMoveToEntityLiving(this.targetMate, this.moveSpeed);
+        this.animal.getLookControl().setLookAt(this.targetMate, 10.0F, this.animal.getMaxHeadXRot());
+        this.animal.getNavigation().moveTo(this.targetMate, this.moveSpeed);
         ++this.spawnBabyDelay;
-        if (this.spawnBabyDelay >= 60 && this.animal.getDistanceSq(this.targetMate) < 9.0D) {
-            this.animal.spawnBabyAnimal((ServerWorld) this.world, this.targetMate);
+        if (this.spawnBabyDelay >= 60 && this.animal.distanceToSqr(this.targetMate) < 9.0D) {
+            this.animal.spawnChildFromBreeding((ServerWorld) this.world, this.targetMate);
         }
     }
 
     @Nullable
     private AnimalEntity getNearbyMate() {
-        List<AnimalEntity> entities = this.world.getEntitiesWithinAABB(
-            this.mateClass, this.animal.getBoundingBox().grow(8.0D), this::filterEntities
+        List<AnimalEntity> entities = this.world.getEntitiesOfClass(
+            this.mateClass, this.animal.getBoundingBox().inflate(8.0D), this::filterEntities
         );
         return EntityUtil.getClosestTo(this.animal, entities);
     }
 
     private boolean filterEntities(AnimalEntity entity) {
-        return breedPredicate.canTarget(this.animal, entity) && this.animal.canMateWith(entity);
+        return breedPredicate.test(this.animal, entity) && this.animal.canMate(entity);
     }
 }

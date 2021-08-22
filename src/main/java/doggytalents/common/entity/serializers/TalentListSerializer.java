@@ -34,12 +34,12 @@ public class TalentListSerializer implements IDataSerializer<List<TalentInstance
     }
 
     @Override
-    public DataParameter<List<TalentInstance>> createKey(int id) {
+    public DataParameter<List<TalentInstance>> createAccessor(int id) {
         return new DataParameter<>(id, this);
     }
 
     @Override
-    public List<TalentInstance> copyValue(List<TalentInstance> value) {
+    public List<TalentInstance> copy(List<TalentInstance> value) {
         List<TalentInstance> newInst = new ArrayList<>(value.size());
 
         for (TalentInstance inst : value) {

@@ -22,18 +22,18 @@ public class DoggyTorchTalent extends TalentInstance {
 
     @Override
     public void tick(AbstractDogEntity dogIn) {
-        if (dogIn.ticksExisted % 10 == 0 && dogIn.isTamed()) {
+        if (dogIn.tickCount % 10 == 0 && dogIn.isTame()) {
 
-            BlockPos pos = dogIn.getPosition();
-            BlockState torchState = Blocks.TORCH.getDefaultState();
+            BlockPos pos = dogIn.blockPosition();
+            BlockState torchState = Blocks.TORCH.defaultBlockState();
 
-            if (dogIn.world.getLight(dogIn.getPosition()) < 8 && dogIn.world.isAirBlock(pos) && torchState.isValidPosition(dogIn.world, pos)) {
+            if (dogIn.level.getMaxLocalRawBrightness(dogIn.blockPosition()) < 8 && dogIn.level.isEmptyBlock(pos) && torchState.canSurvive(dogIn.level, pos)) {
                 PackPuppyItemHandler inventory = dogIn.getTalent(DoggyTalents.PACK_PUPPY)
                     .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);
 
                 // If null might be because no pack puppy
                 if (this.level() >= 5) {
-                    dogIn.world.setBlockState(pos, torchState);
+                    dogIn.level.setBlockAndUpdate(pos, torchState);
                 }
                 else if (inventory != null) { // If null might be because no pack puppy
                     Pair<ItemStack, Integer> foundDetails = InventoryUtil.findStack(inventory, (stack) -> stack.getItem() == Items.TORCH);
@@ -41,7 +41,7 @@ public class DoggyTorchTalent extends TalentInstance {
                         ItemStack torchStack = foundDetails.getLeft();
                         dogIn.consumeItemFromStack(dogIn, torchStack);
                         inventory.setStackInSlot(foundDetails.getRight(), torchStack);
-                        dogIn.world.setBlockState(pos, torchState);
+                        dogIn.level.setBlockAndUpdate(pos, torchState);
                     }
                 }
             }

@@ -26,50 +26,50 @@ public class TreatItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (!dogIn.isTamed() || !dogIn.canInteract(playerIn)) {
+        if (!dogIn.isTame() || !dogIn.canInteract(playerIn)) {
             return ActionResultType.FAIL;
         }
 
         DogLevel dogLevel = dogIn.getLevel();
 
-        if (dogIn.getGrowingAge() < 0) {
+        if (dogIn.getAge() < 0) {
 
-            if (!worldIn.isRemote) {
-                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUniqueID());
+            if (!worldIn.isClientSide) {
+                worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_SMOKE);
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUUID());
             }
 
             return ActionResultType.CONSUME;
         } else if (!dogLevel.canIncrease(this.type)) {
 
-            if (!worldIn.isRemote) {
-                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"), dogIn.getUniqueID());
+            if (!worldIn.isClientSide) {
+                worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_SMOKE);
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".low_level"), dogIn.getUUID());
             }
 
             return ActionResultType.CONSUME;
         }
         else if (dogLevel.getLevel(this.type) < this.maxLevel) {
 
-            if (!playerIn.world.isRemote) {
-                if (!playerIn.abilities.isCreativeMode) {
-                    playerIn.getHeldItem(handIn).shrink(1);
+            if (!playerIn.level.isClientSide) {
+                if (!playerIn.abilities.instabuild) {
+                    playerIn.getItemInHand(handIn).shrink(1);
                 }
 
                 dogIn.increaseLevel(this.type);
                 dogIn.setHealth(dogIn.getMaxHealth());
-                dogIn.setSitting(true);
-                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".level_up"), dogIn.getUniqueID());
+                dogIn.setOrderedToSit(true);
+                worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_HEARTS);
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".level_up"), dogIn.getUUID());
             }
 
             return ActionResultType.SUCCESS;
         }
         else {
 
-            if (!worldIn.isRemote) {
-                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"), dogIn.getUniqueID());
+            if (!worldIn.isClientSide) {
+                worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_SMOKE);
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".max_level"), dogIn.getUUID());
             }
 
             return ActionResultType.CONSUME;

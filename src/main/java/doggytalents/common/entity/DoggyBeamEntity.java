@@ -37,47 +37,47 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
     }
 
     @Override
-    protected void onImpact(RayTraceResult result) {
+    protected void onHit(RayTraceResult result) {
         if (result.getType() == RayTraceResult.Type.ENTITY) {
             Entity entityHit = ((EntityRayTraceResult) result).getEntity();
 
-            Entity thrower = this.getShooter();
+            Entity thrower = this.getOwner();
 
             if (thrower instanceof LivingEntity && entityHit instanceof LivingEntity) {
                 LivingEntity livingThrower = (LivingEntity) thrower;
                 LivingEntity livingEntity = (LivingEntity) entityHit;
 
-                this.world.getEntitiesWithinAABB(DogEntity.class, this.getBoundingBox().grow(64D, 16D, 64D)).stream()
-                    .filter(Predicates.not(DogEntity::isEntitySleeping))
+                this.level.getEntitiesOfClass(DogEntity.class, this.getBoundingBox().inflate(64D, 16D, 64D)).stream()
+                    .filter(Predicates.not(DogEntity::isInSittingPose))
                     .filter(d -> d.isMode(EnumMode.AGGRESIVE, EnumMode.TACTICAL, EnumMode.BERSERKER))
                     .filter(d -> d.canInteract(livingThrower))
-                    .filter(d -> d != livingEntity && d.shouldAttackEntity(livingEntity, d.getOwner()))
-                    .filter(d -> d.getDistance(entityHit) < EntityUtil.getFollowRange(d))
-                    .forEach(d -> d.setAttackTarget(livingEntity));
+                    .filter(d -> d != livingEntity && d.wantsToAttack(livingEntity, d.getOwner()))
+                    .filter(d -> d.distanceTo(entityHit) < EntityUtil.getFollowRange(d))
+                    .forEach(d -> d.setTarget(livingEntity));
             }
 
             for (int j = 0; j < 8; ++j) {
-                this.world.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getPosX(), this.getPosY(), this.getPosZ(), 0.0D, 0.0D, 0.0D);
+                this.level.addParticle(ParticleTypes.ITEM_SNOWBALL, this.getX(), this.getY(), this.getZ(), 0.0D, 0.0D, 0.0D);
             }
         }
 
-        if (!this.world.isRemote) {
-            this.world.setEntityState(this, Constants.EntityState.DEATH);
+        if (!this.level.isClientSide) {
+            this.level.broadcastEntityEvent(this, Constants.EntityState.DEATH);
             this.remove();
         }
     }
 
     @Override
-    public IPacket<?> createSpawnPacket() {
+    public IPacket<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
     public void writeSpawnData(PacketBuffer buffer) {
-        UUID ownerId = this.entityUniqueID;
+        UUID ownerId = this.uuid;
         buffer.writeBoolean(ownerId != null);
         if (ownerId != null) {
-            buffer.writeUniqueId(ownerId);
+            buffer.writeUUID(ownerId);
         }
     }
 
@@ -85,12 +85,12 @@ public class DoggyBeamEntity extends ThrowableEntity implements IEntityAdditiona
     public void readSpawnData(PacketBuffer buffer) {
         boolean hasThrower = buffer.readBoolean();
         if (hasThrower) {
-            this.entityUniqueID = buffer.readUniqueId();
+            this.uuid = buffer.readUUID();
         }
     }
 
     @Override
-    protected void registerData() {
+    protected void defineSynchedData() {
         // TODO Auto-generated method stub
 
     }

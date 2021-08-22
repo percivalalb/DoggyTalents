@@ -22,10 +22,10 @@ public class DogBedRenderer extends TileEntityRenderer<DogBedTileEntity> {
     @Override
     public void render(DogBedTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
         if (tileEntityIn.getBedName() != null && this.isLookingAtBed(tileEntityIn)) {
-            matrixStackIn.push();
+            matrixStackIn.pushPose();
             matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-            RenderUtil.renderLabelWithScale(true, Minecraft.getInstance().getRenderManager(), tileEntityIn.getBedName(), matrixStackIn, bufferIn, combinedLightIn, 0.025F, 1.2F);
-            matrixStackIn.pop();
+            RenderUtil.renderLabelWithScale(true, Minecraft.getInstance().getEntityRenderDispatcher(), tileEntityIn.getBedName(), matrixStackIn, bufferIn, combinedLightIn, 0.025F, 1.2F);
+            matrixStackIn.popPose();
         }
 
     }
@@ -33,9 +33,9 @@ public class DogBedRenderer extends TileEntityRenderer<DogBedTileEntity> {
     public boolean isLookingAtBed(DogBedTileEntity tileEntityIn) {
         Minecraft mc = Minecraft.getInstance();
 
-        if (mc.objectMouseOver != null && mc.objectMouseOver.getType() == RayTraceResult.Type.BLOCK) {
-            BlockPos blockpos = ((BlockRayTraceResult) mc.objectMouseOver).getPos();
-            return Objects.equal(blockpos, tileEntityIn.getPos());
+        if (mc.hitResult != null && mc.hitResult.getType() == RayTraceResult.Type.BLOCK) {
+            BlockPos blockpos = ((BlockRayTraceResult) mc.hitResult).getBlockPos();
+            return Objects.equal(blockpos, tileEntityIn.getBlockPos());
          }
 
         return false;

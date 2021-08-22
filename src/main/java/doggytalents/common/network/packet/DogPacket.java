@@ -22,7 +22,7 @@ public abstract class DogPacket<T extends DogData> implements IPacket<T> {
     @Override
     public final void handle(T data, Supplier<Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            Entity target = ctx.get().getSender().world.getEntityByID(data.entityId);
+            Entity target = ctx.get().getSender().level.getEntity(data.entityId);
 
             if (!(target instanceof DogEntity)) {
                 return;

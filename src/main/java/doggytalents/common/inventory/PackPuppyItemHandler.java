@@ -21,7 +21,7 @@ public class PackPuppyItemHandler extends ItemStackHandler {
            if (!stack.isEmpty()) {
               CompoundNBT itemTag = new CompoundNBT();
               itemTag.putByte("Slot", (byte) i);
-              stack.write(itemTag);
+              stack.save(itemTag);
               itemsList.add(itemTag);
            }
         }
@@ -41,7 +41,7 @@ public class PackPuppyItemHandler extends ItemStackHandler {
                 int slot = itemTag.getInt("Slot");
 
                 if (slot >= 0 && slot < this.stacks.size()) {
-                    this.stacks.set(slot, ItemStack.read(itemTag));
+                    this.stacks.set(slot, ItemStack.of(itemTag));
                 }
             }
             this.onLoad();
@@ -52,7 +52,7 @@ public class PackPuppyItemHandler extends ItemStackHandler {
                 int slot = itemTag.getInt("Slot");
 
                 if (slot >= 0 && slot < this.stacks.size()) {
-                    this.stacks.set(slot, ItemStack.read(itemTag));
+                    this.stacks.set(slot, ItemStack.of(itemTag));
                 }
             }
             this.onLoad();

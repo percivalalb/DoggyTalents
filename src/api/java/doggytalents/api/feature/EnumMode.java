@@ -60,9 +60,9 @@ public enum EnumMode {
     public void onModeSet(AbstractDogEntity dog, EnumMode prev) {
         switch(prev) {
         default:
-            dog.getNavigator().clearPath();
-            dog.setAttackTarget(null);
-            dog.setRevengeTarget(null);
+            dog.getNavigation().stop();
+            dog.setTarget(null);
+            dog.setLastHurtByMob(null);
             break;
         }
     }

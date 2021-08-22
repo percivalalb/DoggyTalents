@@ -24,7 +24,7 @@ public class NBTUtil {
      */
     public static void putUniqueId(CompoundNBT compound, String key, @Nullable UUID uuid) {
         if (uuid != null) {
-            compound.putUniqueId(key, uuid);
+            compound.putUUID(key, uuid);
         }
     }
 
@@ -33,8 +33,8 @@ public class NBTUtil {
      */
     @Nullable
     public static UUID getUniqueId(CompoundNBT compound, String key) {
-        if (compound.hasUniqueId(key)) {
-            return compound.getUniqueId(key);
+        if (compound.hasUUID(key)) {
+            return compound.getUUID(key);
         } else if (NBTUtil.hasOldUniqueId(compound, key)) {
             return NBTUtil.getOldUniqueId(compound, key);
         }
@@ -64,7 +64,7 @@ public class NBTUtil {
     @Nullable
     public static ResourceLocation getResourceLocation(CompoundNBT compound, String key) {
         if (compound.contains(key, Constants.NBT.TAG_STRING)) {
-            return ResourceLocation.tryCreate(compound.getString(key));
+            return ResourceLocation.tryParse(compound.getString(key));
         }
 
         return null;
@@ -73,9 +73,9 @@ public class NBTUtil {
     @Nullable
     public static void putVector3d(CompoundNBT compound, @Nullable Vector3d vec3d) {
         if (vec3d != null) {
-            compound.putDouble("x", vec3d.getX());
-            compound.putDouble("y", vec3d.getY());
-            compound.putDouble("z", vec3d.getZ());
+            compound.putDouble("x", vec3d.x());
+            compound.putDouble("y", vec3d.y());
+            compound.putDouble("z", vec3d.z());
         }
     }
 
@@ -98,7 +98,7 @@ public class NBTUtil {
     @Nullable
     public static ITextComponent getTextComponent(CompoundNBT compound, String key) {
         if (compound.contains(key, Constants.NBT.TAG_STRING)) {
-            return ITextComponent.Serializer.getComponentFromJson(compound.getString(key));
+            return ITextComponent.Serializer.fromJson(compound.getString(key));
         }
 
         return null;
@@ -179,14 +179,14 @@ public class NBTUtil {
 
     public static void writeItemStack(CompoundNBT compound, String key, ItemStack stackIn) {
         if (!stackIn.isEmpty()) {
-            compound.put(key, stackIn.write(new CompoundNBT()));
+            compound.put(key, stackIn.save(new CompoundNBT()));
         }
     }
 
     @Nonnull
     public static ItemStack readItemStack(CompoundNBT compound, String key) {
         if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
-            return ItemStack.read(compound.getCompound(key));
+            return ItemStack.of(compound.getCompound(key));
         }
 
         return ItemStack.EMPTY;

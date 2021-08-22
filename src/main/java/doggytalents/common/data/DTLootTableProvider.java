@@ -60,24 +60,24 @@ public class DTLootTableProvider extends LootTableProvider {
         }
 
         private void dropDogBed(Supplier<? extends Block> block) {
-            LootTable.Builder lootTableBuilder = LootTable.builder().addLootPool(withSurvivesExplosion(block.get(),
-                       LootPool.builder()
-                         .rolls(ConstantRange.of(1))
-                         .addEntry(ItemLootEntry.builder(block.get())
-                                 .acceptFunction(
-                                         CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-                                         .replaceOperation("casingId", "doggytalents.casingId")
-                                         .replaceOperation("beddingId", "doggytalents.beddingId")
-                                         .replaceOperation("ownerId", "doggytalents.ownerId")
-                                         .replaceOperation("name", "doggytalents.name")
-                                         .replaceOperation("ownerName", "doggytalents.ownerName")
+            LootTable.Builder lootTableBuilder = LootTable.lootTable().withPool(applyExplosionCondition(block.get(),
+                       LootPool.lootPool()
+                         .setRolls(ConstantRange.exactly(1))
+                         .add(ItemLootEntry.lootTableItem(block.get())
+                                 .apply(
+                                         CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+                                         .copy("casingId", "doggytalents.casingId")
+                                         .copy("beddingId", "doggytalents.beddingId")
+                                         .copy("ownerId", "doggytalents.ownerId")
+                                         .copy("name", "doggytalents.name")
+                                         .copy("ownerName", "doggytalents.ownerName")
                                  ))));
 
-            this.registerLootTable(block.get(), lootTableBuilder);
+            this.add(block.get(), lootTableBuilder);
         }
 
         private void dropsSelf(Supplier<? extends Block> block) {
-            this.registerDropSelfLootTable(block.get());
+            this.dropSelf(block.get());
         }
 
         @Override
@@ -94,7 +94,7 @@ public class DTLootTableProvider extends LootTableProvider {
         }
 
         protected void registerNoLoot(Supplier<? extends EntityType<?>> type) {
-           this.registerLootTable(type.get(), LootTable.builder());
+           this.add(type.get(), LootTable.lootTable());
         }
 
         @Override

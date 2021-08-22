@@ -35,7 +35,7 @@ public class MoveToClosestItemGoal extends Goal {
 
     public MoveToClosestItemGoal(DogEntity dogIn, double speedIn, float maxDist, float stopDist, @Nullable Predicate<ItemStack> targetSelector) {
         this.dog = dogIn;
-        this.dogNavigator = dogIn.getNavigator();
+        this.dogNavigator = dogIn.getNavigation();
         this.followSpeed = speedIn;
         this.maxDist = maxDist;
         this.minDist = stopDist;
@@ -45,17 +45,17 @@ public class MoveToClosestItemGoal extends Goal {
             } else if (targetSelector != null && !targetSelector.test(entity.getItem())) {
                 return false;
             } else {
-                return entity.getDistance(this.dog) <= EntityUtil.getFollowRange(this.dog);
+                return entity.distanceTo(this.dog) <= EntityUtil.getFollowRange(this.dog);
             }
         };
         this.sorter = new EntityUtil.Sorter(dogIn);
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         double d0 = EntityUtil.getFollowRange(this.dog);
-        List<ItemEntity> list = this.dog.world.getEntitiesWithinAABB(ItemEntity.class, this.dog.getBoundingBox().grow(d0, 4.0D, d0), this.predicate);
+        List<ItemEntity> list = this.dog.level.getEntitiesOfClass(ItemEntity.class, this.dog.getBoundingBox().inflate(d0, 4.0D, d0), this.predicate);
         if (list.isEmpty()) {
             return false;
         } else {
@@ -66,13 +66,13 @@ public class MoveToClosestItemGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         ItemEntity target = this.target;
         if (target == null || !target.isAlive()) {
             return false;
         } else {
             double d0 = EntityUtil.getFollowRange(this.dog);
-            double dist = this.dog.getDistanceSq(target);
+            double dist = this.dog.distanceToSqr(target);
             if (dist > d0 * d0 || dist < this.minDist * this.minDist) {
                 return false;
             } else {
@@ -82,32 +82,32 @@ public class MoveToClosestItemGoal extends Goal {
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
+        this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
         this.oldRangeSense = this.dog.getAttribute(Attributes.FOLLOW_RANGE).getValue();
         this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.maxDist);
     }
 
     @Override
     public void tick() {
-        if (!this.dog.isEntitySleeping()) {
+        if (!this.dog.isInSittingPose()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
-                if (!this.dogNavigator.tryMoveToEntityLiving(this.target, this.followSpeed)) {
-                    this.dog.getLookController().setLookPositionWithEntity(this.target, 10.0F, this.dog.getVerticalFaceSpeed());
+                if (!this.dogNavigator.moveTo(this.target, this.followSpeed)) {
+                    this.dog.getLookControl().setLookAt(this.target, 10.0F, this.dog.getMaxHeadXRot());
                 }
             }
         }
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.target = null;
-        this.dogNavigator.clearPath();
-        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.dogNavigator.stop();
+        this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
         this.dog.getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(this.oldRangeSense);
     }
 }

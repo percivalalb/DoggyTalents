@@ -94,7 +94,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
     public File getClientFolder() {
         Minecraft mc = Minecraft.getInstance();
         SkinManager skinManager = mc.getSkinManager();
-        return new File(skinManager.skinCacheDir.getParentFile(), "skins_dog");
+        return new File(skinManager.skinsDirectory.getParentFile(), "skins_dog");
     }
 
     @Nullable
@@ -138,7 +138,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         Texture texture = textureManager.getTexture(loc);
         if (texture == null && cacheFile.isFile() && cacheFile.exists()) {
             texture = new CachedFileTexture(loc, cacheFile);
-            textureManager.loadTexture(loc, texture);
+            textureManager.register(loc, texture);
         }
 
         return texture;
@@ -162,7 +162,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
             DoggyTalents2.LOGGER.debug("Saved dog texture to local cache ({})", cacheFile);
             FileUtils.writeByteArrayToFile(cacheFile, data);
             DoggyTalents2.LOGGER.debug("Texture not current loaded trying to load");
-            textureManager.loadTexture(loc, new CachedFileTexture(loc, cacheFile));
+            textureManager.register(loc, new CachedFileTexture(loc, cacheFile));
         }
 
         return hash;
@@ -201,7 +201,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
             this.skinHashToLoc.clear();
             this.customSkinLoc.clear();
 
-            Collection<ResourceLocation> resources = resourceManager.getAllResourceLocations("textures/entity/dog/custom", (fileName) -> {
+            Collection<ResourceLocation> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
                 return fileName.endsWith(".png");
             });
 
@@ -223,7 +223,7 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
             }
 
             try {
-                List<IResource> resourcelocation = resourceManager.getAllResources(OVERRIDE_RESOURCE_LOCATION);
+                List<IResource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
                 this.loadOverrideData(resourcelocation);
             } catch (FileNotFoundException e) {
                 ;
@@ -269,11 +269,11 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
 
     private synchronized void loadLocaleData(InputStream inputStreamIn) {
         JsonElement jsonelement = GSON.fromJson(new InputStreamReader(inputStreamIn, StandardCharsets.UTF_8), JsonElement.class);
-        JsonObject jsonobject = JSONUtils.getJsonObject(jsonelement, "strings");
+        JsonObject jsonobject = JSONUtils.convertToJsonObject(jsonelement, "strings");
 
         for (Entry<String, JsonElement> entry : jsonobject.entrySet()) {
             String hash = entry.getKey();
-            ResourceLocation texture = new ResourceLocation(JSONUtils.getString(entry.getValue(), hash));
+            ResourceLocation texture = new ResourceLocation(JSONUtils.convertToString(entry.getValue(), hash));
             ResourceLocation previous = this.skinHashToLoc.put(hash, texture);
 
             if (previous != null) {

@@ -25,12 +25,12 @@ public class DoggyBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DoggyItems.ITEMS;
 
-    public static final RegistryObject<DogBedBlock> DOG_BED = registerWithItem("dog_bed", DogBedBlock::new, (prop) -> prop.group(DoggyItemGroups.DOG_BED));
+    public static final RegistryObject<DogBedBlock> DOG_BED = registerWithItem("dog_bed", DogBedBlock::new, (prop) -> prop.tab(DoggyItemGroups.DOG_BED));
     public static final RegistryObject<DogBathBlock> DOG_BATH = registerWithItem("dog_bath", DogBathBlock::new);
     public static final RegistryObject<FoodBowlBlock> FOOD_BOWL = registerWithItem("food_bowl", FoodBowlBlock::new);
 
     private static Item.Properties createInitialProp() {
-        return new Item.Properties().group(DoggyItemGroups.GENERAL);
+        return new Item.Properties().tab(DoggyItemGroups.GENERAL);
     }
 
     private static BlockItem makeItemBlock(Block block) {
@@ -65,7 +65,7 @@ public class DoggyBlocks {
 
         Util.acceptOrElse(DoggyBlocks.DOG_BATH, (block) -> {
             blockColors.register((state, world, pos, tintIndex) -> {
-                return world != null && pos != null ? BiomeColors.getWaterColor(world, pos) : -1;
+                return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
              }, block);
         }, DoggyBlocks::logError);
     }

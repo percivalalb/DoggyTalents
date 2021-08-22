@@ -52,8 +52,8 @@ public class Screens {
         @Override
         public Container createMenu(int windowId, PlayerInventory inventory, PlayerEntity player) {
             IntArray array = new IntArray(this.dogs.size());
-            for (int i = 0; i < array.size(); i++) {
-                array.set(i, this.dogs.get(i).getEntityId());
+            for (int i = 0; i < array.getCount(); i++) {
+                array.set(i, this.dogs.get(i).getId());
             }
             return new DogInventoriesContainer(windowId, inventory, array);
         }
@@ -88,7 +88,7 @@ public class Screens {
     public static void openPackPuppyScreen(ServerPlayerEntity player, AbstractDogEntity dogIn) {
         if (dogIn.isAlive()) {
             NetworkHooks.openGui(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
-                buf.writeInt(dogIn.getEntityId());
+                buf.writeInt(dogIn.getId());
             });
         }
     }
@@ -98,21 +98,21 @@ public class Screens {
             NetworkHooks.openGui(player, new DogInventoriesContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.size());
                 for (DogEntity dog : dogIn) {
-                    buf.writeInt(dog.getEntityId());
+                    buf.writeInt(dog.getId());
                 }
             });
         }
     }
 
     public static void openFoodBowlScreen(ServerPlayerEntity player, FoodBowlTileEntity foodBowl) {
-        NetworkHooks.openGui(player, foodBowl, foodBowl.getPos());
+        NetworkHooks.openGui(player, foodBowl, foodBowl.getBlockPos());
     }
 
     public static void openTreatBagScreen(ServerPlayerEntity player, ItemStack stackIn, int slotId) {
         if (stackIn.getItem() == DoggyItems.TREAT_BAG.get()) {
             NetworkHooks.openGui(player, new TreatBagContainerProvider(stackIn, slotId), buf -> {
                 buf.writeVarInt(slotId);
-                buf.writeItemStack(stackIn);
+                buf.writeItem(stackIn);
             });
         }
     }

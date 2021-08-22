@@ -26,18 +26,18 @@ public class DogShearsItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (dogIn.isOwner(playerIn)) {
+        if (dogIn.isOwnedBy(playerIn)) {
             List<AccessoryInstance> accessories = dogIn.getAccessories();
             if (accessories.isEmpty()) {
-                if (!dogIn.isTamed()) {
+                if (!dogIn.isTame()) {
                     return ActionResultType.CONSUME;
                 }
 
-                if (!worldIn.isRemote) {
-                    int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.ticksExisted) - dogIn.ticksExisted;
+                if (!worldIn.isClientSide) {
+                    int cooldownLeft = dogIn.getDataOrDefault(COOLDOWN, dogIn.tickCount) - dogIn.tickCount;
 
                     if (cooldownLeft <= 0) {
-                        worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_SMOKE);
+                        worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_SMOKE);
                         dogIn.untame();
                     }
                 }
@@ -45,14 +45,14 @@ public class DogShearsItem extends Item implements IDogItem {
                 return ActionResultType.SUCCESS;
             }
 
-            if (!worldIn.isRemote) {
+            if (!worldIn.isClientSide) {
                 for (AccessoryInstance inst : accessories) {
                     ItemStack returnItem = inst.getReturnItem();
-                    dogIn.entityDropItem(returnItem, 1);
+                    dogIn.spawnAtLocation(returnItem, 1);
                 }
 
                 dogIn.removeAccessories();
-                dogIn.setData(COOLDOWN, dogIn.ticksExisted + 40);
+                dogIn.setData(COOLDOWN, dogIn.tickCount + 40);
 
                 return ActionResultType.SUCCESS;
             }

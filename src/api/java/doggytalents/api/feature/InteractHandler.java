@@ -24,14 +24,14 @@ public class InteractHandler {
     public static ActionResultType getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, PlayerEntity playerIn, Hand handIn) {
         if (stackIn.getItem() instanceof IDogItem) {
             IDogItem item = (IDogItem) stackIn.getItem();
-            ActionResultType result = item.processInteract(dogIn, dogIn.world, playerIn, handIn);
+            ActionResultType result = item.processInteract(dogIn, dogIn.level, playerIn, handIn);
             if (result != ActionResultType.PASS) {
                 return result;
             }
         }
 
         for (IDogItem handler : HANDLERS) {
-            ActionResultType result = handler.processInteract(dogIn, dogIn.world, playerIn, handIn);
+            ActionResultType result = handler.processInteract(dogIn, dogIn.level, playerIn, handIn);
             if (result != ActionResultType.PASS) {
                 return result;
             }

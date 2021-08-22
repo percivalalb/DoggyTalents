@@ -57,7 +57,7 @@ public class DogRespawnCommand {
     public static void register(final CommandDispatcher<CommandSource> dispatcher) {
         dispatcher.register(
                 literal("dog")
-                    .requires(s -> s.hasPermissionLevel(2))
+                    .requires(s -> s.hasPermission(2))
                     .then(Commands.literal("locate")
                         .then(Commands.literal("byuuid")
                           .then(Commands.argument("dog_owner", UUIDArgument.uuid()).suggests(DogRespawnCommand.getOwnerIdSuggestionsLocate())
@@ -84,11 +84,11 @@ public class DogRespawnCommand {
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsLocate() {
-        return (context, builder) -> getOwnerIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getOwnerIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsRevive() {
-        return (context, builder) -> getOwnerIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getOwnerIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getOwnerIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
@@ -102,18 +102,18 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-            return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
+            return context.getSource().customSuggestion((CommandContext<ISuggestionProvider>) context, builder);
         } else {
             return Suggestions.empty();
         }
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogIdSuggestionsLocate() {
-        return (context, builder) -> getDogIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getDogIdSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogIdSuggestionsRevive() {
-        return (context, builder) -> getDogIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getDogIdSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getDogIdSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
@@ -130,7 +130,7 @@ public class DogRespawnCommand {
                      .collect(Collectors.toSet()),
                     builder);
         } else if (context.getSource() instanceof ISuggestionProvider) {
-             return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
+             return context.getSource().customSuggestion((CommandContext<ISuggestionProvider>) context, builder);
         } else {
              return Suggestions.empty();
         }
@@ -138,11 +138,11 @@ public class DogRespawnCommand {
 
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerNameSuggestionsLocate() {
-        return (context, builder) -> getOwnerNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getOwnerNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getOwnerNameSuggestionsRevive() {
-        return (context, builder) -> getOwnerNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getOwnerNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     public static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getOwnerNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
@@ -155,18 +155,18 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-            return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>) context, builder);
+            return context.getSource().customSuggestion((CommandContext<ISuggestionProvider>) context, builder);
         } else {
             return Suggestions.empty();
         }
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogNameSuggestionsLocate() {
-        return (context, builder) -> getDogNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getDogNameSuggestions(DogLocationStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     private static <S extends ISuggestionProvider> SuggestionProvider<S> getDogNameSuggestionsRevive() {
-        return (context, builder) -> getDogNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getWorld()).getAll(), context, builder);
+        return (context, builder) -> getDogNameSuggestions(DogRespawnStorage.get(((CommandSource)context.getSource()).getLevel()).getAll(), context, builder);
     }
 
     public static <S extends ISuggestionProvider> CompletableFuture<Suggestions> getDogNameSuggestions(Collection<? extends IDogData> possibilities, final CommandContext<S> context, final SuggestionsBuilder builder) {
@@ -185,7 +185,7 @@ public class DogRespawnCommand {
                      builder);
 
         } else if (context.getSource() instanceof ISuggestionProvider) {
-             return context.getSource().getSuggestionsFromServer((CommandContext<ISuggestionProvider>)context, builder);
+             return context.getSource().customSuggestion((CommandContext<ISuggestionProvider>)context, builder);
         } else {
              return Suggestions.empty();
         }
@@ -193,8 +193,8 @@ public class DogRespawnCommand {
 
     private static int respawn(final CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         CommandSource source = ctx.getSource();
-        source.asPlayer(); // Check source is a player
-        ServerWorld world = source.getWorld();
+        source.getPlayerOrException(); // Check source is a player
+        ServerWorld world = source.getLevel();
 
         UUID ownerUuid = ctx.getArgument("dog_owner", UUID.class);
 
@@ -212,8 +212,8 @@ public class DogRespawnCommand {
 
     private static int respawn2(final CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         CommandSource source = ctx.getSource();
-        source.asPlayer(); // Check source is a player
-        ServerWorld world = source.getWorld();
+        source.getPlayerOrException(); // Check source is a player
+        ServerWorld world = source.getLevel();
 
         String ownerName = ctx.getArgument("owner_name", String.class);
 
@@ -237,22 +237,22 @@ public class DogRespawnCommand {
     }
 
     private static int respawn(DogRespawnStorage respawnStorage, DogRespawnData respawnData, final CommandSource source) throws CommandSyntaxException {
-        DogEntity dog = respawnData.respawn(source.getWorld(), source.asPlayer(), source.asPlayer().getPosition().up());
+        DogEntity dog = respawnData.respawn(source.getLevel(), source.getPlayerOrException(), source.getPlayerOrException().blockPosition().above());
 
         if (dog != null) {
             respawnStorage.remove(respawnData.getDogId());
-            source.sendFeedback(new TranslationTextComponent("commands.dogrespawn.uuid.success", respawnData.getDogName()), false);
+            source.sendSuccess(new TranslationTextComponent("commands.dogrespawn.uuid.success", respawnData.getDogName()), false);
             return 1;
         }
 
-        source.sendFeedback(new TranslationTextComponent("commands.dogrespawn.uuid.failure", respawnData.getDogName()), false);
+        source.sendSuccess(new TranslationTextComponent("commands.dogrespawn.uuid.failure", respawnData.getDogName()), false);
         return 0;
     }
 
     private static int locate(final CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         CommandSource source = ctx.getSource();
-        source.asPlayer(); // Check source is a player
-        ServerWorld world = source.getWorld();
+        source.getPlayerOrException(); // Check source is a player
+        ServerWorld world = source.getLevel();
 
         UUID ownerUuid = ctx.getArgument("dog_owner", UUID.class);
 
@@ -270,8 +270,8 @@ public class DogRespawnCommand {
 
     private static int locate2(final CommandContext<CommandSource> ctx) throws CommandSyntaxException {
         CommandSource source = ctx.getSource();
-        source.asPlayer(); // Check source is a player
-        ServerWorld world = source.getWorld();
+        source.getPlayerOrException(); // Check source is a player
+        ServerWorld world = source.getLevel();
 
         String ownerName = ctx.getArgument("owner_name", String.class);
 
@@ -296,15 +296,15 @@ public class DogRespawnCommand {
     }
 
     private static int locate(DogLocationStorage respawnStorage, DogLocationData locationData, final CommandSource source) throws CommandSyntaxException {
-        PlayerEntity player = source.asPlayer();
+        PlayerEntity player = source.getPlayerOrException();
 
-        if (locationData.getDimension().equals(player.world.getDimensionKey())) {
+        if (locationData.getDimension().equals(player.level.dimension())) {
             String translateStr = RadarItem.getDirectionTranslationKey(locationData, player);
-            int distance = MathHelper.ceil(locationData.getPos() != null ? locationData.getPos().distanceTo(player.getPositionVec()) : -1);
+            int distance = MathHelper.ceil(locationData.getPos() != null ? locationData.getPos().distanceTo(player.position()) : -1);
 
-            source.sendFeedback(new TranslationTextComponent(translateStr, locationData.getName(player.world), distance), false);
+            source.sendSuccess(new TranslationTextComponent(translateStr, locationData.getName(player.level), distance), false);
         } else {
-            source.sendFeedback(new TranslationTextComponent("dogradar.notindim", locationData.getDimension()), false); // TODO change message
+            source.sendSuccess(new TranslationTextComponent("dogradar.notindim", locationData.getDimension()), false); // TODO change message
         }
         return 1;
 

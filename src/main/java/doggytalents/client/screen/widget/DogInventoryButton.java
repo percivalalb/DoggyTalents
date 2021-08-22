@@ -38,13 +38,13 @@ public class DogInventoryButton extends Button {
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
 
         if (this.parent instanceof CreativeScreen) {
-            int tabIndex = ((CreativeScreen) this.parent).getSelectedTabIndex();
-            this.visible = tabIndex == ItemGroup.INVENTORY.getIndex();
+            int tabIndex = ((CreativeScreen) this.parent).getSelectedTab();
+            this.visible = tabIndex == ItemGroup.TAB_INVENTORY.getId();
             this.active = this.visible;
         }
 
         if (this.parent instanceof InventoryScreen) {
-            RecipeBookGui recipeBook = ((InventoryScreen) this.parent).getRecipeGui();
+            RecipeBookGui recipeBook = ((InventoryScreen) this.parent).getRecipeBookComponent();
             if (recipeBook.isVisible()) {
                 this.x = this.baseX + 77;
             } else {
@@ -54,7 +54,7 @@ public class DogInventoryButton extends Button {
 
         if (this.visible) {
             Minecraft mc = Minecraft.getInstance();
-            List<DogEntity> dogs = mc.world.getEntitiesWithinAABB(DogEntity.class, mc.player.getBoundingBox().grow(12D, 12D, 12D), PackPuppyTalent::hasInventory);
+            List<DogEntity> dogs = mc.level.getEntitiesOfClass(DogEntity.class, mc.player.getBoundingBox().inflate(12D, 12D, 12D), PackPuppyTalent::hasInventory);
             this.active = !dogs.isEmpty();
         }
 
@@ -62,9 +62,9 @@ public class DogInventoryButton extends Button {
     }
 
     @Override
-    public void renderWidget(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
        Minecraft mc = Minecraft.getInstance();
-       mc.getTextureManager().bindTexture(Resources.SMALL_WIDGETS);
+       mc.getTextureManager().bind(Resources.SMALL_WIDGETS);
        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
        int i = this.getYImage(this.isHovered());
        RenderSystem.enableBlend();
@@ -80,7 +80,7 @@ public class DogInventoryButton extends Button {
             ITextComponent msg = new TranslationTextComponent("container.doggytalents.dog_inventories.link");
             this.parent.renderTooltip(stack, msg, mouseX, mouseY);
         } else {
-            ITextComponent msg = new TranslationTextComponent("container.doggytalents.dog_inventories.link").mergeStyle(TextFormatting.RED);
+            ITextComponent msg = new TranslationTextComponent("container.doggytalents.dog_inventories.link").withStyle(TextFormatting.RED);
             this.parent.renderTooltip(stack, msg, mouseX, mouseY);
         }
     }

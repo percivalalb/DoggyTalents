@@ -57,12 +57,12 @@ public class ClientEventHandler {
             ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(DoggyBlocks.DOG_BED.get());
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
-            BlockModel model = (BlockModel) event.getModelLoader().getUnbakedModel(unbakedModelLoc);
-            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bakeModel(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc, true));
+            BlockModel model = (BlockModel) event.getModelLoader().getModel(unbakedModelLoc);
+            IBakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), ModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
-            DoggyBlocks.DOG_BED.get().getStateContainer().getValidStates().forEach(state -> {
-                modelRegistry.put(BlockModelShapes.getModelLocation(state), customModel);
+            DoggyBlocks.DOG_BED.get().getStateDefinition().getPossibleStates().forEach(state -> {
+                modelRegistry.put(BlockModelShapes.stateToModelLocation(state), customModel);
             });
 
             // Replace inventory model
@@ -77,8 +77,8 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onInputEvent(final InputUpdateEvent event) {
-        if (event.getMovementInput().jump) {
-            Entity entity = event.getPlayer().getRidingEntity();
+        if (event.getMovementInput().jumping) {
+            Entity entity = event.getPlayer().getVehicle();
             if (event.getPlayer().isPassenger() && entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
 
@@ -95,8 +95,8 @@ public class ClientEventHandler {
         if (screen instanceof InventoryScreen || screen instanceof CreativeScreen) {
             boolean creative = screen instanceof CreativeScreen;
             Minecraft mc = Minecraft.getInstance();
-            int width = mc.getMainWindow().getScaledWidth();
-            int height = mc.getMainWindow().getScaledHeight();
+            int width = mc.getWindow().getGuiScaledWidth();
+            int height = mc.getWindow().getGuiScaledHeight();
             int sizeX = creative ? 195 : 176;
             int sizeY = creative ? 136 : 166;
             int guiLeft = (width - sizeX) / 2;
@@ -129,14 +129,14 @@ public class ClientEventHandler {
 
             if (btn.visible && btn.isHovered()) {
                 Minecraft mc = Minecraft.getInstance();
-                int width = mc.getMainWindow().getScaledWidth();
-                int height = mc.getMainWindow().getScaledHeight();
+                int width = mc.getWindow().getGuiScaledWidth();
+                int height = mc.getWindow().getGuiScaledHeight();
                 int sizeX = creative ? 195 : 176;
                 int sizeY = creative ? 136 : 166;
                 int guiLeft = (width - sizeX) / 2;
                 int guiTop = (height - sizeY) / 2;
                 if (!creative) {
-                    RecipeBookGui recipeBook = ((InventoryScreen) screen).getRecipeGui();
+                    RecipeBookGui recipeBook = ((InventoryScreen) screen).getRecipeBookComponent();
                     if (recipeBook.isVisible()) {
                         guiLeft += 76;
                     }
@@ -189,15 +189,15 @@ public class ClientEventHandler {
 
 
         RenderSystem.disableTexture();
-        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
-        double d0 = vec3d.getX();
-        double d1 = vec3d.getY();
-        double d2 = vec3d.getZ();
+        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        double d0 = vec3d.x();
+        double d1 = vec3d.y();
+        double d2 = vec3d.z();
 
-        BufferBuilder buf = Tessellator.getInstance().getBuffer();
+        BufferBuilder buf = Tessellator.getInstance().getBuilder();
         buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        WorldRenderer.drawBoundingBox(matrixStackIn, buf, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
-        Tessellator.getInstance().draw();
+        WorldRenderer.renderLineBox(matrixStackIn, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
+        Tessellator.getInstance().end();
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         RenderSystem.depthMask(true);
         RenderSystem.enableTexture();
@@ -210,17 +210,17 @@ public class ClientEventHandler {
         label: if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
             Minecraft mc = Minecraft.getInstance();
 
-            if (mc.player == null || !(mc.player.getRidingEntity() instanceof DogEntity)) {
+            if (mc.player == null || !(mc.player.getVehicle() instanceof DogEntity)) {
                 break label;
             }
 
             MatrixStack stack = event.getMatrixStack();
 
-            DogEntity dog = (DogEntity) mc.player.getRidingEntity();
-            int width = mc.getMainWindow().getScaledWidth();
-            int height = mc.getMainWindow().getScaledHeight();
+            DogEntity dog = (DogEntity) mc.player.getVehicle();
+            int width = mc.getWindow().getGuiScaledWidth();
+            int height = mc.getWindow().getGuiScaledHeight();
             RenderSystem.pushMatrix();
-            mc.getTextureManager().bindTexture(Screen.GUI_ICONS_LOCATION);
+            mc.getTextureManager().bind(Screen.GUI_ICONS_LOCATION);
 
             RenderSystem.enableBlend();
             int left = width / 2 + 91;
@@ -235,13 +235,13 @@ public class ClientEventHandler {
                 int icon = 16;
                 byte backgound = 12;
 
-                mc.ingameGUI.blit(stack, x, y, 16 + backgound * 9, 27, 9, 9);
+                mc.gui.blit(stack, x, y, 16 + backgound * 9, 27, 9, 9);
 
 
                 if (idx < level) {
-                    mc.ingameGUI.blit(stack, x, y, icon + 36, 27, 9, 9);
+                    mc.gui.blit(stack, x, y, icon + 36, 27, 9, 9);
                 } else if (idx == level) {
-                    mc.ingameGUI.blit(stack, x, y, icon + 45, 27, 9, 9);
+                    mc.gui.blit(stack, x, y, icon + 45, 27, 9, 9);
                 }
             }
             RenderSystem.disableBlend();
@@ -250,16 +250,16 @@ public class ClientEventHandler {
             left = width / 2 + 91;
             top = height - ForgeIngameGui.right_height;
             RenderSystem.color4f(1.0F, 1.0F, 0.0F, 1.0F);
-            int l6 = dog.getAir();
-            int j7 = dog.getMaxAir();
+            int l6 = dog.getAirSupply();
+            int j7 = dog.getMaxAirSupply();
 
-            if (dog.areEyesInFluid(FluidTags.WATER) || l6 < j7) {
-                int air = dog.getAir();
+            if (dog.isEyeInFluid(FluidTags.WATER) || l6 < j7) {
+                int air = dog.getAirSupply();
                 int full = MathHelper.ceil((air - 2) * 10.0D / 300.0D);
                 int partial = MathHelper.ceil(air * 10.0D / 300.0D) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
-                    mc.ingameGUI.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+                    mc.gui.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
                 }
                 ForgeIngameGui.right_height += 10;
             }

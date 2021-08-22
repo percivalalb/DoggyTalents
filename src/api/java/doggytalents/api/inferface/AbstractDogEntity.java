@@ -42,7 +42,7 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
         AttributeModifier newModifier = modifierGenerator.apply(this, modifierUUID);
 
         if (newModifier != null) {
-            attributeInst.applyNonPersistentModifier(newModifier);
+            attributeInst.addTransientModifier(newModifier);
         }
     }
 
@@ -62,13 +62,13 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
     }
 
     @Override
-    public void playTameEffect(boolean play) {
-        super.playTameEffect(play);
+    public void spawnTamingParticles(boolean play) {
+        super.spawnTamingParticles(play);
     }
 
     public void consumeItemFromStack(@Nullable Entity entity, ItemStack stack) {
         if (entity instanceof PlayerEntity) {
-            super.consumeItemFromStack((PlayerEntity) entity, stack);
+            super.usePlayerItem((PlayerEntity) entity, stack);
         } else {
             stack.shrink(1);
         }

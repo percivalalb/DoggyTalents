@@ -23,34 +23,34 @@ public class PatrolAreaGoal extends Goal {
 
     public PatrolAreaGoal(DogEntity dogIn) {
         this.dog = dogIn;
-        this.navigator = dogIn.getNavigator();
-        this.setMutexFlags(EnumSet.of(Flag.MOVE));
+        this.navigator = dogIn.getNavigation();
+        this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
+    public boolean canUse() {
+        return this.dog.getMode() == EnumMode.PATROL && this.dog.getTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return this.dog.getMode() == EnumMode.PATROL && this.dog.getAttackTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
+    public boolean canContinueToUse() {
+        return this.dog.getMode() == EnumMode.PATROL && this.dog.getTarget() == null && !this.dog.getData(PatrolItem.POS).isEmpty();
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.timeToRecalcPath = 0;
         this.index = 0;
     }
 
     @Override
-    public void resetTask() {
-        this.dog.getNavigator().clearPath();
+    public void stop() {
+        this.dog.getNavigation().stop();
     }
 
     @Override
     public void tick() {
-        if (!this.dog.isEntitySleeping()) {
+        if (!this.dog.isInSittingPose()) {
             if (--this.timeToRecalcPath <= 0) {
                 this.timeToRecalcPath = 10;
 
@@ -61,7 +61,7 @@ public class PatrolAreaGoal extends Goal {
 
                 DoggyTalents2.LOGGER.info("Update" + this.index);
 
-                if (this.dog.getPosition().withinDistance(pos, 2D) || !this.navigator.tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
+                if (this.dog.blockPosition().closerThan(pos, 2D) || !this.navigator.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
                     ++this.index;
                     this.index %= patrolPos.size();
                 }

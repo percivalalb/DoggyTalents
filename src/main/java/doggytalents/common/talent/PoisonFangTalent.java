@@ -22,21 +22,21 @@ public class PoisonFangTalent extends TalentInstance {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (dogIn.isTamed()) {
+        if (dogIn.isTame()) {
             if (this.level() < 5) {
                 return ActionResultType.PASS;
             }
 
-            ItemStack stack = playerIn.getHeldItem(handIn);
+            ItemStack stack = playerIn.getItemInHand(handIn);
 
             if (stack.getItem() == Items.SPIDER_EYE) {
 
-                if (playerIn.getActivePotionEffect(Effects.POISON) == null || dogIn.getDogHunger() < 30) {
+                if (playerIn.getEffect(Effects.POISON) == null || dogIn.getDogHunger() < 30) {
                     return ActionResultType.FAIL;
                 }
 
-                if (!worldIn.isRemote) {
-                    playerIn.clearActivePotions();
+                if (!worldIn.isClientSide) {
+                    playerIn.removeAllEffects();
                     dogIn.setDogHunger(dogIn.getDogHunger() - 30);
                     dogIn.consumeItemFromStack(playerIn, stack);
                 }
@@ -51,7 +51,7 @@ public class PoisonFangTalent extends TalentInstance {
     @Override
     public ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {
         if (this.level() >= 3) {
-            if (effectIn.getPotion() == Effects.POISON) {
+            if (effectIn.getEffect() == Effects.POISON) {
                 return ActionResultType.FAIL;
             }
         }
@@ -63,7 +63,7 @@ public class PoisonFangTalent extends TalentInstance {
     public ActionResultType attackEntityAsMob(AbstractDogEntity dog, Entity entity) {
         if (entity instanceof LivingEntity) {
             if (this.level() > 0) {
-                ((LivingEntity) entity).addPotionEffect(new EffectInstance(Effects.POISON, this.level() * 20, 0));
+                ((LivingEntity) entity).addEffect(new EffectInstance(Effects.POISON, this.level() * 20, 0));
                 return ActionResultType.PASS;
             }
         }

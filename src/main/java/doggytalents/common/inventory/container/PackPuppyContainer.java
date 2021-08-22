@@ -49,26 +49,26 @@ public class PackPuppyContainer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(i);
+        Slot slot = this.slots.get(i);
         int packpuppyLevel = MathHelper.clamp(this.level, 0, 5);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             if (i < 3 * packpuppyLevel) {
-                if (!this.mergeItemStack(itemstack1, 3 * packpuppyLevel, this.inventorySlots.size(), true))
+                if (!this.moveItemStackTo(itemstack1, 3 * packpuppyLevel, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
-            else if (!this.mergeItemStack(itemstack1, 0, 3 * packpuppyLevel, false))
+            else if (!this.moveItemStackTo(itemstack1, 0, 3 * packpuppyLevel, false))
                 return ItemStack.EMPTY;
 
             if (itemstack1.isEmpty())
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             else
-                slot.onSlotChanged();
+                slot.setChanged();
 
             if (itemstack1.getCount() == itemstack.getCount())
                 return ItemStack.EMPTY;
@@ -78,13 +78,13 @@ public class PackPuppyContainer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity player) {
-        return this.dog.getDistanceSq(player) < 144D;
+    public boolean stillValid(PlayerEntity player) {
+        return this.dog.distanceToSqr(player) < 144D;
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity player) {
-        super.onContainerClosed(player);
+    public void removed(PlayerEntity player) {
+        super.removed(player);
     }
 
     public AbstractDogEntity getDog() {

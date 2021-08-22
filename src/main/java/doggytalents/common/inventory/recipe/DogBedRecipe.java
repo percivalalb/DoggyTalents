@@ -28,7 +28,7 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
         for (int col = 0; col < 3; col++) {
             for (int row = 0; row < 3; row++) {
                 if (col == 1 && row < 2) {
-                    IBeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+                    IBeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getItem(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -41,7 +41,7 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
                     }
                 }
                 else {
-                    ICasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(row * inv.getWidth() + col));
+                    ICasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getItem(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -60,19 +60,19 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
     }
 
     @Override
-    public ItemStack getCraftingResult(CraftingInventory inv) {
-        IBeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getStackInSlot(1));
-        ICasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getStackInSlot(0));
+    public ItemStack assemble(CraftingInventory inv) {
+        IBeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getItem(1));
+        ICasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getItem(0));
 
         return DogBedUtil.createItemStack(casingId, beddingId);
     }
 
     @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+        NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
-            ItemStack itemstack = inv.getStackInSlot(i);
+            ItemStack itemstack = inv.getItem(i);
             nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
         }
 
@@ -81,7 +81,7 @@ public class DogBedRecipe extends SpecialRecipe implements IShapedRecipe<Craftin
 
     //Is on a 3x3 grid or bigger
     @Override
-    public boolean canFit(int width, int height) {
+    public boolean canCraftInDimensions(int width, int height) {
         return width >= 3 && height >= 3;
     }
 

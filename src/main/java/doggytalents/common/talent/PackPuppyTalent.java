@@ -35,7 +35,7 @@ public class PackPuppyTalent extends TalentInstance {
     private LazyOptional<?> lazyPackPuppyHandler;
 
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-        return entity.isAlive() && !entity.cannotPickup() && !entity.getItem().getItem().isIn(DoggyTags.PACK_PUPPY_BLACKLIST);// && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
+        return entity.isAlive() && !entity.hasPickUpDelay() && !entity.getItem().getItem().is(DoggyTags.PACK_PUPPY_BLACKLIST);// && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
     };
 
     public PackPuppyTalent(Talent talentIn, int levelIn) {
@@ -51,8 +51,8 @@ public class PackPuppyTalent extends TalentInstance {
 
     @Override
     public void tick(AbstractDogEntity dogIn) {
-        if (dogIn.isAlive() && !dogIn.world.isRemote && this.level() >= 5) {
-            List<ItemEntity> list = dogIn.world.getEntitiesWithinAABB(ItemEntity.class, dogIn.getBoundingBox().grow(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
+        if (dogIn.isAlive() && !dogIn.level.isClientSide && this.level() >= 5) {
+            List<ItemEntity> list = dogIn.level.getEntitiesOfClass(ItemEntity.class, dogIn.getBoundingBox().inflate(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
 
             if (!list.isEmpty()) {
                 for (ItemEntity entityItem : list) {
@@ -62,7 +62,7 @@ public class PackPuppyTalent extends TalentInstance {
                         entityItem.setItem(remaining);
                     } else {
                         entityItem.remove();
-                        dogIn.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.25F, ((dogIn.world.rand.nextFloat() - dogIn.world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        dogIn.playSound(SoundEvents.ITEM_PICKUP, 0.25F, ((dogIn.level.random.nextFloat() - dogIn.level.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                 }
             }
@@ -71,15 +71,15 @@ public class PackPuppyTalent extends TalentInstance {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+        ItemStack stack = playerIn.getItemInHand(handIn);
 
-        if (dogIn.isTamed() && this.level() > 0) { // Dog requirements
-            if (playerIn.isSneaking() && stack.isEmpty()) { // Player requirements
+        if (dogIn.isTame() && this.level() > 0) { // Dog requirements
+            if (playerIn.isShiftKeyDown() && stack.isEmpty()) { // Player requirements
 
                 if (dogIn.canInteract(playerIn)) {
 
-                    if (!playerIn.world.isRemote) {
-                        playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.pack_puppy.version_migration"), false);
+                    if (!playerIn.level.isClientSide) {
+                        playerIn.displayClientMessage(new TranslationTextComponent("talent.doggytalents.pack_puppy.version_migration"), false);
                     }
                     return ActionResultType.SUCCESS;
                 }
@@ -102,7 +102,7 @@ public class PackPuppyTalent extends TalentInstance {
         //TODO either drop inventory or save to respawn data, currently does both
         // No need to drop anything if dog didn't have pack puppy
         for (int i = 0; i < this.packPuppyHandler.getSlots(); ++i) {
-            InventoryHelper.spawnItemStack(dogIn.world, dogIn.getPosX(), dogIn.getPosY(), dogIn.getPosZ(), this.packPuppyHandler.getStackInSlot(i));
+            InventoryHelper.dropItemStack(dogIn.level, dogIn.getX(), dogIn.getY(), dogIn.getZ(), this.packPuppyHandler.getStackInSlot(i));
             this.packPuppyHandler.setStackInSlot(i, ItemStack.EMPTY);
         }
     }

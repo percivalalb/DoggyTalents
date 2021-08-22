@@ -69,26 +69,26 @@ public class ArmourAccessory extends Accessory {
 
     @Override
     public AccessoryInstance createInstance(PacketBuffer buf) {
-        return this.create(buf.readItemStack());
+        return this.create(buf.readItem());
     }
 
     @Override
     public void write(AccessoryInstance instance, PacketBuffer buf) {
         ArmourAccessory.Instance exact = instance.cast(ArmourAccessory.Instance.class);
-        buf.writeItemStack(exact.armourStack);
+        buf.writeItem(exact.armourStack);
     }
 
     @Override
     public void write(AccessoryInstance instance, CompoundNBT compound) {
         ArmourAccessory.Instance exact = instance.cast(ArmourAccessory.Instance.class);
         CompoundNBT itemTag = new CompoundNBT();
-        exact.armourStack.write(itemTag);
+        exact.armourStack.save(itemTag);
         compound.put("item", itemTag);
     }
 
     @Override
     public AccessoryInstance read(CompoundNBT compound) {
-        return this.create(ItemStack.read(compound.getCompound("item")));
+        return this.create(ItemStack.of(compound.getCompound("item")));
     }
 
     public class Instance extends AccessoryInstance implements IDogAlteration {
@@ -106,10 +106,10 @@ public class ArmourAccessory extends Accessory {
             EquipmentSlotType slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {
-                slotType = ((ArmorItem) this.armourStack.getItem()).getEquipmentSlot();
+                slotType = ((ArmorItem) this.armourStack.getItem()).getSlot();
             }
 
-            dogIn.getAttributeManager().reapplyModifiers(this.armourStack.getAttributeModifiers(slotType));
+            dogIn.getAttributes().addTransientAttributeModifiers(this.armourStack.getAttributeModifiers(slotType));
         }
 
         @Override
@@ -117,10 +117,10 @@ public class ArmourAccessory extends Accessory {
             EquipmentSlotType slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {
-                slotType = ((ArmorItem) this.armourStack.getItem()).getEquipmentSlot();
+                slotType = ((ArmorItem) this.armourStack.getItem()).getSlot();
             }
 
-            dogIn.getAttributeManager().removeModifiers(this.armourStack.getAttributeModifiers(slotType));
+            dogIn.getAttributes().removeAttributeModifiers(this.armourStack.getAttributeModifiers(slotType));
         }
 
         @Override
@@ -129,7 +129,7 @@ public class ArmourAccessory extends Accessory {
         }
 
         public boolean hasEffect() {
-            return this.armourStack.hasEffect();
+            return this.armourStack.hasFoil();
         }
 
         @Override

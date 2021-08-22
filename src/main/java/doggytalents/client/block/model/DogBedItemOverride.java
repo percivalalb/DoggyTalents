@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class DogBedItemOverride extends ItemOverrideList {
 
     @Override
-    public IBakedModel getOverrideModel(IBakedModel modelOriginal, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity livingEntity) {
+    public IBakedModel resolve(IBakedModel modelOriginal, ItemStack stack, @Nullable ClientWorld world, @Nullable LivingEntity livingEntity) {
         if (modelOriginal instanceof DogBedModel) {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
             return ((DogBedModel) modelOriginal).getModelVariant(materials.getLeft(), materials.getRight(), Direction.NORTH);

@@ -20,10 +20,10 @@ public class SmallButton extends Button {
     }
 
     @Override
-    public void renderWidget(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
+    public void renderButton(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
        Minecraft mc = Minecraft.getInstance();
-       FontRenderer font = mc.fontRenderer;
-       mc.getTextureManager().bindTexture(Resources.SMALL_WIDGETS);
+       FontRenderer font = mc.font;
+       mc.getTextureManager().bind(Resources.SMALL_WIDGETS);
        RenderSystem.color4f(1.0F, 1.0F, 1.0F, this.alpha);
        int i = this.getYImage(this.isHovered());
        RenderSystem.enableBlend();

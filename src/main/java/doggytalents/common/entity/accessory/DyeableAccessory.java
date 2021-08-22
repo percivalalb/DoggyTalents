@@ -111,7 +111,7 @@ public class DyeableAccessory extends Accessory {
 
         @Override
         public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-            ItemStack stack = playerIn.getHeldItem(handIn);
+            ItemStack stack = playerIn.getItemInHand(handIn);
 
             DyeColor dyeColor = DyeColor.getColor(stack);
             if (dyeColor != null) {

@@ -24,15 +24,15 @@ public class BedFinderTalent extends TalentInstance {
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
         if (this.level() > 0) {
-            if (!playerIn.isPassenger(dogIn)) {
-                if (playerIn.getHeldItem(handIn).getItem() == Items.BONE && dogIn.canInteract(playerIn)) {
+            if (!playerIn.hasPassenger(dogIn)) {
+                if (playerIn.getItemInHand(handIn).getItem() == Items.BONE && dogIn.canInteract(playerIn)) {
 
                     if (dogIn.startRiding(playerIn)) {
-                        if (!dogIn.world.isRemote) {
-                            dogIn.setSitting(true);
+                        if (!dogIn.level.isClientSide) {
+                            dogIn.setOrderedToSit(true);
                         }
 
-                        playerIn.sendStatusMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
+                        playerIn.displayClientMessage(new TranslationTextComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
                         return ActionResultType.SUCCESS;
                     }
                 }

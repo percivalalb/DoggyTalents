@@ -17,7 +17,7 @@ public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         LivingEntity owner = this.dog.getOwner();
         if (owner == null) {
             return false;
@@ -29,7 +29,7 @@ public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
 
         this.owner = owner;
 
-        if (super.shouldExecute()) {
+        if (super.canUse()) {
             this.owner = owner;
             return true;
         }
@@ -38,12 +38,12 @@ public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
     }
 
     @Override
-    protected double getTargetDistance() {
+    protected double getFollowDistance() {
         return 6D;
     }
 
     @Override
-    protected void findNearestTarget() {
-       this.nearestTarget = this.dog.world.getClosestEntity(this.targetClass, this.targetEntitySelector, this.owner, this.dog.getPosX(), this.dog.getPosYEye(), this.dog.getPosZ(), this.getTargetableArea(this.getTargetDistance()));
+    protected void findTarget() {
+       this.target = this.dog.level.getNearestLoadedEntity(this.targetType, this.targetConditions, this.owner, this.dog.getX(), this.dog.getEyeY(), this.dog.getZ(), this.getTargetSearchArea(this.getFollowDistance()));
     }
 }

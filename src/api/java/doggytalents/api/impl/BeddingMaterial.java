@@ -49,7 +49,7 @@ public class BeddingMaterial extends IBeddingMaterial {
     @Override
     public ITextComponent getTooltip() {
         if (this.translationKey == null) {
-            this.translationKey = Util.makeTranslationKey("dogbed.bedding", DoggyTalentsAPI.BEDDING_MATERIAL.getKey(this));
+            this.translationKey = Util.makeDescriptionId("dogbed.bedding", DoggyTalentsAPI.BEDDING_MATERIAL.getKey(this));
         }
 
         return new TranslationTextComponent(this.translationKey);
@@ -60,6 +60,6 @@ public class BeddingMaterial extends IBeddingMaterial {
      */
     @Override
     public Ingredient getIngredient() {
-        return Ingredient.fromItems(this.block.get());
+        return Ingredient.of(this.block.get());
     }
 }

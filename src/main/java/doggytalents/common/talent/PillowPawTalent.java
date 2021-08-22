@@ -51,9 +51,9 @@ public class PillowPawTalent extends TalentInstance {
     @Override
     public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
         if (this.level() > 0) {
-            return ActionResult.resultSuccess(distance - this.level() * 3);
+            return ActionResult.success(distance - this.level() * 3);
         }
 
-        return ActionResult.resultPass(0F);
+        return ActionResult.pass(0F);
     }
 }

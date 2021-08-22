@@ -46,7 +46,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
+    public void run(DirectoryCache cache) throws IOException {
         Path path = this.generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
         Consumer<Advancement> consumer = (advancement) -> {
@@ -56,7 +56,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
                 Path path1 = getPath(path, advancement);
 
                 try {
-                    IDataProvider.save(GSON, cache, advancement.copy().serialize(), path1);
+                    IDataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), path1);
                 } catch (IOException ioexception) {
                     LOGGER.error("Couldn't save advancement {}", path1, ioexception);
                 }
@@ -66,29 +66,29 @@ public class DTAdvancementProvider extends AdvancementProvider {
         // Disable advancements for now
         if (true) return;
 
-        Advancement advancement = Advancement.Builder.builder()
-                .withDisplay(DisplayInfoBuilder.create().icon(DoggyItems.TRAINING_TREAT).frame(FrameType.TASK).translate("dog.root").background("stone.png").noToast().noAnnouncement().build())
-                .withCriterion("tame_dog", TameAnimalTrigger.Instance.create(EntityPredicate.Builder.create().type(DoggyEntityTypes.DOG.get()).build()))
+        Advancement advancement = Advancement.Builder.advancement()
+                .display(DisplayInfoBuilder.create().icon(DoggyItems.TRAINING_TREAT).frame(FrameType.TASK).translate("dog.root").background("stone.png").noToast().noAnnouncement().build())
+                .addCriterion("tame_dog", TameAnimalTrigger.Instance.tamedAnimal(EntityPredicate.Builder.entity().of(DoggyEntityTypes.DOG.get()).build()))
                 //.withCriterion("get_dog", ItemUseTrigger.TameAnimalTrigger.Instance.create(EntityPredicate.Builder.create().type(DoggyEntityTypes.DOG.get()).build()))
-                .withRequirementsStrategy(IRequirementsStrategy.OR)
-                .register(consumer, Util.getResourcePath("default/tame_dog"));
+                .requirements(IRequirementsStrategy.OR)
+                .save(consumer, Util.getResourcePath("default/tame_dog"));
 
-        Advancement advancement1 = Advancement.Builder.builder()
-                .withParent(advancement)
-                .withDisplay(DisplayInfoBuilder.create().icon(Items.WOODEN_PICKAXE).frame(FrameType.TASK).translate("dog.level_talent").build())
-                .withCriterion("level_talent", InventoryChangeTrigger.Instance.forItems(Blocks.COBBLESTONE))
-                .register(consumer, Util.getResourcePath("default/level_talent"));
-        Advancement advancement2 = Advancement.Builder.builder()
-                .withParent(advancement1)
-                .withDisplay(DisplayInfoBuilder.create().icon(DoggyItems.CAPE).frame(FrameType.TASK).translate("dog.accessorise").build())
-                .withCriterion("accessorise", InventoryChangeTrigger.Instance.forItems(Items.STONE_PICKAXE))
-                .register(consumer, Util.getResourcePath("default/accessorise"));
+        Advancement advancement1 = Advancement.Builder.advancement()
+                .parent(advancement)
+                .display(DisplayInfoBuilder.create().icon(Items.WOODEN_PICKAXE).frame(FrameType.TASK).translate("dog.level_talent").build())
+                .addCriterion("level_talent", InventoryChangeTrigger.Instance.hasItems(Blocks.COBBLESTONE))
+                .save(consumer, Util.getResourcePath("default/level_talent"));
+        Advancement advancement2 = Advancement.Builder.advancement()
+                .parent(advancement1)
+                .display(DisplayInfoBuilder.create().icon(DoggyItems.CAPE).frame(FrameType.TASK).translate("dog.accessorise").build())
+                .addCriterion("accessorise", InventoryChangeTrigger.Instance.hasItems(Items.STONE_PICKAXE))
+                .save(consumer, Util.getResourcePath("default/accessorise"));
 
-        Advancement advancement3 = Advancement.Builder.builder()
-                .withParent(advancement2)
-                .withDisplay(DisplayInfoBuilder.create().icon(DoggyItems.RADIO_COLLAR).frame(FrameType.TASK).translate("dog.radio_collar").build())
-                .withCriterion("iron", InventoryChangeTrigger.Instance.forItems(Items.IRON_INGOT))
-                .register(consumer, Util.getResourcePath("default/radio_collar"));
+        Advancement advancement3 = Advancement.Builder.advancement()
+                .parent(advancement2)
+                .display(DisplayInfoBuilder.create().icon(DoggyItems.RADIO_COLLAR).frame(FrameType.TASK).translate("dog.radio_collar").build())
+                .addCriterion("iron", InventoryChangeTrigger.Instance.hasItems(Items.IRON_INGOT))
+                .save(consumer, Util.getResourcePath("default/radio_collar"));
     }
 
     private static Path getPath(Path pathIn, Advancement advancementIn) {

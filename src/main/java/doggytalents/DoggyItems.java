@@ -68,23 +68,23 @@ public class DoggyItems {
     //public static final RegistryObject<Item> PATROL = registerWith("patrol_item", PatrolItem::new, 1);
 
     private static Item.Properties createInitialProp() {
-        return new Item.Properties().group(DoggyItemGroups.GENERAL);
+        return new Item.Properties().tab(DoggyItemGroups.GENERAL);
     }
 
     private static RegistryObject<Item> registerThrowBone(final String name) {
-        return register(name, () -> new ThrowableItem(THROW_BONE_WET, Items.BONE.delegate, createInitialProp().maxStackSize(2)));
+        return register(name, () -> new ThrowableItem(THROW_BONE_WET, Items.BONE.delegate, createInitialProp().stacksTo(2)));
     }
 
     private static RegistryObject<Item> registerThrowStick(final String name) {
-        return register(name, () -> new ThrowableItem(THROW_STICK_WET, THROW_STICK, createInitialProp().maxStackSize(8)));
+        return register(name, () -> new ThrowableItem(THROW_STICK_WET, THROW_STICK, createInitialProp().stacksTo(8)));
     }
 
     private static RegistryObject<Item> registerThrowBoneWet(final String name) {
-        return register(name, () -> new DroolBoneItem(THROW_BONE, createInitialProp().maxStackSize(1)));
+        return register(name, () -> new DroolBoneItem(THROW_BONE, createInitialProp().stacksTo(1)));
     }
 
     private static RegistryObject<Item> registerThrowStickWet(final String name) {
-        return register(name, () -> new DroolBoneItem(THROW_STICK, createInitialProp().maxStackSize(1)));
+        return register(name, () -> new DroolBoneItem(THROW_STICK, createInitialProp().stacksTo(1)));
     }
 
     private static RegistryObject<Item> registerSizeBone(final String name, final SizeBoneItem.Type typeIn) {
@@ -104,7 +104,7 @@ public class DoggyItems {
     }
 
     private static <T extends Item> RegistryObject<T> registerWith(final String name, Function<Item.Properties, T> itemConstructor, int maxStackSize) {
-        return register(name, () -> itemConstructor.apply(createInitialProp().maxStackSize(maxStackSize)));
+        return register(name, () -> itemConstructor.apply(createInitialProp().stacksTo(maxStackSize)));
     }
 
     private static <T extends Item> RegistryObject<T> register(final String name, Function<Item.Properties, T> itemConstructor) {

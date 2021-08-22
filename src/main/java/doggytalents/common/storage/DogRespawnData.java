@@ -60,7 +60,7 @@ public class DogRespawnData implements IDogData {
 
     public void populate(DogEntity dogIn) {
         this.data = new CompoundNBT();
-        dogIn.writeWithoutTypeId(this.data);
+        dogIn.saveWithoutId(this.data);
 
         // Remove tags that don't need to be saved
         for (String tag : TAGS_TO_REMOVE) {
@@ -80,14 +80,14 @@ public class DogRespawnData implements IDogData {
             return null;
         }
 
-        CompoundNBT compoundnbt = dog.writeWithoutTypeId(new CompoundNBT());
-        UUID uuid = dog.getUniqueID();
+        CompoundNBT compoundnbt = dog.saveWithoutId(new CompoundNBT());
+        UUID uuid = dog.getUUID();
         compoundnbt.merge(this.data);
-        dog.setUniqueId(uuid);
-        dog.read(compoundnbt);
+        dog.setUUID(uuid);
+        dog.load(compoundnbt);
 
         dog.setMode(EnumMode.DOCILE);
-        dog.setSitting(true);
+        dog.setOrderedToSit(true);
 
         return dog;
     }

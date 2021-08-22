@@ -37,20 +37,20 @@ public class SizeBoneItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (dogIn.getGrowingAge() < 0) {
+        if (dogIn.getAge() < 0) {
 
-            if (!playerIn.world.isRemote){
-                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUniqueID());
+            if (!playerIn.level.isClientSide){
+                playerIn.sendMessage(new TranslationTextComponent("treat."+this.type.getName()+".too_young"), dogIn.getUUID());
             }
 
             return ActionResultType.FAIL;
         }
         else {
-            if (!playerIn.abilities.isCreativeMode) {
-                playerIn.getHeldItem(handIn).shrink(1);
+            if (!playerIn.abilities.instabuild) {
+                playerIn.getItemInHand(handIn).shrink(1);
             }
 
-            if (!playerIn.world.isRemote) {
+            if (!playerIn.level.isClientSide) {
                 dogIn.setDogSize(dogIn.getDogSize() + (this.type == Type.BIG ? 1 : -1));
             }
             return ActionResultType.SUCCESS;

@@ -14,6 +14,6 @@ public class DoggyTags {
     public static ITag.INamedTag<Item> TREATS = tag("treats");
 
     private static ITag.INamedTag<Item> tag(String name) {
-        return ItemTags.makeWrapperTag(Util.getResourcePath(name));
+        return ItemTags.bind(Util.getResourcePath(name));
     }
 }

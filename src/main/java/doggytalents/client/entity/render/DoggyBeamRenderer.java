@@ -19,13 +19,13 @@ public class DoggyBeamRenderer<T extends Entity> extends EntityRenderer<T> {
 
     private final net.minecraft.client.renderer.ItemRenderer itemRenderer;
     private final float scale;
-    private final boolean field_229126_f_;
+    private final boolean fullBright;
 
     public DoggyBeamRenderer(EntityRendererManager rendererManager, net.minecraft.client.renderer.ItemRenderer p_i226035_2_, float p_i226035_3_, boolean p_i226035_4_) {
         super(rendererManager);
         this.itemRenderer = p_i226035_2_;
         this.scale = p_i226035_3_;
-        this.field_229126_f_ = p_i226035_4_;
+        this.fullBright = p_i226035_4_;
     }
 
     public DoggyBeamRenderer(EntityRendererManager renderManagerIn, net.minecraft.client.renderer.ItemRenderer itemRendererIn) {
@@ -33,23 +33,23 @@ public class DoggyBeamRenderer<T extends Entity> extends EntityRenderer<T> {
     }
 
     @Override
-    protected int getBlockLight(T entityIn, BlockPos posIn) {
-        return this.field_229126_f_ ? 15 : super.getBlockLight(entityIn, posIn);
+    protected int getBlockLightLevel(T entityIn, BlockPos posIn) {
+        return this.fullBright ? 15 : super.getBlockLightLevel(entityIn, posIn);
     }
 
     @Override
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        matrixStackIn.push();
+        matrixStackIn.pushPose();
         matrixStackIn.scale(this.scale, this.scale, this.scale);
-        matrixStackIn.rotate(this.renderManager.getCameraOrientation());
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180.0F));
-        this.itemRenderer.renderItem(new ItemStack(Items.SNOWBALL), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
-        matrixStackIn.pop();
+        matrixStackIn.mulPose(this.entityRenderDispatcher.cameraOrientation());
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+        this.itemRenderer.renderStatic(new ItemStack(Items.SNOWBALL), ItemCameraTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn);
+        matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
     }
 
     @Override
-    public ResourceLocation getEntityTexture(Entity entity) {
-        return PlayerContainer.LOCATION_BLOCKS_TEXTURE;
+    public ResourceLocation getTextureLocation(Entity entity) {
+        return PlayerContainer.BLOCK_ATLAS;
     }
 }

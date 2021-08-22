@@ -107,7 +107,7 @@ public class DoggyTalents2 {
 
             // If mc is null we are running data gen so no need to add listener
             if (mc != null) {
-                ((IReloadableResourceManager) mc.getResourceManager()).addReloadListener(DogTextureManager.INSTANCE);
+                ((IReloadableResourceManager) mc.getResourceManager()).registerReloadListener(DogTextureManager.INSTANCE);
             }
         });
 

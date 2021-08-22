@@ -20,6 +20,9 @@ import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
+import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder.FaceBuilder;
+
 public class DTBlockstateProvider extends BlockStateProvider {
 
     public DTBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {

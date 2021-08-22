@@ -17,7 +17,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
 
     public static final IDogFoodPredicate INNER_DYN_PRED = (stackIn) -> {
         Item item = stackIn.getItem();
-        return item == Items.ROTTEN_FLESH || (item.isFood() && item.isIn(ItemTags.FISHES));
+        return item == Items.ROTTEN_FLESH || (item.isEdible() && item.is(ItemTags.FISHES));
     };
 
     public HappyEaterTalent(Talent talentIn, int levelIn) {
@@ -27,7 +27,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     @Override
     public ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
         hunger += diff / 10 * this.level();
-        return ActionResult.resultSuccess(hunger);
+        return ActionResult.success(hunger);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
                 return true;
             }
 
-            if (this.level() >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
+            if (this.level() >= 5 && item.isEdible() && item.is(ItemTags.FISHES)) {
                 return true;
             }
         }
@@ -65,8 +65,8 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
                 return ActionResultType.SUCCESS;
             }
 
-            if (this.level() >= 5 && item.isFood() && item.isIn(ItemTags.FISHES)) {
-                dogIn.addHunger(item.getFood().getHealing() * 5);
+            if (this.level() >= 5 && item.isEdible() && item.is(ItemTags.FISHES)) {
+                dogIn.addHunger(item.getFoodProperties().getNutrition() * 5);
                 dogIn.consumeItemFromStack(entityIn, stackIn);
                 return ActionResultType.SUCCESS;
             }

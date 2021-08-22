@@ -137,23 +137,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
 
-    private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.createKey(DogEntity.class, DataSerializers.OPTIONAL_TEXT_COMPONENT);
-    private static final DataParameter<Byte> DOG_FLAGS = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<Optional<ITextComponent>> LAST_KNOWN_NAME = EntityDataManager.defineId(DogEntity.class, DataSerializers.OPTIONAL_COMPONENT);
+    private static final DataParameter<Byte> DOG_FLAGS = EntityDataManager.defineId(DogEntity.class, DataSerializers.BYTE);
 
-    private static final DataParameter<Float> HUNGER_INT = EntityDataManager.createKey(DogEntity.class, DataSerializers.FLOAT);
-    private static final DataParameter<String> CUSTOM_SKIN = EntityDataManager.createKey(DogEntity.class, DataSerializers.STRING);
+    private static final DataParameter<Float> HUNGER_INT = EntityDataManager.defineId(DogEntity.class, DataSerializers.FLOAT);
+    private static final DataParameter<String> CUSTOM_SKIN = EntityDataManager.defineId(DogEntity.class, DataSerializers.STRING);
 
-    private static final DataParameter<Byte> SIZE = EntityDataManager.createKey(DogEntity.class, DataSerializers.BYTE);
-    private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.createKey(DogEntity.class, DataSerializers.ITEMSTACK);
+    private static final DataParameter<Byte> SIZE = EntityDataManager.defineId(DogEntity.class, DataSerializers.BYTE);
+    private static final DataParameter<ItemStack> BONE_VARIANT = EntityDataManager.defineId(DogEntity.class, DataSerializers.ITEM_STACK);
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
-    private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<List<TalentInstance>>> TALENTS = Cache.make(() -> (DataParameter<List<TalentInstance>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<EnumGender>> GENDER = Cache.make(() -> (DataParameter<EnumGender>) EntityDataManager.createKey(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<EnumMode>> MODE = Cache.make(() -> (DataParameter<EnumMode>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
-    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.createKey(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (DataParameter<List<AccessoryInstance>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<List<TalentInstance>>> TALENTS = Cache.make(() -> (DataParameter<List<TalentInstance>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<DogLevel>> DOG_LEVEL = Cache.make(() -> (DataParameter<DogLevel>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<EnumGender>> GENDER = Cache.make(() -> (DataParameter<EnumGender>) EntityDataManager.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<EnumMode>> MODE = Cache.make(() -> (DataParameter<EnumMode>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<DataParameter<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (DataParameter<DimensionDependantArg<Optional<BlockPos>>>) EntityDataManager.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
 
     public static final void initDataParameters() {
         ACCESSORIES.get();
@@ -192,26 +192,26 @@ public class DogEntity extends AbstractDogEntity {
 
     public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
         super(type, worldIn);
-        this.setTamed(false);
-        this.setGender(EnumGender.random(this.getRNG()));
+        this.setTame(false);
+        this.setGender(EnumGender.random(this.getRandom()));
     }
 
     @Override
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(ACCESSORIES.get(), new ArrayList<>(4));
-        this.dataManager.register(TALENTS.get(), new ArrayList<>(4));
-        this.dataManager.register(LAST_KNOWN_NAME, Optional.empty());
-        this.dataManager.register(DOG_FLAGS, (byte) 0);
-        this.dataManager.register(GENDER.get(), EnumGender.UNISEX);
-        this.dataManager.register(MODE.get(), EnumMode.DOCILE);
-        this.dataManager.register(HUNGER_INT, 60F);
-        this.dataManager.register(CUSTOM_SKIN, "");
-        this.dataManager.register(DOG_LEVEL.get(), new DogLevel(0, 0));
-        this.dataManager.register(SIZE, (byte) 3);
-        this.dataManager.register(BONE_VARIANT, ItemStack.EMPTY);
-        this.dataManager.register(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
-        this.dataManager.register(DOG_BOWL_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(ACCESSORIES.get(), new ArrayList<>(4));
+        this.entityData.define(TALENTS.get(), new ArrayList<>(4));
+        this.entityData.define(LAST_KNOWN_NAME, Optional.empty());
+        this.entityData.define(DOG_FLAGS, (byte) 0);
+        this.entityData.define(GENDER.get(), EnumGender.UNISEX);
+        this.entityData.define(MODE.get(), EnumMode.DOCILE);
+        this.entityData.define(HUNGER_INT, 60F);
+        this.entityData.define(CUSTOM_SKIN, "");
+        this.entityData.define(DOG_LEVEL.get(), new DogLevel(0, 0));
+        this.entityData.define(SIZE, (byte) 3);
+        this.entityData.define(BONE_VARIANT, ItemStack.EMPTY);
+        this.entityData.define(DOG_BED_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
+        this.entityData.define(DOG_BOWL_LOCATION.get(), new DimensionDependantArg<>(() -> DataSerializers.OPTIONAL_BLOCK_POS));
     }
 
     @Override
@@ -234,7 +234,7 @@ public class DogEntity extends AbstractDogEntity {
         this.goalSelector.addGoal(10, new LookRandomlyGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setCallsForHelp());
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
@@ -244,26 +244,26 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.WOLF_STEP, 0.15F, 1.0F);
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        if (this.rand.nextInt(3) == 0) {
-            return this.isTamed() && this.getHealth() < 10.0F ? SoundEvents.ENTITY_WOLF_WHINE : SoundEvents.ENTITY_WOLF_PANT;
+        if (this.random.nextInt(3) == 0) {
+            return this.isTame() && this.getHealth() < 10.0F ? SoundEvents.WOLF_WHINE : SoundEvents.WOLF_PANT;
         } else {
-            return SoundEvents.ENTITY_WOLF_AMBIENT;
+            return SoundEvents.WOLF_AMBIENT;
         }
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ENTITY_WOLF_HURT;
+        return SoundEvents.WOLF_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_WOLF_DEATH;
+        return SoundEvents.WOLF_DEATH;
     }
 
     @Override
@@ -300,18 +300,18 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void handleStatusUpdate(byte id) {
+    public void handleEntityEvent(byte id) {
         if (id == doggytalents.common.lib.Constants.EntityState.WOLF_START_SHAKING) {
             this.startShaking();
         } else if (id == doggytalents.common.lib.Constants.EntityState.WOLF_INTERUPT_SHAKING) {
             this.finishShaking();
         } else {
-            super.handleStatusUpdate(id);
+            super.handleEntityEvent(id);
         }
     }
 
     public float getTailRotation() {
-        return this.isTamed() ? (0.55F - (this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
+        return this.isTame() ? (0.55F - (this.getMaxHealth() - this.getHealth()) * 0.02F) * (float)Math.PI : ((float)Math.PI / 5F);
     }
 
     @Override
@@ -325,18 +325,18 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public Vector3d getLeashStartPosition() {
-        return new Vector3d(0.0D, 0.6F * this.getEyeHeight(), this.getWidth() * 0.4F);
+    public Vector3d getLeashOffset() {
+        return new Vector3d(0.0D, 0.6F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
     }
 
     @Override
-    public int getVerticalFaceSpeed() {
-        return this.isEntitySleeping() ? 20 : super.getVerticalFaceSpeed();
+    public int getMaxHeadXRot() {
+        return this.isInSittingPose() ? 20 : super.getMaxHeadXRot();
     }
 
     @Override
-    public double getYOffset() {
-        return this.getRidingEntity() instanceof PlayerEntity ? 0.5D : 0.0D;
+    public double getMyRidingOffset() {
+        return this.getVehicle() instanceof PlayerEntity ? 0.5D : 0.0D;
     }
 
     @Override
@@ -353,20 +353,20 @@ public class DogEntity extends AbstractDogEntity {
 
             boolean inWater = this.isInWater();
             // If inWater is false then isInRain is true in the or statement
-            boolean inRain = inWater ? false : this.isWet();
+            boolean inRain = inWater ? false : this.isInWaterOrRain();
             boolean inBubbleColumn = this.isInBubbleColumn();
 
             if (inWater || inRain || inBubbleColumn) {
                 if (this.wetSource == null) {
                     this.wetSource = WetSource.of(inWater, inBubbleColumn, inRain);
                 }
-                if (this.isShaking && !this.world.isRemote) {
+                if (this.isShaking && !this.level.isClientSide) {
                     this.finishShaking();
-                    this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_INTERUPT_SHAKING);
+                    this.level.broadcastEntityEvent(this, doggytalents.common.lib.Constants.EntityState.WOLF_INTERUPT_SHAKING);
                 }
             } else if ((this.wetSource != null || this.isShaking) && this.isShaking) {
                 if (this.timeWolfIsShaking == 0.0F) {
-                    this.playSound(SoundEvents.ENTITY_WOLF_SHAKE, this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+                    this.playSound(SoundEvents.WOLF_SHAKE, this.getSoundVolume(), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
                 }
 
                 this.prevTimeWolfIsShaking = this.timeWolfIsShaking;
@@ -385,24 +385,24 @@ public class DogEntity extends AbstractDogEntity {
                 }
 
                 if (this.timeWolfIsShaking > 0.4F) {
-                    float f = (float)this.getPosY();
+                    float f = (float)this.getY();
                     int i = (int)(MathHelper.sin((this.timeWolfIsShaking - 0.4F) * (float)Math.PI) * 7.0F);
-                    Vector3d vec3d = this.getMotion();
+                    Vector3d vec3d = this.getDeltaMovement();
 
                     for (int j = 0; j < i; ++j) {
-                        float f1 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-                        float f2 = (this.rand.nextFloat() * 2.0F - 1.0F) * this.getWidth() * 0.5F;
-                        this.world.addParticle(ParticleTypes.SPLASH, this.getPosX() + f1, f + 0.8F, this.getPosZ() + f2, vec3d.x, vec3d.y, vec3d.z);
+                        float f1 = (this.random.nextFloat() * 2.0F - 1.0F) * this.getBbWidth() * 0.5F;
+                        float f2 = (this.random.nextFloat() * 2.0F - 1.0F) * this.getBbWidth() * 0.5F;
+                        this.level.addParticle(ParticleTypes.SPLASH, this.getX() + f1, f + 0.8F, this.getZ() + f2, vec3d.x, vec3d.y, vec3d.z);
                     }
                 }
             }
 
             // On server side
-            if (!this.world.isRemote) {
+            if (!this.level.isClientSide) {
 
                 // Every 2 seconds
-                if (this.ticksExisted % 40 == 0) {
-                    DogLocationStorage.get(this.world).getOrCreateData(this).update(this);
+                if (this.tickCount % 40 == 0) {
+                    DogLocationStorage.get(this.level).getOrCreateData(this).update(this);
 
                     if (this.getOwner() != null) {
                         this.setOwnersName(this.getOwner().getName());
@@ -415,26 +415,26 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void livingTick() {
-        super.livingTick();
-        if (!this.world.isRemote && this.wetSource != null && !this.isShaking && !this.hasPath() && this.isOnGround()) {
+    public void aiStep() {
+        super.aiStep();
+        if (!this.level.isClientSide && this.wetSource != null && !this.isShaking && !this.isPathFinding() && this.isOnGround()) {
             this.startShaking();
-            this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_START_SHAKING);
+            this.level.broadcastEntityEvent(this, doggytalents.common.lib.Constants.EntityState.WOLF_START_SHAKING);
         }
 
-        if (!this.world.isRemote) {
+        if (!this.level.isClientSide) {
             if (!ConfigValues.DISABLE_HUNGER) {
                 this.prevHungerTick = this.hungerTick;
 
-                if (!this.isBeingRidden() && !this.isEntitySleeping()) {
+                if (!this.isVehicle() && !this.isInSittingPose()) {
                     this.hungerTick += 1;
                 }
 
                 for (IDogAlteration alter : this.alterations) {
                     ActionResult<Integer> result = alter.hungerTick(this, this.hungerTick - this.prevHungerTick);
 
-                    if (result.getType().isSuccess()) {
-                        this.hungerTick = result.getResult() + this.prevHungerTick;
+                    if (result.getResult().shouldSwing()) {
+                        this.hungerTick = result.getObject() + this.prevHungerTick;
                     }
                 }
 
@@ -447,15 +447,15 @@ public class DogEntity extends AbstractDogEntity {
             this.prevHealingTick = this.healingTick;
             this.healingTick += 8;
 
-            if (this.isEntitySleeping()) {
+            if (this.isInSittingPose()) {
                 this.healingTick += 4;
             }
 
             for (IDogAlteration alter : this.alterations) {
                 ActionResult<Integer> result = alter.healingTick(this, this.healingTick - this.prevHealingTick);
 
-                if (result.getType().isSuccess()) {
-                    this.healingTick = result.getResult() + this.prevHealingTick;
+                if (result.getResult().shouldSwing()) {
+                    this.healingTick = result.getObject() + this.prevHealingTick;
                 }
             }
 
@@ -468,20 +468,20 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if(ConfigValues.DIRE_PARTICLES && this.world.isRemote && this.getLevel().isDireDog()) {
+        if(ConfigValues.DIRE_PARTICLES && this.level.isClientSide && this.getLevel().isDireDog()) {
             for (int i = 0; i < 2; i++) {
-                this.world.addParticle(ParticleTypes.PORTAL, this.getPosXRandom(0.5D), this.getPosYRandom() - 0.25D, this.getPosZRandom(0.5D), (this.rand.nextDouble() - 0.5D) * 2D, -this.rand.nextDouble(), (this.rand.nextDouble() - 0.5D) * 2D);
+                this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2D);
             }
         }
 
         // Check if dog bowl still exists every 50t/2.5s, if not remove
-        if (this.ticksExisted % 50 == 0) {
-            RegistryKey<World> dimKey = this.world.getDimensionKey();
+        if (this.tickCount % 50 == 0) {
+            RegistryKey<World> dimKey = this.level.dimension();
             Optional<BlockPos> bowlPos = this.getBowlPos(dimKey);
 
             // If the dog has a food bowl in this dimension then check if it is still there
             // Only check if the chunk it is in is loaded
-            if (bowlPos.isPresent() && this.world.isBlockLoaded(bowlPos.get()) && !this.world.getBlockState(bowlPos.get()).matchesBlock(DoggyBlocks.FOOD_BOWL.get())) {
+            if (bowlPos.isPresent() && this.level.hasChunkAt(bowlPos.get()) && !this.level.getBlockState(bowlPos.get()).is(DoggyBlocks.FOOD_BOWL.get())) {
                 this.setBowlPos(dimKey, Optional.empty());
             }
         }
@@ -490,14 +490,14 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 
-        ItemStack stack = player.getHeldItem(hand);
+        ItemStack stack = player.getItemInHand(hand);
 
-        if (this.isTamed()) {
+        if (this.isTame()) {
             if (stack.getItem() == Items.STICK && this.canInteract(player)) {
 
-                if (this.world.isRemote) {
+                if (this.level.isClientSide) {
                     DogInfoScreen.open(this);
                 }
 
@@ -506,18 +506,18 @@ public class DogEntity extends AbstractDogEntity {
         } else { // Not tamed
             if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
 
-                if (!this.world.isRemote) {
-                    this.consumeItemFromStack(player, stack);
+                if (!this.level.isClientSide) {
+                    this.usePlayerItem(player, stack);
 
-                    if (stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.rand.nextInt(3) == 0) {
-                        this.setTamedBy(player);
-                        this.navigator.clearPath();
-                        this.setAttackTarget((LivingEntity) null);
-                        this.setSitting(true);
+                    if (stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.random.nextInt(3) == 0) {
+                        this.tame(player);
+                        this.navigation.stop();
+                        this.setTarget((LivingEntity) null);
+                        this.setOrderedToSit(true);
                         this.setHealth(20.0F);
-                        this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_HEARTS);
+                        this.level.broadcastEntityEvent(this, doggytalents.common.lib.Constants.EntityState.WOLF_HEARTS);
                     } else {
-                        this.world.setEntityState(this, doggytalents.common.lib.Constants.EntityState.WOLF_SMOKE);
+                        this.level.broadcastEntityEvent(this, doggytalents.common.lib.Constants.EntityState.WOLF_SMOKE);
                     }
                 }
 
@@ -538,18 +538,18 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         for (IDogAlteration alter : this.alterations) {
-            ActionResultType result = alter.processInteract(this, this.world, player, hand);
+            ActionResultType result = alter.processInteract(this, this.level, player, hand);
             if (result != ActionResultType.PASS) {
                 return result;
             }
         }
 
-        ActionResultType actionresulttype = super.getEntityInteractionResult(player, hand);
-        if ((!actionresulttype.isSuccessOrConsume() || this.isChild()) && this.canInteract(player)) {
-            this.setSitting(!this.isQueuedToSit());
-            this.isJumping = false;
-            this.navigator.clearPath();
-            this.setAttackTarget(null);
+        ActionResultType actionresulttype = super.mobInteract(player, hand);
+        if ((!actionresulttype.consumesAction() || this.isBaby()) && this.canInteract(player)) {
+            this.setOrderedToSit(!this.isOrderedToSit());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setTarget(null);
             return ActionResultType.SUCCESS;
         }
 
@@ -561,7 +561,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canBeRiddenInWater(this, rider);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -576,7 +576,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canTrample(this, state, pos, fallDistance);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -587,37 +587,37 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean onLivingFall(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier) {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.onLivingFall(this, distance, damageMultiplier);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
         }
 
-        return super.onLivingFall(distance, damageMultiplier);
+        return super.causeFallDamage(distance, damageMultiplier);
     }
 
     // TODO
     @Override
-    public int getMaxFallHeight() {
-        return super.getMaxFallHeight();
+    public int getMaxFallDistance() {
+        return super.getMaxFallDistance();
     }
 
     @Override
     protected int calculateFallDamage(float distance, float damageMultiplier) {
-        EffectInstance effectInst = this.getActivePotionEffect(Effects.JUMP_BOOST);
+        EffectInstance effectInst = this.getEffect(Effects.JUMP);
         float f = effectInst == null ? 0.0F : effectInst.getAmplifier() + 1;
         distance -= f;
 
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Float> result = alter.calculateFallDistance(this, distance);
 
-            if (result.getType().isSuccess()) {
-                distance = result.getResult();
+            if (result.getResult().shouldSwing()) {
+                distance = result.getObject();
                 break;
             }
         }
@@ -630,7 +630,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canBreatheUnderwater(this);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -645,8 +645,8 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Integer> result = alter.decreaseAirSupply(this, air);
 
-            if (result.getType().isSuccess()) {
-                return result.getResult();
+            if (result.getResult().shouldSwing()) {
+                return result.getObject();
             }
         }
 
@@ -654,18 +654,18 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    protected int determineNextAir(int currentAir) {
+    protected int increaseAirSupply(int currentAir) {
         currentAir += 4;
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Integer> result = alter.determineNextAir(this, currentAir);
 
-            if (result.getType().isSuccess()) {
-                currentAir = result.getResult();
+            if (result.getResult().shouldSwing()) {
+                currentAir = result.getObject();
                 break;
             }
         }
 
-        return Math.min(currentAir, this.getMaxAir());
+        return Math.min(currentAir, this.getMaxAirSupply());
     }
 
     @Override
@@ -677,7 +677,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canAttack(this, target);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -688,7 +688,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canAttack(EntityType<?> entityType) {
+    public boolean canAttackType(EntityType<?> entityType) {
         if (this.isMode(EnumMode.DOCILE)) {
             return false;
         }
@@ -696,18 +696,18 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canAttack(this, entityType);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
         }
 
-        return super.canAttack(entityType);
+        return super.canAttackType(entityType);
     }
 
     @Override
-    public boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+    public boolean wantsToAttack(LivingEntity target, LivingEntity owner) {
         if (this.isMode(EnumMode.DOCILE)) {
             return false;
         }
@@ -716,7 +716,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.shouldAttackEntity(this, target, owner);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -729,16 +729,16 @@ public class DogEntity extends AbstractDogEntity {
 
         if (target instanceof WolfEntity) {
             WolfEntity wolfentity = (WolfEntity)target;
-            return !wolfentity.isTamed() || wolfentity.getOwner() != owner;
+            return !wolfentity.isTame() || wolfentity.getOwner() != owner;
         } else if (target instanceof DogEntity) {
             DogEntity dogEntity = (DogEntity)target;
-            return !dogEntity.isTamed() || dogEntity.getOwner() != owner;
-         } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canAttackPlayer((PlayerEntity)target)) {
+            return !dogEntity.isTame() || dogEntity.getOwner() != owner;
+         } else if (target instanceof PlayerEntity && owner instanceof PlayerEntity && !((PlayerEntity)owner).canHarmPlayer((PlayerEntity)target)) {
              return false;
-        } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTame()) {
+        } else if (target instanceof AbstractHorseEntity && ((AbstractHorseEntity)target).isTamed()) {
             return false;
         } else {
-            return !(target instanceof TameableEntity) || !((TameableEntity)target).isTamed();
+            return !(target instanceof TameableEntity) || !((TameableEntity)target).isTame();
         }
     }
 
@@ -749,44 +749,44 @@ public class DogEntity extends AbstractDogEntity {
 //     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean hurt(DamageSource source, float amount) {
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Float> result = alter.attackEntityFrom(this, source, amount);
 
             // TODO
-            if (result.getType() == ActionResultType.FAIL) {
+            if (result.getResult() == ActionResultType.FAIL) {
                 return false;
             } else {
-                amount = result.getResult();
+                amount = result.getObject();
             }
         }
 
         if (this.isInvulnerableTo(source)) {
             return false;
         } else {
-            Entity entity = source.getTrueSource();
+            Entity entity = source.getEntity();
             // Must be checked here too as hitByEntity only applies to when the dog is
             // directly hit not indirect damage like sweeping effect etc
             if (entity instanceof PlayerEntity && !this.canPlayersAttack()) {
                 return false;
             }
 
-            this.setSitting(false);
+            this.setOrderedToSit(false);
 
             if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
-            return super.attackEntityFrom(source, amount);
+            return super.hurt(source, amount);
         }
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity target) {
+    public boolean doHurtTarget(Entity target) {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.attackEntityAsMob(this, target);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -797,9 +797,9 @@ public class DogEntity extends AbstractDogEntity {
 
         Set<AttributeModifier> critModifiers = null;
 
-        if (this.getAttribute(DoggyAttributes.CRIT_CHANCE.get()).getValue() > this.getRNG().nextDouble()) {
-            critModifiers = this.getAttribute(DoggyAttributes.CRIT_BONUS.get()).getModifierListCopy();
-            critModifiers.forEach(attackDamageInst::applyNonPersistentModifier);
+        if (this.getAttribute(DoggyAttributes.CRIT_CHANCE.get()).getValue() > this.getRandom().nextDouble()) {
+            critModifiers = this.getAttribute(DoggyAttributes.CRIT_BONUS.get()).getModifiers();
+            critModifiers.forEach(attackDamageInst::addTransientModifier);
         }
 
         int damage = ((int) attackDamageInst.getValue());
@@ -807,14 +807,14 @@ public class DogEntity extends AbstractDogEntity {
             critModifiers.forEach(attackDamageInst::removeModifier);
         }
 
-        boolean flag = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
+        boolean flag = target.hurt(DamageSource.mobAttack(this), damage);
         if (flag) {
-            this.applyEnchantments(this, target);
+            this.doEnchantDamageEffects(this, target);
             this.statsTracker.increaseDamageDealt(damage);
 
             if (critModifiers != null) {
                 // TODO Might want to make into a packet
-                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particles.addParticleEmitter(target, ParticleTypes.CRIT));
+                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particleEngine.createTrackingEmitter(target, ParticleTypes.CRIT));
             }
         }
 
@@ -828,46 +828,46 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canBlockDamageSource(DamageSource source) {
+    public boolean isDamageSourceBlocked(DamageSource source) {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.canBlockDamageSource(this, source);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
         }
 
-        return super.canBlockDamageSource(source);
+        return super.isDamageSourceBlocked(source);
     }
 
     @Override
-    public void setFire(int second) {
+    public void setSecondsOnFire(int second) {
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Integer> result = alter.setFire(this, second);
 
-            if (result.getType().isSuccess()) {
-                second = result.getResult();
+            if (result.getResult().shouldSwing()) {
+                second = result.getObject();
             }
         }
 
-        super.setFire(second);
+        super.setSecondsOnFire(second);
     }
 
     @Override
-    public boolean isImmuneToFire() {
+    public boolean fireImmune() {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.isImmuneToFire(this);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
         }
 
-        return super.isImmuneToFire();
+        return super.fireImmune();
     }
 
     @Override
@@ -875,7 +875,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.isInvulnerableTo(this, source);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -890,7 +890,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.isInvulnerable(this);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -901,48 +901,48 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean isPotionApplicable(EffectInstance effectIn) {
+    public boolean canBeAffected(EffectInstance effectIn) {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.isPotionApplicable(this, effectIn);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
         }
 
-        return super.isPotionApplicable(effectIn);
+        return super.canBeAffected(effectIn);
     }
 
     @Override
-    public void setUniqueId(UUID uniqueIdIn) {
+    public void setUUID(UUID uniqueIdIn) {
 
         // If the UUID is changed remove old one and add new one
-        UUID oldUniqueId = this.getUniqueID();
+        UUID oldUniqueId = this.getUUID();
 
         if (uniqueIdIn.equals(oldUniqueId)) {
             return; // No change do nothing
         }
 
-        super.setUniqueId(uniqueIdIn);
+        super.setUUID(uniqueIdIn);
 
-        if (this.world != null && !this.world.isRemote) {
-            DogLocationStorage.get(this.world).remove(oldUniqueId);
-            DogLocationStorage.get(this.world).getOrCreateData(this).update(this);
+        if (this.level != null && !this.level.isClientSide) {
+            DogLocationStorage.get(this.level).remove(oldUniqueId);
+            DogLocationStorage.get(this.level).getOrCreateData(this).update(this);
         }
     }
 
     @Override
-    public void setTamedBy(PlayerEntity player) {
-        super.setTamedBy(player);
+    public void tame(PlayerEntity player) {
+        super.tame(player);
         // When tamed by player cache their display name
         this.setOwnersName(player.getName());
     }
 
     @Override
-    public void setTamed(boolean tamed) {
-        super.setTamed(tamed);
+    public void setTame(boolean tamed) {
+        super.setTame(tamed);
         if (tamed) {
            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(20.0D);
            this.setHealth(20.0F);
@@ -954,8 +954,8 @@ public class DogEntity extends AbstractDogEntity {
      }
 
     @Override
-    public void setOwnerId(@Nullable UUID uuid) {
-        super.setOwnerId(uuid);
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        super.setOwnerUUID(uuid);
 
         if (uuid == null) {
             this.setOwnersName((ITextComponent) null);
@@ -963,7 +963,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override // blockAttackFromPlayer
-    public boolean hitByEntity(Entity entityIn) {
+    public boolean skipAttackInteraction(Entity entityIn) {
         if (entityIn instanceof PlayerEntity && !this.canPlayersAttack()) {
             return true;
         }
@@ -971,7 +971,7 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResultType result = alter.hitByEntity(this, entityIn);
 
-            if (result.isSuccess()) {
+            if (result.shouldSwing()) {
                 return true;
             } else if (result == ActionResultType.FAIL) {
                 return false;
@@ -987,23 +987,23 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.getItem().isIn(DoggyTags.BREEDING_ITEMS);
+    public boolean isFood(ItemStack stack) {
+        return stack.getItem().is(DoggyTags.BREEDING_ITEMS);
     }
 
     @Override
-    public boolean canMateWith(AnimalEntity otherAnimal) {
+    public boolean canMate(AnimalEntity otherAnimal) {
         if (otherAnimal == this) {
             return false;
-        } else if (!this.isTamed()) {
+        } else if (!this.isTame()) {
             return false;
         } else if (!(otherAnimal instanceof DogEntity)) {
             return false;
         } else {
             DogEntity entitydog = (DogEntity) otherAnimal;
-            if (!entitydog.isTamed()) {
+            if (!entitydog.isTame()) {
                 return false;
-            } else if (entitydog.isEntitySleeping()) {
+            } else if (entitydog.isInSittingPose()) {
                 return false;
             } else if (ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
                 return false;
@@ -1014,13 +1014,13 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public AgeableEntity createChild(ServerWorld worldIn, AgeableEntity partner) {
+    public AgeableEntity getBreedOffspring(ServerWorld worldIn, AgeableEntity partner) {
         DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
-        UUID uuid = this.getOwnerId();
+        UUID uuid = this.getOwnerUUID();
 
         if (uuid != null) {
-            child.setOwnerId(uuid);
-            child.setTamed(true);
+            child.setOwnerUUID(uuid);
+            child.setTame(true);
         }
 
         if (partner instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
@@ -1031,13 +1031,13 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean getAlwaysRenderNameTagForRender() {
-        return (ConfigValues.ALWAYS_SHOW_DOG_NAME && this.hasCustomName()) || super.getAlwaysRenderNameTagForRender();
+    public boolean shouldShowName() {
+        return (ConfigValues.ALWAYS_SHOW_DOG_NAME && this.hasCustomName()) || super.shouldShowName();
     }
 
     @Override
-    public float getRenderScale() {
-        if (this.isChild()) {
+    public float getScale() {
+        if (this.isBaby()) {
             return 0.5F;
         } else {
             return this.getDogSize() * 0.3F + 0.1F;
@@ -1073,7 +1073,7 @@ public class DogEntity extends AbstractDogEntity {
     public Entity changeDimension(ServerWorld worldIn, ITeleporter teleporter) {
         Entity transportedEntity = super.changeDimension(worldIn, teleporter);
         if (transportedEntity instanceof DogEntity) {
-            DogLocationStorage.get(this.world).getOrCreateData(this).update((DogEntity) transportedEntity);
+            DogLocationStorage.get(this.level).getOrCreateData(this).update((DogEntity) transportedEntity);
         }
         return transportedEntity;
     }
@@ -1081,7 +1081,7 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld(); // When the entity is added to tracking list
-        if (this.world != null && !this.world.isRemote) {
+        if (this.level != null && !this.level.isClientSide) {
             //DogLocationData locationData = DogLocationStorage.get(this.world).getOrCreateData(this);
             //locationData.update(this);
         }
@@ -1101,9 +1101,9 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    protected void onDeathUpdate() {
+    protected void tickDeath() {
         if (this.deathTime == 19) { // 1 second after death
-            if (this.world != null && !this.world.isRemote) {
+            if (this.level != null && !this.level.isClientSide) {
 //                DogRespawnStorage.get(this.world).putData(this);
 //                DoggyTalents.LOGGER.debug("Saved dog as they died {}", this);
 //
@@ -1112,7 +1112,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        super.onDeathUpdate();
+        super.tickDeath();
     }
 
     private void startShaking() {
@@ -1128,24 +1128,24 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void onDeath(DamageSource cause) {
+    public void die(DamageSource cause) {
         this.wetSource = null;
         this.finishShaking();
 
         this.alterations.forEach((alter) -> alter.onDeath(this, cause));
-        super.onDeath(cause);
+        super.die(cause);
 
         // Save inventory after onDeath is called so that pack puppy inventory
         // can be dropped and not saved
-        if (this.world != null && !this.world.isRemote) {
-            DogRespawnStorage.get(this.world).putData(this);
-            DogLocationStorage.get(this.world).remove(this);
+        if (this.level != null && !this.level.isClientSide) {
+            DogRespawnStorage.get(this.level).putData(this);
+            DogLocationStorage.get(this.level).remove(this);
         }
     }
 
     @Override
-    public void dropInventory() {
-        super.dropInventory();
+    public void dropEquipment() {
+        super.dropEquipment();
 
         this.alterations.forEach((alter) -> alter.dropInventory(this));
     }
@@ -1165,8 +1165,8 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
+    public void addAdditionalSaveData(CompoundNBT compound) {
+        super.addAdditionalSaveData(compound);
 
         ListNBT talentList = new ListNBT();
         List<TalentInstance> talents = this.getTalentMap();
@@ -1205,14 +1205,14 @@ public class DogEntity extends AbstractDogEntity {
         compound.putInt("level_dire", this.getLevel().getLevel(Type.DIRE));
         NBTUtil.writeItemStack(compound, "fetchItem", this.getBoneVariant());
 
-        DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get());
+        DimensionDependantArg<Optional<BlockPos>> bedsData = this.entityData.get(DOG_BED_LOCATION.get());
 
         if (!bedsData.isEmpty()) {
             ListNBT bedsList = new ListNBT();
 
             for (Entry<RegistryKey<World>, Optional<BlockPos>> entry : bedsData.entrySet()) {
                 CompoundNBT bedNBT = new CompoundNBT();
-                NBTUtil.putResourceLocation(bedNBT, "dim", entry.getKey().getLocation());
+                NBTUtil.putResourceLocation(bedNBT, "dim", entry.getKey().location());
                 NBTUtil.putBlockPos(bedNBT, "pos", entry.getValue());
                 bedsList.add(bedNBT);
             }
@@ -1220,14 +1220,14 @@ public class DogEntity extends AbstractDogEntity {
             compound.put("beds", bedsList);
         }
 
-        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get());
+        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.entityData.get(DOG_BOWL_LOCATION.get());
 
         if (!bowlsData.isEmpty()) {
             ListNBT bowlsList = new ListNBT();
 
             for (Entry<RegistryKey<World>, Optional<BlockPos>> entry : bowlsData.entrySet()) {
                 CompoundNBT bowlsNBT = new CompoundNBT();
-                NBTUtil.putResourceLocation(bowlsNBT, "dim", entry.getKey().getLocation());
+                NBTUtil.putResourceLocation(bowlsNBT, "dim", entry.getKey().location());
                 NBTUtil.putBlockPos(bowlsNBT, "pos", entry.getValue());
                 bowlsList.add(bowlsNBT);
             }
@@ -1241,32 +1241,32 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void read(CompoundNBT compound) {
+    public void load(CompoundNBT compound) {
 
         // DataFix uuid entries and attribute ids
         try {
             if (NBTUtil.hasOldUniqueId(compound, "UUID")) {
                 UUID entityUUID = NBTUtil.getOldUniqueId(compound, "UUID");
 
-                compound.putUniqueId("UUID", entityUUID);
+                compound.putUUID("UUID", entityUUID);
                 NBTUtil.removeOldUniqueId(compound, "UUID");
             }
 
             if (compound.contains("OwnerUUID", Constants.NBT.TAG_STRING)) {
                 UUID ownerUUID = UUID.fromString(compound.getString("OwnerUUID"));
 
-                compound.putUniqueId("Owner", ownerUUID);
+                compound.putUUID("Owner", ownerUUID);
                 compound.remove("OwnerUUID");
             } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
-                UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.getServer(), compound.getString("Owner"));
+                UUID ownerUUID = PreYggdrasilConverter.convertMobOwnerIfNecessary(this.getServer(), compound.getString("Owner"));
 
-                compound.putUniqueId("Owner", ownerUUID);
+                compound.putUUID("Owner", ownerUUID);
             }
 
             if (NBTUtil.hasOldUniqueId(compound, "LoveCause")) {
                 UUID entityUUID = NBTUtil.getOldUniqueId(compound, "LoveCause");
 
-                compound.putUniqueId("LoveCause", entityUUID);
+                compound.putUUID("LoveCause", entityUUID);
                 NBTUtil.removeOldUniqueId(compound, "LoveCause");
             }
         } catch (Exception e) {
@@ -1309,7 +1309,7 @@ public class DogEntity extends AbstractDogEntity {
                             if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
                                 UUID entityUUID = NBTUtil.getOldUniqueId(modifierData, "UUID");
 
-                                modifierData.putUniqueId("UUID", entityUUID);
+                                modifierData.putUUID("UUID", entityUUID);
                                 NBTUtil.removeOldUniqueId(modifierData, "UUID");
                             }
                         }
@@ -1322,12 +1322,12 @@ public class DogEntity extends AbstractDogEntity {
             DoggyTalents2.LOGGER.error("Failed to data fix attribute IDs: " + e.getMessage());
         }
 
-        super.read(compound);
+        super.load(compound);
     }
 
     @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
+    public void readAdditionalSaveData(CompoundNBT compound) {
+        super.readAdditionalSaveData(compound);
 
         List<TalentInstance> talentMap = this.getTalentMap();
         talentMap.clear();
@@ -1425,7 +1425,7 @@ public class DogEntity extends AbstractDogEntity {
             e.printStackTrace();
         }
 
-        DimensionDependantArg<Optional<BlockPos>> bedsData = this.dataManager.get(DOG_BED_LOCATION.get()).copyEmpty();
+        DimensionDependantArg<Optional<BlockPos>> bedsData = this.entityData.get(DOG_BED_LOCATION.get()).copyEmpty();
 
         try {
             if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
@@ -1434,7 +1434,7 @@ public class DogEntity extends AbstractDogEntity {
                 for (int i = 0; i < bedsList.size(); i++) {
                     CompoundNBT bedNBT = bedsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
-                    RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
+                    RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
                     bedsData.put(type, pos);
                 }
@@ -1446,9 +1446,9 @@ public class DogEntity extends AbstractDogEntity {
             e.printStackTrace();
         }
 
-        this.dataManager.set(DOG_BED_LOCATION.get(), bedsData);
+        this.entityData.set(DOG_BED_LOCATION.get(), bedsData);
 
-        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.dataManager.get(DOG_BOWL_LOCATION.get()).copyEmpty();
+        DimensionDependantArg<Optional<BlockPos>> bowlsData = this.entityData.get(DOG_BOWL_LOCATION.get()).copyEmpty();
 
         try {
             if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
@@ -1457,7 +1457,7 @@ public class DogEntity extends AbstractDogEntity {
                 for (int i = 0; i < bowlsList.size(); i++) {
                     CompoundNBT bowlsNBT = bowlsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
-                    RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
+                    RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
                     bowlsData.put(type, pos);
                 }
@@ -1469,7 +1469,7 @@ public class DogEntity extends AbstractDogEntity {
             e.printStackTrace();
         }
 
-        this.dataManager.set(DOG_BOWL_LOCATION.get(), bowlsData);
+        this.entityData.set(DOG_BOWL_LOCATION.get(), bowlsData);
 
         try {
             this.statsTracker.readAdditional(compound);
@@ -1489,8 +1489,8 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void notifyDataManagerChange(DataParameter<?> key) {
-        super.notifyDataManagerChange(key);
+    public void onSyncedDataUpdated(DataParameter<?> key) {
+        super.onSyncedDataUpdated(key);
         if (TALENTS.get().equals(key) || ACCESSORIES.get().equals(key)) {
             this.recalculateAlterationsCache();
 
@@ -1509,7 +1509,7 @@ public class DogEntity extends AbstractDogEntity {
 
         if (ACCESSORIES.get().equals(key)) {
             // If client sort accessories
-            if (this.world.isRemote) {
+            if (this.level.isClientSide) {
                 // Does not recall this notifyDataManagerChange as list object is
                 // still the same, maybe in future MC versions this will change so need to watch out
                 this.getAccessories().sort(AccessoryInstance.RENDER_SORTER);
@@ -1517,7 +1517,7 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         if (SIZE.equals(key)) {
-            this.recalculateSize();
+            this.refreshDimensions();
         }
     }
 
@@ -1550,12 +1550,12 @@ public class DogEntity extends AbstractDogEntity {
      */
     @Override
     public boolean canInteract(LivingEntity livingEntity) {
-        return this.willObeyOthers() || this.isOwner(livingEntity);
+        return this.willObeyOthers() || this.isOwnedBy(livingEntity);
     }
 
     @Override
     public List<AccessoryInstance> getAccessories() {
-        return this.dataManager.get(ACCESSORIES.get());
+        return this.entityData.get(ACCESSORIES.get());
     }
 
     @Override
@@ -1624,7 +1624,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public Optional<ITextComponent> getOwnersName() {
-        return this.dataManager.get(LAST_KNOWN_NAME);
+        return this.entityData.get(LAST_KNOWN_NAME);
     }
 
     public void setOwnersName(@Nullable ITextComponent comp) {
@@ -1632,20 +1632,20 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public void setOwnersName(Optional<ITextComponent> collar) {
-        this.dataManager.set(LAST_KNOWN_NAME, collar);
+        this.entityData.set(LAST_KNOWN_NAME, collar);
     }
 
     public EnumGender getGender() {
-        return this.dataManager.get(GENDER.get());
+        return this.entityData.get(GENDER.get());
     }
 
     public void setGender(EnumGender collar) {
-        this.dataManager.set(GENDER.get(), collar);
+        this.entityData.set(GENDER.get(), collar);
     }
 
     @Override
     public EnumMode getMode() {
-        return this.dataManager.get(MODE.get());
+        return this.entityData.get(MODE.get());
     }
 
     public boolean isMode(EnumMode... modes) {
@@ -1660,19 +1660,19 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public void setMode(EnumMode collar) {
-        this.dataManager.set(MODE.get(), collar);
+        this.entityData.set(MODE.get(), collar);
     }
 
     public Optional<BlockPos> getBedPos() {
-        return this.getBedPos(this.world.getDimensionKey());
+        return this.getBedPos(this.level.dimension());
     }
 
     public Optional<BlockPos> getBedPos(RegistryKey<World> registryKey) {
-        return this.dataManager.get(DOG_BED_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
+        return this.entityData.get(DOG_BED_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
     }
 
     public void setBedPos(@Nullable BlockPos pos) {
-        this.setBedPos(this.world.getDimensionKey(), pos);
+        this.setBedPos(this.level.dimension(), pos);
     }
 
     public void setBedPos(RegistryKey<World> registryKey, @Nullable BlockPos pos) {
@@ -1680,19 +1680,19 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public void setBedPos(RegistryKey<World> registryKey, Optional<BlockPos> pos) {
-        this.dataManager.set(DOG_BED_LOCATION.get(), this.dataManager.get(DOG_BED_LOCATION.get()).copy().set(registryKey, pos));
+        this.entityData.set(DOG_BED_LOCATION.get(), this.entityData.get(DOG_BED_LOCATION.get()).copy().set(registryKey, pos));
     }
 
     public Optional<BlockPos> getBowlPos() {
-        return this.getBowlPos(this.world.getDimensionKey());
+        return this.getBowlPos(this.level.dimension());
     }
 
     public Optional<BlockPos> getBowlPos(RegistryKey<World> registryKey) {
-        return this.dataManager.get(DOG_BOWL_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
+        return this.entityData.get(DOG_BOWL_LOCATION.get()).getOrDefault(registryKey, Optional.empty());
     }
 
     public void setBowlPos(@Nullable BlockPos pos) {
-        this.setBowlPos(this.world.getDimensionKey(), pos);
+        this.setBowlPos(this.level.dimension(), pos);
     }
 
     public void setBowlPos(RegistryKey<World> registryKey, @Nullable BlockPos pos) {
@@ -1700,7 +1700,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public void setBowlPos(RegistryKey<World> registryKey, Optional<BlockPos> pos) {
-        this.dataManager.set(DOG_BOWL_LOCATION.get(), this.dataManager.get(DOG_BOWL_LOCATION.get()).copy().set(registryKey, pos));
+        this.entityData.set(DOG_BOWL_LOCATION.get(), this.entityData.get(DOG_BOWL_LOCATION.get()).copy().set(registryKey, pos));
     }
 
     @Override
@@ -1710,8 +1710,8 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Float> result = alter.getMaxHunger(this, maxHunger);
 
-            if (result.getType().isSuccess()) {
-                maxHunger = result.getResult();
+            if (result.getResult().shouldSwing()) {
+                maxHunger = result.getObject();
             }
         }
 
@@ -1720,7 +1720,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public float getDogHunger() {
-        return this.dataManager.get(HUNGER_INT);
+        return this.entityData.get(HUNGER_INT);
     }
 
     @Override
@@ -1735,8 +1735,8 @@ public class DogEntity extends AbstractDogEntity {
         for (IDogAlteration alter : this.alterations) {
             ActionResult<Float> result = alter.setDogHunger(this, hunger, diff);
 
-            if (result.getType().isSuccess()) {
-                hunger = result.getResult();
+            if (result.getResult().shouldSwing()) {
+                hunger = result.getObject();
                 diff = hunger - this.getDogHunger();
             }
         }
@@ -1745,7 +1745,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     private void setHungerDirectly(float hunger) {
-        this.dataManager.set(HUNGER_INT, hunger);
+        this.entityData.set(HUNGER_INT, hunger);
     }
 
     public boolean hasCustomSkin() {
@@ -1753,23 +1753,23 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public String getSkinHash() {
-        return this.dataManager.get(CUSTOM_SKIN);
+        return this.entityData.get(CUSTOM_SKIN);
     }
 
     public void setSkinHash(String hash) {
         if (hash == null) {
             hash = "";
         }
-        this.dataManager.set(CUSTOM_SKIN, hash);
+        this.entityData.set(CUSTOM_SKIN, hash);
     }
 
     @Override
     public DogLevel getLevel() {
-        return this.dataManager.get(DOG_LEVEL.get());
+        return this.entityData.get(DOG_LEVEL.get());
     }
 
     public void setLevel(DogLevel level) {
-        this.dataManager.set(DOG_LEVEL.get(), level);
+        this.entityData.set(DOG_LEVEL.get(), level);
     }
 
     @Override
@@ -1780,25 +1780,25 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void setDogSize(int value) {
-        this.dataManager.set(SIZE, (byte)Math.min(5, Math.max(1, value)));
+        this.entityData.set(SIZE, (byte)Math.min(5, Math.max(1, value)));
     }
 
     @Override
     public int getDogSize() {
-        return this.dataManager.get(SIZE);
+        return this.entityData.get(SIZE);
     }
 
     public void setBoneVariant(ItemStack stack) {
-        this.dataManager.set(BONE_VARIANT, stack);
+        this.entityData.set(BONE_VARIANT, stack);
     }
 
     public ItemStack getBoneVariant() {
-        return this.dataManager.get(BONE_VARIANT);
+        return this.entityData.get(BONE_VARIANT);
     }
 
     @Nullable
     public IThrowableItem getThrowableItem() {
-        Item item = this.dataManager.get(BONE_VARIANT).getItem();
+        Item item = this.entityData.get(BONE_VARIANT).getItem();
         return item instanceof IThrowableItem ? (IThrowableItem) item : null;
     }
 
@@ -1807,12 +1807,12 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     private boolean getDogFlag(int bit) {
-        return (this.dataManager.get(DOG_FLAGS) & bit) != 0;
+        return (this.entityData.get(DOG_FLAGS) & bit) != 0;
     }
 
     private void setDogFlag(int bits, boolean flag) {
-        byte c = this.dataManager.get(DOG_FLAGS);
-        this.dataManager.set(DOG_FLAGS, (byte)(flag ? c | bits : c & ~bits));
+        byte c = this.entityData.get(DOG_FLAGS);
+        this.entityData.set(DOG_FLAGS, (byte)(flag ? c | bits : c & ~bits));
     }
 
     public void setBegging(boolean begging) {
@@ -1872,11 +1872,11 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     public List<TalentInstance> getTalentMap() {
-        return this.dataManager.get(TALENTS.get());
+        return this.entityData.get(TALENTS.get());
     }
 
     public void setTalentMap(List<TalentInstance> map) {
-        this.dataManager.set(TALENTS.get(), map);
+        this.entityData.set(TALENTS.get(), map);
     }
 
     public ActionResultType setTalentLevel(Talent talent, int level) {
@@ -1927,13 +1927,13 @@ public class DogEntity extends AbstractDogEntity {
 
     public <T> void markDataParameterDirty(DataParameter<T> key, boolean notify) {
         if (notify) {
-            this.notifyDataManagerChange(key);
+            this.onSyncedDataUpdated(key);
         }
 
         // Force the entry to update
-        DataEntry<T> dataentry = this.dataManager.getEntry(key);
+        DataEntry<T> dataentry = this.entityData.getItem(key);
         dataentry.setDirty(true);
-        this.dataManager.dirty = true;
+        this.entityData.isDirty = true;
     }
 
     @Override
@@ -2006,15 +2006,15 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void untame() {
-        this.setTamed(false);
-        this.navigator.clearPath();
-        this.setSitting(false);
+        this.setTame(false);
+        this.navigation.stop();
+        this.setOrderedToSit(false);
         this.setHealth(8);
 
         this.getTalentMap().clear();
         this.markDataParameterDirty(TALENTS.get());
 
-        this.setOwnerId(null);
+        this.setOwnerUUID(null);
         this.setWillObeyOthers(false);
         this.setMode(EnumMode.DOCILE);
     }
@@ -2048,25 +2048,25 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canBeSteered() {
+    public boolean canBeControlledByRider() {
         return this.getControllingPassenger() instanceof LivingEntity;
     }
 
     //TODO
     @Override
-    public boolean canBeCollidedWith() {
-        return super.canBeCollidedWith();
+    public boolean isPickable() {
+        return super.isPickable();
     }
 
     @Override
-    public boolean canBePushed() {
-        return !this.isBeingRidden() && super.canBePushed();
+    public boolean isPushable() {
+        return !this.isVehicle() && super.isPushable();
     }
 
     @Override
-    public boolean canPassengerSteer() {
+    public boolean isControlledByLocalInstance() {
         // Super calls canBeSteered so controlling passenger can be guaranteed to be LivingEntity
-        return super.canPassengerSteer() && this.canInteract((LivingEntity) this.getControllingPassenger());
+        return super.isControlledByLocalInstance() && this.canInteract((LivingEntity) this.getControllingPassenger());
     }
 
     public boolean isDogJumping() {
@@ -2098,21 +2098,21 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void travel(Vector3d positionIn) {
         if (this.isAlive()) {
-            if (this.isBeingRidden() && this.canBeSteered()) {
+            if (this.isVehicle() && this.canBeControlledByRider()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
 
                 // Face the dog in the direction of the controlling passenger
-                this.rotationYaw = livingentity.rotationYaw;
-                this.prevRotationYaw = this.rotationYaw;
-                this.rotationPitch = livingentity.rotationPitch * 0.5F;
-                this.setRotation(this.rotationYaw, this.rotationPitch);
-                this.renderYawOffset = this.rotationYaw;
-                this.rotationYawHead = this.renderYawOffset;
+                this.yRot = livingentity.yRot;
+                this.yRotO = this.yRot;
+                this.xRot = livingentity.xRot * 0.5F;
+                this.setRot(this.yRot, this.xRot);
+                this.yBodyRot = this.yRot;
+                this.yHeadRot = this.yBodyRot;
 
-                this.stepHeight = 1.0F;
+                this.maxUpStep = 1.0F;
 
-                float straf = livingentity.moveStrafing * 0.7F;
-                float foward = livingentity.moveForward;
+                float straf = livingentity.xxa * 0.7F;
+                float foward = livingentity.zza;
 
                 // If moving backwards half the speed
                 if (foward <= 0.0F) {
@@ -2122,23 +2122,23 @@ public class DogEntity extends AbstractDogEntity {
                 if (this.jumpPower > 0.0F && !this.isDogJumping() && this.isOnGround()) {
 
                     // Calculate jump value based of jump strength, power this jump and jump boosts
-                    double jumpValue = this.getAttribute(DoggyAttributes.JUMP_POWER.get()).getValue() * this.getJumpFactor() * this.jumpPower; //TODO do we want getJumpFactor?
-                    if (this.isPotionActive(Effects.JUMP_BOOST)) {
-                        jumpValue += (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
+                    double jumpValue = this.getAttribute(DoggyAttributes.JUMP_POWER.get()).getValue() * this.getBlockJumpFactor() * this.jumpPower; //TODO do we want getJumpFactor?
+                    if (this.hasEffect(Effects.JUMP)) {
+                        jumpValue += (this.getEffect(Effects.JUMP).getAmplifier() + 1) * 0.1F;
                     }
 
                     // Apply jump
-                    Vector3d vec3d = this.getMotion();
-                    this.setMotion(vec3d.x, jumpValue, vec3d.z);
+                    Vector3d vec3d = this.getDeltaMovement();
+                    this.setDeltaMovement(vec3d.x, jumpValue, vec3d.z);
                     this.setDogJumping(true);
-                    this.isAirBorne = true;
+                    this.hasImpulse = true;
 
                     // If moving forward, propel further in the direction
                     if (foward > 0.0F) {
                         final float amount = 0.4F; // TODO Allow people to change this value
-                        float compX = MathHelper.sin(this.rotationYaw * ((float)Math.PI / 180F));
-                        float compZ = MathHelper.cos(this.rotationYaw * ((float)Math.PI / 180F));
-                        this.setMotion(this.getMotion().add(-amount * compX * this.jumpPower, 0.0D, amount * compZ * this.jumpPower));
+                        float compX = MathHelper.sin(this.yRot * ((float)Math.PI / 180F));
+                        float compZ = MathHelper.cos(this.yRot * ((float)Math.PI / 180F));
+                        this.setDeltaMovement(this.getDeltaMovement().add(-amount * compX * this.jumpPower, 0.0D, amount * compZ * this.jumpPower));
                         //this.playJumpSound();
                     }
 
@@ -2146,15 +2146,15 @@ public class DogEntity extends AbstractDogEntity {
                     this.jumpPower = 0.0F;
                 }
 
-                this.jumpMovementFactor = this.getAIMoveSpeed() * 0.1F;
-                if (this.canPassengerSteer()) {
+                this.flyingSpeed = this.getSpeed() * 0.1F;
+                if (this.isControlledByLocalInstance()) {
                     // Set the move speed and move the dog in the direction of the controlling entity
-                    this.setAIMoveSpeed((float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue() * 0.5F);
+                    this.setSpeed((float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue() * 0.5F);
                     super.travel(new Vector3d(straf, positionIn.y, foward));
-                    this.newPosRotationIncrements = 0;
+                    this.lerpSteps = 0;
                 } else if (livingentity instanceof PlayerEntity) {
                     // A player is riding and can not control then
-                    this.setMotion(Vector3d.ZERO);
+                    this.setDeltaMovement(Vector3d.ZERO);
                 }
 
                 // Once the entity reaches the ground again allow it to jump again
@@ -2164,34 +2164,34 @@ public class DogEntity extends AbstractDogEntity {
                 }
 
                 //
-                this.prevLimbSwingAmount = this.limbSwingAmount;
-                double changeX = this.getPosX() - this.prevPosX;
-                double changeY = this.getPosZ() - this.prevPosZ;
+                this.animationSpeedOld = this.animationSpeed;
+                double changeX = this.getX() - this.xo;
+                double changeY = this.getZ() - this.zo;
                 float f4 = MathHelper.sqrt(changeX * changeX + changeY * changeY) * 4.0F;
 
                 if (f4 > 1.0F) {
                    f4 = 1.0F;
                 }
 
-                this.limbSwingAmount += (f4 - this.limbSwingAmount) * 0.4F;
-                this.limbSwing += this.limbSwingAmount;
+                this.animationSpeed += (f4 - this.animationSpeed) * 0.4F;
+                this.animationPosition += this.animationSpeed;
              } else {
-                 this.stepHeight = 0.5F; // Default
-                 this.jumpMovementFactor = 0.02F; // Default
+                 this.maxUpStep = 0.5F; // Default
+                 this.flyingSpeed = 0.02F; // Default
                  super.travel(positionIn);
              }
 
-            this.addMovementStat(this.getPosX() - this.prevPosX, this.getPosY() - this.prevPosY, this.getPosZ() - this.prevPosZ);
+            this.addMovementStat(this.getX() - this.xo, this.getY() - this.yo, this.getZ() - this.zo);
         }
     }
 
     public void addMovementStat(double xD, double yD, double zD) {
-        if (this.isBeingRidden()) {
+        if (this.isVehicle()) {
             int j = Math.round(MathHelper.sqrt(xD * xD + zD * zD) * 100.0F);
             this.statsTracker.increaseDistanceRidden(j);
         }
         if (!this.isPassenger()) {
-            if (this.areEyesInFluid(FluidTags.WATER)) {
+            if (this.isEyeInFluid(FluidTags.WATER)) {
                 int j = Math.round(MathHelper.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
                 if (j > 0) {
                     this.statsTracker.increaseDistanceOnWater(j);
@@ -2234,7 +2234,7 @@ public class DogEntity extends AbstractDogEntity {
             return true;
         }
 
-        Block blockBelow = this.world.getBlockState(this.getPosition().down()).getBlock();
+        Block blockBelow = this.level.getBlockState(this.blockPosition().below()).getBlock();
         boolean onBed = blockBelow == DoggyBlocks.DOG_BED.get() || BlockTags.BEDS.contains(blockBelow);
         if (onBed) {
             return true;

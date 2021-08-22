@@ -17,7 +17,7 @@ public class PestFighterTalent extends TalentInstance {
 
     @Override
     public void livingTick(AbstractDogEntity dogIn) {
-        if (dogIn.world.isRemote || dogIn.ticksExisted % 2 == 0) {
+        if (dogIn.level.isClientSide || dogIn.tickCount % 2 == 0) {
             return;
         }
 
@@ -28,12 +28,12 @@ public class PestFighterTalent extends TalentInstance {
                 damage = 2;
             }
 
-            List<SilverfishEntity> list = dogIn.world.getEntitiesWithinAABB(
-                SilverfishEntity.class, dogIn.getBoundingBox().grow(this.level() * 3, 4D, this.level() * 3), EntityPredicates.IS_ALIVE
+            List<SilverfishEntity> list = dogIn.level.getEntitiesOfClass(
+                SilverfishEntity.class, dogIn.getBoundingBox().inflate(this.level() * 3, 4D, this.level() * 3), EntityPredicates.ENTITY_STILL_ALIVE
             );
             for (SilverfishEntity silverfish : list) {
-                if (dogIn.getRNG().nextInt(10) == 0) {
-                    silverfish.attackEntityFrom(DamageSource.GENERIC, damage);
+                if (dogIn.getRandom().nextInt(10) == 0) {
+                    silverfish.hurt(DamageSource.GENERIC, damage);
                 }
             }
         }

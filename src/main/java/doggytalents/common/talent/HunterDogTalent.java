@@ -13,12 +13,12 @@ public class HunterDogTalent {
 
         // Possible to be null #265
         if (damageSource != null) {
-            Entity trueSource = damageSource.getTrueSource();
+            Entity trueSource = damageSource.getEntity();
             if (trueSource instanceof DogEntity) {
                 DogEntity dog = (DogEntity) trueSource;
                 int level = dog.getLevel(DoggyTalents.HUNTER_DOG);
 
-                if (dog.getRNG().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
+                if (dog.getRandom().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
                     event.setLootingLevel(event.getLootingLevel() + level / 2);
                 }
             }

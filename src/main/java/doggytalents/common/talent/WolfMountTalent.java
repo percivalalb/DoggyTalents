@@ -50,15 +50,15 @@ public class WolfMountTalent extends TalentInstance {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+        ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (stack.isEmpty()) { // Held item
             if (dogIn.canInteract(playerIn) && this.level() > 0) { // Dog
-                if (playerIn.getRidingEntity() == null && !playerIn.isOnGround()) { // Player
-                    if (!dogIn.world.isRemote) {
-                        dogIn.setSitting(false);
-                        playerIn.rotationYaw = dogIn.rotationYaw;
-                        playerIn.rotationPitch = dogIn.rotationPitch;
+                if (playerIn.getVehicle() == null && !playerIn.isOnGround()) { // Player
+                    if (!dogIn.level.isClientSide) {
+                        dogIn.setOrderedToSit(false);
+                        playerIn.yRot = dogIn.yRot;
+                        playerIn.xRot = dogIn.xRot;
                         playerIn.startRiding(dogIn);
                     }
                     return ActionResultType.SUCCESS;
@@ -71,35 +71,35 @@ public class WolfMountTalent extends TalentInstance {
 
     @Override
     public void livingTick(AbstractDogEntity dog) {
-        if (dog.isBeingRidden() && dog.getDogHunger() < 1) {
-            dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUniqueID());
+        if (dog.isVehicle() && dog.getDogHunger() < 1) {
+            dog.getControllingPassenger().sendMessage(new TranslationTextComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUUID());
 
-            dog.removePassengers();
+            dog.ejectPassengers();
         }
     }
 
     @Override
     public ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
-        if (dogIn.canPassengerSteer()) {
+        if (dogIn.isControlledByLocalInstance()) {
             hungerTick += this.level() < 5 ? 3 : 1;
-            return ActionResult.resultSuccess(hungerTick);
+            return ActionResult.success(hungerTick);
         }
 
-        return ActionResult.resultPass(hungerTick);
+        return ActionResult.pass(hungerTick);
     }
 
     @Override
     public ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
         if (this.level() >= 5) {
-            return ActionResult.resultSuccess(distance - 1F);
+            return ActionResult.success(distance - 1F);
         }
 
-        return ActionResult.resultPass(0F);
+        return ActionResult.pass(0F);
     }
 
     @Override
     public ActionResultType hitByEntity(AbstractDogEntity dogIn, Entity entity) {
         // If the attacking entity is riding block
-        return dogIn.isRidingSameEntity(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
+        return dogIn.isPassengerOfSameVehicle(entity) ? ActionResultType.SUCCESS : ActionResultType.PASS;
     }
 }

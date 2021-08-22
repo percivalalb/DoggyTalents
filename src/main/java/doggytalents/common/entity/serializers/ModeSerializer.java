@@ -17,7 +17,7 @@ public class ModeSerializer implements IDataSerializer<EnumMode> {
     }
 
     @Override
-    public EnumMode copyValue(EnumMode value) {
+    public EnumMode copy(EnumMode value) {
         return value;
     }
 

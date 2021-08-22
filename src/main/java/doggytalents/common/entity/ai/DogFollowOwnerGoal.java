@@ -28,16 +28,16 @@ public class DogFollowOwnerGoal extends Goal {
 
     public DogFollowOwnerGoal(DogEntity dogIn, double speedIn, float minDistIn, float maxDistIn) {
         this.dog = dogIn;
-        this.world = dogIn.world;
+        this.world = dogIn.level;
         this.followSpeed = speedIn;
-        this.navigator = dogIn.getNavigator();
+        this.navigator = dogIn.getNavigation();
         this.startDist = minDistIn;
         this.stopDist = maxDistIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
+    public boolean canUse() {
         LivingEntity owner = this.dog.getOwner();
         if (owner == null) {
             return false;
@@ -45,9 +45,9 @@ public class DogFollowOwnerGoal extends Goal {
             return false;
         } else if (owner.isSpectator()) {
             return false;
-        } else if (this.dog.isEntitySleeping()) {
+        } else if (this.dog.isInSittingPose()) {
             return false;
-        } else if (!this.dog.hasBone() && this.dog.getDistanceSq(owner) < this.getMinStartDistanceSq()) {
+        } else if (!this.dog.hasBone() && this.dog.distanceToSqr(owner) < this.getMinStartDistanceSq()) {
             return false;
         } else {
             this.owner = owner;
@@ -56,51 +56,51 @@ public class DogFollowOwnerGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        if (this.navigator.noPath()) {
+    public boolean canContinueToUse() {
+        if (this.navigator.isDone()) {
             return false;
-        } else if (this.dog.isEntitySleeping()) {
+        } else if (this.dog.isInSittingPose()) {
             return false;
         } else {
-            return this.dog.getDistanceSq(this.owner) > this.stopDist * this.stopDist;
+            return this.dog.distanceToSqr(this.owner) > this.stopDist * this.stopDist;
         }
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.timeToRecalcPath = 0;
-        this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-        this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+        this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
+        this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         if (this.dog.hasBone()) {
-            double distanceToOwner = this.owner.getDistanceSq(this.dog);
+            double distanceToOwner = this.owner.distanceToSqr(this.dog);
             if (distanceToOwner <= this.stopDist * this.stopDist) {
                 IThrowableItem throwableItem = this.dog.getThrowableItem();
                 ItemStack fetchItem = throwableItem != null ? throwableItem.getReturnStack(this.dog.getBoneVariant()) : this.dog.getBoneVariant();
 
-                this.dog.entityDropItem(fetchItem, 0.0F);
+                this.dog.spawnAtLocation(fetchItem, 0.0F);
                 this.dog.setBoneVariant(ItemStack.EMPTY);
             }
         }
 
         this.owner = null;
-        this.navigator.clearPath();
-        this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+        this.navigator.stop();
+        this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
     }
 
     @Override
     public void tick() {
-        this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, this.dog.getVerticalFaceSpeed());
+        this.dog.getLookControl().setLookAt(this.owner, 10.0F, this.dog.getMaxHeadXRot());
         if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = 10;
-            if (!this.dog.getLeashed() && !this.dog.isPassenger()) { // Is not leashed and is not a passenger
-                if (this.dog.getDistanceSq(this.owner) >= 144.0D) { // Further than 12 blocks away teleport
+            if (!this.dog.isLeashed() && !this.dog.isPassenger()) { // Is not leashed and is not a passenger
+                if (this.dog.distanceToSqr(this.owner) >= 144.0D) { // Further than 12 blocks away teleport
                     EntityUtil.tryToTeleportNearEntity(this.dog, this.navigator, this.owner, 4);
                 } else {
-                    this.navigator.tryMoveToEntityLiving(this.owner, this.followSpeed);
+                    this.navigator.moveTo(this.owner, this.followSpeed);
                 }
             }
         }

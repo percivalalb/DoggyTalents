@@ -23,7 +23,7 @@ public class TreatBagContainer extends Container {
         this.itemstack = itemstackIn;
         this.bagInventory = itemstackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
 
-        assertInventorySize(playerInventory, 3 * 5);
+        checkContainerSize(playerInventory, 3 * 5);
 
         for (int l = 0; l < 5; l++) {
             this.addSlot(new SlotItemHandler(this.bagInventory, l, 44 + l * 18, 22));
@@ -38,7 +38,7 @@ public class TreatBagContainer extends Container {
         for (int k = 0; k < 9; k++) {
             this.addSlot(new Slot(playerInventory, k, 8 + k * 18, 103) {
                 @Override
-                public boolean canTakeStack(PlayerEntity playerIn) {
+                public boolean mayPickup(PlayerEntity playerIn) {
                     return TreatBagContainer.this.slot != this.getSlotIndex();
                 }
             });
@@ -46,27 +46,27 @@ public class TreatBagContainer extends Container {
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+    public ItemStack quickMoveStack(PlayerEntity playerIn, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
+        Slot slot = this.slots.get(index);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
             if (index < 5) {
-                if (!mergeItemStack(itemstack1, 5, this.inventorySlots.size(), true)) {
+                if (!moveItemStackTo(itemstack1, 5, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!mergeItemStack(itemstack1, 0, 5, false)) {
+            else if (!moveItemStackTo(itemstack1, 0, 5, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {
@@ -78,7 +78,7 @@ public class TreatBagContainer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity playerIn) {
-        return playerIn.inventory.getStackInSlot(this.slot).getItem() == DoggyItems.TREAT_BAG.get();
+    public boolean stillValid(PlayerEntity playerIn) {
+        return playerIn.inventory.getItem(this.slot).getItem() == DoggyItems.TREAT_BAG.get();
     }
 }

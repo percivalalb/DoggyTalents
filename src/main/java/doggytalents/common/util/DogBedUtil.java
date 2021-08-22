@@ -37,7 +37,7 @@ public class DogBedUtil {
     }
 
     public static Pair<ICasingMaterial, IBeddingMaterial> getMaterials(ItemStack stack) {
-        CompoundNBT tag = stack.getChildTag("doggytalents");
+        CompoundNBT tag = stack.getTagElement("doggytalents");
         if (tag != null) {
             ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
             IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
@@ -51,7 +51,7 @@ public class DogBedUtil {
     public static ItemStack createItemStack(ICasingMaterial casingId, IBeddingMaterial beddingId) {
         ItemStack stack = new ItemStack(DoggyBlocks.DOG_BED.get(), 1);
 
-        CompoundNBT tag = stack.getOrCreateChildTag("doggytalents");
+        CompoundNBT tag = stack.getOrCreateTagElement("doggytalents");
         NBTUtil.putRegistryValue(tag, "casingId", casingId);
         NBTUtil.putRegistryValue(tag, "beddingId", beddingId);
 

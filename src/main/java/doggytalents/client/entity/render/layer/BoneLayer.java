@@ -22,22 +22,22 @@ public class BoneLayer extends LayerRenderer<DogEntity, DogModel<DogEntity>> {
     public void render(MatrixStack matrixStack, IRenderTypeBuffer bufferSource, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (dog.hasBone()) {
 
-            matrixStack.push();
-            DogModel<DogEntity> model = this.getEntityModel();
-            if (model.isChild) {
+            matrixStack.pushPose();
+            DogModel<DogEntity> model = this.getParentModel();
+            if (model.young) {
                 // derived from AgeableModel head offset
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);
             }
 
-            model.head.translateRotate(matrixStack);
+            model.head.translateAndRotate(matrixStack);
 
             matrixStack.translate(-0.025F, 0.125F, -0.32F);
-            matrixStack.rotate(Vector3f.YP.rotationDegrees(45.0F));
-            matrixStack.rotate(Vector3f.XP.rotationDegrees(90.0F));
+            matrixStack.mulPose(Vector3f.YP.rotationDegrees(45.0F));
+            matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
-            matrixStack.pop();
+            Minecraft.getInstance().getItemInHandRenderer().renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemCameraTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
+            matrixStack.popPose();
         }
     }
 }

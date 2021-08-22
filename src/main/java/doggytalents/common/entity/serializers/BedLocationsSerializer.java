@@ -13,10 +13,10 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
     @Override
     public void write(PacketBuffer buf, DimensionDependantArg<D> value) {
         IDataSerializer<D> ser = value.getSerializer();
-        buf.writeInt(DataSerializers.getSerializerId(ser));
+        buf.writeInt(DataSerializers.getSerializedId(ser));
         buf.writeInt(value.size());
         value.entrySet().forEach((entry) -> {
-            buf.writeResourceLocation(entry.getKey().getLocation());
+            buf.writeResourceLocation(entry.getKey().location());
             ser.write(buf, entry.getValue());
         });
     }
@@ -29,7 +29,7 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
 
         for (int i = 0; i < size; i++) {
             ResourceLocation loc = buf.readResourceLocation();
-            RegistryKey<World> type = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, loc);
+            RegistryKey<World> type = RegistryKey.create(Registry.DIMENSION_REGISTRY, loc);
             D subV = ser.read(buf);
             value.map.put(type, subV);
         }
@@ -38,7 +38,7 @@ public class BedLocationsSerializer<D, T extends IDataSerializer<D>> implements 
     }
 
     @Override
-    public DimensionDependantArg<D> copyValue(DimensionDependantArg<D> value) {
+    public DimensionDependantArg<D> copy(DimensionDependantArg<D> value) {
         return value.copy();
     }
 }

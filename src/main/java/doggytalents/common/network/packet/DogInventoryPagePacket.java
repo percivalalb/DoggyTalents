@@ -30,13 +30,13 @@ public class DogInventoryPagePacket implements IPacket<DogInventoryPageData>  {
         ctx.get().enqueueWork(() -> {
             if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
                 ServerPlayerEntity player = ctx.get().getSender();
-                Container container = player.openContainer;
+                Container container = player.containerMenu;
                 if (container instanceof DogInventoriesContainer) {
                     DogInventoriesContainer inventories = (DogInventoriesContainer) container;
                     int page = MathHelper.clamp(data.page, 0, Math.max(0, inventories.getTotalNumColumns() - 9));
 
                     inventories.setPage(page);
-                    inventories.updateProgressBar(0, page);
+                    inventories.setData(0, page);
                 }
             }
         });

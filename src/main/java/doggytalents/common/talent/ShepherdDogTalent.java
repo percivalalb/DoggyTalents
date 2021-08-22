@@ -86,8 +86,8 @@ public class ShepherdDogTalent extends TalentInstance {
 
         public EntityAIShepherdDog(AbstractDogEntity dogIn, double speedIn, float range, @Nullable Predicate<AnimalEntity> targetSelector) {
             this.dog = dogIn;
-            this.world = dogIn.world;
-            this.dogPathfinder = dogIn.getNavigator();
+            this.world = dogIn.level;
+            this.dogPathfinder = dogIn.getNavigation();
             this.followSpeed = speedIn;
             this.maxDist = range;
             this.predicate = (entity) -> {
@@ -98,7 +98,7 @@ public class ShepherdDogTalent extends TalentInstance {
                 else if (targetSelector != null && !targetSelector.test(entity)) {
                     return false;
                 } else {
-                    return entity.getDistance(this.dog) > d0 ? false : entity.canEntityBeSeen(this.dog);
+                    return entity.distanceTo(this.dog) > d0 ? false : entity.canSee(this.dog);
                 }
             };
             this.holdingPred = (stack) -> {
@@ -106,11 +106,11 @@ public class ShepherdDogTalent extends TalentInstance {
             };
 
             this.sorter = new EntityUtil.Sorter(dogIn);
-            this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
         }
 
         @Override
-        public boolean shouldExecute() {
+        public boolean canUse() {
             if (this.dog.getMode() != EnumMode.DOCILE) {
                 return false;
             } else if (this.dog.getLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
@@ -124,7 +124,7 @@ public class ShepherdDogTalent extends TalentInstance {
                 } else if (!EntityUtil.isHolding(owner, DoggyItems.WHISTLE.get(), (nbt) -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
                     return false;
                 } else {
-                    List<AnimalEntity> list = this.world.getEntitiesWithinAABB(AnimalEntity.class, this.dog.getBoundingBox().grow(12D, 4.0D, 12D), this.predicate);
+                    List<AnimalEntity> list = this.world.getEntitiesOfClass(AnimalEntity.class, this.dog.getBoundingBox().inflate(12D, 4.0D, 12D), this.predicate);
                     Collections.sort(list, this.sorter);
                     if (list.isEmpty()) {
                         return false;
@@ -143,7 +143,7 @@ public class ShepherdDogTalent extends TalentInstance {
         }
 
         @Override
-        public boolean shouldContinueExecuting() {
+        public boolean canContinueToUse() {
             if (this.dog.getMode() != EnumMode.DOCILE) {
                 return false;
             } else if (this.dog.getLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
@@ -158,23 +158,23 @@ public class ShepherdDogTalent extends TalentInstance {
         }
 
         @Override
-        public void startExecuting() {
+        public void start() {
             this.timeToRecalcPath = 0;
-            this.oldWaterCost = this.dog.getPathPriority(PathNodeType.WATER);
-            this.dog.setPathPriority(PathNodeType.WATER, 0.0F);
+            this.oldWaterCost = this.dog.getPathfindingMalus(PathNodeType.WATER);
+            this.dog.setPathfindingMalus(PathNodeType.WATER, 0.0F);
         }
 
         @Override
         public void tick() {
-            if (!this.dog.isEntitySleeping()) {
+            if (!this.dog.isInSittingPose()) {
 
                 if (--this.timeToRecalcPath <= 0) {
                     this.timeToRecalcPath = 10;
 
                     // Pick up more animals
                     if (this.targets.size() < MAX_FOLLOW) {
-                        List<AnimalEntity> list = this.world.getEntitiesWithinAABB(AnimalEntity.class,
-                                this.dog.getBoundingBox().grow(16, 4.0D, 16), this.predicate);
+                        List<AnimalEntity> list = this.world.getEntitiesOfClass(AnimalEntity.class,
+                                this.dog.getBoundingBox().inflate(16, 4.0D, 16), this.predicate);
                         list.removeAll(this.targets);
                         Collections.sort(list, this.sorter);
 
@@ -182,27 +182,27 @@ public class ShepherdDogTalent extends TalentInstance {
                     }
 
                     Collections.sort(this.targets, this.sorter);
-                    boolean teleport = this.owner.getDistance(this.targets.get(0)) > 16;
+                    boolean teleport = this.owner.distanceTo(this.targets.get(0)) > 16;
 
                     for (AnimalEntity target : this.targets) {
                         //target.goalSelector.addGoal(0, new );
 
-                        double distanceAway = target.getDistance(this.owner);
-                        target.getLookController().setLookPositionWithEntity(this.owner, 10.0F, target.getVerticalFaceSpeed());
+                        double distanceAway = target.distanceTo(this.owner);
+                        target.getLookControl().setLookAt(this.owner, 10.0F, target.getMaxHeadXRot());
                         if (teleport) {
-                            if (!target.getLeashed() && !target.isPassenger()) {
-                                EntityUtil.tryToTeleportNearEntity(target, target.getNavigator(), this.owner, 4);
+                            if (!target.isLeashed() && !target.isPassenger()) {
+                                EntityUtil.tryToTeleportNearEntity(target, target.getNavigation(), this.owner, 4);
                             }
                         }
                         else if (distanceAway >= 5) {
-                            if (!target.getNavigator().tryMoveToEntityLiving(this.owner, 1.2D)) {
-                                if (!target.getLeashed() && !target.isPassenger() && distanceAway >= 20) {
-                                    EntityUtil.tryToTeleportNearEntity(target, target.getNavigator(), this.owner, 4);
+                            if (!target.getNavigation().moveTo(this.owner, 1.2D)) {
+                                if (!target.isLeashed() && !target.isPassenger() && distanceAway >= 20) {
+                                    EntityUtil.tryToTeleportNearEntity(target, target.getNavigation(), this.owner, 4);
                                 }
                             }
                         }
                         else {
-                            target.getNavigator().clearPath();
+                            target.getNavigation().stop();
                         }
                     }
 
@@ -210,42 +210,42 @@ public class ShepherdDogTalent extends TalentInstance {
 
                     // Calculate average pos of targets
                     for (AnimalEntity target : this.targets) {
-                        vec = vec.add(target.getPositionVec());
+                        vec = vec.add(target.position());
                     }
 
                     vec = vec.scale(1D / this.targets.size());
 
-                    double dPosX = vec.x - this.owner.getPosX();
-                    double dPosZ = vec.z - this.owner.getPosZ();
+                    double dPosX = vec.x - this.owner.getX();
+                    double dPosZ = vec.z - this.owner.getZ();
                     double size = Math.sqrt(dPosX * dPosX + dPosZ * dPosZ);
                     double j3 = vec.x + dPosX / size * (2 + this.targets.size() / 16);
                     double k3 = vec.z + dPosZ / size * (2 + this.targets.size() / 16);
 
                     if (teleport) {
-                        EntityUtil.tryToTeleportNearEntity(this.dog, this.dogPathfinder, new BlockPos(j3, this.dog.getPosY(), k3), 1);
+                        EntityUtil.tryToTeleportNearEntity(this.dog, this.dogPathfinder, new BlockPos(j3, this.dog.getY(), k3), 1);
                     }
 
-                    this.dog.getLookController().setLookPositionWithEntity(this.owner, 10.0F, this.dog.getVerticalFaceSpeed());
-                    if (!this.dogPathfinder.tryMoveToXYZ(j3, this.owner.getBoundingBox().minY, k3, this.followSpeed)) {
-                        if (this.dog.getDistanceSq(j3, this.owner.getBoundingBox().minY, k3) > 144D) {
-                            if (!this.dog.getLeashed() && !this.dog.isPassenger()) {
-                                EntityUtil.tryToTeleportNearEntity(this.dog, this.dogPathfinder, new BlockPos(j3, this.dog.getPosY(), k3), 4);
+                    this.dog.getLookControl().setLookAt(this.owner, 10.0F, this.dog.getMaxHeadXRot());
+                    if (!this.dogPathfinder.moveTo(j3, this.owner.getBoundingBox().minY, k3, this.followSpeed)) {
+                        if (this.dog.distanceToSqr(j3, this.owner.getBoundingBox().minY, k3) > 144D) {
+                            if (!this.dog.isLeashed() && !this.dog.isPassenger()) {
+                                EntityUtil.tryToTeleportNearEntity(this.dog, this.dogPathfinder, new BlockPos(j3, this.dog.getY(), k3), 4);
                             }
                         }
                     }
 
-                    if (this.dog.getDistance(this.owner) > 40) {
+                    if (this.dog.distanceTo(this.owner) > 40) {
                         EntityUtil.tryToTeleportNearEntity(this.dog, this.dogPathfinder, this.owner, 2);
                     }
                     // Play woof sound
-                    if (this.dog.getRNG().nextFloat() < 0.15F) {
-                        this.dog.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, this.dog.getSoundVolume() + 1.0F, (this.dog.getRNG().nextFloat() - this.dog.getRNG().nextFloat()) * 0.1F + 0.9F);
+                    if (this.dog.getRandom().nextFloat() < 0.15F) {
+                        this.dog.playSound(SoundEvents.WOLF_AMBIENT, this.dog.getSoundVolume() + 1.0F, (this.dog.getRandom().nextFloat() - this.dog.getRandom().nextFloat()) * 0.1F + 0.9F);
                     }
 
                     // Remove dead or faraway entities
                     List<AnimalEntity> toRemove = new ArrayList<>();
                     for (AnimalEntity target : this.targets) {
-                        if (!target.isAlive() || target.getDistance(this.dog) > 25D)
+                        if (!target.isAlive() || target.distanceTo(this.dog) > 25D)
                             toRemove.add(target);
                     }
                     this.targets.removeAll(toRemove);
@@ -254,13 +254,13 @@ public class ShepherdDogTalent extends TalentInstance {
         }
 
         @Override
-        public void resetTask() {
+        public void stop() {
             this.owner = null;
             for (AnimalEntity target : this.targets) {
-                target.getNavigator().clearPath();
+                target.getNavigation().stop();
             }
-            this.dogPathfinder.clearPath();
-            this.dog.setPathPriority(PathNodeType.WATER, this.oldWaterCost);
+            this.dogPathfinder.stop();
+            this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
         }
     }
 }

@@ -30,14 +30,14 @@ public final class DogBedRecipeMaker {
 
                 Ingredient beddingIngredient = beddingId.getIngredient();
                 Ingredient casingIngredient = casingId.getIngredient();
-                NonNullList<Ingredient> inputs = NonNullList.from(Ingredient.EMPTY,
+                NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY,
                     casingIngredient, beddingIngredient, casingIngredient,
                     casingIngredient, beddingIngredient, casingIngredient,
                     casingIngredient, casingIngredient, casingIngredient
                 );
                 ItemStack output = DogBedUtil.createItemStack(casingId, beddingId);
 
-                ResourceLocation id = Util.getResource("" + output.getTranslationKey()); //TODO update resource location
+                ResourceLocation id = Util.getResource("" + output.getDescriptionId()); //TODO update resource location
                 ShapedRecipe recipe = new ShapedRecipe(id, group, 3, 3, inputs, output);
                 recipes.add(recipe);
             }

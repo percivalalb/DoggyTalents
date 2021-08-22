@@ -76,9 +76,9 @@ public class DogLocationData implements IDogData {
     }
 
     public void update(DogEntity dogIn) {
-        this.ownerId = dogIn.getOwnerId();
-        this.position = dogIn.getPositionVec();
-        this.dimension = dogIn.world.getDimensionKey();
+        this.ownerId = dogIn.getOwnerUUID();
+        this.position = dogIn.position();
+        this.dimension = dogIn.level.dimension();
 
         this.name = dogIn.getName();
         this.ownerName = dogIn.getOwnersName().orElse(null);
@@ -86,14 +86,14 @@ public class DogLocationData implements IDogData {
         this.hasRadarCollar = dogIn.getAccessory(DoggyAccessories.RADIO_BAND.get()).isPresent();
 
         this.dog = dogIn;
-        this.storage.markDirty();
+        this.storage.setDirty();
     }
 
 
     public void read(CompoundNBT compound) {
         this.ownerId = NBTUtil.getUniqueId(compound, "ownerId");
         this.position = NBTUtil.getVector3d(compound);
-        this.dimension = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, NBTUtil.getResourceLocation(compound, "dimension"));
+        this.dimension = RegistryKey.create(Registry.DIMENSION_REGISTRY, NBTUtil.getResourceLocation(compound, "dimension"));
         this.name = NBTUtil.getTextComponent(compound, "name_text_component");
         if (compound.contains("gender", Constants.NBT.TAG_STRING)) {
             this.gender = EnumGender.bySaveName(compound.getString("gender"));
@@ -104,7 +104,7 @@ public class DogLocationData implements IDogData {
     public CompoundNBT write(CompoundNBT compound) {
         NBTUtil.putUniqueId(compound, "ownerId", this.ownerId);
         NBTUtil.putVector3d(compound, this.position);
-        NBTUtil.putResourceLocation(compound, "dimension", this.dimension.getLocation());
+        NBTUtil.putResourceLocation(compound, "dimension", this.dimension.location());
         NBTUtil.putTextComponent(compound, "name_text_component", this.name);
         if (this.gender != null) {
             compound.putString("gender", this.gender.getSaveName());
@@ -114,7 +114,7 @@ public class DogLocationData implements IDogData {
     }
 
     public static DogLocationData from(DogLocationStorage storageIn, DogEntity dogIn) {
-        DogLocationData locationData = new DogLocationData(storageIn, dogIn.getUniqueID());
+        DogLocationData locationData = new DogLocationData(storageIn, dogIn.getUUID());
         locationData.populate(dogIn);
         return locationData;
     }
@@ -130,7 +130,7 @@ public class DogLocationData implements IDogData {
             throw new IllegalArgumentException("worldIn must be of ServerWorld");
         }
 
-        for (ServerWorld world : server.getWorlds()) {
+        for (ServerWorld world : server.getAllLevels()) {
             LivingEntity possibleOwner = WorldUtil.getCachedEntity(world, LivingEntity.class, this.owner, this.uuid);
             if (possibleOwner != null) {
                 this.owner = possibleOwner;
@@ -153,7 +153,7 @@ public class DogLocationData implements IDogData {
             throw new IllegalArgumentException("worldIn must be of ServerWorld");
         }
 
-        for (ServerWorld world : server.getWorlds()) {
+        for (ServerWorld world : server.getAllLevels()) {
             DogEntity possibleDog = WorldUtil.getCachedEntity(world, DogEntity.class, this.dog, this.uuid);
             if (possibleDog != null) {
                 this.dog = possibleDog;
@@ -166,7 +166,7 @@ public class DogLocationData implements IDogData {
     }
 
     public boolean shouldDisplay(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        return this.hasRadarCollar || playerIn.isCreative() || playerIn.getHeldItem(handIn).getItem() == DoggyItems.CREATIVE_RADAR.get();
+        return this.hasRadarCollar || playerIn.isCreative() || playerIn.getItemInHand(handIn).getItem() == DoggyItems.CREATIVE_RADAR.get();
     }
 
     @Nullable
@@ -176,7 +176,7 @@ public class DogLocationData implements IDogData {
 
     @Nullable
     public Vector3d getPos(@Nullable ServerWorld worldIn) {
-        return this.getDog(worldIn).map(DogEntity::getPositionVec).orElse(this.position);
+        return this.getDog(worldIn).map(DogEntity::position).orElse(this.position);
     }
 
     @Nullable

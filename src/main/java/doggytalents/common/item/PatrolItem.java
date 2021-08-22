@@ -32,9 +32,9 @@ public class PatrolItem extends Item implements IDogItem  {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        this.addPosToStack(playerIn.getHeldItem(handIn), playerIn.getPosition());
-        return ActionResult.resultPass(playerIn.getHeldItem(handIn));
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        this.addPosToStack(playerIn.getItemInHand(handIn), playerIn.blockPosition());
+        return ActionResult.pass(playerIn.getItemInHand(handIn));
     }
 
     public void addPosToStack(ItemStack stackIn, BlockPos posIn) {
@@ -61,7 +61,7 @@ public class PatrolItem extends Item implements IDogItem  {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        List<BlockPos> pos = getPos(playerIn.getHeldItem(handIn));
+        List<BlockPos> pos = getPos(playerIn.getItemInHand(handIn));
         DoggyTalents2.LOGGER.debug("{}", pos);
         dogIn.setData(POS, pos);
         return ActionResultType.SUCCESS;

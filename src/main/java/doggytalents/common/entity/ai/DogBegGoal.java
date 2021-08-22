@@ -23,23 +23,23 @@ public class DogBegGoal extends Goal {
 
     public DogBegGoal(DogEntity wolf, float minDistance) {
         this.dog = wolf;
-        this.world = wolf.world;
+        this.world = wolf.level;
         this.minPlayerDistance = minDistance;
-        this.playerPredicate = (new EntityPredicate()).setDistance(minDistance).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks();
-        this.setMutexFlags(EnumSet.of(Goal.Flag.LOOK));
+        this.playerPredicate = (new EntityPredicate()).range(minDistance).allowInvulnerable().allowSameTeam().allowNonAttackable();
+        this.setFlags(EnumSet.of(Goal.Flag.LOOK));
     }
 
     @Override
-    public boolean shouldExecute() {
-        this.player = this.world.getClosestPlayer(this.playerPredicate, this.dog);
+    public boolean canUse() {
+        this.player = this.world.getNearestPlayer(this.playerPredicate, this.dog);
         return this.player == null ? false : this.hasTemptationItemInHand(this.player);
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         if (!this.player.isAlive()) {
             return false;
-        } else if (this.dog.getDistanceSq(this.player) > this.minPlayerDistance * this.minPlayerDistance) {
+        } else if (this.dog.distanceToSqr(this.player) > this.minPlayerDistance * this.minPlayerDistance) {
             return false;
         } else {
             return this.timeoutCounter > 0 && this.hasTemptationItemInHand(this.player);
@@ -47,27 +47,27 @@ public class DogBegGoal extends Goal {
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.dog.setBegging(true);
-        this.timeoutCounter = 40 + this.dog.getRNG().nextInt(40);
+        this.timeoutCounter = 40 + this.dog.getRandom().nextInt(40);
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         this.dog.setBegging(false);
         this.player = null;
     }
 
     @Override
     public void tick() {
-        this.dog.getLookController().setLookPosition(this.player.getPosX(), this.player.getPosYEye(), this.player.getPosZ(), 10.0F, this.dog.getVerticalFaceSpeed());
+        this.dog.getLookControl().setLookAt(this.player.getX(), this.player.getEyeY(), this.player.getZ(), 10.0F, this.dog.getMaxHeadXRot());
         --this.timeoutCounter;
     }
 
     private boolean hasTemptationItemInHand(PlayerEntity player) {
         for (Hand hand : Hand.values()) {
-            ItemStack itemstack = player.getHeldItem(hand);
-            if (itemstack.getItem().isIn(this.dog.isTamed() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED)) {
+            ItemStack itemstack = player.getItemInHand(hand);
+            if (itemstack.getItem().is(this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED)) {
                 return true;
             }
 
@@ -75,7 +75,7 @@ public class DogBegGoal extends Goal {
                 return true;
             }
 
-            if (this.dog.isBreedingItem(itemstack)) {
+            if (this.dog.isFood(itemstack)) {
                 return true;
             }
         }

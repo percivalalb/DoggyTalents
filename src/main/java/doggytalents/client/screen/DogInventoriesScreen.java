@@ -36,34 +36,34 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(stack, mouseX, mouseY);
+        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
     public void init() {
         super.init();
-        this.left = new SmallButton(this.guiLeft + this.xSize - 29, this.guiTop + 4, new StringTextComponent("<"), (btn) -> {
-            int page = this.getContainer().getPage();
+        this.left = new SmallButton(this.leftPos + this.imageWidth - 29, this.topPos + 4, new StringTextComponent("<"), (btn) -> {
+            int page = this.getMenu().getPage();
 
             if (page > 0) {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogInventoryPageData(--page));
             }
 
             btn.active = page > 0;
-            this.right.active = page < this.getContainer().getTotalNumColumns() - 9;
+            this.right.active = page < this.getMenu().getTotalNumColumns() - 9;
         });
-        this.right = new SmallButton(this.guiLeft + this.xSize - 26 + 9, this.guiTop + 4, new StringTextComponent(">"), (btn) -> {
-            int page = this.getContainer().getPage();
+        this.right = new SmallButton(this.leftPos + this.imageWidth - 26 + 9, this.topPos + 4, new StringTextComponent(">"), (btn) -> {
+            int page = this.getMenu().getPage();
 
-            if (page < this.getContainer().getTotalNumColumns() - 9) {
+            if (page < this.getMenu().getTotalNumColumns() - 9) {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogInventoryPageData(++page));
             }
 
-            btn.active = page < this.getContainer().getTotalNumColumns() - 9;
+            btn.active = page < this.getMenu().getTotalNumColumns() - 9;
             this.left.active = page > 0;
 
         });
-        if (this.getContainer().getTotalNumColumns() > 9) {
+        if (this.getMenu().getTotalNumColumns() > 9) {
             this.left.active = false;
             this.right.active = true;
         } else {
@@ -76,21 +76,21 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int par1, int par2) {
-        this.font.drawString(stack, this.title.getString(), 8, 6, 4210752);
-        this.font.drawString(stack, this.playerInventory.getDisplayName().getString(), 8.0F, this.ySize - 96 + 2, 4210752);
+    protected void renderLabels(MatrixStack stack, int par1, int par2) {
+        this.font.draw(stack, this.title.getString(), 8, 6, 4210752);
+        this.font.draw(stack, this.inventory.getDisplayName().getString(), 8.0F, this.imageHeight - 96 + 2, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int xMouse, int yMouse) {
+    protected void renderBg(MatrixStack stack, float partialTicks, int xMouse, int yMouse) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(Resources.DOG_INVENTORY);
-        int l = (this.width - this.xSize) / 2;
-        int i1 = (this.height - this.ySize) / 2;
-        this.blit(stack, l, i1, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(Resources.DOG_INVENTORY);
+        int l = (this.width - this.imageWidth) / 2;
+        int i1 = (this.height - this.imageHeight) / 2;
+        this.blit(stack, l, i1, 0, 0, this.imageWidth, this.imageHeight);
 
-        for (DogInventorySlot slot : this.getContainer().getSlots()) {
-            if (!slot.isEnabled()) {
+        for (DogInventorySlot slot : this.getMenu().getSlots()) {
+            if (!slot.isActive()) {
                 continue;
             }
 
@@ -102,18 +102,18 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
                 RenderSystem.color3f(1, 1, 1);
             }
 
-            this.blit(stack, l + slot.xPos - 1, i1 + slot.yPos - 1, 197, 2, 18, 18);
+            this.blit(stack, l + slot.x - 1, i1 + slot.y - 1, 197, 2, 18, 18);
         }
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-       InputMappings.Input mouseKey = InputMappings.getInputByCode(keyCode, scanCode);
-       if (this.minecraft.gameSettings.keyBindInventory.isActiveAndMatches(mouseKey)) {
-           if (this.playerInventory.player.abilities.isCreativeMode) {
-               this.minecraft.displayGuiScreen(new CreativeScreen(this.playerInventory.player));
+       InputMappings.Input mouseKey = InputMappings.getKey(keyCode, scanCode);
+       if (this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
+           if (this.inventory.player.abilities.instabuild) {
+               this.minecraft.setScreen(new CreativeScreen(this.inventory.player));
            } else {
-               this.minecraft.displayGuiScreen(new InventoryScreen(this.playerInventory.player));
+               this.minecraft.setScreen(new InventoryScreen(this.inventory.player));
            }
            return true;
        }
@@ -122,12 +122,12 @@ public class DogInventoriesScreen extends ContainerScreen<DogInventoriesContaine
     }
 
     @Override
-    protected void renderHoveredTooltip(MatrixStack stack, int mouseX, int mouseY) {
-        if (this.minecraft.player.inventory.getItemStack().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.getHasStack()) {
+    protected void renderTooltip(MatrixStack stack, int mouseX, int mouseY) {
+        if (this.minecraft.player.inventory.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
 //            if (this.hoveredSlot instanceof DogInventorySlot) {
 //                this.renderTooltip(Arrays.asList(new TranslationTextComponent("test").applyTextStyle(TextFormatting.RED).getFormattedText()), mouseX, mouseY);
 //            } else {
-                this.renderTooltip(stack, this.hoveredSlot.getStack(), mouseX, mouseY);
+                this.renderTooltip(stack, this.hoveredSlot.getItem(), mouseX, mouseY);
 //            }
         }
 

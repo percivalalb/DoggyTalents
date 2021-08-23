@@ -155,9 +155,9 @@
 
    "dog.mode.wandering.description": "Ở chế độ này, cún ở gần Tô Đồ ăn và chờ lệnh tiếp theo của bạn. Để chỉ cún Tô Đồ ăn ở đâu, hãy đưa nó đến cách đó vài khối.",
    "dog.mode.tactical.description": "Ở chế độ này, cún sẽ theo bạn nhưng không tấn công bất cứ thứ gì trừ khi bạn sử dụng lệnh Chiến Thuật",
-   "dog.mode.aggressive.description": "Ở chế độ này, cún sẽ theo dõi bạn và tấn công bất cứ thứ gì tấn công bạn hoặc bạn tấn công",
-   "dog.mode.berserker.description": "Ở chế độ này, cún sẽ theo dõi bạn và nếu bất kỳ kẻ thù nào đến gần, chúng sẽ tấn công nó mà không báo trước",
-   "dog.mode.docile.description": "Ở chế độ này, cún sẽ đi theo bạn nhưng không tấn công bất cứ thứ gì, sẵn sàng để bạn ném xương",
+   "dog.mode.aggressive.description": "Ở chế độ này, cún sẽ theo bạn và tấn công bất cứ thứ gì tấn công bạn hoặc bạn tấn công",
+   "dog.mode.berserker.description": "Ở chế độ này, cún sẽ theo bạn và nếu bất kỳ kẻ thù nào đến gần, nó sẽ tấn công chúng mà không báo trước",
+   "dog.mode.docile.description": "Ở chế độ này, cún sẽ theo bạn nhưng không tấn công bất cứ thứ gì, sẵn sàng để bạn ném xương",
    "dog.mode.patrol.description": "Ở chế độ này, cún sẽ tuần tra giữa 2 đến 4 điểm (thiết lập bằng Công cụ Ra Lệnh) và tấn công những kẻ thù xuất hiện ở đó",
    "dog.mode.guard.description": "Cún theo SÁT bạn và tấn công bất kỳ kẻ thù nào đến gần.",
 

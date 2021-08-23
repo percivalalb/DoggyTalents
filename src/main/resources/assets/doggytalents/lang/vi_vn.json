@@ -60,13 +60,13 @@
 
    "treat.dire_treat.low_level": "Chú cún của bạn có thể không chịu nổi năng lượng chứa trong Xương này",
    "treat.dire_treat.level_up": "Lên cấp!",
-   "treat.dire_treat.too_young": "Cún này còn hơi trẻ để được huấn luyện.",
+   "treat.dire_treat.too_young": "Cún còn hơi trẻ để được huấn luyện.",
    "treat.dire_treat.max_level": "CHÚC MỪNG! Cún bạn đã đạt cấp Cuối Cùng",
    "treat.normal_treat.level_up": "Lên cấp!",
-   "treat.normal_treat.too_young": "Cún này còn hơi trẻ để được huấn luyện.",
+   "treat.normal_treat.too_young": "Cún còn hơi trẻ để được huấn luyện.",
    "treat.normal_treat.max_level": "Cấp chú cún này quá cao, Xương này không còn khả năng đáp ứng cho cún nữa.",
-   "treat.big_bone.too_young": "Cún này còn hơi trẻ với xương này",
-   "treat.tiny_bone.too_young": "Cún này còn hơi trẻ với xương này",
+   "treat.big_bone.too_young": "Cún còn hơi trẻ với xương",
+   "treat.tiny_bone.too_young": "Cún còn hơi trẻ với xương",
 
    "talent.doggytalents.black_pelt": "Đai đen",
    "talent.doggytalents.guard_dog": "Cún Phòng vệ",

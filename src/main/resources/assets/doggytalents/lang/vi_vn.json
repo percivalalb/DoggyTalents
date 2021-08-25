@@ -161,9 +161,9 @@
    "dog.mode.patrol.description": "Ở chế độ này, cún sẽ tuần tra giữa 2 đến 4 điểm (thiết lập bằng Công cụ Ra Lệnh) và tấn công những kẻ thù xuất hiện ở đó",
    "dog.mode.guard.description": "Cún theo SÁT bạn và tấn công bất kỳ kẻ thù nào đến gần.",
 
-   "dog.mode.incapacitated.help": "%s bị mất khả năng chiến đấu và cần một chiếc bánh để phục hồi %s.",
-   "dog.mode.docile.nobowl": "Không có Tô Đồ ăn nào được đặt cả.",
-   "dog.mode.docile.bowl": "Khoảng cách Tô Đồ ăn: %d",
+   "dog.mode.incapacitated.help": "%s bị mất khả năng chiến đấu và cần một chiếc bánh kem để phục hồi.",
+   "dog.mode.docile.nobowl": "Chưa có Tô Đồ ăn nào được đặt cả.",
+   "dog.mode.docile.bowl": "Khoảng cách đến Tô Đồ ăn: %d",
    "dog.mode.docile.distance": "Tô Đồ ăn hiện ở quá xa: %d",
 
    "dog.gender.female": "Nữ",
@@ -270,7 +270,6 @@
    "dogbed.casing.minecraft.dark_oak_planks": "Khung gỗ sồi sẫm",
    "dogbed.casing.minecraft.crimson_planks": "Khung gỗ đỏ thẫm",
    "dogbed.casing.minecraft.warped_planks": "Khung gỗ kì dị",
-
 
 
 

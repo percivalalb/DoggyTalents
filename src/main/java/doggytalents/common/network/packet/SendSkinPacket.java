@@ -18,7 +18,7 @@ import doggytalents.common.network.packet.data.SendSkinData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
 
 public class SendSkinPacket implements IPacket<SendSkinData> {
 

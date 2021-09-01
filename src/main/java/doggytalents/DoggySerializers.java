@@ -11,7 +11,7 @@ import doggytalents.common.entity.serializers.ModeSerializer;
 import doggytalents.common.entity.serializers.TalentListSerializer;
 import doggytalents.common.lib.Constants;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

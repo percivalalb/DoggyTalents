@@ -31,9 +31,7 @@ public class DogLocationStorage extends SavedData {
 
     private Map<UUID, DogLocationData> locationDataMap = Maps.newConcurrentMap();
 
-    public DogLocationStorage() {
-        super(Constants.STORAGE_DOG_LOCATION);
-    }
+    public DogLocationStorage() {}
 
     public static DogLocationStorage get(Level world) {
         if (!(world instanceof ServerLevel)) {
@@ -43,7 +41,7 @@ public class DogLocationStorage extends SavedData {
         ServerLevel overworld = world.getServer().getLevel(Level.OVERWORLD);
 
         DimensionDataStorage storage = overworld.getDataStorage();
-        return storage.computeIfAbsent(DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
+        return storage.computeIfAbsent(DogLocationStorage::load, DogLocationStorage::new, Constants.STORAGE_DOG_LOCATION);
     }
 
     public Stream<DogLocationData> getDogs(LivingEntity owner) {
@@ -123,9 +121,9 @@ public class DogLocationStorage extends SavedData {
         return Collections.unmodifiableCollection(this.locationDataMap.values());
     }
 
-    @Override
-    public void load(CompoundTag nbt) {
-        this.locationDataMap.clear();
+    public static DogLocationStorage load(CompoundTag nbt) {
+        DogLocationStorage store = new DogLocationStorage();
+        store.locationDataMap.clear();
 
         ListTag list = nbt.getList("locationData", TAG_COMPOUND);
 
@@ -144,7 +142,7 @@ public class DogLocationStorage extends SavedData {
                 uuid = NBTUtil.getUniqueId(locationCompound, "entityId");
             }
 
-            DogLocationData locationData = new DogLocationData(this, uuid);
+            DogLocationData locationData = new DogLocationData(store, uuid);
             locationData.read(locationCompound);
 
             if (uuid == null) {
@@ -153,8 +151,10 @@ public class DogLocationStorage extends SavedData {
                 continue;
             }
 
-            this.locationDataMap.put(uuid, locationData);
+            store.locationDataMap.put(uuid, locationData);
         }
+
+        return store;
     }
 
     @Override

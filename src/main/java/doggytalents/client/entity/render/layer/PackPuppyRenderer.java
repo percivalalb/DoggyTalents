@@ -16,17 +16,18 @@ public class PackPuppyRenderer implements ITalentRenderer<DogEntity> {
     private final EntityModel<DogEntity> model;
 
     public PackPuppyRenderer() {
-        this.model = new DogBackpackModel(0.0F);
+        this.model = null;//new DogBackpackModel(0.0F);
     }
 
     @Override
     public void render(RenderLayer<DogEntity, EntityModel<DogEntity>> layer, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, DogEntity dogIn, TalentInstance inst, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!dogIn.isInvisible()) {
-            layer.getParentModel().copyPropertiesTo(this.model);
-            this.model.prepareMobModel(dogIn, limbSwing, limbSwingAmount, partialTicks);
-            this.model.setupAnim(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
-            RenderLayer.renderColoredCutoutModel(this.model, Resources.TALENT_CHEST, matrixStackIn, bufferIn, packedLightIn, dogIn, 1.0f, 1.0f, 1.0f);
+            // TODO
+//            layer.getParentModel().copyPropertiesTo(this.model);
+//            this.model.prepareMobModel(dogIn, limbSwing, limbSwingAmount, partialTicks);
+//            this.model.setupAnim(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+//
+//            RenderLayer.renderColoredCutoutModel(this.model, Resources.TALENT_CHEST, matrixStackIn, bufferIn, packedLightIn, dogIn, 1.0f, 1.0f, 1.0f);
         }
     }
 }

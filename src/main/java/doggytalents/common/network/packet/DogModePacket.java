@@ -6,7 +6,7 @@ import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogModeData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
 
 public class DogModePacket extends DogPacket<DogModeData> {
 

@@ -1,6 +1,7 @@
 package doggytalents.common.block;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.CauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -60,15 +61,13 @@ public class DogBathBlock extends Block {
         } else {
             if (stack.getItem() == Items.GLASS_BOTTLE) {
                 if (!worldIn.isClientSide) {
-                    if (!player.abilities.instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         ItemStack bottleStack = PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.WATER);
                         stack.shrink(1);
                         if (stack.isEmpty()) {
                             player.setItemInHand(handIn, bottleStack);
-                        } else if (!player.inventory.add(bottleStack)) {
+                        } else if (!player.getInventory().add(bottleStack)) {
                             player.drop(bottleStack, false);
-                        } else if (player instanceof ServerPlayer) {
-                            ((ServerPlayer) player).refreshContainer(player.inventoryMenu);
                         }
                     }
 

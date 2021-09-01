@@ -98,7 +98,7 @@ public class ShepherdDogTalent extends TalentInstance {
                 else if (targetSelector != null && !targetSelector.test(entity)) {
                     return false;
                 } else {
-                    return entity.distanceTo(this.dog) > d0 ? false : entity.canSee(this.dog);
+                    return entity.distanceTo(this.dog) > d0 ? false : entity.hasLineOfSight(this.dog);
                 }
             };
             this.holdingPred = (stack) -> {

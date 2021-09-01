@@ -17,7 +17,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.IRegistryDelegate;
 
@@ -60,7 +60,7 @@ public class Util {
 
     public static int colorDye(int startColor, Collection<DyeColor> dyes) {
         List<int[]> colors = dyes.stream()
-                .mapToInt(DyeColor::getColorValue)
+                .mapToInt(DyeColor::getTextColor)
                 .mapToObj(Util::rgbIntToIntArray)
                 .collect(Collectors.toList());
 
@@ -189,7 +189,7 @@ public class Util {
 
         if (obj instanceof String) {
             // Returns null when namespace or path contain invalid
-            // charcters
+            // characters
             return ResourceLocation.tryParse((String) obj);
         }
 

@@ -2,15 +2,14 @@ package doggytalents.test.doggytalents.common.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.IRegistryDelegate;
 import org.junit.jupiter.api.Test;
 
 import static doggytalents.common.util.Util.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class UtilTest {
 

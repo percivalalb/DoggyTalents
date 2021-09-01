@@ -1,5 +1,6 @@
 package doggytalents.common.addon.jei;
 
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;
@@ -24,7 +25,7 @@ public class DTPlugin implements IModPlugin {
 
     @Override
     public void registerItemSubtypes(ISubtypeRegistration registration) {
-        registration.registerSubtypeInterpreter(DoggyBlocks.DOG_BED.get().asItem(), stack -> {
+        registration.registerSubtypeInterpreter(DoggyBlocks.DOG_BED.get().asItem(), (stack, ctx) -> {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
             String casingKey = materials.getLeft() != null

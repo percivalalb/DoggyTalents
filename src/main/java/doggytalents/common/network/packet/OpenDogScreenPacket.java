@@ -11,7 +11,7 @@ import doggytalents.common.talent.PackPuppyTalent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
 
 public class OpenDogScreenPacket implements IPacket<OpenDogScreenData>  {
 

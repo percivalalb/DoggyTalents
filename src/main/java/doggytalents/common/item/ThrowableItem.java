@@ -62,18 +62,18 @@ public class ThrowableItem extends Item implements IThrowableItem {
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemStackIn = playerIn.getItemInHand(handIn);
 
-        worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((Player)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (worldIn.random.nextFloat() * 0.4F + 0.8F));
 
         if (!worldIn.isClientSide) {
             ItemStack stack = itemStackIn.copy();
             stack.setCount(1);
             ItemEntity entityitem = new ItemEntity(playerIn.level, playerIn.getX(), (playerIn.getY() - 0.30000001192092896D) + playerIn.getEyeHeight(), playerIn.getZ(), stack);
             entityitem.setPickUpDelay(20);
-            this.setHeadingFromThrower(entityitem, playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 1.2F, 1.0F);
+            this.setHeadingFromThrower(entityitem, playerIn, playerIn.getXRot(), playerIn.getYRot(), 0.0F, 1.2F, 1.0F);
             worldIn.addFreshEntity(entityitem);
         }
 
-        if (!playerIn.abilities.instabuild)
+        if (!playerIn.getAbilities().instabuild)
             itemStackIn.shrink(1);
 
         playerIn.awardStat(Stats.ITEM_USED.get(this));
@@ -82,12 +82,12 @@ public class ThrowableItem extends Item implements IThrowableItem {
     }
 
     public void setThrowableHeading(ItemEntity entityItem, double x, double y, double z, float velocity, float inaccuracy) {
-        Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
+        Vec3 vec3d = (new Vec3(x, y, z)).normalize().add(entityItem.level.random.nextGaussian() * 0.0075F * inaccuracy, entityItem.level.random.nextGaussian() * 0.0075F * inaccuracy, entityItem.level.random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
         entityItem.setDeltaMovement(vec3d);
-        float f = Mth.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
-        entityItem.yRot = (float)(Mth.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
-        entityItem.xRot = (float)(Mth.atan2(vec3d.y, f) * (180F / (float)Math.PI));
-        entityItem.yRotO =  entityItem.yRot;
-        entityItem.xRotO = entityItem.xRot;
+        float f = Mth.sqrt((float) (vec3d.x * vec3d.x + vec3d.z * vec3d.z));
+        entityItem.setYRot((float)(Mth.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI)));
+        entityItem.setXRot((float)(Mth.atan2(vec3d.y, f) * (180F / (float)Math.PI)));
+        entityItem.yRotO =  entityItem.getYRot();
+        entityItem.xRotO = entityItem.getXRot();
     }
 }

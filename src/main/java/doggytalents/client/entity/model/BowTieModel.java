@@ -13,17 +13,18 @@ public class BowTieModel extends ListModel<DogEntity> {
     public ModelPart leftChest;
 
     public BowTieModel(float scaleFactor) {
-        this.texHeight = 16;
-        this.texWidth = 16;
-        this.rightChest = new ModelPart(this, 52, 0);
-        this.rightChest.addBox(-2.0F, 1.5F, -9.0F, 1, 2, 1, scaleFactor);
-        this.rightChest.setPos(0.0F, 14.0F, 2.0F);
-        this.middleChest = new ModelPart(this, 52, 0);
-        this.middleChest.addBox(0.0F, 14.0F, -0.0F, 2, 1, 1, scaleFactor);
-        this.middleChest.setPos(-1.0F, 2.0F, -9.0F);//0.0F, 14.0F, 2.0F);
-        this.leftChest = new ModelPart(this, 52, 0);
-        this.leftChest.addBox(1.0F, 1.5F, -9.0F, 1, 2, 1, scaleFactor);
-        this.leftChest.setPos(0.0F, 14.0F, 2.0F);
+        // TODO
+//        this.texHeight = 16;
+//        this.texWidth = 16;
+//        this.rightChest = new ModelPart(this, 52, 0);
+//        this.rightChest.addBox(-2.0F, 1.5F, -9.0F, 1, 2, 1, scaleFactor);
+//        this.rightChest.setPos(0.0F, 14.0F, 2.0F);
+//        this.middleChest = new ModelPart(this, 52, 0);
+//        this.middleChest.addBox(0.0F, 14.0F, -0.0F, 2, 1, 1, scaleFactor);
+//        this.middleChest.setPos(-1.0F, 2.0F, -9.0F);//0.0F, 14.0F, 2.0F);
+//        this.leftChest = new ModelPart(this, 52, 0);
+//        this.leftChest.addBox(1.0F, 1.5F, -9.0F, 1, 2, 1, scaleFactor);
+//        this.leftChest.setPos(0.0F, 14.0F, 2.0F);
     }
 
     @Override

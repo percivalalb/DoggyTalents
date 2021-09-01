@@ -11,6 +11,7 @@ import doggytalents.common.util.EntityUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,9 +19,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.fml.network.FMLPlayMessages;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
+import net.minecraftforge.fmllegacy.network.NetworkHooks;
 
 public class DoggyBeamEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 
@@ -63,7 +64,7 @@ public class DoggyBeamEntity extends ThrowableProjectile implements IEntityAddit
 
         if (!this.level.isClientSide) {
             this.level.broadcastEntityEvent(this, Constants.EntityState.DEATH);
-            this.remove();
+            this.discard();
         }
     }
 

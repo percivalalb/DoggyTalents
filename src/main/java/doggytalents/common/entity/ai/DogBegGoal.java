@@ -25,7 +25,7 @@ public class DogBegGoal extends Goal {
         this.dog = wolf;
         this.world = wolf.level;
         this.minPlayerDistance = minDistance;
-        this.playerPredicate = (new TargetingConditions()).range(minDistance).allowInvulnerable().allowSameTeam().allowNonAttackable();
+        this.playerPredicate = TargetingConditions.forNonCombat().range(minDistance); // TODO check
         this.setFlags(EnumSet.of(Goal.Flag.LOOK));
     }
 
@@ -67,7 +67,7 @@ public class DogBegGoal extends Goal {
     private boolean hasTemptationItemInHand(Player player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack itemstack = player.getItemInHand(hand);
-            if (itemstack.getItem().is(this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED)) {
+            if ((this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED).contains(itemstack.getItem())) {
                 return true;
             }
 

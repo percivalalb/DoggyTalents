@@ -84,8 +84,8 @@ public class DogBedModel implements BakedModel {
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture(@Nonnull IModelData data) {
-        return this.getModelVariant(data).getParticleTexture(data);
+    public TextureAtlasSprite getParticleIcon(@Nonnull IModelData data) {
+        return this.getModelVariant(data).getParticleIcon(data);
     }
 
     @Override

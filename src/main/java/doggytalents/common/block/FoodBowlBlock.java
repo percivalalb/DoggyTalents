@@ -3,15 +3,16 @@ package doggytalents.common.block;
 import javax.annotation.Nullable;
 
 import doggytalents.DoggyItems;
+import doggytalents.DoggyTileEntityTypes;
 import doggytalents.common.Screens;
+import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
 import doggytalents.common.util.InventoryUtil;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,7 +48,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.EmptyHandler;
 
-public class FoodBowlBlock extends Block {
+public class FoodBowlBlock extends BaseEntityBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 8.0D, 15.0D);
@@ -57,13 +58,14 @@ public class FoodBowlBlock extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
+        return new FoodBowlTileEntity(pos, blockState);
     }
 
+    @Nullable
     @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-        return new FoodBowlTileEntity();
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        return createTickerHelper(blockEntityType, DoggyTileEntityTypes.FOOD_BOWL.get(), FoodBowlTileEntity::tick);
     }
 
     @Override
@@ -105,7 +107,7 @@ public class FoodBowlBlock extends Block {
                 if (!remaining.isEmpty()) {
                     entityItem.setItem(remaining);
                 } else {
-                    entityItem.remove();
+                    entityItem.discard();
                     worldIn.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.NEUTRAL, 0.25F, ((worldIn.random.nextFloat() - worldIn.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
             }

@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 
 public class BreedGoal extends Goal {
 
-    private static final TargetingConditions breedPredicate = (new TargetingConditions()).range(8.0D).allowInvulnerable().allowSameTeam().allowUnseeable().allowNonAttackable();
+    private static final TargetingConditions breedPredicate = TargetingConditions.forNonCombat().range(8.0D).ignoreLineOfSight(); // TODO check this works
     private final Animal animal;
     private final Class<? extends Animal> mateClass;
     private final Level world;
@@ -68,7 +68,7 @@ public class BreedGoal extends Goal {
 
     @Nullable
     private Animal getNearbyMate() {
-        List<Animal> entities = this.world.getEntitiesOfClass(
+        List<? extends Animal> entities = this.world.getEntitiesOfClass(
             this.mateClass, this.animal.getBoundingBox().inflate(8.0D), this::filterEntities
         );
         return EntityUtil.getClosestTo(this.animal, entities);

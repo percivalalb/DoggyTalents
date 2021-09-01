@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -68,7 +69,8 @@ public abstract class AbstractDogEntity extends TamableAnimal implements IDog {
 
     public void consumeItemFromStack(@Nullable Entity entity, ItemStack stack) {
         if (entity instanceof Player) {
-            super.usePlayerItem((Player) entity, stack);
+            // Review: super.usePlayerItem((Player) entity, stack);
+            stack.shrink(1);
         } else {
             stack.shrink(1);
         }

@@ -18,7 +18,6 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.storage.loot.ConstantIntValue;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -27,6 +26,9 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 public class DTLootTableProvider extends LootTableProvider {
 
@@ -62,16 +64,16 @@ public class DTLootTableProvider extends LootTableProvider {
         private void dropDogBed(Supplier<? extends Block> block) {
             LootTable.Builder lootTableBuilder = LootTable.lootTable().withPool(applyExplosionCondition(block.get(),
                        LootPool.lootPool()
-                         .setRolls(ConstantIntValue.exactly(1))
+                         .setRolls(ConstantValue.exactly(1)))
                          .add(LootItem.lootTableItem(block.get())
                                  .apply(
-                                         CopyNbtFunction.copyData(CopyNbtFunction.DataSource.BLOCK_ENTITY)
+                                         CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
                                          .copy("casingId", "doggytalents.casingId")
                                          .copy("beddingId", "doggytalents.beddingId")
                                          .copy("ownerId", "doggytalents.ownerId")
                                          .copy("name", "doggytalents.name")
                                          .copy("ownerName", "doggytalents.ownerName")
-                                 ))));
+                                 )));
 
             this.add(block.get(), lootTableBuilder);
         }

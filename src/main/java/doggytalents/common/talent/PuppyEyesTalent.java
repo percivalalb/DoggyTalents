@@ -125,7 +125,7 @@ public class PuppyEyesTalent extends TalentInstance {
         List<AbstractVillager> list = dogIn.level.getEntitiesOfClass(
             AbstractVillager.class,
             dogIn.getBoundingBox().inflate(radiusIn, radiusIn, radiusIn),
-            (village) -> village.canSee(dogIn)
+            (village) -> village.hasLineOfSight(dogIn)
         );
 
         return EntityUtil.getClosestTo(dogIn, list);

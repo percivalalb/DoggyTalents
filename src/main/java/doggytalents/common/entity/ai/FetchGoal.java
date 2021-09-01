@@ -52,7 +52,7 @@ public class FetchGoal extends MoveToClosestItemGoal {
 
                 this.dog.setBoneVariant(this.target.getItem());
 
-                this.target.remove();
+                this.target.discard();
             }
         }
 

@@ -28,6 +28,7 @@ import doggytalents.common.network.packet.data.FriendlyFireData;
 import doggytalents.common.network.packet.data.SendSkinData;
 import doggytalents.common.util.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -41,7 +42,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DogInfoScreen extends Screen {
 
@@ -97,7 +98,7 @@ public class DogInfoScreen extends Screen {
             nameTextField.setValue(this.dog.getCustomName().getContents());
         }
 
-        this.addButton(nameTextField);
+        this.addRenderableWidget(nameTextField);
 
 
 
@@ -107,7 +108,7 @@ public class DogInfoScreen extends Screen {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogObeyData(this.dog.getId(), !this.dog.willObeyOthers()));
             });
 
-            this.addButton(obeyBtn);
+            this.addRenderableWidget(obeyBtn);
         }
 
         Button attackPlayerBtn = new Button(this.width - 64, topY - 5, 42, 20, new TextComponent(String.valueOf(this.dog.canPlayersAttack())), button -> {
@@ -115,7 +116,7 @@ public class DogInfoScreen extends Screen {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new FriendlyFireData(this.dog.getId(), !this.dog.canPlayersAttack()));
         });
 
-        this.addButton(attackPlayerBtn);
+        this.addRenderableWidget(attackPlayerBtn);
 
         //if (ConfigValues.USE_DT_TEXTURES) {
             Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, new TextComponent("+"), (btn) -> {
@@ -132,8 +133,8 @@ public class DogInfoScreen extends Screen {
                 this.setDogTexture(rl);
             });
 
-            this.addButton(addBtn);
-            this.addButton(lessBtn);
+            this.addRenderableWidget(addBtn);
+            this.addRenderableWidget(lessBtn);
         //}
 
 
@@ -173,7 +174,7 @@ public class DogInfoScreen extends Screen {
             }
         };
 
-        this.addButton(modeBtn);
+        this.addRenderableWidget(modeBtn);
 
         // Talent level-up buttons
         int size = DoggyTalentsAPI.TALENTS.getKeys().size();
@@ -208,8 +209,8 @@ public class DogInfoScreen extends Screen {
                 }
             };
 
-            this.addButton(this.leftBtn);
-            this.addButton(this.rightBtn);
+            this.addRenderableWidget(this.leftBtn);
+            this.addRenderableWidget(this.rightBtn);
         }
     }
 
@@ -264,7 +265,7 @@ public class DogInfoScreen extends Screen {
             button.active = !ConfigValues.DISABLED_TALENTS.contains(talent);
 
             this.talentWidgets.add(button);
-            this.addButton(button);
+            this.addRenderableWidget(button);
         }
     }
 
@@ -323,7 +324,7 @@ public class DogInfoScreen extends Screen {
         this.font.draw(stack, I18n.get("doggui.friendlyfire"), this.width - 76, topY - 15, 0xFFFFFF);
 
 
-        this.buttons.forEach(widget -> {
+        this.renderables.forEach(widget -> {
             if (widget instanceof TalentButton) {
                 TalentButton talBut = (TalentButton)widget;
                 this.font.draw(stack, I18n.get(talBut.talent.getTranslationKey()), talBut.x + 25, talBut.y + 7, 0xFFFFFF);
@@ -333,9 +334,9 @@ public class DogInfoScreen extends Screen {
         super.render(stack, mouseX, mouseY, partialTicks);
         //RenderHelper.disableStandardItemLighting(); // 1.14 enableGUIStandardItemLighting
 
-        for (AbstractWidget widget : this.buttons) {
-            if (widget.isHovered()) {
-               widget.renderToolTip(stack, mouseX, mouseY);
+        for (Widget widget : this.renderables) {
+            if (widget instanceof AbstractWidget w && w.isHovered()) {
+               w.renderToolTip(stack, mouseX, mouseY);
                break;
             }
          }
@@ -352,12 +353,6 @@ public class DogInfoScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
-    }
-
-    protected <T extends AbstractWidget> T removeWidget(T widgetIn) {
-        this.buttons.remove(widgetIn);
-        this.children.remove(widgetIn);
-        return widgetIn;
     }
 
     private static class TalentButton extends Button {

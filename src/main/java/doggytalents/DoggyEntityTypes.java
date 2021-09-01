@@ -13,7 +13,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -35,16 +36,16 @@ public class DoggyEntityTypes {
             .setCustomClientFactory(DoggyBeamEntity::new)
             .noSummon());
 
-     private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final EntityType.EntityFactory<E> sup, final MobCategory classification, final Function<EntityType.Builder<E>, EntityType.Builder<E>> builder) {
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<EntityType<E>> register(final String name, final EntityType.EntityFactory<E> sup, final MobCategory classification, final Function<EntityType.Builder<E>, EntityType.Builder<E>> builder) {
          return register(name, () -> builder.apply(EntityType.Builder.of(sup, classification)).build(Util.getResourcePath(name)));
-     }
+    }
 
-     private static <E extends Entity, T extends EntityType<E>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
-         return ENTITIES.register(name, sup);
-     }
+    private static <E extends Entity, T extends EntityType<E>> RegistryObject<T> register(final String name, final Supplier<T> sup) {
+        return ENTITIES.register(name, sup);
+    }
 
-     public static void addEntityAttributes() {
-         DefaultAttributes.put(DOG.get(),
+    public static void addEntityAttributes(EntityAttributeCreationEvent e) {
+        e.put(DOG.get(),
                  Mob.createMobAttributes()
                  .add(Attributes.MAX_HEALTH, 8.0D)
                  .add(Attributes.MOVEMENT_SPEED, 0.3D)

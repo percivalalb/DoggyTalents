@@ -6,6 +6,10 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import doggytalents.DoggyTileEntityTypes;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyEntityTypes;
@@ -21,11 +25,7 @@ import doggytalents.common.util.DogBedUtil;
 import doggytalents.common.util.EntityUtil;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.TooltipFlag;
@@ -45,9 +45,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.block.Mirror;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.Util;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
@@ -69,7 +67,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 
-public class DogBedBlock extends Block {
+public class DogBedBlock extends BaseEntityBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -98,13 +96,14 @@ public class DogBedBlock extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(BlockState state) {
-        return true;
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState blockState) {
+        return new DogBedTileEntity(pos, blockState);
     }
 
+    @Nullable
     @Override
-    public BlockEntity createTileEntity(BlockState state, BlockGetter world) {
-        return new DogBedTileEntity();
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
+        return null;
     }
 
     @Override
@@ -171,7 +170,7 @@ public class DogBedBlock extends Block {
                 if (stack.getItem() == Items.NAME_TAG && stack.hasCustomHoverName()) {
                     dogBedTileEntity.setBedName(stack.getHoverName());
 
-                    if (!player.abilities.instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
 

@@ -2,6 +2,14 @@ package doggytalents;
 
 import doggytalents.common.Capabilities;
 import doggytalents.common.talent.HappyEaterTalent;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,16 +44,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 /**
  * @author ProPercivalalb
@@ -86,6 +86,8 @@ public class DoggyTalents2 {
         DoggyAttributes.ATTRIBUTES.register(modEventBus);
 
         modEventBus.addListener(DoggyRegistries::newRegistry);
+        modEventBus.addListener(DoggyEntityTypes::addEntityAttributes);
+        modEventBus.addListener(Capabilities::registerCaps);
 
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.addListener(this::serverStarting);
@@ -100,15 +102,11 @@ public class DoggyTalents2 {
             modEventBus.addListener(DoggyBlocks::registerBlockColours);
             modEventBus.addListener(DoggyItems::registerItemColours);
             modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
+            modEventBus.addListener(ClientSetup::setupTileEntityRenderers);
+            modEventBus.addListener(ClientSetup::setupEntityRenderers);
             forgeEventBus.register(new ClientEventHandler());
+            forgeEventBus.addListener(ClientSetup::addReloadListeners);
             forgeEventBus.addListener(BedFinderRenderer::onWorldRenderLast);
-
-            Minecraft mc = Minecraft.getInstance();
-
-            // If mc is null we are running data gen so no need to add listener
-            if (mc != null) {
-                ((ReloadableResourceManager) mc.getResourceManager()).registerReloadListener(DogTextureManager.INSTANCE);
-            }
         });
 
         ConfigHandler.init(modEventBus);
@@ -124,10 +122,8 @@ public class DoggyTalents2 {
         FoodHandler.registerDynPredicate(HappyEaterTalent.INNER_DYN_PRED);
         InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
-        DoggyEntityTypes.addEntityAttributes();
         DogRespawnCommand.registerSerilizers();
         DogEntity.initDataParameters();
-        Capabilities.init();
     }
 
     public void serverStarting(final FMLServerStartingEvent event) {
@@ -142,9 +138,6 @@ public class DoggyTalents2 {
     public void clientSetup(final FMLClientSetupEvent event) {
         ClientSetup.setupScreenManagers(event);
 
-        ClientSetup.setupEntityRenderers(event);
-
-        ClientSetup.setupTileEntityRenderers(event);
         ClientSetup.setupCollarRenderers(event);
     }
 

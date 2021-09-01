@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import doggytalents.common.inventory.container.TreatBagContainer;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
 
@@ -30,8 +31,9 @@ public class TreatBagScreen extends AbstractContainerScreen<TreatBagContainer> {
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(Resources.GUI_TREAT_BAG);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, Resources.GUI_TREAT_BAG);
         int x = (this.width - this.imageWidth) / 2;
         int y = (this.height - this.imageHeight) / 2;
         this.blit(stack, x, y, 0, 0, this.imageWidth, this.imageHeight);

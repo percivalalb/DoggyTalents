@@ -14,6 +14,7 @@ import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -39,13 +40,13 @@ public class DogBedTileEntity extends PlacedTileEntity {
     private @Nullable Component name;
     private @Nullable Component ownerName;
 
-    public DogBedTileEntity() {
-        super(DoggyTileEntityTypes.DOG_BED.get());
+    public DogBedTileEntity(BlockPos pos, BlockState blockState) {
+        super(DoggyTileEntityTypes.DOG_BED.get(), pos, blockState);
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-        super.load(state, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
 
         this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
         this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);

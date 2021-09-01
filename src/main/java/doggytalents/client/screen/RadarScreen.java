@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -30,8 +31,9 @@ public class RadarScreen extends Screen {
 
     @Override
     public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(Resources.GUI_RADAR);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, Resources.GUI_RADAR);
         int xSize = 210;
         int ySize = 210;
         int x = (this.width - xSize) / 2;

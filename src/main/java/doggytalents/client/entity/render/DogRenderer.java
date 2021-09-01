@@ -2,6 +2,7 @@ package doggytalents.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.layer.BoneLayer;
@@ -9,10 +10,12 @@ import doggytalents.client.entity.render.layer.DogAccessoryLayer;
 import doggytalents.client.entity.render.layer.DogTalentLayer;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
+import net.minecraft.client.model.WolfModel;
+import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
@@ -22,8 +25,8 @@ import java.util.Optional;
 
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
-    public DogRenderer(EntityRenderDispatcher renderManagerIn) {
-        super(renderManagerIn, new DogModel<>(), 0.5F);
+    public DogRenderer(EntityRendererProvider.Context ctx) {
+        super(ctx, new DogModel(ctx.bakeLayer(ClientSetup.DOG)), 0.5F);
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
         this.addLayer(new BoneLayer(this));

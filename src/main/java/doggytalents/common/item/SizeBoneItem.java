@@ -46,7 +46,7 @@ public class SizeBoneItem extends Item implements IDogItem {
             return InteractionResult.FAIL;
         }
         else {
-            if (!playerIn.abilities.instabuild) {
+            if (!playerIn.getAbilities().instabuild) {
                 playerIn.getItemInHand(handIn).shrink(1);
             }
 

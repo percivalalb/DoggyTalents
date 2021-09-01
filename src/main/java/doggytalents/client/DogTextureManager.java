@@ -6,17 +6,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -41,12 +42,11 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.resource.IResourceType;
-import net.minecraftforge.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.resource.VanillaResourceType;
 
-public class DogTextureManager extends DogTextureServer implements ISelectiveResourceReloadListener {
+public class DogTextureManager extends DogTextureServer implements PreparableReloadListener {
 
     public static final DogTextureManager INSTANCE = new DogTextureManager();
     private static final Gson GSON = new Gson();
@@ -189,50 +189,6 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         return Resources.ENTITY_WOLF;
     }
 
-    @Override
-    public IResourceType getResourceType() {
-        return VanillaResourceType.TEXTURES;
-    }
-
-    @Override
-    public void onResourceManagerReload(ResourceManager resourceManager, Predicate<IResourceType> resourcePredicate) {
-        if (resourcePredicate.test(this.getResourceType())) {
-
-            this.skinHashToLoc.clear();
-            this.customSkinLoc.clear();
-
-            Collection<ResourceLocation> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
-                return fileName.endsWith(".png");
-            });
-
-            for (ResourceLocation rl : resources) {
-                try {
-                    Resource resource = resourceManager.getResource(rl);
-
-                    if (resource == null) {
-                        DoggyTalents2.LOGGER.warn("Could not get resource");
-                        continue;
-                    }
-
-                    this.loadDogSkinResource(resource);
-                } catch (FileNotFoundException e) {
-                    ;
-                } catch (Exception exception) {
-                    DoggyTalents2.LOGGER.warn("Skipped custom dog skin file: {} ({})", rl, exception);
-                }
-            }
-
-            try {
-                List<Resource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
-                this.loadOverrideData(resourcelocation);
-            } catch (FileNotFoundException e) {
-                ;
-            }  catch (IOException | RuntimeException runtimeexception) {
-                DoggyTalents2.LOGGER.warn("Unable to parse dog skin override data: {}", runtimeexception);
-            }
-        }
-    }
-
     private synchronized void loadDogSkinResource(Resource resource) {
         InputStream inputstream = null;
         try {
@@ -287,4 +243,64 @@ public class DogTextureManager extends DogTextureServer implements ISelectiveRes
         }
     }
 
+
+    @Override
+    public String getName() {
+        return "DogTexture";
+    }
+
+    @Override
+    public CompletableFuture<Void> reload(PreparationBarrier p_10780_, ResourceManager p_10781_, ProfilerFiller p_10782_, ProfilerFiller p_10783_, Executor p_10784_, Executor p_10785_) {
+        DoggyTalents2.LOGGER.info("Loading doggytassslents textures!");
+        CompletableFuture<String> var10000 = CompletableFuture.supplyAsync(() -> {
+            return this.prepare(p_10781_, p_10782_);
+        }, p_10784_);
+        Objects.requireNonNull(p_10780_);
+        return var10000.thenCompose(p_10780_::wait).thenAcceptAsync((p_10792_) -> {
+            this.apply(p_10792_, p_10781_, p_10783_);
+        }, p_10785_);
+    }
+
+    protected String prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+
+        this.skinHashToLoc.clear();
+        this.customSkinLoc.clear();
+
+        Collection<ResourceLocation> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
+            return fileName.endsWith(".png");
+        });
+        DoggyTalents2.LOGGER.info("Loading doggytalents textures!");
+        for (ResourceLocation rl : resources) {
+            DoggyTalents2.LOGGER.info(rl);
+            try {
+                Resource resource = resourceManager.getResource(rl);
+
+                if (resource == null) {
+                    DoggyTalents2.LOGGER.warn("Could not get resource");
+                    continue;
+                }
+
+                this.loadDogSkinResource(resource);
+            } catch (FileNotFoundException e) {
+                ;
+            } catch (Exception exception) {
+                DoggyTalents2.LOGGER.warn("Skipped custom dog skin file: {} ({})", rl, exception);
+            }
+        }
+
+        try {
+            List<Resource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
+            this.loadOverrideData(resourcelocation);
+        } catch (FileNotFoundException e) {
+            ;
+        }  catch (IOException | RuntimeException runtimeexception) {
+            DoggyTalents2.LOGGER.warn("Unable to parse dog skin override data: {}", runtimeexception);
+        }
+
+        return "Done";
+    }
+
+    protected void apply(String o, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+
+    }
 }

@@ -41,7 +41,7 @@ public class EventHandler {
             if (wolf.isAlive() && wolf.isTame() && wolf.isOwnedBy(player)) {
 
                 if (!world.isClientSide) {
-                    if (!player.abilities.instabuild) {
+                    if (!player.getAbilities().instabuild) {
                         stack.shrink(1);
                     }
 
@@ -50,11 +50,11 @@ public class EventHandler {
                     dog.setHealth(dog.getMaxHealth());
                     dog.setOrderedToSit(false);
                     dog.setAge(wolf.getAge());
-                    dog.absMoveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.yRot, wolf.xRot);
+                    dog.absMoveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getYRot(), wolf.getXRot());
 
                     world.addFreshEntity(dog);
 
-                    wolf.remove();
+                    wolf.discard();
                 }
 
                 event.setCancellationResult(InteractionResult.SUCCESS);
@@ -91,8 +91,8 @@ public class EventHandler {
             if (!persistTag.getBoolean("gotDTStartingItems")) {
                 persistTag.putBoolean("gotDTStartingItems", true);
 
-                player.inventory.add(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
-                player.inventory.add(new ItemStack(DoggyItems.WHISTLE.get()));
+                player.getInventory().add(new ItemStack(DoggyItems.DOGGY_CHARM.get()));
+                player.getInventory().add(new ItemStack(DoggyItems.WHISTLE.get()));
             }
         }
     }

@@ -2,6 +2,7 @@ package doggytalents.client.event;
 
 import java.util.Map;
 
+import net.minecraft.client.gui.components.Widget;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -45,7 +46,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ClientEventHandler {
@@ -120,7 +121,7 @@ public class ClientEventHandler {
             DogInventoryButton btn = null;
 
             //TODO just create a static variable in this class
-            for (AbstractWidget widget : screen.buttons) {
+            for (Widget widget : screen.renderables) {
                 if (widget instanceof DogInventoryButton) {
                     btn = (DogInventoryButton) widget;
                     break;
@@ -141,9 +142,9 @@ public class ClientEventHandler {
                         guiLeft += 76;
                     }
                 }
-                RenderSystem.translated(-guiLeft, -guiTop, 0);
+                // TODO RenderSystem.translated(-guiLeft, -guiTop, 0);
                 btn.renderToolTip(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
-                RenderSystem.translated(guiLeft, guiTop, 0);
+                // TODO RenderSystem.translated(guiLeft, guiTop, 0);
             }
         }
     }
@@ -179,94 +180,96 @@ public class ClientEventHandler {
 //    }
 
     public void drawSelectionBox(PoseStack matrixStackIn, Player player, float particleTicks, AABB boundingBox) {
-        RenderSystem.disableAlphaTest();
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.7F);
-        //TODO Used when drawing outline of bounding box
-        RenderSystem.lineWidth(2.0F);
-
-
-        RenderSystem.disableTexture();
-        Vec3 vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        double d0 = vec3d.x();
-        double d1 = vec3d.y();
-        double d2 = vec3d.z();
-
-        BufferBuilder buf = Tesselator.getInstance().getBuilder();
-        buf.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
-        LevelRenderer.renderLineBox(matrixStackIn, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
-        Tesselator.getInstance().end();
-        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
-        RenderSystem.depthMask(true);
-        RenderSystem.enableTexture();
-        RenderSystem.disableBlend();
-        RenderSystem.enableAlphaTest();
+        // TODO
+//        RenderSystem.disableAlphaTest();
+//        RenderSystem.depthMask(false);
+//        RenderSystem.enableBlend();
+//        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+//        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.7F);
+//        //TODO Used when drawing outline of bounding box
+//        RenderSystem.lineWidth(2.0F);
+//
+//
+//        RenderSystem.disableTexture();
+//        Vec3 vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+//        double d0 = vec3d.x();
+//        double d1 = vec3d.y();
+//        double d2 = vec3d.z();
+//
+//        BufferBuilder buf = Tesselator.getInstance().getBuilder();
+//        buf.begin(GL11.GL_LINES, DefaultVertexFormat.POSITION_COLOR);
+//        LevelRenderer.renderLineBox(matrixStackIn, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0F, 0.8F);
+//        Tesselator.getInstance().end();
+//        RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
+//        RenderSystem.depthMask(true);
+//        RenderSystem.enableTexture();
+//        RenderSystem.disableBlend();
+//        RenderSystem.enableAlphaTest();
     }
 
     @SubscribeEvent
     public void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
-        label: if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
-            Minecraft mc = Minecraft.getInstance();
-
-            if (mc.player == null || !(mc.player.getVehicle() instanceof DogEntity)) {
-                break label;
-            }
-
-            PoseStack stack = event.getMatrixStack();
-
-            DogEntity dog = (DogEntity) mc.player.getVehicle();
-            int width = mc.getWindow().getGuiScaledWidth();
-            int height = mc.getWindow().getGuiScaledHeight();
-            RenderSystem.pushMatrix();
-            mc.getTextureManager().bind(Screen.GUI_ICONS_LOCATION);
-
-            RenderSystem.enableBlend();
-            int left = width / 2 + 91;
-            int top = height - ForgeIngameGui.right_height;
-            ForgeIngameGui.right_height += 10;
-            int level = Mth.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
-
-            for (int i = 0; i < 10; ++i) {
-                int idx = i * 2 + 1;
-                int x = left - i * 8 - 9;
-                int y = top;
-                int icon = 16;
-                byte backgound = 12;
-
-                mc.gui.blit(stack, x, y, 16 + backgound * 9, 27, 9, 9);
-
-
-                if (idx < level) {
-                    mc.gui.blit(stack, x, y, icon + 36, 27, 9, 9);
-                } else if (idx == level) {
-                    mc.gui.blit(stack, x, y, icon + 45, 27, 9, 9);
-                }
-            }
-            RenderSystem.disableBlend();
-
-            RenderSystem.enableBlend();
-            left = width / 2 + 91;
-            top = height - ForgeIngameGui.right_height;
-            RenderSystem.color4f(1.0F, 1.0F, 0.0F, 1.0F);
-            int l6 = dog.getAirSupply();
-            int j7 = dog.getMaxAirSupply();
-
-            if (dog.isEyeInFluid(FluidTags.WATER) || l6 < j7) {
-                int air = dog.getAirSupply();
-                int full = Mth.ceil((air - 2) * 10.0D / 300.0D);
-                int partial = Mth.ceil(air * 10.0D / 300.0D) - full;
-
-                for (int i = 0; i < full + partial; ++i) {
-                    mc.gui.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
-                }
-                ForgeIngameGui.right_height += 10;
-            }
-            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-            RenderSystem.disableBlend();
-
-            RenderSystem.popMatrix();
-        }
+        // TODO
+//        label: if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
+//            Minecraft mc = Minecraft.getInstance();
+//
+//            if (mc.player == null || !(mc.player.getVehicle() instanceof DogEntity)) {
+//                break label;
+//            }
+//
+//            PoseStack stack = event.getMatrixStack();
+//
+//            DogEntity dog = (DogEntity) mc.player.getVehicle();
+//            int width = mc.getWindow().getGuiScaledWidth();
+//            int height = mc.getWindow().getGuiScaledHeight();
+//            RenderSystem.pushMatrix();
+//            mc.getTextureManager().bind(Screen.GUI_ICONS_LOCATION);
+//
+//            RenderSystem.enableBlend();
+//            int left = width / 2 + 91;
+//            int top = height - ForgeIngameGui.right_height;
+//            ForgeIngameGui.right_height += 10;
+//            int level = Mth.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
+//
+//            for (int i = 0; i < 10; ++i) {
+//                int idx = i * 2 + 1;
+//                int x = left - i * 8 - 9;
+//                int y = top;
+//                int icon = 16;
+//                byte backgound = 12;
+//
+//                mc.gui.blit(stack, x, y, 16 + backgound * 9, 27, 9, 9);
+//
+//
+//                if (idx < level) {
+//                    mc.gui.blit(stack, x, y, icon + 36, 27, 9, 9);
+//                } else if (idx == level) {
+//                    mc.gui.blit(stack, x, y, icon + 45, 27, 9, 9);
+//                }
+//            }
+//            RenderSystem.disableBlend();
+//
+//            RenderSystem.enableBlend();
+//            left = width / 2 + 91;
+//            top = height - ForgeIngameGui.right_height;
+//            RenderSystem.color4f(1.0F, 1.0F, 0.0F, 1.0F);
+//            int l6 = dog.getAirSupply();
+//            int j7 = dog.getMaxAirSupply();
+//
+//            if (dog.isEyeInFluid(FluidTags.WATER) || l6 < j7) {
+//                int air = dog.getAirSupply();
+//                int full = Mth.ceil((air - 2) * 10.0D / 300.0D);
+//                int partial = Mth.ceil(air * 10.0D / 300.0D) - full;
+//
+//                for (int i = 0; i < full + partial; ++i) {
+//                    mc.gui.blit(stack, left - i * 8 - 9, top, (i < full ? 16 : 25), 18, 9, 9);
+//                }
+//                ForgeIngameGui.right_height += 10;
+//            }
+//            RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.disableBlend();
+//
+//            RenderSystem.popMatrix();
+//        }
     }
 }

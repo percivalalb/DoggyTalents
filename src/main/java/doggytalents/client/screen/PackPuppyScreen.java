@@ -7,6 +7,7 @@ import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
@@ -28,13 +29,14 @@ public class PackPuppyScreen extends AbstractContainerScreen<PackPuppyContainer>
     @Override
     protected void renderLabels(PoseStack stack, int par1, int par2) {
         this.font.draw(stack, this.title.getString(), this.imageWidth / 2 - 10, 10, 4210752);
-        this.font.draw(stack, this.inventory.getDisplayName().getString(), 8.0F, this.imageHeight - 96 - 2, 4210752);
+        this.font.draw(stack, this.playerInventoryTitle, 8.0F, this.imageHeight - 96 - 2, 4210752);
     }
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int xMouse, int yMouse) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(Resources.GUI_PACK_PUPPY);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, Resources.GUI_PACK_PUPPY);
         int l = (this.width - this.imageWidth) / 2;
         int i1 = (this.height - this.imageHeight) / 2;
         this.blit(stack, l, i1, 0, 0, this.imageWidth, this.imageHeight);

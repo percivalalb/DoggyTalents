@@ -3,6 +3,8 @@ package doggytalents.common.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyTalents2;
@@ -10,8 +12,6 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
 
 public class ConfigHandler {
 
@@ -34,8 +34,9 @@ public class ConfigHandler {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_SERVER_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CONFIG_CLIENT_SPEC);
 
-        modEventBus.addListener(ConfigHandler::loadConfig);
-        modEventBus.addListener(ConfigHandler::reloadConfig);
+        // TODO
+//        modEventBus.addListener(ConfigHandler::loadConfig);
+//        modEventBus.addListener(ConfigHandler::reloadConfig);
     }
 
     public static void initTalentConfig() {
@@ -46,27 +47,28 @@ public class ConfigHandler {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, CONFIG_TALENT_SPEC, "doggytalents-talents.toml");
     }
 
-    public static void loadConfig(final ModConfig.Loading event) {
-        ModConfig config = event.getConfig();
-        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
-            ConfigHandler.refreshClient();
-        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
-            ConfigHandler.refreshServer();
-        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
-            ConfigHandler.refreshTalents();
-        }
-    }
-
-    public static void reloadConfig(final ModConfig.Reloading event) {
-        ModConfig config = event.getConfig();
-        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
-            ConfigHandler.refreshClient();
-        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
-            ConfigHandler.refreshServer();
-        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
-            ConfigHandler.refreshTalents();
-        }
-    }
+    // TODO
+//    public static void loadConfig(final ModConfig.Loading event) {
+//        ModConfig config = event.getConfig();
+//        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
+//            ConfigHandler.refreshClient();
+//        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
+//            ConfigHandler.refreshServer();
+//        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
+//            ConfigHandler.refreshTalents();
+//        }
+//    }
+//
+//    public static void reloadConfig(final ModConfig.Reloading event) {
+//        ModConfig config = event.getConfig();
+//        if (config.getSpec() == ConfigHandler.CONFIG_CLIENT_SPEC) {
+//            ConfigHandler.refreshClient();
+//        } else if (config.getSpec() == ConfigHandler.CONFIG_SERVER_SPEC) {
+//            ConfigHandler.refreshServer();
+//        } else if (config.getSpec() == ConfigHandler.CONFIG_TALENT_SPEC) {
+//            ConfigHandler.refreshTalents();
+//        }
+//    }
 
     public static void refreshServer() {
         DoggyTalents2.LOGGER.debug("Refresh Common Config");

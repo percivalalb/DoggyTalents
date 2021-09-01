@@ -1,32 +1,17 @@
 package doggytalents.common.entity.accessory;
 
 import doggytalents.DoggyAccessories;
-import doggytalents.DoggyAccessoryTypes;
-import doggytalents.DoggyAttributes;
-import doggytalents.DoggyTalents2;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
-import doggytalents.common.util.ColourCache;
-import doggytalents.common.util.Util;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 import net.minecraft.world.item.ArmorItem;

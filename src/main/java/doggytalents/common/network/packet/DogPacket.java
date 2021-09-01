@@ -7,7 +7,7 @@ import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.DogData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
+import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
 
 public abstract class DogPacket<T extends DogData> implements IPacket<T> {
 

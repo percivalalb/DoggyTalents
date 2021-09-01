@@ -26,7 +26,7 @@ import doggytalents.common.talent.RoaringGaleTalent;
 import doggytalents.common.talent.ShepherdDogTalent;
 import doggytalents.common.talent.SwimmerDogTalent;
 import doggytalents.common.talent.WolfMountTalent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class DoggyTalents {

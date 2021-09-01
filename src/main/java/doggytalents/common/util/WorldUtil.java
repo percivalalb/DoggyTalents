@@ -44,7 +44,7 @@ public class WorldUtil {
     @SuppressWarnings({ "unchecked", "deprecation" })
     @Nullable
     public static <T extends Entity> T getCachedEntity(@Nullable Level worldIn, Class<T> type, @Nullable T cached, @Nullable UUID uuid) {
-        if ((cached == null || cached.removed) && uuid != null && worldIn instanceof ServerLevel) {
+        if ((cached == null || cached.isRemoved()) && uuid != null && worldIn instanceof ServerLevel) {
             Entity entity = ((ServerLevel) worldIn).getEntity(uuid);
             if (entity != null && entity.getClass().isAssignableFrom(type)) {
                 return (T) entity;

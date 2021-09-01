@@ -11,10 +11,11 @@ public class DogRescueModel extends ListModel<DogEntity>{
     public ModelPart rescueBox;
 
     public DogRescueModel() {
-        this.rescueBox = new ModelPart(this, 0, 0);
-        this.rescueBox.addBox(-1F, -4F, -4.5F, 4, 2, 2);
-        this.rescueBox.setPos(-1F, 14F, -3F);
-        this.rescueBox.xRot = (float) (Math.PI / 2);
+        // TODO
+//        this.rescueBox = new ModelPart(this, 0, 0);
+//        this.rescueBox.addBox(-1F, -4F, -4.5F, 4, 2, 2);
+//        this.rescueBox.setPos(-1F, 14F, -3F);
+//        this.rescueBox.xRot = (float) (Math.PI / 2);
     }
 
     @Override

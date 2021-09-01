@@ -11,6 +11,7 @@ import doggytalents.client.entity.render.CollarRenderManager;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
 public class DogAccessoryLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {

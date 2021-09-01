@@ -52,7 +52,7 @@ public class TreatItem extends Item implements IDogItem {
         else if (dogLevel.getLevel(this.type) < this.maxLevel) {
 
             if (!playerIn.level.isClientSide) {
-                if (!playerIn.abilities.instabuild) {
+                if (!playerIn.getAbilities().instabuild) {
                     playerIn.getItemInHand(handIn).shrink(1);
                 }
 

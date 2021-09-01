@@ -61,15 +61,10 @@ import doggytalents.common.entity.stats.StatsTracker;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.*;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.AgableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -87,7 +82,6 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Ghast;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
@@ -507,7 +501,7 @@ public class DogEntity extends AbstractDogEntity {
             if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
 
                 if (!this.level.isClientSide) {
-                    this.usePlayerItem(player, stack);
+                    this.usePlayerItem(player, hand, stack);
 
                     if (stack.getItem() == DoggyItems.TRAINING_TREAT.get() || this.random.nextInt(3) == 0) {
                         this.tame(player);
@@ -587,9 +581,9 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean causeFallDamage(float distance, float damageMultiplier) {
+    public boolean causeFallDamage(float distance, float damageMultiplier, DamageSource source) {
         for (IDogAlteration alter : this.alterations) {
-            InteractionResult result = alter.onLivingFall(this, distance, damageMultiplier);
+            InteractionResult result = alter.onLivingFall(this, distance, damageMultiplier); // TODO pass source
 
             if (result.shouldSwing()) {
                 return true;
@@ -598,7 +592,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        return super.causeFallDamage(distance, damageMultiplier);
+        return super.causeFallDamage(distance, damageMultiplier, source);
     }
 
     // TODO
@@ -988,7 +982,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem().is(DoggyTags.BREEDING_ITEMS);
+        return stack.getItem() == DoggyTags.BREEDING_ITEMS;
     }
 
     @Override
@@ -1014,7 +1008,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public AgableMob getBreedOffspring(ServerLevel worldIn, AgableMob partner) {
+    public AgeableMob getBreedOffspring(ServerLevel worldIn, AgeableMob partner) {
         DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerUUID();
 
@@ -1153,13 +1147,13 @@ public class DogEntity extends AbstractDogEntity {
     /**
      * When the entity is removed
      */
-    @Override
-    public void remove(boolean keepData) {
-        super.remove(keepData);
-    }
+    // TODO @Override
+//    public void remove(boolean keepData) {
+//        super.remove(keepData);
+//    }
 
     @Override
-    protected void invalidateCaps() {
+    public void invalidateCaps() {
         super.invalidateCaps();
         this.alterations.forEach((alter) -> alter.invalidateCapabilities(this));
     }
@@ -2102,11 +2096,11 @@ public class DogEntity extends AbstractDogEntity {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
 
                 // Face the dog in the direction of the controlling passenger
-                this.yRot = livingentity.yRot;
-                this.yRotO = this.yRot;
-                this.xRot = livingentity.xRot * 0.5F;
-                this.setRot(this.yRot, this.xRot);
-                this.yBodyRot = this.yRot;
+                this.setYRot(livingentity.getYRot());
+                this.yRotO = this.getYRot();
+                this.setXRot(livingentity.getXRot() * 0.5F);
+                this.setRot(this.getYRot(), this.getXRot());
+                this.yBodyRot = this.getYRot();
                 this.yHeadRot = this.yBodyRot;
 
                 this.maxUpStep = 1.0F;
@@ -2136,8 +2130,8 @@ public class DogEntity extends AbstractDogEntity {
                     // If moving forward, propel further in the direction
                     if (foward > 0.0F) {
                         final float amount = 0.4F; // TODO Allow people to change this value
-                        float compX = Mth.sin(this.yRot * ((float)Math.PI / 180F));
-                        float compZ = Mth.cos(this.yRot * ((float)Math.PI / 180F));
+                        float compX = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
+                        float compZ = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
                         this.setDeltaMovement(this.getDeltaMovement().add(-amount * compX * this.jumpPower, 0.0D, amount * compZ * this.jumpPower));
                         //this.playJumpSound();
                     }
@@ -2167,7 +2161,7 @@ public class DogEntity extends AbstractDogEntity {
                 this.animationSpeedOld = this.animationSpeed;
                 double changeX = this.getX() - this.xo;
                 double changeY = this.getZ() - this.zo;
-                float f4 = Mth.sqrt(changeX * changeX + changeY * changeY) * 4.0F;
+                float f4 = Mth.sqrt((float) (changeX * changeX + changeY * changeY)) * 4.0F;
 
                 if (f4 > 1.0F) {
                    f4 = 1.0F;
@@ -2187,22 +2181,22 @@ public class DogEntity extends AbstractDogEntity {
 
     public void addMovementStat(double xD, double yD, double zD) {
         if (this.isVehicle()) {
-            int j = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
+            int j = Math.round(Mth.sqrt((float) (xD * xD + zD * zD)) * 100.0F);
             this.statsTracker.increaseDistanceRidden(j);
         }
         if (!this.isPassenger()) {
             if (this.isEyeInFluid(FluidTags.WATER)) {
-                int j = Math.round(Mth.sqrt(xD * xD + yD * yD + zD * zD) * 100.0F);
+                int j = Math.round(Mth.sqrt((float) (xD * xD + yD * yD + zD * zD)) * 100.0F);
                 if (j > 0) {
                     this.statsTracker.increaseDistanceOnWater(j);
                 }
             } else if (this.isInWater()) {
-                int k = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
+                int k = Math.round(Mth.sqrt((float) (xD * xD + zD * zD)) * 100.0F);
                 if (k > 0) {
                     this.statsTracker.increaseDistanceInWater(k);
                 }
             } else if (this.isOnGround()) {
-                int l = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
+                int l = Math.round(Mth.sqrt((float) (xD * xD + zD * zD)) * 100.0F);
                 if (l > 0) {
                     if (this.isSprinting()) {
                         this.statsTracker.increaseDistanceSprint(l);
@@ -2213,7 +2207,7 @@ public class DogEntity extends AbstractDogEntity {
                     }
                 }
             } else { // Time in air
-                int j1 = Math.round(Mth.sqrt(xD * xD + zD * zD) * 100.0F);
+                int j1 = Math.round(Mth.sqrt((float) (xD * xD + zD * zD)) * 100.0F);
                 //this.STATS.increaseDistanceInWater(k);
             }
 

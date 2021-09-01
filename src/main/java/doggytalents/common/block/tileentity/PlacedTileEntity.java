@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -19,13 +20,13 @@ public class PlacedTileEntity extends BlockEntity {
     private @Deprecated @Nullable LivingEntity placer;
     private @Nullable UUID placerUUID;
 
-    public PlacedTileEntity(BlockEntityType<?> tileEntityTypeIn) {
-        super(tileEntityTypeIn);
+    public PlacedTileEntity(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState blockState) {
+        super(tileEntityTypeIn, pos, blockState);
     }
 
     @Override
-    public void load(BlockState state, CompoundTag compound) {
-        super.load(state, compound);
+    public void load(CompoundTag compound) {
+        super.load(compound);
 
         this.placerUUID = NBTUtil.getUniqueId(compound, "placerId");
     }
@@ -68,6 +69,6 @@ public class PlacedTileEntity extends BlockEntity {
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        this.load(null, pkt.getTag());
+        this.load(pkt.getTag());
     }
 }

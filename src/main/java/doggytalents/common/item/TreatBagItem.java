@@ -59,7 +59,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
             if (playerIn instanceof ServerPlayer && !(playerIn instanceof FakePlayer)) {
                 ServerPlayer serverPlayer = (ServerPlayer) playerIn;
 
-                Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.selected);
+                Screens.openTreatBagScreen(serverPlayer, stack, playerIn.getInventory().selected);
             }
 
             return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);

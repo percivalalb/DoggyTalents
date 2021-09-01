@@ -7,7 +7,7 @@ import doggytalents.common.entity.accessory.*;
 import doggytalents.common.lib.Constants;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 public class DoggyAccessories {

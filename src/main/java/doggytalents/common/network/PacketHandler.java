@@ -21,7 +21,7 @@ import doggytalents.common.network.packet.data.FriendlyFireData;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import doggytalents.common.network.packet.data.RequestSkinData;
 import doggytalents.common.network.packet.data.SendSkinData;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public final class PacketHandler {
 

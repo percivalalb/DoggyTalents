@@ -79,6 +79,6 @@ public class TreatBagContainer extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player playerIn) {
-        return playerIn.inventory.getItem(this.slot).getItem() == DoggyItems.TREAT_BAG.get();
+        return playerIn.getInventory().getItem(this.slot).getItem() == DoggyItems.TREAT_BAG.get();
     }
 }

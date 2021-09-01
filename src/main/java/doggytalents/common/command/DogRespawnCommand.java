@@ -31,7 +31,7 @@ import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.storage.IDogData;
 import doggytalents.common.util.Util;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.command.Commands;
+import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.commands.synchronization.ArgumentTypes;

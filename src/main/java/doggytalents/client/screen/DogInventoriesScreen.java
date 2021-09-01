@@ -16,20 +16,25 @@ import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogInventoryPageData;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.components.Button;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DogInventoriesScreen extends AbstractContainerScreen<DogInventoriesContainer> {
 
     private Button left, right;
+    private Player player;
 
     public DogInventoriesScreen(DogInventoriesContainer packPuppy, Inventory playerInventory, Component displayName) {
         super(packPuppy, playerInventory, displayName);
+        this.player = playerInventory.player;
     }
 
     @Override
@@ -71,20 +76,21 @@ public class DogInventoriesScreen extends AbstractContainerScreen<DogInventories
             this.right.visible = false;
         }
 
-        this.addButton(this.left);
-        this.addButton(this.right);
+        this.addRenderableWidget(this.left);
+        this.addRenderableWidget(this.right);
     }
 
     @Override
     protected void renderLabels(PoseStack stack, int par1, int par2) {
         this.font.draw(stack, this.title.getString(), 8, 6, 4210752);
-        this.font.draw(stack, this.inventory.getDisplayName().getString(), 8.0F, this.imageHeight - 96 + 2, 4210752);
+        this.font.draw(stack, this.playerInventoryTitle, 8.0F, this.imageHeight - 96 + 2, 4210752);
     }
 
     @Override
     protected void renderBg(PoseStack stack, float partialTicks, int xMouse, int yMouse) {
-        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bind(Resources.DOG_INVENTORY);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, Resources.DOG_INVENTORY);
         int l = (this.width - this.imageWidth) / 2;
         int i1 = (this.height - this.imageHeight) / 2;
         this.blit(stack, l, i1, 0, 0, this.imageWidth, this.imageHeight);
@@ -97,9 +103,9 @@ public class DogInventoriesScreen extends AbstractContainerScreen<DogInventories
             Optional<AccessoryInstance> inst = slot.getDog().getAccessory(DoggyAccessories.DYEABLE_COLLAR.get());
             if (inst.isPresent()) {
                 float[] color = inst.get().cast(DyeableAccessoryInstance.class).getFloatArray();
-                RenderSystem.color3f(color[0], color[1], color[2]);
+                RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0F);
             } else {
-                RenderSystem.color3f(1, 1, 1);
+                RenderSystem.setShaderColor(1, 1, 1, 1);
             }
 
             this.blit(stack, l + slot.x - 1, i1 + slot.y - 1, 197, 2, 18, 18);
@@ -110,10 +116,10 @@ public class DogInventoriesScreen extends AbstractContainerScreen<DogInventories
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
        if (this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey)) {
-           if (this.inventory.player.abilities.instabuild) {
-               this.minecraft.setScreen(new CreativeModeInventoryScreen(this.inventory.player));
+           if (this.player.getAbilities().instabuild) {
+               this.minecraft.setScreen(new CreativeModeInventoryScreen(this.player));
            } else {
-               this.minecraft.setScreen(new InventoryScreen(this.inventory.player));
+               this.minecraft.setScreen(new InventoryScreen(this.player));
            }
            return true;
        }
@@ -123,7 +129,7 @@ public class DogInventoriesScreen extends AbstractContainerScreen<DogInventories
 
     @Override
     protected void renderTooltip(PoseStack stack, int mouseX, int mouseY) {
-        if (this.minecraft.player.inventory.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+        if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
 //            if (this.hoveredSlot instanceof DogInventorySlot) {
 //                this.renderTooltip(Arrays.asList(new TranslationTextComponent("test").applyTextStyle(TextFormatting.RED).getFormattedText()), mouseX, mouseY);
 //            } else {

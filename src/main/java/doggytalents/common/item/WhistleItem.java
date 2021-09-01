@@ -167,10 +167,10 @@ public class WhistleItem extends Item {
             } else if (mode == 5) {
                 if (!world.isClientSide) {
                     if (ConfigValues.WHISTLE_SOUNDS)
-                    world.playSound((Player)null, player.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+                    world.playSound((Player)null, player.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
 
                     DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);
-                    doggyBeam.shootFromRotation(player, player.xRot, player.yRot, 0.0F, 2.0F, 1.0F);
+                    doggyBeam.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.0F, 1.0F);
                     world.addFreshEntity(doggyBeam);
                 }
 
@@ -209,7 +209,7 @@ public class WhistleItem extends Item {
                                         mob.hurt(DamageSource.GENERIC, damage);
                                         mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, effectDuration, 127, false, false));
                                         mob.addEffect(new MobEffectInstance(MobEffects.GLOWING, effectDuration, 1, false, false));
-                                        mob.push(Mth.sin(mob.yRot * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -Mth.cos(mob.yRot * (float) Math.PI / 180.0F) * knockback * 0.5F);
+                                        mob.push(Mth.sin(mob.getYRot() * (float) Math.PI / 180.0F) * knockback * 0.5F, 0.1D, -Mth.cos(mob.getYRot() * (float) Math.PI / 180.0F) * knockback * 0.5F);
                                     }
                                 }
 

@@ -52,7 +52,7 @@ public class EntityUtil {
         } else if (!isTeleportFriendlyBlock(entityIn, new BlockPos(x, y, z), false)) {
             return false;
         } else {
-            entityIn.moveTo(x + 0.5F, y, z + 0.5F, entityIn.yRot, entityIn.xRot);
+            entityIn.moveTo(x + 0.5F, y, z + 0.5F, entityIn.getYRot(), entityIn.getXRot());
             navigator.stop();
             return true;
         }

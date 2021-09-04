@@ -1,6 +1,5 @@
 package doggytalents.common.addon.jei;
 
-import mezz.jei.api.ingredients.subtypes.UidContext;
 import org.apache.commons.lang3.tuple.Pair;
 
 import doggytalents.DoggyBlocks;

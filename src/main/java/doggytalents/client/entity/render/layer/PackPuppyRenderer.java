@@ -2,32 +2,43 @@ package doggytalents.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import doggytalents.api.client.render.ITalentRenderer;
+import doggytalents.DoggyTalents;
 import doggytalents.api.registry.TalentInstance;
+import doggytalents.client.ClientSetup;
 import doggytalents.client.entity.model.DogBackpackModel;
+import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.EntityModel;
 
-public class PackPuppyRenderer implements ITalentRenderer<DogEntity> {
+import java.util.Optional;
 
-    private final EntityModel<DogEntity> model;
+public class PackPuppyRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 
-    public PackPuppyRenderer() {
-        this.model = null;//new DogBackpackModel(0.0F);
+    private DogBackpackModel model;
+
+    public PackPuppyRenderer(RenderLayerParent parentRenderer, EntityRendererProvider.Context ctx) {
+        super(parentRenderer);
+        this.model = new DogBackpackModel(ctx.bakeLayer(ClientSetup.DOG_BACKPACK));
     }
 
     @Override
-    public void render(RenderLayer<DogEntity, EntityModel<DogEntity>> layer, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, DogEntity dogIn, TalentInstance inst, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!dogIn.isInvisible()) {
-            // TODO
-//            layer.getParentModel().copyPropertiesTo(this.model);
-//            this.model.prepareMobModel(dogIn, limbSwing, limbSwingAmount, partialTicks);
-//            this.model.setupAnim(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-//
-//            RenderLayer.renderColoredCutoutModel(this.model, Resources.TALENT_CHEST, matrixStackIn, bufferIn, packedLightIn, dogIn, 1.0f, 1.0f, 1.0f);
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (dog.isInvisible()) {
+            return;
         }
+
+        Optional<TalentInstance> inst = dog.getTalent(DoggyTalents.PACK_PUPPY);
+        if (inst.isPresent() && inst.get().level() >= 0) {
+            this.getParentModel().copyPropertiesTo(this.model);
+            this.model.prepareMobModel(dog, limbSwing, limbSwingAmount, partialTicks);
+            this.model.setupAnim(dog, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+
+            RenderLayer.renderColoredCutoutModel(this.model, Resources.TALENT_CHEST, poseStack, buffer, packedLight, dog, 1.0F, 1.0F, 1.0F);
+        }
+
     }
 }

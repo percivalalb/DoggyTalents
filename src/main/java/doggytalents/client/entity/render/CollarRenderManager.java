@@ -1,5 +1,8 @@
 package doggytalents.client.entity.render;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -11,46 +14,27 @@ import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.client.render.ITalentRenderer;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.Talent;
+import doggytalents.client.entity.model.DogModel;
+import doggytalents.client.entity.render.layer.LayerFactory;
+import doggytalents.common.entity.DogEntity;
 import net.minecraftforge.registries.IRegistryDelegate;
 
 public class CollarRenderManager {
 
-    private static Map<IRegistryDelegate<Accessory>, IAccessoryRenderer<?>> accessoryRendererMap = Maps.newConcurrentMap();
-    private static Map<IRegistryDelegate<Talent>, ITalentRenderer<?>> talentRendererMap = Maps.newConcurrentMap();
-
-    public static void registerRenderer(Supplier<? extends Accessory> entityClass, IAccessoryRenderer<?> shader) {
-        registerRenderer(entityClass.get(), shader);
-    }
+    private static final List<LayerFactory<DogEntity, DogModel<DogEntity>>> backer = new ArrayList<>();
+    private static final List<LayerFactory<DogEntity, DogModel<DogEntity>>> accessoryRendererMap = Collections.synchronizedList(backer);
 
     /**
      * Register a renderer for a collar type
      * Call this during {@link net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent}.
      * This method is safe to call during parallel mod loading.
      */
-    public static void registerRenderer(Accessory entityClass, IAccessoryRenderer<?> shader) {
-        accessoryRendererMap.put(entityClass.delegate, shader);
-    }
-
-    public static void registerRenderer(Supplier<? extends Talent> entityClass, ITalentRenderer<?> shader) {
-        registerRenderer(entityClass.get(), shader);
-    }
-
-    public static void registerRenderer(Talent entityClass, ITalentRenderer<?> shader) {
-        talentRendererMap.put(entityClass.delegate, shader);
-    }
-
-
-    public static boolean hasRenderer(Accessory type) {
-        return accessoryRendererMap.containsKey(type.delegate);
+    public static void registerLayer(LayerFactory<DogEntity, DogModel<DogEntity>> shader) {
+        accessoryRendererMap.add(shader);
     }
 
     @Nullable
-    public static IAccessoryRenderer<?> getRendererFor(Accessory type) {
-        return accessoryRendererMap.get(type.delegate);
-    }
-
-    @Nullable
-    public static ITalentRenderer<?> getRendererFor(Talent talent) {
-        return talentRendererMap.get(talent.delegate);
+    public static List<LayerFactory<DogEntity, DogModel<DogEntity>>> getLayers() {
+        return Collections.unmodifiableList(backer);
     }
 }

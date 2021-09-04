@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import doggytalents.DoggySounds;
 import doggytalents.DoggyTalents;
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
@@ -78,7 +78,7 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
@@ -97,7 +97,7 @@ public class WhistleItem extends Item {
                         }
                     }
 
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
@@ -119,7 +119,7 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
@@ -145,7 +145,7 @@ public class WhistleItem extends Item {
                         successful = true;
                     }
 
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.4F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
@@ -157,7 +157,7 @@ public class WhistleItem extends Item {
             }
             else if (mode == 4) {
                 if (!world.isClientSide) {
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     //player.sendMessage(new TranslationTextComponent("dogcommand.shepherd"));
@@ -166,7 +166,7 @@ public class WhistleItem extends Item {
                 return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
             } else if (mode == 5) {
                 if (!world.isClientSide) {
-                    if (ConfigValues.WHISTLE_SOUNDS)
+                    if (ConfigHandler.WHISTLE_SOUNDS)
                     world.playSound((Player)null, player.blockPosition(), SoundEvents.ARROW_SHOOT, SoundSource.NEUTRAL, 0.5F, 0.4F / (world.random.nextFloat() * 0.4F + 0.8F));
 
                     DoggyBeamEntity doggyBeam = new DoggyBeamEntity(world, player);

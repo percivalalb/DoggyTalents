@@ -54,6 +54,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
         this.dogUUID = NBTUtil.getUniqueId(compound, "ownerId");
         this.name = NBTUtil.getTextComponent(compound, "name");
         this.ownerName = NBTUtil.getTextComponent(compound, "ownerName");
+        this.requestModelDataUpdate();
     }
 
     @Override

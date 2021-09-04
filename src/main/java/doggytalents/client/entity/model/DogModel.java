@@ -4,12 +4,10 @@ import com.google.common.collect.ImmutableList;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import net.minecraft.client.model.ColorableAgeableListModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListModel<T> {
@@ -24,6 +22,8 @@ public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListM
     public ModelPart legFrontLeft;
     public ModelPart tail;
     public ModelPart realTail; //
+    public ModelPart realTail2; //
+    public ModelPart realTail3; //
 
     public DogModel(ModelPart box) {
         this.head = box.getChild("head");
@@ -36,6 +36,8 @@ public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListM
         this.legFrontLeft = box.getChild("left_front_leg");
         this.tail = box.getChild("tail");
         this.realTail = this.tail.getChild("real_tail");
+        this.realTail2 = this.tail.getChild("real_tail_2");
+        this.realTail3 = this.tail.getChild("real_tail_bushy");
         // TODO
 //        float f1 = 13.5F;
 //
@@ -100,20 +102,52 @@ public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListM
     }
 
     public static LayerDefinition createBodyLayer() {
+        return createBodyLayerInternal(CubeDeformation.NONE);
+    }
+
+    public static LayerDefinition createArmorLayer() {
+        return createBodyLayerInternal(new CubeDeformation(0.4F, 0.4F, 0.4F));
+    }
+
+    private static LayerDefinition createBodyLayerInternal(CubeDeformation scale) {
         MeshDefinition var0 = new MeshDefinition();
         PartDefinition var1 = var0.getRoot();
         float var2 = 13.5F;
         PartDefinition var3 = var1.addOrReplaceChild("head", CubeListBuilder.create(), PartPose.offset(-1.0F, 13.5F, -7.0F));
-        var3.addOrReplaceChild("real_head", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -3.0F, -2.0F, 6.0F, 6.0F, 4.0F).texOffs(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F).texOffs(16, 14).addBox(2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F).texOffs(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3.0F, 3.0F, 4.0F), PartPose.ZERO);
-        var1.addOrReplaceChild("body", CubeListBuilder.create().texOffs(18, 14).addBox(-3.0F, -2.0F, -3.0F, 6.0F, 9.0F, 6.0F), PartPose.offsetAndRotation(0.0F, 14.0F, 2.0F, 1.5707964F, 0.0F, 0.0F));
-        var1.addOrReplaceChild("upper_body", CubeListBuilder.create().texOffs(21, 0).addBox(-3.0F, -3.0F, -3.0F, 8.0F, 6.0F, 7.0F), PartPose.offsetAndRotation(-1.0F, 14.0F, -3.0F, 1.5707964F, 0.0F, 0.0F));
-        CubeListBuilder var4 = CubeListBuilder.create().texOffs(0, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F);
+        var3.addOrReplaceChild("real_head", CubeListBuilder.create()
+                // Head
+                .texOffs(0, 0).addBox(-2.0F, -3.0F, -2.0F, 6.0F, 6.0F, 4.0F, scale)
+                // Ears Normal
+                .texOffs(16, 14).addBox(-2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F, scale)
+                .texOffs(16, 14).addBox(2.0F, -5.0F, 0.0F, 2.0F, 2.0F, 1.0F, scale)
+                // Nose
+                .texOffs(0, 10).addBox(-0.5F, 0.0F, -5.0F, 3.0F, 3.0F, 4.0F, scale)
+                // Ears Boni
+                .texOffs(52, 0).addBox(-3.0F, -3.0F, -1.5F, 1, 5, 3, scale)
+                .texOffs(52, 0).addBox(4.0F, -3.0F, -1.5F, 1, 5, 3, scale)
+                // Ears Small
+                .texOffs(18, 0).addBox(-2.8F, -3.5F, -1.0F, 2, 1, 2, scale)
+                .texOffs(18, 0).addBox(2.8F, -3.5F, -1.0F, 2, 1, 2, scale)
+        , PartPose.ZERO);
+        var1.addOrReplaceChild("body", CubeListBuilder.create()
+                .texOffs(18, 14).addBox(-3.0F, -2.0F, -3.0F, 6.0F, 9.0F, 6.0F, scale)
+        , PartPose.offsetAndRotation(0.0F, 14.0F, 2.0F, 1.5707964F, 0.0F, 0.0F));
+        var1.addOrReplaceChild("upper_body", CubeListBuilder.create().texOffs(21, 0).addBox(-3.0F, -3.0F, -3.0F, 8.0F, 6.0F, 7.0F, scale), PartPose.offsetAndRotation(-1.0F, 14.0F, -3.0F, 1.5707964F, 0.0F, 0.0F));
+        CubeListBuilder var4 = CubeListBuilder.create().texOffs(0, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F, scale);
         var1.addOrReplaceChild("right_hind_leg", var4, PartPose.offset(-2.5F, 16.0F, 7.0F));
         var1.addOrReplaceChild("left_hind_leg", var4, PartPose.offset(0.5F, 16.0F, 7.0F));
         var1.addOrReplaceChild("right_front_leg", var4, PartPose.offset(-2.5F, 16.0F, -4.0F));
         var1.addOrReplaceChild("left_front_leg", var4, PartPose.offset(0.5F, 16.0F, -4.0F));
         PartDefinition var5 = var1.addOrReplaceChild("tail", CubeListBuilder.create(), PartPose.offsetAndRotation(-1.0F, 12.0F, 8.0F, 0.62831855F, 0.0F, 0.0F));
-        var5.addOrReplaceChild("real_tail", CubeListBuilder.create().texOffs(9, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F), PartPose.ZERO);
+        var5.addOrReplaceChild("real_tail", CubeListBuilder.create()
+                .texOffs(9, 18).addBox(0.0F, 0.0F, -1.0F, 2.0F, 8.0F, 2.0F, scale)
+        , PartPose.ZERO);
+        var5.addOrReplaceChild("real_tail_2", CubeListBuilder.create()
+                .texOffs(45, 0).addBox(0.0F, 0.0F, 0.0F, 2, 3, 1, scale)
+        , PartPose.offset(0.0F, -2.0F, 0.0F));
+        var5.addOrReplaceChild("real_tail_bushy", CubeListBuilder.create()
+                .texOffs(43, 19).addBox(-1.0F, 0F, -2F, 3, 10, 3, scale)
+                , PartPose.ZERO);
         return LayerDefinition.create(var0, 64, 32);
     }
 
@@ -131,7 +165,7 @@ public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListM
     public void prepareMobModel(T dog, float limbSwing, float limbSwingAmount, float partialTickTime) {
         this.tail.yRot = dog.getWagAngle(limbSwing, limbSwingAmount, partialTickTime);
 
-        if (dog.isInSittingPose()) { // Mapping is wrong isEntitySleeping should be isSitting
+        if (dog.isInSittingPose()) {
             if (dog.isLying()) {
                 this.head.setPos(-1, 19.5F, -7);
                 this.body.setPos(0, 20, 2);
@@ -233,6 +267,9 @@ public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListM
         this.mane.zRot = dog.getShakeAngle(partialTickTime, -0.08F);
         this.body.zRot = dog.getShakeAngle(partialTickTime, -0.16F);
         this.realTail.zRot = dog.getShakeAngle(partialTickTime, -0.2F);
+        this.realTail2.zRot = dog.getShakeAngle(partialTickTime, -0.2F);
+        this.realTail3.zRot = dog.getShakeAngle(partialTickTime, -0.2F);
+
     }
 
     @Override

@@ -44,7 +44,7 @@ import doggytalents.api.registry.AccessoryType;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.client.screen.DogInfoScreen;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.ai.BerserkerModeGoal;
 import doggytalents.common.entity.ai.BreedGoal;
 import doggytalents.common.entity.ai.DogBegGoal;
@@ -417,7 +417,7 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         if (!this.level.isClientSide) {
-            if (!ConfigValues.DISABLE_HUNGER) {
+            if (!ConfigHandler.SERVER.DISABLE_HUNGER.get()) {
                 this.prevHungerTick = this.hungerTick;
 
                 if (!this.isVehicle() && !this.isInSittingPose()) {
@@ -462,7 +462,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if(ConfigValues.DIRE_PARTICLES && this.level.isClientSide && this.getLevel().isDireDog()) {
+        if (ConfigHandler.CLIENT.DIRE_PARTICLES.get() && this.level.isClientSide && this.getLevel().isDireDog()) {
             for (int i = 0; i < 2; i++) {
                 this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2D);
             }
@@ -982,7 +982,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.getItem() == DoggyTags.BREEDING_ITEMS;
+        return DoggyTags.BREEDING_ITEMS.contains(stack.getItem());
     }
 
     @Override
@@ -999,7 +999,7 @@ public class DogEntity extends AbstractDogEntity {
                 return false;
             } else if (entitydog.isInSittingPose()) {
                 return false;
-            } else if (ConfigValues.DOG_GENDER && !this.getGender().canMateWith(entitydog.getGender())) {
+            } else if (ConfigHandler.SERVER.DOG_GENDER.get() && !this.getGender().canMateWith(entitydog.getGender())) {
                 return false;
             } else {
                 return this.isInLove() && entitydog.isInLove();
@@ -1017,7 +1017,7 @@ public class DogEntity extends AbstractDogEntity {
             child.setTame(true);
         }
 
-        if (partner instanceof DogEntity && ConfigValues.PUPS_GET_PARENT_LEVELS) {
+        if (partner instanceof DogEntity && ConfigHandler.SERVER.PUPS_GET_PARENT_LEVELS.get()) {
             child.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
         }
 
@@ -1026,7 +1026,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean shouldShowName() {
-        return (ConfigValues.ALWAYS_SHOW_DOG_NAME && this.hasCustomName()) || super.shouldShowName();
+        return (ConfigHandler.ALWAYS_SHOW_DOG_NAME && this.hasCustomName()) || super.shouldShowName();
     }
 
     @Override
@@ -1073,25 +1073,15 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public void onAddedToWorld() {
-        super.onAddedToWorld(); // When the entity is added to tracking list
-        if (this.level != null && !this.level.isClientSide) {
-            //DogLocationData locationData = DogLocationStorage.get(this.world).getOrCreateData(this);
-            //locationData.update(this);
+    public void remove(Entity.RemovalReason removalReason) {
+        super.remove(removalReason);
+
+        if (removalReason == RemovalReason.DISCARDED || removalReason == RemovalReason.KILLED) {
+            if (this.level != null && !this.level.isClientSide) {
+                DogRespawnStorage.get(this.level).putData(this);
+                DogLocationStorage.get(this.level).remove(this);
+            }
         }
-    }
-
-    @Override
-    public void onRemovedFromWorld() {
-        super.onRemovedFromWorld(); // When the entity is removed from tracking list
-    }
-
-    /**
-     * When the entity is brought back to life
-     */
-    @Override
-    public void revive() {
-        super.revive();
     }
 
     @Override
@@ -1128,13 +1118,6 @@ public class DogEntity extends AbstractDogEntity {
 
         this.alterations.forEach((alter) -> alter.onDeath(this, cause));
         super.die(cause);
-
-        // Save inventory after onDeath is called so that pack puppy inventory
-        // can be dropped and not saved
-        if (this.level != null && !this.level.isClientSide) {
-            DogRespawnStorage.get(this.level).putData(this);
-            DogLocationStorage.get(this.level).remove(this);
-        }
     }
 
     @Override
@@ -1143,14 +1126,6 @@ public class DogEntity extends AbstractDogEntity {
 
         this.alterations.forEach((alter) -> alter.dropInventory(this));
     }
-
-    /**
-     * When the entity is removed
-     */
-    // TODO @Override
-//    public void remove(boolean keepData) {
-//        super.remove(keepData);
-//    }
 
     @Override
     public void invalidateCaps() {
@@ -1699,7 +1674,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public float getMaxHunger() {
-        float maxHunger = ConfigValues.DEFAULT_MAX_HUNGER;
+        float maxHunger = ConfigHandler.DEFAULT_MAX_HUNGER;
 
         for (IDogAlteration alter : this.alterations) {
             InteractionResultHolder<Float> result = alter.getMaxHunger(this, maxHunger);
@@ -2217,7 +2192,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public TranslatableComponent getTranslationKey(Function<EnumGender, String> function) {
-        return new TranslatableComponent(function.apply(ConfigValues.DOG_GENDER ? this.getGender() : EnumGender.UNISEX));
+        return new TranslatableComponent(function.apply(ConfigHandler.SERVER.DOG_GENDER.get() ? this.getGender() : EnumGender.UNISEX));
     }
 
     @Override

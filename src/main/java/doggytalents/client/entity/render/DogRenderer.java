@@ -6,9 +6,8 @@ import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.layer.BoneLayer;
-import doggytalents.client.entity.render.layer.DogAccessoryLayer;
-import doggytalents.client.entity.render.layer.DogTalentLayer;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.client.entity.render.layer.LayerFactory;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -27,10 +26,12 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
     public DogRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new DogModel(ctx.bakeLayer(ClientSetup.DOG)), 0.5F);
-        this.addLayer(new DogTalentLayer(this));
-        this.addLayer(new DogAccessoryLayer(this));
+//        this.addLayer(new DogTalentLayer(this, ctx));
+//        this.addLayer(new DogAccessoryLayer(this, ctx));
         this.addLayer(new BoneLayer(this));
-
+        for (LayerFactory<DogEntity, DogModel<DogEntity>> layer : CollarRenderManager.getLayers()) {
+            this.addLayer(layer.createLayer(this, ctx));
+        }
     }
 
     @Override
@@ -52,15 +53,15 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             double d0 = this.entityRenderDispatcher.distanceToSqr(entityIn);
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
-                String label = String.format(ConfigValues.DOG_GENDER ? "%s(%d)%s" : "%s(%d)",
+                String label = String.format(ConfigHandler.SERVER.DOG_GENDER.get() ? "%s(%d)%s" : "%s(%d)",
                         new TranslatableComponent(tip).getString(),
                         Mth.ceil(entityIn.getDogHunger()),
                         new TranslatableComponent(entityIn.getGender().getUnlocalisedTip()).getString());
 
-                RenderUtil.renderLabelWithScale(entityIn, this, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
+                RenderUtil.renderLabelWithScale(entityIn, this, this.entityRenderDispatcher, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 
                 if (d0 <= 5 * 5 && this.entityRenderDispatcher.camera.getEntity().isShiftKeyDown()) {
-                    RenderUtil.renderLabelWithScale(entityIn, this, entityIn.getOwnersName().orElseGet(() -> this.getNameUnknown(entityIn)), matrixStackIn, bufferIn, packedLightIn, 0.01F, -0.25F);
+                    RenderUtil.renderLabelWithScale(entityIn, this, this.entityRenderDispatcher, entityIn.getOwnersName().orElseGet(() -> this.getNameUnknown(entityIn)), matrixStackIn, bufferIn, packedLightIn, 0.01F, -0.25F);
                 }
             }
         }

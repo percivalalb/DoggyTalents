@@ -3,30 +3,40 @@ package doggytalents.client.entity.render.layer.accessory;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.api.client.render.IAccessoryRenderer;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.registry.AccessoryInstance;
+import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.accessory.DyeableAccessory.DyeableAccessoryInstance;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.resources.ResourceLocation;
 
-public class DefaultAccessoryRenderer implements IAccessoryRenderer<DogEntity> {
+public class DefaultAccessoryRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 
-    private ResourceLocation texture;
-
-    public DefaultAccessoryRenderer(ResourceLocation textureIn) {
-        this.texture = textureIn;
+    public DefaultAccessoryRenderer(RenderLayerParent parentRenderer, EntityRendererProvider.Context ctx) {
+        super(parentRenderer);
     }
 
     @Override
-    public void render(RenderLayer<DogEntity, EntityModel<DogEntity>> layer, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, DogEntity dog, AccessoryInstance data, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (dog.isTame() && !dog.isInvisible()) {
-            RenderLayer.renderColoredCutoutModel(layer.getParentModel(), this.getTexture(dog, data), matrixStackIn, bufferIn, packedLightIn, dog, 1.0f, 1.0f, 1.0f);
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        // Only show armour if dog is tamed or visible
+        if (!dog.isTame() || dog.isInvisible()) {
+            return;
         }
-    }
 
-    public <T extends AbstractDogEntity> ResourceLocation getTexture(T dog, AccessoryInstance data) {
-        return this.texture;
+        for (AccessoryInstance accessoryInst : dog.getAccessories()) {
+            if (accessoryInst.usesRenderer(this.getClass())) {
+                if (accessoryInst instanceof IColoredObject coloredObject) {
+                    float[] color = coloredObject.getColor();
+                    this.renderColoredCutoutModel(this.getParentModel(), accessoryInst.getModelTexture(dog), poseStack, buffer, packedLight, dog, color[0], color[1], color[2]);
+                } else {
+                    RenderLayer.renderColoredCutoutModel(this.getParentModel(), accessoryInst.getModelTexture(dog), poseStack, buffer, packedLight, dog, 1.0F, 1.0F, 1.0F);
+                }
+            }
+        }
     }
 }

@@ -15,6 +15,9 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import doggytalents.common.config.ConfigHandler;
+import net.minecraft.client.sounds.SoundEngine;
+import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -27,7 +30,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.lib.Resources;
@@ -46,7 +48,7 @@ import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import net.minecraftforge.resource.IResourceType;
 import net.minecraftforge.resource.VanillaResourceType;
 
-public class DogTextureManager extends DogTextureServer implements PreparableReloadListener {
+public class DogTextureManager extends SimplePreparableReloadListener<DogTextureManager.Preparations> {
 
     public static final DogTextureManager INSTANCE = new DogTextureManager();
     private static final Gson GSON = new Gson();
@@ -132,8 +134,8 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
         Minecraft mc = Minecraft.getInstance();
         TextureManager textureManager = mc.getTextureManager();
 
-        File cacheFile = getCacheFile(baseFolder, hash);
-        ResourceLocation loc = getResourceLocation(hash);
+        File cacheFile = DogTextureServer.INSTANCE.getCacheFile(baseFolder, hash);
+        ResourceLocation loc = DogTextureServer.INSTANCE.getResourceLocation(hash);
 
         AbstractTexture texture = textureManager.getTexture(loc);
         if (texture == null && cacheFile.isFile() && cacheFile.exists()) {
@@ -152,10 +154,10 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
         Minecraft mc = Minecraft.getInstance();
         TextureManager textureManager = mc.getTextureManager();
 
-        String hash = this.getHash(data);
+        String hash = DogTextureServer.INSTANCE.getHash(data);
 
-        File cacheFile = this.getCacheFile(baseFolder, hash);
-        ResourceLocation loc = this.getResourceLocation(hash);
+        File cacheFile = DogTextureServer.INSTANCE.getCacheFile(baseFolder, hash);
+        ResourceLocation loc = DogTextureServer.INSTANCE.getResourceLocation(hash);
 
         AbstractTexture texture = textureManager.getTexture(loc);
         if (texture == null) {
@@ -169,11 +171,11 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
     }
 
     public ResourceLocation getCached(String hash) {
-        if (!ConfigValues.DISPLAY_OTHER_DOG_SKINS) {
+        if (!ConfigHandler.DISPLAY_OTHER_DOG_SKINS) {
             return Resources.ENTITY_WOLF;
         }
 
-        ResourceLocation loc = this.getResourceLocation(hash);
+        ResourceLocation loc = DogTextureServer.INSTANCE.getResourceLocation(hash);
 
         AbstractTexture texture = getOrLoadTexture(getClientFolder(), hash);
         if (texture != null) {
@@ -189,20 +191,20 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
         return Resources.ENTITY_WOLF;
     }
 
-    private synchronized void loadDogSkinResource(Resource resource) {
+    private synchronized void loadDogSkinResource(DogTextureManager.Preparations prep, Resource resource) {
         InputStream inputstream = null;
         try {
             inputstream = resource.getInputStream();
-            String hash = this.getHash(IOUtils.toByteArray(inputstream));
+            String hash = DogTextureServer.INSTANCE.getHash(IOUtils.toByteArray(inputstream));
             ResourceLocation rl = resource.getLocation();
 
-            if (this.skinHashToLoc.containsKey(hash)) {
+            if (prep.skinHashToLoc.containsKey(hash)) {
                 DoggyTalents2.LOGGER.warn("The loaded resource packs contained a duplicate custom dog skin ({} & {})", resource.getLocation(), this.skinHashToLoc.get(hash));
             } else {
                 DoggyTalents2.LOGGER.info("Found custom dog skin at {} with hash {}", rl, hash);
-                this.skinHashToLoc.put(hash, rl);
-                this.locToSkinHash.put(rl, hash);
-                this.customSkinLoc.add(rl);
+                prep.skinHashToLoc.put(hash, rl);
+                prep.locToSkinHash.put(rl, hash);
+                prep.customSkinLoc.add(rl);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -211,67 +213,48 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
         }
     }
 
-    private void loadOverrideData(List<Resource> resourcesList) {
+    private void loadOverrideData(DogTextureManager.Preparations prep, List<Resource> resourcesList) {
         for (Resource iresource : resourcesList) {
             InputStream inputstream = iresource.getInputStream();
-
+            DoggyTalents2.LOGGER.debug("Loading {}", iresource);
             try {
-                this.loadLocaleData(inputstream);
+                this.loadLocaleData(prep, inputstream);
             } finally {
                 IOUtils.closeQuietly(inputstream);
             }
         }
     }
 
-    private synchronized void loadLocaleData(InputStream inputStreamIn) {
+    private synchronized void loadLocaleData(DogTextureManager.Preparations prep, InputStream inputStreamIn) {
         JsonElement jsonelement = GSON.fromJson(new InputStreamReader(inputStreamIn, StandardCharsets.UTF_8), JsonElement.class);
         JsonObject jsonobject = GsonHelper.convertToJsonObject(jsonelement, "strings");
 
         for (Entry<String, JsonElement> entry : jsonobject.entrySet()) {
             String hash = entry.getKey();
             ResourceLocation texture = new ResourceLocation(GsonHelper.convertToString(entry.getValue(), hash));
-            ResourceLocation previous = this.skinHashToLoc.put(hash, texture);
+            ResourceLocation previous = prep.skinHashToLoc.put(hash, texture);
 
             if (previous != null) {
 
             } else {
 
             }
-            //this.customSkinLoc.remove(texture);
+            //prep.customSkinLoc.remove(texture);
 
             DoggyTalents2.LOGGER.info("Loaded override for {} -> {}", hash, texture);
         }
     }
 
-
     @Override
-    public String getName() {
-        return "DogTexture";
-    }
+    protected DogTextureManager.Preparations prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+        DogTextureManager.Preparations prep = new DogTextureManager.Preparations();
 
-    @Override
-    public CompletableFuture<Void> reload(PreparationBarrier p_10780_, ResourceManager p_10781_, ProfilerFiller p_10782_, ProfilerFiller p_10783_, Executor p_10784_, Executor p_10785_) {
-        DoggyTalents2.LOGGER.info("Loading doggytassslents textures!");
-        CompletableFuture<String> var10000 = CompletableFuture.supplyAsync(() -> {
-            return this.prepare(p_10781_, p_10782_);
-        }, p_10784_);
-        Objects.requireNonNull(p_10780_);
-        return var10000.thenCompose(p_10780_::wait).thenAcceptAsync((p_10792_) -> {
-            this.apply(p_10792_, p_10781_, p_10783_);
-        }, p_10785_);
-    }
-
-    protected String prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller) {
-
-        this.skinHashToLoc.clear();
-        this.customSkinLoc.clear();
+        profiler.startTick();
 
         Collection<ResourceLocation> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
             return fileName.endsWith(".png");
         });
-        DoggyTalents2.LOGGER.info("Loading doggytalents textures!");
         for (ResourceLocation rl : resources) {
-            DoggyTalents2.LOGGER.info(rl);
             try {
                 Resource resource = resourceManager.getResource(rl);
 
@@ -280,7 +263,7 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
                     continue;
                 }
 
-                this.loadDogSkinResource(resource);
+                this.loadDogSkinResource(prep, resource);
             } catch (FileNotFoundException e) {
                 ;
             } catch (Exception exception) {
@@ -289,18 +272,42 @@ public class DogTextureManager extends DogTextureServer implements PreparableRel
         }
 
         try {
-            List<Resource> resourcelocation = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
-            this.loadOverrideData(resourcelocation);
+            List<Resource> override = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
+            this.loadOverrideData(prep, override);
         } catch (FileNotFoundException e) {
             ;
         }  catch (IOException | RuntimeException runtimeexception) {
             DoggyTalents2.LOGGER.warn("Unable to parse dog skin override data: {}", runtimeexception);
         }
 
-        return "Done";
+        profiler.pop();
+        profiler.endTick();
+        return prep;
     }
 
-    protected void apply(String o, ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    @Override
+    protected void apply(DogTextureManager.Preparations prep, ResourceManager resourceManager, ProfilerFiller profiler) {
+        prep.apply(this);
+    }
 
+    @Override
+    public String getName() {
+        return "DogTextureManager";
+    }
+
+    protected static class Preparations {
+
+        private final Map<String, ResourceLocation> skinHashToLoc = new HashMap<>();
+        private final Map<ResourceLocation, String> locToSkinHash = new HashMap<>();
+        private final List<ResourceLocation> customSkinLoc = new ArrayList<>(20);
+
+        public void apply(DogTextureManager dogTextureManager) {
+            dogTextureManager.skinHashToLoc.clear();
+            dogTextureManager.customSkinLoc.clear();
+
+            dogTextureManager.skinHashToLoc.putAll(this.skinHashToLoc);
+            dogTextureManager.locToSkinHash.putAll(this.locToSkinHash);
+            dogTextureManager.customSkinLoc.addAll(this.customSkinLoc);
+        }
     }
 }

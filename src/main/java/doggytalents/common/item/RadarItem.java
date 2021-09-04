@@ -45,7 +45,7 @@ public class RadarItem extends Item {
                 for (UUID uuid : locationManager.getAllUUID()) {
                     playerIn.sendMessage(new TextComponent(locationManager.getData(uuid).toString()), Util.NIL_UUID);
                 }
-                return new InteractionResultHolder<ItemStack>(InteractionResult.FAIL, playerIn.getItemInHand(handIn));
+                return new InteractionResultHolder<>(InteractionResult.FAIL, playerIn.getItemInHand(handIn));
             }
 
             ResourceKey<Level> dimCurr = playerIn.level.dimension();
@@ -56,7 +56,7 @@ public class RadarItem extends Item {
             List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, dimCurr).collect(Collectors.toList());
 
             if (ownDogs.isEmpty()) {
-                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", dimCurr), Util.NIL_UUID);
+                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", dimCurr.location()), Util.NIL_UUID);
             } else {
                 boolean flag = false;
 

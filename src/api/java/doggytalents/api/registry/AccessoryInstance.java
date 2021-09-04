@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.AbstractDogEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -104,4 +105,11 @@ public class AccessoryInstance {
         }
     }
 
+    public ResourceLocation getModelTexture(AbstractDogEntity dog) {
+        return this.getAccessory().getModelTexture();
+    }
+
+    public boolean usesRenderer(Class layer) {
+        return this.getAccessory().usesRenderer(layer);
+    }
 }

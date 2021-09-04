@@ -2,7 +2,10 @@ package doggytalents.client.event;
 
 import java.util.Map;
 
+import doggytalents.client.screen.DogInventoriesScreen;
+import doggytalents.common.lib.Resources;
 import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.renderer.GameRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -142,9 +145,10 @@ public class ClientEventHandler {
                         guiLeft += 76;
                     }
                 }
-                // TODO RenderSystem.translated(-guiLeft, -guiTop, 0);
+
+                event.getMatrixStack().translate(-guiLeft, -guiTop, 0);
                 btn.renderToolTip(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
-                // TODO RenderSystem.translated(guiLeft, guiTop, 0);
+                event.getMatrixStack().translate(guiLeft, guiTop, 0);
             }
         }
     }
@@ -207,9 +211,9 @@ public class ClientEventHandler {
 //        RenderSystem.enableAlphaTest();
     }
 
-    @SubscribeEvent
-    public void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
-        // TODO
+//    @SubscribeEvent
+//    public void onPreRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
+//        // TODO
 //        label: if (event.getType() == RenderGameOverlayEvent.ElementType.HEALTHMOUNT) {
 //            Minecraft mc = Minecraft.getInstance();
 //
@@ -223,12 +227,13 @@ public class ClientEventHandler {
 //            int width = mc.getWindow().getGuiScaledWidth();
 //            int height = mc.getWindow().getGuiScaledHeight();
 //            RenderSystem.pushMatrix();
-//            mc.getTextureManager().bind(Screen.GUI_ICONS_LOCATION);
-//
+//            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+//            RenderSystem.setShaderTexture(0, Screen.GUI_ICONS_LOCATION;
 //            RenderSystem.enableBlend();
 //            int left = width / 2 + 91;
-//            int top = height - ForgeIngameGui.right_height;
-//            ForgeIngameGui.right_height += 10;
+//            int top = height - ((ForgeIngameGui) mc.gui).right_height;
+//            ((ForgeIngameGui) mc.gui).right_height += 10;
 //            int level = Mth.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
 //
 //            for (int i = 0; i < 10; ++i) {
@@ -270,6 +275,6 @@ public class ClientEventHandler {
 //            RenderSystem.disableBlend();
 //
 //            RenderSystem.popMatrix();
-//        }
-    }
+////        }
+//    }
 }

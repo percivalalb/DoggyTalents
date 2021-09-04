@@ -8,7 +8,7 @@ import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.util.InventoryUtil;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -140,7 +140,7 @@ public class PackPuppyTalent extends TalentInstance {
 
     @Override
     public boolean hasRenderer() {
-        return ConfigValues.RENDER_CHEST;
+        return ConfigHandler.CLIENT.RENDER_CHEST.get();
     }
 
     public static boolean hasInventory(AbstractDogEntity dogIn) {

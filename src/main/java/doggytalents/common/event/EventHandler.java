@@ -2,7 +2,7 @@ package doggytalents.common.event;
 
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.talent.HunterDogTalent;
 import net.minecraft.world.entity.Entity;
@@ -76,7 +76,7 @@ public class EventHandler {
 
     @SubscribeEvent
     public void playerLoggedIn(final PlayerLoggedInEvent event) {
-        if (ConfigValues.STARTING_ITEMS) {
+        if (ConfigHandler.SERVER.STARTING_ITEMS.get()) {
 
             Player player = event.getPlayer();
 

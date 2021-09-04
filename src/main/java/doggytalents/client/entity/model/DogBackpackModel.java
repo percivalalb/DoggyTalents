@@ -45,7 +45,7 @@ public class DogBackpackModel extends ListModel<DogEntity> {
 
     @Override
     public void prepareMobModel(DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
-        if (dogIn.isInSittingPose()) { // Mapping is wrong isEntitySleeping should be isSitting
+        if (dogIn.isInSittingPose()) {
             if (dogIn.isLying()) {
                 this.rightChest.setPos(0.0F, 20.0F, 2.0F);
                 this.rightChest.xRot = ((float)Math.PI / 2F);

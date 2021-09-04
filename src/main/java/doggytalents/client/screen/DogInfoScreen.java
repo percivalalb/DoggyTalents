@@ -16,7 +16,8 @@ import doggytalents.api.feature.DogLevel.Type;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.DogTextureManager;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogModeData;
@@ -42,6 +43,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public class DogInfoScreen extends Screen {
@@ -118,7 +120,7 @@ public class DogInfoScreen extends Screen {
 
         this.addRenderableWidget(attackPlayerBtn);
 
-        //if (ConfigValues.USE_DT_TEXTURES) {
+        //if (ConfigHandler.CLIENT.USE_DT_TEXTURES.get()) {
             Button addBtn = new Button(this.width - 42, topY + 30, 20, 20, new TextComponent("+"), (btn) -> {
                 this.textureIndex += 1;
                 this.textureIndex %= this.customSkinList.size();
@@ -215,7 +217,7 @@ public class DogInfoScreen extends Screen {
     }
 
     private void setDogTexture(ResourceLocation rl) {
-        if (ConfigValues.SEND_SKIN) {
+        if (ConfigHandler.SEND_SKIN) {
             try {
                 byte[] data = DogTextureManager.INSTANCE.getResourceBytes(rl);
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new SendSkinData(this.dog.getId(), data));
@@ -262,7 +264,7 @@ public class DogInfoScreen extends Screen {
                     DogInfoScreen.this.renderComponentTooltip(stack, list, mouseX, mouseY);
                 }
             };
-            button.active = !ConfigValues.DISABLED_TALENTS.contains(talent);
+            button.active = ConfigHandler.TALENT.getFlag(talent);
 
             this.talentWidgets.add(button);
             this.addRenderableWidget(button);
@@ -300,7 +302,7 @@ public class DogInfoScreen extends Screen {
         this.font.draw(stack, I18n.get("doggui.owner") + " " + tamedString, this.width - 160, topY - 90, 0xFFFFFF);
         this.font.draw(stack, I18n.get("doggui.age") + " " + ageString, this.width - 160, topY - 80, 0xFFFFFF);
         this.font.draw(stack, I18n.get("doggui.armor") + " " + armorValue, this.width - 160, topY - 70, 0xFFFFFF);
-        if (ConfigValues.DOG_GENDER) {
+        if (ConfigHandler.SERVER.DOG_GENDER.get()) {
             this.font.draw(stack, I18n.get("doggui.gender") + " "+ I18n.get(this.dog.getGender().getUnlocalisedName()), this.width - 160, topY - 60, 0xFFFFFF);
         }
 
@@ -312,7 +314,7 @@ public class DogInfoScreen extends Screen {
         } else {
             this.font.draw(stack, I18n.get("doggui.pointsleft") + " " + this.dog.getSpendablePoints(), topX - 38, topY + 89, 0xFFFFFF);
         }
-       // if (ConfigValues.USE_DT_TEXTURES) {
+       // if (ConfigHandler.CLIENT.USE_DT_TEXTURES.get()) {
             this.font.draw(stack, I18n.get("doggui.textureindex"), this.width - 80, topY + 20, 0xFFFFFF);
             this.font.draw(stack, this.dog.getSkinHash().substring(0, Math.min(this.dog.getSkinHash().length(), 10)), this.width - 73, topY + 54, 0xFFFFFF);
        // }

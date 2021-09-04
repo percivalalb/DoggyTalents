@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
@@ -36,13 +37,13 @@ public class DyeableAccessory extends Accessory {
     @Override
     public void write(AccessoryInstance instance, FriendlyByteBuf buf) {
         DyeableAccessoryInstance exact = instance.cast(DyeableAccessoryInstance.class);
-        buf.writeInt(exact.getColor());
+        buf.writeInt(exact.getColorInteger());
     }
 
     @Override
     public void write(AccessoryInstance instance, CompoundTag compound) {
         DyeableAccessoryInstance exact = instance.cast(DyeableAccessoryInstance.class);
-        compound.putInt("color", exact.getColor());
+        compound.putInt("color", exact.getColorInteger());
     }
 
     @Override
@@ -61,7 +62,7 @@ public class DyeableAccessory extends Accessory {
 
         ItemStack returnStack = super.getReturnItem(instance);
         if (returnStack.getItem() instanceof DyeableLeatherItem) {
-            ((DyeableLeatherItem) returnStack.getItem()).setColor(returnStack, exact.getColor());
+            ((DyeableLeatherItem) returnStack.getItem()).setColor(returnStack, exact.getColorInteger());
         } else {
             DoggyTalents2.LOGGER.info("Unable to set set dyable accessory color.");
         }
@@ -83,7 +84,7 @@ public class DyeableAccessory extends Accessory {
         return this.getDefault();
     }
 
-    public class DyeableAccessoryInstance extends AccessoryInstance implements IDogAlteration {
+    public class DyeableAccessoryInstance extends AccessoryInstance implements IDogAlteration, IColoredObject {
 
         private ColourCache color;
 
@@ -96,12 +97,13 @@ public class DyeableAccessory extends Accessory {
             this.color = colorIn;
         }
 
-        public int getColor() {
-            return this.color.get();
+        @Override
+        public float[] getColor() {
+            return this.color.getFloatArray();
         }
 
-        public float[] getFloatArray() {
-            return this.color.getFloatArray();
+        public int getColorInteger() {
+            return this.color.get();
         }
 
         @Override

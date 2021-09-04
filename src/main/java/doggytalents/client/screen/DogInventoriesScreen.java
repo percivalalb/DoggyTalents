@@ -102,7 +102,7 @@ public class DogInventoriesScreen extends AbstractContainerScreen<DogInventories
 
             Optional<AccessoryInstance> inst = slot.getDog().getAccessory(DoggyAccessories.DYEABLE_COLLAR.get());
             if (inst.isPresent()) {
-                float[] color = inst.get().cast(DyeableAccessoryInstance.class).getFloatArray();
+                float[] color = inst.get().cast(DyeableAccessoryInstance.class).getColor();
                 RenderSystem.setShaderColor(color[0], color[1], color[2], 1.0F);
             } else {
                 RenderSystem.setShaderColor(1, 1, 1, 1);

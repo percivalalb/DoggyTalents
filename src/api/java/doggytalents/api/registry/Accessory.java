@@ -1,10 +1,12 @@
 package doggytalents.api.registry;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
 import doggytalents.api.DoggyTalentsAPI;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -85,5 +87,29 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
 
     public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
         return accessoryDelegateIn.equals(this.delegate);
+    }
+
+    private ResourceLocation modelTexture;
+
+    public <T extends Accessory> T setModelTexture(ResourceLocation modelTextureIn) {
+        this.modelTexture = modelTextureIn;
+        return (T) this;
+    }
+
+    @Nullable
+    public ResourceLocation getModelTexture() {
+        return this.modelTexture;
+    }
+
+    private String renderer;
+
+    public <T extends Accessory> T setRenderer(String rendererIn) {
+        this.renderer = rendererIn;
+        return (T) this;
+    }
+
+    @Nullable
+    public boolean usesRenderer(Class layer) {
+        return Objects.equals(this.renderer, layer.getSimpleName());
     }
 }

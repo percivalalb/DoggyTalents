@@ -104,8 +104,8 @@ public class DoggyTalents2 {
             modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
             modEventBus.addListener(ClientSetup::setupTileEntityRenderers);
             modEventBus.addListener(ClientSetup::setupEntityRenderers);
+            modEventBus.addListener(ClientSetup::addClientReloadListeners);
             forgeEventBus.register(new ClientEventHandler());
-            forgeEventBus.addListener(ClientSetup::addReloadListeners);
             forgeEventBus.addListener(BedFinderRenderer::onWorldRenderLast);
         });
 

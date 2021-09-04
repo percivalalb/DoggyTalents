@@ -5,7 +5,8 @@ import java.util.function.Supplier;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
-import doggytalents.common.config.ConfigValues;
+import doggytalents.common.config.ConfigHandler;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogTalentData;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,7 +33,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
             return;
         }
 
-        if (ConfigValues.DISABLED_TALENTS.contains(data.talent)) {
+        if (!ConfigHandler.TALENT.getFlag(data.talent)) {
             DoggyTalents2.LOGGER.info("{} tried to level a disabled talent ({})",
                     ctx.get().getSender().getGameProfile().getName(),
                     data.talent.getRegistryName());

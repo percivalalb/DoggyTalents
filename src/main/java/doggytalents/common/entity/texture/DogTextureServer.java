@@ -1,22 +1,15 @@
 package doggytalents.common.entity.texture;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-
 import com.google.common.hash.Hashing;
-
 import doggytalents.DoggyTalents2;
 import doggytalents.common.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
+import javax.annotation.Nullable;
+import java.io.*;
 
 public class DogTextureServer {
 

@@ -1,17 +1,17 @@
 package doggytalents.common.network.packet;
 
-import java.util.List;
-import java.util.function.Supplier;
-
 import doggytalents.common.Screens;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import doggytalents.common.talent.PackPuppyTalent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 public class OpenDogScreenPacket implements IPacket<OpenDogScreenData>  {
 

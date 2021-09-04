@@ -1,20 +1,14 @@
 package doggytalents;
 
-import java.util.function.Supplier;
-
-import doggytalents.common.entity.serializers.AccessorySerializer;
-import doggytalents.common.entity.serializers.BedLocationsSerializer;
-import doggytalents.common.entity.serializers.CollarSerializer;
-import doggytalents.common.entity.serializers.DogLevelSerializer;
-import doggytalents.common.entity.serializers.GenderSerializer;
-import doggytalents.common.entity.serializers.ModeSerializer;
-import doggytalents.common.entity.serializers.TalentListSerializer;
+import doggytalents.common.entity.serializers.*;
 import doggytalents.common.lib.Constants;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Supplier;
 
 public class DoggySerializers {
 

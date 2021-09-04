@@ -1,13 +1,13 @@
 package doggytalents.common.entity.ai;
 
-import java.util.EnumSet;
-
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+
+import java.util.EnumSet;
 
 public class MoveToBlockGoal extends Goal {
 

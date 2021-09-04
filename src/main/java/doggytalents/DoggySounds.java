@@ -1,8 +1,5 @@
 package doggytalents;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +7,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class DoggySounds {
 

@@ -1,24 +1,24 @@
 package doggytalents.common.inventory.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.talent.PackPuppyTalent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.DataSlot;
+import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.DataSlot;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ProPercivalalb

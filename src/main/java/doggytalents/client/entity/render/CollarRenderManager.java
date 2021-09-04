@@ -1,23 +1,13 @@
 package doggytalents.client.entity.render;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
-
-import com.google.common.collect.Maps;
-
-import doggytalents.api.client.render.IAccessoryRenderer;
-import doggytalents.api.client.render.ITalentRenderer;
-import doggytalents.api.registry.Accessory;
-import doggytalents.api.registry.Talent;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.layer.LayerFactory;
 import doggytalents.common.entity.DogEntity;
-import net.minecraftforge.registries.IRegistryDelegate;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class CollarRenderManager {
 

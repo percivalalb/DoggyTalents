@@ -1,13 +1,13 @@
 package doggytalents.common.talent;
 
-import java.util.UUID;
-
 import doggytalents.DoggyAttributes;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+
+import java.util.UUID;
 
 public class BlackPeltTalent extends TalentInstance {
 

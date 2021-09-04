@@ -1,29 +1,27 @@
 package doggytalents.common.storage;
 
-import java.util.Optional;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import doggytalents.DoggyAccessories;
 import doggytalents.DoggyItems;
 import doggytalents.api.feature.EnumGender;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
-import doggytalents.common.util.Util;
 import doggytalents.common.util.WorldUtil;
+import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.core.Registry;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Constants;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.UUID;
 
 public class DogLocationData implements IDogData {
 

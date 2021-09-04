@@ -1,24 +1,22 @@
 package doggytalents.common.network.packet;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.function.Supplier;
-
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.IOUtils;
-
 import doggytalents.DoggyTalents2;
 import doggytalents.client.DogTextureManager;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.SendSkinData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import org.apache.commons.io.IOUtils;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.function.Supplier;
 
 public class SendSkinPacket implements IPacket<SendSkinData> {
 

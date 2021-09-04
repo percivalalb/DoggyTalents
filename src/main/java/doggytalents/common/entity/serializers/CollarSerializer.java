@@ -1,13 +1,13 @@
 package doggytalents.common.entity.serializers;
 
-import java.util.Optional;
-
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.util.Util;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
+
+import java.util.Optional;
 
 public class CollarSerializer implements EntityDataSerializer<Optional<AccessoryInstance>> {
 

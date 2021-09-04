@@ -1,19 +1,14 @@
 package doggytalents.client.entity.render.layer.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
-import doggytalents.api.client.render.IAccessoryRenderer;
 import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.common.entity.DogEntity;
-import doggytalents.common.entity.accessory.DyeableAccessory.DyeableAccessoryInstance;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.resources.ResourceLocation;
 
 public class DefaultAccessoryRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 

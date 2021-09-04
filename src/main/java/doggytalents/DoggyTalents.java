@@ -1,33 +1,14 @@
 package doggytalents;
 
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
-
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.lib.Constants;
-import doggytalents.common.talent.BedFinderTalent;
-import doggytalents.common.talent.BlackPeltTalent;
-import doggytalents.common.talent.CreeperSweeperTalent;
-import doggytalents.common.talent.DoggyDashTalent;
-import doggytalents.common.talent.DoggyTorchTalent;
-import doggytalents.common.talent.FisherDogTalent;
-import doggytalents.common.talent.GuardDogTalent;
-import doggytalents.common.talent.HappyEaterTalent;
-import doggytalents.common.talent.HellHoundTalent;
-import doggytalents.common.talent.PackPuppyTalent;
-import doggytalents.common.talent.PestFighterTalent;
-import doggytalents.common.talent.PillowPawTalent;
-import doggytalents.common.talent.PoisonFangTalent;
-import doggytalents.common.talent.PuppyEyesTalent;
-import doggytalents.common.talent.QuickHealerTalent;
-import doggytalents.common.talent.RescueDogTalent;
-import doggytalents.common.talent.RoaringGaleTalent;
-import doggytalents.common.talent.ShepherdDogTalent;
-import doggytalents.common.talent.SwimmerDogTalent;
-import doggytalents.common.talent.WolfMountTalent;
+import doggytalents.common.talent.*;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 public class DoggyTalents {
 

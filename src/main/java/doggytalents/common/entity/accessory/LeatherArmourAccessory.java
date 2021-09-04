@@ -2,14 +2,13 @@ package doggytalents.common.entity.accessory;
 
 import doggytalents.DoggyAccessories;
 import doggytalents.api.inferface.IColoredObject;
-import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.util.ColourCache;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.util.Constants;
 

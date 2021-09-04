@@ -1,6 +1,5 @@
 package doggytalents.common.talent;
 
-import doggytalents.DoggyTalents2;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;

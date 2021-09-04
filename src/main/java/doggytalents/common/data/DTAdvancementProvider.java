@@ -1,17 +1,8 @@
 package doggytalents.common.data;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.function.Consumer;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.common.util.Util;
@@ -21,13 +12,20 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
 import net.minecraft.data.DataProvider;
-import net.minecraft.world.item.Items;
+import net.minecraft.data.HashCache;
+import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public class DTAdvancementProvider extends AdvancementProvider {
 

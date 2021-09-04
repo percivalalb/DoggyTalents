@@ -1,20 +1,20 @@
 package doggytalents.client.data;
 
-import java.util.function.Supplier;
-
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.common.lib.Constants;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.function.Supplier;
 
 public class DTItemModelProvider extends ItemModelProvider {
 

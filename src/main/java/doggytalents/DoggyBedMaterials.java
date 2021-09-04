@@ -1,7 +1,5 @@
 package doggytalents;
 
-import java.util.function.Supplier;
-
 import doggytalents.api.impl.BeddingMaterial;
 import doggytalents.api.impl.CasingMaterial;
 import doggytalents.api.registry.IBeddingMaterial;
@@ -11,6 +9,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class DoggyBedMaterials {
 

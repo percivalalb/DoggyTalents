@@ -1,26 +1,8 @@
 package doggytalents.common.network;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.common.network.packet.DogInventoryPagePacket;
-import doggytalents.common.network.packet.DogModePacket;
-import doggytalents.common.network.packet.DogNamePacket;
-import doggytalents.common.network.packet.DogObeyPacket;
-import doggytalents.common.network.packet.DogTalentPacket;
-import doggytalents.common.network.packet.DogTexturePacket;
-import doggytalents.common.network.packet.FriendlyFirePacket;
-import doggytalents.common.network.packet.OpenDogScreenPacket;
-import doggytalents.common.network.packet.RequestSkinPacket;
-import doggytalents.common.network.packet.SendSkinPacket;
-import doggytalents.common.network.packet.data.DogInventoryPageData;
-import doggytalents.common.network.packet.data.DogModeData;
-import doggytalents.common.network.packet.data.DogNameData;
-import doggytalents.common.network.packet.data.DogObeyData;
-import doggytalents.common.network.packet.data.DogTalentData;
-import doggytalents.common.network.packet.data.DogTextureData;
-import doggytalents.common.network.packet.data.FriendlyFireData;
-import doggytalents.common.network.packet.data.OpenDogScreenData;
-import doggytalents.common.network.packet.data.RequestSkinData;
-import doggytalents.common.network.packet.data.SendSkinData;
+import doggytalents.common.network.packet.*;
+import doggytalents.common.network.packet.data.*;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 public final class PacketHandler {

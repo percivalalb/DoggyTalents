@@ -1,18 +1,11 @@
 package doggytalents.common.entity.serializers;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Supplier;
-
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 
-import java.util.Map.Entry;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class DimensionDependantArg<T> implements Map<ResourceKey<Level>, T> {
 

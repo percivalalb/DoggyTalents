@@ -1,11 +1,11 @@
 package doggytalents.common.network.packet;
 
-import java.util.function.Supplier;
-
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.FriendlyFireData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+
+import java.util.function.Supplier;
 
 public class FriendlyFirePacket extends DogPacket<FriendlyFireData> {
 

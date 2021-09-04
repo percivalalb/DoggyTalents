@@ -1,10 +1,10 @@
 package doggytalents.common.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemUtil {
 

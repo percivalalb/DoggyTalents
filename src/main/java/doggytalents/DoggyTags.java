@@ -1,9 +1,9 @@
 package doggytalents;
 
 import doggytalents.common.util.Util;
-import net.minecraft.world.item.Item;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.item.Item;
 
 public class DoggyTags {
 

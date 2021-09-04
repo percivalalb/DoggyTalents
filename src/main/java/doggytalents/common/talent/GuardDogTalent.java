@@ -3,11 +3,11 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 
 public class GuardDogTalent extends TalentInstance {
 

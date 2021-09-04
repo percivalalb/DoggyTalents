@@ -1,21 +1,19 @@
 package doggytalents.common.util;
 
-import java.util.Optional;
-import java.util.function.Predicate;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.util.Mth;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.tuple.Pair;
+
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public class InventoryUtil {
 

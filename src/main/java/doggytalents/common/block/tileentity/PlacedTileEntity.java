@@ -1,19 +1,18 @@
 package doggytalents.common.block.tileentity;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class PlacedTileEntity extends BlockEntity {
 

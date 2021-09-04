@@ -1,19 +1,19 @@
 package doggytalents.common.data;
 
-import java.util.Arrays;
-import java.util.function.Supplier;
-
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTags;
 import doggytalents.common.lib.Constants;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.tags.Tag;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class DTItemTagsProvider extends ItemTagsProvider {
 

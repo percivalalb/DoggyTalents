@@ -1,16 +1,16 @@
 package doggytalents.common.entity.ai;
 
-import java.util.EnumSet;
-
 import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
+
+import java.util.EnumSet;
 
 public class DogBegGoal extends Goal {
 

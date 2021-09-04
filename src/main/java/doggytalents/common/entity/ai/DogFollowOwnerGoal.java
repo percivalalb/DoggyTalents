@@ -1,17 +1,17 @@
 package doggytalents.common.entity.ai;
 
-import java.util.EnumSet;
-
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+
+import java.util.EnumSet;
 
 public class DogFollowOwnerGoal extends Goal {
 

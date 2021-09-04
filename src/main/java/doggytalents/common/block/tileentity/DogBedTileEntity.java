@@ -1,28 +1,25 @@
 package doggytalents.common.block.tileentity;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
-import doggytalents.DoggyTalents2;
 import doggytalents.DoggyTileEntityTypes;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.entity.DogEntity;
-import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.client.model.data.ModelDataMap;
 import net.minecraftforge.client.model.data.ModelProperty;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class DogBedTileEntity extends PlacedTileEntity {
 

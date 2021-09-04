@@ -1,24 +1,23 @@
 package doggytalents;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
-
 import doggytalents.common.block.DogBathBlock;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.FoodBowlBlock;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class DoggyBlocks {
 

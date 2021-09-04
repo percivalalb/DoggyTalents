@@ -1,7 +1,7 @@
 package doggytalents.common.item;
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 public interface IDyeableArmorItem extends net.minecraft.world.item.DyeableLeatherItem {
 

@@ -1,18 +1,15 @@
 package doggytalents.client.screen.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
-
-import net.minecraft.client.gui.components.Button.OnPress;
+import net.minecraft.util.Mth;
 
 public class SmallButton extends Button {
 

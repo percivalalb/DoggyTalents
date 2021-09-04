@@ -1,26 +1,9 @@
 package doggytalents;
 
-import java.util.function.Function;
-import java.util.function.Supplier;
-
-import javax.annotation.Nullable;
-
 import doggytalents.api.feature.DogLevel;
 import doggytalents.api.registry.Accessory;
 import doggytalents.common.entity.accessory.DyeableAccessory;
-import doggytalents.common.item.AccessoryItem;
-import doggytalents.common.item.ChangeOwnerItem;
-import doggytalents.common.item.ChewStickItem;
-import doggytalents.common.item.DogShearsItem;
-import doggytalents.common.item.DoggyCharmItem;
-import doggytalents.common.item.DroolBoneItem;
-import doggytalents.common.item.DyeableAccessoryItem;
-import doggytalents.common.item.RadarItem;
-import doggytalents.common.item.SizeBoneItem;
-import doggytalents.common.item.ThrowableItem;
-import doggytalents.common.item.TreatBagItem;
-import doggytalents.common.item.TreatItem;
-import doggytalents.common.item.WhistleItem;
+import doggytalents.common.item.*;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
 import net.minecraft.client.color.item.ItemColors;
@@ -31,6 +14,10 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class DoggyItems {
 

@@ -1,15 +1,15 @@
 package doggytalents.common.talent;
 
-import java.util.List;
-
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.sounds.SoundEvents;
+
+import java.util.List;
 
 public class CreeperSweeperTalent extends TalentInstance {
 

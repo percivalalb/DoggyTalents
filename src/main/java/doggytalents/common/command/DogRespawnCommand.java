@@ -1,15 +1,5 @@
 package doggytalents.common.command;
 
-import static net.minecraft.commands.Commands.*;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.StringJoiner;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import com.google.common.base.Strings;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -20,25 +10,26 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-
 import doggytalents.common.command.arguments.UUIDArgument;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.item.RadarItem;
-import doggytalents.common.storage.DogLocationData;
-import doggytalents.common.storage.DogLocationStorage;
-import doggytalents.common.storage.DogRespawnData;
-import doggytalents.common.storage.DogRespawnStorage;
-import doggytalents.common.storage.IDogData;
+import doggytalents.common.storage.*;
 import doggytalents.common.util.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.commands.synchronization.ArgumentTypes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.util.Mth;
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import static net.minecraft.commands.Commands.literal;
 
 public class DogRespawnCommand {
 

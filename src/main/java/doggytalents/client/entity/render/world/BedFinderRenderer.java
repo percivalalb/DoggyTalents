@@ -1,23 +1,20 @@
 package doggytalents.client.entity.render.world;
 
-import java.util.Optional;
-
-import com.mojang.blaze3d.vertex.*;
-import org.lwjgl.opengl.GL11;
-
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.*;
 import doggytalents.DoggyTalents;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+
+import java.util.Optional;
 
 public class BedFinderRenderer {
 

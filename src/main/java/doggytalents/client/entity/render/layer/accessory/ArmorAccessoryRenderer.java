@@ -1,32 +1,24 @@
 package doggytalents.client.entity.render.layer.accessory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import doggytalents.DoggyAccessories;
 import doggytalents.DoggyAccessoryTypes;
-import doggytalents.api.client.render.IAccessoryRenderer;
-import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.entity.model.DogModel;
-import doggytalents.client.entity.render.DogRenderer;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.accessory.ArmourAccessory;
-import doggytalents.common.lib.Resources;
-import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 public class ArmorAccessoryRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 

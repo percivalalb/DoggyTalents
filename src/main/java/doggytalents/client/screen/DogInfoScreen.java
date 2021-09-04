@@ -1,14 +1,6 @@
 package doggytalents.client.screen;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import doggytalents.DoggyAccessories;
 import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
@@ -17,34 +9,33 @@ import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.DogTextureManager;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.PacketHandler;
-import doggytalents.common.network.packet.data.DogModeData;
-import doggytalents.common.network.packet.data.DogNameData;
-import doggytalents.common.network.packet.data.DogObeyData;
-import doggytalents.common.network.packet.data.DogTalentData;
-import doggytalents.common.network.packet.data.DogTextureData;
-import doggytalents.common.network.packet.data.FriendlyFireData;
-import doggytalents.common.network.packet.data.SendSkinData;
+import doggytalents.common.network.packet.data.*;
 import doggytalents.common.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Widget;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class DogInfoScreen extends Screen {
 

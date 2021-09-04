@@ -1,12 +1,12 @@
 package doggytalents.common.network.packet;
 
-import java.util.function.Supplier;
-
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogModeData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+
+import java.util.function.Supplier;
 
 public class DogModePacket extends DogPacket<DogModeData> {
 

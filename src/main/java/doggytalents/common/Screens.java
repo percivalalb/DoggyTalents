@@ -1,7 +1,5 @@
 package doggytalents.common;
 
-import java.util.List;
-
 import doggytalents.DoggyItems;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
@@ -9,16 +7,18 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.inventory.container.TreatBagContainer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
+
+import java.util.List;
 
 public class Screens {
 

@@ -1,7 +1,5 @@
 package doggytalents.common.network.packet;
 
-import java.util.function.Supplier;
-
 import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
@@ -10,6 +8,8 @@ import doggytalents.common.network.packet.data.SendSkinData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+
+import java.util.function.Supplier;
 
 public class RequestSkinPacket implements IPacket<RequestSkinData> {
 

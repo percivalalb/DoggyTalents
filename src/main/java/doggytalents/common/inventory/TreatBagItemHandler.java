@@ -1,11 +1,11 @@
 package doggytalents.common.inventory;
 
-import javax.annotation.Nonnull;
-
 import doggytalents.api.feature.FoodHandler;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
+
+import javax.annotation.Nonnull;
 
 public class TreatBagItemHandler extends ItemStackHandler {
 

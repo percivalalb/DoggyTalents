@@ -1,27 +1,25 @@
 package doggytalents.common.entity;
 
-import java.util.UUID;
-
 import com.google.common.base.Predicates;
-
 import doggytalents.DoggyEntityTypes;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.EntityUtil;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fmllegacy.network.FMLPlayMessages;
 import net.minecraftforge.fmllegacy.network.NetworkHooks;
+
+import java.util.UUID;
 
 public class DoggyBeamEntity extends ThrowableProjectile implements IEntityAdditionalSpawnData {
 

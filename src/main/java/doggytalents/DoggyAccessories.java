@@ -1,9 +1,6 @@
 package doggytalents;
 
-import java.util.function.Supplier;
-
 import doggytalents.api.registry.Accessory;
-import doggytalents.client.entity.render.layer.accessory.DefaultAccessoryRenderer;
 import doggytalents.common.entity.accessory.*;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.lib.Resources;
@@ -12,6 +9,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+
+import java.util.function.Supplier;
 
 public class DoggyAccessories {
 

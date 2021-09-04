@@ -1,10 +1,9 @@
 package doggytalents.common.entity.accessory;
 
-import java.util.function.Supplier;
-
 import doggytalents.DoggyAccessoryTypes;
-import doggytalents.api.registry.Accessory;
 import net.minecraft.world.level.ItemLike;
+
+import java.util.function.Supplier;
 
 public class Helmet extends ArmourAccessory {
 

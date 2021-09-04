@@ -1,11 +1,11 @@
 package doggytalents.client.screen;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScreenUtil {
 

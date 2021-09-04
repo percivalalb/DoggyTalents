@@ -1,7 +1,6 @@
 package doggytalents.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;

@@ -1,14 +1,13 @@
 package doggytalents.common.addon.itemphysic;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-
 import com.google.common.collect.Lists;
-
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.common.addon.Addon;
 import doggytalents.common.util.ReflectionUtil;
+
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 public class ItemPhysicsAddon implements Addon {
 

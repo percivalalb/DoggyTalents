@@ -1,51 +1,43 @@
 package doggytalents;
 
-import doggytalents.common.Capabilities;
-import doggytalents.common.talent.HappyEaterTalent;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import doggytalents.api.feature.FoodHandler;
 import doggytalents.api.feature.InteractHandler;
 import doggytalents.client.ClientSetup;
-import doggytalents.client.DogTextureManager;
 import doggytalents.client.data.DTBlockstateProvider;
 import doggytalents.client.data.DTItemModelProvider;
 import doggytalents.client.entity.render.world.BedFinderRenderer;
 import doggytalents.client.event.ClientEventHandler;
+import doggytalents.common.Capabilities;
 import doggytalents.common.addon.AddonManager;
 import doggytalents.common.command.DogRespawnCommand;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.data.DTAdvancementProvider;
-import doggytalents.common.data.DTBlockTagsProvider;
-import doggytalents.common.data.DTItemTagsProvider;
-import doggytalents.common.data.DTLootTableProvider;
-import doggytalents.common.data.DTRecipeProvider;
+import doggytalents.common.data.*;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.HelmetInteractHandler;
 import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.network.PacketHandler;
+import doggytalents.common.talent.HappyEaterTalent;
 import doggytalents.common.util.BackwardsComp;
-import net.minecraft.client.Minecraft;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fmllegacy.network.NetworkRegistry;
 import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.fmlserverevents.FMLServerStartingEvent;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author ProPercivalalb

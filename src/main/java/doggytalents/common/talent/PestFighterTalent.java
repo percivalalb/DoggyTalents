@@ -1,13 +1,13 @@
 package doggytalents.common.talent;
 
-import java.util.List;
-
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.monster.Silverfish;
+
+import java.util.List;
 
 public class PestFighterTalent extends TalentInstance {
 

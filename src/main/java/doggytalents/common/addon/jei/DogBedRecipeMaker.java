@@ -1,21 +1,21 @@
 package doggytalents.common.addon.jei;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.util.DogBedUtil;
 import doggytalents.common.util.Util;
+import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public final class DogBedRecipeMaker {
 

@@ -2,13 +2,10 @@ package doggytalents.client.tileentity.renderer;
 
 import com.google.common.base.Objects;
 import com.mojang.blaze3d.vertex.PoseStack;
-
-import doggytalents.client.entity.render.RenderUtil;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;

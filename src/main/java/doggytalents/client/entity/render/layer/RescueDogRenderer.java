@@ -1,7 +1,6 @@
 package doggytalents.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import doggytalents.DoggyTalents;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.client.ClientSetup;

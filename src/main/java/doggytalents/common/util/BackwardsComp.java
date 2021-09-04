@@ -1,38 +1,33 @@
 package doggytalents.common.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-
-import doggytalents.DoggyAccessories;
-import doggytalents.DoggyEntityTypes;
-import doggytalents.DoggyItems;
-import doggytalents.DoggyTalents;
-import doggytalents.DoggyTalents2;
+import doggytalents.*;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class BackwardsComp {
 

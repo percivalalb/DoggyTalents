@@ -1,29 +1,23 @@
 package doggytalents.common.storage;
 
-import static net.minecraftforge.common.util.Constants.NBT.*;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Stream;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Maps;
-
 import doggytalents.DoggyTalents2;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.storage.DimensionDataStorage;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.storage.DimensionDataStorage;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.stream.Stream;
+
+import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 public class DogRespawnStorage extends SavedData {
 

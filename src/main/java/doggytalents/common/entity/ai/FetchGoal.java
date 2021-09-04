@@ -1,11 +1,11 @@
 package doggytalents.common.entity.ai;
 
-import java.util.function.Predicate;
-
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.function.Predicate;
 
 public class FetchGoal extends MoveToClosestItemGoal {
 

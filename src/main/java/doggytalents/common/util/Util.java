@@ -1,5 +1,15 @@
 package doggytalents.common.util;
 
+import com.google.common.collect.Lists;
+import doggytalents.common.lib.Constants;
+import io.netty.buffer.Unpooled;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
+import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.IRegistryDelegate;
+
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
@@ -9,17 +19,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.Lists;
-
-import doggytalents.common.lib.Constants;
-import io.netty.buffer.Unpooled;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.RegistryObject;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.IRegistryDelegate;
 
 public class Util {
 

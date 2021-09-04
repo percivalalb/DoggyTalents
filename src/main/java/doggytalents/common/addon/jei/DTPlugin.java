@@ -1,7 +1,5 @@
 package doggytalents.common.addon.jei;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import doggytalents.DoggyBlocks;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
@@ -13,6 +11,7 @@ import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.commons.lang3.tuple.Pair;
 
 @JeiPlugin
 public class DTPlugin implements IModPlugin {

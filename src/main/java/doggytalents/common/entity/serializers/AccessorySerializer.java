@@ -1,13 +1,13 @@
 package doggytalents.common.entity.serializers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccessorySerializer implements EntityDataSerializer<List<AccessoryInstance>> {
 

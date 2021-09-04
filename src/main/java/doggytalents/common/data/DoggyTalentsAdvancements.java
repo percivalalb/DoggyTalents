@@ -1,30 +1,22 @@
 package doggytalents.common.data;
 
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Maps;
-
 import doggytalents.DoggyItems;
 import doggytalents.common.util.Util;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRewards;
-import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.DisplayInfo;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.RequirementsStrategy;
+import net.minecraft.advancements.*;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.block.Blocks;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class DoggyTalentsAdvancements implements Consumer<Consumer<Advancement>> {
 

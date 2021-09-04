@@ -1,10 +1,8 @@
 package doggytalents.client.screen;
 
-import java.util.Optional;
-
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
-
+import com.mojang.blaze3d.vertex.PoseStack;
 import doggytalents.DoggyAccessories;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.screen.widget.SmallButton;
@@ -14,18 +12,18 @@ import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.DogInventoryPageData;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.FurnaceScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.components.Button;
-import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import java.util.Optional;
 
 public class DogInventoriesScreen extends AbstractContainerScreen<DogInventoriesContainer> {
 

@@ -1,18 +1,17 @@
 package doggytalents.common.talent;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import doggytalents.DoggyTalents;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.util.InventoryUtil;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import org.apache.commons.lang3.tuple.Pair;
 
 public class DoggyTorchTalent extends TalentInstance {
 

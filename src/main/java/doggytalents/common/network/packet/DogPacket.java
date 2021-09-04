@@ -1,13 +1,13 @@
 package doggytalents.common.network.packet;
 
-import java.util.function.Supplier;
-
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.DogData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+
+import java.util.function.Supplier;
 
 public abstract class DogPacket<T extends DogData> implements IPacket<T> {
 

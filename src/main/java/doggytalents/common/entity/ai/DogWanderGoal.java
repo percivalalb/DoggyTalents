@@ -1,17 +1,16 @@
 package doggytalents.common.entity.ai;
 
+import doggytalents.api.feature.EnumMode;
+import doggytalents.common.entity.DogEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.phys.Vec3;
+
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Random;
-
-import javax.annotation.Nullable;
-
-import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 
 public class DogWanderGoal extends Goal {
 

@@ -2,10 +2,10 @@ package doggytalents.common.entity;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.InteractionResult;
 
 public class MeatFoodHandler implements IDogFoodHandler {
 

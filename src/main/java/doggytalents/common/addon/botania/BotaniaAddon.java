@@ -1,21 +1,20 @@
 package doggytalents.common.addon.botania;
 
-import java.util.Collection;
-import java.util.function.Supplier;
-
 import com.google.common.collect.Lists;
-
 import doggytalents.api.impl.CasingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.addon.Addon;
 import doggytalents.common.util.Util;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
+
+import java.util.Collection;
+import java.util.function.Supplier;
 
 public class BotaniaAddon implements Addon {
 

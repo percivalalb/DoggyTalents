@@ -1,7 +1,5 @@
 package doggytalents;
 
-import java.util.function.Supplier;
-
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
 import doggytalents.common.lib.Constants;
@@ -11,6 +9,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.fmllegacy.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.function.Supplier;
 
 public class DoggyTileEntityTypes {
 

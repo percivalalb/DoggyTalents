@@ -3,10 +3,10 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 
 public class HellHoundTalent extends TalentInstance {
 

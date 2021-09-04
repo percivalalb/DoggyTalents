@@ -1,10 +1,7 @@
 package doggytalents.client;
 
-import com.google.common.eventbus.Subscribe;
-import doggytalents.DoggyAccessories;
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyEntityTypes;
-import doggytalents.DoggyTalents;
 import doggytalents.DoggyTileEntityTypes;
 import doggytalents.client.entity.model.DogBackpackModel;
 import doggytalents.client.entity.model.DogModel;
@@ -22,20 +19,11 @@ import doggytalents.client.screen.PackPuppyScreen;
 import doggytalents.client.screen.TreatBagScreen;
 import doggytalents.client.tileentity.renderer.DogBedRenderer;
 import doggytalents.common.lib.Constants;
-import doggytalents.common.lib.Resources;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.model.WolfModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {

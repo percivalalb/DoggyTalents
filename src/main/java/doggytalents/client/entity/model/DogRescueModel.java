@@ -1,7 +1,6 @@
 package doggytalents.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -44,7 +43,7 @@ public class DogRescueModel extends ListModel<DogEntity>{
                 this.rescueBox.setPos(-1F, 20F, -2F);
                 this.rescueBox.xRot = (float) (Math.PI / 2);
             }
-            else {
+            else  {
                 this.rescueBox.setPos(-1, 16, -3);
                 this.rescueBox.xRot = (float) (Math.PI * 2 / 5);
             }

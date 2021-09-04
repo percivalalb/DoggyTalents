@@ -1,24 +1,17 @@
 package doggytalents.client;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.annotation.Nullable;
-
-import org.apache.commons.io.IOUtils;
-
+import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.blaze3d.platform.TextureUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import doggytalents.DoggyTalents2;
 import net.minecraft.client.Minecraft;
-import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SimpleTexture;
-import com.mojang.blaze3d.platform.TextureUtil;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import org.apache.commons.io.IOUtils;
+
+import javax.annotation.Nullable;
+import java.io.*;
 
 public class CachedFileTexture extends SimpleTexture {
 

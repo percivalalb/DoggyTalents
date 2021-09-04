@@ -1,20 +1,19 @@
 package doggytalents.common.entity.stats;
 
+import com.google.common.collect.Maps;
+import doggytalents.common.util.Cache;
+import doggytalents.common.util.NBTUtil;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.registries.ForgeRegistries;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
-
-import com.google.common.collect.Maps;
-
-import doggytalents.common.util.Cache;
-import doggytalents.common.util.NBTUtil;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class StatsTracker {
 

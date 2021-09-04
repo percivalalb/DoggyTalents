@@ -2,8 +2,8 @@ package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 
 public class HunterDogTalent {

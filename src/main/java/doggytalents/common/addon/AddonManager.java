@@ -1,18 +1,17 @@
 package doggytalents.common.addon;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
-
 import com.google.common.collect.Lists;
-
 import doggytalents.DoggyTalents2;
 import doggytalents.common.addon.autumnity.AutumnityAddon;
 import doggytalents.common.addon.biomesoplenty.BiomesOPlentyAddon;
 import doggytalents.common.addon.botania.BotaniaAddon;
 import doggytalents.common.addon.itemphysic.ItemPhysicsAddon;
 import io.netty.util.internal.shaded.org.jctools.queues.MessagePassingQueue.Consumer;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 public class AddonManager {
 

@@ -1,7 +1,6 @@
 package doggytalents.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import doggytalents.client.ClientSetup;
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.entity.model.DogModel;
@@ -9,18 +8,13 @@ import doggytalents.client.entity.render.layer.BoneLayer;
 import doggytalents.client.entity.render.layer.LayerFactory;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.client.model.WolfModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-
-import java.util.Optional;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 

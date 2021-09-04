@@ -1,16 +1,14 @@
 package doggytalents.common.item;
 
-import java.util.function.Supplier;
-
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.entity.accessory.DyeableAccessory;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.NonNullList;
 
-import net.minecraft.world.item.Item.Properties;
+import java.util.function.Supplier;
 
 public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmorItem {
 

@@ -1,23 +1,20 @@
 package doggytalents.common.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-
-import doggytalents.api.impl.MissingBeddingMaterial;
-import doggytalents.api.impl.MissingCasingMissing;
-import org.apache.commons.lang3.tuple.Pair;
-
 import doggytalents.DoggyBlocks;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 public class DogBedUtil {
 

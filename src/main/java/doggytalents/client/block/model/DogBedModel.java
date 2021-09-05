@@ -76,9 +76,6 @@ public class DogBedModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon(@Nonnull IModelData data) {
-        TerrainParticle
-        DoggyTalents2.LOGGER.info("{}", Arrays.stream(Thread.currentThread().getStackTrace()).toList());
-        DoggyTalents2.LOGGER.info("getParticleIcon(IModelData...) {}, {}, {}", data.getData(DogBedTileEntity.CASING), data.getData(DogBedTileEntity.BEDDING), data.getData(DogBedTileEntity.FACING));
         return this.getModelVariant(data).getParticleIcon(data);
     }
 
@@ -184,7 +181,6 @@ public class DogBedModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
-        DoggyTalents2.LOGGER.info("getParticleIcon()");
         return this.bakedModel.getParticleIcon();
     }
 

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import doggytalents.DoggyTalents;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -41,14 +42,13 @@ public class BedFinderRenderer {
     }
 
     public static void drawSelectionBox(PoseStack stack, AABB boundingBox) {
-        // TODO RenderSystem.disableAlphaTest();
-        // TODO RenderSystem.disableLighting(); //Make the line see thought blocks
+        RenderSystem.setShader(GameRenderer::getRendertypeLinesShader);
         RenderSystem.depthMask(false);
         RenderSystem.disableDepthTest(); //Make the line see thought blocks
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        //TODO Used when drawing outline of bounding box
-        RenderSystem.lineWidth(2.0F);
+
+        // TODO: This line has no effect RenderSystem.lineWidth(2.0F);
 
         RenderSystem.disableTexture();
         Vec3 vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
@@ -57,15 +57,15 @@ public class BedFinderRenderer {
         double d2 = vec3d.z();
 
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
-        buf.begin(VertexFormat.Mode.LINES, DefaultVertexFormat.POSITION_COLOR);
+        buf.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
         LevelRenderer.renderLineBox(stack, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0, 1F);
-        Tesselator.getInstance().end();
-        RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 0.3F);
+        buf.end();
+        BufferUploader.end(buf);
+
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks
         RenderSystem.depthMask(true);
         RenderSystem.enableTexture();
-        // TODO RenderSystem.enableLighting(); //Make the line see thought blocks
         RenderSystem.disableBlend();
-        // TODO RenderSystem.enableAlphaTest();
     }
 }

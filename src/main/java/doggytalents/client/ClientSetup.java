@@ -7,6 +7,7 @@ import doggytalents.client.entity.model.DogBackpackModel;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.model.DogRescueModel;
 import doggytalents.client.entity.render.CollarRenderManager;
+import doggytalents.client.entity.render.DogScreenOverlays;
 import doggytalents.client.entity.render.DogRenderer;
 import doggytalents.client.entity.render.DoggyBeamRenderer;
 import doggytalents.client.entity.render.layer.PackPuppyRenderer;
@@ -24,6 +25,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class ClientSetup {
@@ -60,6 +62,9 @@ public class ClientSetup {
         CollarRenderManager.registerLayer(ArmorAccessoryRenderer::new);
         CollarRenderManager.registerLayer(PackPuppyRenderer::new);
         CollarRenderManager.registerLayer(RescueDogRenderer::new);
+
+        OverlayRegistry.registerOverlayTop("Dog Food Level", DogScreenOverlays.FOOD_LEVEL_ELEMENT);
+        OverlayRegistry.registerOverlayTop("Dog Air Level", DogScreenOverlays.AIR_LEVEL_ELEMENT);
     }
 
     public static void addClientReloadListeners(final RegisterClientReloadListenersEvent event) {

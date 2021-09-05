@@ -2,11 +2,13 @@ package doggytalents.client.block.model;
 
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
+import doggytalents.DoggyTalents2;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.lib.Constants;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -31,10 +33,7 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements BakedModel {
@@ -77,6 +76,9 @@ public class DogBedModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon(@Nonnull IModelData data) {
+        TerrainParticle
+        DoggyTalents2.LOGGER.info("{}", Arrays.stream(Thread.currentThread().getStackTrace()).toList());
+        DoggyTalents2.LOGGER.info("getParticleIcon(IModelData...) {}, {}, {}", data.getData(DogBedTileEntity.CASING), data.getData(DogBedTileEntity.BEDDING), data.getData(DogBedTileEntity.FACING));
         return this.getModelVariant(data).getParticleIcon(data);
     }
 
@@ -182,6 +184,7 @@ public class DogBedModel implements BakedModel {
 
     @Override
     public TextureAtlasSprite getParticleIcon() {
+        DoggyTalents2.LOGGER.info("getParticleIcon()");
         return this.bakedModel.getParticleIcon();
     }
 

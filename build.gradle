@@ -182,7 +182,9 @@ curseforge {
         releaseType = findProperty("curseforge_release_type") ?: 'beta'
         addGameVersion project.target_mc_version
         for (String v : project.additional_mc_versions.split(',')) {
-            addGameVersion v
+            if (v) {
+                addGameVersion v
+            }
         }
         addArtifact apiJar
     }

@@ -28,10 +28,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
     public static void setupScreenManagers(final FMLClientSetupEvent event) {
-        ScreenManager.registerFactory(DoggyContainerTypes.FOOD_BOWL.get(), FoodBowlScreen::new);
-        ScreenManager.registerFactory(DoggyContainerTypes.PACK_PUPPY.get(), PackPuppyScreen::new);
-        ScreenManager.registerFactory(DoggyContainerTypes.TREAT_BAG.get(), TreatBagScreen::new);
-        ScreenManager.registerFactory(DoggyContainerTypes.DOG_INVENTORIES.get(), DogInventoriesScreen::new);
+        ScreenManager.register(DoggyContainerTypes.FOOD_BOWL.get(), FoodBowlScreen::new);
+        ScreenManager.register(DoggyContainerTypes.PACK_PUPPY.get(), PackPuppyScreen::new);
+        ScreenManager.register(DoggyContainerTypes.TREAT_BAG.get(), TreatBagScreen::new);
+        ScreenManager.register(DoggyContainerTypes.DOG_INVENTORIES.get(), DogInventoriesScreen::new);
     }
 
     public static void setupEntityRenderers(final FMLClientSetupEvent event) {

@@ -21,26 +21,26 @@ public class CreeperSweeperTalent extends TalentInstance {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        this.cooldown = dogIn.ticksExisted;
+        this.cooldown = dogIn.tickCount;
     }
 
     @Override
     public void tick(AbstractDogEntity dogIn) {
         if (this.level() > 0) {
-            int timeLeft = this.cooldown - dogIn.ticksExisted;
+            int timeLeft = this.cooldown - dogIn.tickCount;
 
-            if (timeLeft <= 0 && !dogIn.isEntitySleeping()) {
-                List<CreeperEntity> list = dogIn.world.getEntitiesWithinAABB(CreeperEntity.class, dogIn.getBoundingBox().grow(this.level() * 5,this.level() * 2, this.level() * 5));
+            if (timeLeft <= 0 && !dogIn.isInSittingPose()) {
+                List<CreeperEntity> list = dogIn.level.getEntitiesOfClass(CreeperEntity.class, dogIn.getBoundingBox().inflate(this.level() * 5,this.level() * 2, this.level() * 5));
 
                 if (!list.isEmpty()) {
-                    dogIn.playSound(SoundEvents.ENTITY_WOLF_GROWL, dogIn.getSoundVolume(), (dogIn.getRNG().nextFloat() - dogIn.getRNG().nextFloat()) * 0.2F + 1.0F);
-                    this.cooldown = dogIn.ticksExisted + 60 + dogIn.getRNG().nextInt(40);
+                    dogIn.playSound(SoundEvents.WOLF_GROWL, dogIn.getSoundVolume(), (dogIn.getRandom().nextFloat() - dogIn.getRandom().nextFloat()) * 0.2F + 1.0F);
+                    this.cooldown = dogIn.tickCount + 60 + dogIn.getRandom().nextInt(40);
                 }
             }
 
-            if (dogIn.getAttackTarget() instanceof CreeperEntity) {
-                CreeperEntity creeper = (CreeperEntity) dogIn.getAttackTarget();
-                creeper.setCreeperState(-1);
+            if (dogIn.getTarget() instanceof CreeperEntity) {
+                CreeperEntity creeper = (CreeperEntity) dogIn.getTarget();
+                creeper.setSwellDir(-1);
             }
         }
     }

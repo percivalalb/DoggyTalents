@@ -20,14 +20,14 @@ public class ChangeOwnerItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (!dogIn.isOwner(playerIn)) {
+        if (!dogIn.isOwnedBy(playerIn)) {
 
-            if (!worldIn.isRemote) {
-                dogIn.setTamedBy(playerIn);
-                dogIn.getNavigator().clearPath();
-                dogIn.setAttackTarget((LivingEntity) null);
-                dogIn.setSitting(true);
-                worldIn.setEntityState(dogIn, Constants.EntityState.WOLF_HEARTS);
+            if (!worldIn.isClientSide) {
+                dogIn.tame(playerIn);
+                dogIn.getNavigation().stop();
+                dogIn.setTarget((LivingEntity) null);
+                dogIn.setOrderedToSit(true);
+                worldIn.broadcastEntityEvent(dogIn, Constants.EntityState.WOLF_HEARTS);
 
                 //TODO playerIn.sendMessage(new TranslationTextComponent(""));
             }

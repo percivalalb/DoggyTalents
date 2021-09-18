@@ -27,8 +27,8 @@ public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmor
     }
 
     @Override
-    public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-        if (this.isInGroup(group)) {
+    public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+        if (this.allowdedIn(group)) {
             ItemStack stack = new ItemStack(this);
             this.setColor(stack, this.getDefaultColor(stack));
             items.add(stack);

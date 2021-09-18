@@ -13,28 +13,28 @@ public class TreatBagScreen extends ContainerScreen<TreatBagContainer> {
 
     public TreatBagScreen(TreatBagContainer treatBag, PlayerInventory playerInventory, ITextComponent displayName) {
         super(treatBag, playerInventory, displayName);
-        this.ySize = 127;
+        this.imageHeight = 127;
     }
 
     @Override
     public void render(MatrixStack stack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(stack);
         super.render(stack, mouseX, mouseY, partialTicks);
-        this.renderHoveredTooltip(stack, mouseX, mouseY);
+        this.renderTooltip(stack, mouseX, mouseY);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack stack, int var1, int var2) {
-        this.font.drawString(stack, this.title.getString(), 10.0F, 8.0F, 4210752);
+    protected void renderLabels(MatrixStack stack, int var1, int var2) {
+        this.font.draw(stack, this.title.getString(), 10.0F, 8.0F, 4210752);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
+    protected void renderBg(MatrixStack stack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.getTextureManager().bindTexture(Resources.GUI_TREAT_BAG);
-        int x = (this.width - this.xSize) / 2;
-        int y = (this.height - this.ySize) / 2;
-        this.blit(stack, x, y, 0, 0, this.xSize, this.ySize);
+        this.minecraft.getTextureManager().bind(Resources.GUI_TREAT_BAG);
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        this.blit(stack, x, y, 0, 0, this.imageWidth, this.imageHeight);
     }
 
 }

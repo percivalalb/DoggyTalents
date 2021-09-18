@@ -44,12 +44,12 @@ public class CachedFileTexture extends SimpleTexture {
     }
 
     private void upload(NativeImage imageIn) {
-       TextureUtil.prepareImage(this.getGlTextureId(), imageIn.getWidth(), imageIn.getHeight());
-       imageIn.uploadTextureSub(0, 0, 0, true);
+       TextureUtil.prepareImage(this.getId(), imageIn.getWidth(), imageIn.getHeight());
+       imageIn.upload(0, 0, 0, true);
     }
 
     @Override
-    public void loadTexture(IResourceManager manager) throws IOException {
+    public void load(IResourceManager manager) throws IOException {
         Minecraft.getInstance().execute(() -> {
             if (!this.textureUploaded) {
                 NativeImage nativeimage = null;

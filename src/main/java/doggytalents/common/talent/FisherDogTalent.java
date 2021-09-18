@@ -15,14 +15,14 @@ public class FisherDogTalent extends TalentInstance {
 
     @Override
     public void onShakingDry(AbstractDogEntity dogIn, WetSource source) {
-        if (dogIn.world.isRemote) { // On client do nothing
+        if (dogIn.level.isClientSide) { // On client do nothing
             return;
         }
 
         if (source.isWaterBlock()) {
-            if (dogIn.getRNG().nextInt(15) < this.level() * 2) {
+            if (dogIn.getRandom().nextInt(15) < this.level() * 2) {
                 int lvlHellHound = dogIn.getLevel(DoggyTalents.HELL_HOUND);
-                dogIn.entityDropItem(dogIn.getRNG().nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
+                dogIn.spawnAtLocation(dogIn.getRandom().nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
             }
         }
     }

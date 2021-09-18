@@ -58,11 +58,11 @@ public interface IDogAlteration {
     }
 
     default ActionResult<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
-        return ActionResult.resultPass(hungerTick);
+        return ActionResult.pass(hungerTick);
     }
 
     default ActionResult<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
-        return ActionResult.resultPass(healingTick);
+        return ActionResult.pass(healingTick);
     }
 
     default ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
@@ -78,7 +78,7 @@ public interface IDogAlteration {
     }
 
     default ActionResult<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
-        return ActionResult.resultPass(0F);
+        return ActionResult.pass(0F);
     }
 
     default ActionResultType canBreatheUnderwater(AbstractDogEntity dogIn) {
@@ -107,7 +107,7 @@ public interface IDogAlteration {
 
 
     default ActionResult<Float> attackEntityFrom(AbstractDogEntity dog, DamageSource source, float damage) {
-        return ActionResult.resultPass(damage);
+        return ActionResult.pass(damage);
     }
 
     default ActionResultType canBlockDamageSource(AbstractDogEntity dog, DamageSource source) {
@@ -131,19 +131,19 @@ public interface IDogAlteration {
     }
 
     default ActionResult<Float> attackEntityFrom(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
-        return ActionResult.resultPass(distance);
+        return ActionResult.pass(distance);
     }
 
     default ActionResult<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
-        return ActionResult.resultPass(air);
+        return ActionResult.pass(air);
     }
 
     default ActionResult<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
-        return ActionResult.resultPass(currentAir);
+        return ActionResult.pass(currentAir);
     }
 
     default ActionResult<Integer> setFire(AbstractDogEntity dogIn, int second) {
-        return ActionResult.resultPass(second);
+        return ActionResult.pass(second);
     }
 
     default ActionResultType isImmuneToFire(AbstractDogEntity dogIn) {
@@ -171,11 +171,11 @@ public interface IDogAlteration {
     }
 
     default ActionResult<Float> getMaxHunger(AbstractDogEntity dogIn, float currentMax) {
-        return ActionResult.resultPass(currentMax);
+        return ActionResult.pass(currentMax);
     }
 
     default ActionResult<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
-        return ActionResult.resultPass(hunger);
+        return ActionResult.pass(hunger);
     }
 
     default ActionResultType isPotionApplicable(AbstractDogEntity dogIn, EffectInstance effectIn) {

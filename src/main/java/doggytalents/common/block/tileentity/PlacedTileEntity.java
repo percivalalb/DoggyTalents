@@ -24,15 +24,15 @@ public class PlacedTileEntity extends TileEntity {
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-        super.read(state, compound);
+    public void load(BlockState state, CompoundNBT compound) {
+        super.load(state, compound);
 
         this.placerUUID = NBTUtil.getUniqueId(compound, "placerId");
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
         NBTUtil.putUniqueId(compound, "placerId", this.placerUUID);
 
         return compound;
@@ -40,8 +40,8 @@ public class PlacedTileEntity extends TileEntity {
 
     public void setPlacer(@Nullable LivingEntity placer) {
         this.placer = placer;
-        this.placerUUID = placer == null ? null : placer.getUniqueID();
-        this.markDirty();
+        this.placerUUID = placer == null ? null : placer.getUUID();
+        this.setChanged();
     }
 
     @Nullable
@@ -51,23 +51,23 @@ public class PlacedTileEntity extends TileEntity {
 
     @Nullable
     public LivingEntity getPlacer() {
-        return WorldUtil.getCachedEntity(this.world, LivingEntity.class, this.placer, this.placerUUID);
+        return WorldUtil.getCachedEntity(this.level, LivingEntity.class, this.placer, this.placerUUID);
     }
 
     // Sync to client
     @Override
     public SUpdateTileEntityPacket getUpdatePacket() {
-        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+        return new SUpdateTileEntityPacket(this.worldPosition, 0, this.getUpdateTag());
     }
 
     @Override
     public CompoundNBT getUpdateTag() {
-        CompoundNBT compound = this.write(new CompoundNBT());
+        CompoundNBT compound = this.save(new CompoundNBT());
         return compound;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-        this.read(null, pkt.getNbtCompound());
+        this.load(null, pkt.getTag());
     }
 }

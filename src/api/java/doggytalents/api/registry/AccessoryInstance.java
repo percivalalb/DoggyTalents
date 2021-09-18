@@ -81,7 +81,7 @@ public class AccessoryInstance {
     public static Optional<AccessoryInstance> readInstance(CompoundNBT compound) {
         ResourceLocation rl = null;
         try {
-            rl = ResourceLocation.tryCreate(compound.getString("type"));
+            rl = ResourceLocation.tryParse(compound.getString("type"));
             if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
                 Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
                 return Optional.of(type.read(compound));

@@ -26,8 +26,8 @@ public class AccessoryItem extends Item implements IDogItem {
 
     @Override
     public ActionResultType processInteract(AbstractDogEntity dogIn, World worldIn, PlayerEntity playerIn, Hand handIn) {
-        if (dogIn.canInteract(playerIn) && dogIn.addAccessory(this.createInstance(dogIn, playerIn.getHeldItem(handIn), playerIn))) {
-            dogIn.consumeItemFromStack(playerIn, playerIn.getHeldItem(handIn));
+        if (dogIn.canInteract(playerIn) && dogIn.addAccessory(this.createInstance(dogIn, playerIn.getItemInHand(handIn), playerIn))) {
+            dogIn.consumeItemFromStack(playerIn, playerIn.getItemInHand(handIn));
             return ActionResultType.SUCCESS;
         }
 

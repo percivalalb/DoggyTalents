@@ -32,31 +32,31 @@ public class FindWaterGoal extends Goal {
 
     public FindWaterGoal(CreatureEntity creatureIn) {
         this.creature = creatureIn;
-        this.navigator = creatureIn.getNavigator();
-        this.world = creatureIn.world;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.navigator = creatureIn.getNavigation();
+        this.world = creatureIn.level;
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        if (!this.creature.isOnGround() || (this.creature.ticksExisted % 5) != 0) {
+    public boolean canUse() {
+        if (!this.creature.isOnGround() || (this.creature.tickCount % 5) != 0) {
             return false;
         }
 
-        if (this.creature.isImmuneToFire()) {
+        if (this.creature.fireImmune()) {
             return false;
         }
         
         boolean isInFire = this.isInDangerSpot(this.creature);
-        boolean isOnFire = this.creature.isBurning();
+        boolean isOnFire = this.creature.isOnFire();
 
         if (!isInFire && !isOnFire) {
             return false;
         }
 
-        BlockPos entityPos = this.creature.getPosition();
+        BlockPos entityPos = this.creature.blockPosition();
 
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(entityPos.add(-this.waterSearchRange, -4, -this.waterSearchRange), entityPos.add(this.waterSearchRange, 4, this.waterSearchRange))) {
+        for (BlockPos pos : BlockPos.betweenClosed(entityPos.offset(-this.waterSearchRange, -4, -this.waterSearchRange), entityPos.offset(this.waterSearchRange, 4, this.waterSearchRange))) {
             if (this.getBlockType(pos) == BlockType.WATER) {
                 this.waterPos = pos;
                 break;
@@ -69,7 +69,7 @@ public class FindWaterGoal extends Goal {
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
+    public boolean canContinueToUse() {
         // If there is some water nearby
         if (this.waterPos != null) {
             // Check it is still a water block
@@ -79,7 +79,7 @@ public class FindWaterGoal extends Goal {
             }
 
             // If entity is burning continue
-            if (this.creature.isBurning()) {
+            if (this.creature.isOnFire()) {
                 return true;
             }
         }
@@ -90,7 +90,7 @@ public class FindWaterGoal extends Goal {
 
 
     @Override
-    public void startExecuting() {
+    public void start() {
         this.timeToRecalcPath = 0;
     }
 
@@ -102,14 +102,14 @@ public class FindWaterGoal extends Goal {
 
             if (this.waterPos != null) {
                 targetPos = this.waterPos;
-            } else if (!this.creature.hasPath()) {
+            } else if (!this.creature.isPathFinding()) {
                 BlockPos.Mutable mutablePos = new BlockPos.Mutable();
                 for (int i = 0; i < 10; ++i) {
                     int j = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
                     int k = EntityUtil.getRandomNumber(this.creature, -4, 4);
                     int l = EntityUtil.getRandomNumber(this.creature, -this.safeSearchRange, this.safeSearchRange);
 
-                    mutablePos.setPos(this.creature.getPosX() + j, this.creature.getPosY() + k, this.creature.getPosZ() + l);
+                    mutablePos.set(this.creature.getX() + j, this.creature.getY() + k, this.creature.getZ() + l);
                     boolean flag = this.getBlockType(mutablePos).isSafe();
                     if (flag) {
                         targetPos = mutablePos;
@@ -119,14 +119,14 @@ public class FindWaterGoal extends Goal {
             }
 
             if (targetPos != null) {
-                this.navigator.tryMoveToXYZ(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.2D);
+                this.navigator.moveTo(targetPos.getX(), targetPos.getY(), targetPos.getZ(), 1.2D);
             }
         }
     }
 
     @Override
-    public void resetTask() {
-        this.navigator.clearPath();
+    public void stop() {
+        this.navigator.stop();
         this.waterPos = null;
     }
 
@@ -145,7 +145,7 @@ public class FindWaterGoal extends Goal {
         int maxY = MathHelper.ceil(bb.maxY);
         int maxZ = MathHelper.ceil(bb.maxZ);
 
-        for (BlockPos pos : BlockPos.getAllInBoxMutable(minX, minY, minZ, maxX, maxY, maxZ)) {
+        for (BlockPos pos : BlockPos.betweenClosed(minX, minY, minZ, maxX, maxY, maxZ)) {
             BlockType safety = this.getBlockType(pos);
 
             if (safety == BlockType.FIRE) {
@@ -172,7 +172,7 @@ public class FindWaterGoal extends Goal {
         }
 
         // If it is water
-        if (this.world.getFluidState(posIn).isTagged(FluidTags.WATER)) {
+        if (this.world.getFluidState(posIn).is(FluidTags.WATER)) {
             return BlockType.WATER;
         }
 

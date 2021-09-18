@@ -2,6 +2,7 @@ package doggytalents.common.inventory.container.slot;
 
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -23,13 +24,19 @@ public class DogInventorySlot extends SlotItemHandler {
     }
 
     public DogInventorySlot(DogInventorySlot prev, int newX) {
-        super(prev.getItemHandler(), prev.getSlotIndex(), newX, prev.yPos);
+        super(prev.getItemHandler(), prev.getSlotIndex(), newX, prev.y);
         this.player = prev.player;
         this.overallColumn = prev.overallColumn;
         this.row = prev.row;
         this.col = prev.col;
         this.dog = prev.dog;
-        this.slotNumber = prev.slotNumber;
+        // Work around to set Slot#slotNumber (MCP name) which is Slot#index in official
+        // mappings. Needed because SlotItemHandler#index shadows the latter.
+        {
+            Slot n = this;
+            Slot o = prev;
+            n.index = o.index;
+        }
     }
 
     public void setEnabled(boolean flag) {
@@ -38,8 +45,8 @@ public class DogInventorySlot extends SlotItemHandler {
 
     // Don't accept items when disabled, this means disabled slots cannot be shift clicked into
     @Override
-    public boolean isItemValid(ItemStack stack) {
-        return this.isEnabled() && super.isItemValid(stack);
+    public boolean mayPlace(ItemStack stack) {
+        return this.isActive() && super.mayPlace(stack);
     }
 
 //    @Override
@@ -48,8 +55,8 @@ public class DogInventorySlot extends SlotItemHandler {
 //    }
 
     @Override
-    public boolean isEnabled() {
-        return this.enabled && this.dog.isAlive() && this.dog.getDistanceSq(this.player) < 400;
+    public boolean isActive() {
+        return this.enabled && this.dog.isAlive() && this.dog.distanceToSqr(this.player) < 400;
     }
 
     public DogEntity getDog() {

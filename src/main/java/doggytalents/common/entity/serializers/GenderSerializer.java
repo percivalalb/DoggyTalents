@@ -17,7 +17,7 @@ public class GenderSerializer implements IDataSerializer<EnumGender> {
     }
 
     @Override
-    public EnumGender copyValue(EnumGender value) {
+    public EnumGender copy(EnumGender value) {
         return value;
     }
 

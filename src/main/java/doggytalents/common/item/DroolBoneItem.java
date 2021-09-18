@@ -22,8 +22,8 @@ public class DroolBoneItem extends Item {
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack itemStackIn = playerIn.getItemInHand(handIn);
 
         if (itemStackIn.getItem() == this) {
 
@@ -32,7 +32,7 @@ public class DroolBoneItem extends Item {
                 returnStack.setTag(itemStackIn.getTag().copy());
             }
 
-            playerIn.swingArm(handIn);
+            playerIn.swing(handIn);
             return new ActionResult<ItemStack>(ActionResultType.SUCCESS, returnStack);
         }
 

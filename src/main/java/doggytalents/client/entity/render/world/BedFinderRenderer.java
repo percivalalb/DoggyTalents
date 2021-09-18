@@ -34,11 +34,11 @@ public class BedFinderRenderer {
                 if (bedPosOpt.isPresent()) {
                     BlockPos bedPos = bedPosOpt.get();
                     int level = dog.getLevel(DoggyTalents.BED_FINDER);
-                    double distance = (level * 200D) - Math.sqrt(bedPos.distanceSq(dog.getPosition()));
+                    double distance = (level * 200D) - Math.sqrt(bedPos.distSqr(dog.blockPosition()));
                     if (level == 5 || distance >= 0.0D) {
                         MatrixStack stack = event.getMatrixStack();
 
-                        AxisAlignedBB boundingBox = new AxisAlignedBB(bedPos).grow(0.5D);
+                        AxisAlignedBB boundingBox = new AxisAlignedBB(bedPos).inflate(0.5D);
                         drawSelectionBox(stack, boundingBox);
                     }
                 }
@@ -57,15 +57,15 @@ public class BedFinderRenderer {
         RenderSystem.lineWidth(2.0F);
 
         RenderSystem.disableTexture();
-        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
-        double d0 = vec3d.getX();
-        double d1 = vec3d.getY();
-        double d2 = vec3d.getZ();
+        Vector3d vec3d = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        double d0 = vec3d.x();
+        double d1 = vec3d.y();
+        double d2 = vec3d.z();
 
-        BufferBuilder buf = Tessellator.getInstance().getBuffer();
+        BufferBuilder buf = Tessellator.getInstance().getBuilder();
         buf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        WorldRenderer.drawBoundingBox(stack, buf, boundingBox.offset(-d0, -d1, -d2), 1F, 1F, 0, 1F);
-        Tessellator.getInstance().draw();
+        WorldRenderer.renderLineBox(stack, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0, 1F);
+        Tessellator.getInstance().end();
         RenderSystem.color4f(0.0F, 0.0F, 0.0F, 0.3F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks
         RenderSystem.depthMask(true);

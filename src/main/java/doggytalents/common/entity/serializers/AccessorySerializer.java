@@ -35,7 +35,7 @@ public class AccessorySerializer implements IDataSerializer<List<AccessoryInstan
     }
 
     @Override
-    public List<AccessoryInstance> copyValue(List<AccessoryInstance> value) {
+    public List<AccessoryInstance> copy(List<AccessoryInstance> value) {
         List<AccessoryInstance> newInst = new ArrayList<>(value.size());
 
         for (AccessoryInstance inst : value) {

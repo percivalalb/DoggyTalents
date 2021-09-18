@@ -5,8 +5,8 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
-        classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.66"
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.71.4"
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
     }
 }
@@ -21,33 +21,35 @@ version = project.output_version
 group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "DoggyTalents-${project.target_mc_version}"
 
+sourceSets {
+    api
+    main {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+        resources.srcDirs += 'src/generated/resources'
+    }
+    test {
+        compileClasspath += sourceSets.api.output
+        runtimeClasspath += sourceSets.api.output
+    }
+}
+
+configurations {
+    apiImplementation.extendsFrom(implementation)
+    apiRuntimeOnly.extendsFrom(runtimeOnly)
+}
+
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 repositories {
     maven {
-        url "http://dvs1.progwml6.com/files/maven"
-        content {
-            includeGroup "mezz.jei"
-        }
+        url "https://dvs1.progwml6.com/files/maven"
+        content { includeGroup "mezz.jei" }
     }
     maven {
         url "https://modmaven.k-4u.nl"
-        content {
-            includeGroup "mezz.jei"
-        }
+        content { includeGroup "mezz.jei" }
     }
-}
-
-sourceSets {
-    api
-    main {
-        resources.srcDirs += 'src/generated/resources'
-    }
-    test
-}
-
-configurations {
-    apiCompile.extendsFrom(compile)
 }
 
 minecraft {
@@ -58,38 +60,29 @@ minecraft {
     runs {
         client {
             taskName 'doggytalents_client'
-            workingDirectory project.file('run')
+            workingDirectory file('run')
             property 'forge.logging.console.level', 'debug'
             mods {
-                doggytalents {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
+                doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
             }
         }
 
         server {
             taskName 'doggytalents_server'
-            workingDirectory project.file('run-server')
+            workingDirectory file('run-server')
             property 'forge.logging.console.level', 'debug'
             mods {
-                doggytalents {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
+                doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
             }
         }
 
         data {
             taskName 'doggytalents_data'
-            workingDirectory project.file('run')
+            workingDirectory file('run')
             property 'forge.logging.console.level', 'debug'
             args '--mod', 'doggytalents', '--all', '--output', '"' + file('src/generated/resources/') + '"', '--existing', '"' + sourceSets.main.resources.srcDirs[0] + '"'
             mods {
-                doggytalents {
-                    source sourceSets.main
-                    source sourceSets.api
-                }
+                doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
             }
         }
     }
@@ -97,8 +90,6 @@ minecraft {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
-
-    implementation sourceSets.api.output
 
     compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
@@ -108,12 +99,14 @@ dependencies {
 }
 
 task sourcesJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveClassifier = 'sources'
     from sourceSets.main.allJava
     from sourceSets.api.allJava
 }
 
 task apiJar(type: Jar) {
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
     archiveClassifier = 'api'
     from sourceSets.api.output
     from sourceSets.api.allJava
@@ -124,9 +117,9 @@ artifacts {
     archives apiJar
 }
 
-task replaceResources(type: Copy) {
-    outputs.upToDateWhen { false }
-    from(sourceSets.main.resources.srcDirs) {
+def replaceResources = tasks.register('replaceResources', Copy) {
+    it.outputs.upToDateWhen { false }
+    it.from(sourceSets.main.resources) {
         include 'META-INF/mods.toml'
         expand([
             'version': project.version,
@@ -135,21 +128,23 @@ task replaceResources(type: Copy) {
             'fml_version_range': project.fml_version_range,
         ])
     }
-    into "$buildDir/resources/main/"
+    it.into "$buildDir/resources/main/"
 }
 
+
 processResources {
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
-    }
-    finalizedBy replaceResources
+    duplicatesStrategy(DuplicatesStrategy.FAIL)
+    exclude('META-INF/mods.toml')
+    configure { finalizedBy(replaceResources) }
+}
+
+classes.configure {
+    dependsOn(replaceResources)
 }
 
 jar {
-    from sourceSets.main.output.classesDirs
-    from sourceSets.api.output.classesDirs
-    from sourceSets.main.output.resourcesDir
-    from sourceSets.api.output.resourcesDir
+    from sourceSets.main.output
+    from sourceSets.api.output
 
     manifest {
         attributes([

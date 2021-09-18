@@ -35,11 +35,11 @@ public class DogInventoriesContainer extends Container {
     //Server method
     public DogInventoriesContainer(int windowId, PlayerInventory playerInventory, IntArray trackableArray) {
         super(DoggyContainerTypes.DOG_INVENTORIES.get(), windowId);
-        this.world = playerInventory.player.world;
+        this.world = playerInventory.player.level;
         this.player = playerInventory.player;
-        this.position = IntReferenceHolder.single();
-        assertIntArraySize(trackableArray, 1);
-        this.trackInt(this.position);
+        this.position = IntReferenceHolder.standalone();
+        checkContainerDataCount(trackableArray, 1);
+        this.addDataSlot(this.position);
         this.trackableArray = trackableArray;
 
         for (int row = 0; row < 3; ++row) {
@@ -61,9 +61,9 @@ public class DogInventoriesContainer extends Container {
         int page = this.position.get();
         int drawingColumn = 0;
 
-        for (int i = 0; i < this.trackableArray.size(); i++) {
+        for (int i = 0; i < this.trackableArray.getCount(); i++) {
             int entityId = this.trackableArray.get(i);
-            Entity entity = this.world.getEntityByID(entityId);
+            Entity entity = this.world.getEntity(entityId);
 
             if (entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
@@ -96,8 +96,8 @@ public class DogInventoriesContainer extends Container {
     }
 
     @Override
-    public void updateProgressBar(int id, int data) {
-        super.updateProgressBar(id, data);
+    public void setData(int id, int data) {
+        super.setData(id, data);
 
         if (id == 0) {
             for (int i = 0; i < this.dogSlots.size(); i++) {
@@ -120,7 +120,10 @@ public class DogInventoriesContainer extends Container {
 
     private void replaceDogSlot(int i, DogInventorySlot slotIn) {
         this.dogSlots.set(i, slotIn);
-        this.inventorySlots.set(slotIn.slotNumber, slotIn);
+        // Work around to set Slot#slotNumber (MCP name) which is Slot#index in official
+        // mappings. Needed because SlotItemHandler#index shadows the latter.
+        Slot s = slotIn;
+        this.slots.set(s.index, slotIn);
     }
 
     public int getTotalNumColumns() {
@@ -140,35 +143,35 @@ public class DogInventoriesContainer extends Container {
     }
 
     @Override
-    public boolean canInteractWith(PlayerEntity player) {
+    public boolean stillValid(PlayerEntity player) {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int i) {
+    public ItemStack quickMoveStack(PlayerEntity player, int i) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(i);
+        Slot slot = this.slots.get(i);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
 
-            int startIndex = this.inventorySlots.size() - this.dogSlots.size() + this.position.get() * 3;
-            int endIndex = Math.min(startIndex + 9 * 3, this.inventorySlots.size());
+            int startIndex = this.slots.size() - this.dogSlots.size() + this.position.get() * 3;
+            int endIndex = Math.min(startIndex + 9 * 3, this.slots.size());
 
-            if (i >= this.inventorySlots.size() - this.dogSlots.size() && i < this.inventorySlots.size()) {
-                if (!mergeItemStack(itemstack1, 0, this.inventorySlots.size() - this.dogSlots.size(), true)) {
+            if (i >= this.slots.size() - this.dogSlots.size() && i < this.slots.size()) {
+                if (!moveItemStackTo(itemstack1, 0, this.slots.size() - this.dogSlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             }
-            else if (!mergeItemStack(itemstack1, this.inventorySlots.size() - this.dogSlots.size(), this.inventorySlots.size(), false)) {
+            else if (!moveItemStackTo(itemstack1, this.slots.size() - this.dogSlots.size(), this.slots.size(), false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemstack1.isEmpty()) {
-                slot.putStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.onSlotChanged();
+                slot.setChanged();
             }
 
             if (itemstack1.getCount() == itemstack.getCount()) {

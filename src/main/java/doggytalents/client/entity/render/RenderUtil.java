@@ -24,7 +24,7 @@ public class RenderUtil {
     }
 
     public static <T extends Entity> void renderLabelWithScale(T entity, EntityRenderer<T> renderer, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yChange) {
-        renderLabelWithScale(!entity.isDiscrete(), renderer.getRenderManager(), text, stack, buffer, packedLightIn, scale, yChange + entity.getHeight() + 0.5F);
+        renderLabelWithScale(!entity.isDiscrete(), renderer.getDispatcher(), text, stack, buffer, packedLightIn, scale, yChange + entity.getBbHeight() + 0.5F);
     }
 
     public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, ITextComponent text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {
@@ -32,26 +32,26 @@ public class RenderUtil {
     }
 
     public static void renderLabelWithScale(boolean flag, EntityRendererManager renderManager, String text, MatrixStack stack, IRenderTypeBuffer buffer, int packedLightIn, float scale, float yOffset) {
-        stack.push();
+        stack.pushPose();
         stack.translate(0.0D, yOffset, 0.0D);
-        stack.rotate(renderManager.getCameraOrientation());
+        stack.mulPose(renderManager.cameraOrientation());
         stack.scale(-scale, -scale, scale);
-        Matrix4f matrix4f = stack.getLast().getMatrix();
-        float f1 = Minecraft.getInstance().gameSettings.getTextBackgroundOpacity(0.25F);
+        Matrix4f matrix4f = stack.last().pose();
+        float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
         int j = (int) (f1 * 255.0F) << 24;
-        FontRenderer fontrenderer = renderManager.getFontRenderer();
-        float f2 = -fontrenderer.getStringWidth(text) / 2F;
-        fontrenderer.renderString(text, f2, 0, 553648127, false, matrix4f, buffer, flag, j, packedLightIn);
+        FontRenderer fontrenderer = renderManager.getFont();
+        float f2 = -fontrenderer.width(text) / 2F;
+        fontrenderer.drawInBatch(text, f2, 0, 553648127, false, matrix4f, buffer, flag, j, packedLightIn);
         if (flag) {
-            fontrenderer.renderString(text, f2, 0, -1, false, matrix4f, buffer, false, 0, packedLightIn);
+            fontrenderer.drawInBatch(text, f2, 0, -1, false, matrix4f, buffer, false, 0, packedLightIn);
         }
 
-        stack.pop();
+        stack.popPose();
     }
 
     // From net.minecraft.client.gui.AbstractGui
     public static void blit(int x, int y, int zLevel, int width, int height, TextureAtlasSprite sprite) {
-        innerBlit(x, x + width, y, y + height, zLevel, sprite.getMinU(), sprite.getMaxU(), sprite.getMinV(), sprite.getMaxV());
+        innerBlit(x, x + width, y, y + height, zLevel, sprite.getU0(), sprite.getU1(), sprite.getV0(), sprite.getV1());
     }
 
     public static void blit(int x, int y, int width, int height, int textureX, int textureY) {
@@ -75,14 +75,14 @@ public class RenderUtil {
     }
 
     public static void innerBlit(int minX, int maxX, int yMin, int yMax, int zLevel, float textureXMin, float textureXMax, float textureYMin, float textureYMax) {
-        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+        BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
         bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        bufferbuilder.pos(minX, yMax, zLevel).tex(textureXMin, textureYMax).endVertex();
-        bufferbuilder.pos(maxX, yMax, zLevel).tex(textureXMax, textureYMax).endVertex();
-        bufferbuilder.pos(maxX, yMin, zLevel).tex(textureXMax, textureYMin).endVertex();
-        bufferbuilder.pos(minX, yMin, zLevel).tex(textureXMin, textureYMin).endVertex();
-        bufferbuilder.finishDrawing();
+        bufferbuilder.vertex(minX, yMax, zLevel).uv(textureXMin, textureYMax).endVertex();
+        bufferbuilder.vertex(maxX, yMax, zLevel).uv(textureXMax, textureYMax).endVertex();
+        bufferbuilder.vertex(maxX, yMin, zLevel).uv(textureXMax, textureYMin).endVertex();
+        bufferbuilder.vertex(minX, yMin, zLevel).uv(textureXMin, textureYMin).endVertex();
+        bufferbuilder.end();
         RenderSystem.enableAlphaTest();
-        WorldVertexBufferUploader.draw(bufferbuilder);
+        WorldVertexBufferUploader.end(bufferbuilder);
     }
 }

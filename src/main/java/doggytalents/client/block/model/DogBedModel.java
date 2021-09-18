@@ -94,14 +94,14 @@ public class DogBedModel implements IBakedModel {
         IBeddingMaterial bedding = null;
         Direction facing = Direction.NORTH;
 
-        TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getBlockEntity(pos);
         if (tile instanceof DogBedTileEntity) {
             casing = ((DogBedTileEntity) tile).getCasing();
             bedding = ((DogBedTileEntity) tile).getBedding();
         }
 
         if (state.hasProperty(DogBedBlock.FACING)) {
-            facing = state.get(DogBedBlock.FACING);
+            facing = state.getValue(DogBedBlock.FACING);
         }
 
         tileData.setData(DogBedTileEntity.CASING, casing);
@@ -115,22 +115,22 @@ public class DogBedModel implements IBakedModel {
         List<BlockPart> parts = this.model.getElements();
         List<BlockPart> elements = new ArrayList<>(parts.size()); //We have to duplicate this so we can edit it below.
         for (BlockPart part : parts) {
-            elements.add(new BlockPart(part.positionFrom, part.positionTo, Maps.newHashMap(part.mapFaces), part.partRotation, part.shade));
+            elements.add(new BlockPart(part.from, part.to, Maps.newHashMap(part.faces), part.rotation, part.shade));
         }
 
         BlockModel newModel = new BlockModel(this.model.getParentLocation(), elements,
-            Maps.newHashMap(this.model.textures), this.model.isAmbientOcclusion(), this.model.getGuiLight(),
-            this.model.getAllTransforms(), new ArrayList<>(this.model.getOverrides()));
+            Maps.newHashMap(this.model.textureMap), this.model.hasAmbientOcclusion(), this.model.getGuiLight(),
+            this.model.getTransforms(), new ArrayList<>(this.model.getOverrides()));
         newModel.name = this.model.name;
         newModel.parent = this.model.parent;
 
 
         Either<RenderMaterial, String> casingTexture = findCasingTexture(casingResource);
-        newModel.textures.put("bedding", findBeddingTexture(beddingResource));
-        newModel.textures.put("casing", casingTexture);
-        newModel.textures.put("particle", casingTexture);
+        newModel.textureMap.put("bedding", findBeddingTexture(beddingResource));
+        newModel.textureMap.put("casing", casingTexture);
+        newModel.textureMap.put("particle", casingTexture);
 
-        return newModel.bakeModel(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
+        return newModel.bake(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
     private ResourceLocation createResourceVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
@@ -140,7 +140,7 @@ public class DogBedModel implements IBakedModel {
         String casingKey = beddingResource != null
                 ? casingResource.name().toString().replace(':', '.')
                 : "doggytalents.dogbed.casing.missing";
-        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName2());
+        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName());
     }
 
     private Either<RenderMaterial, String> findCasingTexture(@Nullable IRegistryDelegate<ICasingMaterial> resource) {
@@ -156,7 +156,7 @@ public class DogBedModel implements IBakedModel {
             resource = MISSING_TEXTURE;
         }
 
-        return Either.left(new RenderMaterial(PlayerContainer.LOCATION_BLOCKS_TEXTURE, resource));
+        return Either.left(new RenderMaterial(PlayerContainer.BLOCK_ATLAS, resource));
     }
 
     private ModelRotation getModelRotation(@Nonnull Direction dir) {
@@ -169,8 +169,8 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public boolean isAmbientOcclusion() {
-        return this.bakedModel.isAmbientOcclusion();
+    public boolean useAmbientOcclusion() {
+        return this.bakedModel.useAmbientOcclusion();
     }
 
     @Override
@@ -179,23 +179,23 @@ public class DogBedModel implements IBakedModel {
     }
 
     @Override
-    public boolean isSideLit() {
-        return this.bakedModel.isSideLit();
+    public boolean usesBlockLight() {
+        return this.bakedModel.usesBlockLight();
     }
 
     @Override
-    public boolean isBuiltInRenderer() {
-        return this.bakedModel.isBuiltInRenderer();
+    public boolean isCustomRenderer() {
+        return this.bakedModel.isCustomRenderer();
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return this.bakedModel.getParticleTexture();
+    public TextureAtlasSprite getParticleIcon() {
+        return this.bakedModel.getParticleIcon();
     }
 
     @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return this.bakedModel.getItemCameraTransforms();
+    public ItemCameraTransforms getTransforms() {
+        return this.bakedModel.getTransforms();
     }
 
     @Override

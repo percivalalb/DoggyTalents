@@ -34,7 +34,7 @@ public class CollarSerializer implements IDataSerializer<Optional<AccessoryInsta
     }
 
     @Override
-    public Optional<AccessoryInstance> copyValue(Optional<AccessoryInstance> value) {
+    public Optional<AccessoryInstance> copy(Optional<AccessoryInstance> value) {
         if (value.isPresent()) {
             return Optional.of(value.get().copy());
         }

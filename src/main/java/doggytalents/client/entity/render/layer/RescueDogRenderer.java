@@ -23,11 +23,11 @@ public class RescueDogRenderer implements ITalentRenderer<DogEntity> {
     public void render(LayerRenderer<DogEntity, EntityModel<DogEntity>> layer, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, DogEntity dogIn, TalentInstance inst, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
         if (!dogIn.isInvisible() && inst.level() >= 5) {
-            layer.getEntityModel().copyModelAttributesTo(this.model);
-            this.model.setLivingAnimations(dogIn, limbSwing, limbSwingAmount, partialTicks);
-            this.model.setRotationAngles(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+            layer.getParentModel().copyPropertiesTo(this.model);
+            this.model.prepareMobModel(dogIn, limbSwing, limbSwingAmount, partialTicks);
+            this.model.setupAnim(dogIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-            LayerRenderer.renderCutoutModel(this.model, Resources.TALENT_RESCUE, matrixStackIn, bufferIn, packedLightIn, dogIn, 1.0F, 1.0F, 1.0F);
+            LayerRenderer.renderColoredCutoutModel(this.model, Resources.TALENT_RESCUE, matrixStackIn, bufferIn, packedLightIn, dogIn, 1.0F, 1.0F, 1.0F);
         }
     }
 }

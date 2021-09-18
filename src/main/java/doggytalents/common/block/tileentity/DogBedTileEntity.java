@@ -44,8 +44,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-        super.read(state, compound);
+    public void load(BlockState state, CompoundNBT compound) {
+        super.load(state, compound);
 
         this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
         this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
@@ -56,8 +56,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
 
         NBTUtil.putRegistryValue(compound, "casingId", this.casingType);
         NBTUtil.putRegistryValue(compound, "beddingId", this.beddingType);
@@ -71,13 +71,13 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     public void setCasing(ICasingMaterial casingType) {
         this.casingType = casingType;
-        this.markDirty();
+        this.setChanged();
         this.requestModelDataUpdate();
     }
 
     public void setBedding(IBeddingMaterial beddingType) {
         this.beddingType = beddingType;
-        this.markDirty();
+        this.setChanged();
         this.requestModelDataUpdate();
     }
 
@@ -99,7 +99,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     public void setOwner(@Nullable DogEntity owner) {
-        this.setOwner(owner == null ? null : owner.getUniqueID());
+        this.setOwner(owner == null ? null : owner.getUUID());
 
         this.dog = owner;
 
@@ -109,7 +109,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
         this.dog = null;
         this.dogUUID = owner;
 
-        this.markDirty();
+        this.setChanged();
     }
 
     @Nullable
@@ -119,7 +119,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     @Nullable
     public DogEntity getOwner() {
-       return WorldUtil.getCachedEntity(this.world, DogEntity.class, this.dog, this.dogUUID);
+       return WorldUtil.getCachedEntity(this.level, DogEntity.class, this.dog, this.dogUUID);
     }
 
     @Nullable
@@ -129,12 +129,12 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     @Nullable
     public ITextComponent getOwnerName() {
-        if (this.dogUUID == null || this.world == null) { return null; }
+        if (this.dogUUID == null || this.level == null) { return null; }
 
         ITextComponent name = DogLocationStorage
-                .get(this.world)
+                .get(this.level)
                 .getData(this.dogUUID)
-                .getName(this.world);
+                .getName(this.level);
 
         if (name != null) {
             this.ownerName = name;
@@ -149,6 +149,6 @@ public class DogBedTileEntity extends PlacedTileEntity {
 
     public void setBedName(@Nullable ITextComponent nameIn) {
         this.name = nameIn;
-        this.markDirty();
+        this.setChanged();
     }
 }

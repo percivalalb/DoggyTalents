@@ -15,43 +15,43 @@ public class MoveToBlockGoal extends Goal {
 
     public MoveToBlockGoal(DogEntity dogIn) {
         this.dog = dogIn;
-        this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+        this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }
 
     @Override
-    public boolean shouldExecute() {
-        return this.dog.getTargetBlock() != null && !this.dog.isQueuedToSit();
+    public boolean canUse() {
+        return this.dog.getTargetBlock() != null && !this.dog.isOrderedToSit();
     }
 
     @Override
-    public boolean shouldContinueExecuting() {
-        return this.dog.hasPath() && !this.dog.getTargetBlock().withinDistance(this.dog.getPositionVec(), 0.5);
+    public boolean canContinueToUse() {
+        return this.dog.isPathFinding() && !this.dog.getTargetBlock().closerThan(this.dog.position(), 0.5);
     }
 
     @Override
-    public void resetTask() {
+    public void stop() {
         BlockPos target = this.dog.getTargetBlock();
 
-        DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(dog.world, target, DogBedTileEntity.class);
+        DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(dog.level, target, DogBedTileEntity.class);
 
         if (dogBedTileEntity != null) {
             // Double check the bed still has no owner
             if (dogBedTileEntity.getOwnerUUID() == null) {
                 dogBedTileEntity.setOwner(this.dog);
-                this.dog.setBedPos(this.dog.world.getDimensionKey(), target);
+                this.dog.setBedPos(this.dog.level.dimension(), target);
             }
         }
 
         this.dog.setTargetBlock(null);
-        this.dog.setSitting(true);
+        this.dog.setOrderedToSit(true);
 
-        this.dog.world.setEntityState(this.dog, Constants.EntityState.WOLF_HEARTS);
+        this.dog.level.broadcastEntityEvent(this.dog, Constants.EntityState.WOLF_HEARTS);
     }
 
     @Override
-    public void startExecuting() {
+    public void start() {
         BlockPos target = this.dog.getTargetBlock();
-        this.dog.getNavigator().tryMoveToXYZ((target.getX()) + 0.5D, target.getY() + 1, (target.getZ()) + 0.5D, 1.0D);
+        this.dog.getNavigation().moveTo((target.getX()) + 0.5D, target.getY() + 1, (target.getZ()) + 0.5D, 1.0D);
     }
 
 }

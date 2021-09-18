@@ -17,7 +17,7 @@ public class ScreenUtil {
 
         for (int i = 0; i < split.length; ++i) {
             String str = split[i];
-            int length = font.getStringWidth(temp + str);
+            int length = font.width(temp + str);
 
             if (length > maxLength) {
                 list.add(new StringTextComponent(temp.toString()));

@@ -15,7 +15,7 @@ public class TreatBagItemHandler extends ItemStackHandler {
         super(5);
         this.bag = bag;
 
-        CompoundNBT inventoryNBT = bag.getChildTag("inventory");
+        CompoundNBT inventoryNBT = bag.getTagElement("inventory");
         if (inventoryNBT != null) {
             this.deserializeNBT(inventoryNBT);
         }
@@ -23,7 +23,7 @@ public class TreatBagItemHandler extends ItemStackHandler {
 
     @Override
     protected void onContentsChanged(int slot) {
-        this.bag.getOrCreateChildTag("inventory").merge(this.serializeNBT());
+        this.bag.getOrCreateTagElement("inventory").merge(this.serializeNBT());
     }
 
     @Override

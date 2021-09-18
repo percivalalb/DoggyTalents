@@ -19,7 +19,7 @@ public class DogLevelSerializer implements IDataSerializer<DogLevel> {
     }
 
     @Override
-    public DogLevel copyValue(DogLevel value) {
+    public DogLevel copy(DogLevel value) {
         return value.copy();
     }
 

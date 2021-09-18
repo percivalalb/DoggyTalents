@@ -14,7 +14,7 @@ public class RescueDogTalent extends TalentInstance {
 
     @Override
     public void livingTick(AbstractDogEntity dogIn) {
-        if (dogIn.world.isRemote) {
+        if (dogIn.level.isClientSide) {
             return;
         }
 

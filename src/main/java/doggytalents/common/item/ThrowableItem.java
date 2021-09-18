@@ -54,40 +54,40 @@ public class ThrowableItem extends Item implements IThrowableItem {
         float f1 = -MathHelper.sin((rotationPitchIn + pitchOffset) * ((float)Math.PI / 180F));
         float f2 = MathHelper.cos(rotationYawIn * ((float)Math.PI / 180F)) * MathHelper.cos(rotationPitchIn * ((float)Math.PI / 180F));
         this.setThrowableHeading(entityItem, f, f1, f2, velocity, inaccuracy);
-        Vector3d vec3d = entityThrower.getMotion();
-        entityItem.setMotion(entityItem.getMotion().add(vec3d.x, entityThrower.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
+        Vector3d vec3d = entityThrower.getDeltaMovement();
+        entityItem.setDeltaMovement(entityItem.getDeltaMovement().add(vec3d.x, entityThrower.isOnGround() ? 0.0D : vec3d.y, vec3d.z));
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack itemStackIn = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack itemStackIn = playerIn.getItemInHand(handIn);
 
-        worldIn.playSound((PlayerEntity)null, playerIn.getPosX(), playerIn.getPosY(), playerIn.getPosZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
+        worldIn.playSound((PlayerEntity)null, playerIn.getX(), playerIn.getY(), playerIn.getZ(), SoundEvents.ARROW_SHOOT, SoundCategory.NEUTRAL, 0.5F, 0.4F / (random.nextFloat() * 0.4F + 0.8F));
 
-        if (!worldIn.isRemote) {
+        if (!worldIn.isClientSide) {
             ItemStack stack = itemStackIn.copy();
             stack.setCount(1);
-            ItemEntity entityitem = new ItemEntity(playerIn.world, playerIn.getPosX(), (playerIn.getPosY() - 0.30000001192092896D) + playerIn.getEyeHeight(), playerIn.getPosZ(), stack);
-            entityitem.setPickupDelay(20);
-            this.setHeadingFromThrower(entityitem, playerIn, playerIn.rotationPitch, playerIn.rotationYaw, 0.0F, 1.2F, 1.0F);
-            worldIn.addEntity(entityitem);
+            ItemEntity entityitem = new ItemEntity(playerIn.level, playerIn.getX(), (playerIn.getY() - 0.30000001192092896D) + playerIn.getEyeHeight(), playerIn.getZ(), stack);
+            entityitem.setPickUpDelay(20);
+            this.setHeadingFromThrower(entityitem, playerIn, playerIn.xRot, playerIn.yRot, 0.0F, 1.2F, 1.0F);
+            worldIn.addFreshEntity(entityitem);
         }
 
-        if (!playerIn.abilities.isCreativeMode)
+        if (!playerIn.abilities.instabuild)
             itemStackIn.shrink(1);
 
-        playerIn.addStat(Stats.ITEM_USED.get(this));
+        playerIn.awardStat(Stats.ITEM_USED.get(this));
         return new ActionResult<ItemStack>(ActionResultType.SUCCESS, itemStackIn);
 
     }
 
     public void setThrowableHeading(ItemEntity entityItem, double x, double y, double z, float velocity, float inaccuracy) {
         Vector3d vec3d = (new Vector3d(x, y, z)).normalize().add(random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy, random.nextGaussian() * 0.0075F * inaccuracy).scale(velocity);
-        entityItem.setMotion(vec3d);
+        entityItem.setDeltaMovement(vec3d);
         float f = MathHelper.sqrt(vec3d.x * vec3d.x + vec3d.z * vec3d.z);
-        entityItem.rotationYaw = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
-        entityItem.rotationPitch = (float)(MathHelper.atan2(vec3d.y, f) * (180F / (float)Math.PI));
-        entityItem.prevRotationYaw =  entityItem.rotationYaw;
-        entityItem.prevRotationPitch = entityItem.rotationPitch;
+        entityItem.yRot = (float)(MathHelper.atan2(vec3d.x, vec3d.z) * (180F / (float)Math.PI));
+        entityItem.xRot = (float)(MathHelper.atan2(vec3d.y, f) * (180F / (float)Math.PI));
+        entityItem.yRotO =  entityItem.yRot;
+        entityItem.xRotO = entityItem.xRot;
     }
 }

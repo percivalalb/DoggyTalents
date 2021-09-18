@@ -26,7 +26,7 @@ public class DogTextureServer {
      * Get the dedicated servers cache location
      */
     public File getServerFolder() {
-        return new File(ServerLifecycleHooks.getCurrentServer().getDataDirectory(), "dog_skins");
+        return new File(ServerLifecycleHooks.getCurrentServer().getServerDirectory(), "dog_skins");
     }
 
     @Nullable

@@ -190,7 +190,7 @@ public class Util {
         if (obj instanceof String) {
             // Returns null when namespace or path contain invalid
             // charcters
-            return ResourceLocation.tryCreate((String) obj);
+            return ResourceLocation.tryParse((String) obj);
         }
 
         if (obj instanceof IForgeRegistryEntry) {

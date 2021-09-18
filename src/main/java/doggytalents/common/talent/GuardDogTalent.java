@@ -26,44 +26,44 @@ public class GuardDogTalent extends TalentInstance {
 
     @Override
     public void init(AbstractDogEntity dogIn) {
-        this.cooldown = dogIn.ticksExisted;
+        this.cooldown = dogIn.tickCount;
     }
 
     @Override
     public void writeToNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
         super.writeToNBT(dogIn, compound);
-        int timeLeft = this.cooldown - dogIn.ticksExisted;
+        int timeLeft = this.cooldown - dogIn.tickCount;
         compound.putInt("guardtime", timeLeft);
     }
 
     @Override
     public void readFromNBT(AbstractDogEntity dogIn, CompoundNBT compound) {
         super.readFromNBT(dogIn, compound);
-        this.cooldown = dogIn.ticksExisted + compound.getInt("guardtime");
+        this.cooldown = dogIn.tickCount + compound.getInt("guardtime");
     }
 
     @Override
     public ActionResult<Float> attackEntityFrom(AbstractDogEntity dogIn, DamageSource damageSource, float damage) {
-        if (dogIn.world.isRemote) {
-            return ActionResult.resultPass(damage);
+        if (dogIn.level.isClientSide) {
+            return ActionResult.pass(damage);
         }
 
-        Entity entity = damageSource.getTrueSource();
+        Entity entity = damageSource.getEntity();
 
         if (entity != null) {
-            int timeLeft =  this.cooldown - dogIn.ticksExisted;
+            int timeLeft =  this.cooldown - dogIn.tickCount;
             if (timeLeft <= 0) {
                 int blockChance = this.level() + (this.level() >= 5 ? 1 : 0);
 
-                if (dogIn.getRNG().nextInt(12) < blockChance) {
-                    this.cooldown = dogIn.ticksExisted + 10;
-                    dogIn.playSound(SoundEvents.ENTITY_ITEM_BREAK, dogIn.getSoundVolume() / 2, (dogIn.getRNG().nextFloat() - dogIn.getRNG().nextFloat()) * 0.2F + 1.0F);
-                    return ActionResult.resultFail(0F);
+                if (dogIn.getRandom().nextInt(12) < blockChance) {
+                    this.cooldown = dogIn.tickCount + 10;
+                    dogIn.playSound(SoundEvents.ITEM_BREAK, dogIn.getSoundVolume() / 2, (dogIn.getRandom().nextFloat() - dogIn.getRandom().nextFloat()) * 0.2F + 1.0F);
+                    return ActionResult.fail(0F);
                 }
             }
         }
 
-        return ActionResult.resultPass(damage);
+        return ActionResult.pass(damage);
     }
 
 }

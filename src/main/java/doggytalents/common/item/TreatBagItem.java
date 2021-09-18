@@ -42,24 +42,24 @@ import net.minecraft.item.Item.Properties;
 
 public class TreatBagItem extends Item implements IDogFoodHandler {
 
-    private Cache<String> contentsTranslationKey = Cache.make(() -> this.getTranslationKey() + ".contents");
+    private Cache<String> contentsTranslationKey = Cache.make(() -> this.getDescriptionId() + ".contents");
 
     public TreatBagItem(Properties properties) {
         super(properties);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
+    public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+        ItemStack stack = playerIn.getItemInHand(handIn);
 
-        if (worldIn.isRemote) {
+        if (worldIn.isClientSide) {
             return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
         }
         else {
             if (playerIn instanceof ServerPlayerEntity && !(playerIn instanceof FakePlayer)) {
                 ServerPlayerEntity serverPlayer = (ServerPlayerEntity) playerIn;
 
-                Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.currentItem);
+                Screens.openTreatBagScreen(serverPlayer, stack, playerIn.inventory.selected);
             }
 
             return new ActionResult<ItemStack>(ActionResultType.SUCCESS, stack);
@@ -68,14 +68,14 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+    public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+        super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
         IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         List<ItemStack> condensedContents = ItemUtil.getContentOverview(bagInventory);
 
         condensedContents.forEach((food) -> {
-            tooltip.add(new TranslationTextComponent(this.contentsTranslationKey.get(), food.getCount(), new TranslationTextComponent(food.getTranslationKey())));
+            tooltip.add(new TranslationTextComponent(this.contentsTranslationKey.get(), food.getCount(), new TranslationTextComponent(food.getDescriptionId())));
         });
     }
 
@@ -102,7 +102,7 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !ItemStack.areItemsEqual(oldStack, newStack);
+        return !ItemStack.isSame(oldStack, newStack);
     }
 
     @Override

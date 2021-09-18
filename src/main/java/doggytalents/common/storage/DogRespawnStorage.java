@@ -38,10 +38,10 @@ public class DogRespawnStorage extends WorldSavedData {
             throw new RuntimeException("Tried to access dog respawn data from the client. This should not happen...");
         }
 
-        ServerWorld overworld = world.getServer().getWorld(World.OVERWORLD);
+        ServerWorld overworld = world.getServer().getLevel(World.OVERWORLD);
 
-        DimensionSavedDataManager storage = overworld.getSavedData();
-        return storage.getOrCreate(DogRespawnStorage::new, Constants.STORAGE_DOG_RESPAWN);
+        DimensionSavedDataManager storage = overworld.getDataStorage();
+        return storage.computeIfAbsent(DogRespawnStorage::new, Constants.STORAGE_DOG_RESPAWN);
     }
 
     public Stream<DogRespawnData> getDogs(@Nonnull UUID ownerId) {
@@ -69,7 +69,7 @@ public class DogRespawnStorage extends WorldSavedData {
             DogRespawnData storage = this.respawnDataMap.remove(uuid);
 
             // Mark dirty so changes are saved
-            this.markDirty();
+            this.setDirty();
             return storage;
         }
 
@@ -78,14 +78,14 @@ public class DogRespawnStorage extends WorldSavedData {
 
     @Nullable
     public DogRespawnData putData(DogEntity dogIn) {
-        UUID uuid = dogIn.getUniqueID();
+        UUID uuid = dogIn.getUUID();
 
         DogRespawnData storage = new DogRespawnData(this, uuid);
         storage.populate(dogIn);
 
         this.respawnDataMap.put(uuid, storage);
         // Mark dirty so changes are saved
-        this.markDirty();
+        this.setDirty();
         return storage;
     }
 
@@ -98,7 +98,7 @@ public class DogRespawnStorage extends WorldSavedData {
     }
 
     @Override
-    public void read(CompoundNBT nbt) {
+    public void load(CompoundNBT nbt) {
         this.respawnDataMap.clear();
 
         ListNBT list = nbt.getList("respawnData", TAG_COMPOUND);
@@ -121,7 +121,7 @@ public class DogRespawnStorage extends WorldSavedData {
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
+    public CompoundNBT save(CompoundNBT compound) {
         ListNBT list = new ListNBT();
 
         for (Map.Entry<UUID, DogRespawnData> entry : this.respawnDataMap.entrySet()) {

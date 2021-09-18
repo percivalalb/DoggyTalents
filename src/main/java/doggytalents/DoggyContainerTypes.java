@@ -27,25 +27,25 @@ public class DoggyContainerTypes {
 
     public static final RegistryObject<ContainerType<FoodBowlContainer>> FOOD_BOWL = register("food_bowl", (windowId, inv, data) -> {
         BlockPos pos = data.readBlockPos();
-        return new FoodBowlContainer(windowId, inv.player.world, pos, inv, inv.player);
+        return new FoodBowlContainer(windowId, inv.player.level, pos, inv, inv.player);
     });
     public static final RegistryObject<ContainerType<PackPuppyContainer>> PACK_PUPPY = register("pack_puppy", (windowId, inv, data) -> {
-        Entity entity = inv.player.world.getEntityByID(data.readInt());
+        Entity entity = inv.player.level.getEntity(data.readInt());
         return entity instanceof DogEntity ? new PackPuppyContainer(windowId, inv, (DogEntity) entity) : null;
     });
     public static final RegistryObject<ContainerType<TreatBagContainer>> TREAT_BAG = register("treat_bag", (windowId, inv, data) -> {
         int slotId = data.readByte();
-        return new TreatBagContainer(windowId, inv, slotId, data.readItemStack());
+        return new TreatBagContainer(windowId, inv, slotId, data.readItem());
     });
     public static final RegistryObject<ContainerType<DogInventoriesContainer>> DOG_INVENTORIES = register("dog_inventories", (windowId, inv, data) -> {
         int noDogs = data.readInt();
         List<DogEntity> dogs = new ArrayList<>(noDogs);
         IntArray array = new IntArray(noDogs);
         for (int i = 0; i < noDogs; i++) {
-            Entity entity = inv.player.world.getEntityByID(data.readInt());
+            Entity entity = inv.player.level.getEntity(data.readInt());
             if (entity instanceof DogEntity) {
                 dogs.add((DogEntity) entity);
-                array.set(i, entity.getEntityId());
+                array.set(i, entity.getId());
             }
         }
         return !dogs.isEmpty() ? new DogInventoriesContainer(windowId, inv, array) : null;

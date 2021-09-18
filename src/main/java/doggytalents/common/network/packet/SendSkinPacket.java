@@ -53,7 +53,7 @@ public class SendSkinPacket implements IPacket<SendSkinData> {
                     DogTextureManager.INSTANCE.setRequestFailed(hash);
                 }
             } else if (side.isServer()) {
-                Entity target = ctx.get().getSender().world.getEntityByID(data.entityId);
+                Entity target = ctx.get().getSender().level.getEntity(data.entityId);
                 if (!(target instanceof DogEntity)) {
                     return;
                 }

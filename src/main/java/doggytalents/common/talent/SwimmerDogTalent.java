@@ -20,11 +20,11 @@ public class SwimmerDogTalent extends TalentInstance {
 
     @Override
     public void livingTick(AbstractDogEntity dogIn) {
-        if (this.level() >= 5 && dogIn.isBeingRidden() && dogIn.canBeSteered()) {
+        if (this.level() >= 5 && dogIn.isVehicle() && dogIn.canBeControlledByRider()) {
             // canBeSteered checks entity is LivingEntity
             LivingEntity rider = (LivingEntity) dogIn.getControllingPassenger();
             if (rider.isInWater()) {
-                rider.addPotionEffect(new EffectInstance(Effects.NIGHT_VISION, 80, 1, true, false));
+                rider.addEffect(new EffectInstance(Effects.NIGHT_VISION, 80, 1, true, false));
             }
         }
     }
@@ -41,19 +41,19 @@ public class SwimmerDogTalent extends TalentInstance {
 
     @Override
     public ActionResult<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
-        if (this.level() > 0 && dogIn.getRNG().nextInt(this.level() + 1) > 0) {
-            return ActionResult.resultSuccess(air);
+        if (this.level() > 0 && dogIn.getRandom().nextInt(this.level() + 1) > 0) {
+            return ActionResult.success(air);
         }
 
-        return ActionResult.resultPass(air);
+        return ActionResult.pass(air);
     }
 
     @Override
     public ActionResult<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
         if (this.level() > 0) {
-            return ActionResult.resultPass(currentAir + this.level());
+            return ActionResult.pass(currentAir + this.level());
         }
 
-        return ActionResult.resultPass(currentAir);
+        return ActionResult.pass(currentAir);
     }
 }

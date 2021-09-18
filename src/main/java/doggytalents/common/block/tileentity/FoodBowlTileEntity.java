@@ -34,7 +34,7 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
         @Override
         protected void onContentsChanged(int slot) {
             // When contents change mark needs save to disc
-            FoodBowlTileEntity.this.markDirty();
+            FoodBowlTileEntity.this.setChanged();
         }
 
         @Override
@@ -52,14 +52,14 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
     }
 
     @Override
-    public void read(BlockState state, CompoundNBT compound) {
-        super.read(state, compound);
+    public void load(BlockState state, CompoundNBT compound) {
+        super.load(state, compound);
         this.inventory.deserializeNBT(compound);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound) {
-        super.write(compound);
+    public CompoundNBT save(CompoundNBT compound) {
+        super.save(compound);
         compound.merge(this.inventory.serializeNBT());
         return compound;
     }
@@ -70,13 +70,13 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
         //Only run update code every 5 ticks (0.25s)
         if (++this.timeoutCounter < 5) { return; }
 
-        List<DogEntity> dogList = this.world.getEntitiesWithinAABB(DogEntity.class, new AxisAlignedBB(this.pos).grow(5, 5, 5));
+        List<DogEntity> dogList = this.level.getEntitiesOfClass(DogEntity.class, new AxisAlignedBB(this.worldPosition).inflate(5, 5, 5));
 
         for (DogEntity dog : dogList) {
             //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
             UUID placerId = this.getPlacerId();
-            if (placerId != null && placerId.equals(dog.getOwnerId()) && !dog.getBowlPos().isPresent()) {
-                dog.setBowlPos(this.pos);
+            if (placerId != null && placerId.equals(dog.getOwnerUUID()) && !dog.getBowlPos().isPresent()) {
+                dog.setBowlPos(this.worldPosition);
             }
 
             if (dog.getDogHunger() < dog.getMaxHunger() / 2) {
@@ -107,6 +107,6 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements INamedContai
 
     @Override
     public Container createMenu(int windowId, PlayerInventory playerInventory, PlayerEntity playerIn) {
-        return new FoodBowlContainer(windowId, this.world, this.pos, playerInventory, playerIn);
+        return new FoodBowlContainer(windowId, this.level, this.worldPosition, playerInventory, playerIn);
     }
 }

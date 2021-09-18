@@ -15,12 +15,12 @@ public class RequestSkinPacket implements IPacket<RequestSkinData> {
 
     @Override
     public void encode(RequestSkinData data, PacketBuffer buf) {
-        buf.writeString(data.hash, 128);
+        buf.writeUtf(data.hash, 128);
     }
 
     @Override
     public RequestSkinData decode(PacketBuffer buf) {
-        return new RequestSkinData(buf.readString(128));
+        return new RequestSkinData(buf.readUtf(128));
     }
 
     @Override

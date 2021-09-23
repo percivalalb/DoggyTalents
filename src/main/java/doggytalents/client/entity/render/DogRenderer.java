@@ -27,7 +27,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
         this.addLayer(new BoneLayer(this));
-
+    
     }
 
     @Override

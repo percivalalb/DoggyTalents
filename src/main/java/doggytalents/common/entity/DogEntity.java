@@ -466,7 +466,6 @@ public class DogEntity extends AbstractDogEntity {
 
             if (this.RoaringGaleTick > 0) {
                 --this.RoaringGaleTick;
-                DoggyTalentsAPI.LOGGER.info(Integer.toString(this.RoaringGaleTick));
             }
 
             for (IDogAlteration alter : this.alterations) {

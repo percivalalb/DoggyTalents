@@ -180,11 +180,9 @@ public class WhistleItem extends Item {
                 if (!world.isClientSide) {
                     List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
-                        DoggyTalentsAPI.LOGGER.info("in empty");
                         player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
                         List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getRoaringGaleCooldown() == 0).collect(Collectors.toList());
-                        DoggyTalentsAPI.LOGGER.info(cdDogs.toString());
                         if (cdDogs.isEmpty()) {
                             player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {

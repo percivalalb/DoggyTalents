@@ -132,13 +132,15 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public ITextComponent getOwnerName() {
         if (this.dogUUID == null || this.level == null) { return null; }
 
-        ITextComponent name = DogLocationStorage
+        DogLocationData locData = DogLocationStorage
                 .get(this.level)
-                .getData(this.dogUUID)
-                .getName(this.level);
+                .getData(this.dogUUID);
 
-        if (name != null) {
-            this.ownerName = name;
+        if (locData != null) {
+            ITextComponent text = locData.getName(this.level);
+            if (text != null) {
+                this.ownerName = name;
+            }
         }
 
         return this.ownerName;

@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import doggytalents.DoggySounds;
 import doggytalents.DoggyTalents;
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
@@ -175,23 +176,23 @@ public class WhistleItem extends Item {
                 }
 
                 return new ActionResult<>(ActionResultType.CONSUME, player.getItemInHand(hand));
-            } else if (mode == 6) {
+            } else if (mode == 6) { //Gale
                 if (!world.isClientSide) {
                     List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
+                        DoggyTalentsAPI.LOGGER.info("in empty");
                         player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
-                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0) == 0).collect(Collectors.toList());
+                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getRoaringGaleCooldown() == 0).collect(Collectors.toList());
                         if (cdDogs.isEmpty()) {
                             player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
                             for (DogEntity dog : dogsList) {
                                 int level = dog.getLevel(DoggyTalents.ROARING_GALE);
-                                int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0);
-
-                                roarCooldown = level == 5 ? 60 : 100;
+                                int roarCooldown = level == 5 ? 60 : 100;
 
                                 byte damage = (byte)(level > 4 ? level * 2 : level);
+                            
 
                                 /*
                                  * If level = 1, set duration to  20 ticks (1 second); level = 2, set duration to 24 ticks (1.2 seconds)
@@ -220,7 +221,7 @@ public class WhistleItem extends Item {
                                     roarCooldown /= 2;
                                 }
 
-                                dog.setData(RoaringGaleTalent.COOLDOWN, roarCooldown);
+                                dog.setRoaringGaleCooldown(roarCooldown);
                             }
                         }
                     }

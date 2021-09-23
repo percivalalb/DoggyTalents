@@ -13,13 +13,11 @@ import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.monster.PhantomEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 
-import java.text.DecimalFormat;
 import java.util.Optional;
 
 public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
@@ -29,6 +27,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
         this.addLayer(new DogTalentLayer(this));
         this.addLayer(new DogAccessoryLayer(this));
         this.addLayer(new BoneLayer(this));
+    
     }
 
     @Override

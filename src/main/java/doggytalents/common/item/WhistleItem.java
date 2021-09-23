@@ -184,6 +184,7 @@ public class WhistleItem extends Item {
                         player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
                         List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getRoaringGaleCooldown() == 0).collect(Collectors.toList());
+                        DoggyTalentsAPI.LOGGER.info(cdDogs.toString());
                         if (cdDogs.isEmpty()) {
                             player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {

@@ -26,7 +26,6 @@ import doggytalents.DoggyItems;
 import doggytalents.DoggySerializers;
 import doggytalents.DoggyTags;
 import doggytalents.DoggyTalents2;
-import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.enu.WetSource;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.feature.DogLevel;
@@ -178,7 +177,6 @@ public class DogEntity extends AbstractDogEntity {
     private int prevHungerTick;
     private int healingTick;
     private int prevHealingTick;
-    private int RoaringGaleTick = 0;
 
     private float headRotationCourse;
     private float headRotationCourseOld;
@@ -344,7 +342,6 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void tick() {
         super.tick();
-        
 
         if (this.isAlive()) {
             this.headRotationCourseOld = this.headRotationCourse;
@@ -403,7 +400,6 @@ public class DogEntity extends AbstractDogEntity {
             // On server side
             if (!this.level.isClientSide) {
 
-
                 // Every 2 seconds
                 if (this.tickCount % 40 == 0) {
                     DogLocationStorage.get(this.level).getOrCreateData(this).update(this);
@@ -412,19 +408,10 @@ public class DogEntity extends AbstractDogEntity {
                         this.setOwnersName(this.getOwner().getName());
                     }
                 }
-                
             }
         }
 
         this.alterations.forEach((alter) -> alter.tick(this));
-    }
-
-    public void setRoaringGaleCooldown(int tick) {
-        this.RoaringGaleTick = tick;
-    }
-
-    public int getRoaringGaleCooldown() {
-        return this.RoaringGaleTick;
     }
 
     @Override
@@ -462,10 +449,6 @@ public class DogEntity extends AbstractDogEntity {
 
             if (this.isInSittingPose()) {
                 this.healingTick += 4;
-            }
-
-            if (this.RoaringGaleTick > 0) {
-                --this.RoaringGaleTick;
             }
 
             for (IDogAlteration alter : this.alterations) {

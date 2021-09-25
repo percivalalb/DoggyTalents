@@ -2255,4 +2255,8 @@ public class DogEntity extends AbstractDogEntity {
     public BlockPos getTargetBlock() {
         return this.targetBlock;
     }
+
+    public void teleportToOwner() {
+        EntityUtil.tryToTeleportNearEntity(this, this.getNavigation(), this.getOwner(), 4);
+    }
 }

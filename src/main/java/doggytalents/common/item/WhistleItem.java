@@ -28,6 +28,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -93,7 +95,9 @@ public class WhistleItem extends Item {
                 if (!world.isClientSide) {
                     for (DogEntity dog : dogsList) {
                         if (!dog.isInSittingPose() && dog.getMode() != EnumMode.WANDERING) {
-                            //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
+                            if (dog.distanceToSqr(dog.getOwner()) > 16) { // Only heel if distanceTo < dog.DistStop
+                                dog.teleportToOwner();
+                            }
                             successful = true;
                         }
                     }

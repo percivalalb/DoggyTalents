@@ -11,6 +11,7 @@ import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
+import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,6 +29,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -93,7 +96,10 @@ public class WhistleItem extends Item {
                 if (!world.isClientSide) {
                     for (DogEntity dog : dogsList) {
                         if (!dog.isInSittingPose() && dog.getMode() != EnumMode.WANDERING) {
-                            //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
+                            if (dog.distanceToSqr(dog.getOwner()) > 16) { // Only heel if distanceTo < dog.DistStop
+                                //TODO : Due to this using the same teleport function as the teleport goal itself, this currently only 60% working
+                                EntityUtil.tryToTeleportNearEntity(dog, dog.getNavigation(), dog.getOwner(), 4);
+                            }
                             successful = true;
                         }
                     }

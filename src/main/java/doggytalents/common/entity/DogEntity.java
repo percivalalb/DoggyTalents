@@ -2255,4 +2255,6 @@ public class DogEntity extends AbstractDogEntity {
     public BlockPos getTargetBlock() {
         return this.targetBlock;
     }
+
+
 }

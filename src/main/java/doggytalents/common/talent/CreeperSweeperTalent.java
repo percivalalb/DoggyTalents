@@ -5,6 +5,7 @@ import java.util.List;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
+import doggytalents.common.entity.DogEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.CreeperEntity;
@@ -22,6 +23,7 @@ public class CreeperSweeperTalent extends TalentInstance {
     @Override
     public void init(AbstractDogEntity dogIn) {
         this.cooldown = dogIn.tickCount;
+        ((DogEntity) dogIn).getBerserkerGoal().setNewSelector(null);
     }
 
     @Override

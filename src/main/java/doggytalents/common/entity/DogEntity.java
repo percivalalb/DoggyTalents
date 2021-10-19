@@ -190,6 +190,8 @@ public class DogEntity extends AbstractDogEntity {
 
     protected BlockPos targetBlock;
 
+    private BerserkerModeGoal<?> berserkerModeGoal;
+
     public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
         super(type, worldIn);
         this.setTame(false);
@@ -238,8 +240,13 @@ public class DogEntity extends AbstractDogEntity {
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, AnimalEntity.class, false, TARGET_ENTITIES));
         //this.targetSelector.addGoal(4, new NonTamedTargetGoal<>(this, TurtleEntity.class, false, TurtleEntity.TARGET_DRY_BABY));
         this.targetSelector.addGoal(5, new NearestAttackableTargetGoal<>(this, AbstractSkeletonEntity.class, false));
-        this.targetSelector.addGoal(6, new BerserkerModeGoal<>(this, MonsterEntity.class, false));
+        this.berserkerModeGoal = new BerserkerModeGoal<>(this, MonsterEntity.class, false);
+        this.targetSelector.addGoal(6, this.berserkerModeGoal);
         this.targetSelector.addGoal(6, new GuardModeGoal(this, false));
+    }
+
+    public BerserkerModeGoal<?> getBerserkerGoal() {
+        return this.berserkerModeGoal;
     }
 
     @Override

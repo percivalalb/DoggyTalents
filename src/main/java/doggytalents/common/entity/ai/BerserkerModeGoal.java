@@ -10,7 +10,9 @@ public class BerserkerModeGoal<T extends LivingEntity> extends NearestAttackable
     private final DogEntity dog;
 
     public BerserkerModeGoal(DogEntity dogIn, Class<T> targetClassIn, boolean checkSight) {
-        super(dogIn, targetClassIn, checkSight, false);
+        super(dogIn, targetClassIn, 10, checkSight, false,   //Set the third param to 10 because it is the default param if not specified
+            (target) -> dogIn.wantsToAttack(target, dogIn.getOwner())  //Add predicate whick use the DogEntity::alterations dependent DogEntity::wantsToAttack method to filter out the target
+        );
         this.dog = dogIn;
     }
 

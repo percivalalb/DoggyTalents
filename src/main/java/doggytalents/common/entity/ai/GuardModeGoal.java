@@ -12,7 +12,9 @@ public class GuardModeGoal extends NearestAttackableTargetGoal<MonsterEntity> {
     private LivingEntity owner;
 
     public GuardModeGoal(DogEntity dogIn, boolean checkSight) {
-        super(dogIn, MonsterEntity.class, 0, checkSight, false, null);
+        super(dogIn, MonsterEntity.class, 0, checkSight, false,
+            (target) -> dogIn.wantsToAttack(target, dogIn.getOwner())  //Add predicate whick use the DogEntity::alterations dependent DogEntity::wantsToAttack method to filter out the target
+        );
         this.dog = dogIn;
     }
 

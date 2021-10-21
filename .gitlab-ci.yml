@@ -12,10 +12,12 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x ./gradlew
 
-cache:
+cache: &global_cache
+  key: $CI_COMMIT_REF_SLUG
   paths:
-    - .gradle
-    - build
+    - .gradle/
+    - build/
+  policy: pull-push
 
 build:
   stage: build
@@ -25,9 +27,17 @@ build:
     paths:
       - 'build/libs/*.jar'
     expire_in: 1 week
+  except:
+    - tags
 
 publish:
   stage: publish
+  cache:
+    <<: *global_cache
+    policy: pull
   script:
     - './gradlew curseforge'
-  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^\d\.\d{1,3}(?:\.(?:\d{1,3}|x))?$/'
+      when: always
+    - when: never

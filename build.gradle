@@ -8,6 +8,7 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.71.4"
         classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
+        classpath "org.ajoberstar.grgit:grgit-gradle:4.1.0"
     }
 }
 apply plugin: 'net.minecraftforge.gradle'
@@ -16,10 +17,18 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'com.matthewprenger.cursegradle'
 apply plugin: 'se.bjurr.gitchangelog.git-changelog-gradle-plugin'
+apply plugin: 'org.ajoberstar.grgit'
 
-version = project.output_version
-group = 'com.github.percivalalb' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+def branch = grgit.branch.current()
+println "On branch: ${branch.fullName}"
+println "Pipeline branch: " + (System.getenv('CI_COMMIT_BRANCH') ?: 'NONE')
+
+group = 'com.github.percivalalb'
 archivesBaseName = "DoggyTalents-${project.target_mc_version}"
+version = (grgit.describe(longDescr: true, tags: true) ?: '0-0-0').split('-').with { it -> "${it[0]}.${it[1]}" }
+
+println "Version: ${version}"
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 sourceSets {
     api
@@ -163,8 +172,7 @@ test {
     useJUnitPlatform()
 }
 
-import se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask
-task makeChangelog(type: GitChangelogTask) {
+task makeChangelog(type: se.bjurr.gitchangelog.plugin.gradle.GitChangelogTask) {
     file = new File("build/changelog.html")
     untaggedName = "Current release ${project.version}"
     fromCommit = 'f594ba81ba02d04a2189b6cf15216d2afb6943ba'

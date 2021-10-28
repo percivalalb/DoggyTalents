@@ -686,7 +686,7 @@ public class DogEntity extends AbstractDogEntity {
 
         // Stop dogs being able to attack creepers. If the dog has lvl 5 creeper
         // sweeper then we will return true in the for loop above.
-        if (target instanceof Creeper) {
+        if (target instanceof CreeperEntity) {
             return false;
         }
 

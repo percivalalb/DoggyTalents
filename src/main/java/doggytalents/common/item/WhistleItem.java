@@ -184,15 +184,15 @@ public class WhistleItem extends Item {
                     if (roarDogs.isEmpty()) {
                         player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
-                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0) == 0).collect(Collectors.toList());
+                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, dog.tickCount) <= dog.tickCount).collect(Collectors.toList());
                         if (cdDogs.isEmpty()) {
                             player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
+                            boolean anyHits = false;
+
                             for (DogEntity dog : dogsList) {
                                 int level = dog.getLevel(DoggyTalents.ROARING_GALE);
-                                int roarCooldown = dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, 0);
-
-                                roarCooldown = level == 5 ? 60 : 100;
+                                int roarCooldown = dog.tickCount;
 
                                 byte damage = (byte)(level > 4 ? level * 2 : level);
 
@@ -218,12 +218,18 @@ public class WhistleItem extends Item {
 
                                 if (hit) {
                                     dog.playSound(SoundEvents.WOLF_GROWL, 0.7F, 1.0F);
+                                    roarCooldown += level >= 5 ? 60 : 100;
+                                    anyHits = true;
                                 } else {
                                     dog.playSound(SoundEvents.WOLF_AMBIENT, 1F, 1.2F);
-                                    roarCooldown /= 2;
+                                    roarCooldown += level >= 5 ? 30 : 50;
                                 }
 
                                 dog.setData(RoaringGaleTalent.COOLDOWN, roarCooldown);
+                            }
+
+                            if (!anyHits) {
+                                player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.miss"), true);
                             }
                         }
                     }

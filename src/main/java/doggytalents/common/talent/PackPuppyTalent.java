@@ -21,6 +21,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.List;
@@ -28,8 +30,7 @@ import java.util.function.Predicate;
 
 public class PackPuppyTalent extends TalentInstance {
 
-    @CapabilityInject(PackPuppyItemHandler.class)
-    public static Capability<PackPuppyItemHandler> PACK_PUPPY_CAPABILITY = null;
+    public static Capability<PackPuppyItemHandler> PACK_PUPPY_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});;
 
     private PackPuppyItemHandler packPuppyHandler;
     private LazyOptional<?> lazyPackPuppyHandler;

@@ -10,6 +10,7 @@ import doggytalents.common.config.ConfigValues;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
+import doggytalents.common.util.EntityUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.PlayerEntity;
@@ -92,7 +93,9 @@ public class WhistleItem extends Item {
                 if (!world.isClientSide) {
                     for (DogEntity dog : dogsList) {
                         if (!dog.isInSittingPose() && dog.getMode() != EnumMode.WANDERING) {
-                            //TODO DogUtil.teleportDogToOwner(player, dog, world, dog.getNavigator());
+                            if (dog.distanceToSqr(dog.getOwner()) > 9) { // Only heel if less than 3 blocks away
+                                EntityUtil.tryToTeleportNearEntity(dog, dog.getNavigation(), dog.getOwner(), 2);
+                            }
                             successful = true;
                         }
                     }

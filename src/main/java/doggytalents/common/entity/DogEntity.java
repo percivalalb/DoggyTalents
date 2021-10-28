@@ -684,6 +684,12 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
+        // Stop dogs being able to attack creepers. If the dog has lvl 5 creeper
+        // sweeper then we will return true in the for loop above.
+        if (target instanceof Creeper) {
+            return false;
+        }
+
         return super.canAttack(target);
     }
 
@@ -701,6 +707,12 @@ public class DogEntity extends AbstractDogEntity {
             } else if (result == ActionResultType.FAIL) {
                 return false;
             }
+        }
+
+        // Stop dogs being able to attack creepers. If the dog has lvl 5 creeper
+        // sweeper then we will return true in the for loop above.
+        if (entityType == EntityType.CREEPER) {
+            return false;
         }
 
         return super.canAttackType(entityType);
@@ -723,6 +735,8 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
+        // Stop dogs being able to attack creepers. If the dog has lvl 5 creeper
+        // sweeper then we will return true in the for loop above.
         if (target instanceof CreeperEntity || target instanceof GhastEntity) {
             return false;
         }

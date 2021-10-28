@@ -229,7 +229,7 @@ public class WhistleItem extends Item {
                             }
 
                             if (!anyHits) {
-                                player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.miss"), true);
+                                player.displayClientMessage(new TranslationTextComponent("talent.doggytalents.roaring_gale.miss"), true);
                             }
                         }
                     }

@@ -196,6 +196,9 @@ curseforge {
         }
         addArtifact apiJar
     }
+    options {
+        detectNewerJava = true
+    }
 }
 
 // Must be done in afterEvaluate as the specific curseforge$id

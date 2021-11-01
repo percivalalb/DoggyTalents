@@ -597,8 +597,33 @@ public class DogEntity extends AbstractDogEntity {
                 return false;
             }
         }
+    
 
-        return super.causeFallDamage(distance, damageMultiplier);
+        //Forge Stuffs
+        float[] ret = net.minecraftforge.common.ForgeHooks.onLivingFall(this, distance, damageMultiplier);
+        if (ret == null) return false;
+        distance = ret[0];
+        damageMultiplier = ret[1];
+  
+        
+        //Calculate fall damage first
+        int i = this.calculateFallDamage(distance, damageMultiplier);
+
+        if (i > 0) {
+            //if the dog do actually take fall damage then hurt the passagers
+            if (this.isVehicle()) {
+                for(Entity e : this.getPassengers()) {
+                   e.hurt(DamageSource.FALL, (float)i);
+                }
+            }
+
+           this.playSound(this.getFallDamageSound(i), 1.0F, 1.0F);
+           this.playBlockFallSound();
+           this.hurt(DamageSource.FALL, (float)i);
+           return true;
+        } else {
+           return false;
+        }
     }
 
     // TODO

@@ -597,23 +597,19 @@ public class DogEntity extends AbstractDogEntity {
                 return false;
             }
         }
-    
 
-        //Forge Stuffs
+        // Start: Logic copied from the super call and altered to apply the reduced fall damage to passengers too. #358
         float[] ret = net.minecraftforge.common.ForgeHooks.onLivingFall(this, distance, damageMultiplier);
         if (ret == null) return false;
         distance = ret[0];
         damageMultiplier = ret[1];
-  
-        
-        //Calculate fall damage first
+
         int i = this.calculateFallDamage(distance, damageMultiplier);
 
         if (i > 0) {
-            //if the dog do actually take fall damage then hurt the passagers
             if (this.isVehicle()) {
                 for(Entity e : this.getPassengers()) {
-                   e.hurt(DamageSource.FALL, (float)i);
+                   e.hurt(DamageSource.FALL, i);
                 }
             }
 
@@ -624,6 +620,7 @@ public class DogEntity extends AbstractDogEntity {
         } else {
            return false;
         }
+        // End: Logic copied from the super call and altered to apply the reduced fall damage to passengers too. #358
     }
 
     // TODO

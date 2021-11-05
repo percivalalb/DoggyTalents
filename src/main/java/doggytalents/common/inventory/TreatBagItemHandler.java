@@ -1,5 +1,8 @@
 package doggytalents.common.inventory;
 
+import javax.annotation.Nonnull;
+
+import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +31,6 @@ public class TreatBagItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return FoodHandler.isFood(stack).isPresent();
+        return DoggyTags.TREATS.contains(stack.getItem()) || FoodHandler.isFood(stack).isPresent();
     }
 }

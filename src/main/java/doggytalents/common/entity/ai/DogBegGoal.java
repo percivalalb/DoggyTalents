@@ -71,6 +71,10 @@ public class DogBegGoal extends Goal {
                 return true;
             }
 
+            if (DoggyTags.TREATS.contains(itemstack.getItem())) {
+                return true;
+            }
+
             if (FoodHandler.isFood(itemstack).isPresent()) {
                 return true;
             }

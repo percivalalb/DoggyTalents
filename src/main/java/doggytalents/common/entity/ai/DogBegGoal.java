@@ -71,6 +71,12 @@ public class DogBegGoal extends Goal {
                 return true;
             }
 
+            //Make dog beg when holding treat again, like in DoggyTalents 1
+            if (itemstack.getItem().is(DoggyTags.TREATS)) {
+                return true;
+            }
+            //?1 : Or just instanceof ?? 
+
             if (FoodHandler.isFood(itemstack).isPresent()) {
                 return true;
             }

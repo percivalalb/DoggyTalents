@@ -2,6 +2,7 @@ package doggytalents.common.inventory;
 
 import javax.annotation.Nonnull;
 
+import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -28,6 +29,8 @@ public class TreatBagItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return FoodHandler.isFood(stack).isPresent();
+        return stack.getItem().is(DoggyTags.TREATS) || FoodHandler.isFood(stack).isPresent();
+        //?1 : Or just stack.getItem() instanceof TreatItem ?
+        //?2 : Are you planning on making isFood() on TreatItem returns true ? 
     }
 }

@@ -2141,6 +2141,10 @@ public class DogEntity extends AbstractDogEntity {
 
                 this.animationSpeed += (f4 - this.animationSpeed) * 0.4F;
                 this.animationPosition += this.animationSpeed;
+
+                if (this.onClimbable()) {
+                    this.fallDistance = 0.0F;
+                }
              } else {
                  this.maxUpStep = 0.5F; // Default
                  this.flyingSpeed = 0.02F; // Default

@@ -5,6 +5,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
@@ -130,13 +131,15 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public Component getOwnerName() {
         if (this.dogUUID == null || this.level == null) { return null; }
 
-        Component name = DogLocationStorage
+        DogLocationData locData = DogLocationStorage
                 .get(this.level)
-                .getData(this.dogUUID)
-                .getName(this.level);
+                .getData(this.dogUUID);
 
-        if (name != null) {
-            this.ownerName = name;
+        if (locData != null) {
+            Component text = locData.getName(this.level);
+            if (text != null) {
+                this.ownerName = text;
+            }
         }
 
         return this.ownerName;

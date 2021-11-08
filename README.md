@@ -35,13 +35,13 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 -----------------
 
 ### FAQ
- - **Q:** Will there be a Fabric version?
+ - **Q:** Will there be a Fabric version  
    **A:** I will not be creating one, if someone wants to take up this task please contact me.
- - **Q:** Which Minecraft versions are supported?
+ - **Q:** Which Minecraft versions are supported?  
    **A:** It is normally be the last two major releases, currently `1.16.x` and `1.17.x`.
- - **Q:** Are dogs no longer immortal?
+ - **Q:** Are dogs no longer immortal?  
    **A:** Unlike the previous versions, **dogs can die**. Fortunately, they can be revived. Visit the [Behaviour wiki](https://github.com/percivalalb/DoggyTalents/wiki/Behavior#immortality-only-mc-112-and-older-versions-for-mc-115) for more info.
- - **Q:** I have a wolf, how to get started?
+ - **Q:** I have a wolf, how to get started?  
    **A:** Use a **Training Treat** to turn him into a **DoggyTalents Dog**. Visit the [Getting Started wiki](https://github.com/percivalalb/DoggyTalents/wiki/Getting-Started) for more info.
 
 -----------------

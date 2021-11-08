@@ -28,7 +28,7 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
   - For **Windows**, it is located at ```%appadata%/.minecraft```
   - For **Mac**, it is located at ````~/Library/Application Support/minecraft````
   - For **Linux**, it is located at ```~/.minecraft``` 
-- In the .minecraft folder, there will be a new folder called ```mods``` (*create one if there isn't one*)
+- In this directory, there will be a new folder called ```mods``` (*create one if there isn't one*)
 - Download the mod from [here](https://www.curseforge.com/minecraft/mc-mods/doggy-talents/files), then drag n' drop the mod into the ```mods``` folder.
 - *Run Minecraft and enjoy!*
 

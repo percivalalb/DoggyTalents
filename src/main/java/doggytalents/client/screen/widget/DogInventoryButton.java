@@ -54,7 +54,9 @@ public class DogInventoryButton extends Button {
 
         if (this.visible) {
             Minecraft mc = Minecraft.getInstance();
-            List<DogEntity> dogs = mc.level.getEntitiesOfClass(DogEntity.class, mc.player.getBoundingBox().inflate(12D, 12D, 12D), PackPuppyTalent::hasInventory);
+            List<DogEntity> dogs = mc.level.getEntitiesOfClass(DogEntity.class, mc.player.getBoundingBox().inflate(12D, 12D, 12D), 
+                d -> ( d.canInteract(mc.player) && PackPuppyTalent.hasInventory(d) )
+            );
             this.active = !dogs.isEmpty();
         }
 

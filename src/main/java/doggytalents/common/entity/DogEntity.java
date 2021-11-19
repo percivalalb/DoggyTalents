@@ -58,12 +58,12 @@ import doggytalents.common.entity.ai.OwnerHurtByTargetGoal;
 import doggytalents.common.entity.ai.OwnerHurtTargetGoal;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
+import doggytalents.common.network.packet.ParticlePackets.CritEmitterPacket;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
@@ -132,7 +132,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class DogEntity extends AbstractDogEntity {
@@ -849,8 +848,7 @@ public class DogEntity extends AbstractDogEntity {
             this.statsTracker.increaseDamageDealt(damage);
 
             if (critModifiers != null) {
-                // TODO Might want to make into a packet
-                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particleEngine.createTrackingEmitter(target, ParticleTypes.CRIT));
+                CritEmitterPacket.sendCritEmitterPacketToNearClients(target);
             }
         }
 

@@ -21,6 +21,8 @@ import doggytalents.common.network.packet.data.FriendlyFireData;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import doggytalents.common.network.packet.data.RequestSkinData;
 import doggytalents.common.network.packet.data.SendSkinData;
+import doggytalents.common.network.packet.data.ParticleData.*;
+import doggytalents.common.network.packet.ParticlePackets.*;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public final class PacketHandler {
@@ -39,6 +41,7 @@ public final class PacketHandler {
         registerPacket(new OpenDogScreenPacket(), OpenDogScreenData.class);
         registerPacket(new DogInventoryPagePacket(), DogInventoryPageData.class);
         registerPacket(new DogTexturePacket(), DogTextureData.class);
+        registerPacket(new CritEmitterPacket(), CritEmitterData.class); 
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {

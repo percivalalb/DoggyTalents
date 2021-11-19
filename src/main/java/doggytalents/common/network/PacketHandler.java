@@ -1,9 +1,11 @@
 package doggytalents.common.network;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.common.network.packet.*;
-import doggytalents.common.network.packet.data.*;
 import net.minecraftforge.network.PacketDistributor;
+import doggytalents.common.network.packet.*;
+import doggytalents.common.network.packet.ParticlePackets.*;
+import doggytalents.common.network.packet.data.*;
+import doggytalents.common.network.packet.data.ParticleData.*;
 
 public final class PacketHandler {
 
@@ -21,6 +23,7 @@ public final class PacketHandler {
         registerPacket(new OpenDogScreenPacket(), OpenDogScreenData.class);
         registerPacket(new DogInventoryPagePacket(), DogInventoryPageData.class);
         registerPacket(new DogTexturePacket(), DogTextureData.class);
+        registerPacket(new CritEmitterPacket(), CritEmitterData.class); 
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {

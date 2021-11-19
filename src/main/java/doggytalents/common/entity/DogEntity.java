@@ -18,6 +18,7 @@ import doggytalents.common.entity.ai.MoveToBlockGoal;
 import doggytalents.common.entity.ai.*;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
+import doggytalents.common.network.packet.ParticlePackets.CritEmitterPacket;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.*;
@@ -80,7 +81,6 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
@@ -805,8 +805,7 @@ public class DogEntity extends AbstractDogEntity {
             this.statsTracker.increaseDamageDealt(damage);
 
             if (critModifiers != null) {
-                // TODO Might want to make into a packet
-                DistExecutor.runWhenOn(Dist.CLIENT, () -> () -> Minecraft.getInstance().particleEngine.createTrackingEmitter(target, ParticleTypes.CRIT));
+                CritEmitterPacket.sendCritEmitterPacketToNearClients(target);
             }
         }
 

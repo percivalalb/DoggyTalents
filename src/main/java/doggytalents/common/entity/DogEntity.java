@@ -952,6 +952,12 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
+    public boolean canBeLeashed(PlayerEntity player) {
+        if(!this.willObeyOthers()) return false;
+        else return super.canBeLeashed(player);
+    }
+
+    @Override
     public void setUUID(UUID uniqueIdIn) {
 
         // If the UUID is changed remove old one and add new one

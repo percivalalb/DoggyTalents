@@ -166,6 +166,10 @@
    "dog.mode.docile.bowl": "Bowl distance: %d",
    "dog.mode.docile.distance": "Bowl to far away: %d",
 
+   "dog.msg.low_hunger.0" : "%s: Woof, woof, wooooof? Woof, wooooof. (Can we get something to eat, i'm starving !)",
+   "dog.msg.low_hunger.1" : "%s: Woof woooof (Food pls)",
+   "dog.msg.low_hunger.2" : "%s: Woof woof woooof wooof? (Shall we eat now?)",
+
    "dog.gender.female": "Female",
    "dog.gender.female.indicator": "(F)",
    "dog.gender.female.pronoun": "her",

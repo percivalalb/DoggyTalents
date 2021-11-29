@@ -166,6 +166,10 @@
    "dog.mode.docile.bowl": "Khoảng cách đến Tô Đồ ăn: %d",
    "dog.mode.docile.distance": "Tô Đồ ăn hiện ở quá xa: %d",
 
+   "dog.msg.low_hunger.0" : "%s: Woof, woof, wooooof? Woof, wooooof. (Sao chúng ta không kiếm gì ăn đi? Em đói rồi)",
+   "dog.msg.low_hunger.1" : "%s: Woof woooof (Cho em ăn đi)",
+   "dog.msg.low_hunger.2" : "%s: Woof woof woooof wooof? (Mình ăn bây giờ được không?)",
+
    "dog.gender.female": "Nữ",
    "dog.gender.female.indicator": "(F)",
    "dog.gender.female.pronoun": "cún",

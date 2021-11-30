@@ -108,7 +108,7 @@ public class ShepherdDogTalent extends TalentInstance {
         public boolean canUse() {
             if (this.dog.getMode() != EnumMode.DOCILE) {
                 return false;
-            } else if (this.dog.getLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
+            } else if (this.dog.getDogLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
                 return false;
             } else {
                 LivingEntity owner = this.dog.getOwner();
@@ -128,7 +128,7 @@ public class ShepherdDogTalent extends TalentInstance {
 
 
 
-                        this.MAX_FOLLOW = ShepherdDogTalent.getMaxFollowers(this.dog.getLevel(DoggyTalents.SHEPHERD_DOG));
+                        this.MAX_FOLLOW = ShepherdDogTalent.getMaxFollowers(this.dog.getDogLevel(DoggyTalents.SHEPHERD_DOG));
                         this.targets = list.subList(0, Math.min(MAX_FOLLOW, list.size()));
                         this.owner = owner;
                         return true;
@@ -141,7 +141,7 @@ public class ShepherdDogTalent extends TalentInstance {
         public boolean canContinueToUse() {
             if (this.dog.getMode() != EnumMode.DOCILE) {
                 return false;
-            } else if (this.dog.getLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
+            } else if (this.dog.getDogLevel(DoggyTalents.SHEPHERD_DOG) <= 0) {
                 return false;
             } else if (!EntityUtil.isHolding(owner, DoggyItems.WHISTLE.get(), (nbt) -> nbt.contains("mode") && nbt.getInt("mode") == 4)) {
                 return false;

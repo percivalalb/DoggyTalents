@@ -7,7 +7,7 @@ import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.lib.Constants;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;

@@ -28,7 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -233,7 +233,7 @@ public class DogInfoScreen extends Screen {
             Talent talent = this.talentList.get(index);
 
             Button button = new TalentButton(25, 10 + i * 21, 20, 20, new TextComponent("+"), talent, (btn) -> {
-                int level = DogInfoScreen.this.dog.getLevel(talent);
+                int level = DogInfoScreen.this.dog.getDogLevel(talent);
                 if (level < talent.getMaxLevel() && DogInfoScreen.this.dog.canSpendPoints(talent.getLevelCost(level + 1))) {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new DogTalentData(DogInfoScreen.this.dog.getId(), talent));
                 }
@@ -245,7 +245,7 @@ public class DogInfoScreen extends Screen {
 
                     list.add(new TranslatableComponent(talent.getTranslationKey()).withStyle(ChatFormatting.GREEN));
                     if (this.active) {
-                        list.add(new TextComponent("Level: " + DogInfoScreen.this.dog.getLevel(talent)));
+                        list.add(new TextComponent("Level: " + DogInfoScreen.this.dog.getDogLevel(talent)));
                         list.add(new TextComponent("--------------------------------").withStyle(ChatFormatting.GRAY));
                         list.addAll(ScreenUtil.splitInto(I18n.get(talent.getInfoTranslationKey()), 200, DogInfoScreen.this.font));
                     } else {
@@ -298,8 +298,8 @@ public class DogInfoScreen extends Screen {
         }
 
         this.font.draw(stack, I18n.get("doggui.newname"), topX - 100, topY + 38, 4210752);
-        this.font.draw(stack, I18n.get("doggui.level") + " " + this.dog.getLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
-        this.font.draw(stack, I18n.get("doggui.leveldire") + " " + this.dog.getLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
+        this.font.draw(stack, I18n.get("doggui.level") + " " + this.dog.getDogLevel().getLevel(Type.NORMAL), topX - 65, topY + 75, 0xFF10F9);
+        this.font.draw(stack, I18n.get("doggui.leveldire") + " " + this.dog.getDogLevel().getLevel(Type.DIRE), topX, topY + 75, 0xFF10F9);
         if (this.dog.getAccessory(DoggyAccessories.GOLDEN_COLLAR.get()).isPresent()) {
             this.font.draw(stack, ChatFormatting.GOLD + "Unlimited Points", topX - 38, topY + 89, 0xFFFFFF); //TODO translation
         } else {
@@ -328,7 +328,7 @@ public class DogInfoScreen extends Screen {
         //RenderHelper.disableStandardItemLighting(); // 1.14 enableGUIStandardItemLighting
 
         for (Widget widget : this.renderables) {
-            if (widget instanceof AbstractWidget w && w.isHovered()) {
+            if (widget instanceof AbstractWidget w && w.isHoveredOrFocused()) {
                w.renderToolTip(stack, mouseX, mouseY);
                break;
             }

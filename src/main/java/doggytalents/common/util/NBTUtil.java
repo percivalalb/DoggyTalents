@@ -3,11 +3,11 @@ package doggytalents.common.util;
 import doggytalents.DoggyTalents2;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
@@ -46,7 +46,7 @@ public class NBTUtil {
     }
 
     public static boolean hasOldUniqueId(CompoundTag compound, String key) {
-        return compound.contains(key + "Most", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains(key + "Least", Constants.NBT.TAG_ANY_NUMERIC);
+        return compound.contains(key + "Most", Tag.TAG_ANY_NUMERIC) && compound.contains(key + "Least", Tag.TAG_ANY_NUMERIC);
     }
 
     public static void removeOldUniqueId(CompoundTag compound, String key) {
@@ -62,7 +62,7 @@ public class NBTUtil {
 
     @Nullable
     public static ResourceLocation getResourceLocation(CompoundTag compound, String key) {
-        if (compound.contains(key, Constants.NBT.TAG_STRING)) {
+        if (compound.contains(key, Tag.TAG_STRING)) {
             return ResourceLocation.tryParse(compound.getString(key));
         }
 
@@ -80,7 +80,7 @@ public class NBTUtil {
 
     @Nullable
     public static Vec3 getVector3d(CompoundTag compound) {
-        if (compound.contains("x", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("y", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("z", Constants.NBT.TAG_ANY_NUMERIC)) {
+        if (compound.contains("x", Tag.TAG_ANY_NUMERIC) && compound.contains("y", Tag.TAG_ANY_NUMERIC) && compound.contains("z", Tag.TAG_ANY_NUMERIC)) {
             return new Vec3(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
         }
 
@@ -96,7 +96,7 @@ public class NBTUtil {
 
     @Nullable
     public static Component getTextComponent(CompoundTag compound, String key) {
-        if (compound.contains(key, Constants.NBT.TAG_STRING)) {
+        if (compound.contains(key, Tag.TAG_STRING)) {
             return Component.Serializer.fromJson(compound.getString(key));
         }
 
@@ -135,7 +135,7 @@ public class NBTUtil {
 
     @Nullable
     public static BlockPos getBlockPos(CompoundTag compound) {
-        if (compound.contains("x", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("y", Constants.NBT.TAG_ANY_NUMERIC) && compound.contains("z", Constants.NBT.TAG_ANY_NUMERIC)) {
+        if (compound.contains("x", Tag.TAG_ANY_NUMERIC) && compound.contains("y", Tag.TAG_ANY_NUMERIC) && compound.contains("z", Tag.TAG_ANY_NUMERIC)) {
             return new BlockPos(compound.getInt("x"), compound.getInt("y"), compound.getInt("z"));
         }
 
@@ -152,7 +152,7 @@ public class NBTUtil {
     }
 
     public static Optional<BlockPos> getBlockPos(CompoundTag compound, String key) {
-        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains(key, Tag.TAG_COMPOUND)) {
             return Optional.of(getBlockPos(compound.getCompound(key)));
         }
 
@@ -169,7 +169,7 @@ public class NBTUtil {
 
 //    @Nullable
 //    public static BlockPos getBlockPos(CompoundNBT compound, String key) {
-//        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+//        if (compound.contains(key, Tag.TAG_COMPOUND)) {
 //            return getBlockPos(compound.getCompound(key));
 //        }
 //
@@ -184,7 +184,7 @@ public class NBTUtil {
 
     @Nonnull
     public static ItemStack readItemStack(CompoundTag compound, String key) {
-        if (compound.contains(key, Constants.NBT.TAG_COMPOUND)) {
+        if (compound.contains(key, Tag.TAG_COMPOUND)) {
             return ItemStack.of(compound.getCompound(key));
         }
 

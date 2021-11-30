@@ -5,7 +5,7 @@ import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.DogData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 

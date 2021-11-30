@@ -3,7 +3,7 @@ package doggytalents;
 import doggytalents.common.entity.serializers.*;
 import doggytalents.common.lib.Constants;
 import net.minecraft.network.syncher.EntityDataSerializer;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

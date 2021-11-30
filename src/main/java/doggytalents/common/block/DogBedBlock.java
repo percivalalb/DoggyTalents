@@ -56,7 +56,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
+import doggytalents.common.lib.Constants;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -132,13 +132,13 @@ public class DogBedBlock extends BaseEntityBlock {
             }
         }
 
-        worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        worldIn.setBlock(pos, state, Block.UPDATE_CLIENTS);
     }
 
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (stateIn.getValue(WATERLOGGED)) {
-            worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+            worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
         return facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
@@ -176,7 +176,7 @@ public class DogBedBlock extends BaseEntityBlock {
                         stack.shrink(1);
                     }
 
-                    worldIn.sendBlockUpdated(pos, state, state, Constants.BlockFlags.DEFAULT);
+                    worldIn.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     return InteractionResult.SUCCESS;
                 } else if (player.isShiftKeyDown() && dogBedTileEntity.getOwnerUUID() == null) {
                     List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AABB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
@@ -272,7 +272,7 @@ public class DogBedBlock extends BaseEntityBlock {
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
         DogBedTileEntity dogBedTileEntity = WorldUtil.getTileEntity(world, pos, DogBedTileEntity.class);
 
         if (dogBedTileEntity != null) {

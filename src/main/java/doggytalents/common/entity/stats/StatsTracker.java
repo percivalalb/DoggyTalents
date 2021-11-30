@@ -5,10 +5,10 @@ import doggytalents.common.util.Cache;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
@@ -48,7 +48,7 @@ public class StatsTracker {
     }
 
     public void readAdditional(CompoundTag compound) {
-        ListTag killList = compound.getList("entityKills", Constants.NBT.TAG_COMPOUND);
+        ListTag killList = compound.getList("entityKills", Tag.TAG_COMPOUND);
         for (int i = 0; i < killList.size(); i++) {
             CompoundTag stats = killList.getCompound(i);
             EntityType<?> type = NBTUtil.getRegistryValue(stats, "type", ForgeRegistries.ENTITIES);

@@ -13,13 +13,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 
 import java.util.Optional;
 
 public class BedFinderRenderer {
 
-    public static void onWorldRenderLast(RenderWorldLastEvent event) {
+    public static void onWorldRenderLast(RenderLevelLastEvent event) {
         Player player = Minecraft.getInstance().player;
         for (Entity passenger : player.getPassengers()) {
             if (passenger instanceof DogEntity) {
@@ -28,10 +28,10 @@ public class BedFinderRenderer {
 
                 if (bedPosOpt.isPresent()) {
                     BlockPos bedPos = bedPosOpt.get();
-                    int level = dog.getLevel(DoggyTalents.BED_FINDER);
+                    int level = dog.getDogLevel(DoggyTalents.BED_FINDER);
                     double distance = (level * 200D) - Math.sqrt(bedPos.distSqr(dog.blockPosition()));
                     if (level == 5 || distance >= 0.0D) {
-                        PoseStack stack = event.getMatrixStack();
+                        PoseStack stack = event.getPoseStack();
 
                         AABB boundingBox = new AABB(bedPos).inflate(0.5D);
                         drawSelectionBox(stack, boundingBox);

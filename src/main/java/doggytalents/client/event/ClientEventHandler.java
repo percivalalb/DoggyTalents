@@ -28,13 +28,12 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.GuiContainerEvent;
-import net.minecraftforge.client.event.GuiScreenEvent;
-import net.minecraftforge.client.event.InputUpdateEvent;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
@@ -49,7 +48,7 @@ public class ClientEventHandler {
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
             BlockModel model = (BlockModel) event.getModelLoader().getModel(unbakedModelLoc);
-            BakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ModelLoader.defaultTextureGetter(), BlockModelRotation.X180_Y180, unbakedModelLoc, true));
+            BakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ForgeModelBakery.defaultTextureGetter(), BlockModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
             DoggyBlocks.DOG_BED.get().getStateDefinition().getPossibleStates().forEach(state -> {
@@ -67,8 +66,8 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onInputEvent(final InputUpdateEvent event) {
-        if (event.getMovementInput().jumping) {
+    public void onInputEvent(final MovementInputUpdateEvent event) {
+        if (event.getInput().jumping) {
             Entity entity = event.getPlayer().getVehicle();
             if (event.getPlayer().isPassenger() && entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
@@ -81,8 +80,8 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onScreenInit(final GuiScreenEvent.InitGuiEvent.Post event) {
-        Screen screen = event.getGui();
+    public void onScreenInit(final ScreenEvent.InitScreenEvent.Post event) {
+        Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             boolean creative = screen instanceof CreativeModeInventoryScreen;
             Minecraft mc = Minecraft.getInstance();
@@ -96,7 +95,7 @@ public class ClientEventHandler {
             int x = guiLeft + (creative ? 36 : sizeX / 2 - 10);
             int y = guiTop + (creative ? 7 : 48);
 
-            event.addWidget(new DogInventoryButton(x, y, screen, (btn) -> {
+            event.addListener(new DogInventoryButton(x, y, screen, (btn) -> {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new OpenDogScreenData());
                 btn.active = false;
             }));
@@ -104,8 +103,8 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onScreenDrawForeground(final GuiContainerEvent.DrawForeground event) {
-        Screen screen = event.getGuiContainer();
+    public void onScreenDrawForeground(final ScreenEvent.DrawScreenEvent event) {
+        Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             boolean creative = screen instanceof CreativeModeInventoryScreen;
             DogInventoryButton btn = null;
@@ -118,7 +117,7 @@ public class ClientEventHandler {
                 }
             }
 
-            if (btn.visible && btn.isHovered()) {
+            if (btn.visible && btn.isHoveredOrFocused()) {
                 Minecraft mc = Minecraft.getInstance();
                 int width = mc.getWindow().getGuiScaledWidth();
                 int height = mc.getWindow().getGuiScaledHeight();
@@ -133,9 +132,9 @@ public class ClientEventHandler {
                     }
                 }
 
-                event.getMatrixStack().translate(-guiLeft, -guiTop, 0);
-                btn.renderToolTip(event.getMatrixStack(), event.getMouseX(), event.getMouseY());
-                event.getMatrixStack().translate(guiLeft, guiTop, 0);
+                //event.getPoseStack().translate(-guiLeft, -guiTop, 0);
+                btn.renderToolTip(event.getPoseStack(), event.getMouseX(), event.getMouseY());
+                //event.getPoseStack().translate(guiLeft, guiTop, 0);
             }
         }
     }
@@ -154,8 +153,8 @@ public class ClientEventHandler {
 //
 //        RenderSystem.pushMatrix();
 //
-//        if (stack.hasTag() && stack.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
-//            ListNBT list = stack.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+//        if (stack.hasTag() && stack.getTag().contains("patrolPos", Tag.TAG_LIST)) {
+//            ListNBT list = stack.getTag().getList("patrolPos", Tag.TAG_COMPOUND);
 //            List<BlockPos> poses = new ArrayList<>(list.size());
 //            for (int i = 0; i < list.size(); i++) {
 //                poses.add(NBTUtil.getBlockPos(list.getCompound(i)));

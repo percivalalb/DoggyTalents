@@ -22,7 +22,7 @@ public interface IDog {
 
     public EnumMode getMode();
 
-    public DogLevel getLevel();
+    public DogLevel getDogLevel();
     public void increaseLevel(DogLevel.Type typeIn);
 
     /**
@@ -30,8 +30,8 @@ public interface IDog {
      * @param talentGetter A getter function, typically a {@link RegistryObject<Talent>} would be provided
      * @return The level of the talent
      */
-    default int getLevel(Supplier<? extends Talent> talentGetter) {
-        return this.getLevel(talentGetter.get());
+    default int getDogLevel(Supplier<? extends Talent> talentGetter) {
+        return this.getDogLevel(talentGetter.get());
     }
 
     /**
@@ -39,7 +39,7 @@ public interface IDog {
      * @param talentIn The {@link Talent}
      * @return The level of the talent
      */
-    public int getLevel(Talent talentIn);
+    public int getDogLevel(Talent talentIn);
 
     default Optional<TalentInstance> getTalent(Supplier<? extends Talent> talentGetter) {
         return this.getTalent(talentGetter.get());

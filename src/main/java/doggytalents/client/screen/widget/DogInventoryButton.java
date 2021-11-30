@@ -67,7 +67,7 @@ public class DogInventoryButton extends Button {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         RenderSystem.setShaderTexture(0, Resources.SMALL_WIDGETS);
        Minecraft mc = Minecraft.getInstance();
-       int i = this.getYImage(this.isHovered());
+       int i = this.getYImage(this.isHoveredOrFocused());
        RenderSystem.enableBlend();
        RenderSystem.defaultBlendFunc();
        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);

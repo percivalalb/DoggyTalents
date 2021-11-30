@@ -7,7 +7,7 @@ import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogTalentData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 
@@ -39,7 +39,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
             return;
         }
 
-        int level = dogIn.getLevel(data.talent);
+        int level = dogIn.getDogLevel(data.talent);
 
         if (level < data.talent.getMaxLevel() && dogIn.canSpendPoints(data.talent.getLevelCost(level + 1))) {
             dogIn.setTalentLevel(data.talent, level + 1);

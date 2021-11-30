@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.registries.IRegistryDelegate;
@@ -41,13 +41,13 @@ public class DogBedModel implements BakedModel {
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
     private static final ResourceLocation MISSING_TEXTURE = new ResourceLocation("missingno");
 
-    private ModelLoader modelLoader;
+    private ForgeModelBakery modelLoader;
     private BlockModel model;
     private BakedModel bakedModel;
 
     private final Map<Triple<IRegistryDelegate<ICasingMaterial>, IRegistryDelegate<IBeddingMaterial>, Direction>, BakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(ModelLoader modelLoader, BlockModel model, BakedModel bakedModel) {
+    public DogBedModel(ForgeModelBakery modelLoader, BlockModel model, BakedModel bakedModel) {
         this.modelLoader = modelLoader;
         this.model = model;
         this.bakedModel = bakedModel;
@@ -121,7 +121,7 @@ public class DogBedModel implements BakedModel {
         newModel.textureMap.put("casing", casingTexture);
         newModel.textureMap.put("particle", casingTexture);
 
-        return newModel.bake(this.modelLoader, newModel, ModelLoader.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
+        return newModel.bake(this.modelLoader, newModel, ForgeModelBakery.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
     private ResourceLocation createResourceVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {

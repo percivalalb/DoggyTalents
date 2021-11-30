@@ -9,7 +9,7 @@ import doggytalents.common.network.packet.data.SendSkinData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkEvent.Context;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;

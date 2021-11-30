@@ -21,7 +21,7 @@ public class FisherDogTalent extends TalentInstance {
 
         if (source.isWaterBlock()) {
             if (dogIn.getRandom().nextInt(15) < this.level() * 2) {
-                int lvlHellHound = dogIn.getLevel(DoggyTalents.HELL_HOUND);
+                int lvlHellHound = dogIn.getDogLevel(DoggyTalents.HELL_HOUND);
                 dogIn.spawnAtLocation(dogIn.getRandom().nextInt(15) < lvlHellHound * 2 ? Items.COOKED_COD : Items.COD);
             }
         }

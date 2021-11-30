@@ -3,7 +3,7 @@ package doggytalents.common.network.packet;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogObeyData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
 

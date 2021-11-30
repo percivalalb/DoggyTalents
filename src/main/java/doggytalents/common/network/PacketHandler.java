@@ -3,7 +3,7 @@ package doggytalents.common.network;
 import doggytalents.DoggyTalents2;
 import doggytalents.common.network.packet.*;
 import doggytalents.common.network.packet.data.*;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 public final class PacketHandler {
 

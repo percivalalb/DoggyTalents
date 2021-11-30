@@ -28,7 +28,7 @@ public class TreatItem extends Item implements IDogItem {
             return InteractionResult.FAIL;
         }
 
-        DogLevel dogLevel = dogIn.getLevel();
+        DogLevel dogLevel = dogIn.getDogLevel();
 
         if (dogIn.getAge() < 0) {
 

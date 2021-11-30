@@ -16,7 +16,7 @@ public class HunterDogTalent {
             Entity trueSource = damageSource.getEntity();
             if (trueSource instanceof DogEntity) {
                 DogEntity dog = (DogEntity) trueSource;
-                int level = dog.getLevel(DoggyTalents.HUNTER_DOG);
+                int level = dog.getDogLevel(DoggyTalents.HUNTER_DOG);
 
                 if (dog.getRandom().nextInt(6) < level + (level >= 5 ? 1 : 0)) {
                     event.setLootingLevel(event.getLootingLevel() + level / 2);

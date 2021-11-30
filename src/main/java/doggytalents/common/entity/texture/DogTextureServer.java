@@ -4,7 +4,7 @@ import com.google.common.hash.Hashing;
 import doggytalents.DoggyTalents2;
 import doggytalents.common.util.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fmllegacy.server.ServerLifecycleHooks;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 

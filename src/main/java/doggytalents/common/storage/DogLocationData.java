@@ -8,6 +8,7 @@ import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -93,7 +93,7 @@ public class DogLocationData implements IDogData {
         this.position = NBTUtil.getVector3d(compound);
         this.dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, NBTUtil.getResourceLocation(compound, "dimension"));
         this.name = NBTUtil.getTextComponent(compound, "name_text_component");
-        if (compound.contains("gender", Constants.NBT.TAG_STRING)) {
+        if (compound.contains("gender", Tag.TAG_STRING)) {
             this.gender = EnumGender.bySaveName(compound.getString("gender"));
         }
         this.hasRadarCollar = compound.getBoolean("collar");

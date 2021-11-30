@@ -28,6 +28,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -77,7 +78,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ITeleporter;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fml.DistExecutor;
@@ -423,7 +423,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if (ConfigHandler.CLIENT.DIRE_PARTICLES.get() && this.level.isClientSide && this.getLevel().isDireDog()) {
+        if (ConfigHandler.CLIENT.DIRE_PARTICLES.get() && this.level.isClientSide && this.getDogLevel().isDireDog()) {
             for (int i = 0; i < 2; i++) {
                 this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2D);
             }
@@ -568,7 +568,8 @@ public class DogEntity extends AbstractDogEntity {
                 }
             }
 
-           this.playSound(this.getFallDamageSound(i), 1.0F, 1.0F);
+            // Sound selection is copied from Entity#getFallDamageSound()
+           this.playSound(i > 4 ? this.getFallSounds().big() : this.getFallSounds().small(), 1.0F, 1.0F);
            this.playBlockFallSound();
            this.hurt(DamageSource.FALL, (float)i);
            return true;
@@ -1015,7 +1016,7 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         if (partner instanceof DogEntity && ConfigHandler.SERVER.PUPS_GET_PARENT_LEVELS.get()) {
-            child.setLevel(this.getLevel().combine(((DogEntity) partner).getLevel()));
+            child.setLevel(this.getDogLevel().combine(((DogEntity) partner).getDogLevel()));
         }
 
         return child;
@@ -1167,8 +1168,8 @@ public class DogEntity extends AbstractDogEntity {
         compound.putBoolean("willObey", this.willObeyOthers());
         compound.putBoolean("friendlyFire", this.canPlayersAttack());
         compound.putInt("dogSize", this.getDogSize());
-        compound.putInt("level_normal", this.getLevel().getLevel(Type.NORMAL));
-        compound.putInt("level_dire", this.getLevel().getLevel(Type.DIRE));
+        compound.putInt("level_normal", this.getDogLevel().getLevel(Type.NORMAL));
+        compound.putInt("level_dire", this.getDogLevel().getLevel(Type.DIRE));
         NBTUtil.writeItemStack(compound, "fetchItem", this.getBoneVariant());
 
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.entityData.get(DOG_BED_LOCATION.get());
@@ -1218,12 +1219,12 @@ public class DogEntity extends AbstractDogEntity {
                 NBTUtil.removeOldUniqueId(compound, "UUID");
             }
 
-            if (compound.contains("OwnerUUID", Constants.NBT.TAG_STRING)) {
+            if (compound.contains("OwnerUUID", Tag.TAG_STRING)) {
                 UUID ownerUUID = UUID.fromString(compound.getString("OwnerUUID"));
 
                 compound.putUUID("Owner", ownerUUID);
                 compound.remove("OwnerUUID");
-            } else if (compound.contains("Owner", Constants.NBT.TAG_STRING)) {
+            } else if (compound.contains("Owner", Tag.TAG_STRING)) {
                 UUID ownerUUID = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), compound.getString("Owner"));
 
                 compound.putUUID("Owner", ownerUUID);
@@ -1240,8 +1241,8 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         try {
-            if (compound.contains("Attributes", Constants.NBT.TAG_LIST)) {
-                ListTag attributeList = compound.getList("Attributes", Constants.NBT.TAG_COMPOUND);
+            if (compound.contains("Attributes", Tag.TAG_LIST)) {
+                ListTag attributeList = compound.getList("Attributes", Tag.TAG_COMPOUND);
                 for (int i = 0; i < attributeList.size(); i++) {
                     CompoundTag attributeData = attributeList.getCompound(i);
                     String namePrev = attributeData.getString("Name");
@@ -1269,7 +1270,7 @@ public class DogEntity extends AbstractDogEntity {
 
                     if (attributeRL != null && ForgeRegistries.ATTRIBUTES.containsKey(attributeRL)) {
                         attributeData.putString("Name", attributeRL.toString());
-                        ListTag modifierList = attributeData.getList("Modifiers", Constants.NBT.TAG_COMPOUND);
+                        ListTag modifierList = attributeData.getList("Modifiers", Tag.TAG_COMPOUND);
                         for (int j = 0; j < modifierList.size(); j++) {
                             CompoundTag modifierData = modifierList.getCompound(j);
                             if (NBTUtil.hasOldUniqueId(modifierData, "UUID")) {
@@ -1298,8 +1299,8 @@ public class DogEntity extends AbstractDogEntity {
         List<TalentInstance> talentMap = this.getTalentMap();
         talentMap.clear();
 
-        if (compound.contains("talents", Constants.NBT.TAG_LIST)) {
-            ListTag talentList = compound.getList("talents", Constants.NBT.TAG_COMPOUND);
+        if (compound.contains("talents", Tag.TAG_LIST)) {
+            ListTag talentList = compound.getList("talents", Tag.TAG_COMPOUND);
 
             for (int i = 0; i < talentList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
@@ -1315,8 +1316,8 @@ public class DogEntity extends AbstractDogEntity {
         List<AccessoryInstance> accessories = this.getAccessories();
         accessories.clear();
 
-        if (compound.contains("accessories", Constants.NBT.TAG_LIST)) {
-            ListTag accessoryList = compound.getList("accessories", Constants.NBT.TAG_COMPOUND);
+        if (compound.contains("accessories", Tag.TAG_LIST)) {
+            ListTag accessoryList = compound.getList("accessories", Tag.TAG_COMPOUND);
 
             for (int i = 0; i < accessoryList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
@@ -1345,20 +1346,20 @@ public class DogEntity extends AbstractDogEntity {
         try {
             this.setGender(EnumGender.bySaveName(compound.getString("dogGender")));
 
-            if (compound.contains("mode", Constants.NBT.TAG_STRING)) {
+            if (compound.contains("mode", Tag.TAG_STRING)) {
                 this.setMode(EnumMode.bySaveName(compound.getString("mode")));
             } else {
                 // Read old mode id
                 BackwardsComp.readMode(compound, this::setMode);
             }
 
-            if (compound.contains("customSkinHash", Constants.NBT.TAG_STRING)) {
+            if (compound.contains("customSkinHash", Tag.TAG_STRING)) {
                 this.setSkinHash(compound.getString("customSkinHash"));
             } else {
                 BackwardsComp.readDogTexture(compound, this::setSkinHash);
             }
 
-            if (compound.contains("fetchItem", Constants.NBT.TAG_COMPOUND)) {
+            if (compound.contains("fetchItem", Tag.TAG_COMPOUND)) {
                 this.setBoneVariant(NBTUtil.readItemStack(compound, "fetchItem"));
             } else {
                 BackwardsComp.readHasBone(compound, this::setBoneVariant);
@@ -1368,7 +1369,7 @@ public class DogEntity extends AbstractDogEntity {
             this.setOwnersName(NBTUtil.getTextComponent(compound, "lastKnownOwnerName"));
             this.setWillObeyOthers(compound.getBoolean("willObey"));
             this.setCanPlayersAttack(compound.getBoolean("friendlyFire"));
-            if (compound.contains("dogSize", Constants.NBT.TAG_ANY_NUMERIC)) {
+            if (compound.contains("dogSize", Tag.TAG_ANY_NUMERIC)) {
                 this.setDogSize(compound.getInt("dogSize"));
             }
         } catch (Exception e) {
@@ -1377,13 +1378,13 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         try {
-            if (compound.contains("level_normal", Constants.NBT.TAG_ANY_NUMERIC)) {
-                this.getLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
+            if (compound.contains("level_normal", Tag.TAG_ANY_NUMERIC)) {
+                this.getDogLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
                 this.markDataParameterDirty(DOG_LEVEL.get());
             }
 
-            if (compound.contains("level_dire", Constants.NBT.TAG_ANY_NUMERIC)) {
-                this.getLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
+            if (compound.contains("level_dire", Tag.TAG_ANY_NUMERIC)) {
+                this.getDogLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
                 this.markDataParameterDirty(DOG_LEVEL.get());
             }
         } catch (Exception e) {
@@ -1394,8 +1395,8 @@ public class DogEntity extends AbstractDogEntity {
         DimensionDependantArg<Optional<BlockPos>> bedsData = this.entityData.get(DOG_BED_LOCATION.get()).copyEmpty();
 
         try {
-            if (compound.contains("beds", Constants.NBT.TAG_LIST)) {
-                ListTag bedsList = compound.getList("beds", Constants.NBT.TAG_COMPOUND);
+            if (compound.contains("beds", Tag.TAG_LIST)) {
+                ListTag bedsList = compound.getList("beds", Tag.TAG_COMPOUND);
 
                 for (int i = 0; i < bedsList.size(); i++) {
                     CompoundTag bedNBT = bedsList.getCompound(i);
@@ -1417,8 +1418,8 @@ public class DogEntity extends AbstractDogEntity {
         DimensionDependantArg<Optional<BlockPos>> bowlsData = this.entityData.get(DOG_BOWL_LOCATION.get()).copyEmpty();
 
         try {
-            if (compound.contains("bowls", Constants.NBT.TAG_LIST)) {
-                ListTag bowlsList = compound.getList("bowls", Constants.NBT.TAG_COMPOUND);
+            if (compound.contains("bowls", Tag.TAG_LIST)) {
+                ListTag bowlsList = compound.getList("bowls", Tag.TAG_COMPOUND);
 
                 for (int i = 0; i < bowlsList.size(); i++) {
                     CompoundTag bowlsNBT = bowlsList.getCompound(i);
@@ -1730,7 +1731,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public DogLevel getLevel() {
+    public DogLevel getDogLevel() {
         return this.entityData.get(DOG_LEVEL.get());
     }
 
@@ -1740,7 +1741,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public void increaseLevel(DogLevel.Type typeIn) {
-        this.getLevel().incrementLevel(typeIn);
+        this.getDogLevel().incrementLevel(typeIn);
         this.markDataParameterDirty(DOG_LEVEL.get());
     }
 
@@ -1921,7 +1922,7 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public int getLevel(Talent talentIn) {
+    public int getDogLevel(Talent talentIn) {
         return this.getTalent(talentIn).map(TalentInstance::level).orElse(0);
     }
 
@@ -1991,7 +1992,7 @@ public class DogEntity extends AbstractDogEntity {
 
     // When this method is changed the cache may need to be updated at certain points
     private final int getSpendablePointsInternal() {
-        int totalPoints = 15 + this.getLevel().getLevel(Type.NORMAL) + this.getLevel().getLevel(Type.DIRE);
+        int totalPoints = 15 + this.getDogLevel().getLevel(Type.NORMAL) + this.getDogLevel().getLevel(Type.DIRE);
         for (TalentInstance entry : this.getTalentMap()) {
             totalPoints -= entry.getTalent().getCummulativeCost(entry.level());
         }

@@ -10,6 +10,7 @@ import doggytalents.common.talent.RoaringGaleTalent;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,7 +28,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +58,7 @@ public class WhistleItem extends Item {
         else {
             byte mode = 0;
 
-            if (stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
+            if (stack.hasTag() && stack.getTag().contains("mode", Tag.TAG_ANY_NUMERIC)) {
                 mode = stack.getTag().getByte("mode");
             }
 
@@ -178,7 +178,7 @@ public class WhistleItem extends Item {
                 return new InteractionResultHolder<>(InteractionResult.CONSUME, player.getItemInHand(hand));
             } else if (mode == 6) {
                 if (!world.isClientSide) {
-                    List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
+                    List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getDogLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
                         player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
@@ -189,7 +189,7 @@ public class WhistleItem extends Item {
                             boolean anyHits = false;
 
                             for (DogEntity dog : dogsList) {
-                                int level = dog.getLevel(DoggyTalents.ROARING_GALE);
+                                int level = dog.getDogLevel(DoggyTalents.ROARING_GALE);
                                 int roarCooldown = dog.tickCount;
 
                                 byte damage = (byte)(level > 4 ? level * 2 : level);
@@ -247,7 +247,7 @@ public class WhistleItem extends Item {
     public String getDescriptionId(ItemStack stack) {
         byte mode = 0;
 
-        if (stack.hasTag() && stack.getTag().contains("mode", Constants.NBT.TAG_ANY_NUMERIC)) {
+        if (stack.hasTag() && stack.getTag().contains("mode", Tag.TAG_ANY_NUMERIC)) {
             mode = stack.getTag().getByte("mode");
         }
         return this.getDescriptionId() + "." + mode;

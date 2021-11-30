@@ -2,7 +2,7 @@ package doggytalents;
 
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.lib.Constants;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 
 import java.util.function.Supplier;

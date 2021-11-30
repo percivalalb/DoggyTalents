@@ -25,7 +25,7 @@ public class PackPuppyContainer extends AbstractContainerMenu {
     public PackPuppyContainer(int windowId, Inventory playerInventory, AbstractDogEntity dogIn) {
         super(DoggyContainerTypes.PACK_PUPPY.get(), windowId);
         this.dog = dogIn;
-        this.level = Mth.clamp(dogIn.getLevel(DoggyTalents.PACK_PUPPY), 0, 5);
+        this.level = Mth.clamp(dogIn.getDogLevel(DoggyTalents.PACK_PUPPY), 0, 5);
         this.packInventory = dogIn.getCapability(PackPuppyTalent.PACK_PUPPY_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
 
         for (int j = 0; j < 3; j++) {

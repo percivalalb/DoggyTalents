@@ -56,8 +56,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
 
         NBTUtil.putRegistryValue(compound, "casingId", this.casingType);
         NBTUtil.putRegistryValue(compound, "beddingId", this.beddingType);
@@ -65,8 +65,6 @@ public class DogBedTileEntity extends PlacedTileEntity {
         NBTUtil.putUniqueId(compound, "ownerId", this.dogUUID);
         NBTUtil.putTextComponent(compound, "name", this.name);
         NBTUtil.putTextComponent(compound, "ownerName", this.ownerName);
-
-        return compound;
     }
 
     public void setCasing(ICasingMaterial casingType) {

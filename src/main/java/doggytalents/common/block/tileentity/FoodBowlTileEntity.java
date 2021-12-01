@@ -59,10 +59,9 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements MenuProvider
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
+    public void saveAdditional(CompoundTag compound) {
         super.save(compound);
         compound.merge(this.inventory.serializeNBT());
-        return compound;
     }
 
     public static void tick(Level level, BlockPos pos, BlockState blockState, BlockEntity blockEntity) {

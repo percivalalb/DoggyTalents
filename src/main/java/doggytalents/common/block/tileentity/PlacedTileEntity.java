@@ -31,11 +31,9 @@ public class PlacedTileEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        super.save(compound);
+    public void saveAdditional(CompoundTag compound) {
+        super.saveAdditional(compound);
         NBTUtil.putUniqueId(compound, "placerId", this.placerUUID);
-
-        return compound;
     }
 
     public void setPlacer(@Nullable LivingEntity placer) {
@@ -57,12 +55,13 @@ public class PlacedTileEntity extends BlockEntity {
     // Sync to client
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this, (e) -> e.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     public CompoundTag getUpdateTag() {
-        CompoundTag compound = this.save(new CompoundTag());
+        CompoundTag compound = new CompoundTag();
+        this.saveAdditional(compound);
         return compound;
     }
 

@@ -38,7 +38,6 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -90,7 +89,7 @@ public class FoodBowlBlock extends BaseEntityBlock {
             foodBowlTileEntity.setPlacer(placer);
         }
 
-        worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        worldIn.setBlock(pos, state, Block.UPDATE_CLIENTS);
     }
 
     @Override

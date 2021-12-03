@@ -154,8 +154,8 @@ public class ClientEventHandler {
 //
 //        RenderSystem.pushMatrix();
 //
-//        if (stack.hasTag() && stack.getTag().contains("patrolPos", Constants.NBT.TAG_LIST)) {
-//            ListNBT list = stack.getTag().getList("patrolPos", Constants.NBT.TAG_COMPOUND);
+//        if (stack.hasTag() && stack.getTag().contains("patrolPos", Tag.TAG_LIST)) {
+//            ListNBT list = stack.getTag().getList("patrolPos", Tag.TAG_COMPOUND);
 //            List<BlockPos> poses = new ArrayList<>(list.size());
 //            for (int i = 0; i < list.size(); i++) {
 //                poses.add(NBTUtil.getBlockPos(list.getCompound(i)));

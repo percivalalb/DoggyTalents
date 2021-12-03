@@ -6,11 +6,11 @@ import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.AccessoryType;
 import doggytalents.common.util.ColourCache;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.util.Constants;
 
 import java.util.function.Supplier;
 
@@ -39,7 +39,7 @@ public class LeatherArmourAccessory extends ArmourAccessory {
 
         if (this.of(DoggyAccessories.LEATHER_HELMET)) {
             // Backwards compatibility
-            if (compound.contains("color", Constants.NBT.TAG_ANY_NUMERIC)) {
+            if (compound.contains("color", Tag.TAG_ANY_NUMERIC)) {
                 int color = compound.getInt("color");
 
                 Instance def = inst.cast(Instance.class);

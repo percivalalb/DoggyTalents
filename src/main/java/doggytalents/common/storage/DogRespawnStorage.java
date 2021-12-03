@@ -7,6 +7,7 @@ import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -16,8 +17,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Stream;
-
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 public class DogRespawnStorage extends SavedData {
 
@@ -93,7 +92,7 @@ public class DogRespawnStorage extends SavedData {
         DogRespawnStorage store = new DogRespawnStorage();
         store.respawnDataMap.clear();
 
-        ListTag list = nbt.getList("respawnData", TAG_COMPOUND);
+        ListTag list = nbt.getList("respawnData", Tag.TAG_COMPOUND);
 
         for (int i = 0; i < list.size(); ++i) {
             CompoundTag respawnCompound = list.getCompound(i);

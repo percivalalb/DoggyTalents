@@ -2,8 +2,8 @@ package doggytalents.common.inventory;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class PackPuppyItemHandler extends ItemStackHandler {
@@ -34,8 +34,8 @@ public class PackPuppyItemHandler extends ItemStackHandler {
 
     @Override
     public void deserializeNBT(CompoundTag compound) {
-        if (compound.contains("items", Constants.NBT.TAG_LIST)) {
-            ListTag tagList = compound.getList("items", Constants.NBT.TAG_COMPOUND);
+        if (compound.contains("items", Tag.TAG_LIST)) {
+            ListTag tagList = compound.getList("items", Tag.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
                 CompoundTag itemTag = tagList.getCompound(i);
                 int slot = itemTag.getInt("Slot");
@@ -45,8 +45,8 @@ public class PackPuppyItemHandler extends ItemStackHandler {
                 }
             }
             this.onLoad();
-        } else if (compound.contains("packpuppyitems", Constants.NBT.TAG_LIST)) {
-            ListTag tagList = compound.getList("packpuppyitems", Constants.NBT.TAG_COMPOUND);
+        } else if (compound.contains("packpuppyitems", Tag.TAG_LIST)) {
+            ListTag tagList = compound.getList("packpuppyitems", Tag.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
                 CompoundTag itemTag = tagList.getCompound(i);
                 int slot = itemTag.getInt("Slot");

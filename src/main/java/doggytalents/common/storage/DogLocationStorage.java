@@ -7,6 +7,7 @@ import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,8 +19,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Stream;
-
-import static net.minecraftforge.common.util.Constants.NBT.TAG_COMPOUND;
 
 public class DogLocationStorage extends SavedData {
 
@@ -119,11 +118,11 @@ public class DogLocationStorage extends SavedData {
         DogLocationStorage store = new DogLocationStorage();
         store.locationDataMap.clear();
 
-        ListTag list = nbt.getList("locationData", TAG_COMPOUND);
+        ListTag list = nbt.getList("locationData", Tag.TAG_COMPOUND);
 
         // Old style
         if (list.isEmpty()) {
-            list = nbt.getList("dog_locations", TAG_COMPOUND);
+            list = nbt.getList("dog_locations", Tag.TAG_COMPOUND);
         }
 
         for (int i = 0; i < list.size(); ++i) {

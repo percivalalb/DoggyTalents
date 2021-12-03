@@ -56,7 +56,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -132,7 +131,7 @@ public class DogBedBlock extends BaseEntityBlock {
             }
         }
 
-        worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+        worldIn.setBlock(pos, state, Block.UPDATE_CLIENTS);
     }
 
     @Override
@@ -176,7 +175,7 @@ public class DogBedBlock extends BaseEntityBlock {
                         stack.shrink(1);
                     }
 
-                    worldIn.sendBlockUpdated(pos, state, state, Constants.BlockFlags.DEFAULT);
+                    worldIn.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     return InteractionResult.SUCCESS;
                 } else if (player.isShiftKeyDown() && dogBedTileEntity.getOwnerUUID() == null) {
                     List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AABB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));

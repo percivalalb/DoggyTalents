@@ -1830,6 +1830,7 @@ public class DogEntity extends AbstractDogEntity {
         );
         
         this.getOwner().sendMessage(new TranslationTextComponent("dog.msg.low_hunger." + this.random.nextInt(3), this.getName()), net.minecraft.util.Util.NIL_UUID);
+        this.playSound(SoundEvents.WOLF_WHINE, this.getSoundVolume(), this.getVoicePitch());
     }
 
     private void onHungerLowToHigh() {

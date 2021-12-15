@@ -16,7 +16,6 @@ import net.minecraft.world.World;
 public class DogFollowOwnerGoal extends Goal {
 
     private final DogEntity dog;
-    private final PathNavigator navigator;
     private final World world;
     private final double followSpeed;
     private final float stopDist; // If closer than stopDist stop moving towards owner
@@ -30,7 +29,6 @@ public class DogFollowOwnerGoal extends Goal {
         this.dog = dogIn;
         this.world = dogIn.level;
         this.followSpeed = speedIn;
-        this.navigator = dogIn.getNavigation();
         this.startDist = minDistIn;
         this.stopDist = maxDistIn;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -57,7 +55,7 @@ public class DogFollowOwnerGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        if (this.navigator.isDone()) {
+        if (this.dog.getNavigation().isDone()) {
             return false;
         } else if (this.dog.isInSittingPose()) {
             return false;
@@ -87,7 +85,7 @@ public class DogFollowOwnerGoal extends Goal {
         }
 
         this.owner = null;
-        this.navigator.stop();
+        this.dog.getNavigation().stop();
         this.dog.setPathfindingMalus(PathNodeType.WATER, this.oldWaterCost);
     }
 
@@ -98,9 +96,9 @@ public class DogFollowOwnerGoal extends Goal {
             this.timeToRecalcPath = 10;
             if (!this.dog.isLeashed() && !this.dog.isPassenger()) { // Is not leashed and is not a passenger
                 if (this.dog.distanceToSqr(this.owner) >= 144.0D) { // Further than 12 blocks away teleport
-                    EntityUtil.tryToTeleportNearEntity(this.dog, this.navigator, this.owner, 4);
+                    EntityUtil.tryToTeleportNearEntity(this.dog, this.dog.getNavigation(), this.owner, 4);
                 } else {
-                    this.navigator.moveTo(this.owner, this.followSpeed);
+                    this.dog.getNavigation().moveTo(this.owner, this.followSpeed);
                 }
             }
         }

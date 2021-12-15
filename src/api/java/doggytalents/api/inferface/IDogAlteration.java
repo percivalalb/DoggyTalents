@@ -182,6 +182,15 @@ public interface IDogAlteration {
         return ActionResultType.PASS;
     }
 
+    default ActionResultType canSwim(AbstractDogEntity dogIn) {
+        return ActionResultType.PASS;
+    }
+
+    default ActionResultType isBlockSafe(AbstractDogEntity dogIn, BlockPos p) {
+        return ActionResultType.PASS;
+    }
+
+
     /**
      * Only called serverside
      * @param dogIn The dog

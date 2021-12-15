@@ -49,6 +49,7 @@ import doggytalents.common.entity.ai.BerserkerModeGoal;
 import doggytalents.common.entity.ai.BreedGoal;
 import doggytalents.common.entity.ai.DogBegGoal;
 import doggytalents.common.entity.ai.DogFollowOwnerGoal;
+import doggytalents.common.entity.ai.DogSwimGoal;
 import doggytalents.common.entity.ai.DogWanderGoal;
 import doggytalents.common.entity.ai.FetchGoal;
 import doggytalents.common.entity.ai.FindWaterGoal;
@@ -73,6 +74,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.ai.goal.HurtByTargetGoal;
 import net.minecraft.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
@@ -102,6 +104,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.network.datasync.EntityDataManager.DataEntry;
 import net.minecraft.particles.ParticleTypes;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.server.management.PreYggdrasilConverter;
@@ -190,10 +193,16 @@ public class DogEntity extends AbstractDogEntity {
 
     protected BlockPos targetBlock;
 
+    private PathNavigator defaultNavigation;
+    private MovementController defaultMoveControl;
+
     public DogEntity(EntityType<? extends DogEntity> type, World worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.setGender(EnumGender.random(this.getRandom()));
+
+        this.defaultMoveControl = this.moveControl;
+        this.defaultNavigation = this.navigation;
     }
 
     @Override
@@ -216,7 +225,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.goalSelector.addGoal(1, new DogSwimGoal(this)); 
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         //this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
         this.goalSelector.addGoal(2, new SitGoal(this));
@@ -688,6 +697,15 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         return Math.min(currentAir, this.getMaxAirSupply());
+    }
+
+    public boolean canSwim() {
+        if (this.isInSittingPose()) return false;
+        for (IDogAlteration d_alt : this.alterations) {
+            ActionResultType r = d_alt.canSwim(this);
+            if (r.shouldSwing()) return true;
+        }
+        return false;
     }
 
     @Override
@@ -2295,4 +2313,13 @@ public class DogEntity extends AbstractDogEntity {
     public BlockPos getTargetBlock() {
         return this.targetBlock;
     }
+
+    public void resetNavigation() {
+        this.navigation = this.defaultNavigation;
+    }
+
+    public void resetMoveControl() {
+        this.moveControl = this.defaultMoveControl;
+    }
+
 }

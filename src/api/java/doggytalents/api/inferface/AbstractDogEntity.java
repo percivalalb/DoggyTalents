@@ -14,9 +14,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
@@ -95,4 +97,14 @@ public abstract class AbstractDogEntity extends TameableEntity implements IDog {
     public TranslationTextComponent getGenderName() {
         return this.getTranslationKey(EnumGender::getUnlocalisedName);
     }
+
+    //Make this::navigation and this::moveControl writetable
+    //TODO : Add navigation x moveControl writing mutex flag
+    public void setNavigation(PathNavigator p) { 
+        this.navigation = p;
+    }
+
+    public void setMoveControl(MovementController mvCtrl) {
+        this.moveControl = mvCtrl;
+    } 
 }

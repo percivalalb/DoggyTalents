@@ -40,7 +40,7 @@ public class Talent extends ForgeRegistryEntry<Talent> {
 
     public String getTranslationKey() {
         if (this.translationKey == null) {
-            this.translationKey = Util.makeDescriptionId("talent", DoggyTalentsAPI.TALENTS.getKey(this));
+            this.translationKey = Util.makeDescriptionId("talent", DoggyTalentsAPI.TALENTS.get().getKey(this));
         }
         return this.translationKey;
     }

@@ -20,13 +20,13 @@ import java.util.List;
 public final class DogBedRecipeMaker {
 
     public static List<IShapedRecipe<? extends Container>> createDogBedRecipes() {
-        Collection<IBeddingMaterial> beddingMaterials = DoggyTalentsAPI.BEDDING_MATERIAL.getValues();
-        Collection<ICasingMaterial>  casingMaterials  = DoggyTalentsAPI.CASING_MATERIAL.getValues();
+        Collection<IBeddingMaterial> beddingMaterials = DoggyTalentsAPI.BEDDING_MATERIAL.get().getValues();
+        Collection<ICasingMaterial>  casingMaterials  = DoggyTalentsAPI.CASING_MATERIAL.get().getValues();
 
         List<IShapedRecipe<? extends Container>> recipes = new ArrayList<>(beddingMaterials.size() * casingMaterials.size());
         String group = "doggytalents.dogbed";
-        for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.getValues()) {
-            for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.getValues()) {
+        for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.get().getValues()) {
+            for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.get().getValues()) {
 
                 Ingredient beddingIngredient = beddingId.getIngredient();
                 Ingredient casingIngredient = casingId.getIngredient();

@@ -14,8 +14,8 @@ import java.util.function.Supplier;
 
 public class DoggyBedMaterials {
 
-    public static final DeferredRegister<IBeddingMaterial> BEDDINGS = DeferredRegister.create(IBeddingMaterial.class, Constants.VANILLA_ID);
-    public static final DeferredRegister<ICasingMaterial> CASINGS = DeferredRegister.create(ICasingMaterial.class, Constants.VANILLA_ID);
+    public static final DeferredRegister<IBeddingMaterial> BEDDINGS = DeferredRegister.create(DoggyRegistries.Keys.BEDDING_REGISTRY, Constants.VANILLA_ID);
+    public static final DeferredRegister<ICasingMaterial> CASINGS = DeferredRegister.create(DoggyRegistries.Keys.CASING_REGISTRY, Constants.VANILLA_ID);
 
     public static final RegistryObject<ICasingMaterial> OAK_PLANKS = registerCasing(Blocks.OAK_PLANKS.delegate);
     public static final RegistryObject<ICasingMaterial> SPRUCE_PLANKS = registerCasing(Blocks.SPRUCE_PLANKS.delegate);

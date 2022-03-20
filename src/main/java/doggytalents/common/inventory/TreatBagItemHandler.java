@@ -31,6 +31,6 @@ public class TreatBagItemHandler extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-        return DoggyTags.TREATS.contains(stack.getItem()) || FoodHandler.isFood(stack).isPresent();
+        return stack.is(DoggyTags.TREATS) || FoodHandler.isFood(stack).isPresent();
     }
 }

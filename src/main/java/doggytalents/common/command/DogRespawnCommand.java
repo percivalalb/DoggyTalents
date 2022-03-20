@@ -93,7 +93,7 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof SharedSuggestionProvider) {
-            return context.getSource().customSuggestion((CommandContext<SharedSuggestionProvider>) context, builder);
+            return context.getSource().customSuggestion(context);
         } else {
             return Suggestions.empty();
         }
@@ -121,7 +121,7 @@ public class DogRespawnCommand {
                      .collect(Collectors.toSet()),
                     builder);
         } else if (context.getSource() instanceof SharedSuggestionProvider) {
-             return context.getSource().customSuggestion((CommandContext<SharedSuggestionProvider>) context, builder);
+             return context.getSource().customSuggestion(context);
         } else {
              return Suggestions.empty();
         }
@@ -146,7 +146,7 @@ public class DogRespawnCommand {
                    builder);
 
         } else if (context.getSource() instanceof SharedSuggestionProvider) {
-            return context.getSource().customSuggestion((CommandContext<SharedSuggestionProvider>) context, builder);
+            return context.getSource().customSuggestion(context);
         } else {
             return Suggestions.empty();
         }
@@ -176,7 +176,7 @@ public class DogRespawnCommand {
                      builder);
 
         } else if (context.getSource() instanceof SharedSuggestionProvider) {
-             return context.getSource().customSuggestion((CommandContext<SharedSuggestionProvider>)context, builder);
+             return context.getSource().customSuggestion(context);
         } else {
              return Suggestions.empty();
         }

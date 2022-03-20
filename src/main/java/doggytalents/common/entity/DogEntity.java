@@ -985,7 +985,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return DoggyTags.BREEDING_ITEMS.contains(stack.getItem());
+        return stack.is(DoggyTags.BREEDING_ITEMS);
     }
 
     @Override
@@ -2210,8 +2210,8 @@ public class DogEntity extends AbstractDogEntity {
             return true;
         }
 
-        Block blockBelow = this.level.getBlockState(this.blockPosition().below()).getBlock();
-        boolean onBed = blockBelow == DoggyBlocks.DOG_BED.get() || BlockTags.BEDS.contains(blockBelow);
+        BlockState blockBelow = this.level.getBlockState(this.blockPosition().below());
+        boolean onBed = blockBelow.is(DoggyBlocks.DOG_BED.get()) || blockBelow.is(BlockTags.BEDS);
         if (onBed) {
             return true;
         }

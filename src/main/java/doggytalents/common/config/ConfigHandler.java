@@ -161,7 +161,7 @@ public class ConfigHandler {
 
             DISABLED_TALENTS = new HashMap<>();
 
-            DoggyTalentsAPI.TALENTS.forEach((loc) ->
+            DoggyTalentsAPI.TALENTS.get().forEach((loc) ->
                 DISABLED_TALENTS.put(loc.delegate, builder.define(loc.getRegistryName().toString(), true))
             );
             builder.pop();

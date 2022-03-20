@@ -36,7 +36,7 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
 
     public String getTranslationKey() {
         if (this.translationKey == null) {
-            this.translationKey = Util.makeDescriptionId("accessory", DoggyTalentsAPI.ACCESSORIES.getKey(this));
+            this.translationKey = Util.makeDescriptionId("accessory", DoggyTalentsAPI.ACCESSORIES.get().getKey(this));
         }
         return this.translationKey;
     }

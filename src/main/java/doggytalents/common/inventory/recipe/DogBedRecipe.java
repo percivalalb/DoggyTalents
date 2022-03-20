@@ -28,7 +28,7 @@ public class DogBedRecipe extends CustomRecipe implements IShapedRecipe<Crafting
         for (int col = 0; col < 3; col++) {
             for (int row = 0; row < 3; row++) {
                 if (col == 1 && row < 2) {
-                    IBeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getItem(row * inv.getWidth() + col));
+                    IBeddingMaterial id = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL.get(), inv.getItem(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -41,7 +41,7 @@ public class DogBedRecipe extends CustomRecipe implements IShapedRecipe<Crafting
                     }
                 }
                 else {
-                    ICasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getItem(row * inv.getWidth() + col));
+                    ICasingMaterial id = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL.get(), inv.getItem(row * inv.getWidth() + col));
 
                     if (id == null) {
                         return false;
@@ -61,8 +61,8 @@ public class DogBedRecipe extends CustomRecipe implements IShapedRecipe<Crafting
 
     @Override
     public ItemStack assemble(CraftingContainer inv) {
-        IBeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL, inv.getItem(1));
-        ICasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL, inv.getItem(0));
+        IBeddingMaterial beddingId = DogBedUtil.getBeddingFromStack(DoggyTalentsAPI.BEDDING_MATERIAL.get(), inv.getItem(1));
+        ICasingMaterial casingId = DogBedUtil.getCasingFromStack(DoggyTalentsAPI.CASING_MATERIAL.get(), inv.getItem(0));
 
         return DogBedUtil.createItemStack(casingId, beddingId);
     }

@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public class DoggyAccessoryTypes {
 
-    public static final DeferredRegister<AccessoryType> ACCESSORY_TYPES = DeferredRegister.create(AccessoryType.class, Constants.MOD_ID);
+    public static final DeferredRegister<AccessoryType> ACCESSORY_TYPES = DeferredRegister.create(DoggyRegistries.Keys.ACCESSORY_TYPE_REGISTRY, Constants.MOD_ID);
 
     public static final RegistryObject<AccessoryType> COLLAR = register("collar");
     public static final RegistryObject<AccessoryType> CLOTHING = register("clothing");

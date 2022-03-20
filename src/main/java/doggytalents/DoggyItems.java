@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 
 public class DoggyItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Constants.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.Keys.ITEMS, Constants.MOD_ID);
 
     public static final RegistryObject<Item> THROW_BONE = registerThrowBone("throw_bone");
     public static final RegistryObject<Item> THROW_BONE_WET = registerThrowBoneWet("throw_bone_wet");

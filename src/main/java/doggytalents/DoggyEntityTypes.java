@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 public class DoggyEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Constants.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_TYPES, Constants.MOD_ID);
 
     public static final RegistryObject<EntityType<DogEntity>> DOG = register("dog", DogEntity::new, MobCategory.CREATURE, (b) -> b
             .sized(0.6F, 0.85F)

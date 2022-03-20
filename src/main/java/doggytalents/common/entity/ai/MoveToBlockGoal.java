@@ -25,7 +25,7 @@ public class MoveToBlockGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.dog.isPathFinding() && !this.dog.getTargetBlock().closerThan(this.dog.position(), 0.5);
+        return this.dog.isPathFinding() && !this.dog.getTargetBlock().closerToCenterThan(this.dog.position(), 0.5);
     }
 
     @Override

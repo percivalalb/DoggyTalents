@@ -57,7 +57,7 @@ public class DogInfoScreen extends Screen {
         super(new TranslatableComponent("doggytalents.screen.dog.title"));
         this.dog = dog;
         this.player = player;
-        this.talentList = DoggyTalentsAPI.TALENTS
+        this.talentList = DoggyTalentsAPI.TALENTS.get()
                 .getValues()
                 .stream()
                 .sorted(Comparator.comparing((t) -> I18n.get(t.getTranslationKey())))
@@ -170,7 +170,7 @@ public class DogInfoScreen extends Screen {
         this.addRenderableWidget(modeBtn);
 
         // Talent level-up buttons
-        int size = DoggyTalentsAPI.TALENTS.getKeys().size();
+        int size = DoggyTalentsAPI.TALENTS.get().getKeys().size();
         int perPage = Math.max(Mth.floor((this.height - 10) / (double) 21) - 2, 1);
         this.currentPage = 0;
         this.recalculatePage(perPage);

@@ -78,7 +78,7 @@ public class BackwardsComp {
             ListTag list = compound.getList("talent_level_list", Tag.TAG_COMPOUND);
             for (int i = 0; i < list.size(); i++) {
                 CompoundTag talentCompound = list.getCompound(i);
-                Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS);
+                Talent talent = NBTUtil.getRegistryValue(talentCompound, "talent", DoggyTalentsAPI.TALENTS.get());
 
                 if (talent != null) { // Only load if talent exists
                     int level = talentCompound.getInt("level");

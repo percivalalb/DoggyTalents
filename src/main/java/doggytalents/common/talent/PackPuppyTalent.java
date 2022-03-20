@@ -35,7 +35,7 @@ public class PackPuppyTalent extends TalentInstance {
     private LazyOptional<?> lazyPackPuppyHandler;
 
     public static Predicate<ItemEntity> SHOULD_PICKUP_ENTITY_ITEM = (entity) -> {
-        return entity.isAlive() && !entity.hasPickUpDelay() && !DoggyTags.PACK_PUPPY_BLACKLIST.contains(entity.getItem().getItem());// && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
+        return entity.isAlive() && !entity.hasPickUpDelay() && !entity.getItem().is(DoggyTags.PACK_PUPPY_BLACKLIST);// && !EntityAIFetch.BONE_PREDICATE.test(entity.getItem());
     };
 
     public PackPuppyTalent(Talent talentIn, int levelIn) {

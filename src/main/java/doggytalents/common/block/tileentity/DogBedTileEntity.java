@@ -46,8 +46,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public void load(CompoundTag compound) {
         super.load(compound);
 
-        this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
-        this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
+        this.casingType = NBTUtil.getRegistryValue(compound, "casingId", DoggyTalentsAPI.CASING_MATERIAL.get());
+        this.beddingType = NBTUtil.getRegistryValue(compound, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL.get());
 
         this.dogUUID = NBTUtil.getUniqueId(compound, "ownerId");
         this.name = NBTUtil.getTextComponent(compound, "name");

@@ -7,6 +7,7 @@ import doggytalents.common.util.DogBedUtil;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.ModIds;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
@@ -40,6 +41,6 @@ public class DTPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), VanillaRecipeCategoryUid.CRAFTING);
+        registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), RecipeTypes.CRAFTING.getUid());
     }
 }

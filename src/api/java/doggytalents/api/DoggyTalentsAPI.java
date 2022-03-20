@@ -10,16 +10,18 @@ import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.api.registry.Talent;
 import net.minecraftforge.registries.IForgeRegistry;
 
+import java.util.function.Supplier;
+
 /**
  * @author ProPercivalalb
  */
 public class DoggyTalentsAPI {
 
-    public static IForgeRegistry<Talent> TALENTS;
-    public static IForgeRegistry<Accessory> ACCESSORIES;
-    public static IForgeRegistry<AccessoryType> ACCESSORY_TYPE;
-    public static IForgeRegistry<IBeddingMaterial> BEDDING_MATERIAL;
-    public static IForgeRegistry<ICasingMaterial> CASING_MATERIAL;
+    public static Supplier<IForgeRegistry<Talent>> TALENTS;
+    public static Supplier<IForgeRegistry<Accessory>> ACCESSORIES;
+    public static Supplier<IForgeRegistry<AccessoryType>> ACCESSORY_TYPE;
+    public static Supplier<IForgeRegistry<IBeddingMaterial>> BEDDING_MATERIAL;
+    public static Supplier<IForgeRegistry<ICasingMaterial>> CASING_MATERIAL;
 
     public static final Logger LOGGER = LogManager.getLogger("doggytalents");
 }

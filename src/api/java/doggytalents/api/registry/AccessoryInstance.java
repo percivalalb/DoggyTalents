@@ -83,8 +83,8 @@ public class AccessoryInstance {
         ResourceLocation rl = null;
         try {
             rl = ResourceLocation.tryParse(compound.getString("type"));
-            if (DoggyTalentsAPI.ACCESSORIES.containsKey(rl)) {
-                Accessory type = DoggyTalentsAPI.ACCESSORIES.getValue(rl);
+            if (DoggyTalentsAPI.ACCESSORIES.get().containsKey(rl)) {
+                Accessory type = DoggyTalentsAPI.ACCESSORIES.get().getValue(rl);
                 return Optional.of(type.read(compound));
             } else {
                 DoggyTalentsAPI.LOGGER.warn("Failed to load accessory {}", compound);

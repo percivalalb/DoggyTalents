@@ -67,11 +67,11 @@ public class DogBegGoal extends Goal {
     private boolean hasTemptationItemInHand(Player player) {
         for (InteractionHand hand : InteractionHand.values()) {
             ItemStack itemstack = player.getItemInHand(hand);
-            if ((this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED).contains(itemstack.getItem())) {
+            if (itemstack.is(this.dog.isTame() ? DoggyTags.BEG_ITEMS_TAMED : DoggyTags.BEG_ITEMS_UNTAMED)) {
                 return true;
             }
 
-            if (DoggyTags.TREATS.contains(itemstack.getItem())) {
+            if (itemstack.is(DoggyTags.TREATS)) {
                 return true;
             }
 

@@ -28,16 +28,16 @@ public class DogBedUtil {
     }
 
     public static ItemStack createRandomBed() {
-        ICasingMaterial casing = pickRandom(DoggyTalentsAPI.CASING_MATERIAL);
-        IBeddingMaterial bedding = pickRandom(DoggyTalentsAPI.BEDDING_MATERIAL);
+        ICasingMaterial casing = pickRandom(DoggyTalentsAPI.CASING_MATERIAL.get());
+        IBeddingMaterial bedding = pickRandom(DoggyTalentsAPI.BEDDING_MATERIAL.get());
         return DogBedUtil.createItemStack(casing, bedding);
     }
 
     public static Pair<ICasingMaterial, IBeddingMaterial> getMaterials(ItemStack stack) {
         CompoundTag tag = stack.getTagElement("doggytalents");
         if (tag != null) {
-            ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL);
-            IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL);
+            ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL.get());
+            IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL.get());
 
             return Pair.of(casingId, beddingId);
         }

@@ -6,23 +6,31 @@ import doggytalents.api.impl.MissingCasingMissing;
 import doggytalents.api.registry.*;
 import doggytalents.common.util.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 
 public class DoggyRegistries {
 
-    public static void newRegistry(RegistryEvent.NewRegistry event) {
-        DoggyTalentsAPI.TALENTS = makeRegistry("talents", Talent.class).create();
-        DoggyTalentsAPI.ACCESSORIES = makeRegistry("accessories", Accessory.class).create();
-        DoggyTalentsAPI.ACCESSORY_TYPE = makeRegistry("accessory_type", AccessoryType.class).disableSync().create();
-        DoggyTalentsAPI.BEDDING_MATERIAL = makeRegistry("bedding", IBeddingMaterial.class).addCallback(BeddingCallbacks.INSTANCE).create();
-        DoggyTalentsAPI.CASING_MATERIAL = makeRegistry("casing", ICasingMaterial.class).addCallback(CasingCallbacks.INSTANCE).create(); //TODO ADD holder object
+    protected class Keys {
+        public static final ResourceLocation TALENTS_REGISTRY = Util.getResource("talents");
+        public static final ResourceLocation ACCESSORIES_REGISTRY = Util.getResource("accessories");
+        public static final ResourceLocation ACCESSORY_TYPE_REGISTRY = Util.getResource("accessory_type");
+        public static final ResourceLocation BEDDING_REGISTRY = Util.getResource("bedding");
+        public static final ResourceLocation CASING_REGISTRY = Util.getResource("casing");
     }
 
-    private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(final String name, Class<T> type) {
-        return new RegistryBuilder<T>().setName(Util.getResource(name)).setType(type);
+    public static void newRegistry(NewRegistryEvent event) {
+        DoggyTalentsAPI.TALENTS = event.create(makeRegistry(Keys.TALENTS_REGISTRY, Talent.class));
+        DoggyTalentsAPI.ACCESSORIES = event.create(makeRegistry(Keys.ACCESSORIES_REGISTRY, Accessory.class));
+        DoggyTalentsAPI.ACCESSORY_TYPE = event.create(makeRegistry(Keys.ACCESSORY_TYPE_REGISTRY, AccessoryType.class).disableSync());
+        DoggyTalentsAPI.BEDDING_MATERIAL = event.create(makeRegistry(Keys.BEDDING_REGISTRY, IBeddingMaterial.class).addCallback(BeddingCallbacks.INSTANCE));
+        DoggyTalentsAPI.CASING_MATERIAL = event.create(makeRegistry(Keys.CASING_REGISTRY, ICasingMaterial.class).addCallback(CasingCallbacks.INSTANCE)); //TODO ADD holder object
+    }
+
+    private static <T extends IForgeRegistryEntry<T>> RegistryBuilder<T> makeRegistry(final ResourceLocation rl, Class<T> type) {
+        return new RegistryBuilder<T>().setName(rl).setType(type);
     }
 
     private static class BeddingCallbacks implements IForgeRegistry.DummyFactory<IBeddingMaterial> {

@@ -6,9 +6,9 @@ buildscript {
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.71.4"
-        classpath "gradle.plugin.com.matthewprenger:CurseGradle:1.4.0"
-        classpath "org.ajoberstar.grgit:grgit-gradle:4.1.0"
+        classpath "gradle.plugin.se.bjurr.gitchangelog:git-changelog-gradle-plugin:1.71.8"
+        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.4.0'
+        classpath 'org.ajoberstar.grgit:grgit-gradle:4.1.1'
     }
 }
 apply plugin: 'net.minecraftforge.gradle'

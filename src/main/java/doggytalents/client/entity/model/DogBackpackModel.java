@@ -1,7 +1,7 @@
 package doggytalents.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-public class DogBackpackModel extends ListModel<DogEntity> {
+public class DogBackpackModel extends ListModel<Dog> {
 
     public ModelPart rightChest;
     public ModelPart leftChest;
@@ -43,7 +43,7 @@ public class DogBackpackModel extends ListModel<DogEntity> {
     }
 
     @Override
-    public void prepareMobModel(DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    public void prepareMobModel(Dog dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
         if (dogIn.isInSittingPose()) {
             if (dogIn.isLying()) {
                 this.rightChest.setPos(0.0F, 20.0F, 2.0F);
@@ -71,7 +71,7 @@ public class DogBackpackModel extends ListModel<DogEntity> {
     }
 
     @Override
-    public void setupAnim(DogEntity dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Dog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

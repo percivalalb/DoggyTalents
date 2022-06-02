@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.nbt.CompoundTag;
@@ -25,25 +25,25 @@ public class GuardDogTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         this.cooldown = dogIn.tickCount;
     }
 
     @Override
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void writeToNBT(AbstractDog dogIn, CompoundTag compound) {
         super.writeToNBT(dogIn, compound);
         int timeLeft = this.cooldown - dogIn.tickCount;
         compound.putInt("guardtime", timeLeft);
     }
 
     @Override
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void readFromNBT(AbstractDog dogIn, CompoundTag compound) {
         super.readFromNBT(dogIn, compound);
         this.cooldown = dogIn.tickCount + compound.getInt("guardtime");
     }
 
     @Override
-    public InteractionResultHolder<Float> attackEntityFrom(AbstractDogEntity dogIn, DamageSource damageSource, float damage) {
+    public InteractionResultHolder<Float> attackEntityFrom(AbstractDog dogIn, DamageSource damageSource, float damage) {
         if (dogIn.level.isClientSide) {
             return InteractionResultHolder.pass(damage);
         }

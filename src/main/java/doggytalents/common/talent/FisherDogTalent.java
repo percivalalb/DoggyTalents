@@ -2,7 +2,7 @@ package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents;
 import doggytalents.api.enu.WetSource;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.item.Items;
@@ -14,7 +14,7 @@ public class FisherDogTalent extends TalentInstance {
     }
 
     @Override
-    public void onShakingDry(AbstractDogEntity dogIn, WetSource source) {
+    public void onShakingDry(AbstractDog dogIn, WetSource source) {
         if (dogIn.level.isClientSide) { // On client do nothing
             return;
         }

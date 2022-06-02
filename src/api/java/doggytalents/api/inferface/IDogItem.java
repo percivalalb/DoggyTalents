@@ -15,10 +15,10 @@ public interface IDogItem {
      * @param handIn The hand used
      * @return The result of the interaction
      */
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn);
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn);
 
     @Deprecated
-    default InteractionResult onInteractWithDog(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    default InteractionResult onInteractWithDog(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         return processInteract(dogIn, worldIn, playerIn, handIn);
     }
 }

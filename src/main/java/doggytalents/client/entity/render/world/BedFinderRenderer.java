@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import doggytalents.DoggyTalents;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -22,8 +22,8 @@ public class BedFinderRenderer {
     public static void onWorldRenderLast(RenderLevelLastEvent event) {
         Player player = Minecraft.getInstance().player;
         for (Entity passenger : player.getPassengers()) {
-            if (passenger instanceof DogEntity) {
-                DogEntity dog = (DogEntity) passenger;
+            if (passenger instanceof Dog) {
+                Dog dog = (Dog) passenger;
                 Optional<BlockPos> bedPosOpt = dog.getBedPos();
 
                 if (bedPosOpt.isPresent()) {

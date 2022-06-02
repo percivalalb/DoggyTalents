@@ -2,7 +2,7 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -14,14 +14,14 @@ import java.util.EnumSet;
 
 public class DogBegGoal extends Goal {
 
-    private final DogEntity dog;
+    private final Dog dog;
     private Player player;
     private final Level world;
     private final float minPlayerDistance;
     private int timeoutCounter;
     private final TargetingConditions playerPredicate;
 
-    public DogBegGoal(DogEntity wolf, float minDistance) {
+    public DogBegGoal(Dog wolf, float minDistance) {
         this.dog = wolf;
         this.world = wolf.level;
         this.minPlayerDistance = minDistance;

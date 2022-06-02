@@ -1,7 +1,7 @@
 package doggytalents.common.entity.accessory;
 
 import doggytalents.DoggyAccessories;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
@@ -90,7 +90,7 @@ public class ArmourAccessory extends Accessory {
         }
 
         @Override
-        public void init(AbstractDogEntity dogIn) {
+        public void init(AbstractDog dogIn) {
             EquipmentSlot slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {
@@ -101,7 +101,7 @@ public class ArmourAccessory extends Accessory {
         }
 
         @Override
-        public void remove(AbstractDogEntity dogIn) {
+        public void remove(AbstractDog dogIn) {
             EquipmentSlot slotType = null;
 
             if (this.armourStack.getItem() instanceof ArmorItem) {

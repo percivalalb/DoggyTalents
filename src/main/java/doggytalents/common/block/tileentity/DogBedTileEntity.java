@@ -4,7 +4,7 @@ import doggytalents.DoggyTileEntityTypes;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.util.NBTUtil;
@@ -32,7 +32,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public static ModelProperty<IBeddingMaterial> BEDDING = new ModelProperty<>();
     public static ModelProperty<Direction> FACING = new ModelProperty<>();
 
-    private @Deprecated @Nullable DogEntity dog;
+    private @Deprecated @Nullable Dog dog;
     private @Nullable UUID dogUUID;
 
     private @Nullable Component name;
@@ -96,7 +96,7 @@ public class DogBedTileEntity extends PlacedTileEntity {
                 .build();
     }
 
-    public void setOwner(@Nullable DogEntity owner) {
+    public void setOwner(@Nullable Dog owner) {
         this.setOwner(owner == null ? null : owner.getUUID());
 
         this.dog = owner;
@@ -116,8 +116,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Nullable
-    public DogEntity getOwner() {
-       return WorldUtil.getCachedEntity(this.level, DogEntity.class, this.dog, this.dogUUID);
+    public Dog getOwner() {
+       return WorldUtil.getCachedEntity(this.level, Dog.class, this.dog, this.dogUUID);
     }
 
     @Nullable

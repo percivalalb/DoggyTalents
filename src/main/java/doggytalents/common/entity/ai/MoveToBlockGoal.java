@@ -1,7 +1,7 @@
 package doggytalents.common.entity.ai;
 
 import doggytalents.common.block.tileentity.DogBedTileEntity;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.core.BlockPos;
@@ -11,9 +11,9 @@ import java.util.EnumSet;
 
 public class MoveToBlockGoal extends Goal {
 
-    protected final DogEntity dog;
+    protected final Dog dog;
 
-    public MoveToBlockGoal(DogEntity dogIn) {
+    public MoveToBlockGoal(Dog dogIn) {
         this.dog = dogIn;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
     }

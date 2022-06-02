@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -17,16 +17,16 @@ public class DoggyDashTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         dogIn.setAttributeModifier(Attributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
-    public void set(AbstractDogEntity dogIn, int level) {
+    public void set(AbstractDog dogIn, int level) {
         dogIn.setAttributeModifier(Attributes.MOVEMENT_SPEED, DASH_BOOST_ID, this::createSpeedModifier);
     }
 
-    public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createSpeedModifier(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() > 0) {
             double speed = 0.03D * this.level();
 

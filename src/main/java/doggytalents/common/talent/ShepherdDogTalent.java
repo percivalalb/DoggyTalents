@@ -4,7 +4,7 @@ import doggytalents.DoggyItems;
 import doggytalents.DoggyTalents;
 import doggytalents.api.feature.DataKey;
 import doggytalents.api.feature.EnumMode;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
@@ -35,7 +35,7 @@ public class ShepherdDogTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         if (!dogIn.hasData(SHEPHERD_AI)) {
             EntityAIShepherdDog shepherdAI = new EntityAIShepherdDog(dogIn, 1.0D, 8F, entity -> !(entity instanceof TamableAnimal));
             dogIn.goalSelector.addGoal(7, shepherdAI);
@@ -62,7 +62,7 @@ public class ShepherdDogTalent extends TalentInstance {
 
     public static class EntityAIShepherdDog extends Goal {
 
-        protected final AbstractDogEntity dog;
+        protected final AbstractDog dog;
         private final Level world;
         private final double followSpeed;
         private final float maxDist;
@@ -79,7 +79,7 @@ public class ShepherdDogTalent extends TalentInstance {
 
         private int MAX_FOLLOW = 5;
 
-        public EntityAIShepherdDog(AbstractDogEntity dogIn, double speedIn, float range, @Nullable Predicate<Animal> targetSelector) {
+        public EntityAIShepherdDog(AbstractDog dogIn, double speedIn, float range, @Nullable Predicate<Animal> targetSelector) {
             this.dog = dogIn;
             this.world = dogIn.level;
             this.dogPathfinder = dogIn.getNavigation();

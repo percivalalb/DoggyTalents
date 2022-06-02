@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import javax.annotation.Nullable;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IDogFoodPredicate;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +48,7 @@ public class FoodHandler {
         return Optional.empty();
     }
 
-    public static Optional<IDogFoodHandler> getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn) {
+    public static Optional<IDogFoodHandler> getMatch(@Nullable AbstractDog dogIn, ItemStack stackIn, @Nullable Entity entityIn) {
         for (IDogFoodHandler handler : dogIn.getFoodHandlers()) {
             if (handler.canConsume(dogIn, stackIn, entityIn)) {
                 return Optional.of(handler);

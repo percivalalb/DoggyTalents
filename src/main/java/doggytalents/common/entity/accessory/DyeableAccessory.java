@@ -1,7 +1,7 @@
 package doggytalents.common.entity.accessory;
 
 import doggytalents.DoggyTalents2;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.registry.Accessory;
@@ -112,7 +112,7 @@ public class DyeableAccessory extends Accessory {
         }
 
         @Override
-        public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+        public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
             ItemStack stack = playerIn.getItemInHand(handIn);
 
             DyeColor dyeColor = DyeColor.getColor(stack);

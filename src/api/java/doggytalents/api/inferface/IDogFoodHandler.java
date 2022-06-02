@@ -16,7 +16,7 @@ public interface IDogFoodHandler extends IDogFoodPredicate {
      * @param entityIn The entity who fed the dog, usually the player. Can be null probably meaning the dog ate on its own
      * @return If the dog can eat the stack, {@link #consume} is called to eat the stack
      */
-    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
+    public boolean canConsume(AbstractDog dogIn, ItemStack stackIn, @Nullable Entity entityIn);
 
     /**
      * Actually eat the stack,
@@ -25,5 +25,5 @@ public interface IDogFoodHandler extends IDogFoodPredicate {
      * @param entityIn The entity who fed the dog, usually the player. Can be null probably meaning the dog ate on its own
      * @return
      */
-    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, @Nullable Entity entityIn);
+    public InteractionResult consume(AbstractDog dogIn, ItemStack stackIn, @Nullable Entity entityIn);
 }

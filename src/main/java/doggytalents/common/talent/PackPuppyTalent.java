@@ -2,7 +2,7 @@ package doggytalents.common.talent;
 
 import doggytalents.DoggyTags;
 import doggytalents.DoggyTalents;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.config.ConfigHandler;
@@ -50,7 +50,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void tick(AbstractDogEntity dogIn) {
+    public void tick(AbstractDog dogIn) {
         if (dogIn.isAlive() && !dogIn.level.isClientSide && this.level() >= 5) {
             List<ItemEntity> list = dogIn.level.getEntitiesOfClass(ItemEntity.class, dogIn.getBoundingBox().inflate(2.5D, 1D, 2.5D), SHOULD_PICKUP_ENTITY_ITEM);
 
@@ -70,7 +70,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (dogIn.isTame() && this.level() > 0) { // Dog requirements
@@ -90,7 +90,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void set(AbstractDogEntity dog, int preLevel) {
+    public void set(AbstractDog dog, int preLevel) {
         // No need to drop anything if dog didn't have pack puppy
         if (preLevel > 0 && this.level == 0) {
             this.dropInventory(dog);
@@ -98,7 +98,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void dropInventory(AbstractDogEntity dogIn) {
+    public void dropInventory(AbstractDog dogIn) {
         //TODO either drop inventory or save to respawn data, currently does both
         // No need to drop anything if dog didn't have pack puppy
         for (int i = 0; i < this.packPuppyHandler.getSlots(); ++i) {
@@ -108,25 +108,25 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void writeToNBT(AbstractDog dogIn, CompoundTag compound) {
         super.writeToNBT(dogIn, compound);
         compound.merge(this.packPuppyHandler.serializeNBT());
     }
 
     @Override
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void readFromNBT(AbstractDog dogIn, CompoundTag compound) {
         super.readFromNBT(dogIn, compound);
         this.packPuppyHandler.deserializeNBT(compound);
     }
 
     // Left in for backwards compatibility for versions <= 2.0.0.5
     @Override
-    public void onRead(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void onRead(AbstractDog dogIn, CompoundTag compound) {
         this.packPuppyHandler.deserializeNBT(compound);
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(AbstractDogEntity dogIn, Capability<T> cap, Direction side) {
+    public <T> LazyOptional<T> getCapability(AbstractDog dogIn, Capability<T> cap, Direction side) {
         if (cap == PackPuppyTalent.PACK_PUPPY_CAPABILITY) {
             return (LazyOptional<T>) this.lazyPackPuppyHandler;
         }
@@ -134,7 +134,7 @@ public class PackPuppyTalent extends TalentInstance {
     }
 
     @Override
-    public void invalidateCapabilities(AbstractDogEntity dogIn) {
+    public void invalidateCapabilities(AbstractDog dogIn) {
         this.lazyPackPuppyHandler.invalidate();
     }
 
@@ -143,7 +143,7 @@ public class PackPuppyTalent extends TalentInstance {
         return ConfigHandler.CLIENT.RENDER_CHEST.get();
     }
 
-    public static boolean hasInventory(AbstractDogEntity dogIn) {
+    public static boolean hasInventory(AbstractDog dogIn) {
         return dogIn.isAlive() && dogIn.getTalent(DoggyTalents.PACK_PUPPY).isPresent();
     }
 }

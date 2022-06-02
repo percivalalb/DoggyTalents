@@ -2,7 +2,7 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.item.PatrolItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class PatrolAreaGoal extends Goal {
 
-    public final DogEntity dog;
+    public final Dog dog;
     private final PathNavigation navigator;
     public int index;
     private int timeToRecalcPath;
 
-    public PatrolAreaGoal(DogEntity dogIn) {
+    public PatrolAreaGoal(Dog dogIn) {
         this.dog = dogIn;
         this.navigator = dogIn.getNavigation();
         this.setFlags(EnumSet.of(Flag.MOVE));

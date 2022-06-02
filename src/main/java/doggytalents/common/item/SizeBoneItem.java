@@ -1,6 +1,6 @@
 package doggytalents.common.item;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +34,7 @@ public class SizeBoneItem extends Item implements IDogItem {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.getAge() < 0) {
 
             if (!playerIn.level.isClientSide){

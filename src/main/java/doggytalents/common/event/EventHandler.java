@@ -3,7 +3,7 @@ package doggytalents.common.event;
 import doggytalents.DoggyEntityTypes;
 import doggytalents.DoggyItems;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.talent.HunterDogTalent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
@@ -45,7 +45,7 @@ public class EventHandler {
                         stack.shrink(1);
                     }
 
-                    DogEntity dog = DoggyEntityTypes.DOG.get().create(world);
+                    Dog dog = DoggyEntityTypes.DOG.get().create(world);
                     dog.tame(player);
                     dog.setHealth(dog.getMaxHealth());
                     dog.setOrderedToSit(false);
@@ -70,7 +70,7 @@ public class EventHandler {
 
         if (entity instanceof AbstractSkeleton) {
             AbstractSkeleton skeleton = (AbstractSkeleton) entity;
-            skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, DogEntity.class, 6.0F, 1.0D, 1.2D)); // Same goal as in AbstractSkeletonEntity
+            skeleton.goalSelector.addGoal(3, new AvoidEntityGoal<>(skeleton, Dog.class, 6.0F, 1.0D, 1.2D)); // Same goal as in AbstractSkeletonEntity
         }
     }
 

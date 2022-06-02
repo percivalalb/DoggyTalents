@@ -1,7 +1,7 @@
 package doggytalents.client.entity.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -12,9 +12,9 @@ public class DogScreenOverlays {
 
     public static final IIngameOverlay FOOD_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
-        boolean isMounted = mc.player.getVehicle() instanceof DogEntity;
+        boolean isMounted = mc.player.getVehicle() instanceof Dog;
         if (isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
-            DogEntity dog = (DogEntity) mc.player.getVehicle();
+            Dog dog = (Dog) mc.player.getVehicle();
             gui.setupOverlayRenderState(true, false);
 
             mc.getProfiler().push("food_dog");
@@ -52,9 +52,9 @@ public class DogScreenOverlays {
 
     public static final IIngameOverlay AIR_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
-        boolean isMounted = mc.player.getVehicle() instanceof DogEntity;
+        boolean isMounted = mc.player.getVehicle() instanceof Dog;
         if (isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
-            DogEntity dog = (DogEntity) mc.player.getVehicle();
+            Dog dog = (Dog) mc.player.getVehicle();
 
             gui.setupOverlayRenderState(true, false);
             mc.getProfiler().push("air_dog");

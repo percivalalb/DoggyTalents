@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 // TODO: Add javadoc
 public interface IDog {
 
-    public AbstractDogEntity getDog();
+    public AbstractDog getDog();
 
     public void untame();
 

@@ -7,7 +7,7 @@ import doggytalents.api.inferface.IColoredObject;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.entity.model.DogModel;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.accessory.ArmourAccessory;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ArmorAccessoryRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
+public class ArmorAccessoryRenderer extends RenderLayer<Dog, DogModel<Dog>> {
 
     private DogModel model;
 
@@ -30,7 +30,7 @@ public class ArmorAccessoryRenderer extends RenderLayer<DogEntity, DogModel<DogE
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Dog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         // Only show armour if dog is tamed or visible
         if (!dog.isTame() || dog.isInvisible()) {
             return;

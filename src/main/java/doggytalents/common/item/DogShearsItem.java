@@ -1,7 +1,7 @@
 package doggytalents.common.item;
 
 import doggytalents.api.feature.DataKey;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.lib.Constants;
@@ -23,7 +23,7 @@ public class DogShearsItem extends Item implements IDogItem {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.isOwnedBy(playerIn)) {
             List<AccessoryInstance> accessories = dogIn.getAccessories();
             if (accessories.isEmpty()) {

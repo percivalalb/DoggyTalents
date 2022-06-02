@@ -1,7 +1,7 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyAttributes;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,20 +20,20 @@ public class BlackPeltTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         dogIn.setAttributeModifier(Attributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
         dogIn.setAttributeModifier(DoggyAttributes.CRIT_CHANCE.get(), BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
         dogIn.setAttributeModifier(DoggyAttributes.CRIT_BONUS.get(), BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
     }
 
     @Override
-    public void set(AbstractDogEntity dogIn, int levelBefore) {
+    public void set(AbstractDog dogIn, int levelBefore) {
         dogIn.setAttributeModifier(Attributes.ATTACK_DAMAGE, BLACK_PELT_DAMAGE_ID, this::createPeltModifier);
         dogIn.setAttributeModifier(DoggyAttributes.CRIT_CHANCE.get(), BLACK_PELT_CRIT_CHANCE_ID, this::createPeltCritChance);
         dogIn.setAttributeModifier(DoggyAttributes.CRIT_BONUS.get(), BLACK_PELT_CRIT_BONUS_ID, this::createPeltCritBonus);
     }
 
-    public AttributeModifier createPeltModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createPeltModifier(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() > 0) {
             double damageBonus = this.level();
 
@@ -47,7 +47,7 @@ public class BlackPeltTalent extends TalentInstance {
         return null;
     }
 
-    public AttributeModifier createPeltCritChance(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createPeltCritChance(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() <= 0) {
             return null;
         }
@@ -61,7 +61,7 @@ public class BlackPeltTalent extends TalentInstance {
         return new AttributeModifier(uuidIn, "Black Pelt Crit Chance", damageBonus, AttributeModifier.Operation.ADDITION);
     }
 
-    public AttributeModifier createPeltCritBonus(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createPeltCritBonus(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() <= 0) {
             return null;
         }

@@ -1,6 +1,6 @@
 package doggytalents.common.network.packet;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.DogData;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,16 +24,16 @@ public abstract class DogPacket<T extends DogData> implements IPacket<T> {
         ctx.get().enqueueWork(() -> {
             Entity target = ctx.get().getSender().level.getEntity(data.entityId);
 
-            if (!(target instanceof DogEntity)) {
+            if (!(target instanceof Dog)) {
                 return;
             }
 
-            this.handleDog((DogEntity) target, data, ctx);
+            this.handleDog((Dog) target, data, ctx);
         });
 
         ctx.get().setPacketHandled(true);
     }
 
-    public abstract void handleDog(DogEntity dogIn, T data, Supplier<Context> ctx);
+    public abstract void handleDog(Dog dogIn, T data, Supplier<Context> ctx);
 
 }

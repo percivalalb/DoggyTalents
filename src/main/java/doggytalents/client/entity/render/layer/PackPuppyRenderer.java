@@ -6,7 +6,7 @@ import doggytalents.api.registry.TalentInstance;
 import doggytalents.client.ClientSetup;
 import doggytalents.client.entity.model.DogBackpackModel;
 import doggytalents.client.entity.model.DogModel;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.lib.Resources;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
 import java.util.Optional;
 
-public class PackPuppyRenderer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
+public class PackPuppyRenderer extends RenderLayer<Dog, DogModel<Dog>> {
 
     private DogBackpackModel model;
 
@@ -25,7 +25,7 @@ public class PackPuppyRenderer extends RenderLayer<DogEntity, DogModel<DogEntity
     }
 
     @Override
-    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, Dog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (dog.isInvisible()) {
             return;
         }

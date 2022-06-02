@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IDogFoodPredicate;
 import doggytalents.api.registry.Talent;
@@ -25,7 +25,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     }
 
     @Override
-    public InteractionResultHolder<Float> setDogHunger(AbstractDogEntity dogIn, float hunger, float diff) {
+    public InteractionResultHolder<Float> setDogHunger(AbstractDog dogIn, float hunger, float diff) {
         hunger += diff / 10 * this.level();
         return InteractionResultHolder.success(hunger);
     }
@@ -36,7 +36,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     }
 
     @Override
-    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean canConsume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
         if (this.level() >= 3) {
 
             Item item = stackIn.getItem();
@@ -54,7 +54,7 @@ public class HappyEaterTalent extends TalentInstance implements IDogFoodHandler 
     }
 
     @Override
-    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
         if (this.level() >= 3) {
 
             Item item = stackIn.getItem();

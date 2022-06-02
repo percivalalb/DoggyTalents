@@ -1,6 +1,6 @@
 package doggytalents.common.network.packet;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.packet.data.FriendlyFireData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -23,7 +23,7 @@ public class FriendlyFirePacket extends DogPacket<FriendlyFireData> {
     }
 
     @Override
-    public void handleDog(DogEntity dogIn, FriendlyFireData data, Supplier<Context> ctx) {
+    public void handleDog(Dog dogIn, FriendlyFireData data, Supplier<Context> ctx) {
         if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }

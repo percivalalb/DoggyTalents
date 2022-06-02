@@ -7,7 +7,7 @@ import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.layer.BoneLayer;
 import doggytalents.client.entity.render.layer.LayerFactory;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -16,25 +16,25 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
+public class DogRenderer extends MobRenderer<Dog, DogModel<Dog>> {
 
     public DogRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new DogModel(ctx.bakeLayer(ClientSetup.DOG)), 0.5F);
 //        this.addLayer(new DogTalentLayer(this, ctx));
 //        this.addLayer(new DogAccessoryLayer(this, ctx));
         this.addLayer(new BoneLayer(this));
-        for (LayerFactory<DogEntity, DogModel<DogEntity>> layer : CollarRenderManager.getLayers()) {
+        for (LayerFactory<Dog, DogModel<Dog>> layer : CollarRenderManager.getLayers()) {
             this.addLayer(layer.createLayer(this, ctx));
         }
     }
 
     @Override
-    protected float getBob(DogEntity livingBase, float partialTicks) {
+    protected float getBob(Dog livingBase, float partialTicks) {
         return livingBase.getTailRotation();
     }
 
     @Override
-    public void render(DogEntity entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+    public void render(Dog entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         if (entityIn.isDogWet()) {
             float f = entityIn.getShadingWhileWet(partialTicks);
             this.model.setColor(f, f, f);
@@ -67,17 +67,17 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
     }
 
 
-    private Component getNameUnknown(DogEntity dogIn) {
+    private Component getNameUnknown(Dog dogIn) {
         return new TranslatableComponent(dogIn.getOwnerUUID() != null ? "entity.doggytalents.dog.unknown_owner" : "entity.doggytalents.dog.untamed");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DogEntity dogIn) {
+    public ResourceLocation getTextureLocation(Dog dogIn) {
         return DogTextureManager.INSTANCE.getTexture(dogIn);
     }
 
     @Override
-    protected void scale(DogEntity dogIn, PoseStack matrixStackIn, float partialTickTime) {
+    protected void scale(Dog dogIn, PoseStack matrixStackIn, float partialTickTime) {
         float size = dogIn.getDogSize() * 0.3F + 0.1F;
         matrixStackIn.scale(size, size, size);
         this.shadowRadius = size * 0.5F;

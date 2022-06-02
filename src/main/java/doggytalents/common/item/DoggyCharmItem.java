@@ -1,7 +1,7 @@
 package doggytalents.common.item;
 
 import doggytalents.DoggyEntityTypes;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -51,8 +51,8 @@ public class DoggyCharmItem extends Item {
 
 
             Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerLevel) world, itemstack, context.getPlayer(), blockpos1, MobSpawnType.SPAWN_EGG, !Objects.equals(blockpos, blockpos1) && enumfacing == Direction.UP, false);
-            if (entity instanceof DogEntity) {
-               DogEntity dog = (DogEntity)entity;
+            if (entity instanceof Dog) {
+               Dog dog = (Dog)entity;
                if (player != null) {
                    dog.setTame(true);
                    dog.setOwnerUUID(player.getUUID());
@@ -77,8 +77,8 @@ public class DoggyCharmItem extends Item {
                     return new InteractionResultHolder<>(InteractionResult.PASS, itemstack);
                 } else if (worldIn.mayInteract(playerIn, blockpos) && playerIn.mayUseItemAt(blockpos, ((BlockHitResult)raytraceresult).getDirection(), itemstack)) {
                     Entity entity = DoggyEntityTypes.DOG.get().spawn((ServerLevel) worldIn, itemstack, playerIn, blockpos, MobSpawnType.SPAWN_EGG, false, false);
-                    if (entity instanceof DogEntity) {
-                        DogEntity dog = (DogEntity)entity;
+                    if (entity instanceof Dog) {
+                        Dog dog = (Dog)entity;
                            dog.setTame(true);
                            dog.setOwnerUUID(playerIn.getUUID());
                            itemstack.shrink(1);

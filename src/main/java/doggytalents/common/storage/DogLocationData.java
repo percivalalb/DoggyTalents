@@ -3,7 +3,7 @@ package doggytalents.common.storage;
 import doggytalents.DoggyAccessories;
 import doggytalents.DoggyItems;
 import doggytalents.api.feature.EnumGender;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.core.Registry;
@@ -40,7 +40,7 @@ public class DogLocationData implements IDogData {
     private boolean hasRadarCollar;
 
     // Cached objects
-    private DogEntity dog;
+    private Dog dog;
     private LivingEntity owner;
 
     protected DogLocationData(DogLocationStorage storageIn, UUID uuid) {
@@ -69,11 +69,11 @@ public class DogLocationData implements IDogData {
         return this.ownerName == null ? "" : this.ownerName.getString();
     }
 
-    public void populate(DogEntity dogIn) {
+    public void populate(Dog dogIn) {
         this.update(dogIn);
     }
 
-    public void update(DogEntity dogIn) {
+    public void update(Dog dogIn) {
         this.ownerId = dogIn.getOwnerUUID();
         this.position = dogIn.position();
         this.dimension = dogIn.level.dimension();
@@ -111,7 +111,7 @@ public class DogLocationData implements IDogData {
         return compound;
     }
 
-    public static DogLocationData from(DogLocationStorage storageIn, DogEntity dogIn) {
+    public static DogLocationData from(DogLocationStorage storageIn, Dog dogIn) {
         DogLocationData locationData = new DogLocationData(storageIn, dogIn.getUUID());
         locationData.populate(dogIn);
         return locationData;
@@ -141,7 +141,7 @@ public class DogLocationData implements IDogData {
     }
 
     @Nullable
-    public Optional<DogEntity> getDog(@Nullable Level worldIn) {
+    public Optional<Dog> getDog(@Nullable Level worldIn) {
         if (worldIn == null) {
             return Optional.ofNullable(this.dog);
         }
@@ -152,7 +152,7 @@ public class DogLocationData implements IDogData {
         }
 
         for (ServerLevel world : server.getAllLevels()) {
-            DogEntity possibleDog = WorldUtil.getCachedEntity(world, DogEntity.class, this.dog, this.uuid);
+            Dog possibleDog = WorldUtil.getCachedEntity(world, Dog.class, this.dog, this.uuid);
             if (possibleDog != null) {
                 this.dog = possibleDog;
                 return Optional.of(this.dog);
@@ -169,12 +169,12 @@ public class DogLocationData implements IDogData {
 
     @Nullable
     public Component getName(@Nullable Level worldIn) {
-        return this.getDog(worldIn).map(DogEntity::getDisplayName).orElse(this.name);
+        return this.getDog(worldIn).map(Dog::getDisplayName).orElse(this.name);
     }
 
     @Nullable
     public Vec3 getPos(@Nullable ServerLevel worldIn) {
-        return this.getDog(worldIn).map(DogEntity::position).orElse(this.position);
+        return this.getDog(worldIn).map(Dog::position).orElse(this.position);
     }
 
     @Nullable

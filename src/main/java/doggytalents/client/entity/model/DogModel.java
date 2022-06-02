@@ -1,14 +1,14 @@
 package doggytalents.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import net.minecraft.client.model.ColorableAgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-public class DogModel<T extends AbstractDogEntity> extends ColorableAgeableListModel<T> {
+public class DogModel<T extends AbstractDog> extends ColorableAgeableListModel<T> {
 
     public ModelPart head;
     public ModelPart realHead; //

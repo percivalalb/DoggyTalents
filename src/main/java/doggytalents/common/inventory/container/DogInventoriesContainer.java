@@ -2,7 +2,7 @@ package doggytalents.common.inventory.container;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.inventory.PackPuppyItemHandler;
 import doggytalents.common.inventory.container.slot.DogInventorySlot;
 import doggytalents.common.talent.PackPuppyTalent;
@@ -65,8 +65,8 @@ public class DogInventoriesContainer extends AbstractContainerMenu {
             int entityId = this.trackableArray.get(i);
             Entity entity = this.world.getEntity(entityId);
 
-            if (entity instanceof DogEntity) {
-                DogEntity dog = (DogEntity) entity;
+            if (entity instanceof Dog) {
+                Dog dog = (Dog) entity;
 
                 PackPuppyItemHandler packInventory = dog.getTalent(DoggyTalents.PACK_PUPPY)
                         .map((inst) -> inst.cast(PackPuppyTalent.class).inventory()).orElse(null);

@@ -1,6 +1,6 @@
 package doggytalents.common.network.packet;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.packet.data.DogNameData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
@@ -24,7 +24,7 @@ public class DogNamePacket extends DogPacket<DogNameData> {
     }
 
     @Override
-    public void handleDog(DogEntity dogIn, DogNameData data, Supplier<Context> ctx) {
+    public void handleDog(Dog dogIn, DogNameData data, Supplier<Context> ctx) {
         if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }

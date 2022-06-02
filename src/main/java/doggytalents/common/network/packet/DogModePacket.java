@@ -1,7 +1,7 @@
 package doggytalents.common.network.packet;
 
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.packet.data.DogModeData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -24,7 +24,7 @@ public class DogModePacket extends DogPacket<DogModeData> {
     }
 
     @Override
-    public void handleDog(DogEntity dogIn, DogModeData data, Supplier<Context> ctx) {
+    public void handleDog(Dog dogIn, DogModeData data, Supplier<Context> ctx) {
         if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }

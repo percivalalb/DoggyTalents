@@ -2,7 +2,7 @@ package doggytalents.common.entity;
 
 import com.google.common.collect.ImmutableMap;
 import doggytalents.DoggyAccessories;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.Accessory;
 import doggytalents.api.registry.AccessoryInstance;
@@ -43,7 +43,7 @@ public class HelmetInteractHandler implements IDogItem {
        .build();
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (dogIn.isTame() && dogIn.canInteract(playerIn)) {
             ItemStack stack = playerIn.getItemInHand(handIn);
 

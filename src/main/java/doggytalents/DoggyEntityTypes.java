@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
@@ -21,7 +21,7 @@ public class DoggyEntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.Keys.ENTITY_TYPES, Constants.MOD_ID);
 
-    public static final RegistryObject<EntityType<DogEntity>> DOG = register("dog", DogEntity::new, MobCategory.CREATURE, (b) -> b
+    public static final RegistryObject<EntityType<Dog>> DOG = register("dog", Dog::new, MobCategory.CREATURE, (b) -> b
             .sized(0.6F, 0.85F)
             .setUpdateInterval(3)
             .setTrackingRange(16)

@@ -3,7 +3,7 @@ package doggytalents.common.storage;
 import com.google.common.collect.Lists;
 import doggytalents.DoggyEntityTypes;
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -56,7 +56,7 @@ public class DogRespawnData implements IDogData {
         return name == null ? "" : name.getString();
     }
 
-    public void populate(DogEntity dogIn) {
+    public void populate(Dog dogIn) {
         this.data = new CompoundTag();
         dogIn.saveWithoutId(this.data);
 
@@ -70,8 +70,8 @@ public class DogRespawnData implements IDogData {
     }
 
     @Nullable
-    public DogEntity respawn(ServerLevel worldIn, Player playerIn, BlockPos pos) {
-        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundTag) null, (Component) null, playerIn, pos, MobSpawnType.TRIGGERED, true, false);
+    public Dog respawn(ServerLevel worldIn, Player playerIn, BlockPos pos) {
+        Dog dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundTag) null, (Component) null, playerIn, pos, MobSpawnType.TRIGGERED, true, false);
 
         // Failed for some reason
         if (dog == null) {

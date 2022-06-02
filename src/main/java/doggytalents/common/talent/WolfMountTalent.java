@@ -1,7 +1,7 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyAttributes;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -25,16 +25,16 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         dogIn.setAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
     @Override
-    public void set(AbstractDogEntity dogIn, int level) {
+    public void set(AbstractDog dogIn, int level) {
         dogIn.setAttributeModifier(DoggyAttributes.JUMP_POWER.get(), WOLF_MOUNT_JUMP, this::createSpeedModifier);
     }
 
-    public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createSpeedModifier(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() > 0) {
             double speed = 0.06D * this.level();
 
@@ -49,7 +49,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack stack = playerIn.getItemInHand(handIn);
 
         if (stack.isEmpty()) { // Held item
@@ -70,7 +70,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public void livingTick(AbstractDogEntity dog) {
+    public void livingTick(AbstractDog dog) {
         if (dog.isVehicle() && dog.getDogHunger() < 1) {
             dog.getControllingPassenger().sendMessage(new TranslatableComponent("talent.doggytalents.wolf_mount.exhausted", dog.getName()), dog.getUUID());
 
@@ -79,7 +79,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResultHolder<Integer> hungerTick(AbstractDogEntity dogIn, int hungerTick) {
+    public InteractionResultHolder<Integer> hungerTick(AbstractDog dogIn, int hungerTick) {
         if (dogIn.isControlledByLocalInstance()) {
             hungerTick += this.level() < 5 ? 3 : 1;
             return InteractionResultHolder.success(hungerTick);
@@ -89,7 +89,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResultHolder<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+    public InteractionResultHolder<Float> calculateFallDistance(AbstractDog dogIn, float distance) {
         if (this.level() >= 5) {
             return InteractionResultHolder.success(distance - 1F);
         }
@@ -98,7 +98,7 @@ public class WolfMountTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult hitByEntity(AbstractDogEntity dogIn, Entity entity) {
+    public InteractionResult hitByEntity(AbstractDog dogIn, Entity entity) {
         // If the attacking entity is riding block
         return dogIn.isPassengerOfSameVehicle(entity) ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }

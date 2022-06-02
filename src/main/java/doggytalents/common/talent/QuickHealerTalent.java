@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.InteractionResultHolder;
@@ -12,7 +12,7 @@ public class QuickHealerTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResultHolder<Integer> healingTick(AbstractDogEntity dogIn, int healingTick) {
+    public InteractionResultHolder<Integer> healingTick(AbstractDog dogIn, int healingTick) {
         if (this.level() > 0) {
             if (dogIn.isInSittingPose() && this.level() >= 5) {
                 if (dogIn.getNoActionTime() > 100) {

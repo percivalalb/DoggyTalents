@@ -1,6 +1,6 @@
 package doggytalents;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.inventory.container.FoodBowlContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
@@ -31,7 +31,7 @@ public class DoggyContainerTypes {
     });
     public static final RegistryObject<MenuType<PackPuppyContainer>> PACK_PUPPY = register("pack_puppy", (windowId, inv, data) -> {
         Entity entity = inv.player.level.getEntity(data.readInt());
-        return entity instanceof DogEntity ? new PackPuppyContainer(windowId, inv, (DogEntity) entity) : null;
+        return entity instanceof Dog ? new PackPuppyContainer(windowId, inv, (Dog) entity) : null;
     });
     public static final RegistryObject<MenuType<TreatBagContainer>> TREAT_BAG = register("treat_bag", (windowId, inv, data) -> {
         int slotId = data.readByte();
@@ -39,12 +39,12 @@ public class DoggyContainerTypes {
     });
     public static final RegistryObject<MenuType<DogInventoriesContainer>> DOG_INVENTORIES = register("dog_inventories", (windowId, inv, data) -> {
         int noDogs = data.readInt();
-        List<DogEntity> dogs = new ArrayList<>(noDogs);
+        List<Dog> dogs = new ArrayList<>(noDogs);
         SimpleContainerData array = new SimpleContainerData(noDogs);
         for (int i = 0; i < noDogs; i++) {
             Entity entity = inv.player.level.getEntity(data.readInt());
-            if (entity instanceof DogEntity) {
-                dogs.add((DogEntity) entity);
+            if (entity instanceof Dog) {
+                dogs.add((Dog) entity);
                 array.set(i, entity.getId());
             }
         }

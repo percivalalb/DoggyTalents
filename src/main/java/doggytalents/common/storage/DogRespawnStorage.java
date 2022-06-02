@@ -2,7 +2,7 @@ package doggytalents.common.storage;
 
 import com.google.common.collect.Maps;
 import doggytalents.DoggyTalents2;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -68,7 +68,7 @@ public class DogRespawnStorage extends SavedData {
     }
 
     @Nullable
-    public DogRespawnData putData(DogEntity dogIn) {
+    public DogRespawnData putData(Dog dogIn) {
         UUID uuid = dogIn.getUUID();
 
         DogRespawnData storage = new DogRespawnData(this, uuid);

@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.util.EntityUtil;
@@ -29,33 +29,33 @@ public class PuppyEyesTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         this.cooldown = dogIn.tickCount;
     }
 
     @Override
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void writeToNBT(AbstractDog dogIn, CompoundTag compound) {
         super.writeToNBT(dogIn, compound);
         int timeLeft = this.cooldown - dogIn.tickCount;
         compound.putInt("cooldown", timeLeft);
     }
 
     @Override
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void readFromNBT(AbstractDog dogIn, CompoundTag compound) {
         super.readFromNBT(dogIn, compound);
         this.cooldown = dogIn.tickCount + compound.getInt("cooldown");
     }
 
     // Left in for backwards compatibility for versions <= 2.0.0.5
     @Override
-    public void onRead(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void onRead(AbstractDog dogIn, CompoundTag compound) {
         if (compound.contains("charmercharge")) {
             this.cooldown = dogIn.tickCount + compound.getInt("charmercharge");
         }
     }
 
     @Override
-    public void livingTick(AbstractDogEntity dogIn) {
+    public void livingTick(AbstractDog dogIn) {
         if (dogIn.tickCount % 40 != 0) {
             return;
         }
@@ -121,7 +121,7 @@ public class PuppyEyesTalent extends TalentInstance {
         }
     }
 
-    public LivingEntity getClosestVisibleVillager(AbstractDogEntity dogIn, double radiusIn) {
+    public LivingEntity getClosestVisibleVillager(AbstractDog dogIn, double radiusIn) {
         List<AbstractVillager> list = dogIn.level.getEntitiesOfClass(
             AbstractVillager.class,
             dogIn.getBoundingBox().inflate(radiusIn, radiusIn, radiusIn),

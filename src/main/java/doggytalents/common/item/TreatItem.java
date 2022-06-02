@@ -1,7 +1,7 @@
 package doggytalents.common.item;
 
 import doggytalents.api.feature.DogLevel;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.common.lib.Constants;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -23,7 +23,7 @@ public class TreatItem extends Item implements IDogItem {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (!dogIn.isTame() || !dogIn.canInteract(playerIn)) {
             return InteractionResult.FAIL;
         }

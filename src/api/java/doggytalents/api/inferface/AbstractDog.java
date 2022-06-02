@@ -21,13 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.Level;
 
-public abstract class AbstractDogEntity extends TamableAnimal implements IDog {
+public abstract class AbstractDog extends TamableAnimal implements IDog {
 
-    protected AbstractDogEntity(EntityType<? extends TamableAnimal> type, Level worldIn) {
+    protected AbstractDog(EntityType<? extends TamableAnimal> type, Level worldIn) {
         super(type, worldIn);
     }
 
-    public void setAttributeModifier(Attribute attribute, UUID modifierUUID, BiFunction<AbstractDogEntity, UUID, AttributeModifier> modifierGenerator) {
+    public void setAttributeModifier(Attribute attribute, UUID modifierUUID, BiFunction<AbstractDog, UUID, AttributeModifier> modifierGenerator) {
         AttributeInstance attributeInst = this.getAttribute(attribute);
 
         AttributeModifier currentModifier = attributeInst.getModifier(modifierUUID);
@@ -52,7 +52,7 @@ public abstract class AbstractDogEntity extends TamableAnimal implements IDog {
     }
 
     @Override
-    public AbstractDogEntity getDog() {
+    public AbstractDog getDog() {
         return this;
     }
 

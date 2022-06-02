@@ -4,7 +4,7 @@ import doggytalents.DoggySounds;
 import doggytalents.DoggyTalents;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
 import doggytalents.common.util.EntityUtil;
@@ -62,12 +62,12 @@ public class WhistleItem extends Item {
                 mode = stack.getTag().getByte("mode");
             }
 
-            List<DogEntity> dogsList = world.getEntitiesOfClass(DogEntity.class, player.getBoundingBox().inflate(100D, 50D, 100D), dog -> dog.isOwnedBy(player));
+            List<Dog> dogsList = world.getEntitiesOfClass(Dog.class, player.getBoundingBox().inflate(100D, 50D, 100D), dog -> dog.isOwnedBy(player));
             boolean successful = false;
 
             if (mode == 0) { // Stand
                 if (!world.isClientSide) {
-                    for (DogEntity dog : dogsList) {
+                    for (Dog dog : dogsList) {
                         dog.setOrderedToSit(false);
                         dog.getNavigation().stop();
                         dog.setTarget(null);
@@ -89,7 +89,7 @@ public class WhistleItem extends Item {
             }
             else if (mode == 1) { // Heel
                 if (!world.isClientSide) {
-                    for (DogEntity dog : dogsList) {
+                    for (Dog dog : dogsList) {
                         if (!dog.isInSittingPose() && dog.getMode() != EnumMode.WANDERING) {
                             if (dog.distanceToSqr(dog.getOwner()) > 9) { // Only heel if less than 3 blocks away
                                 EntityUtil.tryToTeleportNearEntity(dog, dog.getNavigation(), dog.getOwner(), 2);
@@ -110,7 +110,7 @@ public class WhistleItem extends Item {
             }
             else if (mode == 2) { // Stay
                 if (!world.isClientSide) {
-                    for (DogEntity dog : dogsList) {
+                    for (Dog dog : dogsList) {
                         dog.setOrderedToSit(true);
                         dog.getNavigation().stop();
                         dog.setTarget(null);
@@ -132,7 +132,7 @@ public class WhistleItem extends Item {
             }
             else if (mode == 3) { // Ok
                 if (!world.isClientSide) {
-                    for (DogEntity dog : dogsList) {
+                    for (Dog dog : dogsList) {
                         if (dog.getMaxHealth() / 2 >= dog.getHealth()) {
                             dog.setOrderedToSit(true);
                             dog.getNavigation().stop();
@@ -178,17 +178,17 @@ public class WhistleItem extends Item {
                 return new InteractionResultHolder<>(InteractionResult.CONSUME, player.getItemInHand(hand));
             } else if (mode == 6) {
                 if (!world.isClientSide) {
-                    List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getDogLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
+                    List<Dog> roarDogs = dogsList.stream().filter(dog -> dog.getDogLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
                         player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.level"), true);
                     } else {
-                        List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, dog.tickCount) <= dog.tickCount).collect(Collectors.toList());
+                        List<Dog> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, dog.tickCount) <= dog.tickCount).collect(Collectors.toList());
                         if (cdDogs.isEmpty()) {
                             player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
                             boolean anyHits = false;
 
-                            for (DogEntity dog : dogsList) {
+                            for (Dog dog : dogsList) {
                                 int level = dog.getDogLevel(DoggyTalents.ROARING_GALE);
                                 int roarCooldown = dog.tickCount;
 

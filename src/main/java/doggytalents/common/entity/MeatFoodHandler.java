@@ -1,6 +1,6 @@
 package doggytalents.common.entity;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -15,12 +15,12 @@ public class MeatFoodHandler implements IDogFoodHandler {
     }
 
     @Override
-    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean canConsume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
         return this.isFood(stackIn);
     }
 
     @Override
-    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
 
         if (dogIn.getDogHunger() < dogIn.getMaxHunger()) {
             if (!dogIn.level.isClientSide) {

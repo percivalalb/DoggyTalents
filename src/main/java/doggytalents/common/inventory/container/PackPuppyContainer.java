@@ -2,7 +2,7 @@ package doggytalents.common.inventory.container;
 
 import doggytalents.DoggyContainerTypes;
 import doggytalents.DoggyTalents;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.common.talent.PackPuppyTalent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,11 +18,11 @@ import net.minecraftforge.items.SlotItemHandler;
  */
 public class PackPuppyContainer extends AbstractContainerMenu {
 
-    private AbstractDogEntity dog;
+    private AbstractDog dog;
     private ItemStackHandler packInventory;
     private int level;
 
-    public PackPuppyContainer(int windowId, Inventory playerInventory, AbstractDogEntity dogIn) {
+    public PackPuppyContainer(int windowId, Inventory playerInventory, AbstractDog dogIn) {
         super(DoggyContainerTypes.PACK_PUPPY.get(), windowId);
         this.dog = dogIn;
         this.level = Mth.clamp(dogIn.getDogLevel(DoggyTalents.PACK_PUPPY), 0, 5);
@@ -87,7 +87,7 @@ public class PackPuppyContainer extends AbstractContainerMenu {
         super.removed(player);
     }
 
-    public AbstractDogEntity getDog() {
+    public AbstractDog getDog() {
         return this.dog;
     }
 

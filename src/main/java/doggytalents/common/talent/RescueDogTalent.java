@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.util.Mth;
@@ -13,7 +13,7 @@ public class RescueDogTalent extends TalentInstance {
     }
 
     @Override
-    public void livingTick(AbstractDogEntity dogIn) {
+    public void livingTick(AbstractDog dogIn) {
         if (dogIn.level.isClientSide) {
             return;
         }

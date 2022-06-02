@@ -1,7 +1,7 @@
 package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -14,12 +14,12 @@ import java.util.Random;
 
 public class DogWanderGoal extends Goal {
 
-    protected final DogEntity dog;
+    protected final Dog dog;
 
     protected final double speed;
     protected int executionChance;
 
-    public DogWanderGoal(DogEntity dogIn, double speedIn) {
+    public DogWanderGoal(Dog dogIn, double speedIn) {
         this.dog = dogIn;
         this.speed = speedIn;
         this.executionChance = 60;

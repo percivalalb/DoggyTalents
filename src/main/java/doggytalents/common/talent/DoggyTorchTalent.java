@@ -1,7 +1,7 @@
 package doggytalents.common.talent;
 
 import doggytalents.DoggyTalents;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.inventory.PackPuppyItemHandler;
@@ -20,7 +20,7 @@ public class DoggyTorchTalent extends TalentInstance {
     }
 
     @Override
-    public void tick(AbstractDogEntity dogIn) {
+    public void tick(AbstractDog dogIn) {
         if (dogIn.tickCount % 10 == 0 && dogIn.isTame()) {
 
             BlockPos pos = dogIn.blockPosition();

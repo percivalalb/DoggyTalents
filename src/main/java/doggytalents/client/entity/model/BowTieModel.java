@@ -1,11 +1,11 @@
 package doggytalents.client.entity.model;
 
 import com.google.common.collect.ImmutableList;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelPart;
 
-public class BowTieModel extends ListModel<DogEntity> {
+public class BowTieModel extends ListModel<Dog> {
 
     public ModelPart rightChest;
     public ModelPart middleChest;
@@ -32,7 +32,7 @@ public class BowTieModel extends ListModel<DogEntity> {
     }
 
     @Override
-    public void prepareMobModel(DogEntity dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
+    public void prepareMobModel(Dog dogIn, float limbSwing, float limbSwingAmount, float partialTickTime) {
 
         this.rightChest.xRot += 0.1;
         this.middleChest.xRot += 0.1;
@@ -42,7 +42,7 @@ public class BowTieModel extends ListModel<DogEntity> {
     }
 
     @Override
-    public void setupAnim(DogEntity dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Dog dogIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
 }

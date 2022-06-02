@@ -2,7 +2,7 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Predicate;
@@ -11,7 +11,7 @@ public class FetchGoal extends MoveToClosestItemGoal {
 
     public static Predicate<ItemStack> BONE_PREDICATE = (item) -> item.getItem() instanceof IThrowableItem;
 
-    public FetchGoal(DogEntity dogIn, double speedIn, float range) {
+    public FetchGoal(Dog dogIn, double speedIn, float range) {
         super(dogIn, speedIn, range, 2, BONE_PREDICATE);
     }
 

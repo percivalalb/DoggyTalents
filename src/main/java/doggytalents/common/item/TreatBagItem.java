@@ -1,6 +1,6 @@
 package doggytalents.common.item;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.common.Screens;
 import doggytalents.common.inventory.TreatBagItemHandler;
@@ -108,12 +108,12 @@ public class TreatBagItem extends Item implements IDogFoodHandler {
     }
 
     @Override
-    public boolean canConsume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public boolean canConsume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
         return entityIn instanceof LivingEntity ? dogIn.canInteract((LivingEntity) entityIn) : false;
     }
 
     @Override
-    public InteractionResult consume(AbstractDogEntity dogIn, ItemStack stackIn, Entity entityIn) {
+    public InteractionResult consume(AbstractDog dogIn, ItemStack stackIn, Entity entityIn) {
         IItemHandlerModifiable treatBag = (IItemHandlerModifiable) stackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
         return InventoryUtil.feedDogFrom(dogIn, entityIn, treatBag);
     }

@@ -9,7 +9,7 @@ import doggytalents.api.feature.EnumMode;
 import doggytalents.api.registry.Talent;
 import doggytalents.client.DogTextureManager;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.*;
 import doggytalents.common.util.Util;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 
 public class DogInfoScreen extends Screen {
 
-    public final DogEntity dog;
+    public final Dog dog;
     public final Player player;
 
     private int currentPage = 0;
@@ -53,7 +53,7 @@ public class DogInfoScreen extends Screen {
 
     public int textureIndex;
 
-    public DogInfoScreen(DogEntity dog, Player player) {
+    public DogInfoScreen(Dog dog, Player player) {
         super(new TranslatableComponent("doggytalents.screen.dog.title"));
         this.dog = dog;
         this.player = player;
@@ -68,7 +68,7 @@ public class DogInfoScreen extends Screen {
         this.textureIndex = this.textureIndex >= 0 ? this.textureIndex : 0;
     }
 
-    public static void open(DogEntity dog) {
+    public static void open(Dog dog) {
         Minecraft mc = Minecraft.getInstance();
         mc.setScreen(new DogInfoScreen(dog, mc.player));
     }

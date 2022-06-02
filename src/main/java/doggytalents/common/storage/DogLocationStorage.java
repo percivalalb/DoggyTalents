@@ -2,7 +2,7 @@ package doggytalents.common.storage;
 
 import com.google.common.collect.Maps;
 import doggytalents.DoggyTalents2;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -53,7 +53,7 @@ public class DogLocationStorage extends SavedData {
     }
 
     @Nullable
-    public DogLocationData getData(DogEntity dogIn) {
+    public DogLocationData getData(Dog dogIn) {
         return getData(dogIn.getUUID());
     }
 
@@ -67,12 +67,12 @@ public class DogLocationStorage extends SavedData {
     }
 
     @Nullable
-    public DogLocationData remove(DogEntity dogIn) {
+    public DogLocationData remove(Dog dogIn) {
         return remove(dogIn.getUUID());
     }
 
     @Nullable
-    public DogLocationData getOrCreateData(DogEntity dogIn) {
+    public DogLocationData getOrCreateData(Dog dogIn) {
         UUID uuid = dogIn.getUUID();
 
         return this.locationDataMap.computeIfAbsent(uuid, ($) -> {
@@ -95,7 +95,7 @@ public class DogLocationStorage extends SavedData {
     }
 
     @Nullable
-    public DogLocationData putData(DogEntity dogIn) {
+    public DogLocationData putData(Dog dogIn) {
         UUID uuid = dogIn.getUUID();
 
         DogLocationData storage = new DogLocationData(this, uuid);

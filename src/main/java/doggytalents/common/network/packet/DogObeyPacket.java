@@ -1,6 +1,6 @@
 package doggytalents.common.network.packet;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.packet.data.DogObeyData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -23,7 +23,7 @@ public class DogObeyPacket extends DogPacket<DogObeyData> {
     }
 
     @Override
-    public void handleDog(DogEntity dogIn, DogObeyData data, Supplier<Context> ctx) {
+    public void handleDog(Dog dogIn, DogObeyData data, Supplier<Context> ctx) {
         if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }

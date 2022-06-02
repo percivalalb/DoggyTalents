@@ -1,9 +1,9 @@
 package doggytalents.common;
 
 import doggytalents.DoggyItems;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.common.block.tileentity.FoodBowlTileEntity;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.inventory.container.TreatBagContainer;
@@ -24,9 +24,9 @@ public class Screens {
 
     public static class PackPuppyContainerProvider implements MenuProvider {
 
-        private AbstractDogEntity dog;
+        private AbstractDog dog;
 
-        public PackPuppyContainerProvider(AbstractDogEntity dogIn) {
+        public PackPuppyContainerProvider(AbstractDog dogIn) {
             this.dog = dogIn;
         }
 
@@ -43,9 +43,9 @@ public class Screens {
 
     public static class DogInventoriesContainerProvider implements MenuProvider {
 
-        private List<DogEntity> dogs;
+        private List<Dog> dogs;
 
-        public DogInventoriesContainerProvider(List<DogEntity> dogIn) {
+        public DogInventoriesContainerProvider(List<Dog> dogIn) {
             this.dogs = dogIn;
         }
 
@@ -85,7 +85,7 @@ public class Screens {
         }
     }
 
-    public static void openPackPuppyScreen(ServerPlayer player, AbstractDogEntity dogIn) {
+    public static void openPackPuppyScreen(ServerPlayer player, AbstractDog dogIn) {
         if (dogIn.isAlive()) {
             NetworkHooks.openGui(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.getId());
@@ -93,11 +93,11 @@ public class Screens {
         }
     }
 
-    public static void openDogInventoriesScreen(ServerPlayer player, List<DogEntity> dogIn) {
+    public static void openDogInventoriesScreen(ServerPlayer player, List<Dog> dogIn) {
         if (!dogIn.isEmpty()) {
             NetworkHooks.openGui(player, new DogInventoriesContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.size());
-                for (DogEntity dog : dogIn) {
+                for (Dog dog : dogIn) {
                     buf.writeInt(dog.getId());
                 }
             });

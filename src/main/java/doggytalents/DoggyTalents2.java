@@ -12,7 +12,7 @@ import doggytalents.common.addon.AddonManager;
 import doggytalents.common.command.DogRespawnCommand;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.data.*;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.HelmetInteractHandler;
 import doggytalents.common.entity.MeatFoodHandler;
 import doggytalents.common.event.EventHandler;
@@ -115,7 +115,7 @@ public class DoggyTalents2 {
         InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
         DogRespawnCommand.registerSerilizers();
-        DogEntity.initDataParameters();
+        Dog.initDataParameters();
     }
 
     public void serverStarting(final ServerStartingEvent event) {

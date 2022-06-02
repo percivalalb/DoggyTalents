@@ -2,7 +2,7 @@ package doggytalents.common.network.packet;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.client.DogTextureManager;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.SendSkinData;
@@ -52,11 +52,11 @@ public class SendSkinPacket implements IPacket<SendSkinData> {
                 }
             } else if (side.isServer()) {
                 Entity target = ctx.get().getSender().level.getEntity(data.entityId);
-                if (!(target instanceof DogEntity)) {
+                if (!(target instanceof Dog)) {
                     return;
                 }
 
-                DogEntity dog = (DogEntity) target;
+                Dog dog = (Dog) target;
                 if (!dog.canInteract(ctx.get().getSender())) {
                     return;
                 }

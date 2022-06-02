@@ -3,7 +3,7 @@ package doggytalents.client.screen.widget;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.talent.PackPuppyTalent;
 import net.minecraft.ChatFormatting;
@@ -52,7 +52,7 @@ public class DogInventoryButton extends Button {
 
         if (this.visible) {
             Minecraft mc = Minecraft.getInstance();
-            List<DogEntity> dogs = mc.level.getEntitiesOfClass(DogEntity.class, mc.player.getBoundingBox().inflate(12D, 12D, 12D),
+            List<Dog> dogs = mc.level.getEntitiesOfClass(Dog.class, mc.player.getBoundingBox().inflate(12D, 12D, 12D),
                 (dog) -> dog.canInteract(mc.player) && PackPuppyTalent.hasInventory(dog)
             );
             this.active = !dogs.isEmpty();

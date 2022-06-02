@@ -1,13 +1,13 @@
 package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 
 public class OwnerHurtTargetGoal extends net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal {
 
-    private DogEntity dog;
+    private Dog dog;
 
-    public OwnerHurtTargetGoal(DogEntity dogIn) {
+    public OwnerHurtTargetGoal(Dog dogIn) {
         super(dogIn);
         this.dog = dogIn;
     }

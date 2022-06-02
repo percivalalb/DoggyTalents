@@ -11,7 +11,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import doggytalents.common.command.arguments.UUIDArgument;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.item.RadarItem;
 import doggytalents.common.storage.*;
 import doggytalents.common.util.Util;
@@ -228,7 +228,7 @@ public class DogRespawnCommand {
     }
 
     private static int respawn(DogRespawnStorage respawnStorage, DogRespawnData respawnData, final CommandSourceStack source) throws CommandSyntaxException {
-        DogEntity dog = respawnData.respawn(source.getLevel(), source.getPlayerOrException(), source.getPlayerOrException().blockPosition().above());
+        Dog dog = respawnData.respawn(source.getLevel(), source.getPlayerOrException(), source.getPlayerOrException().blockPosition().above());
 
         if (dog != null) {
             respawnStorage.remove(respawnData.getDogId());

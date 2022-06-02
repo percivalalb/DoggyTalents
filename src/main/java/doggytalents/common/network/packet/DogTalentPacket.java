@@ -4,7 +4,7 @@ import doggytalents.DoggyTalents2;
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Talent;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.packet.data.DogTalentData;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -27,7 +27,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
     }
 
     @Override
-    public void handleDog(DogEntity dogIn, DogTalentData data, Supplier<Context> ctx) {
+    public void handleDog(Dog dogIn, DogTalentData data, Supplier<Context> ctx) {
         if (!dogIn.canInteract(ctx.get().getSender())) {
             return;
         }

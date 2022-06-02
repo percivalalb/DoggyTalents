@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +19,7 @@ public class SwimmerDogTalent extends TalentInstance {
     }
 
     @Override
-    public void livingTick(AbstractDogEntity dogIn) {
+    public void livingTick(AbstractDog dogIn) {
         if (this.level() >= 5 && dogIn.isVehicle() && dogIn.canBeControlledByRider()) {
             // canBeSteered checks entity is LivingEntity
             LivingEntity rider = (LivingEntity) dogIn.getControllingPassenger();
@@ -30,17 +30,17 @@ public class SwimmerDogTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
+    public InteractionResult canBeRiddenInWater(AbstractDog dogIn, Entity rider) {
         return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResult canBreatheUnderwater(AbstractDogEntity dogIn) {
+    public InteractionResult canBreatheUnderwater(AbstractDog dogIn) {
         return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResultHolder<Integer> decreaseAirSupply(AbstractDogEntity dogIn, int air) {
+    public InteractionResultHolder<Integer> decreaseAirSupply(AbstractDog dogIn, int air) {
         if (this.level() > 0 && dogIn.getRandom().nextInt(this.level() + 1) > 0) {
             return InteractionResultHolder.success(air);
         }
@@ -49,7 +49,7 @@ public class SwimmerDogTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResultHolder<Integer> determineNextAir(AbstractDogEntity dogIn, int currentAir) {
+    public InteractionResultHolder<Integer> determineNextAir(AbstractDog dogIn, int currentAir) {
         if (this.level() > 0) {
             return InteractionResultHolder.pass(currentAir + this.level());
         }

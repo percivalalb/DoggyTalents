@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.InteractionResult;
@@ -15,17 +15,17 @@ public class HellHoundTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResultHolder<Integer> setFire(AbstractDogEntity dogIn, int second) {
+    public InteractionResultHolder<Integer> setFire(AbstractDog dogIn, int second) {
         return InteractionResultHolder.success(this.level() > 0 ? second / this.level() : second);
     }
 
     @Override
-    public InteractionResult isImmuneToFire(AbstractDogEntity dogIn) {
+    public InteractionResult isImmuneToFire(AbstractDog dogIn) {
         return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResult isInvulnerableTo(AbstractDogEntity dogIn, DamageSource source) {
+    public InteractionResult isInvulnerableTo(AbstractDog dogIn, DamageSource source) {
         if (source.isFire()) {
             return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
         }
@@ -34,7 +34,7 @@ public class HellHoundTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult attackEntityAsMob(AbstractDogEntity dogIn, Entity entity) {
+    public InteractionResult attackEntityAsMob(AbstractDog dogIn, Entity entity) {
         if (this.level() > 0) {
             entity.setSecondsOnFire(this.level());
             return InteractionResult.PASS;

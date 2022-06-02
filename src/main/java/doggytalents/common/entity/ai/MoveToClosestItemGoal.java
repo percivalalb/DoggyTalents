@@ -1,6 +1,6 @@
 package doggytalents.common.entity.ai;
 
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,7 +19,7 @@ import java.util.function.Predicate;
 
 public class MoveToClosestItemGoal extends Goal {
 
-    protected final DogEntity dog;
+    protected final Dog dog;
     protected final Predicate<ItemEntity> predicate;
     protected final Comparator<Entity> sorter;
     protected final double followSpeed;
@@ -32,7 +32,7 @@ public class MoveToClosestItemGoal extends Goal {
     private float oldWaterCost;
     private double oldRangeSense;
 
-    public MoveToClosestItemGoal(DogEntity dogIn, double speedIn, float maxDist, float stopDist, @Nullable Predicate<ItemStack> targetSelector) {
+    public MoveToClosestItemGoal(Dog dogIn, double speedIn, float maxDist, float stopDist, @Nullable Predicate<ItemStack> targetSelector) {
         this.dog = dogIn;
         this.dogNavigator = dogIn.getNavigation();
         this.followSpeed = speedIn;

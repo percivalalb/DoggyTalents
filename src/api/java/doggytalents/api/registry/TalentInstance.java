@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogAlteration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -58,11 +58,11 @@ public class TalentInstance implements IDogAlteration {
         return this.talentDelegate.get().getDefault(this.level);
     }
 
-    public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void writeToNBT(AbstractDog dogIn, CompoundTag compound) {
         compound.putInt("level", this.level());
     }
 
-    public void readFromNBT(AbstractDogEntity dogIn, CompoundTag compound) {
+    public void readFromNBT(AbstractDog dogIn, CompoundTag compound) {
         this.setLevel(compound.getInt("level"));
     }
 
@@ -74,7 +74,7 @@ public class TalentInstance implements IDogAlteration {
         this.setLevel(buf.readInt());
     }
 
-    public final void writeInstance(AbstractDogEntity dogIn, CompoundTag compound) {
+    public final void writeInstance(AbstractDog dogIn, CompoundTag compound) {
         ResourceLocation rl = this.talentDelegate.name();
         if (rl != null) {
             compound.putString("type", rl.toString());
@@ -83,7 +83,7 @@ public class TalentInstance implements IDogAlteration {
         this.writeToNBT(dogIn, compound);
     }
 
-    public static Optional<TalentInstance> readInstance(AbstractDogEntity dogIn, CompoundTag compound) {
+    public static Optional<TalentInstance> readInstance(AbstractDog dogIn, CompoundTag compound) {
         ResourceLocation rl = ResourceLocation.tryParse(compound.getString("type"));
         if (DoggyTalentsAPI.TALENTS.get().containsKey(rl)) {
             TalentInstance inst = DoggyTalentsAPI.TALENTS.get().getValue(rl).getDefault();
@@ -116,7 +116,7 @@ public class TalentInstance implements IDogAlteration {
      *
      * @param dogIn The dog
      */
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
 
     }
 
@@ -126,7 +126,7 @@ public class TalentInstance implements IDogAlteration {
      *
      * @param dogIn The dog
      */
-    public void set(AbstractDogEntity dog, int levelBefore) {
+    public void set(AbstractDog dog, int levelBefore) {
 
     }
 

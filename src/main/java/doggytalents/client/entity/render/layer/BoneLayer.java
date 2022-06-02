@@ -5,24 +5,24 @@ import com.mojang.math.Vector3f;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.DogRenderer;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
-public class BoneLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
+public class BoneLayer extends RenderLayer<Dog, DogModel<Dog>> {
 
     public BoneLayer(DogRenderer dogRendererIn) {
         super(dogRendererIn);
     }
 
     @Override
-    public void render(PoseStack matrixStack, MultiBufferSource bufferSource, int packedLight, DogEntity dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void render(PoseStack matrixStack, MultiBufferSource bufferSource, int packedLight, Dog dog, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (dog.hasBone()) {
 
             matrixStack.pushPose();
-            DogModel<DogEntity> model = this.getParentModel();
+            DogModel<Dog> model = this.getParentModel();
             if (model.young) {
                 // derived from AgeableModel head offset
                 matrixStack.translate(0.0F, 5.0F / 16.0F, 2.0F / 16.0F);

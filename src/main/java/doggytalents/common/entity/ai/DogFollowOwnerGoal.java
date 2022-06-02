@@ -2,7 +2,7 @@ package doggytalents.common.entity.ai;
 
 import doggytalents.api.feature.EnumMode;
 import doggytalents.api.inferface.IThrowableItem;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.util.EntityUtil;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -15,7 +15,7 @@ import java.util.EnumSet;
 
 public class DogFollowOwnerGoal extends Goal {
 
-    private final DogEntity dog;
+    private final Dog dog;
     private final PathNavigation navigator;
     private final Level world;
     private final double followSpeed;
@@ -26,7 +26,7 @@ public class DogFollowOwnerGoal extends Goal {
     private int timeToRecalcPath;
     private float oldWaterCost;
 
-    public DogFollowOwnerGoal(DogEntity dogIn, double speedIn, float minDistIn, float maxDistIn) {
+    public DogFollowOwnerGoal(Dog dogIn, double speedIn, float minDistIn, float maxDistIn) {
         this.dog = dogIn;
         this.world = dogIn.level;
         this.followSpeed = speedIn;

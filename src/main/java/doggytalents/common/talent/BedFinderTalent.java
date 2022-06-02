@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -17,12 +17,12 @@ public class BedFinderTalent extends TalentInstance {
     }
 
     @Override
-    public void livingTick(AbstractDogEntity dog) {
+    public void livingTick(AbstractDog dog) {
 
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         if (this.level() > 0) {
             if (!playerIn.hasPassenger(dogIn)) {
                 if (playerIn.getItemInHand(handIn).getItem() == Items.BONE && dogIn.canInteract(playerIn)) {

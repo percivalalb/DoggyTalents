@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.sounds.SoundEvents;
@@ -20,12 +20,12 @@ public class CreeperSweeperTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         this.cooldown = dogIn.tickCount;
     }
 
     @Override
-    public void tick(AbstractDogEntity dogIn) {
+    public void tick(AbstractDog dogIn) {
         if (this.level() > 0) {
             int timeLeft = this.cooldown - dogIn.tickCount;
 
@@ -46,17 +46,17 @@ public class CreeperSweeperTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult canAttack(AbstractDogEntity dog, EntityType<?> entityType) {
+    public InteractionResult canAttack(AbstractDog dog, EntityType<?> entityType) {
         return entityType == EntityType.CREEPER && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResult canAttack(AbstractDogEntity dog, LivingEntity entity) {
+    public InteractionResult canAttack(AbstractDog dog, LivingEntity entity) {
         return entity instanceof Creeper && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResult shouldAttackEntity(AbstractDogEntity dog, LivingEntity target, LivingEntity owner) {
+    public InteractionResult shouldAttackEntity(AbstractDog dog, LivingEntity target, LivingEntity owner) {
         return target instanceof Creeper && this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
      }
 }

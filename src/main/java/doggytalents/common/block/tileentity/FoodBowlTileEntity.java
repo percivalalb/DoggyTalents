@@ -2,7 +2,7 @@ package doggytalents.common.block.tileentity;
 
 import doggytalents.DoggyTileEntityTypes;
 import doggytalents.api.feature.FoodHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.inventory.container.FoodBowlContainer;
 import doggytalents.common.util.InventoryUtil;
 import net.minecraft.core.BlockPos;
@@ -72,9 +72,9 @@ public class FoodBowlTileEntity extends PlacedTileEntity implements MenuProvider
         //Only run update code every 5 ticks (0.25s)
         if (++bowl.timeoutCounter < 5) { return; }
 
-        List<DogEntity> dogList = bowl.level.getEntitiesOfClass(DogEntity.class, new AABB(pos).inflate(5, 5, 5));
+        List<Dog> dogList = bowl.level.getEntitiesOfClass(Dog.class, new AABB(pos).inflate(5, 5, 5));
 
-        for (DogEntity dog : dogList) {
+        for (Dog dog : dogList) {
             //TODO make dog bowl remember who placed and only their dogs can attach to the bowl
             UUID placerId = bowl.getPlacerId();
             if (placerId != null && placerId.equals(dog.getOwnerUUID()) && !dog.getBowlPos().isPresent()) {

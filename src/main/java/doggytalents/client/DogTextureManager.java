@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import doggytalents.DoggyTalents2;
 import doggytalents.common.config.ConfigHandler;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.entity.texture.DogTextureServer;
 import doggytalents.common.lib.Resources;
 import doggytalents.common.network.PacketHandler;
@@ -105,7 +105,7 @@ public class DogTextureManager extends SimplePreparableReloadListener<DogTexture
         return resource.getInputStream();
     }
 
-    public ResourceLocation getTexture(DogEntity dog) {
+    public ResourceLocation getTexture(Dog dog) {
         if (dog.hasCustomSkin()) {
             String hash = dog.getSkinHash();
             return DogTextureManager.INSTANCE.getLocFromHashOrGet(hash, this::getCached);

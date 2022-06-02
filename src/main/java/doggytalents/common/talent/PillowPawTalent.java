@@ -1,6 +1,6 @@
 package doggytalents.common.talent;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.core.BlockPos;
@@ -21,16 +21,16 @@ public class PillowPawTalent extends TalentInstance {
     }
 
     @Override
-    public void init(AbstractDogEntity dogIn) {
+    public void init(AbstractDog dogIn) {
         dogIn.setAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
     }
 
     @Override
-    public void set(AbstractDogEntity dogIn, int level) {
+    public void set(AbstractDog dogIn, int level) {
         dogIn.setAttributeModifier(ForgeMod.ENTITY_GRAVITY.get(), PILLOW_PAW_BOOST_ID, this::createSpeedModifier);
     }
 
-    public AttributeModifier createSpeedModifier(AbstractDogEntity dogIn, UUID uuidIn) {
+    public AttributeModifier createSpeedModifier(AbstractDog dogIn, UUID uuidIn) {
         if (this.level() >= 5) {
             return new AttributeModifier(uuidIn, "Pillow Paw", -0.065D, AttributeModifier.Operation.ADDITION);
         }
@@ -39,17 +39,17 @@ public class PillowPawTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult canTrample(AbstractDogEntity dogIn, BlockState state, BlockPos pos, float fallDistance) {
+    public InteractionResult canTrample(AbstractDog dogIn, BlockState state, BlockPos pos, float fallDistance) {
         return this.level() >= 5 ? InteractionResult.FAIL : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResult onLivingFall(AbstractDogEntity dogIn, float distance, float damageMultiplier) {
+    public InteractionResult onLivingFall(AbstractDog dogIn, float distance, float damageMultiplier) {
         return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
-    public InteractionResultHolder<Float> calculateFallDistance(AbstractDogEntity dogIn, float distance) {
+    public InteractionResultHolder<Float> calculateFallDistance(AbstractDog dogIn, float distance) {
         if (this.level() > 0) {
             return InteractionResultHolder.success(distance - this.level() * 3);
         }

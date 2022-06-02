@@ -1,7 +1,7 @@
 package doggytalents.common.util;
 
 import doggytalents.api.feature.FoodHandler;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogFoodHandler;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 public class InventoryUtil {
 
-    public static InteractionResult feedDogFrom(AbstractDogEntity dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
+    public static InteractionResult feedDogFrom(AbstractDog dogIn, @Nullable Entity entity, IItemHandlerModifiable source) {
 
         for (int i = 0; i < source.getSlots(); i++) {
 

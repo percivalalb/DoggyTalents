@@ -46,8 +46,8 @@ public class DoggyBeamEntity extends ThrowableProjectile implements IEntityAddit
                 LivingEntity livingThrower = (LivingEntity) thrower;
                 LivingEntity livingEntity = (LivingEntity) entityHit;
 
-                this.level.getEntitiesOfClass(DogEntity.class, this.getBoundingBox().inflate(64D, 16D, 64D)).stream()
-                    .filter(Predicates.not(DogEntity::isInSittingPose))
+                this.level.getEntitiesOfClass(Dog.class, this.getBoundingBox().inflate(64D, 16D, 64D)).stream()
+                    .filter(Predicates.not(Dog::isInSittingPose))
                     .filter(d -> d.isMode(EnumMode.AGGRESIVE, EnumMode.TACTICAL, EnumMode.BERSERKER))
                     .filter(d -> d.canInteract(livingThrower))
                     .filter(d -> d != livingEntity && d.wantsToAttack(livingEntity, d.getOwner()))

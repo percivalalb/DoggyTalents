@@ -6,7 +6,7 @@ import doggytalents.*;
 import doggytalents.api.enu.WetSource;
 import doggytalents.api.feature.*;
 import doggytalents.api.feature.DogLevel.Type;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogAlteration;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IThrowableItem;
@@ -90,25 +90,25 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class DogEntity extends AbstractDogEntity {
+public class Dog extends AbstractDog {
 
-    private static final EntityDataAccessor<Optional<Component>> LAST_KNOWN_NAME = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.OPTIONAL_COMPONENT);
-    private static final EntityDataAccessor<Byte> DOG_FLAGS = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Optional<Component>> LAST_KNOWN_NAME = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.OPTIONAL_COMPONENT);
+    private static final EntityDataAccessor<Byte> DOG_FLAGS = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.BYTE);
 
-    private static final EntityDataAccessor<Float> HUNGER_INT = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<String> CUSTOM_SKIN = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Float> HUNGER_INT = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<String> CUSTOM_SKIN = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.STRING);
 
-    private static final EntityDataAccessor<Byte> SIZE = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<ItemStack> BONE_VARIANT = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Byte> SIZE = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<ItemStack> BONE_VARIANT = SynchedEntityData.defineId(Dog.class, EntityDataSerializers.ITEM_STACK);
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
-    private static final Cache<EntityDataAccessor<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (EntityDataAccessor<List<AccessoryInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<List<TalentInstance>>> TALENTS = Cache.make(() -> (EntityDataAccessor<List<TalentInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DogLevel>> DOG_LEVEL = Cache.make(() -> (EntityDataAccessor<DogLevel>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<EnumGender>> GENDER = Cache.make(() -> (EntityDataAccessor<EnumGender>) SynchedEntityData.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<EnumMode>> MODE = Cache.make(() -> (EntityDataAccessor<EnumMode>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (EntityDataAccessor<List<AccessoryInstance>>) SynchedEntityData.defineId(Dog.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<List<TalentInstance>>> TALENTS = Cache.make(() -> (EntityDataAccessor<List<TalentInstance>>) SynchedEntityData.defineId(Dog.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DogLevel>> DOG_LEVEL = Cache.make(() -> (EntityDataAccessor<DogLevel>) SynchedEntityData.defineId(Dog.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<EnumGender>> GENDER = Cache.make(() -> (EntityDataAccessor<EnumGender>) SynchedEntityData.defineId(Dog.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<EnumMode>> MODE = Cache.make(() -> (EntityDataAccessor<EnumMode>) SynchedEntityData.defineId(Dog.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(Dog.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(Dog.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
 
     public static final void initDataParameters() {
         ACCESSORIES.get();
@@ -145,7 +145,7 @@ public class DogEntity extends AbstractDogEntity {
 
     protected BlockPos targetBlock;
 
-    public DogEntity(EntityType<? extends DogEntity> type, Level worldIn) {
+    public Dog(EntityType<? extends Dog> type, Level worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.setGender(EnumGender.random(this.getRandom()));
@@ -722,8 +722,8 @@ public class DogEntity extends AbstractDogEntity {
         if (target instanceof Wolf) {
             Wolf wolfentity = (Wolf)target;
             return !wolfentity.isTame() || wolfentity.getOwner() != owner;
-        } else if (target instanceof DogEntity) {
-            DogEntity dogEntity = (DogEntity)target;
+        } else if (target instanceof Dog) {
+            Dog dogEntity = (Dog)target;
             return !dogEntity.isTame() || dogEntity.getOwner() != owner;
          } else if (target instanceof Player && owner instanceof Player && !((Player)owner).canHarmPlayer((Player)target)) {
              return false;
@@ -994,10 +994,10 @@ public class DogEntity extends AbstractDogEntity {
             return false;
         } else if (!this.isTame()) {
             return false;
-        } else if (!(otherAnimal instanceof DogEntity)) {
+        } else if (!(otherAnimal instanceof Dog)) {
             return false;
         } else {
-            DogEntity entitydog = (DogEntity) otherAnimal;
+            Dog entitydog = (Dog) otherAnimal;
             if (!entitydog.isTame()) {
                 return false;
             } else if (entitydog.isInSittingPose()) {
@@ -1012,7 +1012,7 @@ public class DogEntity extends AbstractDogEntity {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel worldIn, AgeableMob partner) {
-        DogEntity child = DoggyEntityTypes.DOG.get().create(worldIn);
+        Dog child = DoggyEntityTypes.DOG.get().create(worldIn);
         UUID uuid = this.getOwnerUUID();
 
         if (uuid != null) {
@@ -1020,8 +1020,8 @@ public class DogEntity extends AbstractDogEntity {
             child.setTame(true);
         }
 
-        if (partner instanceof DogEntity && ConfigHandler.SERVER.PUPS_GET_PARENT_LEVELS.get()) {
-            child.setLevel(this.getDogLevel().combine(((DogEntity) partner).getDogLevel()));
+        if (partner instanceof Dog && ConfigHandler.SERVER.PUPS_GET_PARENT_LEVELS.get()) {
+            child.setLevel(this.getDogLevel().combine(((Dog) partner).getDogLevel()));
         }
 
         return child;
@@ -1069,8 +1069,8 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public Entity changeDimension(ServerLevel worldIn, ITeleporter teleporter) {
         Entity transportedEntity = super.changeDimension(worldIn, teleporter);
-        if (transportedEntity instanceof DogEntity) {
-            DogLocationStorage.get(this.level).getOrCreateData(this).update((DogEntity) transportedEntity);
+        if (transportedEntity instanceof Dog) {
+            DogLocationStorage.get(this.level).getOrCreateData(this).update((Dog) transportedEntity);
         }
         return transportedEntity;
     }

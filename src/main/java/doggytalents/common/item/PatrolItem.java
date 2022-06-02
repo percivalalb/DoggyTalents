@@ -2,7 +2,7 @@ package doggytalents.common.item;
 
 import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.DataKey;
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.common.util.NBTUtil;
 import net.minecraft.core.BlockPos;
@@ -58,7 +58,7 @@ public class PatrolItem extends Item implements IDogItem  {
     }
 
     @Override
-    public InteractionResult processInteract(AbstractDogEntity dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
+    public InteractionResult processInteract(AbstractDog dogIn, Level worldIn, Player playerIn, InteractionHand handIn) {
         List<BlockPos> pos = getPos(playerIn.getItemInHand(handIn));
         DoggyTalents2.LOGGER.debug("{}", pos);
         dogIn.setData(POS, pos);

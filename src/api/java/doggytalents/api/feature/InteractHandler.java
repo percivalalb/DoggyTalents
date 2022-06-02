@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.inferface.IDogItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +21,7 @@ public class InteractHandler {
         HANDLERS.add(handler);
     }
 
-    public static InteractionResult getMatch(@Nullable AbstractDogEntity dogIn, ItemStack stackIn, Player playerIn, InteractionHand handIn) {
+    public static InteractionResult getMatch(@Nullable AbstractDog dogIn, ItemStack stackIn, Player playerIn, InteractionHand handIn) {
         if (stackIn.getItem() instanceof IDogItem) {
             IDogItem item = (IDogItem) stackIn.getItem();
             InteractionResult result = item.processInteract(dogIn, dogIn.level, playerIn, handIn);

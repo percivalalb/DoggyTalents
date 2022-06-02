@@ -7,7 +7,7 @@ import doggytalents.DoggyBlocks;
 import doggytalents.DoggyTalents2;
 import doggytalents.client.block.model.DogBedModel;
 import doggytalents.client.screen.widget.DogInventoryButton;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import net.minecraft.client.Minecraft;
@@ -69,8 +69,8 @@ public class ClientEventHandler {
     public void onInputEvent(final MovementInputUpdateEvent event) {
         if (event.getInput().jumping) {
             Entity entity = event.getPlayer().getVehicle();
-            if (event.getPlayer().isPassenger() && entity instanceof DogEntity) {
-                DogEntity dog = (DogEntity) entity;
+            if (event.getPlayer().isPassenger() && entity instanceof Dog) {
+                Dog dog = (Dog) entity;
 
                 if (dog.canJump()) {
                     dog.setJumpPower(100);

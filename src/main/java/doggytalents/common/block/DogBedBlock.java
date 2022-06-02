@@ -6,7 +6,7 @@ import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.storage.DogRespawnData;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.DogBedUtil;
@@ -179,12 +179,12 @@ public class DogBedBlock extends BaseEntityBlock {
                     worldIn.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
                     return InteractionResult.SUCCESS;
                 } else if (player.isShiftKeyDown() && dogBedTileEntity.getOwnerUUID() == null) {
-                    List<DogEntity> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AABB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
+                    List<Dog> dogs = worldIn.getEntities(DoggyEntityTypes.DOG.get(), new AABB(pos).inflate(10D), (dog) -> dog.isAlive() && dog.isOwnedBy(player));
                     Collections.sort(dogs, new EntityUtil.Sorter(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
 
-                    DogEntity closestStanding = null;
-                    DogEntity closestSitting = null;
-                    for (DogEntity dog : dogs) {
+                    Dog closestStanding = null;
+                    Dog closestSitting = null;
+                    for (Dog dog : dogs) {
                         if (closestSitting != null && closestSitting != null) {
                             break;
                         }
@@ -196,7 +196,7 @@ public class DogBedBlock extends BaseEntityBlock {
                         }
                     }
 
-                    DogEntity closests = closestStanding != null ? closestStanding : closestSitting;
+                    Dog closests = closestStanding != null ? closestStanding : closestSitting;
                     if (closests != null) {
                         closests.setTargetBlock(pos);
                     }
@@ -204,7 +204,7 @@ public class DogBedBlock extends BaseEntityBlock {
                     DogRespawnData storage = DogRespawnStorage.get(worldIn).remove(dogBedTileEntity.getOwnerUUID());
 
                     if (storage != null) {
-                        DogEntity dog = storage.respawn((ServerLevel) worldIn, player, pos.above());
+                        Dog dog = storage.respawn((ServerLevel) worldIn, player, pos.above());
 
                         dogBedTileEntity.setOwner(dog);
                         dog.setBedPos(dog.level.dimension(), pos);

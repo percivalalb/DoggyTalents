@@ -1,7 +1,7 @@
 package doggytalents.common.network.packet;
 
 import doggytalents.common.Screens;
-import doggytalents.common.entity.DogEntity;
+import doggytalents.common.entity.Dog;
 import doggytalents.common.network.IPacket;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import doggytalents.common.talent.PackPuppyTalent;
@@ -31,7 +31,7 @@ public class OpenDogScreenPacket implements IPacket<OpenDogScreenData>  {
         ctx.get().enqueueWork(() -> {
             if (ctx.get().getDirection().getReceptionSide() == LogicalSide.SERVER) {
                 ServerPlayer player = ctx.get().getSender();
-                List<DogEntity> dogs = player.level.getEntitiesOfClass(DogEntity.class, player.getBoundingBox().inflate(12D, 12D, 12D),
+                List<Dog> dogs = player.level.getEntitiesOfClass(Dog.class, player.getBoundingBox().inflate(12D, 12D, 12D),
                     (dog) -> dog.canInteract(player) && PackPuppyTalent.hasInventory(dog)
                 );
 				if (!dogs.isEmpty()) {

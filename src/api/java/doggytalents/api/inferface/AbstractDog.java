@@ -13,6 +13,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.Wolf;
@@ -97,4 +100,19 @@ public abstract class AbstractDog extends TamableAnimal implements IDog {
     public TranslatableComponent getGenderName() {
         return this.getTranslationKey(EnumGender::getUnlocalisedName);
     }
+
+    public void setNavigation(PathNavigation p) {
+        if (this.navigation == p) return;
+        this.navigation.stop();
+        this.navigation = p;
+    }
+
+    public void setMoveControl(MoveControl m) {
+        this.moveControl = m;
+    }
+
+    public abstract void resetNavigation();
+
+    public abstract void resetMoveControl();
+    
 }

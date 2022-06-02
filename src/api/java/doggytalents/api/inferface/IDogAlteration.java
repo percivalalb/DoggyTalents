@@ -162,6 +162,14 @@ public interface IDogAlteration {
         return InteractionResult.PASS;
     }
 
+    default InteractionResult isBlockSafe(BlockState blockIn) {
+        return InteractionResult.PASS;
+    }
+
+    default InteractionResult canSwimUnderwater(AbstractDog dogIn) {
+        return InteractionResult.PASS;
+    }
+
     default <T> LazyOptional<T> getCapability(AbstractDog dogIn, Capability<T> cap, Direction side) {
         return null;
     }

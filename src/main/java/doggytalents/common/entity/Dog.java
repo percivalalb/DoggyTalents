@@ -15,6 +15,7 @@ import doggytalents.client.screen.DogInfoScreen;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.ai.BreedGoal;
 import doggytalents.common.entity.ai.MoveToBlockGoal;
+import doggytalents.common.entity.ai.nav.DogWaterBoundNavigation;
 import doggytalents.common.entity.ai.*;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
 import doggytalents.common.entity.stats.StatsTracker;
@@ -54,9 +55,15 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.LookControl;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
+import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
@@ -128,9 +135,12 @@ public class Dog extends AbstractDog {
 
     public final StatsTracker statsTracker = new StatsTracker();
 
+    protected final PathNavigation defaultNavigation;
+    protected final MoveControl defaultMoveControl;
+
     private int hungerTick;
-    private int prevHungerTick;
-    private int healingTick;
+    private int prevHungerTick;      
+    private int healingTick;  
     private int prevHealingTick;
 
     private float headRotationCourse;
@@ -145,10 +155,15 @@ public class Dog extends AbstractDog {
 
     protected BlockPos targetBlock;
 
+    
+
     public Dog(EntityType<? extends Dog> type, Level worldIn) {
         super(type, worldIn);
         this.setTame(false);
         this.setGender(EnumGender.random(this.getRandom()));
+
+        this.defaultNavigation = this.navigation;
+        this.defaultMoveControl = this.moveControl;
     }
 
     @Override
@@ -171,7 +186,7 @@ public class Dog extends AbstractDog {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new DogFloatGoal(this));
         this.goalSelector.addGoal(1, new FindWaterGoal(this));
         //this.goalSelector.addGoal(1, new PatrolAreaGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
@@ -378,6 +393,7 @@ public class Dog extends AbstractDog {
         }
 
         if (!this.level.isClientSide) {
+        
             if (!ConfigHandler.SERVER.DISABLE_HUNGER.get()) {
                 this.prevHungerTick = this.hungerTick;
 
@@ -457,7 +473,16 @@ public class Dog extends AbstractDog {
                 }
 
                 return InteractionResult.SUCCESS;
-            }
+            } else if (stack.getItem() == Items.STONE_AXE) {
+                //Debug
+                if (player.isShiftKeyDown()) {
+                    this.resetNavigation();
+                    this.resetMoveControl();
+                } else {
+                    this.setNavigation(new DogWaterBoundNavigation(this, this.level));
+                    this.setMoveControl(new SmoothSwimmingMoveControl(this, 85, 10, 0.02F, 0.1F, true));
+                }
+            } 
         } else { // Not tamed
             if (stack.getItem() == Items.BONE || stack.getItem() == DoggyItems.TRAINING_TREAT.get()) {
 
@@ -477,7 +502,7 @@ public class Dog extends AbstractDog {
                 }
 
                 return InteractionResult.SUCCESS;
-            }
+            } 
         }
 
         Optional<IDogFoodHandler> foodHandler = FoodHandler.getMatch(this, stack, player);
@@ -2231,4 +2256,30 @@ public class Dog extends AbstractDog {
     public BlockPos getTargetBlock() {
         return this.targetBlock;
     }
+
+    @Override
+    public void resetNavigation() {
+        this.navigation = this.defaultNavigation;
+    }
+
+    @Override
+    public void resetMoveControl() {
+        this.moveControl = this.defaultMoveControl;
+    }
+
+    public boolean canSwimUnderwater() {
+        for (IDogAlteration alter : this.alterations) {
+            InteractionResult result = alter.canSwimUnderwater(this);
+
+            if (result.shouldSwing()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isLowAirSupply() {
+        return this.getAirSupply() < this.getMaxAirSupply()*0.3;
+    } 
+
 }

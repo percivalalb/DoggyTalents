@@ -11,6 +11,7 @@ import doggytalents.api.inferface.AbstractDog;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.Dog;
+import doggytalents.common.entity.ai.nav.DogWaterBoundNavigation;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
@@ -114,7 +115,7 @@ public class SwimmerDogTalent extends TalentInstance {
         public SwimmerDogGoal(Dog d) {
             this.dog = d;
             this.moveControl = new SmoothSwimmingMoveControl(d, d.getMaxHeadXRot(), d.getMaxHeadYRot(), 1, 1, false);
-            this.navigator = new WaterBoundPathNavigation(d, d.level);
+            this.navigator = new DogWaterBoundNavigation(d, d.level);
             this.setFlags(EnumSet.of(Flag.JUMP));
         }
         

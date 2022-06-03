@@ -2109,12 +2109,19 @@ public class Dog extends AbstractDog {
                 this.maxUpStep = 1.0F;
 
                 float straf = livingentity.xxa * 0.7F;
-                float foward = livingentity.zza;
-
-                // If moving backwards half the speed
-                if (foward <= 0.0F) {
-                   foward *= 0.5F;
-                }
+                float forward = livingentity.zza;
+                double downward = positionIn.y; 
+                
+                if (this.isInWater() && forward > 0 && this.canSwimUnderwater() ) {
+                    float l = forward;
+                    downward = -l*Mth.sin(this.getXRot() * ((float)Math.PI / 180F));
+                    forward = l*Mth.cos(this.getXRot() * ((float)Math.PI / 180F));
+                } 
+ 
+                // If moving backwards half  the speed
+                if (forward <= 0.0F) {
+                   forward *= 0.5F;
+                } 
 
                 if (this.jumpPower > 0.0F && !this.isDogJumping() && this.isOnGround()) {
 
@@ -2131,7 +2138,7 @@ public class Dog extends AbstractDog {
                     this.hasImpulse = true;
 
                     // If moving forward, propel further in the direction
-                    if (foward > 0.0F) {
+                    if (forward > 0.0F) {
                         final float amount = 0.4F; // TODO Allow people to change this value
                         float compX = Mth.sin(this.getYRot() * ((float)Math.PI / 180F));
                         float compZ = Mth.cos(this.getYRot() * ((float)Math.PI / 180F));
@@ -2147,7 +2154,7 @@ public class Dog extends AbstractDog {
                 if (this.isControlledByLocalInstance()) {
                     // Set the move speed and move the dog in the direction of the controlling entity
                     this.setSpeed((float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue() * 0.5F);
-                    super.travel(new Vec3(straf, positionIn.y, foward));
+                    super.travel(new Vec3(straf, downward, forward));
                     this.lerpSteps = 0;
                 } else if (livingentity instanceof Player) {
                     // A player is riding and can not control then

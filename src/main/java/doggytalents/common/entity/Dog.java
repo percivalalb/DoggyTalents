@@ -2266,6 +2266,7 @@ public class Dog extends AbstractDog {
 
     @Override
     public void resetNavigation() {
+        this.navigation.stop();
         this.navigation = this.defaultNavigation;
     }
 

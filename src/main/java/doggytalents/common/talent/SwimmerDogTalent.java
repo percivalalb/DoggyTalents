@@ -111,6 +111,8 @@ public class SwimmerDogTalent extends TalentInstance {
         private boolean isGettingAir = false;
         private SmoothSwimmingMoveControl moveControl;
         private WaterBoundPathNavigation navigator;
+        private float oldWaterCost;
+        private float oldWaterBorderCost;
 
         public SwimmerDogGoal(Dog d) {
             this.dog = d;
@@ -137,6 +139,8 @@ public class SwimmerDogTalent extends TalentInstance {
                 this.dog.setInSittingPose(false);
             }
             this.applySwimAttributes();
+            this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
+            this.oldWaterBorderCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER_BORDER);
             this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
             this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0);
         }
@@ -166,8 +170,8 @@ public class SwimmerDogTalent extends TalentInstance {
             this.dog.resetMoveControl();
             this.dog.resetNavigation();
             this.removeSwimAttributes();
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 8);
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER, 8);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, this.oldWaterBorderCost);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
         }
 
         private boolean checkSurroundingForLand(AbstractDog dogIn, BlockPos p) {

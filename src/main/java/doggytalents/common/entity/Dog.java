@@ -153,6 +153,8 @@ public class Dog extends AbstractDog {
     protected boolean dogJumping;
     protected float jumpPower;
 
+    protected boolean dogSwimming = false;
+
     protected BlockPos targetBlock;
 
     
@@ -2289,5 +2291,13 @@ public class Dog extends AbstractDog {
     public boolean isLowAirSupply() {
         return this.getAirSupply() < this.getMaxAirSupply()*0.3;
     } 
+
+    public boolean isDogSwimming() {
+        return this.dogSwimming;
+    }
+
+    public void setDogSwimming(boolean ds) {
+        this.dogSwimming = ds;
+    }
 
 }

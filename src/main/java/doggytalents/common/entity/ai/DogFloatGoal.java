@@ -15,7 +15,7 @@ public class DogFloatGoal extends FloatGoal {
     
     @Override
     public boolean canUse() {
-        return super.canUse() && !this.dog.canSwimUnderwater();
+        return super.canUse() && !this.dog.isDogSwimming();
     }
     
 }

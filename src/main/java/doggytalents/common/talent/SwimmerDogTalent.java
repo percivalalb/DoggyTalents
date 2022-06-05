@@ -35,7 +35,6 @@ import net.minecraftforge.common.ForgeMod;
 
 public class SwimmerDogTalent extends TalentInstance {
     
-    //TODO Make user can ride the dog upwards in water 
     //TODO handle Teleport Inteference (Try to teleport but to no avail, but still keep trying)
     
     private SwimmerDogGoal goal;
@@ -107,8 +106,9 @@ public class SwimmerDogTalent extends TalentInstance {
     
     public static class SwimmerDogGoal extends Goal {
 
+        //TODO fix dog cannot leave water
         private Dog dog;
-        private boolean isGettingAir = false;
+        //private boolean isGettingAir = false;
         private SmoothSwimmingMoveControl moveControl;
         private WaterBoundPathNavigation navigator;
         private float oldWaterCost;
@@ -118,60 +118,26 @@ public class SwimmerDogTalent extends TalentInstance {
             this.dog = d;
             this.moveControl = new SmoothSwimmingMoveControl(d, d.getMaxHeadXRot(), d.getMaxHeadYRot(), 1, 1, false);
             this.navigator = new DogWaterBoundNavigation(d, d.level);
-            this.setFlags(EnumSet.of(Flag.JUMP));
-        }
+        }                 
         
         @Override
         public boolean canUse() {
-            return (this.dog.isInWater() || this.isGettingAir) && this.dog.canSwimUnderwater() && !this.checkSurroundingForLand(this.dog, this.dog.blockPosition());
+            return this.dog.isInWater() && this.dog.canSwimUnderwater() && !this.checkSurroundingForLand(this.dog, this.dog.blockPosition()) && dog.getAirSupply() > dog.getMaxAirSupply()*0.9;
         }
 
         @Override
         public boolean canContinueToUse() {
-            return this.canUse();
+            return !this.dog.isLowAirSupply() && this.canUse();
         }
 
         @Override
         public void start() {
-            this.dog.setNavigation(this.navigator);
-            this.dog.setMoveControl(this.moveControl);
-            if (this.dog.isInSittingPose()) {
-                this.dog.setInSittingPose(false);
-            }
-            this.applySwimAttributes();
-            this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
-            this.oldWaterBorderCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER_BORDER);
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0);
-        }
-
-        @Override 
-        public void tick() {
-            if (!this.isGettingAir && dog.isLowAirSupply() ) {
-                this.isGettingAir = true; //Begin getting air
-                this.dog.resetMoveControl();
-                this.dog.resetNavigation();
-                this.removeSwimAttributes();
-            }
-            if (this.isGettingAir)
-            if (this.dog.getFluidHeight(FluidTags.WATER) > this.dog.getFluidJumpThreshold() && this.dog.getRandom().nextFloat() < 0.8F) {
-                this.dog.getJumpControl().jump();
-            }
-            if (this.isGettingAir && dog.getAirSupply() > dog.getMaxAirSupply()*0.9) {
-                this.isGettingAir = false; //stop getting air
-                this.dog.setNavigation(this.navigator);
-                this.dog.setMoveControl(this.moveControl);
-                this.applySwimAttributes();
-            }
+            this.startSwimming();
         }
 
         @Override
         public void stop() {
-            this.dog.resetMoveControl();
-            this.dog.resetNavigation();
-            this.removeSwimAttributes();
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, this.oldWaterBorderCost);
-            this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+            this.stopSwimming();
         }
 
         private boolean checkSurroundingForLand(AbstractDog dogIn, BlockPos p) {
@@ -192,6 +158,28 @@ public class SwimmerDogTalent extends TalentInstance {
             this.dog.removeAttributeModifier(ForgeMod.SWIM_SPEED.get(), SWIM_BOOST_ID);
         }
         
+        private void startSwimming() {
+            this.dog.setNavigation(this.navigator);
+            this.dog.setMoveControl(this.moveControl);
+            if (this.dog.isInSittingPose()) { 
+                this.dog.setInSittingPose(false);
+            }
+            this.applySwimAttributes();
+            this.oldWaterCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER);
+            this.oldWaterBorderCost = this.dog.getPathfindingMalus(BlockPathTypes.WATER_BORDER);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER, 0);
+            this.dog.setDogSwimming(true);
+        }
+
+        private void stopSwimming() {
+            this.dog.resetMoveControl();
+            this.dog.resetNavigation();
+            this.removeSwimAttributes();
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER_BORDER, this.oldWaterBorderCost);
+            this.dog.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+            this.dog.setDogSwimming(false);
+        }
     }
 
 }

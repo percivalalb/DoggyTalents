@@ -122,6 +122,7 @@ public class SwimmerDogTalent extends TalentInstance {
         
         @Override
         public boolean canUse() {
+            if (this.dog.getDogLevel(DoggyTalents.SWIMMER_DOG) <= 0) return false;
             return this.dog.isInWater() && this.dog.canSwimUnderwater() && !this.checkSurroundingForLand(this.dog, this.dog.blockPosition()) && dog.getAirSupply() > dog.getMaxAirSupply()*0.9;
         }
 

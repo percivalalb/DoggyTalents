@@ -58,6 +58,13 @@ public class SwimmerDogTalent extends TalentInstance {
         }
     }
 
+    @Override
+    public void set(AbstractDog dogIn, int level) {
+        if (dogIn.hasData(SWIM_AI)) {
+            dogIn.getData(SWIM_AI).applySwimAttributes();
+        }
+    }
+
 
     @Override
     public void livingTick(AbstractDog dogIn) {

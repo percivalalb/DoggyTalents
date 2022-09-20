@@ -1,5 +1,4 @@
-# Known to run on a centos-8, java-openjdk-11 machine
-# with gitlab runner installed
+image: gradle:7-jdk17-alpine
 
 stages:
   - build
@@ -9,7 +8,7 @@ variables:
   GIT_DEPTH: 0 # clone all
 
 before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
   - chmod +x ./gradlew
 
 cache: &global_cache
@@ -21,8 +20,10 @@ cache: &global_cache
 
 build:
   stage: build
+  tags:
+    - docker
   script:
-    - ./gradlew build
+    - gradle build
   artifacts:
     paths:
       - 'build/libs/*.jar'
@@ -32,11 +33,13 @@ build:
 
 publish:
   stage: publish
+  tags:
+    - docker
   cache:
     <<: *global_cache
     policy: pull
   script:
-    - './gradlew curseforge'
+    - gradle curseforge
   rules:
     - if: '$CI_COMMIT_BRANCH =~ /^\d\.\d{1,3}(?:\.(?:\d{1,3}|x))?$/'
       when: always

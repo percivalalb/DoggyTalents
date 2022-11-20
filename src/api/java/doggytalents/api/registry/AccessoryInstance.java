@@ -19,18 +19,14 @@ public class AccessoryInstance {
     public static final Comparator<AccessoryInstance> RENDER_SORTER = Comparator.comparing(AccessoryInstance::getRenderIndex);
 
     @Deprecated // Do not call directly use AccessoryInstance#getAccessory
-    private final Holder.Reference<Accessory> accessoryDelegate;
+    private final Accessory accessoryDelegate;
 
     public AccessoryInstance(Accessory typeIn) {
-        this.accessoryDelegate = DoggyTalentsAPI.ACCESSORIES.get().getDelegateOrThrow(typeIn);
-    }
-
-    public AccessoryInstance(Holder.Reference<Accessory> accessoryDelegateIn) {
-        this.accessoryDelegate = accessoryDelegateIn;
+        this.accessoryDelegate = typeIn;
     }
 
     public Accessory getAccessory() {
-        return this.accessoryDelegate.get();
+        return this.accessoryDelegate;
     }
 
     public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
@@ -38,11 +34,7 @@ public class AccessoryInstance {
     }
 
     public <T extends Accessory> boolean of(T accessoryIn) {
-        return this.of(DoggyTalentsAPI.ACCESSORIES.get().getKey(accessoryIn));
-    }
-
-    public <T extends Accessory> boolean of(ResourceLocation accessoryDelegateIn) {
-        return this.accessoryDelegate.is(accessoryDelegateIn);
+        return this.accessoryDelegate == accessoryIn;
     }
 
     public <T extends AccessoryType> boolean ofType(Supplier<T> accessoryTypeIn) {
@@ -54,7 +46,7 @@ public class AccessoryInstance {
     }
 
     public <T extends AccessoryType> boolean ofType(ResourceLocation accessoryTypeDelegateIn) {
-        return DoggyTalentsAPI.ACCESSORY_TYPE.get().getKey(this.accessoryDelegate.get().getType()).equals(accessoryTypeDelegateIn);
+        return DoggyTalentsAPI.ACCESSORY_TYPE.get().getKey(this.accessoryDelegate.getType()).equals(accessoryTypeDelegateIn);
     }
 
     public AccessoryInstance copy() {
@@ -70,7 +62,7 @@ public class AccessoryInstance {
     }
 
     public final void writeInstance(CompoundTag compound) {
-        ResourceLocation rl = this.accessoryDelegate.key().location();
+        ResourceLocation rl = DoggyTalentsAPI.ACCESSORIES.get().getKey(this.accessoryDelegate);
         if (rl != null) {
             compound.putString("type", rl.toString());
         }

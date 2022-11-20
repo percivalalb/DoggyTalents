@@ -1,6 +1,5 @@
 package doggytalents.common.util;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import doggytalents.*;
 import doggytalents.api.DoggyTalentsAPI;
@@ -9,6 +8,7 @@ import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import doggytalents.common.entity.serializers.DimensionDependantArg;
+import doggytalents.common.lib.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,9 +18,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.MissingMappingsEvent;
 
 import java.util.List;
 import java.util.Map;
@@ -177,37 +178,36 @@ public class BackwardsComp {
         }
     }
 
-    @SubscribeEvent
-    public void remapMissingEntities(final RegistryEvent.MissingMappings<EntityType<?>> event) {
-        ImmutableList<Mapping<EntityType<?>>> mappings = event.getAllMappings();
+    public static void remapMissingEntities(final MissingMappingsEvent event) {
+        if (ForgeRegistries.Keys.ENTITY_TYPES.equals(event.getRegistry().getRegistryName())) {
 
-        if (mappings == null) {
-            DoggyTalents2.LOGGER.warn("Failed to attempt to remap missing mapppings.");
-            return;
-        }
+            List<MissingMappingsEvent.Mapping<EntityType<?>>> mappings = event.getMappings(ForgeRegistries.Keys.ENTITY_TYPES, Constants.MOD_ID);
 
-        mappings.forEach(mapping -> {
-            if (Objects.equals(mapping.key, BackwardsComp.DOGGY_BEAM)) {
-                mapping.remap(DoggyEntityTypes.DOG_BEAM.get());
-                DoggyTalents2.LOGGER.debug("Remapped Dog Beam id");
+            if (mappings == null) {
+                DoggyTalents2.LOGGER.warn("Failed to attempt to remap missing mapppings.");
+                return;
             }
-        });
-    }
 
-    @SubscribeEvent
-    public void remapMissingItems(final RegistryEvent.MissingMappings<Item> event) {
-        ImmutableList<Mapping<Item>> mappings = event.getAllMappings();
-        if (mappings == null) {
-            DoggyTalents2.LOGGER.warn("Failed to attempt to remap missing mapppings.");
-            return;
-        }
-
-        mappings.forEach(mapping -> {
-            if (Objects.equals(mapping.key, BackwardsComp.COMMAND_EMBLEM)) {
-                mapping.remap(DoggyItems.WHISTLE.get());
-                DoggyTalents2.LOGGER.debug("Remapped Command Emblem to Whistle");
+            mappings.forEach(mapping -> {
+                if (Objects.equals(mapping.getKey(), BackwardsComp.DOGGY_BEAM)) {
+                    mapping.remap(DoggyEntityTypes.DOG_BEAM.get());
+                    DoggyTalents2.LOGGER.debug("Remapped Dog Beam id");
+                }
+            });
+        } else if (ForgeRegistries.Keys.ITEMS.equals(event.getRegistry().getRegistryName())) {
+            List<MissingMappingsEvent.Mapping<Item>> mappings = event.getMappings(ForgeRegistries.Keys.ITEMS, Constants.MOD_ID);
+            if (mappings == null) {
+                DoggyTalents2.LOGGER.warn("Failed to attempt to remap missing mapppings.");
+                return;
             }
-        });
+
+            mappings.forEach(mapping -> {
+                if (Objects.equals(mapping.getKey(), BackwardsComp.COMMAND_EMBLEM)) {
+                    mapping.remap(DoggyItems.WHISTLE.get());
+                    DoggyTalents2.LOGGER.debug("Remapped Command Emblem to Whistle");
+                }
+            });
+        }
     }
 
     public static void putBeddingMapping(String current, String... previous) {
@@ -263,5 +263,8 @@ public class BackwardsComp {
         OLD_NEW_TALENT.put("shepherddog", DoggyTalents.SHEPHERD_DOG);
         OLD_NEW_TALENT.put("swimmerdog", DoggyTalents.SWIMMER_DOG);
         OLD_NEW_TALENT.put("wolfmount", DoggyTalents.WOLF_MOUNT);
+
+        IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
+        forgeEventBus.addListener(BackwardsComp::remapMissingEntities);
     }
 }

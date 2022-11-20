@@ -1,7 +1,5 @@
 package doggytalents.common.inventory;
 
-import javax.annotation.Nonnull;
-
 import doggytalents.DoggyTags;
 import doggytalents.api.feature.FoodHandler;
 import net.minecraft.nbt.CompoundTag;

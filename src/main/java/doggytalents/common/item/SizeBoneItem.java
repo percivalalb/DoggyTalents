@@ -2,7 +2,7 @@ package doggytalents.common.item;
 
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +38,7 @@ public class SizeBoneItem extends Item implements IDogItem {
         if (dogIn.getAge() < 0) {
 
             if (!playerIn.level.isClientSide){
-                playerIn.sendMessage(new TranslatableComponent("treat."+this.type.getName()+".too_young"), dogIn.getUUID());
+                playerIn.sendSystemMessage(Component.translatable("treat."+this.type.getName()+".too_young"));
             }
 
             return InteractionResult.FAIL;

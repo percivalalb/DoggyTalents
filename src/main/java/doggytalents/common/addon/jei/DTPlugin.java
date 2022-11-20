@@ -8,7 +8,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
@@ -28,11 +27,11 @@ public class DTPlugin implements IModPlugin {
             Pair<ICasingMaterial, IBeddingMaterial> materials = DogBedUtil.getMaterials(stack);
 
             String casingKey = materials.getLeft() != null
-                    ? materials.getLeft().getRegistryName().toString()
+                    ? materials.getLeft().toString()
                     : "doggytalents:casing_missing";
 
             String beddingKey = materials.getRight() != null
-                    ? materials.getRight().getRegistryName().toString()
+                    ? materials.getRight().toString()
                     : "doggytalents:bedding_missing";
 
             return casingKey + "+" + beddingKey;
@@ -41,6 +40,6 @@ public class DTPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), RecipeTypes.CRAFTING.getUid());
+        registration.addRecipes(RecipeTypes.CRAFTING, DogBedRecipeMaker.createDogBedRecipes());
     }
 }

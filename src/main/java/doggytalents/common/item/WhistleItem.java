@@ -8,10 +8,9 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.entity.DoggyBeamEntity;
 import doggytalents.common.talent.RoaringGaleTalent;
 import doggytalents.common.util.EntityUtil;
-import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -81,7 +80,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslatableComponent("dogcommand.come"), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.translatable("dogcommand.come"));
                     }
                 }
 
@@ -102,7 +101,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslatableComponent("dogcommand.heel"), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.translatable("dogcommand.heel"));
                     }
                 }
 
@@ -124,7 +123,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_SHORT.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.8F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslatableComponent("dogcommand.stay"), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.translatable("dogcommand.stay"));
                     }
                 }
 
@@ -150,7 +149,7 @@ public class WhistleItem extends Item {
                     world.playSound(null, player.blockPosition(), DoggySounds.WHISTLE_LONG.get(), SoundSource.PLAYERS, 0.6F + world.random.nextFloat() * 0.1F, 0.4F + world.random.nextFloat() * 0.2F);
 
                     if (successful) {
-                        player.sendMessage(new TranslatableComponent("dogcommand.ok"), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.translatable("dogcommand.ok"));
                     }
 
                     return new InteractionResultHolder<ItemStack>(InteractionResult.SUCCESS, stack);
@@ -180,11 +179,11 @@ public class WhistleItem extends Item {
                 if (!world.isClientSide) {
                     List<DogEntity> roarDogs = dogsList.stream().filter(dog -> dog.getDogLevel(DoggyTalents.ROARING_GALE) > 0).collect(Collectors.toList());
                     if (roarDogs.isEmpty()) {
-                        player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.level"), true);
+                        player.displayClientMessage(Component.translatable("talent.doggytalents.roaring_gale.level"), true);
                     } else {
                         List<DogEntity> cdDogs = roarDogs.stream().filter(dog -> dog.getDataOrDefault(RoaringGaleTalent.COOLDOWN, dog.tickCount) <= dog.tickCount).collect(Collectors.toList());
                         if (cdDogs.isEmpty()) {
-                            player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.cooldown"), true);
+                            player.displayClientMessage(Component.translatable("talent.doggytalents.roaring_gale.cooldown"), true);
                         } else {
                             boolean anyHits = false;
 
@@ -227,7 +226,7 @@ public class WhistleItem extends Item {
                             }
 
                             if (!anyHits) {
-                                player.displayClientMessage(new TranslatableComponent("talent.doggytalents.roaring_gale.miss"), true);
+                                player.displayClientMessage(Component.translatable("talent.doggytalents.roaring_gale.miss"), true);
                             }
                         }
                     }

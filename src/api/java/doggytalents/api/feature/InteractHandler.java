@@ -1,17 +1,16 @@
 package doggytalents.api.feature;
 
+import doggytalents.api.inferface.AbstractDogEntity;
+import doggytalents.api.inferface.IDogItem;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.annotation.Nullable;
-
-import doggytalents.api.inferface.AbstractDogEntity;
-import doggytalents.api.inferface.IDogItem;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionHand;
 
 public class InteractHandler {
 

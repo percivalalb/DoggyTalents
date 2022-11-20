@@ -24,7 +24,9 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -34,8 +36,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -97,6 +97,7 @@ public class DoggyTalents2 {
             modEventBus.addListener(ClientSetup::setupTileEntityRenderers);
             modEventBus.addListener(ClientSetup::setupEntityRenderers);
             modEventBus.addListener(ClientSetup::addClientReloadListeners);
+            modEventBus.addListener(ClientSetup::registerOverlays);
             forgeEventBus.register(new ClientEventHandler());
             forgeEventBus.addListener(BedFinderRenderer::onWorldRenderLast);
         });
@@ -135,7 +136,6 @@ public class DoggyTalents2 {
 
     protected void interModProcess(final InterModProcessEvent event) {
         BackwardsComp.init();
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         AddonManager.init();
     }
@@ -145,18 +145,18 @@ public class DoggyTalents2 {
 
         if (event.includeClient()) {
             DTBlockstateProvider blockstates = new DTBlockstateProvider(gen, event.getExistingFileHelper());
-            gen.addProvider(blockstates);
-            gen.addProvider(new DTItemModelProvider(gen, blockstates.getExistingHelper()));
+            gen.addProvider(true, blockstates);
+            gen.addProvider(true, new DTItemModelProvider(gen, blockstates.getExistingHelper()));
         }
 
         if (event.includeServer()) {
             // gen.addProvider(new DTBlockTagsProvider(gen));
-            gen.addProvider(new DTAdvancementProvider(gen));
+            gen.addProvider(true, new DTAdvancementProvider(gen, event.getExistingFileHelper()));
             DTBlockTagsProvider blockTagProvider = new DTBlockTagsProvider(gen, event.getExistingFileHelper());
-            gen.addProvider(blockTagProvider);
-            gen.addProvider(new DTItemTagsProvider(gen, blockTagProvider, event.getExistingFileHelper()));
-            gen.addProvider(new DTRecipeProvider(gen));
-            gen.addProvider(new DTLootTableProvider(gen));
+            gen.addProvider(true, blockTagProvider);
+            gen.addProvider(true, new DTItemTagsProvider(gen, blockTagProvider, event.getExistingFileHelper()));
+            gen.addProvider(true, new DTRecipeProvider(gen));
+            gen.addProvider(true, new DTLootTableProvider(gen));
         }
     }
 }

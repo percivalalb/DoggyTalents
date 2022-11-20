@@ -73,7 +73,7 @@ public class DogBedRecipe extends CustomRecipe implements IShapedRecipe<Crafting
 
         for (int i = 0; i < nonnulllist.size(); ++i) {
             ItemStack itemstack = inv.getItem(i);
-            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+            nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getCraftingRemainingItem(itemstack));
         }
 
         return nonnulllist;

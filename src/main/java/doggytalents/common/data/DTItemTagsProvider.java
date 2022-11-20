@@ -6,7 +6,6 @@ import doggytalents.common.lib.Constants;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -29,9 +28,9 @@ public class DTItemTagsProvider extends ItemTagsProvider {
 
     @Override
     public void addTags() {
-        createTag(DoggyTags.BEG_ITEMS_TAMED, DoggyItems.BREEDING_BONE, DoggyItems.THROW_STICK, DoggyItems.THROW_BONE, Items.BONE.delegate);
+        createTag(DoggyTags.BEG_ITEMS_TAMED, DoggyItems.BREEDING_BONE, DoggyItems.THROW_STICK, DoggyItems.THROW_BONE, () -> Items.BONE);
         appendToTag(DoggyTags.TREATS);
-        createTag(DoggyTags.BEG_ITEMS_UNTAMED, DoggyItems.TRAINING_TREAT, Items.BONE.delegate);
+        createTag(DoggyTags.BEG_ITEMS_UNTAMED, DoggyItems.TRAINING_TREAT, () -> Items.BONE);
         createTag(DoggyTags.BREEDING_ITEMS, DoggyItems.BREEDING_BONE);
         createTag(DoggyTags.PACK_PUPPY_BLACKLIST, DoggyItems.THROW_BONE, DoggyItems.THROW_BONE_WET, DoggyItems.THROW_STICK, DoggyItems.THROW_STICK_WET);
         createTag(DoggyTags.TREATS, DoggyItems.TRAINING_TREAT, DoggyItems.SUPER_TREAT, DoggyItems.MASTER_TREAT, DoggyItems.DIRE_TREAT);

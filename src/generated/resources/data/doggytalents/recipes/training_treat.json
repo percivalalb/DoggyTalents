@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "TUV",
-    "XXX",
-    "YYY"
-  ],
   "key": {
     "T": {
       "item": "minecraft:string"
@@ -22,6 +17,11 @@
       "item": "minecraft:wheat"
     }
   },
+  "pattern": [
+    "TUV",
+    "XXX",
+    "YYY"
+  ],
   "result": {
     "item": "doggytalents:training_treat"
   }

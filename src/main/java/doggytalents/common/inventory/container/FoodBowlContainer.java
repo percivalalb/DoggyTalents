@@ -11,7 +11,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -26,7 +26,7 @@ public class FoodBowlContainer extends AbstractContainerMenu {
     public FoodBowlContainer(int windowId, Level world, BlockPos pos, Inventory playerInventory, Player player) {
         super(DoggyContainerTypes.FOOD_BOWL.get(), windowId);
         this.tileEntity = world.getBlockEntity(pos);
-        IItemHandler inventory = this.tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElseThrow(() -> new RuntimeException("Item handler not present."));
+        IItemHandler inventory = this.tileEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).orElseThrow(() -> new RuntimeException("Item handler not present."));
 
         for (int i = 0; i < 1; i++) {
             for (int l = 0; l < 5; l++) {

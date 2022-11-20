@@ -1,0 +1,6 @@
+// 1.19.2	2022-11-13T11:46:37.9893701	DoggyTalents Item Tags
+b86af51144fc9033550291c87db30b58886e801d data/doggytalents/tags/items/beg_items_tamed.json
+8028613ac4c93680be80fa4e6e43a1e3b35be1f1 data/doggytalents/tags/items/beg_items_untamed.json
+79f9f87a319d8a1fb2cf5bc1cc287288a490eaea data/doggytalents/tags/items/breeding_items.json
+e02fbe1fd70ae94b24bef7cbbe39885e2546aed4 data/doggytalents/tags/items/pack_puppy_blacklist.json
+f170fad28d9e6445f26508eeb2b300d0792712ea data/doggytalents/tags/items/treats.json

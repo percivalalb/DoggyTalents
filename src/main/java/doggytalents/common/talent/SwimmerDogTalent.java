@@ -7,7 +7,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
 public class SwimmerDogTalent extends TalentInstance {
@@ -20,7 +19,7 @@ public class SwimmerDogTalent extends TalentInstance {
 
     @Override
     public void livingTick(AbstractDogEntity dogIn) {
-        if (this.level() >= 5 && dogIn.isVehicle() && dogIn.canBeControlledByRider()) {
+        if (this.level() >= 5 && dogIn.isVehicle() && dogIn.hasControllingPassenger()) {
             // canBeSteered checks entity is LivingEntity
             LivingEntity rider = (LivingEntity) dogIn.getControllingPassenger();
             if (rider.isInWater()) {
@@ -30,7 +29,7 @@ public class SwimmerDogTalent extends TalentInstance {
     }
 
     @Override
-    public InteractionResult canBeRiddenInWater(AbstractDogEntity dogIn, Entity rider) {
+    public InteractionResult rideableUnderWater(AbstractDogEntity dogIn) {
         return this.level() >= 5 ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 

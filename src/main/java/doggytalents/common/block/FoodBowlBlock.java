@@ -38,8 +38,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.EmptyHandler;
@@ -157,7 +157,7 @@ public class FoodBowlBlock extends BaseEntityBlock {
                 ItemStack stack = playerIn.getItemInHand(handIn);
 
                 if (!stack.isEmpty() && stack.getItem() == DoggyItems.TREAT_BAG.get()) {
-                    IItemHandler bagInventory = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(EmptyHandler.INSTANCE);
+                    IItemHandler bagInventory = stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(EmptyHandler.INSTANCE);
                     IItemHandler bowlInventory = foodBowl.getInventory();
 
                     InventoryUtil.transferStacks((IItemHandlerModifiable) bagInventory, bowlInventory);

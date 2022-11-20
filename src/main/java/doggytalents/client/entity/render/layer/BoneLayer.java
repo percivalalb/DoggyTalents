@@ -6,15 +6,17 @@ import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.DogRenderer;
 import doggytalents.common.entity.DogEntity;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 
 public class BoneLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
 
-    public BoneLayer(DogRenderer dogRendererIn) {
+    private ItemInHandRenderer itemInHandRenderer;
+    public BoneLayer(DogRenderer dogRendererIn, ItemInHandRenderer itemInHandRendererIn) {
         super(dogRendererIn);
+        this.itemInHandRenderer = itemInHandRendererIn;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class BoneLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
             matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
 
             IThrowableItem throwableItem = dog.getThrowableItem();
-            Minecraft.getInstance().getItemInHandRenderer().renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
+            this.itemInHandRenderer.renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);
             matrixStack.popPose();
         }
     }

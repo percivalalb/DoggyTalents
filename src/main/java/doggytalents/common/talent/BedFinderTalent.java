@@ -3,7 +3,7 @@ package doggytalents.common.talent;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public class BedFinderTalent extends TalentInstance {
                             dogIn.setOrderedToSit(true);
                         }
 
-                        playerIn.displayClientMessage(new TranslatableComponent("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
+                        playerIn.displayClientMessage(Component.translatable("talent.doggytalents.bed_finder.dog_mount", dogIn.getGenderPronoun()), true);
                         return InteractionResult.SUCCESS;
                     }
                 }

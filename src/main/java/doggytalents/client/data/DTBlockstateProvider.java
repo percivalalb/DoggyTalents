@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -63,9 +63,9 @@ public class DTBlockstateProvider extends BlockStateProvider {
         BlockModelBuilder model = this.models()
                 .getBuilder(name(blockIn))
                 .parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block")))
-                .texture("particle", blockTexture(Blocks.OAK_PLANKS.delegate))
-                .texture("bedding", blockTexture(Blocks.WHITE_WOOL.delegate))
-                .texture("casing", blockTexture(Blocks.OAK_PLANKS.delegate))
+                .texture("particle", blockTexture(Blocks.OAK_PLANKS))
+                .texture("bedding", blockTexture(Blocks.WHITE_WOOL))
+                .texture("casing", blockTexture(Blocks.OAK_PLANKS))
                 .ao(false);
 
         model.element()
@@ -111,10 +111,10 @@ public class DTBlockstateProvider extends BlockStateProvider {
         BlockModelBuilder model = this.models()
                 .getBuilder(name(blockIn))
                 .parent(this.models().getExistingFile(mcLoc(ModelProvider.BLOCK_FOLDER + "/block")))
-                .texture("particle", blockTexture(Blocks.IRON_BLOCK.delegate))
-                .texture("water", extend(blockTexture(Blocks.WATER.delegate), "_still"))
-                .texture("side", blockTexture(Blocks.IRON_BLOCK.delegate))
-                .texture("bottom", blockTexture(Blocks.IRON_BLOCK.delegate))
+                .texture("particle", blockTexture(Blocks.IRON_BLOCK))
+                .texture("water", extend(blockTexture(Blocks.WATER), "_still"))
+                .texture("side", blockTexture(Blocks.IRON_BLOCK))
+                .texture("bottom", blockTexture(Blocks.IRON_BLOCK))
                 .ao(false);
 
         model.element()
@@ -152,12 +152,12 @@ public class DTBlockstateProvider extends BlockStateProvider {
 
 
 
-    private String name(Supplier<? extends IForgeRegistryEntry<?>> block) {
-        return block.get().getRegistryName().getPath();
+    private String name(Supplier<? extends Block> block) {
+        return ForgeRegistries.BLOCKS.getKey(block.get()).getPath();
     }
 
     private ResourceLocation blockTexture(Supplier<? extends Block> block) {
-        ResourceLocation base = block.get().getRegistryName();
+        ResourceLocation base = ForgeRegistries.BLOCKS.getKey(block.get());
         return prextend(base, ModelProvider.BLOCK_FOLDER + "/");
     }
 

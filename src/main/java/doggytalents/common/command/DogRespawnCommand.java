@@ -14,13 +14,12 @@ import doggytalents.common.command.arguments.UUIDArgument;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.item.RadarItem;
 import doggytalents.common.storage.*;
-import doggytalents.common.util.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
-import net.minecraft.commands.synchronization.ArgumentTypes;
-import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -34,15 +33,15 @@ import static net.minecraft.commands.Commands.literal;
 public class DogRespawnCommand {
 
     public static final DynamicCommandExceptionType COLOR_INVALID = new DynamicCommandExceptionType((arg) -> {
-        return new TranslatableComponent("command.dogrespawn.invalid", arg);
+        return Component.translatable("command.dogrespawn.invalid", arg);
     });
 
     public static final DynamicCommandExceptionType SPAWN_EXCEPTION = new DynamicCommandExceptionType((arg) -> {
-        return new TranslatableComponent("command.dogrespawn.exception", arg);
+        return Component.translatable("command.dogrespawn.exception", arg);
     });
 
     public static final Dynamic2CommandExceptionType TOO_MANY_OPTIONS = new Dynamic2CommandExceptionType((arg1, arg2) -> {
-        return new TranslatableComponent("command.dogrespawn.imprecise", arg1, arg2);
+        return Component.translatable("command.dogrespawn.imprecise", arg1, arg2);
     });
 
     public static void register(final CommandDispatcher<CommandSourceStack> dispatcher) {
@@ -71,7 +70,7 @@ public class DogRespawnCommand {
     }
 
     public static void registerSerilizers() {
-        ArgumentTypes.register(Util.getResourcePath("uuid"), UUIDArgument.class, new EmptyArgumentSerializer<>(UUIDArgument::uuid));
+        ArgumentTypeInfos.registerByClass(UUIDArgument.class, SingletonArgumentInfo.contextFree(UUIDArgument::uuid));
     }
 
     private static <S extends SharedSuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsLocate() {
@@ -232,11 +231,11 @@ public class DogRespawnCommand {
 
         if (dog != null) {
             respawnStorage.remove(respawnData.getDogId());
-            source.sendSuccess(new TranslatableComponent("commands.dogrespawn.uuid.success", respawnData.getDogName()), false);
+            source.sendSuccess(Component.translatable("commands.dogrespawn.uuid.success", respawnData.getDogName()), false);
             return 1;
         }
 
-        source.sendSuccess(new TranslatableComponent("commands.dogrespawn.uuid.failure", respawnData.getDogName()), false);
+        source.sendSuccess(Component.translatable("commands.dogrespawn.uuid.failure", respawnData.getDogName()), false);
         return 0;
     }
 
@@ -293,9 +292,9 @@ public class DogRespawnCommand {
             String translateStr = RadarItem.getDirectionTranslationKey(locationData, player);
             int distance = Mth.ceil(locationData.getPos() != null ? locationData.getPos().distanceTo(player.position()) : -1);
 
-            source.sendSuccess(new TranslatableComponent(translateStr, locationData.getName(player.level), distance), false);
+            source.sendSuccess(Component.translatable(translateStr, locationData.getName(player.level), distance), false);
         } else {
-            source.sendSuccess(new TranslatableComponent("dogradar.notindim", locationData.getDimension()), false); // TODO change message
+            source.sendSuccess(Component.translatable("dogradar.notindim", locationData.getDimension()), false); // TODO change message
         }
         return 1;
 

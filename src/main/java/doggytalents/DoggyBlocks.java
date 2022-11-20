@@ -5,15 +5,14 @@ import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.FoodBowlBlock;
 import doggytalents.common.lib.Constants;
 import doggytalents.common.util.Util;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -59,11 +58,9 @@ public class DoggyBlocks {
         return BLOCKS.register(name, blockSupplier);
     }
 
-    public static void registerBlockColours(final ColorHandlerEvent.Block event) {
-        BlockColors blockColors = event.getBlockColors();
-
+    public static void registerBlockColours(final RegisterColorHandlersEvent.Block event) {
         Util.acceptOrElse(DoggyBlocks.DOG_BATH, (block) -> {
-            blockColors.register((state, world, pos, tintIndex) -> {
+            event.register((state, world, pos, tintIndex) -> {
                 return world != null && pos != null ? BiomeColors.getAverageWaterColor(world, pos) : -1;
              }, block);
         }, DoggyBlocks::logError);

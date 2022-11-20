@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "S S",
-    "LLL",
-    "LLL"
-  ],
   "key": {
     "L": {
       "item": "minecraft:leather"
@@ -13,6 +8,11 @@
       "item": "minecraft:string"
     }
   },
+  "pattern": [
+    "S S",
+    "LLL",
+    "LLL"
+  ],
   "result": {
     "item": "doggytalents:cape_coloured"
   }

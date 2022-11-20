@@ -2,7 +2,6 @@ package doggytalents.client.screen;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ public class ScreenUtil {
             int length = font.width(temp + str);
 
             if (length > maxLength) {
-                list.add(new TextComponent(temp.toString()));
+                list.add(Component.literal(temp.toString()));
                 temp = new StringBuilder();
             }
 
@@ -28,7 +27,7 @@ public class ScreenUtil {
             temp.append(" ");
 
             if (i == split.length - 1) {
-                list.add(new TextComponent(temp.toString()));
+                list.add(Component.literal(temp.toString()));
             }
         }
 

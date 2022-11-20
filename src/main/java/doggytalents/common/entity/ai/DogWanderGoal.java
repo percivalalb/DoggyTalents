@@ -3,6 +3,7 @@ package doggytalents.common.entity.ai;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.phys.Vec3;
@@ -10,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Optional;
-import java.util.Random;
 
 public class DogWanderGoal extends Goal {
 
@@ -62,7 +62,7 @@ public class DogWanderGoal extends Goal {
     @Nullable
     protected Vec3 getPosition() {
         PathNavigation pathNavigate = this.dog.getNavigation();
-        Random random = this.dog.getRandom();
+        RandomSource random = this.dog.getRandom();
 
         int xzRange = 5;
         int yRange = 3;

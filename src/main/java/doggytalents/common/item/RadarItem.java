@@ -3,9 +3,7 @@ package doggytalents.common.item;
 import doggytalents.DoggyItems;
 import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
-import net.minecraft.Util;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -23,7 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 public class RadarItem extends Item {
 
     public RadarItem(Properties properties) {
@@ -41,20 +38,20 @@ public class RadarItem extends Item {
             if (playerIn.isShiftKeyDown()) {
                 DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
                 for (UUID uuid : locationManager.getAllUUID()) {
-                    playerIn.sendMessage(new TextComponent(locationManager.getData(uuid).toString()), Util.NIL_UUID);
+                    playerIn.sendSystemMessage(Component.literal(locationManager.getData(uuid).toString()));
                 }
                 return new InteractionResultHolder<>(InteractionResult.FAIL, playerIn.getItemInHand(handIn));
             }
 
             ResourceKey<Level> dimCurr = playerIn.level.dimension();
 
-            playerIn.sendMessage(new TextComponent(""), Util.NIL_UUID);
+            playerIn.sendSystemMessage(Component.literal(""));
 
             DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
             List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, dimCurr).collect(Collectors.toList());
 
             if (ownDogs.isEmpty()) {
-                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", dimCurr.location()), Util.NIL_UUID);
+                playerIn.sendSystemMessage(Component.translatable("dogradar.errornull", dimCurr.location()));
             } else {
                 boolean flag = false;
 
@@ -65,12 +62,12 @@ public class RadarItem extends Item {
                         String translateStr = RadarItem.getDirectionTranslationKey(loc, playerIn);
                         int distance = Mth.ceil(loc.getPos() != null ? loc.getPos().distanceTo(playerIn.position()) : -1);
 
-                        playerIn.sendMessage(new TranslatableComponent(translateStr, loc.getName(worldIn), distance), Util.NIL_UUID);
+                        playerIn.sendSystemMessage(Component.translatable(translateStr, loc.getName(worldIn), distance));
                     }
                 }
 
                 if (!flag) {
-                    playerIn.sendMessage(new TranslatableComponent("dogradar.errornoradio"), Util.NIL_UUID);
+                    playerIn.sendSystemMessage(Component.translatable("dogradar.errornoradio"));
                 }
             }
 
@@ -84,11 +81,11 @@ public class RadarItem extends Item {
             }
 
             if (otherDogs.size() > 0) {
-                playerIn.sendMessage(new TranslatableComponent("dogradar.notindim", otherDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
+                playerIn.sendSystemMessage(Component.translatable("dogradar.notindim", otherDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))));
             }
 
             if (noDogs.size() > 0 && stack.getItem() == DoggyItems.CREATIVE_RADAR.get()) {
-                playerIn.sendMessage(new TranslatableComponent("dogradar.errornull", noDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))), Util.NIL_UUID);
+                playerIn.sendSystemMessage(Component.translatable("dogradar.errornull", noDogs.stream().map(ResourceKey::location).map(Objects::toString).collect(Collectors.joining(", "))));
             }
         }
         return new InteractionResultHolder<ItemStack>(InteractionResult.FAIL, stack);

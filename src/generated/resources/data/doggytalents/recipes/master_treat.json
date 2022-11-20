@@ -21,7 +21,7 @@
     }
   ],
   "result": {
-    "item": "doggytalents:master_treat",
-    "count": 5
+    "count": 5,
+    "item": "doggytalents:master_treat"
   }
 }

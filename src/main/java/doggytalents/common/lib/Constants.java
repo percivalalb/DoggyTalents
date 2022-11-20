@@ -1,11 +1,12 @@
 package doggytalents.common.lib;
 
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.common.util.Util;
 import net.minecraft.resources.ResourceLocation;
 
 public class Constants {
 
-    public static final String MOD_ID = "doggytalents";
+    public static final String MOD_ID = DoggyTalentsAPI.MOD_ID;
     public static final String MOD_NAME = "Doggy Talents";
 
     public static final String VANILLA_ID = "minecraft";

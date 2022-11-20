@@ -3,7 +3,6 @@ package doggytalents.common.data;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
@@ -29,8 +28,8 @@ public class DisplayInfoBuilder {
     }
 
     public DisplayInfoBuilder translate(String key) {
-        this.title(new TranslatableComponent("advancements."+key+".title"));
-        this.description(new TranslatableComponent("advancements."+key+".description"));
+        this.title(Component.translatable("advancements."+key+".title"));
+        this.description(Component.translatable("advancements."+key+".description"));
         return this;
     }
 

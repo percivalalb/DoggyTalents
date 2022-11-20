@@ -1,9 +1,9 @@
 package doggytalents.api.feature;
 
+import doggytalents.api.inferface.AbstractDogEntity;
+
 import java.util.Arrays;
 import java.util.Comparator;
-
-import doggytalents.api.inferface.AbstractDogEntity;
 
 public enum EnumMode {
 

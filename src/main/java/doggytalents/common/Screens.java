@@ -8,7 +8,6 @@ import doggytalents.common.inventory.container.DogInventoriesContainer;
 import doggytalents.common.inventory.container.PackPuppyContainer;
 import doggytalents.common.inventory.container.TreatBagContainer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,7 +36,7 @@ public class Screens {
 
         @Override
         public Component getDisplayName() {
-            return new TranslatableComponent("container.doggytalents.pack_puppy");
+            return Component.translatable("container.doggytalents.pack_puppy");
         }
     }
 
@@ -60,7 +59,7 @@ public class Screens {
 
         @Override
         public Component getDisplayName() {
-            return new TranslatableComponent("container.doggytalents.dog_inventories");
+            return Component.translatable("container.doggytalents.dog_inventories");
         }
     }
 
@@ -81,13 +80,13 @@ public class Screens {
 
         @Override
         public Component getDisplayName() {
-            return new TranslatableComponent("container.doggytalents.treat_bag");
+            return Component.translatable("container.doggytalents.treat_bag");
         }
     }
 
     public static void openPackPuppyScreen(ServerPlayer player, AbstractDogEntity dogIn) {
         if (dogIn.isAlive()) {
-            NetworkHooks.openGui(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
+            NetworkHooks.openScreen(player, new PackPuppyContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.getId());
             });
         }
@@ -95,7 +94,7 @@ public class Screens {
 
     public static void openDogInventoriesScreen(ServerPlayer player, List<DogEntity> dogIn) {
         if (!dogIn.isEmpty()) {
-            NetworkHooks.openGui(player, new DogInventoriesContainerProvider(dogIn), (buf) -> {
+            NetworkHooks.openScreen(player, new DogInventoriesContainerProvider(dogIn), (buf) -> {
                 buf.writeInt(dogIn.size());
                 for (DogEntity dog : dogIn) {
                     buf.writeInt(dog.getId());
@@ -105,12 +104,12 @@ public class Screens {
     }
 
     public static void openFoodBowlScreen(ServerPlayer player, FoodBowlTileEntity foodBowl) {
-        NetworkHooks.openGui(player, foodBowl, foodBowl.getBlockPos());
+        NetworkHooks.openScreen(player, foodBowl, foodBowl.getBlockPos());
     }
 
     public static void openTreatBagScreen(ServerPlayer player, ItemStack stackIn, int slotId) {
         if (stackIn.getItem() == DoggyItems.TREAT_BAG.get()) {
-            NetworkHooks.openGui(player, new TreatBagContainerProvider(stackIn, slotId), buf -> {
+            NetworkHooks.openScreen(player, new TreatBagContainerProvider(stackIn, slotId), buf -> {
                 buf.writeVarInt(slotId);
                 buf.writeItem(stackIn);
             });

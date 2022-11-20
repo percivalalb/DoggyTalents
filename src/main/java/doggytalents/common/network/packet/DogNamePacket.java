@@ -3,11 +3,10 @@ package doggytalents.common.network.packet;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.packet.data.DogNameData;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 import java.util.function.Supplier;
-
 public class DogNamePacket extends DogPacket<DogNameData> {
 
     @Override
@@ -33,7 +32,7 @@ public class DogNamePacket extends DogPacket<DogNameData> {
             dogIn.setCustomName(null);
         }
         else {
-            dogIn.setCustomName(new TextComponent(data.name));
+            dogIn.setCustomName(Component.literal(data.name));
         }
     }
 }

@@ -10,10 +10,10 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
@@ -59,7 +59,7 @@ public class DoggyItems {
     }
 
     private static RegistryObject<Item> registerThrowBone(final String name) {
-        return register(name, () -> new ThrowableItem(THROW_BONE_WET, Items.BONE.delegate, createInitialProp().stacksTo(2)));
+        return register(name, () -> new ThrowableItem(THROW_BONE_WET, () -> Items.BONE, createInitialProp().stacksTo(2)));
     }
 
     private static RegistryObject<Item> registerThrowStick(final String name) {
@@ -111,7 +111,7 @@ public class DoggyItems {
         return ITEMS.register(name, sup);
     }
 
-    public static void registerItemColours(final ColorHandlerEvent.Item event) {
+    public static void registerItemColours(final RegisterColorHandlersEvent.Item event) {
         ItemColors itemColors = event.getItemColors();
         Util.acceptOrElse(DoggyItems.WOOL_COLLAR, (item) -> {
             itemColors.register((stack, tintIndex) -> {

@@ -5,8 +5,8 @@ import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyRecipeSerializers;
 import doggytalents.common.util.Util;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.HashCache;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
@@ -28,7 +28,6 @@ public class DTRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-        //TODO
         ShapedRecipeBuilder.shaped(DoggyItems.THROW_BONE.get()).pattern(" X ").pattern("XYX").pattern(" X ").define('X', Items.BONE).define('Y', Items.SLIME_BALL).unlockedBy("has_bone", has(Items.BONE)).save(consumer);
         ShapelessRecipeBuilder.shapeless(DoggyItems.THROW_BONE.get()).requires(DoggyItems.THROW_BONE_WET.get(), 1).unlockedBy("has_throw_bone", has(DoggyItems.THROW_BONE.get())).save(consumer, Util.getResource("throw_bone_wet"));
         ShapedRecipeBuilder.shaped(DoggyItems.THROW_STICK.get(), 1).pattern(" X ").pattern("XYX").pattern(" X ").define('X', Items.STICK).define('Y', Items.SLIME_BALL).unlockedBy("has_slime_ball", has(Items.SLIME_BALL)).save(consumer);
@@ -65,7 +64,7 @@ public class DTRecipeProvider extends RecipeProvider {
     }
 
     @Override
-    protected void saveAdvancement(HashCache cache, JsonObject advancementJson, Path pathIn) {
+    protected void saveAdvancement(CachedOutput cache, JsonObject advancementJson, Path pathIn) {
         //NOOP - We dont replace any of the advancement things yet...
     }
 }

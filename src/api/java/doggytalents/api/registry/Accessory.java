@@ -1,21 +1,18 @@
 package doggytalents.api.registry;
 
+import doggytalents.api.DoggyTalentsAPI;
+import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+
+import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
-import doggytalents.api.DoggyTalentsAPI;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.Util;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-import net.minecraftforge.registries.IRegistryDelegate;
-
-public class Accessory extends ForgeRegistryEntry<Accessory> {
+public class Accessory {
 
     @Nullable
     private String translationKey;
@@ -77,16 +74,12 @@ public class Accessory extends ForgeRegistryEntry<Accessory> {
         return this.type.get();
     }
 
-    public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
-        return this.of(accessoryIn.get());
-    }
-
     public <T extends Accessory> boolean of(T accessoryIn) {
-        return this.of(accessoryIn.delegate);
+        return DoggyTalentsAPI.ACCESSORIES.get().getKey(accessoryIn).equals(DoggyTalentsAPI.ACCESSORIES.get().getKey(this));
     }
 
-    public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
-        return accessoryDelegateIn.equals(this.delegate);
+    public <T extends Accessory> boolean of(Supplier<T> accessoryDelegateIn) {
+        return this.of(accessoryDelegateIn.get());
     }
 
     private ResourceLocation modelTexture;

@@ -6,7 +6,7 @@ import doggytalents.common.lib.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public class RadarScreen extends Screen {
@@ -14,7 +14,7 @@ public class RadarScreen extends Screen {
     private Player player;
 
     protected RadarScreen(Player playerIn) {
-        super(new TranslatableComponent("doggytalents.screen.radar.title"));
+        super(Component.translatable("doggytalents.screen.radar.title"));
         this.player = playerIn;
     }
 

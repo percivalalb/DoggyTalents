@@ -15,7 +15,7 @@ import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LootingLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -26,7 +26,7 @@ public class EventHandler {
     @SubscribeEvent
     public void rightClickEntity(final PlayerInteractEvent.EntityInteract event) {
 
-        Level world = event.getWorld();
+        Level world = event.getLevel();
 
         ItemStack stack = event.getItemStack();
         Entity target = event.getTarget();
@@ -36,7 +36,7 @@ public class EventHandler {
 
             TamableAnimal wolf = (TamableAnimal) target;
 
-            Player player = event.getPlayer();
+            Player player = event.getEntity();
 
             if (wolf.isAlive() && wolf.isTame() && wolf.isOwnedBy(player)) {
 
@@ -65,7 +65,7 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public void onEntitySpawn(final EntityJoinWorldEvent event) {
+    public void onEntitySpawn(final EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
 
         if (entity instanceof AbstractSkeleton) {
@@ -78,7 +78,7 @@ public class EventHandler {
     public void playerLoggedIn(final PlayerLoggedInEvent event) {
         if (ConfigHandler.SERVER.STARTING_ITEMS.get()) {
 
-            Player player = event.getPlayer();
+            Player player = event.getEntity();
 
             CompoundTag tag = player.getPersistentData();
 

@@ -1,32 +1,14 @@
 {
   "parent": "minecraft:block/block",
   "ambientocclusion": false,
-  "textures": {
-    "particle": "minecraft:block/iron_block",
-    "water": "minecraft:block/water_still",
-    "side": "minecraft:block/iron_block",
-    "bottom": "minecraft:block/iron_block"
-  },
   "elements": [
     {
-      "from": [
-        1,
-        0,
-        1
-      ],
-      "to": [
-        15,
-        6,
-        15
-      ],
       "faces": {
         "up": {
           "texture": "#water",
           "tintindex": 0
         }
-      }
-    },
-    {
+      },
       "from": [
         1,
         0,
@@ -36,14 +18,47 @@
         15,
         6,
         15
-      ],
+      ]
+    },
+    {
       "faces": {
         "down": {
           "texture": "#bottom"
         }
-      }
+      },
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        6,
+        15
+      ]
     },
     {
+      "faces": {
+        "down": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
       "from": [
         0,
         0,
@@ -53,30 +68,30 @@
         16,
         8,
         1
-      ],
+      ]
+    },
+    {
       "faces": {
         "down": {
+          "texture": "#side"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
           "texture": "#side"
         },
         "up": {
           "texture": "#side"
         },
-        "north": {
-          "texture": "#side",
-          "cullface": "north"
-        },
-        "south": {
-          "texture": "#side"
-        },
         "west": {
           "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
         }
-      }
-    },
-    {
+      },
       "from": [
         15,
         0,
@@ -86,30 +101,30 @@
         16,
         8,
         16
-      ],
+      ]
+    },
+    {
       "faces": {
         "down": {
           "texture": "#side"
         },
-        "up": {
+        "east": {
           "texture": "#side"
         },
         "north": {
           "texture": "#side"
         },
         "south": {
+          "cullface": "south",
+          "texture": "#side"
+        },
+        "up": {
           "texture": "#side"
         },
         "west": {
           "texture": "#side"
-        },
-        "east": {
-          "texture": "#side",
-          "cullface": "east"
         }
-      }
-    },
-    {
+      },
       "from": [
         0,
         0,
@@ -119,30 +134,30 @@
         16,
         8,
         16
-      ],
+      ]
+    },
+    {
       "faces": {
         "down": {
           "texture": "#side"
         },
-        "up": {
+        "east": {
           "texture": "#side"
         },
         "north": {
           "texture": "#side"
         },
         "south": {
-          "texture": "#side",
-          "cullface": "south"
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#side"
         },
         "west": {
-          "texture": "#side"
-        },
-        "east": {
+          "cullface": "west",
           "texture": "#side"
         }
-      }
-    },
-    {
+      },
       "from": [
         0,
         0,
@@ -152,28 +167,13 @@
         1,
         8,
         16
-      ],
-      "faces": {
-        "down": {
-          "texture": "#side"
-        },
-        "up": {
-          "texture": "#side"
-        },
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side",
-          "cullface": "west"
-        },
-        "east": {
-          "texture": "#side"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "bottom": "minecraft:block/iron_block",
+    "particle": "minecraft:block/iron_block",
+    "side": "minecraft:block/iron_block",
+    "water": "minecraft:block/water_still"
+  }
 }

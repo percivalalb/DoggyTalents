@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
@@ -22,7 +21,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
         super(ctx, new DogModel(ctx.bakeLayer(ClientSetup.DOG)), 0.5F);
 //        this.addLayer(new DogTalentLayer(this, ctx));
 //        this.addLayer(new DogAccessoryLayer(this, ctx));
-        this.addLayer(new BoneLayer(this));
+        this.addLayer(new BoneLayer(this, ctx.getItemInHandRenderer()));
         for (LayerFactory<DogEntity, DogModel<DogEntity>> layer : CollarRenderManager.getLayers()) {
             this.addLayer(layer.createLayer(this, ctx));
         }
@@ -48,9 +47,9 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
             if (d0 <= 64 * 64) {
                 String tip = entityIn.getMode().getTip();
                 String label = String.format(ConfigHandler.SERVER.DOG_GENDER.get() ? "%s(%d)%s" : "%s(%d)",
-                        new TranslatableComponent(tip).getString(),
+                        Component.translatable(tip).getString(),
                         Mth.ceil(entityIn.getDogHunger()),
-                        new TranslatableComponent(entityIn.getGender().getUnlocalisedTip()).getString());
+                        Component.translatable(entityIn.getGender().getUnlocalisedTip()).getString());
 
                 RenderUtil.renderLabelWithScale(entityIn, this, this.entityRenderDispatcher, label, matrixStackIn, bufferIn, packedLightIn, 0.01F, 0.12F);
 
@@ -68,7 +67,7 @@ public class DogRenderer extends MobRenderer<DogEntity, DogModel<DogEntity>> {
 
 
     private Component getNameUnknown(DogEntity dogIn) {
-        return new TranslatableComponent(dogIn.getOwnerUUID() != null ? "entity.doggytalents.dog.unknown_owner" : "entity.doggytalents.dog.untamed");
+        return Component.translatable(dogIn.getOwnerUUID() != null ? "entity.doggytalents.dog.unknown_owner" : "entity.doggytalents.dog.untamed");
     }
 
     @Override

@@ -1,10 +1,10 @@
 package doggytalents.api.inferface;
 
-import javax.annotation.Nullable;
-
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.InteractionResult;
+
+import javax.annotation.Nullable;
 
 public interface IDogFoodHandler extends IDogFoodPredicate {
 

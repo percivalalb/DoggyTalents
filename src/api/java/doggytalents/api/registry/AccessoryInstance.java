@@ -1,15 +1,15 @@
 package doggytalents.api.registry;
 
+import doggytalents.api.DoggyTalentsAPI;
+import doggytalents.api.inferface.AbstractDogEntity;
+import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import doggytalents.api.DoggyTalentsAPI;
-import doggytalents.api.inferface.AbstractDogEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IRegistryDelegate;
 
 public class AccessoryInstance {
 
@@ -19,26 +19,30 @@ public class AccessoryInstance {
     public static final Comparator<AccessoryInstance> RENDER_SORTER = Comparator.comparing(AccessoryInstance::getRenderIndex);
 
     @Deprecated // Do not call directly use AccessoryInstance#getAccessory
-    private final Accessory accessory;
+    private final Holder.Reference<Accessory> accessoryDelegate;
 
     public AccessoryInstance(Accessory typeIn) {
-        this.accessory = typeIn;
+        this.accessoryDelegate = DoggyTalentsAPI.ACCESSORIES.get().getDelegateOrThrow(typeIn);
+    }
+
+    public AccessoryInstance(Holder.Reference<Accessory> accessoryDelegateIn) {
+        this.accessoryDelegate = accessoryDelegateIn;
     }
 
     public Accessory getAccessory() {
-        return this.accessory;
+        return this.accessoryDelegate.get();
     }
 
     public <T extends Accessory> boolean of(Supplier<T> accessoryIn) {
-        return this.accessory.of(accessoryIn);
+        return this.of(accessoryIn.get());
     }
 
     public <T extends Accessory> boolean of(T accessoryIn) {
-        return this.accessory.of(accessoryIn);
+        return this.of(DoggyTalentsAPI.ACCESSORIES.get().getKey(accessoryIn));
     }
 
-    public <T extends Accessory> boolean of(IRegistryDelegate<T> accessoryDelegateIn) {
-        return this.accessory.of(accessoryDelegateIn);
+    public <T extends Accessory> boolean of(ResourceLocation accessoryDelegateIn) {
+        return this.accessoryDelegate.is(accessoryDelegateIn);
     }
 
     public <T extends AccessoryType> boolean ofType(Supplier<T> accessoryTypeIn) {
@@ -46,15 +50,15 @@ public class AccessoryInstance {
     }
 
     public <T extends AccessoryType> boolean ofType(T accessoryTypeIn) {
-        return this.ofType(accessoryTypeIn.delegate);
+        return this.ofType(DoggyTalentsAPI.ACCESSORY_TYPE.get().getKey(accessoryTypeIn));
     }
 
-    public <T extends AccessoryType> boolean ofType(IRegistryDelegate<T> accessoryTypeDelegateIn) {
-        return accessoryTypeDelegateIn.equals(this.accessory.getType().delegate);
+    public <T extends AccessoryType> boolean ofType(ResourceLocation accessoryTypeDelegateIn) {
+        return DoggyTalentsAPI.ACCESSORY_TYPE.get().getKey(this.accessoryDelegate.get().getType()).equals(accessoryTypeDelegateIn);
     }
 
     public AccessoryInstance copy() {
-        return new AccessoryInstance(this.accessory);
+        return new AccessoryInstance(this.accessoryDelegate);
     }
 
     public ItemStack getReturnItem() {
@@ -66,7 +70,7 @@ public class AccessoryInstance {
     }
 
     public final void writeInstance(CompoundTag compound) {
-        ResourceLocation rl = this.getAccessory().getRegistryName();
+        ResourceLocation rl = this.accessoryDelegate.key().location();
         if (rl != null) {
             compound.putString("type", rl.toString());
         }

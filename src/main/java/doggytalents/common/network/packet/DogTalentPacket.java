@@ -35,7 +35,7 @@ public class DogTalentPacket extends DogPacket<DogTalentData> {
         if (!ConfigHandler.TALENT.getFlag(data.talent)) {
             DoggyTalents2.LOGGER.info("{} tried to level a disabled talent ({})",
                     ctx.get().getSender().getGameProfile().getName(),
-                    data.talent.getRegistryName());
+                    DoggyTalentsAPI.TALENTS.get().getKey(data.talent));
             return;
         }
 

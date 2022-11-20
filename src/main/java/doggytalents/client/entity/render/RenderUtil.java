@@ -78,7 +78,6 @@ public class RenderUtil {
         bufferbuilder.vertex(maxX, yMax, zLevel).uv(textureXMax, textureYMax).endVertex();
         bufferbuilder.vertex(maxX, yMin, zLevel).uv(textureXMax, textureYMin).endVertex();
         bufferbuilder.vertex(minX, yMin, zLevel).uv(textureXMin, textureYMin).endVertex();
-        bufferbuilder.end();
-        BufferUploader.end(bufferbuilder);
+        BufferUploader.drawWithShader(bufferbuilder.end());
     }
 }

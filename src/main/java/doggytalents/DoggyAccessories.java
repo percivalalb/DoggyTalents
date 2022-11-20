@@ -1,5 +1,6 @@
 package doggytalents;
 
+import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.registry.Accessory;
 import doggytalents.common.entity.accessory.*;
 import doggytalents.common.lib.Constants;
@@ -7,14 +8,14 @@ import doggytalents.common.lib.Resources;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 
 public class DoggyAccessories {
 
-    public static final DeferredRegister<Accessory> ACCESSORIES = DeferredRegister.create(DoggyRegistries.Keys.ACCESSORIES_REGISTRY, Constants.MOD_ID);
+    public static final DeferredRegister<Accessory> ACCESSORIES = DeferredRegister.create(DoggyTalentsAPI.RegistryKeys.ACCESSORIES_REGISTRY, Constants.MOD_ID);
 
     public static final RegistryObject<DyeableAccessory> DYEABLE_COLLAR = register("dyeable_collar", () -> new DyeableAccessory(DoggyAccessoryTypes.COLLAR, DoggyItems.WOOL_COLLAR).setModelTexture(Resources.COLLAR_DEFAULT).setRenderer("DefaultAccessoryRenderer"));
     public static final RegistryObject<Collar> GOLDEN_COLLAR = register("golden_collar", () -> new Collar(DoggyItems.CREATIVE_COLLAR).setModelTexture(Resources.COLLAR_GOLDEN).setRenderer("DefaultAccessoryRenderer"));
@@ -47,9 +48,9 @@ public class DoggyAccessories {
     public static final RegistryObject<ArmourAccessory> CHAINMAIL_BOOTS = registerBoots("chainmail_boots", () -> Items.CHAINMAIL_BOOTS, Resources.CHAINMAIL_BOOTS);
     public static final RegistryObject<ArmourAccessory> NETHERITE_BOOTS = registerBoots("netherite_boots", () -> Items.NETHERITE_BOOTS, Resources.NETHERITE_BOOTS);
 
-    public static final RegistryObject<LeatherArmourAccessory> LEATHER_HELMET = register("leather_helmet", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.HEAD, Items.LEATHER_HELMET.delegate).setModelTexture(Resources.LEATHER_HELMET));
-    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BODY_PIECE = register("leather_body_piece", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.CLOTHING, Items.LEATHER_CHESTPLATE.delegate).setModelTexture(Resources.LEATHER_BODY_PIECE));
-    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BOOTS = register("leather_boots", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.FEET, Items.LEATHER_BOOTS.delegate).setModelTexture(Resources.LEATHER_BOOTS));
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_HELMET = register("leather_helmet", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.HEAD, () -> Items.LEATHER_HELMET).setModelTexture(Resources.LEATHER_HELMET));
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BODY_PIECE = register("leather_body_piece", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.CLOTHING, () -> Items.LEATHER_CHESTPLATE).setModelTexture(Resources.LEATHER_BODY_PIECE));
+    public static final RegistryObject<LeatherArmourAccessory> LEATHER_BOOTS = register("leather_boots", () -> new LeatherArmourAccessory(DoggyAccessoryTypes.FEET, () -> Items.LEATHER_BOOTS).setModelTexture(Resources.LEATHER_BOOTS));
 
     private static RegistryObject<Helmet> registerHelmet(final String name, final Supplier<? extends ItemLike> itemIn, ResourceLocation modelLocation) {
         return ACCESSORIES.register(name, () -> new Helmet(itemIn).setModelTexture(modelLocation));

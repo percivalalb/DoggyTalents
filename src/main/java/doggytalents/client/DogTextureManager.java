@@ -101,8 +101,8 @@ public class DogTextureManager extends SimplePreparableReloadListener<DogTexture
         Minecraft mc = Minecraft.getInstance();
 
         ResourceManager resourceManager = mc.getResourceManager();
-        Resource resource = resourceManager.getResource(loc);
-        return resource.getInputStream();
+        Resource resource = resourceManager.getResource(loc).get();
+        return resource.open();
     }
 
     public ResourceLocation getTexture(DogEntity dog) {
@@ -176,15 +176,14 @@ public class DogTextureManager extends SimplePreparableReloadListener<DogTexture
         return Resources.ENTITY_WOLF;
     }
 
-    private synchronized void loadDogSkinResource(DogTextureManager.Preparations prep, Resource resource) {
+    private synchronized void loadDogSkinResource(DogTextureManager.Preparations prep, ResourceLocation rl, Resource resource) {
         InputStream inputstream = null;
         try {
-            inputstream = resource.getInputStream();
+            inputstream = resource.open();
             String hash = DogTextureServer.INSTANCE.getHash(IOUtils.toByteArray(inputstream));
-            ResourceLocation rl = resource.getLocation();
 
             if (prep.skinHashToLoc.containsKey(hash)) {
-                DoggyTalents2.LOGGER.warn("The loaded resource packs contained a duplicate custom dog skin ({} & {})", resource.getLocation(), this.skinHashToLoc.get(hash));
+                DoggyTalents2.LOGGER.warn("The loaded resource packs contained a duplicate custom dog skin ({} & {})", rl, this.skinHashToLoc.get(hash));
             } else {
                 DoggyTalents2.LOGGER.info("Found custom dog skin at {} with hash {}", rl, hash);
                 prep.skinHashToLoc.put(hash, rl);
@@ -198,9 +197,9 @@ public class DogTextureManager extends SimplePreparableReloadListener<DogTexture
         }
     }
 
-    private void loadOverrideData(DogTextureManager.Preparations prep, List<Resource> resourcesList) {
+    private void loadOverrideData(DogTextureManager.Preparations prep, Collection<Resource> resourcesList) throws IOException {
         for (Resource iresource : resourcesList) {
-            InputStream inputstream = iresource.getInputStream();
+            InputStream inputstream = iresource.open();
             DoggyTalents2.LOGGER.debug("Loading {}", iresource);
             try {
                 this.loadLocaleData(prep, inputstream);
@@ -236,28 +235,26 @@ public class DogTextureManager extends SimplePreparableReloadListener<DogTexture
 
         profiler.startTick();
 
-        Collection<ResourceLocation> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
-            return fileName.endsWith(".png");
+        Map<ResourceLocation, Resource> resources = resourceManager.listResources("textures/entity/dog/custom", (fileName) -> {
+            return fileName.getPath().endsWith(".png");
         });
-        for (ResourceLocation rl : resources) {
+        for (Entry<ResourceLocation, Resource> i : resources.entrySet()) {
             try {
-                Resource resource = resourceManager.getResource(rl);
+                Optional<Resource> resource = resourceManager.getResource(i.getKey());
 
-                if (resource == null) {
+                if (resource.isEmpty()) {
                     DoggyTalents2.LOGGER.warn("Could not get resource");
                     continue;
                 }
 
-                this.loadDogSkinResource(prep, resource);
-            } catch (FileNotFoundException e) {
-                ;
+                this.loadDogSkinResource(prep, i.getKey(), resource.get());
             } catch (Exception exception) {
-                DoggyTalents2.LOGGER.warn("Skipped custom dog skin file: {} ({})", rl, exception);
+                DoggyTalents2.LOGGER.warn("Skipped custom dog skin file: {} ({})", i.getKey(), exception);
             }
         }
 
         try {
-            List<Resource> override = resourceManager.getResources(OVERRIDE_RESOURCE_LOCATION);
+            Collection<Resource> override = resourceManager.listResources(OVERRIDE_RESOURCE_LOCATION.getPath(), _t -> true).values();
             this.loadOverrideData(prep, override);
         } catch (FileNotFoundException e) {
             ;

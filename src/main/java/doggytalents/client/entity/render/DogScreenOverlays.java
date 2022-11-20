@@ -6,11 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class DogScreenOverlays {
 
-    public static final IIngameOverlay FOOD_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
+    public static final IGuiOverlay FOOD_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
         boolean isMounted = mc.player.getVehicle() instanceof DogEntity;
         if (isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
@@ -21,8 +21,8 @@ public class DogScreenOverlays {
 
             RenderSystem.enableBlend();
             int left = screenWidth / 2 + 91;
-            int top = screenHeight - gui.right_height;
-            gui.right_height += 10;
+            int top = screenHeight - gui.rightHeight;
+            gui.rightHeight += 10;
 
             int level = Mth.ceil((dog.getDogHunger() / dog.getMaxHunger()) * 20.0D);
 
@@ -50,7 +50,7 @@ public class DogScreenOverlays {
         }
     };
 
-    public static final IIngameOverlay AIR_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
+    public static final IGuiOverlay AIR_LEVEL_ELEMENT = (gui, mStack, partialTicks, screenWidth, screenHeight) -> {
         Minecraft mc = Minecraft.getInstance();
         boolean isMounted = mc.player.getVehicle() instanceof DogEntity;
         if (isMounted && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
@@ -60,7 +60,7 @@ public class DogScreenOverlays {
             mc.getProfiler().push("air_dog");
             RenderSystem.enableBlend();
             int left = screenWidth / 2 + 91;
-            int top = screenHeight - gui.right_height;
+            int top = screenHeight - gui.rightHeight;
 
             int air = dog.getAirSupply();
             int maxAir = dog.getMaxAirSupply();
@@ -74,7 +74,7 @@ public class DogScreenOverlays {
 
                     gui.blit(mStack, x, y, (i < full ? 16 : 25), 18, 9, 9);
                 }
-                gui.right_height += 10;
+                gui.rightHeight += 10;
             }
 
             RenderSystem.disableBlend();

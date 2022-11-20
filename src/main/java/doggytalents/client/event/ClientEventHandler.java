@@ -22,16 +22,16 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -40,15 +40,15 @@ import java.util.Map;
 
 public class ClientEventHandler {
 
-    public static void onModelBakeEvent(final ModelBakeEvent event) {
-        Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
+    public static void onModelBakeEvent(final BakingCompleted event) {
+        Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         try {
             ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(DoggyBlocks.DOG_BED.get());
             ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
-            BlockModel model = (BlockModel) event.getModelLoader().getModel(unbakedModelLoc);
-            BakedModel customModel = new DogBedModel(event.getModelLoader(), model, model.bake(event.getModelLoader(), model, ForgeModelBakery.defaultTextureGetter(), BlockModelRotation.X180_Y180, unbakedModelLoc, true));
+            BlockModel model = (BlockModel) event.getModelBakery().getModel(unbakedModelLoc);
+            BakedModel customModel = new DogBedModel(event.getModelBakery(), model, model.bake(event.getModelBakery(), model, Material::sprite, BlockModelRotation.X180_Y180, unbakedModelLoc, true));
 
             // Replace all valid block states
             DoggyBlocks.DOG_BED.get().getStateDefinition().getPossibleStates().forEach(state -> {
@@ -68,8 +68,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void onInputEvent(final MovementInputUpdateEvent event) {
         if (event.getInput().jumping) {
-            Entity entity = event.getPlayer().getVehicle();
-            if (event.getPlayer().isPassenger() && entity instanceof DogEntity) {
+            Entity entity = event.getEntity().getVehicle();
+            if (event.getEntity().isPassenger() && entity instanceof DogEntity) {
                 DogEntity dog = (DogEntity) entity;
 
                 if (dog.canJump()) {
@@ -80,7 +80,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onScreenInit(final ScreenEvent.InitScreenEvent.Post event) {
+    public void onScreenInit(final ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             boolean creative = screen instanceof CreativeModeInventoryScreen;
@@ -103,7 +103,7 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void onScreenDrawForeground(final ScreenEvent.DrawScreenEvent event) {
+    public void onScreenDrawForeground(final ScreenEvent.Render event) {
         Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             boolean creative = screen instanceof CreativeModeInventoryScreen;

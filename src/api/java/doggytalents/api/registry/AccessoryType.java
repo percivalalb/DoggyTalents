@@ -1,12 +1,11 @@
 package doggytalents.api.registry;
 
-import javax.annotation.Nullable;
-
 import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.Util;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 
-public class AccessoryType extends ForgeRegistryEntry<AccessoryType> {
+import javax.annotation.Nullable;
+
+public class AccessoryType {
 
     @Nullable
     private String translationKey;

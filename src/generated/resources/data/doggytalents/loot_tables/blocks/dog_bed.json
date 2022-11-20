@@ -2,52 +2,52 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "casingId",
-                  "target": "doggytalents.casingId",
-                  "op": "replace"
+                  "target": "doggytalents.casingId"
                 },
                 {
+                  "op": "replace",
                   "source": "beddingId",
-                  "target": "doggytalents.beddingId",
-                  "op": "replace"
+                  "target": "doggytalents.beddingId"
                 },
                 {
+                  "op": "replace",
                   "source": "ownerId",
-                  "target": "doggytalents.ownerId",
-                  "op": "replace"
+                  "target": "doggytalents.ownerId"
                 },
                 {
+                  "op": "replace",
                   "source": "name",
-                  "target": "doggytalents.name",
-                  "op": "replace"
+                  "target": "doggytalents.name"
                 },
                 {
+                  "op": "replace",
                   "source": "ownerName",
-                  "target": "doggytalents.ownerName",
-                  "op": "replace"
+                  "target": "doggytalents.ownerName"
                 }
-              ]
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "doggytalents:dog_bed"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }

@@ -30,7 +30,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -70,7 +69,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -102,13 +100,13 @@ public class DogEntity extends AbstractDogEntity {
     private static final EntityDataAccessor<ItemStack> BONE_VARIANT = SynchedEntityData.defineId(DogEntity.class, EntityDataSerializers.ITEM_STACK);
 
     // Use Cache.make to ensure static fields are not initialised too early (before Serializers have been registered)
-    private static final Cache<EntityDataAccessor<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (EntityDataAccessor<List<AccessoryInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<List<TalentInstance>>> TALENTS = Cache.make(() -> (EntityDataAccessor<List<TalentInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DogLevel>> DOG_LEVEL = Cache.make(() -> (EntityDataAccessor<DogLevel>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<EnumGender>> GENDER = Cache.make(() -> (EntityDataAccessor<EnumGender>) SynchedEntityData.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<EnumMode>> MODE = Cache.make(() -> (EntityDataAccessor<EnumMode>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
-    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get().getSerializer()));
+    private static final Cache<EntityDataAccessor<List<AccessoryInstance>>> ACCESSORIES =  Cache.make(() -> (EntityDataAccessor<List<AccessoryInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.ACCESSORY_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<List<TalentInstance>>> TALENTS = Cache.make(() -> (EntityDataAccessor<List<TalentInstance>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.TALENT_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<DogLevel>> DOG_LEVEL = Cache.make(() -> (EntityDataAccessor<DogLevel>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.DOG_LEVEL_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<EnumGender>> GENDER = Cache.make(() -> (EntityDataAccessor<EnumGender>) SynchedEntityData.defineId(DogEntity.class,  DoggySerializers.GENDER_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<EnumMode>> MODE = Cache.make(() -> (EntityDataAccessor<EnumMode>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.MODE_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BED_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get()));
+    private static final Cache<EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>> DOG_BOWL_LOCATION = Cache.make(() -> (EntityDataAccessor<DimensionDependantArg<Optional<BlockPos>>>) SynchedEntityData.defineId(DogEntity.class, DoggySerializers.BED_LOC_SERIALIZER.get()));
 
     public static final void initDataParameters() {
         ACCESSORIES.get();
@@ -512,9 +510,9 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public boolean canBeRiddenInWater(Entity rider) {
+    public boolean rideableUnderWater() {
         for (IDogAlteration alter : this.alterations) {
-            InteractionResult result = alter.canBeRiddenInWater(this, rider);
+            InteractionResult result = alter.rideableUnderWater(this);
 
             if (result.shouldSwing()) {
                 return true;
@@ -523,7 +521,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        return super.canBeRiddenInWater(rider);
+        return super.rideableUnderWater();
     }
 
     @Override
@@ -2019,11 +2017,6 @@ public class DogEntity extends AbstractDogEntity {
         return this.getPassengers().isEmpty() ? null : (Entity) this.getPassengers().get(0);
     }
 
-    @Override
-    public boolean canBeControlledByRider() {
-        return this.getControllingPassenger() instanceof LivingEntity;
-    }
-
     //TODO
     @Override
     public boolean isPickable() {
@@ -2070,7 +2063,7 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     public void travel(Vec3 positionIn) {
         if (this.isAlive()) {
-            if (this.isVehicle() && this.canBeControlledByRider()) {
+            if (this.isVehicle() && this.hasControllingPassenger()) {
                 LivingEntity livingentity = (LivingEntity) this.getControllingPassenger();
 
                 // Face the dog in the direction of the controlling passenger
@@ -2198,8 +2191,8 @@ public class DogEntity extends AbstractDogEntity {
     }
 
     @Override
-    public TranslatableComponent getTranslationKey(Function<EnumGender, String> function) {
-        return new TranslatableComponent(function.apply(ConfigHandler.SERVER.DOG_GENDER.get() ? this.getGender() : EnumGender.UNISEX));
+    public Component getTranslationKey(Function<EnumGender, String> function) {
+        return Component.translatable(function.apply(ConfigHandler.SERVER.DOG_GENDER.get() ? this.getGender() : EnumGender.UNISEX));
     }
 
     @Override

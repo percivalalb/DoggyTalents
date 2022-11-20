@@ -2,38 +2,34 @@ package doggytalents.client.block.model;
 
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
-import doggytalents.DoggyTalents2;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
 import doggytalents.common.lib.Constants;
-import net.minecraft.client.particle.TerrainParticle;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.model.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.model.ForgeModelBakery;
-import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.registries.IRegistryDelegate;
+import net.minecraftforge.client.model.data.ModelData;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements BakedModel {
@@ -41,46 +37,46 @@ public class DogBedModel implements BakedModel {
     public static DogBedItemOverride ITEM_OVERIDE = new DogBedItemOverride();
     private static final ResourceLocation MISSING_TEXTURE = new ResourceLocation("missingno");
 
-    private ForgeModelBakery modelLoader;
+    private ModelBakery modelLoader;
     private BlockModel model;
     private BakedModel bakedModel;
 
-    private final Map<Triple<IRegistryDelegate<ICasingMaterial>, IRegistryDelegate<IBeddingMaterial>, Direction>, BakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<ICasingMaterial, IBeddingMaterial, Direction>, BakedModel> cache = Maps.newHashMap();
 
-    public DogBedModel(ForgeModelBakery modelLoader, BlockModel model, BakedModel bakedModel) {
+    public DogBedModel(ModelBakery modelLoader, BlockModel model, BakedModel bakedModel) {
         this.modelLoader = modelLoader;
         this.model = model;
         this.bakedModel = bakedModel;
     }
 
-    public BakedModel getModelVariant(@Nonnull IModelData data) {
-        return this.getModelVariant(data.getData(DogBedTileEntity.CASING), data.getData(DogBedTileEntity.BEDDING), data.getData(DogBedTileEntity.FACING));
+    public BakedModel getModelVariant(@Nonnull ModelData data) {
+        return this.getModelVariant(data.get(DogBedTileEntity.CASING), data.get(DogBedTileEntity.BEDDING), data.get(DogBedTileEntity.FACING));
     }
 
     public BakedModel getModelVariant(ICasingMaterial casing, IBeddingMaterial bedding, Direction facing) {
-        Triple<IRegistryDelegate<ICasingMaterial>, IRegistryDelegate<IBeddingMaterial>, Direction> key =
-                ImmutableTriple.of(casing != null ? casing.delegate : null, bedding != null ? bedding.delegate : null, facing != null ? facing : Direction.NORTH);
-
+        // Just for caching, if the registry is reloaded then the cache is cleared by
+        Triple<ICasingMaterial, IBeddingMaterial, Direction> key =
+                ImmutableTriple.of(casing, bedding, facing != null ? facing : Direction.NORTH);
         return this.cache.computeIfAbsent(key, (k) -> bakeModelVariant(k.getLeft(), k.getMiddle(), k.getRight()));
     }
 
     @Override
-    public List<BakedQuad> getQuads(BlockState state, Direction side, Random rand) {
-        return this.getModelVariant(null, null, Direction.NORTH).getQuads(state, side, rand, EmptyModelData.INSTANCE);
+    public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand) {
+        return this.getModelVariant(null, null, Direction.NORTH).getQuads(state, side, rand, ModelData.EMPTY, null);
     }
 
     @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull Random rand, @Nonnull IModelData data) {
-        return this.getModelVariant(data).getQuads(state, side, rand, data);
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @Nonnull RandomSource rand, @Nonnull ModelData data, @Nullable RenderType renderType) {
+        return this.getModelVariant(data).getQuads(state, side, rand, data, renderType);
     }
 
     @Override
-    public TextureAtlasSprite getParticleIcon(@Nonnull IModelData data) {
+    public TextureAtlasSprite getParticleIcon(@Nonnull ModelData data) {
         return this.getModelVariant(data).getParticleIcon(data);
     }
 
     @Override
-    public IModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull IModelData tileData) {
+    public ModelData getModelData(@Nonnull BlockAndTintGetter world, @Nonnull BlockPos pos, @Nonnull BlockState state, @Nonnull ModelData tileData) {
         ICasingMaterial casing = null;
         IBeddingMaterial bedding = null;
         Direction facing = Direction.NORTH;
@@ -95,14 +91,10 @@ public class DogBedModel implements BakedModel {
             facing = state.getValue(DogBedBlock.FACING);
         }
 
-        tileData.setData(DogBedTileEntity.CASING, casing);
-        tileData.setData(DogBedTileEntity.BEDDING, bedding);
-        tileData.setData(DogBedTileEntity.FACING, facing);
-
-        return tileData;
+        return tileData.derive().with(DogBedTileEntity.CASING, casing).with(DogBedTileEntity.BEDDING, bedding).with(DogBedTileEntity.FACING, facing).build();
     }
 
-    public BakedModel bakeModelVariant(@Nullable IRegistryDelegate<ICasingMaterial> casingResource, @Nullable IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
+    public BakedModel bakeModelVariant(@Nullable ICasingMaterial casingResource, @Nullable IBeddingMaterial beddingResource, @Nonnull Direction facing) {
         List<BlockElement> parts = this.model.getElements();
         List<BlockElement> elements = new ArrayList<>(parts.size()); //We have to duplicate this so we can edit it below.
         for (BlockElement part : parts) {
@@ -121,25 +113,25 @@ public class DogBedModel implements BakedModel {
         newModel.textureMap.put("casing", casingTexture);
         newModel.textureMap.put("particle", casingTexture);
 
-        return newModel.bake(this.modelLoader, newModel, ForgeModelBakery.defaultTextureGetter(), getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
+        return newModel.bake(this.modelLoader, newModel, Material::sprite, getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
     }
 
-    private ResourceLocation createResourceVariant(@Nonnull IRegistryDelegate<ICasingMaterial> casingResource, @Nonnull IRegistryDelegate<IBeddingMaterial> beddingResource, @Nonnull Direction facing) {
+    private ResourceLocation createResourceVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
         String beddingKey = beddingResource != null
-                ? beddingResource.name().toString().replace(':', '.')
+                ? beddingResource.toString().replace(':', '.')
                 : "doggytalents.dogbed.bedding.missing";
         String casingKey = beddingResource != null
-                ? casingResource.name().toString().replace(':', '.')
+                ? casingResource.toString().replace(':', '.')
                 : "doggytalents.dogbed.casing.missing";
         return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName());
     }
 
-    private Either<Material, String> findCasingTexture(@Nullable IRegistryDelegate<ICasingMaterial> resource) {
-        return findTexture(resource != null ? resource.get().getTexture() : null);
+    private Either<Material, String> findCasingTexture(@Nullable ICasingMaterial resource) {
+        return findTexture(resource != null ? resource.getTexture() : null);
     }
 
-    private Either<Material, String> findBeddingTexture(@Nullable IRegistryDelegate<IBeddingMaterial> resource) {
-        return findTexture(resource != null ? resource.get().getTexture() : null);
+    private Either<Material, String> findBeddingTexture(@Nullable IBeddingMaterial resource) {
+        return findTexture(resource != null ? resource.getTexture() : null);
     }
 
     private Either<Material, String> findTexture(@Nullable ResourceLocation resource) {

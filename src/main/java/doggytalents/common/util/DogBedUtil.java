@@ -8,7 +8,6 @@ import doggytalents.common.block.tileentity.DogBedTileEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -36,10 +35,10 @@ public class DogBedUtil {
     public static Pair<ICasingMaterial, IBeddingMaterial> getMaterials(ItemStack stack) {
         CompoundTag tag = stack.getTagElement("doggytalents");
         if (tag != null) {
-            ICasingMaterial casingId = NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL.get());
-            IBeddingMaterial beddingId = NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL.get());
-
-            return Pair.of(casingId, beddingId);
+            return Pair.of(
+                NBTUtil.getRegistryValue(tag, "casingId", DoggyTalentsAPI.CASING_MATERIAL.get()),
+                NBTUtil.getRegistryValue(tag, "beddingId", DoggyTalentsAPI.BEDDING_MATERIAL.get())
+            );
         }
 
         return Pair.of(null, null);
@@ -49,8 +48,8 @@ public class DogBedUtil {
         ItemStack stack = new ItemStack(DoggyBlocks.DOG_BED.get(), 1);
 
         CompoundTag tag = stack.getOrCreateTagElement("doggytalents");
-        NBTUtil.putRegistryValue(tag, "casingId", casingId);
-        NBTUtil.putRegistryValue(tag, "beddingId", beddingId);
+        NBTUtil.putRegistryValue(tag, "casingId", casingId, DoggyTalentsAPI.CASING_MATERIAL.get());
+        NBTUtil.putRegistryValue(tag, "beddingId", beddingId, DoggyTalentsAPI.BEDDING_MATERIAL.get());
 
         return stack;
     }
@@ -75,7 +74,7 @@ public class DogBedUtil {
         return null;
     }
 
-    public static <T extends IForgeRegistryEntry<T>> T pickRandom(IForgeRegistry<T> registry) {
+    public static <T> T pickRandom(IForgeRegistry<T> registry) {
         Collection<T> values = registry.getValues();
         List<T> list = values instanceof List ? (List<T>) values : new ArrayList<>(values);
         return list.get(RANDOM.nextInt(list.size()));

@@ -1,13 +1,28 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {
-    "particle": "doggytalents:block/food_bowl_bottom",
-    "bottom": "doggytalents:block/food_bowl_bottom",
-    "top": "doggytalents:block/food_bowl_top",
-    "side": "doggytalents:block/food_bowl_side"
-  },
   "elements": [
     {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
       "from": [
         1,
         0,
@@ -17,28 +32,13 @@
         15,
         8,
         15
-      ],
-      "faces": {
-        "down": {
-          "texture": "#bottom",
-          "cullface": "down"
-        },
-        "up": {
-          "texture": "#top"
-        },
-        "north": {
-          "texture": "#side"
-        },
-        "south": {
-          "texture": "#side"
-        },
-        "west": {
-          "texture": "#side"
-        },
-        "east": {
-          "texture": "#side"
-        }
-      }
+      ]
     }
-  ]
+  ],
+  "textures": {
+    "bottom": "doggytalents:block/food_bowl_bottom",
+    "particle": "doggytalents:block/food_bowl_bottom",
+    "side": "doggytalents:block/food_bowl_side",
+    "top": "doggytalents:block/food_bowl_top"
+  }
 }

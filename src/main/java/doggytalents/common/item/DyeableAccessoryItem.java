@@ -26,7 +26,7 @@ public class DyeableAccessoryItem extends AccessoryItem implements IDyeableArmor
 
     @Override
     public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-        if (this.allowdedIn(group)) {
+        if (this.allowedIn(group)) {
             ItemStack stack = new ItemStack(this);
             this.setColor(stack, this.getDefaultColor(stack));
             items.add(stack);

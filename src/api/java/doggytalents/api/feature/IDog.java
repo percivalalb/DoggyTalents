@@ -1,15 +1,15 @@
 package doggytalents.api.feature;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.api.registry.Talent;
 import doggytalents.api.registry.TalentInstance;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 // TODO: Add javadoc
 public interface IDog {

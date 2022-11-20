@@ -1,10 +1,9 @@
 package doggytalents.api.impl;
 
 import doggytalents.api.registry.ICasingMaterial;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class MissingCasingMissing extends ICasingMaterial {
 
@@ -18,7 +17,7 @@ public class MissingCasingMissing extends ICasingMaterial {
 
     @Override
     public Component getTooltip() {
-        return new TranslatableComponent("dogbed.casing.missing", this.getRegistryName());
+        return Component.translatable("dogbed.casing.missing", "//TODO");
     }
 
     @Override

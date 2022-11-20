@@ -12,9 +12,9 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.TameAnimalTrigger;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -33,8 +33,8 @@ public class DTAdvancementProvider extends AdvancementProvider {
     private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
     private final DataGenerator generator;
 
-    public DTAdvancementProvider(DataGenerator generatorIn) {
-        super(generatorIn);
+    public DTAdvancementProvider(DataGenerator generatorIn, net.minecraftforge.common.data.ExistingFileHelper fileHelperIn) {
+        super(generatorIn, fileHelperIn);
         this.generator = generatorIn;
     }
 
@@ -44,7 +44,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
     }
 
     @Override
-    public void run(HashCache cache) {
+    public void run(CachedOutput cache) {
         Path path = this.generator.getOutputFolder();
         Set<ResourceLocation> set = Sets.newHashSet();
         Consumer<Advancement> consumer = (advancement) -> {
@@ -54,7 +54,7 @@ public class DTAdvancementProvider extends AdvancementProvider {
                 Path path1 = getPath(path, advancement);
 
                 try {
-                    DataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), path1);
+                    DataProvider.saveStable(cache, advancement.deconstruct().serializeToJson(), path1);
                 } catch (IOException ioexception) {
                     LOGGER.error("Couldn't save advancement {}", path1, ioexception);
                 }

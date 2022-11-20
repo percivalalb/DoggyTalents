@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
   "pattern": [
     "S S",
     "GSG"
   ],
-  "key": {
-    "S": {
-      "item": "minecraft:stick"
-    },
-    "G": {
-      "item": "minecraft:glass_pane"
-    }
-  },
   "result": {
     "item": "doggytalents:sunglasses"
   }

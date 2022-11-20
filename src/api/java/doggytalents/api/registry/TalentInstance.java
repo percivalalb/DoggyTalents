@@ -1,37 +1,32 @@
 package doggytalents.api.registry;
 
-import java.util.Optional;
-import java.util.function.Supplier;
-
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogAlteration;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IRegistryDelegate;
+
+import java.util.Optional;
+import java.util.function.Supplier;
 
 public class TalentInstance implements IDogAlteration {
 
-    protected final IRegistryDelegate<Talent> talentDelegate;
+    protected final Talent talentDelegate;
 
     protected int level;
 
-    public TalentInstance(Talent talentIn, int levelIn) {
-        this(talentIn.delegate, levelIn);
-    }
-
     public TalentInstance(Talent talentIn) {
-        this(talentIn.delegate, 1);
+        this(talentIn, 1);
     }
 
-    public TalentInstance(IRegistryDelegate<Talent> talentDelegateIn, int levelIn) {
+    public TalentInstance(Talent talentDelegateIn, int levelIn) {
         this.talentDelegate = talentDelegateIn;
         this.level = levelIn;
     }
 
     public Talent getTalent() {
-        return this.talentDelegate.get();
+        return this.talentDelegate;
     }
 
     public final int level() {
@@ -47,15 +42,11 @@ public class TalentInstance implements IDogAlteration {
     }
 
     public boolean of(Talent talentIn) {
-        return this.of(talentIn.delegate);
-    }
-
-    public boolean of(IRegistryDelegate<Talent> talentDelegateIn) {
-        return talentDelegateIn.equals(this.talentDelegate);
+        return this.talentDelegate == talentIn;
     }
 
     public TalentInstance copy() {
-        return this.talentDelegate.get().getDefault(this.level);
+        return this.talentDelegate.getDefault(this.level);
     }
 
     public void writeToNBT(AbstractDogEntity dogIn, CompoundTag compound) {
@@ -75,7 +66,7 @@ public class TalentInstance implements IDogAlteration {
     }
 
     public final void writeInstance(AbstractDogEntity dogIn, CompoundTag compound) {
-        ResourceLocation rl = this.talentDelegate.name();
+        ResourceLocation rl = DoggyTalentsAPI.TALENTS.get().getKey(this.talentDelegate);
         if (rl != null) {
             compound.putString("type", rl.toString());
         }
@@ -106,7 +97,7 @@ public class TalentInstance implements IDogAlteration {
 
     @Override
     public String toString() {
-        return String.format("%s [talent: %s, level: %d]", this.getClass().getSimpleName(), talentDelegate.name(), this.level);
+        return String.format("%s [talent: %s, level: %d]", this.getClass().getSimpleName(), DoggyTalentsAPI.TALENTS.get().getKey(talentDelegate), this.level);
     }
 
     /**

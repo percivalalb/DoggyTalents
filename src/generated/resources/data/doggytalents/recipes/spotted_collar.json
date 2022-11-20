@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:black_dye"
+    },
+    "C": {
+      "item": "doggytalents:wool_collar"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "W": {
+      "item": "minecraft:white_dye"
+    }
+  },
   "pattern": [
     "BWB",
     "WCW",
     "BSB"
   ],
-  "key": {
-    "C": {
-      "item": "doggytalents:wool_collar"
-    },
-    "B": {
-      "item": "minecraft:black_dye"
-    },
-    "W": {
-      "item": "minecraft:white_dye"
-    },
-    "S": {
-      "item": "minecraft:string"
-    }
-  },
   "result": {
     "item": "doggytalents:spotted_collar"
   }

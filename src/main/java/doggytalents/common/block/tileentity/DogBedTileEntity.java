@@ -15,8 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.data.IModelData;
-import net.minecraftforge.client.model.data.ModelDataMap;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.data.ModelProperty;
 
 import javax.annotation.Nullable;
@@ -59,8 +58,8 @@ public class DogBedTileEntity extends PlacedTileEntity {
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
 
-        NBTUtil.putRegistryValue(compound, "casingId", this.casingType);
-        NBTUtil.putRegistryValue(compound, "beddingId", this.beddingType);
+        NBTUtil.putRegistryValue(compound, "casingId", this.casingType, DoggyTalentsAPI.CASING_MATERIAL.get());
+        NBTUtil.putRegistryValue(compound, "beddingId", this.beddingType, DoggyTalentsAPI.BEDDING_MATERIAL.get());
 
         NBTUtil.putUniqueId(compound, "ownerId", this.dogUUID);
         NBTUtil.putTextComponent(compound, "name", this.name);
@@ -88,11 +87,11 @@ public class DogBedTileEntity extends PlacedTileEntity {
     }
 
     @Override
-    public IModelData getModelData() {
-        return new ModelDataMap.Builder()
-                .withInitial(CASING, this.casingType)
-                .withInitial(BEDDING, this.beddingType)
-                .withInitial(FACING, Direction.NORTH)
+    public ModelData getModelData() {
+        return ModelData.builder()
+                .with(CASING, this.casingType)
+                .with(BEDDING, this.beddingType)
+                .with(FACING, Direction.NORTH)
                 .build();
     }
 

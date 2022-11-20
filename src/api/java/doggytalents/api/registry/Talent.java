@@ -1,20 +1,18 @@
 package doggytalents.api.registry;
 
-import java.util.function.BiFunction;
-
-import javax.annotation.Nullable;
-
 import doggytalents.api.DoggyTalentsAPI;
 import net.minecraft.Util;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiFunction;
 
 /**
  * @author ProPercivalalb
  */
-public class Talent extends ForgeRegistryEntry<Talent> {
+public class Talent {
 
     @Nullable
-    private String translationKey, translationInfoKey;
+    protected String translationKey, translationInfoKey;
 
     @Nullable
     private final BiFunction<Talent, Integer, TalentInstance> create;

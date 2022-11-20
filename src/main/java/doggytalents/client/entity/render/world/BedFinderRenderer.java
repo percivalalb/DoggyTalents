@@ -13,13 +13,17 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 
 import java.util.Optional;
 
 public class BedFinderRenderer {
 
-    public static void onWorldRenderLast(RenderLevelLastEvent event) {
+    public static void onWorldRenderLast(RenderLevelStageEvent event) {
+        if (!(event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES)) {
+            return;
+        }
+
         Player player = Minecraft.getInstance().player;
         for (Entity passenger : player.getPassengers()) {
             if (passenger instanceof DogEntity) {
@@ -59,8 +63,7 @@ public class BedFinderRenderer {
         BufferBuilder buf = Tesselator.getInstance().getBuilder();
         buf.begin(VertexFormat.Mode.DEBUG_LINES, DefaultVertexFormat.POSITION_COLOR_NORMAL);
         LevelRenderer.renderLineBox(stack, buf, boundingBox.move(-d0, -d1, -d2), 1F, 1F, 0, 1F);
-        buf.end();
-        BufferUploader.end(buf);
+        BufferUploader.drawWithShader(buf.end());
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableDepthTest(); //Make the line see thought blocks

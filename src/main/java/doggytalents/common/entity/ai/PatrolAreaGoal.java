@@ -1,6 +1,5 @@
 package doggytalents.common.entity.ai;
 
-import doggytalents.DoggyTalents2;
 import doggytalents.api.feature.EnumMode;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.item.PatrolItem;
@@ -56,8 +55,6 @@ public class PatrolAreaGoal extends Goal {
 
                 this.index = Mth.clamp(this.index, 0, patrolPos.size() - 1);
                 BlockPos pos = patrolPos.get(this.index);
-
-                DoggyTalents2.LOGGER.info("Update" + this.index);
 
                 if (this.dog.blockPosition().closerThan(pos, 2D) || !this.navigator.moveTo(pos.getX(), pos.getY(), pos.getZ(), 0.8D)) {
                     ++this.index;

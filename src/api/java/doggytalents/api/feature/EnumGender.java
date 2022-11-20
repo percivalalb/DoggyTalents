@@ -1,8 +1,9 @@
 package doggytalents.api.feature;
 
+import net.minecraft.util.RandomSource;
+
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Random;
 
 public enum EnumGender {
 
@@ -82,7 +83,7 @@ public enum EnumGender {
         return UNISEX;
     }
 
-    public static EnumGender random(Random rng) {
+    public static EnumGender random(RandomSource rng) {
         return rng.nextBoolean() ? MALE : FEMALE;
     }
 

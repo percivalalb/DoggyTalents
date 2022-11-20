@@ -14,15 +14,12 @@ import doggytalents.common.util.EntityUtil;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,7 +53,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import doggytalents.common.lib.Constants;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -211,11 +207,11 @@ public class DogBedBlock extends BaseEntityBlock {
                         return InteractionResult.SUCCESS;
                     } else {
                         Component name = dogBedTileEntity.getOwnerName();
-                        player.sendMessage(new TranslatableComponent("block.doggytalents.dog_bed.owner", name != null ? name : "someone"), Util.NIL_UUID);
+                        player.sendSystemMessage(Component.translatable("block.doggytalents.dog_bed.owner", name != null ? name : "someone"));
                         return InteractionResult.FAIL;
                     }
                 } else {
-                    player.sendMessage(new TranslatableComponent("block.doggytalents.dog_bed.set_owner_help"), Util.NIL_UUID);
+                    player.sendSystemMessage(Component.translatable("block.doggytalents.dog_bed.set_owner_help"));
                     return InteractionResult.SUCCESS;
                 }
             }
@@ -232,13 +228,13 @@ public class DogBedBlock extends BaseEntityBlock {
 
         tooltip.add(materials.getLeft() != null
                 ? materials.getLeft().getTooltip()
-                : new TranslatableComponent("dogbed.casing.null").withStyle(ChatFormatting.RED));
+                : Component.translatable("dogbed.casing.null").withStyle(ChatFormatting.RED));
         tooltip.add(materials.getRight() != null
                 ? materials.getRight().getTooltip()
-                : new TranslatableComponent("dogbed.bedding.null").withStyle(ChatFormatting.RED));
+                : Component.translatable("dogbed.bedding.null").withStyle(ChatFormatting.RED));
 
         if (materials.getLeft() == null && materials.getRight() == null) {
-            tooltip.add(new TranslatableComponent("dogbed.explain.missing").withStyle(ChatFormatting.ITALIC));
+            tooltip.add(Component.translatable("dogbed.explain.missing").withStyle(ChatFormatting.ITALIC));
         }
 
         CompoundTag tag = stack.getTagElement("doggytalents");
@@ -248,16 +244,16 @@ public class DogBedBlock extends BaseEntityBlock {
             Component ownerName = NBTUtil.getTextComponent(tag, "ownerName");
 
             if (name != null) {
-                tooltip.add(new TextComponent("Bed Name: ").withStyle(ChatFormatting.WHITE).append(name));
+                tooltip.add(Component.literal("Bed Name: ").withStyle(ChatFormatting.WHITE).append(name));
             }
 
             if (ownerName != null) {
-                tooltip.add(new TextComponent("Name: ").withStyle(ChatFormatting.DARK_AQUA).append(ownerName));
+                tooltip.add(Component.literal("Name: ").withStyle(ChatFormatting.DARK_AQUA).append(ownerName));
 
             }
 
             if (ownerId != null && (flagIn.isAdvanced() || Screen.hasShiftDown())) {
-                tooltip.add(new TextComponent("UUID: ").withStyle(ChatFormatting.AQUA).append(new TextComponent(ownerId.toString())));
+                tooltip.add(Component.literal("UUID: ").withStyle(ChatFormatting.AQUA).append(Component.literal(ownerId.toString())));
             }
         }
     }

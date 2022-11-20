@@ -1,4 +1,4 @@
-Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/full_doggy-talents_downloads.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/For%20MC_doggy-talents_all.svg)](https://minecraft.curseforge.com/projects/doggy-talents)
+Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Inactively Maintained](https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 ===========
 
 **Doggy Talents** is a **Minecraft mod** made for **Minecraft Forge**
@@ -48,9 +48,9 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
 
 ### Licenses
 DoggyTalents API
- - 2017 - 2021
+ - 2017 - 2022
  - [![License](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 DoggyTalents
- - 2013 - 2021
+ - 2013 - 2022
  - [![License](https://img.shields.io/badge/License-GNU-blue.svg?style=flat-square)](https://opensource.org/licenses/GPL-3.0)

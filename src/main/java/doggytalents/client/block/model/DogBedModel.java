@@ -41,7 +41,7 @@ public class DogBedModel implements BakedModel {
     private BlockModel model;
     private BakedModel bakedModel;
 
-    private final Map<Triple<ICasingMaterial, IBeddingMaterial, Direction>, BakedModel> cache = Maps.newHashMap();
+    private final Map<Triple<ICasingMaterial, IBeddingMaterial, Direction>, BakedModel> cache = Maps.newConcurrentMap();
 
     public DogBedModel(ModelBakery modelLoader, BlockModel model, BakedModel bakedModel) {
         this.modelLoader = modelLoader;

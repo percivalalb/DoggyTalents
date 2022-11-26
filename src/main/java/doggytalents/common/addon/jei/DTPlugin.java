@@ -8,7 +8,6 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.resources.ResourceLocation;
@@ -41,6 +40,6 @@ public class DTPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(DogBedRecipeMaker.createDogBedRecipes(), RecipeTypes.CRAFTING.getUid());
+        registration.addRecipes(RecipeTypes.CRAFTING, DogBedRecipeMaker.createDogBedRecipes());
     }
 }

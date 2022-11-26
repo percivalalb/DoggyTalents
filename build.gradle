@@ -102,8 +102,9 @@ minecraft {
 dependencies {
     minecraft "net.minecraftforge:forge:${project.forge_version}"
 
-    compileOnly fg.deobf("mezz.jei:jei-${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.target_mc_version}-common-api:${project.jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${project.target_mc_version}-forge-api:${project.jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${project.target_mc_version}-forge:${project.jei_version}")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
@@ -207,6 +208,10 @@ curseforge {
 // task is generated lazily
 afterEvaluate {
     tasks.named("curseforge${project.curseforge_project_id}").get().dependsOn.add(makeChangelog)
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
 if (project.hasProperty('UPDATE_MAPPINGS')) {

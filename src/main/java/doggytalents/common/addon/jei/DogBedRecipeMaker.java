@@ -7,10 +7,11 @@ import doggytalents.common.util.DogBedUtil;
 import doggytalents.common.util.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,11 +19,11 @@ import java.util.List;
 
 public final class DogBedRecipeMaker {
 
-    public static List<CraftingRecipe> createDogBedRecipes() {
+    public static List<IShapedRecipe<? extends Container>> createDogBedRecipes() {
         Collection<IBeddingMaterial> beddingMaterials = DoggyTalentsAPI.BEDDING_MATERIAL.get().getValues();
         Collection<ICasingMaterial>  casingMaterials  = DoggyTalentsAPI.CASING_MATERIAL.get().getValues();
 
-        List<CraftingRecipe> recipes = new ArrayList<>(beddingMaterials.size() * casingMaterials.size());
+        List<IShapedRecipe<? extends Container>> recipes = new ArrayList<>(beddingMaterials.size() * casingMaterials.size());
         String group = "doggytalents.dogbed";
         for (IBeddingMaterial beddingId : DoggyTalentsAPI.BEDDING_MATERIAL.get().getValues()) {
             for (ICasingMaterial casingId : DoggyTalentsAPI.CASING_MATERIAL.get().getValues()) {

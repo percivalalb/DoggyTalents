@@ -27,10 +27,3 @@ logoFile="dt_logo.png"
     versionRange="${minecraft_version_range}"
     ordering="NONE"
     side="BOTH"
-
-[[dependencies.doggytalents]]
-    modId="jei"
-    mandatory=false
-    versionRange="[10.2,)"
-    ordering="NONE"
-    side="CLIENT"

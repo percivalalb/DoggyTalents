@@ -3,13 +3,13 @@ package doggytalents.client.data;
 import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.common.lib.Constants;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
+import net.minecraftforge.client.model.generators.ModelBuilder.Perspective;
 import net.minecraftforge.client.model.generators.ModelFile.UncheckedModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -85,10 +85,10 @@ public class DTItemModelProvider extends ItemModelProvider {
 
     private ItemModelBuilder radar(Supplier<? extends ItemLike> item, ResourceLocation texture) {
         ItemModelBuilder builder = generated(item, texture);
-        builder.transforms().transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(0, 0, 55F).translation(0, 4F, 0.5F).scale(0.85F);
-        builder.transforms().transform(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND).rotation(0, 0, -55F).translation(0, 4F, 0.5F).scale(0.85F);
-        builder.transforms().transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).translation(-3.13F, 3.2F, 1.13F).scale(0.8F);
-        builder.transforms().transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).translation(-3.13F, 3.2F, 1.13F).scale(0.8F);
+        builder.transforms().transform(Perspective.THIRDPERSON_RIGHT).rotation(0, 0, 55F).translation(0, 4F, 0.5F).scale(0.85F);
+        builder.transforms().transform(Perspective.THIRDPERSON_LEFT).rotation(0, 0, -55F).translation(0, 4F, 0.5F).scale(0.85F);
+        builder.transforms().transform(Perspective.FIRSTPERSON_RIGHT).translation(-3.13F, 3.2F, 1.13F).scale(0.8F);
+        builder.transforms().transform(Perspective.FIRSTPERSON_LEFT).translation(-3.13F, 3.2F, 1.13F).scale(0.8F);
         return builder;
     }
 

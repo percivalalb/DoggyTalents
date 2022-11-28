@@ -62,6 +62,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'doggytalents'
             mods {
                 doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
             }
@@ -73,6 +74,18 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'forge.enabledGameTestNamespaces', 'doggytalents'
+            mods {
+                doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
+            }
+        }
+
+        gameTestServer {
+            taskName 'doggytalents_test'
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'examplemod'
+
             mods {
                 doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])
             }

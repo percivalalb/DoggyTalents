@@ -421,7 +421,7 @@ public class DogEntity extends AbstractDogEntity {
             }
         }
 
-        if (ConfigHandler.CLIENT.DIRE_PARTICLES.get() && this.level.isClientSide && this.getDogLevel().isDireDog()) {
+        if (this.level.isClientSide && ConfigHandler.CLIENT.DIRE_PARTICLES.get() && this.getDogLevel().isDireDog()) {
             for (int i = 0; i < 2; i++) {
                 this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY() - 0.25D, this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2D);
             }

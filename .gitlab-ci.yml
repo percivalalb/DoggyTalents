@@ -1,4 +1,4 @@
-image: gradle:7-jdk17-alpine
+image: gradle:7.5-jdk17-alpine
 
 stages:
   - build

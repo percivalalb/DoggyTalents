@@ -81,6 +81,8 @@ public class DoggyTalents2 {
         modEventBus.addListener(DoggyEntityTypes::addEntityAttributes);
         modEventBus.addListener(Capabilities::registerCaps);
 
+        DogRespawnCommand.registerSerilizers(modEventBus);
+
         IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
         forgeEventBus.addListener(this::serverStarting);
         forgeEventBus.addListener(this::registerCommands);
@@ -115,7 +117,6 @@ public class DoggyTalents2 {
         FoodHandler.registerDynPredicate(HappyEaterTalent.INNER_DYN_PRED);
         InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
-        DogRespawnCommand.registerSerilizers();
         DogEntity.initDataParameters();
     }
 

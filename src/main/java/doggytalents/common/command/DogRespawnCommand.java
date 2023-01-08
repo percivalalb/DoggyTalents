@@ -13,16 +13,21 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import doggytalents.common.command.arguments.UUIDArgument;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.item.RadarItem;
+import doggytalents.common.lib.Constants;
 import doggytalents.common.storage.*;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -69,8 +74,10 @@ public class DogRespawnCommand {
         );
     }
 
-    public static void registerSerilizers() {
-        ArgumentTypeInfos.registerByClass(UUIDArgument.class, SingletonArgumentInfo.contextFree(UUIDArgument::uuid));
+    private static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPES = DeferredRegister.create(ForgeRegistries.Keys.COMMAND_ARGUMENT_TYPES, Constants.MOD_ID);
+    public static void registerSerilizers(IEventBus modEventBus) {
+        ARGUMENT_TYPES.register("uuid", () -> ArgumentTypeInfos.registerByClass(UUIDArgument.class, SingletonArgumentInfo.contextFree(UUIDArgument::uuid)));
+        ARGUMENT_TYPES.register(modEventBus);
     }
 
     private static <S extends SharedSuggestionProvider> SuggestionProvider<S> getOwnerIdSuggestionsLocate() {

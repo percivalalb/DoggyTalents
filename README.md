@@ -38,7 +38,7 @@ Want to know more about the mod? Take a gander at the [wiki](https://github.com/
  - **Q:** Will there be a Fabric version?  
    **A:** I will not be creating one, if someone wants to take up this task please contact me.
  - **Q:** Which Minecraft versions are supported?  
-   **A:** It is normally be the last two major releases, currently `1.16.x` and `1.17.x`.
+   **A:** It is normally the last two major releases.
  - **Q:** Are dogs no longer immortal?  
    **A:** Unlike the previous versions, **dogs can die**. Fortunately, they can be revived. Visit the [Behaviour wiki](https://github.com/percivalalb/DoggyTalents/wiki/Behavior#immortality-only-mc-112-and-older-versions-for-mc-115) for more info.
  - **Q:** I have a wolf, how to get started?  

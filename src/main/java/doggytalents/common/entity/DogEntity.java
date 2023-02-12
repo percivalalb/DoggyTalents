@@ -22,11 +22,10 @@ import doggytalents.common.network.packet.ParticlePackets.CritEmitterPacket;
 import doggytalents.common.storage.DogLocationStorage;
 import doggytalents.common.storage.DogRespawnStorage;
 import doggytalents.common.util.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -1403,7 +1402,7 @@ public class DogEntity extends AbstractDogEntity {
                 for (int i = 0; i < bedsList.size(); i++) {
                     CompoundTag bedNBT = bedsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bedNBT, "dim");
-                    ResourceKey<Level> type = ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
+                    ResourceKey<Level> type = ResourceKey.create(Registries.DIMENSION, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bedNBT, "pos");
                     bedsData.put(type, pos);
                 }
@@ -1426,7 +1425,7 @@ public class DogEntity extends AbstractDogEntity {
                 for (int i = 0; i < bowlsList.size(); i++) {
                     CompoundTag bowlsNBT = bowlsList.getCompound(i);
                     ResourceLocation loc = NBTUtil.getResourceLocation(bowlsNBT, "dim");
-                    ResourceKey<Level> type = ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
+                    ResourceKey<Level> type = ResourceKey.create(Registries.DIMENSION, loc);
                     Optional<BlockPos> pos = NBTUtil.getBlockPos(bowlsNBT, "pos");
                     bowlsData.put(type, pos);
                 }

@@ -2,11 +2,11 @@ package doggytalents.client.block.model;
 
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Either;
+import doggytalents.DoggyBlocks;
 import doggytalents.api.registry.IBeddingMaterial;
 import doggytalents.api.registry.ICasingMaterial;
 import doggytalents.common.block.DogBedBlock;
 import doggytalents.common.block.tileentity.DogBedTileEntity;
-import doggytalents.common.lib.Constants;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 @OnlyIn(Dist.CLIENT)
 public class DogBedModel implements BakedModel {
@@ -113,7 +114,34 @@ public class DogBedModel implements BakedModel {
         newModel.textureMap.put("casing", casingTexture);
         newModel.textureMap.put("particle", casingTexture);
 
-        return newModel.bake(this.modelLoader, newModel, Material::sprite, getModelRotation(facing), createResourceVariant(casingResource, beddingResource, facing), true);
+        return (new ModelBaker() {
+
+            @Override
+            public @Nullable BakedModel bake(ResourceLocation location, ModelState state, Function<Material, TextureAtlasSprite> sprites) {
+                return newModel.bake(this, newModel, Material::sprite,
+                    getModelRotation(facing),
+                    createResourceVariant(casingResource, beddingResource, facing),
+                    true
+                );
+            }
+
+            @Override
+            public Function<Material, TextureAtlasSprite> getModelTextureGetter() {
+                return Material::sprite;
+            }
+
+            @Override
+            public UnbakedModel getModel(ResourceLocation location) {
+                return newModel;
+            }
+
+            @Override
+            @Nullable
+            public BakedModel bake(ResourceLocation location, ModelState state) {
+                return this.bake(location, state, this.getModelTextureGetter());
+            }
+
+        }).bake(null, null, null);
     }
 
     private ResourceLocation createResourceVariant(@Nonnull ICasingMaterial casingResource, @Nonnull IBeddingMaterial beddingResource, @Nonnull Direction facing) {
@@ -123,7 +151,7 @@ public class DogBedModel implements BakedModel {
         String casingKey = beddingResource != null
                 ? casingResource.toString().replace(':', '.')
                 : "doggytalents.dogbed.casing.missing";
-        return new ModelResourceLocation(Constants.MOD_ID, "block/dog_bed#bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName());
+        return new ModelResourceLocation(DoggyBlocks.DOG_BED.getId(), "bedding=" + beddingKey + ",casing=" + casingKey + ",facing=" + facing.getName());
     }
 
     private Either<Material, String> findCasingTexture(@Nullable ICasingMaterial resource) {

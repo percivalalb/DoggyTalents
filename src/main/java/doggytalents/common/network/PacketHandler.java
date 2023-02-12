@@ -1,11 +1,11 @@
 package doggytalents.common.network;
 
 import doggytalents.DoggyTalents2;
-import net.minecraftforge.network.PacketDistributor;
 import doggytalents.common.network.packet.*;
-import doggytalents.common.network.packet.ParticlePackets.*;
+import doggytalents.common.network.packet.ParticlePackets.CritEmitterPacket;
 import doggytalents.common.network.packet.data.*;
-import doggytalents.common.network.packet.data.ParticleData.*;
+import doggytalents.common.network.packet.data.ParticleData.CritEmitterData;
+import net.minecraftforge.network.PacketDistributor;
 
 public final class PacketHandler {
 

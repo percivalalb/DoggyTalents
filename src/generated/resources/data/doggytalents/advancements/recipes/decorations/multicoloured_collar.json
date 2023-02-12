@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "doggytalents:multicoloured_collar"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wool_collar": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "doggytalents:wool_collar"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_wool_collar",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "doggytalents:multicoloured_collar"
+    ]
+  }
+}

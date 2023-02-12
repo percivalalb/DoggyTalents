@@ -11,25 +11,21 @@ import doggytalents.common.entity.DogEntity;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.BlockModelRotation;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.ModelEvent.BakingCompleted;
+import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -40,15 +36,30 @@ import java.util.Map;
 
 public class ClientEventHandler {
 
-    public static void onModelBakeEvent(final BakingCompleted event) {
+    public static void onRegisterAdditionalModel(final ModelEvent.RegisterAdditional event) {
+        try {
+            ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(DoggyBlocks.DOG_BED.get());
+            ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
+            event.register(unbakedModelLoc);
+        }
+        catch(Exception e) {
+            DoggyTalents2.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
+            e.printStackTrace();
+        }
+    }
+
+    public static void onModelBakeEvent(final ModelEvent.ModifyBakingResult event) {
         Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         try {
             ResourceLocation resourceLocation = ForgeRegistries.BLOCKS.getKey(DoggyBlocks.DOG_BED.get());
-            ResourceLocation unbakedModelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
+            ResourceLocation modelLoc = new ResourceLocation(resourceLocation.getNamespace(), "block/" + resourceLocation.getPath());
 
-            BlockModel model = (BlockModel) event.getModelBakery().getModel(unbakedModelLoc);
-            BakedModel customModel = new DogBedModel(event.getModelBakery(), model, model.bake(event.getModelBakery(), model, Material::sprite, BlockModelRotation.X180_Y180, unbakedModelLoc, true));
+            BakedModel model = modelRegistry.get(modelLoc);
+
+            BlockModel modelUnbaked = (BlockModel) event.getModelBakery().getModel(modelLoc);
+
+            BakedModel customModel = new DogBedModel(event.getModelBakery(), modelUnbaked, model);
 
             // Replace all valid block states
             DoggyBlocks.DOG_BED.get().getStateDefinition().getPossibleStates().forEach(state -> {
@@ -57,7 +68,6 @@ public class ClientEventHandler {
 
             // Replace inventory model
             modelRegistry.put(new ModelResourceLocation(resourceLocation, "inventory"), customModel);
-
         }
         catch(Exception e) {
             DoggyTalents2.LOGGER.warn("Could not get base Dog Bed model. Reverting to default textures...");
@@ -99,43 +109,6 @@ public class ClientEventHandler {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new OpenDogScreenData());
                 btn.active = false;
             }));
-        }
-    }
-
-    @SubscribeEvent
-    public void onScreenDrawForeground(final ScreenEvent.Render event) {
-        Screen screen = event.getScreen();
-        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
-            boolean creative = screen instanceof CreativeModeInventoryScreen;
-            DogInventoryButton btn = null;
-
-            //TODO just create a static variable in this class
-            for (Widget widget : screen.renderables) {
-                if (widget instanceof DogInventoryButton) {
-                    btn = (DogInventoryButton) widget;
-                    break;
-                }
-            }
-
-            if (btn.visible && btn.isHoveredOrFocused()) {
-                Minecraft mc = Minecraft.getInstance();
-                int width = mc.getWindow().getGuiScaledWidth();
-                int height = mc.getWindow().getGuiScaledHeight();
-                int sizeX = creative ? 195 : 176;
-                int sizeY = creative ? 136 : 166;
-                int guiLeft = (width - sizeX) / 2;
-                int guiTop = (height - sizeY) / 2;
-                if (!creative) {
-                    RecipeBookComponent recipeBook = ((InventoryScreen) screen).getRecipeBookComponent();
-                    if (recipeBook.isVisible()) {
-                        guiLeft += 76;
-                    }
-                }
-
-                //event.getPoseStack().translate(-guiLeft, -guiTop, 0);
-                btn.renderToolTip(event.getPoseStack(), event.getMouseX(), event.getMouseY());
-                //event.getPoseStack().translate(guiLeft, guiTop, 0);
-            }
         }
     }
 

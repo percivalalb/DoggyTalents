@@ -1,7 +1,7 @@
 package doggytalents.client.entity.render.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.client.entity.model.DogModel;
 import doggytalents.client.entity.render.DogRenderer;
@@ -33,8 +33,8 @@ public class BoneLayer extends RenderLayer<DogEntity, DogModel<DogEntity>> {
             model.head.translateAndRotate(matrixStack);
 
             matrixStack.translate(-0.025F, 0.125F, -0.32F);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(45.0F));
-            matrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+            matrixStack.mulPose(Axis.YP.rotationDegrees(45.0F));
+            matrixStack.mulPose(Axis.XP.rotationDegrees(90.0F));
 
             IThrowableItem throwableItem = dog.getThrowableItem();
             this.itemInHandRenderer.renderItem(dog, throwableItem != null ? throwableItem.getRenderStack(dog.getBoneVariant()) : dog.getBoneVariant(), ItemTransforms.TransformType.GROUND, false, matrixStack, bufferSource, packedLight);

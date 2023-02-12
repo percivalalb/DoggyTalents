@@ -1,7 +1,7 @@
 package doggytalents.client.entity.render;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -41,7 +41,7 @@ public class DoggyBeamRenderer<T extends Entity> extends EntityRenderer<T> {
         matrixStackIn.pushPose();
         matrixStackIn.scale(this.scale, this.scale, this.scale);
         matrixStackIn.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
         this.itemRenderer.renderStatic(new ItemStack(Items.SNOWBALL), ItemTransforms.TransformType.GROUND, packedLightIn, OverlayTexture.NO_OVERLAY, matrixStackIn, bufferIn, entityIn.getId());
         matrixStackIn.popPose();
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);

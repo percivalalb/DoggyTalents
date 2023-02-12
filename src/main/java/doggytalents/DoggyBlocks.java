@@ -21,14 +21,14 @@ import java.util.function.Supplier;
 public class DoggyBlocks {
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.Keys.BLOCKS, Constants.MOD_ID);
-    public static final DeferredRegister<Item> ITEMS = DoggyItems.ITEMS;
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.Keys.ITEMS, Constants.MOD_ID);
 
-    public static final RegistryObject<DogBedBlock> DOG_BED = registerWithItem("dog_bed", DogBedBlock::new, (prop) -> prop.tab(DoggyItemGroups.DOG_BED));
+    public static final RegistryObject<DogBedBlock> DOG_BED = registerWithItem("dog_bed", DogBedBlock::new);
     public static final RegistryObject<DogBathBlock> DOG_BATH = registerWithItem("dog_bath", DogBathBlock::new);
     public static final RegistryObject<FoodBowlBlock> FOOD_BOWL = registerWithItem("food_bowl", FoodBowlBlock::new);
 
     private static Item.Properties createInitialProp() {
-        return new Item.Properties().tab(DoggyItemGroups.GENERAL);
+        return new Item.Properties();
     }
 
     private static BlockItem makeItemBlock(Block block) {
@@ -71,6 +71,6 @@ public class DoggyBlocks {
         // Trying to avoid as reports like DoggyTalents#242, where it says
         // DoggyTalents crashed but is not the CAUSE of the crash
 
-         DoggyTalents2.LOGGER.info("Items/Blocks were not registered for some reason... probably beacuse we are c...r..a..s.hing");
+         DoggyTalents2.LOGGER.info("Items/Blocks were not registered for some reason... probably because we are c...r..a..s.hing");
     }
 }

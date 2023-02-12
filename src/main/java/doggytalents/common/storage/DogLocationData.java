@@ -6,7 +6,7 @@ import doggytalents.api.feature.EnumGender;
 import doggytalents.common.entity.DogEntity;
 import doggytalents.common.util.NBTUtil;
 import doggytalents.common.util.WorldUtil;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -91,7 +91,7 @@ public class DogLocationData implements IDogData {
     public void read(CompoundTag compound) {
         this.ownerId = NBTUtil.getUniqueId(compound, "ownerId");
         this.position = NBTUtil.getVector3d(compound);
-        this.dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, NBTUtil.getResourceLocation(compound, "dimension"));
+        this.dimension = ResourceKey.create(Registries.DIMENSION, NBTUtil.getResourceLocation(compound, "dimension"));
         this.name = NBTUtil.getTextComponent(compound, "name_text_component");
         if (compound.contains("gender", Tag.TAG_STRING)) {
             this.gender = EnumGender.bySaveName(compound.getString("gender"));

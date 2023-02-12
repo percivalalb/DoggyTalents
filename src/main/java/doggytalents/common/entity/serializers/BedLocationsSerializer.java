@@ -1,6 +1,6 @@
 package doggytalents.common.entity.serializers;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -29,7 +29,7 @@ public class BedLocationsSerializer<D, T extends EntityDataSerializer<D>> implem
 
         for (int i = 0; i < size; i++) {
             ResourceLocation loc = buf.readResourceLocation();
-            ResourceKey<Level> type = ResourceKey.create(Registry.DIMENSION_REGISTRY, loc);
+            ResourceKey<Level> type = ResourceKey.create(Registries.DIMENSION, loc);
             D subV = ser.read(buf);
             value.map.put(type, subV);
         }

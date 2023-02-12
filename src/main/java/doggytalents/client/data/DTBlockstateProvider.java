@@ -3,7 +3,7 @@ package doggytalents.client.data;
 import doggytalents.DoggyBlocks;
 import doggytalents.common.lib.Constants;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 
 public class DTBlockstateProvider extends BlockStateProvider {
 
-    public DTBlockstateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, Constants.MOD_ID, exFileHelper);
+    public DTBlockstateProvider(PackOutput packOutput, ExistingFileHelper exFileHelper) {
+        super(packOutput, Constants.MOD_ID, exFileHelper);
     }
 
     public ExistingFileHelper getExistingHelper() {

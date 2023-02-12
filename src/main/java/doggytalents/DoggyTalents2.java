@@ -21,6 +21,7 @@ import doggytalents.common.network.PacketHandler;
 import doggytalents.common.talent.HappyEaterTalent;
 import doggytalents.common.util.BackwardsComp;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
@@ -63,6 +64,7 @@ public class DoggyTalents2 {
 
         // Registries
         DoggyBlocks.BLOCKS.register(modEventBus);
+        DoggyBlocks.ITEMS.register(modEventBus);
         DoggyTileEntityTypes.TILE_ENTITIES.register(modEventBus);
         DoggyItems.ITEMS.register(modEventBus);
         DoggyEntityTypes.ENTITIES.register(modEventBus);
@@ -79,6 +81,9 @@ public class DoggyTalents2 {
 
         modEventBus.addListener(DoggyRegistries::newRegistry);
         modEventBus.addListener(DoggyEntityTypes::addEntityAttributes);
+        modEventBus.addListener(DoggyItemGroups::creativeModeTabRegisterEvent);
+        modEventBus.addListener(DoggyItemGroups::creativeModeTabBuildEvent);
+
         modEventBus.addListener(Capabilities::registerCaps);
 
         DogRespawnCommand.registerSerilizers(modEventBus);
@@ -95,6 +100,7 @@ public class DoggyTalents2 {
             modEventBus.addListener(this::clientSetup);
             modEventBus.addListener(DoggyBlocks::registerBlockColours);
             modEventBus.addListener(DoggyItems::registerItemColours);
+            modEventBus.addListener(ClientEventHandler::onRegisterAdditionalModel);
             modEventBus.addListener(ClientEventHandler::onModelBakeEvent);
             modEventBus.addListener(ClientSetup::setupTileEntityRenderers);
             modEventBus.addListener(ClientSetup::setupEntityRenderers);
@@ -144,20 +150,22 @@ public class DoggyTalents2 {
     private void gatherData(final GatherDataEvent event) {
         DataGenerator gen = event.getGenerator();
 
+        PackOutput packOutput = gen.getPackOutput();
+
         if (event.includeClient()) {
-            DTBlockstateProvider blockstates = new DTBlockstateProvider(gen, event.getExistingFileHelper());
+            DTBlockstateProvider blockstates = new DTBlockstateProvider(packOutput, event.getExistingFileHelper());
             gen.addProvider(true, blockstates);
-            gen.addProvider(true, new DTItemModelProvider(gen, blockstates.getExistingHelper()));
+            gen.addProvider(true, new DTItemModelProvider(packOutput, blockstates.getExistingHelper()));
         }
 
         if (event.includeServer()) {
             // gen.addProvider(new DTBlockTagsProvider(gen));
-            gen.addProvider(true, new DTAdvancementProvider(gen, event.getExistingFileHelper()));
-            DTBlockTagsProvider blockTagProvider = new DTBlockTagsProvider(gen, event.getExistingFileHelper());
+            gen.addProvider(true, new DTAdvancementProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper()));
+            DTBlockTagsProvider blockTagProvider = new DTBlockTagsProvider(packOutput, event.getLookupProvider(), event.getExistingFileHelper());
             gen.addProvider(true, blockTagProvider);
-            gen.addProvider(true, new DTItemTagsProvider(gen, blockTagProvider, event.getExistingFileHelper()));
-            gen.addProvider(true, new DTRecipeProvider(gen));
-            gen.addProvider(true, new DTLootTableProvider(gen));
+            gen.addProvider(true, new DTItemTagsProvider(packOutput, event.getLookupProvider(), blockTagProvider, event.getExistingFileHelper()));
+            gen.addProvider(true, new DTRecipeProvider(packOutput));
+            gen.addProvider(true, new DTLootTableProvider(packOutput));
         }
     }
 }

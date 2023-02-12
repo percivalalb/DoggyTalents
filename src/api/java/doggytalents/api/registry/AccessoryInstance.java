@@ -2,7 +2,6 @@ package doggytalents.api.registry;
 
 import doggytalents.api.DoggyTalentsAPI;
 import doggytalents.api.inferface.AbstractDogEntity;
-import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

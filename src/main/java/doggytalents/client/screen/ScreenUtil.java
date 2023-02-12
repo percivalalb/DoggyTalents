@@ -8,6 +8,7 @@ import java.util.List;
 
 public class ScreenUtil {
 
+    // Replace by .font.split(p_260172_, 170);
     public static List<Component> splitInto(String text, int maxLength, Font font) {
         List<Component> list = new ArrayList<>();
 

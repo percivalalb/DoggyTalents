@@ -3,22 +3,25 @@ package doggytalents.common.data;
 import doggytalents.DoggyItems;
 import doggytalents.DoggyTags;
 import doggytalents.common.lib.Constants;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import java.util.Arrays;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class DTItemTagsProvider extends ItemTagsProvider {
 
-    public DTItemTagsProvider(DataGenerator generatorIn, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, blockTagProvider, Constants.MOD_ID, existingFileHelper);
+    public DTItemTagsProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> providers, TagsProvider<Block> tagProvider, ExistingFileHelper existingFileHelper) {
+        super(packOutput, providers, tagProvider, Constants.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -27,7 +30,7 @@ public class DTItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    public void addTags() {
+    protected void addTags(HolderLookup.Provider provider) {
         createTag(DoggyTags.BEG_ITEMS_TAMED, DoggyItems.BREEDING_BONE, DoggyItems.THROW_STICK, DoggyItems.THROW_BONE, () -> Items.BONE);
         appendToTag(DoggyTags.TREATS);
         createTag(DoggyTags.BEG_ITEMS_UNTAMED, DoggyItems.TRAINING_TREAT, () -> Items.BONE);

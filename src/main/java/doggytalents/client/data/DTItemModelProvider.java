@@ -4,7 +4,7 @@ import doggytalents.DoggyBlocks;
 import doggytalents.DoggyItems;
 import doggytalents.common.lib.Constants;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 
 public class DTItemModelProvider extends ItemModelProvider {
 
-    public DTItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, Constants.MOD_ID, existingFileHelper);
+    public DTItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+        super(output, Constants.MOD_ID, existingFileHelper);
     }
 
     @Override

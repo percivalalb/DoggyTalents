@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -71,7 +72,7 @@ public class DogRespawnData implements IDogData {
 
     @Nullable
     public DogEntity respawn(ServerLevel worldIn, Player playerIn, BlockPos pos) {
-        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (CompoundTag) null, (Component) null, playerIn, pos, MobSpawnType.TRIGGERED, true, false);
+        DogEntity dog = DoggyEntityTypes.DOG.get().spawn(worldIn, (ItemStack) null, playerIn, pos, MobSpawnType.TRIGGERED, true, false);
 
         // Failed for some reason
         if (dog == null) {

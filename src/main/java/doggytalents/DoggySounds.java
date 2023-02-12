@@ -19,7 +19,7 @@ public class DoggySounds {
     public static final RegistryObject<SoundEvent> WHISTLE_LONG = register("whistle_long");
 
     private static RegistryObject<SoundEvent> register(final String name) {
-        return register(name, SoundEvent::new);
+        return register(name, SoundEvent::createVariableRangeEvent);
     }
 
     private static <T extends SoundEvent> RegistryObject<T> register(final String name, final Function<ResourceLocation, T> factory) {

@@ -3,6 +3,7 @@ package doggytalents.common.item;
 import doggytalents.DoggyItems;
 import doggytalents.common.storage.DogLocationData;
 import doggytalents.common.storage.DogLocationStorage;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
@@ -45,7 +46,7 @@ public class RadarItem extends Item {
 
             ResourceKey<Level> dimCurr = playerIn.level.dimension();
 
-            playerIn.sendSystemMessage(Component.literal(""));
+            playerIn.sendSystemMessage(CommonComponents.EMPTY);
 
             DogLocationStorage locationManager = DogLocationStorage.get(worldIn);
             List<DogLocationData> ownDogs = locationManager.getDogs(playerIn, dimCurr).collect(Collectors.toList());

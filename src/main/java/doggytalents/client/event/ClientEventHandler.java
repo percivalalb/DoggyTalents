@@ -8,6 +8,7 @@ import doggytalents.DoggyTalents2;
 import doggytalents.client.block.model.DogBedModel;
 import doggytalents.client.screen.widget.DogInventoryButton;
 import doggytalents.common.entity.DogEntity;
+import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.network.PacketHandler;
 import doggytalents.common.network.packet.data.OpenDogScreenData;
 import net.minecraft.client.Minecraft;
@@ -91,6 +92,8 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onScreenInit(final ScreenEvent.Init.Post event) {
+        if (!ConfigHandler.CLIENT.DOG_INV_BUTTON_IN_INV.get())
+            return;
         Screen screen = event.getScreen();
         if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
             boolean creative = screen instanceof CreativeModeInventoryScreen;

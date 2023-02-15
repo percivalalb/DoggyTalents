@@ -58,6 +58,8 @@ public class ConfigHandler {
         public ForgeConfigSpec.BooleanValue RENDER_SADDLE;
         public ForgeConfigSpec.BooleanValue RENDER_WINGS;
         public ForgeConfigSpec.BooleanValue RENDER_BLOOD;
+        public ForgeConfigSpec.BooleanValue USE_LEGACY_DOGGUI;
+        public ForgeConfigSpec.BooleanValue DOG_INV_BUTTON_IN_INV;
 
         public ClientConfig(ForgeConfigSpec.Builder builder) {
             builder.push("General");
@@ -93,6 +95,16 @@ public class ConfigHandler {
                     .comment("When enabled, Dogs will show blood texture while incapacitated.")
                     .translation("doggytalents.config.client.render_incapacitated_overlay")
                     .define("render_incapacitated_overlay", true);
+            USE_LEGACY_DOGGUI = builder
+                .comment("Turn this on to use the old Dog GUI instead.")
+                .translation("doggytalents.config.client.use_legacy_doggui")
+                .define("use_legacy_doggui", false);
+            DOG_INV_BUTTON_IN_INV = builder
+                .comment("Render a universal dog inventory access button in your inventory gui.")
+                .comment("If this is turned off, you can still access the button via the dog's")
+                .comment("GUI in Talents > Pack Puppy.")
+                .translation("doggytalents.config.client.dog_inv_button_in_inv")
+                .define("dog_inv_button_in_inv", true);
 
             builder.pop();
         }

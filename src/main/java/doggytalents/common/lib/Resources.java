@@ -13,6 +13,8 @@ public class Resources {
     public static final ResourceLocation DOG_INVENTORY = getGui("dog_inventory");
     public static final ResourceLocation INVENTORY_BUTTON = getGui("dog_button");
     public static final ResourceLocation SMALL_WIDGETS = getGui("small_widgets");
+    public static final ResourceLocation STYLE_ADD_REMOVE = getGui("style_add_remove");
+    public static final ResourceLocation HAMBURGER = getGui("hamburger");
 
     // Vanilla wolf
     public static final ResourceLocation ENTITY_WOLF = Util.getResource(Constants.VANILLA_ID, "textures/entity/wolf/wolf_tame.png");

@@ -5,6 +5,7 @@ import doggytalents.api.inferface.AbstractDogEntity;
 import doggytalents.api.inferface.IDogItem;
 import doggytalents.api.registry.AccessoryInstance;
 import doggytalents.common.lib.Constants;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -49,6 +50,9 @@ public class DogShearsItem extends Item implements IDogItem {
                     dogIn.spawnAtLocation(returnItem, 1);
                 }
 
+                playerIn.sendSystemMessage(Component.translatable(
+                    "item.doggytalents.collar_shears.deprecated.0"
+                ));
                 dogIn.removeAccessories();
                 dogIn.setData(COOLDOWN, dogIn.tickCount + 40);
 

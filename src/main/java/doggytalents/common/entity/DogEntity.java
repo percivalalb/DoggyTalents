@@ -12,6 +12,8 @@ import doggytalents.api.inferface.IDogFoodHandler;
 import doggytalents.api.inferface.IThrowableItem;
 import doggytalents.api.registry.*;
 import doggytalents.client.screen.DogInfoScreen;
+import doggytalents.client.screen.DogNewInfoScreen.DogNewInfoScreen;
+import doggytalents.client.screen.DogNewInfoScreen.screen.DogCannotInteractWithScreen;
 import doggytalents.common.config.ConfigHandler;
 import doggytalents.common.entity.ai.BreedGoal;
 import doggytalents.common.entity.ai.MoveToBlockGoal;
@@ -447,10 +449,22 @@ public class DogEntity extends AbstractDogEntity {
         ItemStack stack = player.getItemInHand(hand);
 
         if (this.isTame()) {
-            if (stack.getItem() == Items.STICK && this.canInteract(player)) {
+            if (stack.getItem() == Items.STICK) {
 
                 if (this.level.isClientSide) {
-                    DogInfoScreen.open(this);
+                    boolean useLegacyDogGui = 
+                        ConfigHandler.CLIENT.USE_LEGACY_DOGGUI.get(); 
+                    if (this.canInteract(player)) {
+                        if (!useLegacyDogGui) {
+                            DogNewInfoScreen.open(this);
+                        } else {
+                            DogInfoScreen.open(this);
+                        }
+                    } else {
+                        if (!useLegacyDogGui) {
+                            DogCannotInteractWithScreen.open(this);
+                        }
+                    }
                 }
 
                 return InteractionResult.SUCCESS;
@@ -2222,4 +2236,9 @@ public class DogEntity extends AbstractDogEntity {
     public BlockPos getTargetBlock() {
         return this.targetBlock;
     }
+
+    public StatsTracker getStatTracker() {
+        return this.statsTracker;
+    }
+
 }

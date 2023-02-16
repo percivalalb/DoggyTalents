@@ -77,37 +77,37 @@ public class MainInfoView extends AbstractElement {
         int mX = sizeX/2;
         int mY = sizeY/2;
 
-        int styleViewBoxSizeX = sizeX > 507 ? 448 : sizeX;
-        int styleViewBoxSizeY = sizeY > 304 ? 320 : sizeY;
+        int editInfoViewBoxSizeX = sizeX > 507 ? 448 : sizeX;
+        int editInfoViewBoxSizeY = sizeY > 304 ? 320 : sizeY;
         
-        var styleViewBoxDiv = new DivElement(this, getScreen())
-            .setPosition(PosType.ABSOLUTE, mX - styleViewBoxSizeX/2, 
-            mY - styleViewBoxSizeY/2)
-            .setSize(styleViewBoxSizeX, styleViewBoxSizeY);
+        var editInfoViewBoxDiv = new DivElement(this, getScreen())
+            .setPosition(PosType.ABSOLUTE, mX - editInfoViewBoxSizeX/2, 
+            mY - editInfoViewBoxSizeY/2 + (sizeY > 304 ? 10 : 0)) //+10 if detached to center it.
+            .setSize(editInfoViewBoxSizeX, editInfoViewBoxSizeY);
             //.setBackgroundColor(0xffff05de);
-        this.addChildren(styleViewBoxDiv);
+        this.addChildren(editInfoViewBoxDiv);
 
-        var styleListDiv = new MainViewListPanel(styleViewBoxDiv, getScreen())
+        var editInfoListDiv = new MainViewListPanel(editInfoViewBoxDiv, getScreen())
             .setPosition(PosType.RELATIVE, 0, 0)
             .setSize(120, 1f)
             .setBackgroundColor(0x87363636)
             .init();
 
-        styleViewBoxDiv.addChildren(styleListDiv);
+        editInfoViewBoxDiv.addChildren(editInfoListDiv);
 
         AbstractElement rightView;
         switch (tab) {
             default:
-                rightView = new EditInfoView(styleViewBoxDiv, getScreen(), dog, font);
+                rightView = new EditInfoView(editInfoViewBoxDiv, getScreen(), dog, font);
                 break;
         }
         
         rightView
             .setPosition(PosType.RELATIVE, 0, 0)
-            .setSize(styleViewBoxDiv.getSizeX() - 120, 1f)
+            .setSize(editInfoViewBoxDiv.getSizeX() - 120, 1f)
             .setBackgroundColor(0x57595858)
             .init();
-        styleViewBoxDiv.addChildren(rightView);
+        editInfoViewBoxDiv.addChildren(rightView);
         
     }
 

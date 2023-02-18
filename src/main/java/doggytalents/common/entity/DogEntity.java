@@ -151,8 +151,8 @@ public class DogEntity extends AbstractDogEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(ACCESSORIES.get(), new ArrayList<>(4));
-        this.entityData.define(TALENTS.get(), new ArrayList<>(4));
+        this.entityData.define(ACCESSORIES.get(), new ArrayList<>());
+        this.entityData.define(TALENTS.get(), new ArrayList<>());
         this.entityData.define(LAST_KNOWN_NAME, Optional.empty());
         this.entityData.define(DOG_FLAGS, (byte) 0);
         this.entityData.define(GENDER.get(), EnumGender.UNISEX);
@@ -1297,39 +1297,39 @@ public class DogEntity extends AbstractDogEntity {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
 
-        List<TalentInstance> talentMap = this.getTalentMap();
-        talentMap.clear();
+        var newTlInstLs = new ArrayList<TalentInstance>();
 
         if (compound.contains("talents", Tag.TAG_LIST)) {
             ListTag talentList = compound.getList("talents", Tag.TAG_COMPOUND);
 
             for (int i = 0; i < talentList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
-                TalentInstance.readInstance(this, talentList.getCompound(i)).ifPresent(talentMap::add);
+                TalentInstance.readInstance(this, talentList.getCompound(i)).ifPresent(newTlInstLs::add);
             }
         } else {
             // Try to read old talent format if new one doesn't exist
-            BackwardsComp.readTalentMapping(compound, talentMap);
+            BackwardsComp.readTalentMapping(compound, newTlInstLs);
         }
 
-        this.markDataParameterDirty(TALENTS.get(), false); // Mark dirty so data is synced to client
+        //this.markDataParameterDirty(TALENTS.get(), false); // Mark dirty so data is synced to client
+        this.entityData.set(TALENTS.get(), newTlInstLs);
 
-        List<AccessoryInstance> accessories = this.getAccessories();
-        accessories.clear();
+        var newAccInstLs = new ArrayList<AccessoryInstance>();
 
         if (compound.contains("accessories", Tag.TAG_LIST)) {
             ListTag accessoryList = compound.getList("accessories", Tag.TAG_COMPOUND);
 
             for (int i = 0; i < accessoryList.size(); i++) {
                 // Add directly so that nothing is lost, if number allowed on changes
-                AccessoryInstance.readInstance(accessoryList.getCompound(i)).ifPresent(accessories::add);
+                AccessoryInstance.readInstance(accessoryList.getCompound(i)).ifPresent(newAccInstLs::add);
             }
         } else {
             // Try to read old accessories from their individual format
-            BackwardsComp.readAccessories(compound, accessories);
+            BackwardsComp.readAccessories(compound, newAccInstLs);
         }
 
-        this.markDataParameterDirty(ACCESSORIES.get(), false); // Mark dirty so data is synced to client
+        //this.markDataParameterDirty(ACCESSORIES.get(), false); // Mark dirty so data is synced to client
+        this.entityData.set(ACCESSORIES.get(), newAccInstLs);
 
         // Does what notifyDataManagerChange would have done but this way only does it once
         this.recalculateAlterationsCache();

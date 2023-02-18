@@ -1379,15 +1379,15 @@ public class DogEntity extends AbstractDogEntity {
         }
 
         try {
+            int level_normal = 0;
+            int level_dire = 0;
             if (compound.contains("level_normal", Tag.TAG_ANY_NUMERIC)) {
-                this.getDogLevel().setLevel(Type.NORMAL, compound.getInt("level_normal"));
-                this.markDataParameterDirty(DOG_LEVEL.get());
+                level_normal = compound.getInt("level_normal");
             }
-
             if (compound.contains("level_dire", Tag.TAG_ANY_NUMERIC)) {
-                this.getDogLevel().setLevel(Type.DIRE, compound.getInt("level_dire"));
-                this.markDataParameterDirty(DOG_LEVEL.get());
+                level_dire = compound.getInt("level_dire");          
             }
+            this.entityData.set(DOG_LEVEL.get(), new DogLevel(level_normal, level_dire));
         } catch (Exception e) {
             DoggyTalents2.LOGGER.error("Failed to load levels: " + e.getMessage());
             e.printStackTrace();

@@ -24,6 +24,7 @@ public final class PacketHandler {
         registerPacket(new DogInventoryPagePacket(), DogInventoryPageData.class);
         registerPacket(new DogTexturePacket(), DogTextureData.class);
         registerPacket(new CritEmitterPacket(), CritEmitterData.class); 
+        registerPacket(new DogDismountPacket(), DogDismountData.class);
     }
 
     public static <MSG> void send(PacketDistributor.PacketTarget target, MSG message) {

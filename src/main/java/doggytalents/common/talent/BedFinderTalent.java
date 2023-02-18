@@ -37,7 +37,7 @@ public class BedFinderTalent extends TalentInstance {
                     }
                 }
             } else {
-                dogIn.stopRiding();
+                if (!dogIn.level.isClientSide) dogIn.stopRiding();
                 return InteractionResult.SUCCESS;
             }
         }

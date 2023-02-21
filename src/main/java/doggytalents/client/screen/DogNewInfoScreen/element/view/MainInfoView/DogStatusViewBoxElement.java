@@ -10,6 +10,7 @@ import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
 
@@ -31,8 +32,23 @@ public class DogStatusViewBoxElement extends AbstractElement {
         int e_mX = this.getRealX() + this.getSizeX()/2; 
         int e_mY = this.getRealY() + this.getSizeY()/2; 
 
+        var dogCurrentName = dog.getCustomName();
+        String dogCurrentNameStr = "";
+        boolean nameTooLong = false;
+        if (dogCurrentName != null) {
+            dogCurrentNameStr = dogCurrentName.getString();
+            nameTooLong = dogCurrentNameStr.length() > 14;
+        }
+        if (nameTooLong) {
+            var tempName = dogCurrentNameStr.substring(0, 13) + " ..";
+            dog.setCustomName(Component.literal(tempName));
+        }
         InventoryScreen.renderEntityInInventory(e_mX, e_mY + 32, 50, 
             e_mX - mouseX, e_mY - mouseY, this.dog);
+        if (nameTooLong) {
+            dog.setCustomName(dogCurrentName);
+        }
+
         this.renderHealthBar(stack, dog, e_mX - 41, this.getRealY() + this.getSizeY() - 10);
 
         var points = this.dog.getSpendablePoints();

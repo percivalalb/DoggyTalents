@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import doggytalents.client.DogTextureManager;
 import doggytalents.client.screen.DogNewInfoScreen.element.AbstractElement;
+import doggytalents.client.screen.DogNewInfoScreen.element.view.MainInfoView.DogStatusViewBoxElement;
 import doggytalents.client.screen.DogNewInfoScreen.store.Store;
 import doggytalents.client.screen.DogNewInfoScreen.store.slice.ActiveSkinSlice;
 import doggytalents.common.entity.DogEntity;
@@ -49,8 +50,8 @@ public class DogSkinElement extends AbstractElement {
             var oldHash = dog.getSkinHash();
             var manifestHash = DogTextureManager.INSTANCE.getTextureHash(this.locList.get(activeSkinId));
             dog.setSkinHash(manifestHash);
-            InventoryScreen.renderEntityInInventory(e_mX, e_mY + 36, 64, 
-            e_mX - mouseX, e_mY - mouseY, this.dog);
+            DogStatusViewBoxElement.renderDogInside(stack, dog, e_mX, e_mY + 36, 64, 
+                e_mX - mouseX, e_mY - mouseY);
             dog.setSkinHash(oldHash);
 
             if (
@@ -89,8 +90,8 @@ public class DogSkinElement extends AbstractElement {
             dog.setInSittingPose(false);
             dog.setSkinHash(manifestHash);
             
-            InventoryScreen.renderEntityInInventory(e_mX + 32 + 25 + 25, e_mY + 32, 50, 
-            -64, -64, this.dog);
+            DogStatusViewBoxElement.renderDogInside(stack, dog, e_mX + 32 + 25 + 25, e_mY + 32, 50, 
+                -64, -64);
             dog.setSkinHash(oldHash);
             dog.setInSittingPose(oldSittingPose);
 
@@ -119,8 +120,8 @@ public class DogSkinElement extends AbstractElement {
             var oldSittingPose = dog.isInSittingPose();
             dog.setInSittingPose(false);
             dog.setSkinHash(manifestHash);
-            InventoryScreen.renderEntityInInventory(e_mX - 32 - 25 - 25, e_mY + 32, 50, 
-            -64, -64, this.dog);
+            DogStatusViewBoxElement.renderDogInside(stack, dog, e_mX - 32 - 25 - 25, e_mY + 32, 50, 
+                -64, -64);
             dog.setSkinHash(oldHash);
             dog.setInSittingPose(oldSittingPose);
 

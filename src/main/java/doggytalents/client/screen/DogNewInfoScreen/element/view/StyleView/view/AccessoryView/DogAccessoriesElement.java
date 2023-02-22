@@ -8,6 +8,7 @@ import doggytalents.client.screen.DogNewInfoScreen.element.AbstractElement;
 import doggytalents.client.screen.DogNewInfoScreen.element.DivElement;
 import doggytalents.client.screen.DogNewInfoScreen.element.ElementPosition.ChildDirection;
 import doggytalents.client.screen.DogNewInfoScreen.element.ElementPosition.PosType;
+import doggytalents.client.screen.DogNewInfoScreen.element.view.MainInfoView.DogStatusViewBoxElement;
 import doggytalents.client.screen.DogNewInfoScreen.element.view.StyleView.widget.AccessoryHolder;
 import doggytalents.common.entity.DogEntity;
 import net.minecraft.client.Minecraft;
@@ -90,8 +91,8 @@ public class DogAccessoriesElement extends AbstractElement {
             int e_mX = dogDiv.getRealX() + mX;
             int e_mY = dogDiv.getRealY() + mY;
 
-            InventoryScreen.renderEntityInInventory(e_mX, e_mY + 32, 50, 
-            e_mX - mouseX, e_mY - mouseY, this.dog);
+            DogStatusViewBoxElement.renderDogInside(stack, this.dog, e_mX, e_mY + 32, 50, 
+            e_mX - mouseX, e_mY - mouseY);
         }
 
         //accessory div

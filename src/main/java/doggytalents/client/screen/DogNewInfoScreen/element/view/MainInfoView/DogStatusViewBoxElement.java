@@ -32,27 +32,43 @@ public class DogStatusViewBoxElement extends AbstractElement {
         int e_mX = this.getRealX() + this.getSizeX()/2; 
         int e_mY = this.getRealY() + this.getSizeY()/2; 
 
-        var dogCurrentName = dog.getCustomName();
-        String dogCurrentNameStr = "";
-        boolean nameTooLong = false;
-        if (dogCurrentName != null) {
-            dogCurrentNameStr = dogCurrentName.getString();
-            nameTooLong = dogCurrentNameStr.length() > 14;
-        }
-        if (nameTooLong) {
-            var tempName = dogCurrentNameStr.substring(0, 13) + " ..";
-            dog.setCustomName(Component.literal(tempName));
-        }
-        InventoryScreen.renderEntityInInventory(e_mX, e_mY + 32, 50, 
-            e_mX - mouseX, e_mY - mouseY, this.dog);
-        if (nameTooLong) {
-            dog.setCustomName(dogCurrentName);
-        }
+        renderDogInside(stack, dog, e_mX, e_mY + 32, 50, e_mX - mouseX, e_mY - mouseY);
 
         this.renderHealthBar(stack, dog, e_mX - 41, this.getRealY() + this.getSizeY() - 10);
 
         var points = this.dog.getSpendablePoints();
         this.font.draw(stack, "Pts: " + points, this.getRealX(), this.getRealY(), 0xffffffff);
+    }
+
+    public static void renderDogInside(PoseStack stack, DogEntity dog, 
+        int dog_mX, int dog_mY, int size, int lookX, int lookY) {
+        int currentDogSize = dog.getDogSize();
+        boolean dogTooBig = currentDogSize > 3;
+        if (dogTooBig) {
+            dog.setDogSize(3);
+        }
+
+        var currentDogName = dog.getCustomName();
+        String currentDogNameStr = "";
+        boolean nameTooLong = false;
+        if (currentDogName != null) {
+            currentDogNameStr = currentDogName.getString();
+            nameTooLong = currentDogNameStr.length() > 14;
+        }
+        if (nameTooLong) {
+            var tempName = currentDogNameStr.substring(0, 13) + " ..";
+            dog.setCustomName(Component.literal(tempName));
+        }
+
+        InventoryScreen.renderEntityInInventory(dog_mX, dog_mY, size, 
+            lookX, lookY, dog);
+
+        if (nameTooLong) {
+            dog.setCustomName(currentDogName);
+        }
+        if (dogTooBig) {
+            dog.setDogSize(currentDogSize);
+        }
     }
 
     public void renderHealthBar(PoseStack stack, DogEntity dog, int x, int y) {

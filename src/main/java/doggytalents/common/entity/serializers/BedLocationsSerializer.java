@@ -8,11 +8,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
-public class BedLocationsSerializer<D, T extends EntityDataSerializer<D>> implements EntityDataSerializer<DimensionDependantArg<D>> {
+public class BedLocationsSerializer<T> implements EntityDataSerializer<DimensionDependantArg<T>> {
 
     @Override
-    public void write(FriendlyByteBuf buf, DimensionDependantArg<D> value) {
-        EntityDataSerializer<D> ser = value.getSerializer();
+    public void write(FriendlyByteBuf buf, DimensionDependantArg<T> value) {
+        EntityDataSerializer<T> ser = value.getSerializer();
         buf.writeInt(EntityDataSerializers.getSerializedId(ser));
         buf.writeInt(value.size());
         value.entrySet().forEach((entry) -> {
@@ -22,15 +22,15 @@ public class BedLocationsSerializer<D, T extends EntityDataSerializer<D>> implem
     }
 
     @Override
-    public DimensionDependantArg<D> read(FriendlyByteBuf buf) {
-        EntityDataSerializer<D> ser = (EntityDataSerializer<D>) EntityDataSerializers.getSerializer(buf.readInt());
-        DimensionDependantArg<D> value = new DimensionDependantArg<>(() -> ser);
+    public DimensionDependantArg<T> read(FriendlyByteBuf buf) {
+        EntityDataSerializer<T> ser = (EntityDataSerializer<T>) EntityDataSerializers.getSerializer(buf.readInt());
+        DimensionDependantArg<T> value = new DimensionDependantArg<>(() -> ser);
         int size = buf.readInt();
 
         for (int i = 0; i < size; i++) {
             ResourceLocation loc = buf.readResourceLocation();
             ResourceKey<Level> type = ResourceKey.create(Registries.DIMENSION, loc);
-            D subV = ser.read(buf);
+            T subV = ser.read(buf);
             value.map.put(type, subV);
         }
 
@@ -38,7 +38,7 @@ public class BedLocationsSerializer<D, T extends EntityDataSerializer<D>> implem
     }
 
     @Override
-    public DimensionDependantArg<D> copy(DimensionDependantArg<D> value) {
+    public DimensionDependantArg<T> copy(DimensionDependantArg<T> value) {
         return value.copy();
     }
 }

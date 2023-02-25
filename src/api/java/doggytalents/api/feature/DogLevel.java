@@ -1,11 +1,10 @@
 package doggytalents.api.feature;
 
-public class DogLevel {
+import java.util.Objects;
 
-    private int level;
-    private int direLevel;
+public record DogLevel(int level, int direLevel) {
 
-    public static enum Type {
+    public enum Type {
         NORMAL("normal_treat"),
         DIRE("dire_treat");
 
@@ -20,11 +19,6 @@ public class DogLevel {
         }
     }
 
-    public DogLevel(int level, int direLevel) {
-        this.level = level;
-        this.direLevel = direLevel;
-    }
-
     public int getLevel(Type type) {
         return type == Type.DIRE ? this.direLevel : this.level;
     }
@@ -33,18 +27,16 @@ public class DogLevel {
         return type == Type.DIRE ? this.level >= 60 : true;
     }
 
-    @Deprecated
-    public void setLevel(Type type, int level) {
+    public DogLevel setLevel(Type type, int level) {
         if (type == Type.DIRE) {
-            this.direLevel = level;
+            return new DogLevel(this.level, level);
         } else {
-            this.level = level;
+            return new DogLevel(level, this.direLevel);
         }
     }
 
-    @Deprecated
-    public void incrementLevel(Type type) {
-        this.setLevel(type, this.getLevel(type) + 1);
+    public DogLevel incrementLevel(Type type) {
+        return this.setLevel(type, this.getLevel(type) + 1);
     }
 
     public DogLevel copy() {
@@ -61,8 +53,7 @@ public class DogLevel {
         return new DogLevel(combinedLevel, 0);
     }
 
-    public final boolean isDireDog() {
+    public boolean isDireDog() {
         return this.direLevel >= 30;
     }
-
 }

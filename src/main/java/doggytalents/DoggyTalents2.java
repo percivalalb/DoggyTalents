@@ -123,7 +123,6 @@ public class DoggyTalents2 {
         FoodHandler.registerDynPredicate(HappyEaterTalent.INNER_DYN_PRED);
         InteractHandler.registerHandler(new HelmetInteractHandler());
         ConfigHandler.initTalentConfig();
-        DogEntity.initDataParameters();
     }
 
     public void serverStarting(final ServerStartingEvent event) {

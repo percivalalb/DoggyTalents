@@ -84,7 +84,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
+            property 'forge.enabledGameTestNamespaces', 'doggytalents'
 
             mods {
                 doggytalents.sources((SourceSet[]) [sourceSets.main, sourceSets.api])

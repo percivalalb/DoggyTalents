@@ -128,6 +128,7 @@ public class DyeableAccessory extends Accessory {
                 dogIn.consumeItemFromStack(playerIn, stack);
                 // Make sure to sync change with client
                 dogIn.markAccessoriesDirty();
+
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;

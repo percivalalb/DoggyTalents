@@ -8,6 +8,7 @@ import doggytalents.common.entity.DogEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 
@@ -45,22 +46,29 @@ public class DogCannotInteractWithScreen extends Screen {
         //         );
         //     help = "Please check back when he is recovered.";
         // } else {
-            if (this.dog.canInteract(Minecraft.getInstance().player)) {
-                DogNewInfoScreen.open(dog);
-                return;
-            };
-            title = Component.literal("You do not own this dog!")
-            .withStyle(
-                Style.EMPTY
-                .withBold(true)
-                .withColor(ChatFormatting.RED)
-            );
-            help = "Please ensure that you have permission to interact with him.";
-        //}
-        var dog_title = "Dog: " + this.dog.getName().getString();
-        var owner_title = "Owner: " 
-        + this.dog.getOwnersName().orElse(Component.literal("")).getString(); 
-        var escToReturn= "Esc to return.";
+        if (this.dog.canInteract(Minecraft.getInstance().player)) {
+            DogNewInfoScreen.open(dog);
+            return;
+        };
+        title = Component.literal("doggui.invalid_dog.no_permission.title")
+        .withStyle(
+            Style.EMPTY
+            .withBold(true)
+            .withColor(ChatFormatting.RED)
+        );
+        help = I18n.get(
+            "doggui.invalid_dog.no_permission.subtitle",
+            dog.getGenderPronoun()
+        );
+        var dog_title = I18n.get(
+            "doggui.invalid_dog.info.dog",
+            dog.getName().getString()
+        );
+        var owner_title = I18n.get(
+            "doggui.invalid_dog.info.owner",
+            this.dog.getOwnersName().orElse(Component.literal("")).getString()
+        );
+        var escToReturn= I18n.get("doggui.invalid_dog.esc_to_return");
         stack.pushPose();
         stack.scale(1.2f, 1.2f, 1.2f);
         this.font.draw(stack, title, (mX/1.2f -font.width(title)/2 ), pY/1.2f, 0xffffffff);

@@ -231,6 +231,14 @@
    "doggui.stats.mob_kills" : "Mob Kills",
    "doggui.stats.mob_kills.no_kills" : "%s did not kill any mobs.",
 
+   "doggui.invalid_dog.incapacitated.title" : "Dog is Incapacitated!",
+   "doggui.invalid_dog.incapacitated.subtitle" : "Please check back when %s is recovered.",
+   "doggui.invalid_dog.no_permission.title" : "You do not own this dog!",
+   "doggui.invalid_dog.no_permission.subtitle" : "Please ensure that you have permission to interact with %s.",
+   "doggui.invalid_dog.info.dog" : "Dog: %s",
+   "doggui.invalid_dog.info.owner" : "Owner: %s",
+   "doggui.invalid_dog.esc_to_return" : "Esc to return.",
+
    "doggui.prevpage": "Previous Page",
    "doggui.nextpage": "Next Page",
    "doggui.newname": "New name:",

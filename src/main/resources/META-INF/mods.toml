@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="${fml_version_range}"
-license="GNU GPLv3"
+license="GNU LGPLv3"
 issueTrackerURL="https://github.com/percivalalb/DoggyTalents/issues"
 displayURL="https://minecraft.curseforge.com/projects/doggy-talents/"
 logoFile="dt_logo.png"

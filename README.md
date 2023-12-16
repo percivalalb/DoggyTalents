@@ -1,4 +1,6 @@
-Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Inactively Maintained](https://img.shields.io/badge/Maintenance%20Level-Inactively%20Maintained-yellowgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+**This project is no longer maintained, a fork is available at https://github.com/DashieDev/DoggyTalentsNext.**
+
+Doggy Talents [![Curseforge](http://cf.way2muchnoise.eu/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Curseforge](http://cf.way2muchnoise.eu/versions/271050.svg)](https://minecraft.curseforge.com/projects/doggy-talents) [![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Abandoned-orange.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 ===========
 
 **Doggy Talents** is a **Minecraft mod** made for **Minecraft Forge**
